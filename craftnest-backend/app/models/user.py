@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import String, Boolean, DateTime, text
-from sqlalchemy.orm import Mapped, mapped_column, validates
+from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from sqlalchemy.sql import func
 from app.core.database import Base, GUID
 
@@ -52,9 +52,13 @@ class User(Base):
         nullable=False,
     )
 
+    buyer_profile = relationship("BuyerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
+    seller_profile = relationship("SellerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
+
     @validates("email")
     def validate_email(self, key: str, value: str) -> str:
         """Ensure email is stored as lowercase."""
         if value:
             return value.lower().strip()
         return value
+

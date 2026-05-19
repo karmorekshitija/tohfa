@@ -66,6 +66,7 @@ async def lifespan(app: FastAPI):
 
 from app.routers.auth import router as auth_router
 from app.routers.items import router as items_router
+from app.routers.profiles import router as profiles_router
 
 app = FastAPI(
     title="CraftNest API",
@@ -89,6 +90,8 @@ async def custom_rate_limit_handler(request: Request, exc: RateLimitExceeded):
 
 app.include_router(auth_router)
 app.include_router(items_router)
+app.include_router(profiles_router)
+
 
 @app.middleware("http")
 async def structlog_middleware(request: Request, call_next):

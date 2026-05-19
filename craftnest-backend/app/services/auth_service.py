@@ -56,6 +56,19 @@ async def signup_user(
     )
     db.add(user)
     await db.flush()
+
+    # Automatically create the corresponding profile row with default values
+    if role == "buyer":
+        from app.models.profile import BuyerProfile
+        profile = BuyerProfile(user_id=user.id)
+        db.add(profile)
+        await db.flush()
+    elif role == "seller":
+        from app.models.profile import SellerProfile
+        profile = SellerProfile(user_id=user.id)
+        db.add(profile)
+        await db.flush()
+
     
     # Write audit log for signup (in the same transaction)
     await log_event(

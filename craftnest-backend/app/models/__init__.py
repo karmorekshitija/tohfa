@@ -4,3 +4,4 @@ from app.models.user import User  # noqa
 from app.models.item import Item  # noqa
 from app.models.refresh_token import RefreshToken  # noqa
 from app.models.audit_log import AuditLog  # noqa
+from app.models.profile import BuyerProfile, SellerProfile  # noqa
