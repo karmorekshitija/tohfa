@@ -118,8 +118,8 @@
             
             <div class="hidden md:flex items-center gap-8">
                 <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="home.html">Home</a>
-                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="category.html">Categories</a>
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="wishlist.html">Wishlist</a>
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="category.html">Category</a>
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="reels.html">reels</a>
                 <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" id="navbar-dashboard-link" href="profile.html">Profile</a>
             </div>
 
@@ -146,47 +146,134 @@
         </nav>
     </header>
 
-    <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
-        <!-- Category Filter Pills -->
-        <div class="flex flex-wrap gap-2.5 justify-center mb-10" id="categories-filter-container">
-            <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
-            <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
-            <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
+    <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 relative">
+        
+        <!-- Bento Categories View (Browse by Craft) -->
+        <div id="bento-categories-view" class="transition-opacity duration-300">
+            <!-- Hero Title -->
+            <section class="mb-16 text-center relative">
+                <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-10 pointer-events-none select-none">
+                    <span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+                </div>
+                <h2 class="font-headline-lg text-[40px] md:text-[56px] font-extrabold text-primary mb-4 tracking-tight leading-tight" style="font-family: 'EB Garamond', serif;">Browse by Craft</h2>
+                <p class="text-secondary max-w-2xl mx-auto text-base md:text-lg">Discover the artistry behind every piece. Explore our curated collections of handmade treasures, each telling a unique story of craftsmanship and botanical inspiration.</p>
+            </section>
+
+            <!-- Category Grid (Bento Style Layout) -->
+            <section class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 gap-6 h-auto md:h-[900px] mb-24">
+                <!-- Crochet - Feature Large -->
+                <div onclick="selectCategory('knitting')" class="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCObPUeWdtf941R11tkq5y_ZFB4OcF-w6C_XgD9woyFYwfzIQkHfvVRirx-Kdqu5bZ2M5PGu3oafACFLMrtqaif_H4peiWwv50buCtNdXW6eR0Vse00piA9wXeKALg_dtLlLwRnGJ-5013BMEaN-uUbys0VBMH6JQ7N5jrgTWuhj_xHzeNq5Sl5DFmyk8-BS-QFn5bfRuzjrrsoRAKVfF3RzfDlVI8W3rGnXyrgug2jIpiyUu9hSV8w3sxTwVxM5d0KFvdwWBkZ3PM" alt="Crochet"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex flex-col justify-end p-8">
+                        <span class="text-white/70 text-sm font-bold uppercase tracking-widest mb-1">Textile Arts</span>
+                        <h3 class="text-white text-3xl font-bold mb-4">Crochet</h3>
+                        <button class="bg-white/20 backdrop-blur-md text-white border border-white/30 px-6 py-2 rounded-full w-fit hover:bg-white hover:text-primary transition-all">Explore Collection</button>
+                    </div>
+                </div>
+                <!-- Jewelry -->
+                <div onclick="selectCategory('jewellery')" class="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeJNG4g7zflqMyn7WkuQSO9QQfGcVEFgeG-_Q0vueOcwACo9wB_3n47LGCGJVjJyD5sfvTVuMxlSNq3ugTNodbWaf8Rgn8A7cyCh0QaXHy8sfqpicQEvtRzXgzJIJOONq4Su4fxZb7lnoTQHb_u6bb5vManpfJP_NRwCt10DBpdAVLjND6X5aH2zsasex4krU07RHdXNpLrcY1FHuhwPOp0OnqIUuCIM1socL7oGiZsOBNfwaKnQRVUDO4lv_gQ3tIv8Gakdbld2g" alt="Jewelry"/>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Jewelry</h3>
+                    </div>
+                </div>
+                <!-- Ceramics -->
+                <div onclick="selectCategory('pottery')" class="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYhjlpVVO-eSNQ3YGmsjZmdeDamckzLFtmNl9KV9wUxhHlEwCWHQ7xDRR2_92d2CpxSRtKBLdTbrbFgx8zaZdUrvSomQK5Dp8AtJQO7FycjVs7w96kYI_cKy7dhu8BAyp9LLP69hsx8lyycHGELDFdlFcl9uvgE4S1dcF7Ikvegf1PnkoHIMwdLsWHLeeZUd5u3NVg9KdZPn10apJPTjMa6qBah1Um6ynCsWZcgTEt_ILERIAlmYHL5DJGXgfQvL0BhIbJo6sc8gQ" alt="Ceramics"/>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Ceramics</h3>
+                    </div>
+                </div>
+                <!-- Stationery -->
+                <div onclick="selectCategory('journals')" class="md:col-span-2 group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuuYPSTSnwuj49ojGB3jUWP8o3aCtui_OzxC7KspxVpHZcoxAD-C8UJ0VpQB6-eFitKYYOrdCQbsEM99UiMDcG-i8c9D6QoHkCXX7VgrHyGDOklhImJYUkUKC3J9gTveZKlebOt1YoFS9OslaDMyNmb3Wk2yOxw-SFSuYXJhtPLB0liNytfa2V_QVgwCekO_poXPWyFZag5zAlMkwymWBqetUnVrbUwcGJkDYvFnvfqtiKcWd5FfADUlsy1yWsEvOEs6Tm2HSzqK8" alt="Stationery"/>
+                    <div class="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex flex-col justify-center p-8">
+                        <h3 class="text-white text-2xl font-bold">Stationery</h3>
+                        <p class="text-white/80 text-sm max-w-xs mt-2">Notebook covers, journals, and hand-pressed cards.</p>
+                    </div>
+                </div>
+                <!-- Paintings -->
+                <div onclick="selectCategory('prints')" class="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcdcclf3UkDxobY1FyffIYZkIuPBIOwqM68_c6boQadkb7F3jGJO1dajAVHxHdbK8VEHQacdvmWo-z2bItqs3dPNHzvJ-DYMnoTg8RV0u8KAjxLEIZxtMTz5ZkmZYjpLZr7S-2t3peS6V5wRHCQwd79lri2M9XseyAdopf5zWKXDh3bZjj0UqDEccR4BUiQcQBpf75TLJeOcLXEbtPZWpzhH9ZQ9VqO5KWGnMg1YugB4gKF1D8TR3mWzex8pg5wGYaPKs7a0VdPKw" alt="Paintings"/>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Paintings</h3>
+                    </div>
+                </div>
+                <!-- Photo Frames -->
+                <div onclick="selectCategory('woodwork')" class="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7iTSdGuzZigGuF_giQ44sJ2TRwkcDKVoIixbQNlSJ4TakpnfzQ1VoRHjn1_ATaeYlE1lk7WW2f0gyrMPsI6AewqdmNxQXwVI3alpR8EsQLdn5L3kA1iEVO6D2mscunhiErRw8OBa-otyifX-YA9cBKqJM0i25aA4zhfwXCLTrAZ5ilUpY_zh-2w_BEPMXOJSt-3H9QakVgLcZizt3fJn_VhrUMNu4avgS4QKjh5sJggmDAhHoLk3AqivMY97YpeRllJS7hKx1cTc" alt="Photo Frames"/>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Photo Frames</h3>
+                    </div>
+                </div>
+                <!-- Keychains -->
+                <div onclick="selectCategory('mixed')" class="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsZ9fmteUvkxB7X4pnviv0wh7vWZFZssqKASBn720geG3Tby6dei76wxICNjySDGD9KO5sCf-bQmxn3dHYKRN1GCkGoQ3TyA2aexIp4wfZ-J9wG8r22miCnW1xI90sQaV4fDed1jMyfJsCixmdR_eM50_hp627WKttdoPFcCMvJL9qkTLg8EaVwlMu3ubYUkS7Mu-DwURAyTx34WmI1BuKLRz-YRYtHaN9oDMYAcGl-wnUvjsxFxRXbDOSaIimntvnBPe2WhmuVpY" alt="Keychains"/>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Keychains</h3>
+                    </div>
+                </div>
+                <!-- Textiles -->
+                <div onclick="selectCategory('clothing')" class="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer h-60 md:h-auto">
+                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLho-RnXqI5Tg2ffVG1uOPsQTavqPBz_N1kvNlkFkUUdUfqXeF4bQmTcvIss-slOULqnatqsxAG5ZNrJ4u21EtEr4Jsdf5m4oc_fkSopRm_MoMneDJwcAjJrXf0fTRMzRhQFtXD90Sf41OdIsoDsA_gJ5QaW_zo09wi7mkswMW9Fvy4nxE9FkA2gpBBbb_geIWJ4dfjkyyYOAzn7RGlAgkm7loiGCgTs2Kqj7udGV3zTA-69z_NxJON2TnXXmzSIiSkhyCVXOudiY" alt="Textiles"/>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <h3 class="text-white text-xl font-bold tracking-tight">Textiles</h3>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <!-- Browse Header -->
-        <header class="mb-12 text-center max-w-2xl mx-auto space-y-4">
-            <h2 class="font-headline-lg text-headline-lg text-primary" id="browse-title">All Products</h2>
-            <p class="text-secondary text-sm" id="browse-desc">Explore beautiful handmade goods crafted by local makers.</p>
-            <div class="w-16 h-0.5 bg-primary/20 mx-auto"></div>
-        </header>
-
-        <!-- Product Grid -->
-        <section class="min-h-[400px]">
-            <div id="products-empty" class="hidden text-center py-16 bg-surface-container-low/50 rounded-xl">
-                <span class="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
-                <p class="text-secondary" id="empty-state-text">No products found matching this filter.</p>
+        <!-- Products Browse View (Filtered Category / Search Results) -->
+        <div id="products-browse-view" class="hidden transition-opacity duration-300">
+            <!-- Breadcrumbs / Back button -->
+            <div class="mb-8 flex items-center gap-2">
+                <button onclick="clearCategory()" class="text-secondary hover:text-primary transition-colors flex items-center gap-1.5 text-sm font-semibold">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                    Back to All Crafts
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="products-grid">
-                <!-- Dynamically loaded product cards -->
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+            <!-- Category Filter Pills -->
+            <div class="flex flex-wrap gap-2.5 justify-center mb-10" id="categories-filter-container">
+                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
+                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
+                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
             </div>
-        </section>
 
-        <!-- Pagination Controls -->
-        <footer class="flex justify-center items-center gap-6 mt-16" id="pagination-controls">
-            <button id="btn-prev" onclick="changePage(-1)" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-5 py-2.5 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">arrow_back</span> Prev
-            </button>
-            <span id="page-indicator" class="font-label-caps text-sm text-secondary uppercase font-bold">Page 1</span>
-            <button id="btn-next" onclick="changePage(1)" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-5 py-2.5 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1">
-                Next <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </button>
-        </footer>
+            <!-- Browse Header -->
+            <header class="mb-12 text-center max-w-2xl mx-auto space-y-4">
+                <h2 class="font-headline-lg text-headline-lg text-primary" id="browse-title">All Products</h2>
+                <p class="text-secondary text-sm" id="browse-desc">Explore beautiful handmade goods crafted by local makers.</p>
+                <div class="w-16 h-0.5 bg-primary/20 mx-auto"></div>
+            </header>
+
+            <!-- Product Grid -->
+            <section class="min-h-[400px]">
+                <div id="products-empty" class="hidden text-center py-16 bg-surface-container-low/50 rounded-xl">
+                    <span class="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
+                    <p class="text-secondary" id="empty-state-text">No products found matching this filter.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="products-grid">
+                    <!-- Dynamically loaded product cards -->
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                </div>
+            </section>
+
+            <!-- Pagination Controls -->
+            <footer class="flex justify-center items-center gap-6 mt-16" id="pagination-controls">
+                <button id="btn-prev" onclick="changePage(-1)" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-5 py-2.5 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span> Prev
+                </button>
+                <span id="page-indicator" class="font-label-caps text-sm text-secondary uppercase font-bold">Page 1</span>
+                <button id="btn-next" onclick="changePage(1)" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-5 py-2.5 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1">
+                    Next <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </button>
+            </footer>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -222,9 +309,9 @@
             <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">category</span>
             <span class="font-label-caps text-[10px] mt-0.5">Category</span>
         </div>
-        <div onclick="window.location.href='wishlist.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 cursor-pointer">
-            <span class="material-symbols-outlined">favorite</span>
-            <span class="font-label-caps text-[10px] mt-0.5">Wishlist</span>
+        <div onclick="window.location.href='reels.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 cursor-pointer">
+            <span class="material-symbols-outlined">play_circle</span>
+            <span class="font-label-caps text-[10px] mt-0.5">Reels</span>
         </div>
         <div onclick="window.location.href='profile.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 cursor-pointer">
             <span class="material-symbols-outlined">person</span>
@@ -425,6 +512,10 @@
             window.location.href = slug ? `category.html?slug=${slug}` : `category.html`;
         }
 
+        function clearCategory() {
+            window.location.href = 'category.html';
+        }
+
         // Fetch products
         async function fetchProducts() {
             const grid = document.getElementById('products-grid');
@@ -544,7 +635,15 @@
             checkAuthState();
             await fetchWishlist();
             await loadCategories();
-            await fetchProducts();
+            
+            if (activeSlug || searchQuery) {
+                document.getElementById('bento-categories-view').classList.add('hidden');
+                document.getElementById('products-browse-view').classList.remove('hidden');
+                await fetchProducts();
+            } else {
+                document.getElementById('bento-categories-view').classList.remove('hidden');
+                document.getElementById('products-browse-view').classList.add('hidden');
+            }
         });
     </script>
 </body>

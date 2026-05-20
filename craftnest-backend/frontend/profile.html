@@ -210,23 +210,23 @@
 </section>
 </main>
 <!-- BottomNavBar (Mobile Only) -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface border-t border-outline-variant/30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] z-50 md:hidden">
-<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
-<span class="material-symbols-outlined">explore</span>
-<span class="font-label-sm text-[10px] uppercase">Discover</span>
-</div>
-<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
-<span class="material-symbols-outlined">favorite</span>
-<span class="font-label-sm text-[10px] uppercase">Wishlist</span>
-</div>
-<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
-<span class="material-symbols-outlined">shopping_cart</span>
-<span class="font-label-sm text-[10px] uppercase">Cart</span>
-</div>
-<div class="flex flex-col items-center justify-center text-primary px-4 py-1">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">package_2</span>
-<span class="font-label-sm text-[10px] uppercase">Orders</span>
-</div>
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(74,69,62,0.08)] rounded-t-xl">
+    <div onclick="window.location.href='home.html'" class="flex flex-col items-center justify-center text-secondary rounded-xl px-4 py-1.5 cursor-pointer">
+        <span class="material-symbols-outlined">home</span>
+        <span class="font-label-caps text-[10px] mt-0.5">Home</span>
+    </div>
+    <div onclick="window.location.href='category.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 cursor-pointer">
+        <span class="material-symbols-outlined">category</span>
+        <span class="font-label-caps text-[10px] mt-0.5">Category</span>
+    </div>
+    <div onclick="window.location.href='reels.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 cursor-pointer">
+        <span class="material-symbols-outlined">play_circle</span>
+        <span class="font-label-caps text-[10px] mt-0.5">Reels</span>
+    </div>
+    <div onclick="window.location.href='profile.html'" class="flex flex-col items-center justify-center text-primary px-4 py-1.5 cursor-pointer">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+        <span class="font-label-caps text-[10px] mt-0.5">Profile</span>
+    </div>
 </nav>
 
 <script>

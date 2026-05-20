@@ -141,10 +141,10 @@
 <h1 class="font-headline-lg text-headline-lg text-primary select-none">Flora &amp; Craft</h1>
 </div>
 <div class="hidden md:flex items-center gap-8">
-<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="#">Home</a>
-<a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="#">Category</a>
-<a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="#">Reel</a>
-<a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="#">Profile</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="home.html">Home</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="category.html">Category</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="reels.html">reels</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="profile.html">Profile</a>
 </div>
 <div class="flex items-center gap-4">
 <button class="text-secondary hover:text-primary transition-colors">
@@ -168,7 +168,7 @@
 <p class="text-secondary max-w-lg">Discover our curated collection of hand-carved ceramics, sustainable textiles, and botanical-inspired stationery crafted by local artisans.</p>
 <div class="flex gap-4">
 <button class="bg-primary text-background px-8 py-3 rounded-lg font-title-md text-title-md hover:bg-primary-fixed-dim transition-all shadow-lg shadow-primary/10">Explore Collection</button>
-<button class="border-2 border-primary text-primary px-8 py-3 rounded-lg font-title-md text-title-md hover:bg-primary/5 transition-all">Our Story</button>
+<button onclick="document.getElementById('my-story-section').scrollIntoView({ behavior: 'smooth' })" class="border-2 border-primary text-primary px-8 py-3 rounded-lg font-title-md text-title-md hover:bg-primary/5 transition-all">My Story</button>
 </div>
 </div>
 <div class="flex-1 relative">
@@ -178,6 +178,46 @@
 <p class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary">"Every piece tells a story of the hands that shaped it."</p>
 </div>
 </div>
+</section>
+
+<!-- My Story Section (USPs of the App) -->
+<section id="my-story-section" class="px-margin-mobile md:px-margin-desktop py-16 bg-surface-container-low/40 rounded-3xl mx-margin-mobile md:mx-0 my-8 border border-outline-variant/10">
+    <div class="flex flex-col lg:flex-row items-center gap-12">
+        <!-- Story Text -->
+        <div class="flex-1 space-y-6">
+            <span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">The Heart of Flora &amp; Craft</span>
+            <h3 class="font-headline-lg text-headline-lg text-on-surface leading-tight">My Own Story</h3>
+            <p class="text-secondary leading-relaxed font-body-lg text-body-lg">
+                Born from a love for slow mornings and tactile beauty, Flora &amp; Craft is a sanctuary for authentic, handmade design. We believe that everyday objects should carry a soul, a history, and the gentle touch of the human hand. By bridging the gap between independent artisans and conscious collectors, we nurture the art of slow living.
+            </p>
+            <p class="text-secondary leading-relaxed font-body-lg text-body-lg">
+                Every purchase directly supports a maker's craft, ensuring that these beautiful traditions continue to thrive in our modern world.
+            </p>
+        </div>
+        <!-- USP Cards -->
+        <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
+                <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">handshake</span>
+                <h4 class="font-title-md text-title-md text-on-surface mb-2">Direct Connection</h4>
+                <p class="text-secondary text-sm font-body-sm text-body-sm">Connect directly with local, independent artisans. No middlemen, no factory-made replicas—just pure craftsmanship.</p>
+            </div>
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
+                <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">brush</span>
+                <h4 class="font-title-md text-title-md text-on-surface mb-2">Slow &amp; Small-Batch</h4>
+                <p class="text-secondary text-sm font-body-sm text-body-sm">We celebrate slow creation. Every product is small-batch, hand-carved, hand-woven, or hand-glazed with meticulous care.</p>
+            </div>
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
+                <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">eco</span>
+                <h4 class="font-title-md text-title-md text-on-surface mb-2">Sustainable Roots</h4>
+                <p class="text-secondary text-sm font-body-sm text-body-sm">Prioritizing natural materials, organic clay, FSC-certified wood, and zero-plastic packaging to honor the earth.</p>
+            </div>
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
+                <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                <h4 class="font-title-md text-title-md text-on-surface mb-2">Cherished Quality</h4>
+                <p class="text-secondary text-sm font-body-sm text-body-sm">Handmade means heart-made. Our pieces are crafted with materials built to be cherished and passed down for generations.</p>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- Featured Artisans - Bento Layout -->
 <section class="px-margin-mobile md:px-margin-desktop py-20">
@@ -431,19 +471,19 @@
 </footer>
 <!-- BottomNavBar (Mobile Only) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(74,69,62,0.08)] rounded-t-xl">
-<div class="flex flex-col items-center justify-center bg-primary-container/20 text-primary rounded-xl px-4 py-1.5 transition-transform duration-200 active:scale-95">
+<div onclick="window.location.href='home.html'" class="flex flex-col items-center justify-center bg-primary-container/20 text-primary rounded-xl px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
 <span class="font-label-caps text-[10px] mt-0.5">Home</span>
 </div>
-<div class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95">
+<div onclick="window.location.href='category.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
 <span class="material-symbols-outlined">category</span>
 <span class="font-label-caps text-[10px] mt-0.5">Category</span>
 </div>
-<div class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95">
+<div onclick="window.location.href='reels.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
 <span class="material-symbols-outlined">play_circle</span>
-<span class="font-label-caps text-[10px] mt-0.5">Reel</span>
+<span class="font-label-caps text-[10px] mt-0.5">Reels</span>
 </div>
-<div class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95">
+<div onclick="window.location.href='profile.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
 <span class="material-symbols-outlined">person</span>
 <span class="font-label-caps text-[10px] mt-0.5">Profile</span>
 </div>
