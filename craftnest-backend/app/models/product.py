@@ -3,8 +3,7 @@ from datetime import datetime
 from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import ARRAY
-from app.core.database import Base, GUID
+from app.core.database import Base, GUID, DialectArray, engine
 
 class Product(Base):
     __tablename__ = "products"
@@ -46,9 +45,9 @@ class Product(Base):
         nullable=False,
     )
     image_urls: Mapped[list[str]] = mapped_column(
-        ARRAY(String),
+        DialectArray(String),
         default=list,
-        server_default=text("'{}'"),
+        server_default=text("'[]'") if "sqlite" in str(engine.url) else text("'{}'"),
         nullable=False,
     )
     is_active: Mapped[bool] = mapped_column(

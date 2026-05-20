@@ -98,6 +98,7 @@ async def seeded_data(client: AsyncClient, db):
     
     db.add_all([p1, p2, p3, p4])
     await db.flush()
+    db.expire_all()
     
     return {
         "seller": seller_user,
@@ -136,6 +137,7 @@ async def test_browse_home(client: AsyncClient, seeded_data):
     response = await client.get("/api/v1/browse/home")
     assert response.status_code == 200
     data = response.json()
+    print("DEBUG BROWSE HOME DATA:", data)
     assert "sponsored" in data
     assert "recent" in data
     
