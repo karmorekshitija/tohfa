@@ -15,3 +15,16 @@ class UserResponse(UserBase):
     is_active: bool
     
     model_config = ConfigDict(from_attributes=True)
+
+
+class PublicUserSummary(BaseModel):
+    id: uuid.UUID
+    role: str
+    
+    model_config = ConfigDict(from_attributes=True)
+
+class FollowListResponse(BaseModel):
+    items: list[PublicUserSummary]
+    total: int
+    limit: int
+    offset: int

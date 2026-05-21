@@ -320,7 +320,7 @@
     </nav>
 
     <script>
-        const API_BASE_URL = 'https://localhost:8443';
+        const API_BASE_URL = window.location.origin;
         let wishlistedProductIds = new Set();
         let isLoggedIn = false;
         let categories = [];

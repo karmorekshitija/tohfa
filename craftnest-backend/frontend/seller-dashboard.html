@@ -274,7 +274,7 @@
 </footer>
 
 <script>
-        const API_BASE_URL = 'https://localhost:8443';
+        const API_BASE_URL = window.location.origin;
 
         document.addEventListener('DOMContentLoaded', async function() {
             const accessToken = sessionStorage.getItem('access_token');

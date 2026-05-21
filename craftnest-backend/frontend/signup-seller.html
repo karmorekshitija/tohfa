@@ -165,7 +165,7 @@
 
     <script>
         // API Base URL config
-        const API_BASE_URL = 'https://localhost:8443';
+        const API_BASE_URL = window.location.origin;
 
         // Selectors
         const signupForm = document.getElementById('signup-form');
@@ -329,7 +329,7 @@
             } catch (error) {
                 // Connection or other fetch failures
                 console.error("Signup request failed:", error);
-                generalErrorText.textContent = "Unable to connect to the backend server. Please verify the server is running on https://localhost:8443 and try again.";
+                generalErrorText.textContent = `Unable to connect to the backend server. Please verify the server is running on ${API_BASE_URL} and try again.`;
                 generalError.classList.remove('hidden');
             } finally {
                 // Reset button UI

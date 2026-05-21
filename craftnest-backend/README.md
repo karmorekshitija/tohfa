@@ -93,6 +93,47 @@ To execute tests using Pytest:
 pytest
 ```
 
+## Secure LAN / Mobile Testing
+
+To test the CraftNest frontend and backend endpoints on your mobile phone or other devices connected to the same Wi-Fi network:
+
+### 1. Generating a LAN Certificate
+To make HTTPS work seamlessly without browser security warnings on external devices, you can generate a custom development certificate using `mkcert` that includes both `localhost` and your laptop's Wi-Fi network IP (e.g., `192.168.31.26`):
+```powershell
+mkcert -key-file certs/lan-key.pem -cert-file certs/lan.pem localhost 192.168.31.26 127.0.0.1 ::1
+```
+
+### 2. Running in LAN Mode
+You can start the server in LAN-accessible mode by passing the `-lan` flag on Windows (PowerShell) or `--lan` flag on macOS/Linux (bash):
+
+- **Windows** (PowerShell):
+  ```powershell
+  .\run_dev.ps1 -lan
+  ```
+- **macOS / Linux** (Bash):
+  ```bash
+  ./run_dev.sh --lan
+  ```
+
+When running in LAN mode, the server binds to `0.0.0.0` (making it reachable across your local network) and serves connections using `certs/lan.pem`. Without this flag, the server stays strictly locked to `127.0.0.1` and uses the default localhost certificate.
+
+### 3. Installing Root CA on Phone
+To make your mobile browser trust the `lan.pem` certificate:
+1. Locate the `mkcert` Root CA directory path on your laptop by running:
+   ```bash
+   mkcert -CAROOT
+   ```
+2. Copy the `rootCA.pem` file from that directory to your phone (via email, AirDrop, file transfer, or hosting a quick server).
+3. **On iOS**:
+   - Open the `.pem` file to install the profile in Settings.
+   - Go to **Settings > General > Profile** and install the profile.
+   - Go to **Settings > General > About > Certificate Trust Settings** and enable full trust for the Root CA.
+4. **On Android**:
+   - Go to **Settings > Security & Privacy > More Security Settings > Encryption & Credentials > Install a certificate > CA certificate** and select `rootCA.pem`.
+
+> [!CAUTION]
+> **SECURITY WARNING**: Never run the development server with the `-lan`/`--lan` flag active on untrusted public networks (e.g., cafés, airports, hotels). This binds the server to `0.0.0.0` and makes your local databases/endpoints accessible to anyone else on that network. Always stop the server and restart it in standard localhost-only mode when finished testing.
+
 ## Database Security and Roles Note
 
 The application runs using a restricted database user `craftnest_app`.

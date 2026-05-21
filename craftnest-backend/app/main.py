@@ -71,6 +71,8 @@ from app.routers.products import router as products_router
 from app.routers.browse import router as browse_router
 from app.routers.uploads import router as uploads_router
 from app.routers.wishlist import router as wishlist_router
+from app.routers.reels import router as reels_router
+from app.routers.users import router as users_router
 
 
 
@@ -103,6 +105,8 @@ app.include_router(products_router)
 app.include_router(browse_router)
 app.include_router(uploads_router)
 app.include_router(wishlist_router)
+app.include_router(reels_router)
+app.include_router(users_router)
 
 
 
@@ -179,6 +183,7 @@ async def structlog_middleware(request: Request, call_next):
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=r"https?://.*" if (settings.ENVIRONMENT == "development" and "pytest" not in sys.modules) else None,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
@@ -209,6 +214,7 @@ async def health_db_check(db: AsyncSession = Depends(get_db)):
 
 import os
 os.makedirs("media/products", exist_ok=True)
+os.makedirs("media/reels", exist_ok=True)
 app.mount("/media", StaticFiles(directory="media"), name="media")
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
