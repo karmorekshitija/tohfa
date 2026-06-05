@@ -1,0 +1,321 @@
+<body class="bg-[#FFFFFF] text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- 1. TOP BAR (DESKTOP TASKBAR) -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="#">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="#" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <div class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0">
+      A
+    </div>
+  </div>
+</header>
+<main class="max-w-[1440px] mx-auto pb-24">
+<!-- 2. CATEGORY IDENTITY HEADER -->
+<section class="h-[140px] w-full watercolour-wash relative flex items-center px-margin-desktop overflow-hidden border-b border-outline-variant/30">
+<div class="absolute inset-0 opacity-[0.08] artisan-pattern pointer-events-none"></div>
+<div class="flex items-center gap-lg z-10">
+<div class="text-[56px] drop-shadow-sm">🏺</div>
+<div>
+<h2 class="font-headline-lg text-primary">Studio Ceramics</h2>
+<p class="font-data-price text-data-price text-outline uppercase tracking-widest mt-1">42 active makes</p>
+</div>
+</div>
+<!-- Hand-drawn leaf watermark -->
+<div class="absolute right-10 -bottom-8 opacity-[0.09] rotate-12">
+<span class="material-symbols-outlined text-[160px] text-secondary">eco</span>
+</div>
+</section>
+<!-- 3. SORT + CATEGORY FILTER ROW -->
+<section class="bg-[#FFFFFF] py-md sticky top-20 z-40 border-b border-outline-variant/30">
+<div class="flex items-center gap-sm px-margin-desktop">
+<div class="flex-shrink-0 bg-[#FFFFFF] pr-md border-r border-outline-variant/50 mr-md">
+<button class="p-sm bg-[#FCFAF5] border border-outline-variant rounded-lg text-primary flex items-center gap-sm hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">tune</span>
+<span class="text-sm font-body-md pr-1">Filter</span>
+</button>
+</div>
+<div class="flex items-center gap-sm overflow-x-auto no-scrollbar flex-grow">
+<button class="flex-shrink-0 px-lg py-sm rounded-full bg-[#FCFAF5] border border-outline-variant text-on-surface-variant font-body-md text-sm hover:border-primary transition-all">Paintings</button>
+<button class="flex-shrink-0 px-xl py-sm rounded-full bg-primary-container text-white font-body-md text-sm transition-all shadow-md">Ceramics</button>
+<button class="flex-shrink-0 px-lg py-sm rounded-full bg-[#FCFAF5] border border-outline-variant text-on-surface-variant font-body-md text-sm hover:border-primary transition-all">Customized Gifts</button>
+<button class="flex-shrink-0 px-lg py-sm rounded-full bg-[#FCFAF5] border border-outline-variant text-on-surface-variant font-body-md text-sm hover:border-primary transition-all">Crochet</button>
+<button class="flex-shrink-0 px-lg py-sm rounded-full bg-[#FCFAF5] border border-outline-variant text-on-surface-variant font-body-md text-sm hover:border-primary transition-all">Knitted</button>
+<button class="flex-shrink-0 px-lg py-sm rounded-full bg-[#FCFAF5] border border-outline-variant text-on-surface-variant font-body-md text-sm hover:border-primary transition-all">Wedding Rituals</button>
+<button class="flex-shrink-0 px-lg py-sm rounded-full bg-[#FCFAF5] border border-outline-variant text-on-surface-variant font-body-md text-sm hover:border-primary transition-all">Candles</button>
+<div class="w-12 h-1 flex-shrink-0"></div> <!-- Spacer for gradient fade effect if needed -->
+</div>
+<div class="flex items-center gap-sm ml-lg border-l border-outline-variant/50 pl-lg">
+<span class="text-xs text-outline font-label-caps whitespace-nowrap">Sort:</span>
+<button class="flex-shrink-0 px-md py-sm rounded-lg bg-surface text-on-surface-variant font-body-md text-sm hover:text-primary transition-all flex items-center gap-xs">
+                    Newest <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 4. PRODUCT GRID (DESKTOP 4 COLUMNS) -->
+<section class="px-margin-desktop mt-xl relative min-h-[600px]">
+<!-- Background Watermarks -->
+<div class="absolute top-40 left-10 opacity-[0.05] pointer-events-none">
+<span class="material-symbols-outlined text-[120px]">content_cut</span>
+</div>
+<div class="absolute bottom-60 right-20 opacity-[0.05] pointer-events-none">
+<span class="material-symbols-outlined text-[150px]">texture</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg">
+<!-- Card 1 -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A close-up photograph of a hand-thrown ceramic vase with a speckled oatmeal glaze, sitting on a rustic wooden studio table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALC6UYYOUWjs3W4VkD8uWjcppHVpQhleCxmEGF6UAFY8zCGq3M9x6zGcZb7ATlZPZWyZLbSbkv6C58GzEpFbGJJF7JEwus4RG0AzgYM1uMpb92qU1vu8i14hzLiI8fu0O8r26llYaiEO1t5Q9kPxeoUw1n4rvUdAC5wtPtJiaCY0kStW5phf-aTpMsoEorrV1be7nbHSSBZTPskASzrBSMxaqLYGItxSzojxseeJL8bn5hlwwz74rh9mHDKiSU_JfgVPudS3_BDcE">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 3 days</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Speckled Moon Bowl</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$48.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A minimalist overhead shot of two hand-crafted ceramic espresso cups with a matte forest green dip glaze." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVOngRd-DVK72EyammumZPlK3sZdreV15xeleG5jZxygwSOJ09GzEOyVEuHGwUtHyHCjfb5iNmcXFEHLNU7dEdOrvZrIJ_SKc4RWteMPfH4UQt1iQ8fDsEpRhg7R0UA4jLfpudhLGVyoicGdIvGeezmZSBt5ehdb7pd2A6sr4tAHk8UyPCdXKv-zBNShdIwAEt7czXe-trxM6QSdALpWd-4QnZTcoprR1gR0j9mbqGZFAmnUcUnX5kvHlmhlV2oFJryqm0PKX-pbg">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ready to Ship</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Forest Dip Espresso Set</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$32.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A tall, elegant ceramic carafe with an irregular, hand-pinched rim and a pale sage green wash glaze." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfTUELyuKQTKXZ8luOpxbP9ZxSrvRQDToCQ0N18Chw5sTUg82THIln8Ywpy6ROctrBVZxm4zFsYwHOuhtAI92ZCIAbpe4eqUYATYVv7s9zWjEG9SfkJyQSQdzQBsrnhvLPPvDNP_-gMX3s304PZA5qDh3Joi58lbJcAkG31FdyaiEJhovOjCwL0xUY1mFiuqNY1vjkip3sOainPZ_dkH3YAFlh143DRgVjCKL1NQONSkN_iExDgNpXIkfSJ-VXTND2mi3OdvzYZrs">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 5 days</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Sage Ribbed Carafe</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$85.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A series of small, shallow ceramic ring dishes in varying earthy tones like terracotta, ivory, and soft violet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnYwodC8O5OBIoHWDoOMQ_wndi6zN0wBAKqxarh1XKgMAwXhMz0eCaH5Wkv8xfSozcufOwFAreoGEys_Za0DK4CVqLAXxxQj2tFv-SxeEi3WaPLuHQNmvN_r_nTcljqc3Wdam1xn2LaMHwxF_rVy9UPcLza3R17VZXHodaznYkCDfp2J_pZ-GlA0qAOUsvFbwDA3jkJkx7vU1RFPUk_sgAmCNoVe9lWC9izWoIbkDhT3DxWPNVqGj9RPcExPbmQn9G0B9rZPcagxs">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Custom Order</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Petal Ring Dish</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$24.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Repeat some cards for a fuller grid appearance -->
+<!-- Card 5 (Clone of 1) -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALC6UYYOUWjs3W4VkD8uWjcppHVpQhleCxmEGF6UAFY8zCGq3M9x6zGcZb7ATlZPZWyZLbSbkv6C58GzEpFbGJJF7JEwus4RG0AzgYM1uMpb92qU1vu8i14hzLiI8fu0O8r26llYaiEO1t5Q9kPxeoUw1n4rvUdAC5wtPtJiaCY0kStW5phf-aTpMsoEorrV1be7nbHSSBZTPskASzrBSMxaqLYGItxSzojxseeJL8bn5hlwwz74rh9mHDKiSU_JfgVPudS3_BDcE">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 3 days</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Speckled Moon Bowl</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$48.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 6 (Clone of 2) -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVOngRd-DVK72EyammumZPlK3sZdreV15xeleG5jZxygwSOJ09GzEOyVEuHGwUtHyHCjfb5iNmcXFEHLNU7dEdOrvZrIJ_SKc4RWteMPfH4UQt1iQ8fDsEpRhg7R0UA4jLfpudhLGVyoicGdIvGeezmZSBt5ehdb7pd2A6sr4tAHk8UyPCdXKv-zBNShdIwAEt7czXe-trxM6QSdALpWd-4QnZTcoprR1gR0j9mbqGZFAmnUcUnX5kvHlmhlV2oFJryqm0PKX-pbg">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ready to Ship</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Forest Dip Espresso Set</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$32.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 7 (Clone of 3) -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfTUELyuKQTKXZ8luOpxbP9ZxSrvRQDToCQ0N18Chw5sTUg82THIln8Ywpy6ROctrBVZxm4zFsYwHOuhtAI92ZCIAbpe4eqUYATYVv7s9zWjEG9SfkJyQSQdzQBsrnhvLPPvDNP_-gMX3s304PZA5qDh3Joi58lbJcAkG31FdyaiEJhovOjCwL0xUY1mFiuqNY1vjkip3sOainPZ_dkH3YAFlh143DRgVjCKL1NQONSkN_iExDgNpXIkfSJ-VXTND2mi3OdvzYZrs">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 5 days</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Sage Ribbed Carafe</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$85.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 8 (Clone of 4) -->
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
+<div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnYwodC8O5OBIoHWDoOMQ_wndi6zN0wBAKqxarh1XKgMAwXhMz0eCaH5Wkv8xfSozcufOwFAreoGEys_Za0DK4CVqLAXxxQj2tFv-SxeEi3WaPLuHQNmvN_r_nTcljqc3Wdam1xn2LaMHwxF_rVy9UPcLza3R17VZXHodaznYkCDfp2J_pZ-GlA0qAOUsvFbwDA3jkJkx7vU1RFPUk_sgAmCNoVe9lWC9izWoIbkDhT3DxWPNVqGj9RPcExPbmQn9G0B9rZPcagxs">
+<div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</div>
+</div>
+<div class="p-md">
+<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Custom Order</p>
+<h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Petal Ring Dish</h3>
+<div class="flex items-center justify-between mt-md">
+<p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$24.00</p>
+<button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-md">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. INFINITE SCROLL VISUAL -->
+<section class="flex flex-col items-center justify-center py-20 px-margin-desktop">
+<div class="relative w-12 h-12">
+<div class="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+<div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+</div>
+<p class="mt-md text-primary font-body-md italic animate-pulse">Curation of more unique makes...</p>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container border-t border-outline-variant py-xl">
+<div class="max-w-[1440px] mx-auto px-margin-desktop grid grid-cols-4 gap-xl">
+<div class="col-span-2">
+<h4 class="font-headline-lg text-primary italic mb-md">Artisan Studio</h4>
+<p class="text-on-surface-variant max-w-md">Celebrating the soul of handmade craftsmanship. Every piece tells a story of human touch, patience, and the beauty of imperfection.</p>
+</div>
+<div>
+<h5 class="font-label-caps text-primary mb-md">Shop</h5>
+<ul class="space-y-sm text-sm text-on-surface-variant">
+<li class=""><a class="hover:text-primary" href="#">Featured Artists</a></li>
+<li class=""><a class="hover:text-primary" href="#">New Arrivals</a></li>
+<li class=""><a class="hover:text-primary" href="#">Best Sellers</a></li>
+<li class=""><a class="hover:text-primary" href="#">Care Guide</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-primary mb-md">Connect</h5>
+<ul class="space-y-sm text-sm text-on-surface-variant">
+<li class=""><a class="hover:text-primary" href="#">Our Story</a></li>
+<li class=""><a class="hover:text-primary" href="#">Wholesale</a></li>
+<li class=""><a class="hover:text-primary" href="#">Shipping &amp; Returns</a></li>
+<li class=""><a class="hover:text-primary" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+</footer>
+<script>
+    // Micro-interactions for scrolling
+    let lastScrollTop = 0;
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            header.style.transform = 'translateY(0)';
+        }
+        lastScrollTop = scrollTop;
+    });
+
+    // Simulated infinite scroll logic
+    window.addEventListener('scroll', () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            // This is where more items would be fetched in a real app
+            console.log('Loading more artisan makes...');
+        }
+    });
+</script>
+
+
+</body>
