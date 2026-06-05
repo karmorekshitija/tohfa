@@ -166,4 +166,21 @@ const migrateProductImages = () => {
 
 migrateProductImages();
 
+// Task 04: Migration for cart_items table
+const migrateCartItems = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS cart_items (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      product_id  INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+      quantity    INTEGER NOT NULL DEFAULT 1,
+      added_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(user_id, product_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_cart_user ON cart_items(user_id);
+  `);
+};
+
+migrateCartItems();
+
 module.exports = db;
