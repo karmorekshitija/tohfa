@@ -3564,6 +3564,1169 @@ app.post('/api/reviews', rateLimit(30), authenticateToken, (req, res) => {
   }
 });
 
+// ============================================================
+// PART 4: SELLER STUDIO — MIDDLEWARE & UPLOAD SETUP
+// ============================================================
+
+// requireSeller: authenticateToken + lookup seller_profile
+function requireSeller(req, res, next) {
+  authenticateToken(req, res, () => {
+    const seller = db.prepare('SELECT * FROM seller_profiles WHERE user_id = ?').get(req.user.user_id);
+    if (!seller) {
+      return res.status(403).json({ error: true, message: 'Seller profile not found', code: 'NO_SELLER_PROFILE' });
+    }
+    req.seller = seller;
+    next();
+  });
+}
+
+// Multer storage for listing photos
+const listingPhotosDir = path.join(__dirname, '..', 'uploads', 'listings');
+fs.mkdirSync(listingPhotosDir, { recursive: true });
+const listingPhotoStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(listingPhotosDir, String(req.params.id || 'tmp'));
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => cb(null, `photo-${Date.now()}-${file.originalname.replace(/\s+/g, '_')}`)
+});
+const uploadListingPhoto = multer({ storage: listingPhotoStorage, limits: { fileSize: 50 * 1024 * 1024 } });
+
+// Multer storage for seller reels
+const sellerReelsDir = path.join(__dirname, '..', 'uploads', 'seller-reels');
+fs.mkdirSync(sellerReelsDir, { recursive: true });
+const sellerReelStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, sellerReelsDir),
+  filename: (req, file, cb) => cb(null, `reel-${Date.now()}-${file.originalname.replace(/\s+/g, '_')}`)
+});
+const uploadSellerReel = multer({ storage: sellerReelStorage, limits: { fileSize: 500 * 1024 * 1024 } });
+
+// Helper: compute listing_score
+function computeListingScore(listing, photoCount) {
+  let score = 0;
+  if (photoCount > 0) score += 20;
+  if (photoCount >= 4) score += 10;
+  if (listing.description) score += 15;
+  if (listing.price_paise) score += 10;
+  if (listing.category) score += 10;
+  if (listing.tags) score += 10;
+  if (listing.sku) score += 5;
+  if (listing.processing_time) score += 5;
+  if (listing.weight_grams) score += 5;
+  if (listing.shipping_profile_id) score += 10;
+  return Math.min(score, 100);
+}
+
+// Helper: build full listing object for responses
+function buildListingDetail(listingId) {
+  const l = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+  if (!l) return null;
+  const photos = db.prepare('SELECT id as photo_id, url, is_cover, is_video, sort_order FROM listing_photos WHERE listing_id = ? ORDER BY sort_order').all(listingId);
+  return {
+    listing_id: l.id,
+    primary_name: l.primary_name,
+    title: l.title,
+    description: l.description,
+    category: l.category,
+    primary_medium: l.primary_medium,
+    tags: l.tags ? JSON.parse(l.tags) : [],
+    badges: l.badges ? JSON.parse(l.badges) : [],
+    price_paise: l.price_paise,
+    sku: l.sku,
+    stock_count: l.stock_count,
+    processing_time: l.processing_time,
+    gift_wrap_available: l.gift_wrap_available === 1,
+    gift_wrap_price_paise: l.gift_wrap_price_paise,
+    handwritten_note: l.handwritten_note === 1,
+    weight_grams: l.weight_grams,
+    length_cm: l.length_cm,
+    width_cm: l.width_cm,
+    height_cm: l.height_cm,
+    shipping_profile_id: l.shipping_profile_id,
+    status: l.status,
+    listing_score: l.listing_score,
+    view_count: l.view_count,
+    sale_count: l.sale_count,
+    photos,
+    cover_photo_url: l.cover_photo_url,
+    published_at: l.published_at,
+    created_at: l.created_at
+  };
+}
+
+// Helper: build seller profile response shape
+function buildSellerProfileResponse(seller) {
+  // Pending payouts balance
+  const bal = db.prepare("SELECT COALESCE(SUM(amount_paise),0) as total FROM payout_history WHERE seller_id = ? AND status = 'pending'").get(seller.id);
+  const nextPayout = db.prepare("SELECT scheduled_at FROM payout_history WHERE seller_id = ? AND status = 'pending' ORDER BY scheduled_at ASC LIMIT 1").get(seller.id);
+  return {
+    seller_id: seller.id,
+    user_id: seller.user_id,
+    display_name: seller.display_name || seller.shop_name,
+    handle: seller.handle,
+    bio: seller.bio || seller.shop_bio,
+    location: seller.location,
+    website: seller.website,
+    artisan_story: seller.artisan_story,
+    avatar_url: seller.avatar_url,
+    store_slug: seller.store_slug,
+    is_accepting_orders: seller.is_accepting_orders === 1,
+    zai_mode_enabled: seller.zai_mode_enabled === 1,
+    default_language: seller.default_language || 'en',
+    store_currency: seller.store_currency || 'INR',
+    seller_rank: seller.seller_rank,
+    total_reviews: seller.total_reviews || 0,
+    avg_rating: seller.avg_rating || 0,
+    total_sales: seller.total_sales || 0,
+    current_balance_paise: bal.total,
+    next_payout_date: nextPayout ? nextPayout.scheduled_at : null,
+    payout_method_masked: null,
+    notifications: {
+      new_order_alerts: true,
+      low_stock_warnings: true,
+      direct_messages: true,
+      review_notifications: true,
+      payout_confirmations: true,
+      zai_suggestions: seller.zai_mode_enabled === 1
+    }
+  };
+}
+
+// ============================================================
+// TASK 16: GET /api/seller/dashboard
+// ============================================================
+app.get('/api/seller/dashboard', rateLimit(60), requireSeller, (req, res) => {
+  try {
+    const seller = req.seller;
+    const period = req.query.period || '7d';
+    let fromDate, toDate;
+    if (period === 'custom') {
+      fromDate = req.query.from;
+      toDate = req.query.to;
+    } else {
+      const days = period === '30d' ? 30 : period === '90d' ? 90 : 7;
+      toDate = new Date().toISOString().split('T')[0];
+      fromDate = new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
+    }
+
+    // KPIs: from orders joined to order_items + products for this seller
+    const kpiRow = db.prepare(`
+      SELECT
+        COALESCE(SUM(o.total_paise), 0) AS order_value_paise,
+        COUNT(DISTINCT o.id) AS total_orders
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      WHERE p.seller_id = ? AND date(o.created_at) BETWEEN ? AND ?
+    `).get(req.user.user_id, fromDate, toDate);
+
+    // Low stock alerts from listings
+    const lowStock = db.prepare("SELECT id as listing_id, title, stock_count FROM listings WHERE seller_id = ? AND status != 'deleted' AND stock_count <= 5 ORDER BY stock_count ASC LIMIT 5").all(seller.id);
+
+    // Recent orders
+    const recentOrders = db.prepare(`
+      SELECT o.order_ref as order_id, oi.product_name as item_title,
+             u.full_name as buyer_name, o.total_paise as amount_paise,
+             COALESCE(som.fulfillment_status, 'pending') as status
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      JOIN users u ON u.id = o.buyer_id
+      LEFT JOIN seller_order_meta som ON som.order_id = o.id
+      WHERE p.seller_id = ?
+      ORDER BY o.created_at DESC LIMIT 5
+    `).all(req.user.user_id);
+
+    // Announcements
+    const announcements = db.prepare("SELECT id, icon, title, body FROM seller_announcements WHERE is_active = 1 ORDER BY id DESC LIMIT 3").all();
+
+    // ZAI mode
+    const zaiRow = db.prepare("SELECT enabled FROM zai_mode_state WHERE seller_id = ?").get(seller.id);
+    const zaiEnabled = zaiRow ? zaiRow.enabled === 1 : seller.zai_mode_enabled === 1;
+
+    // Date label
+    const now = new Date();
+    const dateLabel = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    return res.json({
+      success: true,
+      data: {
+        seller: {
+          display_name: seller.display_name || seller.shop_name,
+          avatar_url: seller.avatar_url,
+          store_slug: seller.store_slug,
+          zai_mode_enabled: zaiEnabled
+        },
+        date_label: dateLabel,
+        period,
+        kpis: {
+          order_value_paise: kpiRow.order_value_paise,
+          order_value_change_pct: 0,
+          total_orders: kpiRow.total_orders,
+          new_orders_since_last_period: 0,
+          website_visits: 0,
+          visits_change_pct: 0,
+          conversion_rate: 0,
+          conversion_change_pct: 0
+        },
+        low_stock_alerts: lowStock,
+        recent_orders: recentOrders,
+        announcements,
+        zai_tip: zaiEnabled ? 'Review your low-stock items and consider restocking before the weekend rush.' : null
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/dashboard error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 17: GET /api/seller/profile
+// ============================================================
+app.get('/api/seller/profile', requireSeller, (req, res) => {
+  try {
+    return res.json({ success: true, data: buildSellerProfileResponse(req.seller) });
+  } catch (err) {
+    console.error('GET /api/seller/profile error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 18: PUT /api/seller/profile
+// ============================================================
+app.put('/api/seller/profile', requireSeller, (req, res) => {
+  try {
+    const seller = req.seller;
+    const { display_name, handle, bio, location, website, artisan_story, is_accepting_orders, default_language, store_currency } = req.body;
+
+    // Validate handle
+    if (handle !== undefined) {
+      if (!/^[a-z0-9_]+$/.test(handle)) {
+        return res.status(400).json({ error: true, message: 'Handle must be lowercase letters, numbers, underscores only', code: 'INVALID_HANDLE' });
+      }
+      if (handle !== seller.handle) {
+        const taken = db.prepare('SELECT id FROM seller_profiles WHERE handle = ? AND id != ?').get(handle, seller.id);
+        if (taken) {
+          return res.status(400).json({ error: true, message: 'Handle already in use', code: 'HANDLE_TAKEN' });
+        }
+      }
+    }
+
+    db.prepare(`
+      UPDATE seller_profiles SET
+        display_name = COALESCE(?, display_name),
+        handle = COALESCE(?, handle),
+        bio = COALESCE(?, bio),
+        location = COALESCE(?, location),
+        website = COALESCE(?, website),
+        artisan_story = COALESCE(?, artisan_story),
+        is_accepting_orders = COALESCE(?, is_accepting_orders),
+        default_language = COALESCE(?, default_language),
+        store_currency = COALESCE(?, store_currency),
+        updated_at = datetime('now')
+      WHERE id = ?
+    `).run(
+      display_name ?? null, handle ?? null, bio ?? null, location ?? null,
+      website ?? null, artisan_story ?? null,
+      is_accepting_orders !== undefined ? (is_accepting_orders ? 1 : 0) : null,
+      default_language ?? null, store_currency ?? null,
+      seller.id
+    );
+
+    const updated = db.prepare('SELECT * FROM seller_profiles WHERE id = ?').get(seller.id);
+    return res.json({ success: true, data: buildSellerProfileResponse(updated) });
+  } catch (err) {
+    console.error('PUT /api/seller/profile error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 19: GET /api/seller/listings
+// ============================================================
+app.get('/api/seller/listings', requireSeller, (req, res) => {
+  try {
+    const { status = 'all', category = 'all', sort = 'newest', search = '', page = 1, limit = 20 } = req.query;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    let where = "seller_id = ? AND status != 'deleted'";
+    const params = [req.seller.id];
+
+    if (status !== 'all') { where += ' AND status = ?'; params.push(status); }
+    if (category !== 'all') { where += ' AND category = ?'; params.push(category); }
+    if (search) { where += ' AND title LIKE ?'; params.push(`%${search}%`); }
+
+    const sortMap = {
+      newest: 'created_at DESC', oldest: 'created_at ASC',
+      popularity: 'view_count DESC', price_asc: 'price_paise ASC', stock_asc: 'stock_count ASC'
+    };
+    const orderBy = sortMap[sort] || 'created_at DESC';
+
+    const total = db.prepare(`SELECT COUNT(*) as c FROM listings WHERE ${where}`).get(...params).c;
+    const lowStockCount = db.prepare(`SELECT COUNT(*) as c FROM listings WHERE seller_id = ? AND status != 'deleted' AND stock_count <= 5`).get(req.seller.id).c;
+
+    const listings = db.prepare(`
+      SELECT id as listing_id, title, category, price_paise, stock_count, status, cover_photo_url, view_count, sale_count
+      FROM listings WHERE ${where} ORDER BY ${orderBy} LIMIT ? OFFSET ?
+    `).all(...params, parseInt(limit), offset);
+
+    return res.json({
+      success: true,
+      data: { total, low_stock_count: lowStockCount, page: parseInt(page), limit: parseInt(limit), listings }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/listings error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 20: POST /api/seller/listings
+// ============================================================
+app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
+  try {
+    const { title, price_paise, stock_count, status = 'draft', photo_urls = [], cover_photo_index = 0, ...rest } = req.body;
+    if (!title || !price_paise || stock_count === undefined) {
+      return res.status(400).json({ error: true, message: 'title, price_paise, and stock_count are required', code: 'VALIDATION_ERROR' });
+    }
+
+    const publishedAt = status === 'active' ? new Date().toISOString() : null;
+    const tags = Array.isArray(rest.tags) ? JSON.stringify(rest.tags) : (rest.tags || null);
+    const badges = Array.isArray(rest.badges) ? JSON.stringify(rest.badges) : (rest.badges || null);
+
+    const result = db.prepare(`
+      INSERT INTO listings (seller_id, title, primary_name, description, category, primary_medium, tags, badges,
+        price_paise, sku, stock_count, processing_time, gift_wrap_available, gift_wrap_price_paise,
+        handwritten_note, status, weight_grams, length_cm, width_cm, height_cm, shipping_profile_id, published_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      req.seller.id, title, rest.primary_name || null, rest.description || null,
+      rest.category || null, rest.primary_medium || null, tags, badges,
+      price_paise, rest.sku || null, stock_count,
+      rest.processing_time || null, rest.gift_wrap_available ? 1 : 0,
+      rest.gift_wrap_price_paise || 5000, rest.handwritten_note ? 1 : 0,
+      status, rest.weight_grams || null, rest.length_cm || null,
+      rest.width_cm || null, rest.height_cm || null,
+      rest.shipping_profile_id || null, publishedAt
+    );
+    const listingId = result.lastInsertRowid;
+
+    // Insert photos
+    let coverUrl = null;
+    photo_urls.forEach((url, idx) => {
+      const isCover = idx === cover_photo_index ? 1 : 0;
+      if (isCover) coverUrl = url;
+      db.prepare('INSERT INTO listing_photos (listing_id, url, is_cover, sort_order) VALUES (?, ?, ?, ?)').run(listingId, url, isCover, idx);
+    });
+
+    // Compute listing_score
+    const photoCount = photo_urls.length;
+    const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+    const score = computeListingScore(listing, photoCount);
+    db.prepare('UPDATE listings SET listing_score = ?, cover_photo_url = ? WHERE id = ?').run(score, coverUrl, listingId);
+
+    return res.status(201).json({
+      success: true,
+      data: { listing_id: listingId, title, status, listing_score: score, published_at: publishedAt }
+    });
+  } catch (err) {
+    console.error('POST /api/seller/listings error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 21: GET /api/seller/listings/:id
+// ============================================================
+app.get('/api/seller/listings/:id', requireSeller, (req, res) => {
+  try {
+    const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(parseInt(req.params.id));
+    if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
+    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    return res.json({ success: true, data: buildListingDetail(listing.id) });
+  } catch (err) {
+    console.error('GET /api/seller/listings/:id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 22: PUT /api/seller/listings/:id
+// ============================================================
+app.put('/api/seller/listings/:id', requireSeller, (req, res) => {
+  try {
+    const listingId = parseInt(req.params.id);
+    const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+    if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
+    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+
+    const body = req.body;
+    const tags = body.tags !== undefined ? (Array.isArray(body.tags) ? JSON.stringify(body.tags) : body.tags) : undefined;
+    const badges = body.badges !== undefined ? (Array.isArray(body.badges) ? JSON.stringify(body.badges) : body.badges) : undefined;
+    const publishedAt = body.status === 'active' && !listing.published_at ? new Date().toISOString() : listing.published_at;
+
+    db.prepare(`
+      UPDATE listings SET
+        title = COALESCE(?, title),
+        primary_name = COALESCE(?, primary_name),
+        description = COALESCE(?, description),
+        category = COALESCE(?, category),
+        primary_medium = COALESCE(?, primary_medium),
+        tags = COALESCE(?, tags),
+        badges = COALESCE(?, badges),
+        price_paise = COALESCE(?, price_paise),
+        sku = COALESCE(?, sku),
+        stock_count = COALESCE(?, stock_count),
+        processing_time = COALESCE(?, processing_time),
+        gift_wrap_available = COALESCE(?, gift_wrap_available),
+        gift_wrap_price_paise = COALESCE(?, gift_wrap_price_paise),
+        handwritten_note = COALESCE(?, handwritten_note),
+        status = COALESCE(?, status),
+        weight_grams = COALESCE(?, weight_grams),
+        length_cm = COALESCE(?, length_cm),
+        width_cm = COALESCE(?, width_cm),
+        height_cm = COALESCE(?, height_cm),
+        shipping_profile_id = COALESCE(?, shipping_profile_id),
+        published_at = COALESCE(?, published_at),
+        updated_at = datetime('now')
+      WHERE id = ?
+    `).run(
+      body.title ?? null, body.primary_name ?? null, body.description ?? null,
+      body.category ?? null, body.primary_medium ?? null,
+      tags ?? null, badges ?? null,
+      body.price_paise ?? null, body.sku ?? null, body.stock_count ?? null,
+      body.processing_time ?? null,
+      body.gift_wrap_available !== undefined ? (body.gift_wrap_available ? 1 : 0) : null,
+      body.gift_wrap_price_paise ?? null,
+      body.handwritten_note !== undefined ? (body.handwritten_note ? 1 : 0) : null,
+      body.status ?? null,
+      body.weight_grams ?? null, body.length_cm ?? null,
+      body.width_cm ?? null, body.height_cm ?? null,
+      body.shipping_profile_id ?? null, publishedAt,
+      listingId
+    );
+
+    return res.json({ success: true, data: buildListingDetail(listingId) });
+  } catch (err) {
+    console.error('PUT /api/seller/listings/:id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 23: DELETE /api/seller/listings/:id (soft delete)
+// ============================================================
+app.delete('/api/seller/listings/:id', requireSeller, (req, res) => {
+  try {
+    const listingId = parseInt(req.params.id);
+    const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+    if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
+    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    db.prepare("UPDATE listings SET status = 'deleted', updated_at = datetime('now') WHERE id = ?").run(listingId);
+    return res.json({ success: true, data: { listing_id: listingId, status: 'deleted' } });
+  } catch (err) {
+    console.error('DELETE /api/seller/listings/:id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 24: POST /api/seller/listings/:id/photos
+// ============================================================
+app.post('/api/seller/listings/:id/photos', rateLimit(20), requireSeller, uploadListingPhoto.single('file'), (req, res) => {
+  try {
+    const listingId = parseInt(req.params.id);
+    const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+    if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
+    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    if (!req.file) return res.status(400).json({ error: true, message: 'File required', code: 'VALIDATION_ERROR' });
+
+    const isCover = req.body.is_cover === 'true';
+    const isVideo = req.body.is_video === 'true';
+    const sortOrder = parseInt(req.body.sort_order) || 0;
+    const url = `/uploads/listings/${listingId}/${req.file.filename}`;
+
+    if (isCover) {
+      db.prepare('UPDATE listing_photos SET is_cover = 0 WHERE listing_id = ?').run(listingId);
+    }
+
+    const result = db.prepare('INSERT INTO listing_photos (listing_id, url, is_cover, is_video, sort_order) VALUES (?, ?, ?, ?, ?)').run(listingId, url, isCover ? 1 : 0, isVideo ? 1 : 0, sortOrder);
+    const photoId = result.lastInsertRowid;
+
+    if (isCover) {
+      db.prepare('UPDATE listings SET cover_photo_url = ? WHERE id = ?').run(url, listingId);
+    }
+
+    // Update listing score
+    const photoCount = db.prepare('SELECT COUNT(*) as c FROM listing_photos WHERE listing_id = ?').get(listingId).c;
+    const updatedListing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+    const score = computeListingScore(updatedListing, photoCount);
+    db.prepare('UPDATE listings SET listing_score = ? WHERE id = ?').run(score, listingId);
+
+    return res.status(201).json({ success: true, data: { photo_id: photoId, url, is_cover: isCover, is_video: isVideo, sort_order: sortOrder } });
+  } catch (err) {
+    console.error('POST /api/seller/listings/:id/photos error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 25: POST /api/seller/reels
+// ============================================================
+app.post('/api/seller/reels', rateLimit(10), requireSeller, uploadSellerReel.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), (req, res) => {
+  try {
+    const body = req.body;
+    const caption = body.caption || '';
+    if (caption.length > 2200) {
+      return res.status(400).json({ error: true, message: 'Caption must be ≤ 2200 characters', code: 'VALIDATION_ERROR' });
+    }
+    if (!req.files || !req.files.video) {
+      return res.status(400).json({ error: true, message: 'Video file required', code: 'VALIDATION_ERROR' });
+    }
+
+    const videoFile = req.files.video[0];
+    const thumbFile = req.files.thumbnail ? req.files.thumbnail[0] : null;
+    const videoUrl = `/uploads/seller-reels/${videoFile.filename}`;
+    const thumbnailUrl = thumbFile ? `/uploads/seller-reels/${thumbFile.filename}` : null;
+
+    const tags = body.tags ? (typeof body.tags === 'string' ? body.tags : JSON.stringify(body.tags)) : null;
+    const status = body.status || 'published';
+    const shareFeed = body.share_to_feed !== 'false' ? 1 : 0;
+    const shareProfile = body.share_to_profile !== 'false' ? 1 : 0;
+    const autoIg = body.auto_post_instagram === 'true' ? 1 : 0;
+
+    const result = db.prepare(`
+      INSERT INTO seller_reels (seller_id, video_url, thumbnail_url, caption, tags, audio_type,
+        share_to_feed, share_to_profile, auto_post_instagram, status, scheduled_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      req.seller.id, videoUrl, thumbnailUrl, caption, tags,
+      body.audio_type || 'original', shareFeed, shareProfile, autoIg,
+      status, body.scheduled_at || null
+    );
+    const reelId = result.lastInsertRowid;
+
+    // Tag listings
+    let taggedListings = [];
+    if (body.tagged_listing_ids) {
+      const ids = JSON.parse(body.tagged_listing_ids);
+      for (const lid of ids) {
+        try {
+          db.prepare('INSERT OR IGNORE INTO reel_product_tags (reel_id, listing_id) VALUES (?, ?)').run(reelId, lid);
+          const l = db.prepare('SELECT id as listing_id, title, price_paise FROM listings WHERE id = ?').get(lid);
+          if (l) taggedListings.push(l);
+        } catch (e) {}
+      }
+    }
+
+    const parsedTags = tags ? JSON.parse(tags) : [];
+    return res.status(201).json({
+      success: true,
+      data: {
+        reel_id: reelId, video_url: videoUrl, thumbnail_url: thumbnailUrl,
+        caption, tags: parsedTags, status, tagged_listings: taggedListings,
+        created_at: new Date().toISOString()
+      }
+    });
+  } catch (err) {
+    console.error('POST /api/seller/reels error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 26: GET /api/seller/orders
+// ============================================================
+app.get('/api/seller/orders', requireSeller, (req, res) => {
+  try {
+    const { status = 'all', search = '', period = '30d', page = 1, limit = 20 } = req.query;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const days = period === '90d' ? 90 : 30;
+    const fromDate = new Date(Date.now() - days * 86400000).toISOString();
+
+    let where = "p.seller_id = ? AND o.created_at >= ?";
+    const params = [req.user.user_id, fromDate];
+    if (status !== 'all') { where += ' AND COALESCE(som.fulfillment_status, \'pending\') = ?'; params.push(status); }
+    if (search) { where += ' AND (o.order_ref LIKE ? OR u.full_name LIKE ?)'; params.push(`%${search}%`, `%${search}%`); }
+
+    const totalRow = db.prepare(`
+      SELECT COUNT(DISTINCT o.id) as c FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      JOIN users u ON u.id = o.buyer_id
+      LEFT JOIN seller_order_meta som ON som.order_id = o.id
+      WHERE ${where}
+    `).get(...params);
+
+    const pendingActionCount = db.prepare(`
+      SELECT COUNT(DISTINCT o.id) as c FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      LEFT JOIN seller_order_meta som ON som.order_id = o.id
+      WHERE p.seller_id = ? AND COALESCE(som.fulfillment_status, 'pending') = 'pending'
+    `).get(req.user.user_id).c;
+
+    const rows = db.prepare(`
+      SELECT DISTINCT o.id as internal_id, o.order_ref as order_id,
+             oi.product_name as item_title, u.full_name as buyer_name,
+             u.display_name as buyer_handle,
+             a.line1 || ', ' || a.city || ', ' || a.state || ' ' || a.pincode as buyer_address,
+             o.created_at as order_date, o.total_paise,
+             COALESCE(som.fulfillment_status, 'pending') as fulfillment_status,
+             som.tracking_number
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      JOIN users u ON u.id = o.buyer_id
+      LEFT JOIN addresses a ON a.id = o.address_id
+      LEFT JOIN seller_order_meta som ON som.order_id = o.id
+      WHERE ${where}
+      ORDER BY o.created_at DESC LIMIT ? OFFSET ?
+    `).all(...params, parseInt(limit), offset);
+
+    const orders = rows.map(row => {
+      const events = db.prepare('SELECT status, occurred_at FROM order_tracking_events WHERE order_id = ? ORDER BY occurred_at ASC').all(row.internal_id);
+      return { ...row, tracking_events: events };
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        total: totalRow.c, pending_action_count: pendingActionCount,
+        avg_dispatch_days: 0, dispatch_change_pct: 0,
+        on_time_rate_pct: 100, on_time_change_pct: 0,
+        orders
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/orders error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 27: GET /api/seller/orders/:id
+// ============================================================
+app.get('/api/seller/orders/:id', requireSeller, (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id);
+    const row = db.prepare(`
+      SELECT o.id as internal_id, o.order_ref as order_id,
+             oi.product_name as item_title,
+             pi2.url as item_photo_url,
+             u.full_name as buyer_name,
+             u.display_name as buyer_handle,
+             u.id as buyer_id,
+             a.line1 || ', ' || a.city || ', ' || a.state || ' ' || a.pincode as buyer_address,
+             o.created_at as order_date, o.total_paise,
+             COALESCE(som.fulfillment_status, 'pending') as fulfillment_status,
+             som.tracking_number, som.dispatch_note, som.gift_wrap_requested
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      JOIN users u ON u.id = o.buyer_id
+      LEFT JOIN addresses a ON a.id = o.address_id
+      LEFT JOIN seller_order_meta som ON som.order_id = o.id
+      LEFT JOIN product_images pi2 ON pi2.product_id = p.id AND pi2.is_primary = 1
+      WHERE o.id = ? AND p.seller_id = ?
+      LIMIT 1
+    `).get(orderId, req.user.user_id);
+
+    if (!row) return res.status(404).json({ error: true, message: 'Order not found', code: 'NOT_FOUND' });
+
+    const events = db.prepare('SELECT status, occurred_at, note FROM order_tracking_events WHERE order_id = ? ORDER BY occurred_at ASC').all(orderId);
+    return res.json({
+      success: true,
+      data: { ...row, gift_wrap_requested: row.gift_wrap_requested === 1, tracking_events: events }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/orders/:id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 28: PUT /api/seller/orders/:id/status
+// ============================================================
+app.put('/api/seller/orders/:id/status', requireSeller, (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id);
+    const { status, dispatch_note, tracking_number } = req.body;
+
+    const validStatuses = ['crafting', 'shipped', 'delivered', 'cancelled'];
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({ error: true, message: 'Invalid status', code: 'VALIDATION_ERROR' });
+    }
+
+    // Verify seller owns this order
+    const orderCheck = db.prepare(`
+      SELECT DISTINCT o.id FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      WHERE o.id = ? AND p.seller_id = ?
+    `).get(orderId, req.user.user_id);
+    if (!orderCheck) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+
+    // Upsert seller_order_meta
+    const existing = db.prepare('SELECT id FROM seller_order_meta WHERE order_id = ?').get(orderId);
+    const dispatchedAt = status === 'shipped' ? new Date().toISOString() : undefined;
+    if (existing) {
+      db.prepare(`UPDATE seller_order_meta SET fulfillment_status = ?, tracking_number = COALESCE(?, tracking_number),
+        dispatch_note = COALESCE(?, dispatch_note), dispatched_at = COALESCE(?, dispatched_at), updated_at = datetime('now') WHERE order_id = ?`
+      ).run(status, tracking_number || null, dispatch_note || null, dispatchedAt || null, orderId);
+    } else {
+      db.prepare(`INSERT INTO seller_order_meta (order_id, seller_id, fulfillment_status, tracking_number, dispatch_note, dispatched_at)
+        VALUES (?, ?, ?, ?, ?, ?)`
+      ).run(orderId, req.seller.id, status, tracking_number || null, dispatch_note || null, dispatchedAt || null);
+    }
+
+    // Insert tracking event
+    db.prepare('INSERT INTO order_tracking_events (order_id, seller_id, status) VALUES (?, ?, ?)').run(orderId, req.seller.id, status);
+
+    const events = db.prepare('SELECT status, occurred_at FROM order_tracking_events WHERE order_id = ? ORDER BY occurred_at ASC').all(orderId);
+    const meta = db.prepare('SELECT fulfillment_status, tracking_number FROM seller_order_meta WHERE order_id = ?').get(orderId);
+    const order = db.prepare('SELECT order_ref FROM orders WHERE id = ?').get(orderId);
+
+    return res.json({
+      success: true,
+      data: { order_id: order.order_ref, fulfillment_status: meta.fulfillment_status, tracking_number: meta.tracking_number, tracking_events: events }
+    });
+  } catch (err) {
+    console.error('PUT /api/seller/orders/:id/status error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 29: POST /api/seller/orders/:id/tracking
+// ============================================================
+app.post('/api/seller/orders/:id/tracking', requireSeller, (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id);
+    const { tracking_number, tracking_prefix, dispatch_note } = req.body;
+
+    const orderCheck = db.prepare(`
+      SELECT DISTINCT o.id, o.order_ref FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      WHERE o.id = ? AND p.seller_id = ?
+    `).get(orderId, req.user.user_id);
+    if (!orderCheck) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+
+    const existing = db.prepare('SELECT id FROM seller_order_meta WHERE order_id = ?').get(orderId);
+    if (existing) {
+      db.prepare(`UPDATE seller_order_meta SET tracking_number = COALESCE(?, tracking_number),
+        tracking_prefix = COALESCE(?, tracking_prefix), dispatch_note = COALESCE(?, dispatch_note),
+        updated_at = datetime('now') WHERE order_id = ?`
+      ).run(tracking_number || null, tracking_prefix || null, dispatch_note || null, orderId);
+    } else {
+      db.prepare('INSERT INTO seller_order_meta (order_id, seller_id, tracking_number, tracking_prefix, dispatch_note) VALUES (?, ?, ?, ?, ?)')
+        .run(orderId, req.seller.id, tracking_number || null, tracking_prefix || null, dispatch_note || null);
+    }
+
+    return res.json({ success: true, data: { order_id: orderCheck.order_ref, tracking_number: tracking_number || null } });
+  } catch (err) {
+    console.error('POST /api/seller/orders/:id/tracking error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 30: GET /api/seller/reviews
+// ============================================================
+app.get('/api/seller/reviews', requireSeller, (req, res) => {
+  try {
+    const { filter = 'all', sort = 'newest' } = req.query;
+
+    // All reviews for this seller's products
+    let where = 'p.seller_id = ?';
+    const params = [req.user.user_id];
+    if (filter === 'unreplied') { where += ' AND rr.id IS NULL'; }
+    if (filter === 'critical') { where += ' AND r.rating <= 2'; }
+
+    const sortMap = { highest_rating: 'r.rating DESC', lowest_rating: 'r.rating ASC', newest: 'r.created_at DESC' };
+    const orderBy = sortMap[sort] || 'r.created_at DESC';
+
+    const rows = db.prepare(`
+      SELECT r.id as review_id, u.display_name || '@' || u.email as reviewer_handle,
+             p.name as listing_title, r.rating, r.body, r.created_at,
+             rr.reply_text, rr.created_at as reply_created_at
+      FROM reviews r
+      JOIN products p ON p.id = r.product_id
+      JOIN users u ON u.id = r.reviewer_id
+      LEFT JOIN review_replies rr ON rr.review_id = r.id
+      WHERE ${where} ORDER BY ${orderBy}
+    `).all(...params);
+
+    const avgRow = db.prepare(`
+      SELECT AVG(r.rating) as avg, COUNT(*) as total,
+             SUM(CASE WHEN rr.id IS NOT NULL THEN 1 ELSE 0 END) as replied
+      FROM reviews r
+      JOIN products p ON p.id = r.product_id
+      LEFT JOIN review_replies rr ON rr.review_id = r.id
+      WHERE p.seller_id = ?
+    `).get(req.user.user_id);
+
+    const distRow = db.prepare(`
+      SELECT rating, COUNT(*) as c FROM reviews r
+      JOIN products p ON p.id = r.product_id
+      WHERE p.seller_id = ? GROUP BY rating
+    `).all(req.user.user_id);
+    const distribution = { '5': 0, '4': 0, '3': 0, '2': 0, '1': 0 };
+    distRow.forEach(d => { distribution[String(d.rating)] = d.c; });
+
+    const topRated = db.prepare(`
+      SELECT p.id as listing_id, p.name as title, AVG(r.rating) as avg_rating
+      FROM reviews r JOIN products p ON p.id = r.product_id
+      WHERE p.seller_id = ? GROUP BY p.id ORDER BY avg_rating DESC LIMIT 5
+    `).all(req.user.user_id);
+
+    const pendingReplies = (avgRow.total || 0) - (avgRow.replied || 0);
+    const responseRate = avgRow.total > 0 ? Math.round((avgRow.replied / avgRow.total) * 100) : 100;
+
+    const reviews = rows.map(r => ({
+      review_id: r.review_id,
+      reviewer_handle: r.reviewer_handle,
+      listing_title: r.listing_title,
+      rating: r.rating,
+      body: r.body,
+      verified_purchase: true,
+      helpful_count: 0,
+      has_photos: false,
+      created_at: r.created_at,
+      reply: r.reply_text ? { reply_text: r.reply_text, created_at: r.reply_created_at } : null
+    }));
+
+    return res.json({
+      success: true,
+      data: {
+        summary: {
+          avg_rating: avgRow.avg ? Math.round(avgRow.avg * 10) / 10 : 0,
+          total_reviews: avgRow.total || 0,
+          seller_rank: req.seller.seller_rank || null,
+          pending_replies: pendingReplies,
+          response_rate_pct: responseRate,
+          photo_review_pct: 0,
+          verified_pct: 100,
+          rating_distribution: distribution
+        },
+        top_rated_collections: topRated,
+        reviews
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/reviews error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 31: POST /api/seller/reviews/:id/reply
+// ============================================================
+app.post('/api/seller/reviews/:id/reply', requireSeller, (req, res) => {
+  try {
+    const reviewId = parseInt(req.params.id);
+    const { reply_text } = req.body;
+    if (!reply_text || !reply_text.trim()) {
+      return res.status(400).json({ error: true, message: 'reply_text required', code: 'VALIDATION_ERROR' });
+    }
+
+    // Verify seller owns the product being reviewed
+    const review = db.prepare(`
+      SELECT r.id FROM reviews r
+      JOIN products p ON p.id = r.product_id
+      WHERE r.id = ? AND p.seller_id = ?
+    `).get(reviewId, req.user.user_id);
+    if (!review) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+
+    db.prepare('INSERT OR REPLACE INTO review_replies (review_id, seller_id, reply_text, created_at, updated_at) VALUES (?, ?, ?, datetime(\'now\'), datetime(\'now\'))').run(reviewId, req.seller.id, reply_text.trim());
+
+    const reply = db.prepare('SELECT reply_text, created_at FROM review_replies WHERE review_id = ?').get(reviewId);
+    return res.status(201).json({ success: true, data: { review_id: reviewId, reply } });
+  } catch (err) {
+    console.error('POST /api/seller/reviews/:id/reply error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 32: GET /api/seller/analytics
+// ============================================================
+app.get('/api/seller/analytics', requireSeller, (req, res) => {
+  try {
+    const { period = '30d' } = req.query;
+    let fromDate, toDate;
+    if (period === 'custom') {
+      fromDate = req.query.from;
+      toDate = req.query.to;
+    } else {
+      const days = period === '90d' ? 90 : 30;
+      toDate = new Date().toISOString().split('T')[0];
+      fromDate = new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
+    }
+
+    const kpiRow = db.prepare(`
+      SELECT COALESCE(SUM(o.total_paise), 0) as revenue_paise,
+             COUNT(DISTINCT o.id) as order_count,
+             COALESCE(AVG(o.total_paise), 0) as avg_order_paise
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      WHERE p.seller_id = ? AND date(o.created_at) BETWEEN ? AND ?
+    `).get(req.user.user_id, fromDate, toDate);
+
+    const zaiRow = db.prepare('SELECT enabled FROM zai_mode_state WHERE seller_id = ?').get(req.seller.id);
+    const zaiEnabled = zaiRow ? zaiRow.enabled === 1 : req.seller.zai_mode_enabled === 1;
+
+    return res.json({
+      success: true,
+      data: {
+        period,
+        zai_insight: zaiEnabled ? 'Revenue analysis complete — consider promoting your top listings on the Reels feed to boost visibility this month.' : null,
+        kpis: {
+          revenue_paise: kpiRow.revenue_paise,
+          revenue_change_pct: 0,
+          avg_order_value_paise: Math.round(kpiRow.avg_order_paise),
+          avg_order_change_pct: 0,
+          return_rate_pct: 0,
+          return_rate_change_pct: 0,
+          repeat_buyer_pct: 0,
+          repeat_buyer_change_pct: 0
+        },
+        revenue_chart: [],
+        chart_annotations: [],
+        traffic: { total_visits: 0, sources: [] }
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/analytics error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// GET /api/seller/analytics/export — CSV export (bonus sub-task per spec)
+app.get('/api/seller/analytics/export', requireSeller, (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT o.order_ref, o.created_at, o.total_paise, oi.product_name
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.id
+      JOIN products p ON p.id = oi.product_id
+      WHERE p.seller_id = ? ORDER BY o.created_at DESC
+    `).all(req.user.user_id);
+
+    let csv = 'Order Ref,Date,Product,Total (paise)\n';
+    rows.forEach(r => { csv += `"${r.order_ref}","${r.created_at}","${r.product_name}",${r.total_paise}\n`; });
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="analytics-export.csv"');
+    return res.send(csv);
+  } catch (err) {
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 33: GET /api/seller/store-config
+// ============================================================
+app.get('/api/seller/store-config', requireSeller, (req, res) => {
+  try {
+    const seller = req.seller;
+    const teamMembers = db.prepare('SELECT id, name, email, role FROM seller_team_members WHERE seller_id = ?').all(seller.id);
+    const pendingPayout = db.prepare("SELECT COALESCE(SUM(amount_paise),0) as total FROM payout_history WHERE seller_id = ? AND status='pending'").get(seller.id).total;
+
+    const step = seller.onboarding_step || 0;
+    const onboardingSteps = {
+      store_details:      { complete: step >= 1, label: 'Store details',      status: step >= 1 ? 'Verified' : 'Incomplete' },
+      payment_gateway:    { complete: step >= 2, label: 'Payment gateway',    status: step >= 2 ? 'Active' : 'Incomplete' },
+      shipping:           { complete: step >= 3, label: 'Shipping',           status: step >= 3 ? 'Configured' : 'Incomplete' },
+      store_policies:     { complete: step >= 4, label: 'Store policies',     status: step >= 4 ? 'Published' : 'Incomplete' },
+      website_appearance: { complete: step >= 5, label: 'Website appearance', status: step >= 5 ? 'Customized' : 'Incomplete' },
+      user_access:        { complete: step >= 6, label: 'User access',        status: step >= 6 ? 'Set up' : 'Set up' },
+      accept_orders:      { complete: seller.is_accepting_orders === 1, label: 'Accept orders', status: seller.is_accepting_orders ? 'Active' : 'Incomplete' },
+      gift_wrap:          { complete: false, label: 'Gift wrap', status: 'Optional' }
+    };
+    const stepsComplete = Object.values(onboardingSteps).filter(s => s.complete).length;
+
+    return res.json({
+      success: true,
+      data: {
+        onboarding_steps: onboardingSteps,
+        steps_complete: stepsComplete,
+        steps_total: 8,
+        credibility_label: stepsComplete >= 6 ? 'Strong credibility' : stepsComplete >= 4 ? 'Good credibility' : 'Building credibility',
+        shipping: { flat_fee_enabled: true, store_pickup_enabled: false },
+        payment_methods: ['UPI', 'Cards', 'NetBanking'],
+        pending_payout_paise: pendingPayout,
+        store_url: seller.store_slug ? `tofa.art/${seller.store_slug}` : null,
+        team_members: teamMembers,
+        return_policy: null,
+        contact_email: null
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/store-config error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 34: PUT /api/seller/store-config
+// ============================================================
+app.put('/api/seller/store-config', requireSeller, (req, res) => {
+  try {
+    const { shipping, return_policy, contact_email, accept_orders } = req.body;
+    const seller = req.seller;
+
+    if (accept_orders !== undefined) {
+      db.prepare('UPDATE seller_profiles SET is_accepting_orders = ?, updated_at = datetime(\'now\') WHERE id = ?')
+        .run(accept_orders ? 1 : 0, seller.id);
+    }
+
+    const updated = db.prepare('SELECT * FROM seller_profiles WHERE id = ?').get(seller.id);
+    req.seller = updated;
+
+    // Build config response (same shape as GET)
+    const teamMembers = db.prepare('SELECT id, name, email, role FROM seller_team_members WHERE seller_id = ?').all(seller.id);
+    const pendingPayout = db.prepare("SELECT COALESCE(SUM(amount_paise),0) as total FROM payout_history WHERE seller_id = ? AND status='pending'").get(seller.id).total;
+    const step = updated.onboarding_step || 0;
+    const onboardingSteps = {
+      store_details:      { complete: step >= 1, label: 'Store details',      status: step >= 1 ? 'Verified' : 'Incomplete' },
+      payment_gateway:    { complete: step >= 2, label: 'Payment gateway',    status: step >= 2 ? 'Active' : 'Incomplete' },
+      shipping:           { complete: step >= 3, label: 'Shipping',           status: step >= 3 ? 'Configured' : 'Incomplete' },
+      store_policies:     { complete: step >= 4, label: 'Store policies',     status: step >= 4 ? 'Published' : 'Incomplete' },
+      website_appearance: { complete: step >= 5, label: 'Website appearance', status: step >= 5 ? 'Customized' : 'Incomplete' },
+      user_access:        { complete: step >= 6, label: 'User access',        status: 'Set up' },
+      accept_orders:      { complete: updated.is_accepting_orders === 1, label: 'Accept orders', status: updated.is_accepting_orders ? 'Active' : 'Incomplete' },
+      gift_wrap:          { complete: false, label: 'Gift wrap', status: 'Optional' }
+    };
+    const stepsComplete = Object.values(onboardingSteps).filter(s => s.complete).length;
+
+    return res.json({
+      success: true,
+      data: {
+        onboarding_steps: onboardingSteps,
+        steps_complete: stepsComplete,
+        steps_total: 8,
+        credibility_label: stepsComplete >= 6 ? 'Strong credibility' : stepsComplete >= 4 ? 'Good credibility' : 'Building credibility',
+        shipping: shipping || { flat_fee_enabled: true, store_pickup_enabled: false },
+        payment_methods: ['UPI', 'Cards', 'NetBanking'],
+        pending_payout_paise: pendingPayout,
+        store_url: updated.store_slug ? `tofa.art/${updated.store_slug}` : null,
+        team_members: teamMembers,
+        return_policy: return_policy || null,
+        contact_email: contact_email || null
+      }
+    });
+  } catch (err) {
+    console.error('PUT /api/seller/store-config error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 35: GET /api/seller/payouts
+// ============================================================
+app.get('/api/seller/payouts', requireSeller, (req, res) => {
+  try {
+    const { page = 1, limit = 20 } = req.query;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    const balRow = db.prepare("SELECT COALESCE(SUM(amount_paise),0) as total FROM payout_history WHERE seller_id = ? AND status='pending'").get(req.seller.id);
+    const nextPayout = db.prepare("SELECT scheduled_at FROM payout_history WHERE seller_id = ? AND status='pending' ORDER BY scheduled_at ASC LIMIT 1").get(req.seller.id);
+
+    const payouts = db.prepare(`
+      SELECT id as payout_id, date(created_at) as date, txn_ref, amount_paise, status
+      FROM payout_history WHERE seller_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?
+    `).all(req.seller.id, parseInt(limit), offset);
+
+    return res.json({
+      success: true,
+      data: {
+        current_balance_paise: balRow.total,
+        next_payout_date: nextPayout ? nextPayout.scheduled_at : null,
+        payout_method_masked: null,
+        payouts
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/payouts error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 36: PUT /api/seller/zai-mode
+// ============================================================
+app.put('/api/seller/zai-mode', requireSeller, (req, res) => {
+  try {
+    const enabled = req.body.enabled === true || req.body.enabled === 'true' ? 1 : 0;
+    db.prepare('INSERT OR REPLACE INTO zai_mode_state (seller_id, enabled, updated_at) VALUES (?, ?, datetime(\'now\'))').run(req.seller.id, enabled);
+    db.prepare('UPDATE seller_profiles SET zai_mode_enabled = ? WHERE id = ?').run(enabled, req.seller.id);
+    return res.json({ success: true, data: { enabled: enabled === 1 } });
+  } catch (err) {
+    console.error('PUT /api/seller/zai-mode error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 42: POST /api/seller/become (seller onboarding)
+// ============================================================
+app.post('/api/seller/become', rateLimit(5), authenticateToken, (req, res) => {
+  try {
+    const { display_name, handle, store_currency = 'INR' } = req.body;
+    if (!display_name || !handle) {
+      return res.status(400).json({ error: true, message: 'display_name and handle required', code: 'VALIDATION_ERROR' });
+    }
+    if (!/^[a-z0-9_]+$/.test(handle)) {
+      return res.status(400).json({ error: true, message: 'Handle must be lowercase letters, numbers, underscores only', code: 'INVALID_HANDLE' });
+    }
+
+    // Check already a seller
+    const existing = db.prepare('SELECT id FROM seller_profiles WHERE user_id = ?').get(req.user.user_id);
+    if (existing) {
+      return res.status(409).json({ error: true, message: 'You already have a seller account', code: 'ALREADY_SELLER' });
+    }
+
+    // Check handle uniqueness
+    const handleTaken = db.prepare('SELECT id FROM seller_profiles WHERE handle = ?').get(handle);
+    if (handleTaken) {
+      return res.status(400).json({ error: true, message: 'Handle already taken', code: 'HANDLE_TAKEN' });
+    }
+
+    // Generate store_slug from display_name
+    const storeSlug = display_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    // INSERT seller_profiles
+    const result = db.prepare(`
+      INSERT INTO seller_profiles (user_id, shop_name, shop_bio, display_name, handle, store_slug, store_currency, platform_fee_pct, is_accepting_orders, onboarding_step)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 8, 1, 0)
+    `).run(req.user.user_id, display_name, null, display_name, handle, storeSlug, store_currency);
+    const sellerId = result.lastInsertRowid;
+
+    // UPDATE user role to seller
+    db.prepare("UPDATE users SET role = 'seller' WHERE id = ?").run(req.user.user_id);
+
+    // Seed default shipping profiles
+    db.prepare(`INSERT INTO listing_shipping_profiles (seller_id, profile_name, is_domestic, flat_fee_paise, estimated_days_min, estimated_days_max)
+      VALUES (?, 'Standard Botanical', 1, 8000, 5, 7)`).run(sellerId);
+    db.prepare(`INSERT INTO listing_shipping_profiles (seller_id, profile_name, is_domestic, flat_fee_paise, estimated_days_min, estimated_days_max)
+      VALUES (?, 'Express Sage', 1, 15000, 2, 3)`).run(sellerId);
+
+    return res.status(201).json({
+      success: true,
+      data: { seller_id: sellerId, handle, store_slug: storeSlug, onboarding_step: 0, redirect_to: '/seller/studio' }
+    });
+  } catch (err) {
+    console.error('POST /api/seller/become error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
