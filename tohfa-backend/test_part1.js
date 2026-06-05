@@ -1793,6 +1793,44 @@ async function runTests() {
     }
 
     console.log('✓ Task 49 Passed: POST /api/profile/me/avatar');
+
+    // --- TASK 50 TESTS: GET /api/users/:id/followers ---
+    console.log('--- Testing TASK 50: GET /api/users/:id/followers ---');
+    db.prepare('DELETE FROM follows').run();
+    db.prepare('INSERT INTO follows (follower_id, following_id) VALUES (?, ?)').run(buyerId, sellerId);
+
+    // 1. Non-existent user followers
+    const nonexistentFollowersRes = await fetch(`${baseUrl}/api/users/99999/followers`);
+    if (nonexistentFollowersRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent user followers, got ${nonexistentFollowersRes.status}`);
+    }
+
+    // 2. Unauthenticated followers fetch
+    const unauthFollowersRes = await fetch(`${baseUrl}/api/users/${sellerId}/followers?limit=10`);
+    const unauthFollowersData = await unauthFollowersRes.json();
+    if (unauthFollowersRes.status !== 200 || !unauthFollowersData.success || unauthFollowersData.data.total_count !== 1 || unauthFollowersData.data.followers.length !== 1) {
+      throw new Error(`Expected 1 follower, got: ${JSON.stringify(unauthFollowersData)}`);
+    }
+    const f1 = unauthFollowersData.data.followers[0];
+    if (f1.display_name !== 'Elias Thorne' || f1.role_label !== 'BUYER' || f1.is_following !== false) {
+      throw new Error(`Unexpected follower details: ${JSON.stringify(f1)}`);
+    }
+
+    // 3. Authenticated followers fetch (mutual follow detection check)
+    db.prepare('INSERT INTO follows (follower_id, following_id) VALUES (?, ?)').run(sellerId, buyerId);
+    const authFollowersRes = await fetch(`${baseUrl}/api/users/${buyerId}/followers?limit=10`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const authFollowersData = await authFollowersRes.json();
+    if (authFollowersRes.status !== 200 || !authFollowersData.success) {
+      throw new Error(`Expected 200 for auth followers: ${JSON.stringify(authFollowersData)}`);
+    }
+    const f2 = authFollowersData.data.followers[0];
+    if (f2.display_name !== 'Stoneware Studio' || f2.role_label !== 'MAKER' || f2.is_following !== true) {
+      throw new Error(`Expected is_following to be true for Stoneware Studio: ${JSON.stringify(f2)}`);
+    }
+
+    console.log('✓ Task 50 Passed: GET /api/users/:id/followers');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
