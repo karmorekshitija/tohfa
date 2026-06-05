@@ -1868,6 +1868,54 @@ async function runTests() {
     }
 
     console.log('✓ Task 51 Passed: GET /api/users/:id/following');
+
+    // --- TASK 52 TESTS: POST /api/follows/:userId ---
+    console.log('--- Testing TASK 52: POST /api/follows/:userId ---');
+    db.prepare('DELETE FROM follows').run();
+
+    // 1. Unauthenticated follow request
+    const unauthFollowRes = await fetch(`${baseUrl}/api/follows/${sellerId}`, {
+      method: 'POST'
+    });
+    if (unauthFollowRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth follow, got ${unauthFollowRes.status}`);
+    }
+
+    // 2. Follow yourself (authenticated)
+    const selfFollowRes = await fetch(`${baseUrl}/api/follows/${buyerId}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (selfFollowRes.status !== 400) {
+      throw new Error(`Expected 400 for self follow, got ${selfFollowRes.status}`);
+    }
+
+    // 3. Follow non-existent user
+    const nonexistentFollowRes = await fetch(`${baseUrl}/api/follows/99999`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentFollowRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent follow, got ${nonexistentFollowRes.status}`);
+    }
+
+    // 4. Successful follow
+    const successFollowRes = await fetch(`${baseUrl}/api/follows/${sellerId}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const successFollowData = await successFollowRes.json();
+    if (successFollowRes.status !== 200 || !successFollowData.success || successFollowData.data.following !== true) {
+      throw new Error(`Expected success for follow: ${JSON.stringify(successFollowData)}`);
+    }
+
+    // Verify database has it
+    const followCheck = db.prepare("SELECT 1 FROM follows WHERE follower_id = ? AND following_id = ?").get(buyerId, sellerId);
+    if (!followCheck) {
+      throw new Error(`Expected follow record in db, found none`);
+    }
+
+    console.log('✓ Task 52 Passed: POST /api/follows/:userId');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

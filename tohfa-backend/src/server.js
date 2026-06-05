@@ -3317,6 +3317,47 @@ app.get('/api/users/:id/following', rateLimit(60), optionalAuthenticateToken, (r
   }
 });
 
+// TASK 52: POST /api/follows/:userId
+app.post('/api/follows/:userId', rateLimit(60), authenticateToken, (req, res) => {
+  const targetUserId = parseInt(req.params.userId, 10);
+  const authUserId = req.user.user_id;
+
+  if (targetUserId === authUserId) {
+    return res.status(400).json({
+      error: true,
+      message: "Cannot follow yourself",
+      code: "CANNOT_FOLLOW_YOURSELF"
+    });
+  }
+
+  try {
+    const targetUser = db.prepare("SELECT id FROM users WHERE id = ?").get(targetUserId);
+    if (!targetUser) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+        code: "USER_NOT_FOUND"
+      });
+    }
+
+    db.prepare("INSERT OR IGNORE INTO follows (follower_id, following_id) VALUES (?, ?)").run(authUserId, targetUserId);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        following: true
+      }
+    });
+  } catch (err) {
+    console.error('Error following user:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
