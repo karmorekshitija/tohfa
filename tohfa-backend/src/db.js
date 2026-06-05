@@ -124,4 +124,30 @@ const migrateCategories = () => {
 
 migrateCategories();
 
+// Task 02: Migration for products table
+const migrateProducts = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS products (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id       INTEGER NOT NULL REFERENCES users(id),
+      category_id     INTEGER REFERENCES categories(id),
+      name            TEXT NOT NULL,
+      description     TEXT,
+      price_paise     INTEGER NOT NULL,
+      stock_qty       INTEGER DEFAULT 0,
+      ships_in_days   INTEGER DEFAULT 3,
+      status          TEXT DEFAULT 'active',
+      avg_rating      REAL DEFAULT 0,
+      review_count    INTEGER DEFAULT 0,
+      created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_products_seller ON products(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
+    CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
+  `);
+};
+
+migrateProducts();
+
 module.exports = db;
