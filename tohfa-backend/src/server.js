@@ -4903,6 +4903,19 @@ app.post('/api/admin/auth/login', rateLimit(10), async (req, res) => {
   }
 });
 
+function formatJoinedDisplay(dateStr) {
+  if (!dateStr) return 'unknown';
+  let cleanDateStr = dateStr;
+  if (dateStr.indexOf(' ') > 0 && dateStr.indexOf('T') === -1) {
+    cleanDateStr = dateStr.replace(' ', 'T') + 'Z';
+  } else if (dateStr.indexOf('Z') === -1) {
+    cleanDateStr = dateStr + 'Z';
+  }
+  const date = new Date(cleanDateStr);
+  const options = { month: 'short', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
 function formatJoinedAgo(dateStr) {
   if (!dateStr) return 'unknown';
   let cleanDateStr = dateStr;
@@ -5046,6 +5059,924 @@ app.get('/api/admin/sellers', authenticateAdminToken, (req, res) => {
       message: "Internal server error",
       code: "INTERNAL_SERVER_ERROR"
     });
+  }
+});
+
+// TASK 10: GET /api/admin/sellers/:seller_id
+app.get('/api/admin/sellers/:seller_id', authenticateAdminToken, (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.seller_id);
+    const user = db.prepare('SELECT * FROM users WHERE id = ? AND role = ?').get(sellerId, 'seller');
+    if (!user) {
+      return res.status(404).json({ error: true, message: 'Seller not found', code: 'NOT_FOUND' });
+    }
+    const sp = db.prepare('SELECT * FROM seller_profiles WHERE user_id = ?').get(sellerId);
+    const displayName = sp ? (sp.display_name || sp.shop_name || user.full_name) : user.full_name;
+    const names = displayName.split(/\s+/).filter(Boolean);
+    const initials = names.map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+    // Active ban check
+    const activeBan = db.prepare("SELECT 1 FROM seller_bans WHERE seller_id = ? AND unbanned_at IS NULL").get(sellerId);
+    const sellerStatus = (user.is_banned === 1 || activeBan) ? 'banned' : 'active';
+
+    // Recent products
+    const recentProducts = db.prepare(`
+      SELECT id, name, price_paise, stock_qty FROM products WHERE seller_id = ? AND status != 'archived'
+      ORDER BY created_at DESC LIMIT 5
+    `).all(sellerId).map(p => ({
+      id: p.id,
+      name: p.name,
+      price_paise: p.price_paise,
+      price_display: formatMoney(p.price_paise),
+      stock_status: p.stock_qty === 0 ? 'sold_out' : p.stock_qty <= 5 ? 'low_stock' : 'in_stock'
+    }));
+
+    // Also check listings
+    const recentListings = sp ? db.prepare(`
+      SELECT id, title AS name, price_paise, stock_count AS stock_qty FROM listings WHERE seller_id = ? AND status != 'deleted'
+      ORDER BY created_at DESC LIMIT 5
+    `).all(sp.id).map(p => ({
+      id: p.id,
+      name: p.name,
+      price_paise: p.price_paise,
+      price_display: formatMoney(p.price_paise),
+      stock_status: p.stock_qty === 0 ? 'sold_out' : p.stock_qty <= 5 ? 'low_stock' : 'in_stock'
+    })) : [];
+
+    const allRecent = [...recentProducts, ...recentListings].slice(0, 5);
+
+    // Ban history
+    const banHistory = db.prepare(`
+      SELECT banned_at, ban_reason, unbanned_at FROM seller_bans WHERE seller_id = ? ORDER BY banned_at DESC
+    `).all(sellerId);
+
+    // Sales
+    const salesRow = sp ? db.prepare(`
+      SELECT COALESCE(SUM(total_paise),0) AS total FROM (
+        SELECT DISTINCT o.id, o.total_paise FROM orders o
+        LEFT JOIN order_items oi ON oi.order_id = o.id
+        LEFT JOIN products p ON p.id = oi.product_id
+        LEFT JOIN seller_order_meta som ON som.order_id = o.id
+        WHERE (p.seller_id = ? OR som.seller_id = ?) AND o.status != 'Cancelled'
+      )
+    `).get(sellerId, sp.id) : { total: 0 };
+    const totalSalesPaise = salesRow.total;
+
+    const productCount = (db.prepare("SELECT COUNT(*) AS c FROM products WHERE seller_id = ? AND status != 'archived'").get(sellerId).c || 0) +
+                         (sp ? db.prepare("SELECT COUNT(*) AS c FROM listings WHERE seller_id = ? AND status != 'deleted'").get(sp.id).c : 0);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: sellerId,
+        display_name: displayName,
+        avatar_initials: initials || 'SA',
+        email: user.email,
+        phone: user.phone || null,
+        joined_at: user.created_at,
+        joined_display: formatJoinedDisplay(user.created_at),
+        bio: sp ? (sp.bio || sp.shop_bio) : null,
+        status: sellerStatus,
+        total_products: productCount,
+        total_sales_paise: totalSalesPaise,
+        total_sales_display: formatMoney(totalSalesPaise),
+        all_time_revenue_paise: totalSalesPaise,
+        all_time_revenue_display: formatMoney(totalSalesPaise),
+        recent_products: allRecent,
+        ban_history: banHistory
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/sellers/:seller_id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 11: POST /api/admin/sellers/:seller_id/ban
+app.post('/api/admin/sellers/:seller_id/ban', authenticateAdminToken, (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.seller_id);
+    const { ban_reason } = req.body;
+    if (!ban_reason || typeof ban_reason !== 'string' || !ban_reason.trim()) {
+      return res.status(400).json({ error: true, message: 'ban_reason is required', code: 'VALIDATION_ERROR' });
+    }
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(sellerId);
+    if (!user) return res.status(404).json({ error: true, message: 'Seller not found', code: 'NOT_FOUND' });
+
+    const activeBan = db.prepare("SELECT 1 FROM seller_bans WHERE seller_id = ? AND unbanned_at IS NULL").get(sellerId);
+    if (user.is_banned === 1 || activeBan) {
+      return res.status(409).json({ error: true, message: 'Seller is already banned', code: 'ALREADY_BANNED' });
+    }
+
+    const banTransaction = db.transaction(() => {
+      db.prepare("UPDATE users SET is_banned = 1, updated_at = datetime('now') WHERE id = ?").run(sellerId);
+      db.prepare("UPDATE products SET status = 'archived', updated_at = datetime('now') WHERE seller_id = ?").run(sellerId);
+      try {
+        db.prepare("UPDATE reels SET status = 'inactive' WHERE seller_id = ?").run(sellerId);
+      } catch (e) {}
+      const banRow = db.prepare(`
+        INSERT INTO seller_bans (seller_id, banned_by, ban_reason) VALUES (?, ?, ?)
+      `).run(sellerId, req.admin.id, ban_reason.trim());
+      writeAuditLog(
+        'admin.seller.banned', req.admin.id, req.admin.display_name,
+        'seller', sellerId, `Seller: ${user.full_name}`,
+        { status: 'active' },
+        { status: 'banned', ban_reason: ban_reason.trim(), updated_at: new Date().toISOString() }
+      );
+    });
+    banTransaction();
+
+    return res.status(200).json({
+      success: true,
+      data: { seller_id: sellerId, status: 'banned', banned_at: new Date().toISOString() }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/sellers/:seller_id/ban error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 12: POST /api/admin/sellers/:seller_id/unban
+app.post('/api/admin/sellers/:seller_id/unban', authenticateAdminToken, (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.seller_id);
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(sellerId);
+    if (!user) return res.status(404).json({ error: true, message: 'Seller not found', code: 'NOT_FOUND' });
+
+    const activeBan = db.prepare("SELECT 1 FROM seller_bans WHERE seller_id = ? AND unbanned_at IS NULL").get(sellerId);
+    if (user.is_banned === 0 && !activeBan) {
+      return res.status(409).json({ error: true, message: 'Seller is not banned', code: 'NOT_BANNED' });
+    }
+
+    const unbanTransaction = db.transaction(() => {
+      db.prepare("UPDATE users SET is_banned = 0, updated_at = datetime('now') WHERE id = ?").run(sellerId);
+      db.prepare("UPDATE products SET status = 'active', updated_at = datetime('now') WHERE seller_id = ? AND status = 'archived'").run(sellerId);
+      db.prepare("UPDATE seller_bans SET unbanned_at = datetime('now'), unbanned_by = ? WHERE seller_id = ? AND unbanned_at IS NULL").run(req.admin.id, sellerId);
+      writeAuditLog(
+        'admin.seller.unbanned', req.admin.id, req.admin.display_name,
+        'seller', sellerId, `Seller: ${user.full_name}`,
+        { status: 'banned' },
+        { status: 'active' }
+      );
+    });
+    unbanTransaction();
+
+    return res.status(200).json({
+      success: true,
+      data: { seller_id: sellerId, status: 'active', unbanned_at: new Date().toISOString() }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/sellers/:seller_id/unban error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 13: GET /api/admin/orders
+app.get('/api/admin/orders', authenticateAdminToken, (req, res) => {
+  try {
+    const { status = 'all', from_date, to_date, search, page = 1, per_page = 10 } = req.query;
+    const limit = parseInt(per_page) || 10;
+    const offset = (parseInt(page) - 1) * limit;
+
+    let conditions = [];
+    const params = [];
+
+    if (status === 'refund_flagged') {
+      conditions.push("EXISTS (SELECT 1 FROM order_flags of2 WHERE of2.order_id = o.order_ref AND of2.resolved_at IS NULL)");
+    } else if (status !== 'all') {
+      conditions.push("LOWER(o.status) = ?");
+      params.push(status.toLowerCase());
+    }
+
+    if (from_date) {
+      conditions.push("date(o.created_at) >= ?");
+      params.push(from_date);
+    }
+    if (to_date) {
+      conditions.push("date(o.created_at) <= ?");
+      params.push(to_date);
+    }
+    if (search) {
+      conditions.push("o.order_ref LIKE ?");
+      params.push(`%${search}%`);
+    }
+
+    const whereClause = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
+
+    const totalRow = db.prepare(`SELECT COUNT(*) AS c FROM orders o ${whereClause}`).get(...params);
+    const total = totalRow.c;
+
+    const refundFlaggedCount = db.prepare(`
+      SELECT COUNT(*) AS c FROM order_flags WHERE resolved_at IS NULL
+    `).get().c;
+
+    const rows = db.prepare(`
+      SELECT o.id, o.order_ref, o.status, o.total_paise, o.created_at,
+        buyer.full_name AS buyer_name,
+        (SELECT COALESCE(sp.shop_name, seller.full_name) 
+         FROM order_items oi2
+         JOIN products p2 ON p2.id = oi2.product_id
+         JOIN users seller ON seller.id = p2.seller_id
+         LEFT JOIN seller_profiles sp ON sp.user_id = seller.id
+         WHERE oi2.order_id = o.id LIMIT 1) AS seller_name,
+        EXISTS (SELECT 1 FROM order_flags of2 WHERE of2.order_id = o.order_ref AND of2.resolved_at IS NULL) AS is_refund_flagged
+      FROM orders o
+      JOIN users buyer ON buyer.id = o.buyer_id
+      ${whereClause}
+      ORDER BY o.created_at DESC
+      LIMIT ? OFFSET ?
+    `).all(...params, limit, offset);
+
+    const orders = rows.map(r => ({
+      order_id: r.order_ref,
+      buyer_name: r.buyer_name,
+      seller_name: r.seller_name || 'Unknown',
+      amount_paise: r.total_paise,
+      amount_display: formatMoney(r.total_paise),
+      status: r.status ? r.status.toLowerCase().replace(/\s+/g, '_') : 'pending',
+      is_refund_flagged: !!r.is_refund_flagged,
+      created_at: r.created_at,
+      created_ago: formatJoinedAgo(r.created_at)
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        orders,
+        total,
+        page: parseInt(page),
+        per_page: limit,
+        total_pages: Math.ceil(total / limit) || 1,
+        refund_flagged_count: refundFlaggedCount
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/orders error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 14: GET /api/admin/orders/:order_id
+app.get('/api/admin/orders/:order_id', authenticateAdminToken, (req, res) => {
+  try {
+    const orderId = req.params.order_id;
+    const order = db.prepare('SELECT * FROM orders WHERE order_ref = ?').get(orderId);
+    if (!order) return res.status(404).json({ error: true, message: 'Order not found', code: 'NOT_FOUND' });
+
+    const buyer = db.prepare('SELECT id, full_name, email FROM users WHERE id = ?').get(order.buyer_id);
+
+    // Get seller from first order item
+    const firstItem = db.prepare(`
+      SELECT p.seller_id FROM order_items oi JOIN products p ON p.id = oi.product_id WHERE oi.order_id = ? LIMIT 1
+    `).get(order.id);
+    let sellerInfo = { id: null, shop_name: 'Unknown', tagline: '' };
+    if (firstItem) {
+      const sellerUser = db.prepare('SELECT id, full_name FROM users WHERE id = ?').get(firstItem.seller_id);
+      const sp = db.prepare('SELECT shop_name, shop_bio, bio FROM seller_profiles WHERE user_id = ?').get(firstItem.seller_id);
+      if (sellerUser) {
+        sellerInfo = {
+          id: sellerUser.id,
+          shop_name: sp ? sp.shop_name : sellerUser.full_name,
+          tagline: sp ? (sp.bio || sp.shop_bio || '') : ''
+        };
+      }
+    }
+
+    const lineItems = db.prepare(`
+      SELECT oi.product_id, oi.product_name, oi.quantity, oi.unit_price_paise
+      FROM order_items oi WHERE oi.order_id = ?
+    `).all(order.id).map(item => ({
+      product_id: item.product_id,
+      product_name: item.product_name,
+      quantity: item.quantity,
+      unit_price_paise: item.unit_price_paise,
+      unit_price_display: formatMoney(item.unit_price_paise)
+    }));
+
+    const isRefundFlagged = !!db.prepare("SELECT 1 FROM order_flags WHERE order_id = ? AND resolved_at IS NULL").get(orderId);
+
+    // Build journey
+    const statusVal = (order.status || '').toLowerCase();
+    const statusProgress = ['awaiting_payment','payment_confirmed','processing','shipped','delivered'];
+    const statusMap = {
+      'awaiting payment': 'awaiting_payment',
+      'paid': 'payment_confirmed',
+      'processing': 'processing',
+      'shipped': 'shipped',
+      'delivered': 'delivered',
+      'in_transit': 'shipped'
+    };
+    const currentStep = statusMap[statusVal] || statusVal;
+    const currentIdx = statusProgress.indexOf(currentStep);
+
+    const journey = [
+      { step: 'order_placed', label: 'Order Placed', icon: 'check', timestamp: order.created_at, display: order.created_at ? order.created_at.slice(0, 16).replace('T', ' ') : null, note: null, completed: true },
+      { step: 'payment_confirmed', label: 'Payment Confirmed', icon: 'payments', timestamp: order.created_at, display: order.created_at ? order.created_at.slice(0, 16).replace('T', ' ') : null, note: null, completed: currentIdx >= 1 },
+      { step: 'processing', label: 'Processing', icon: 'settings_suggest', timestamp: currentIdx >= 2 ? order.updated_at : null, display: currentIdx >= 2 ? (order.updated_at ? order.updated_at.slice(0, 16).replace('T', ' ') : null) : 'Pending', note: null, completed: currentIdx >= 2 },
+      { step: 'shipped', label: 'Shipped', icon: 'local_shipping', timestamp: order.shipped_at || null, display: order.shipped_at ? order.shipped_at.slice(0, 16).replace('T', ' ') : 'Pending', note: null, completed: currentIdx >= 3 || !!order.shipped_at },
+      { step: 'delivered', label: 'Delivered', icon: 'inventory_2', timestamp: order.delivered_at || null, display: order.delivered_at ? order.delivered_at.slice(0, 16).replace('T', ' ') : 'Pending', note: null, completed: currentIdx >= 4 || !!order.delivered_at }
+    ];
+
+    const createdDisplay = order.created_at ? new Date(order.created_at.replace(' ', 'T') + 'Z').toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) : null;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        order_id: order.order_ref,
+        status: statusVal,
+        created_at: order.created_at,
+        created_display: createdDisplay,
+        is_refund_flagged: isRefundFlagged,
+        buyer: { id: buyer ? buyer.id : null, name: buyer ? buyer.full_name : 'Unknown', email: buyer ? buyer.email : '' },
+        seller: sellerInfo,
+        line_items: lineItems,
+        subtotal_paise: order.subtotal_paise,
+        subtotal_display: formatMoney(order.subtotal_paise),
+        shipping_paise: order.shipping_paise || 0,
+        shipping_display: order.shipping_paise === 0 ? '₹0 (Free)' : formatMoney(order.shipping_paise || 0),
+        total_paise: order.total_paise,
+        total_display: formatMoney(order.total_paise),
+        journey,
+        admin_internal: {
+          last_viewed_by: req.admin.display_name,
+          last_viewed_at: new Date().toISOString(),
+          previous_log_count: 0
+        }
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/orders/:order_id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 15: PATCH /api/admin/orders/:order_id/status
+app.patch('/api/admin/orders/:order_id/status', authenticateAdminToken, (req, res) => {
+  const VALID_STATUSES = ['processing', 'in_transit', 'delivered', 'cancelled', 'on_hold'];
+  try {
+    const orderId = req.params.order_id;
+    const { new_status } = req.body;
+
+    if (!new_status || !VALID_STATUSES.includes(new_status)) {
+      return res.status(400).json({
+        error: true,
+        message: `new_status must be one of: ${VALID_STATUSES.join(', ')}`,
+        code: 'VALIDATION_ERROR'
+      });
+    }
+
+    const order = db.prepare('SELECT * FROM orders WHERE order_ref = ?').get(orderId);
+    if (!order) return res.status(404).json({ error: true, message: 'Order not found', code: 'NOT_FOUND' });
+
+    const oldStatus = order.status;
+    db.prepare("UPDATE orders SET status = ?, updated_at = datetime('now') WHERE order_ref = ?").run(new_status, orderId);
+
+    writeAuditLog(
+      'admin.order.status_overridden', req.admin.id, req.admin.display_name,
+      'order', orderId, `Order: ${orderId}`,
+      { status: oldStatus },
+      { status: new_status, overridden_by: req.admin.display_name, updated_at: new Date().toISOString() }
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        order_id: orderId,
+        old_status: oldStatus,
+        new_status,
+        overridden_at: new Date().toISOString(),
+        overridden_by: req.admin.display_name
+      }
+    });
+  } catch (err) {
+    console.error('PATCH /api/admin/orders/:order_id/status error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 16: POST /api/admin/orders/:order_id/flag-refund
+app.post('/api/admin/orders/:order_id/flag-refund', authenticateAdminToken, (req, res) => {
+  try {
+    const orderId = req.params.order_id;
+    const order = db.prepare('SELECT * FROM orders WHERE order_ref = ?').get(orderId);
+    if (!order) return res.status(404).json({ error: true, message: 'Order not found', code: 'NOT_FOUND' });
+
+    const existing = db.prepare("SELECT 1 FROM order_flags WHERE order_id = ? AND resolved_at IS NULL").get(orderId);
+    if (existing) return res.status(409).json({ error: true, message: 'Order already flagged for refund', code: 'ALREADY_FLAGGED' });
+
+    db.prepare("INSERT INTO order_flags (order_id, flagged_by, flag_type) VALUES (?, ?, 'refund_review')").run(orderId, req.admin.id);
+
+    writeAuditLog(
+      'admin.order.refund_flagged', req.admin.id, req.admin.display_name,
+      'order', orderId, `Order: ${orderId}`
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: { order_id: orderId, is_refund_flagged: true, flagged_at: new Date().toISOString() }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/orders/:order_id/flag-refund error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 17: GET /api/admin/categories
+app.get('/api/admin/categories', authenticateAdminToken, (req, res) => {
+  try {
+    const cats = db.prepare('SELECT * FROM categories ORDER BY sort_order ASC, id ASC').all();
+    const categories = cats.map(c => ({
+      id: c.id,
+      display_name: c.display_name || c.name,
+      slug: c.slug,
+      emoji_icon: c.emoji_icon || c.icon_emoji || '🏷️',
+      description: c.description || null,
+      sort_order: c.sort_order || 0,
+      is_active: c.is_active !== undefined ? !!c.is_active : true,
+      status_label: (c.is_active === 0 || c.is_active === false) ? 'Hidden' : 'Active',
+      product_count: c.product_count || c.item_count || 0
+    }));
+    return res.status(200).json({ success: true, data: { categories, total: categories.length } });
+  } catch (err) {
+    console.error('GET /api/admin/categories error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 18: POST /api/admin/categories
+app.post('/api/admin/categories', authenticateAdminToken, (req, res) => {
+  try {
+    const { emoji_icon, display_name, slug, description, sort_order, is_active } = req.body;
+    if (!emoji_icon || !display_name || !slug || sort_order === undefined || is_active === undefined) {
+      return res.status(400).json({ error: true, message: 'emoji_icon, display_name, slug, sort_order, is_active are required', code: 'VALIDATION_ERROR' });
+    }
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      return res.status(400).json({ error: true, message: 'Slug must match [a-z0-9-]+', code: 'INVALID_SLUG' });
+    }
+    const existing = db.prepare('SELECT id FROM categories WHERE slug = ?').get(slug);
+    if (existing) return res.status(409).json({ error: true, message: 'Slug already exists', code: 'SLUG_CONFLICT' });
+
+    const result = db.prepare(`
+      INSERT INTO categories (display_name, name, slug, emoji_icon, icon_emoji, description, sort_order, is_active, product_count, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, datetime('now'))
+    `).run(display_name, display_name, slug, emoji_icon, emoji_icon, description || null, sort_order, is_active ? 1 : 0);
+
+    writeAuditLog('admin.category.created', req.admin.id, req.admin.display_name, 'category', result.lastInsertRowid, `Category: ${display_name}`);
+
+    const newCat = db.prepare('SELECT * FROM categories WHERE id = ?').get(result.lastInsertRowid);
+    return res.status(201).json({
+      success: true,
+      data: {
+        id: newCat.id,
+        display_name: newCat.display_name,
+        slug: newCat.slug,
+        emoji_icon: newCat.emoji_icon,
+        sort_order: newCat.sort_order,
+        is_active: !!newCat.is_active,
+        status_label: newCat.is_active ? 'Active' : 'Hidden',
+        product_count: 0
+      }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/categories error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 19: PATCH /api/admin/categories/:category_id
+app.patch('/api/admin/categories/:category_id', authenticateAdminToken, (req, res) => {
+  try {
+    const catId = parseInt(req.params.category_id);
+    const cat = db.prepare('SELECT * FROM categories WHERE id = ?').get(catId);
+    if (!cat) return res.status(404).json({ error: true, message: 'Category not found', code: 'NOT_FOUND' });
+
+    const { emoji_icon, display_name, slug, description, sort_order, is_active } = req.body;
+    if (slug !== undefined) {
+      if (!/^[a-z0-9-]+$/.test(slug)) {
+        return res.status(400).json({ error: true, message: 'Invalid slug format', code: 'INVALID_SLUG' });
+      }
+      const conflict = db.prepare('SELECT id FROM categories WHERE slug = ? AND id != ?').get(slug, catId);
+      if (conflict) return res.status(409).json({ error: true, message: 'Slug already exists', code: 'SLUG_CONFLICT' });
+    }
+
+    const beforeJson = { display_name: cat.display_name, slug: cat.slug, is_active: cat.is_active };
+
+    const updates = [];
+    const params = [];
+    if (emoji_icon !== undefined) { updates.push('emoji_icon = ?', 'icon_emoji = ?'); params.push(emoji_icon, emoji_icon); }
+    if (display_name !== undefined) { updates.push('display_name = ?', 'name = ?'); params.push(display_name, display_name); }
+    if (slug !== undefined) { updates.push('slug = ?'); params.push(slug); }
+    if (description !== undefined) { updates.push('description = ?'); params.push(description); }
+    if (sort_order !== undefined) { updates.push('sort_order = ?'); params.push(sort_order); }
+    if (is_active !== undefined) { updates.push('is_active = ?'); params.push(is_active ? 1 : 0); }
+
+    updates.push("updated_at = datetime('now')");
+    params.push(catId);
+
+    db.prepare(`UPDATE categories SET ${updates.join(', ')} WHERE id = ?`).run(...params);
+
+    const updated = db.prepare('SELECT * FROM categories WHERE id = ?').get(catId);
+    writeAuditLog('admin.category.updated', req.admin.id, req.admin.display_name, 'category', catId, `Category: ${updated.display_name}`, beforeJson, { display_name: updated.display_name, slug: updated.slug, is_active: updated.is_active });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: updated.id,
+        display_name: updated.display_name || updated.name,
+        slug: updated.slug,
+        emoji_icon: updated.emoji_icon || updated.icon_emoji,
+        sort_order: updated.sort_order,
+        is_active: !!updated.is_active,
+        status_label: updated.is_active ? 'Active' : 'Hidden',
+        product_count: updated.product_count || updated.item_count || 0
+      }
+    });
+  } catch (err) {
+    console.error('PATCH /api/admin/categories/:category_id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 20: DELETE /api/admin/categories/:category_id
+app.delete('/api/admin/categories/:category_id', authenticateAdminToken, (req, res) => {
+  try {
+    const catId = parseInt(req.params.category_id);
+    const cat = db.prepare('SELECT * FROM categories WHERE id = ?').get(catId);
+    if (!cat) return res.status(404).json({ error: true, message: 'Category not found', code: 'NOT_FOUND' });
+
+    const productCount = db.prepare("SELECT COUNT(*) AS c FROM products WHERE category_id = ? AND status = 'active'").get(catId).c;
+    if (productCount > 0) {
+      return res.status(400).json({
+        error: true,
+        message: `Cannot delete: this category has ${productCount} active products.`,
+        code: 'HAS_ACTIVE_PRODUCTS',
+        product_count: productCount
+      });
+    }
+
+    db.prepare('DELETE FROM categories WHERE id = ?').run(catId);
+    writeAuditLog('admin.category.deleted', req.admin.id, req.admin.display_name, 'category', catId, `Category: ${cat.display_name || cat.name}`);
+
+    return res.status(200).json({
+      success: true,
+      data: { deleted_id: catId, display_name: cat.display_name || cat.name }
+    });
+  } catch (err) {
+    console.error('DELETE /api/admin/categories/:category_id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 21: GET /api/admin/products
+app.get('/api/admin/products', authenticateAdminToken, (req, res) => {
+  try {
+    const { filter = 'all', search, page = 1, per_page = 20 } = req.query;
+    const limit = parseInt(per_page) || 20;
+    const offset = (parseInt(page) - 1) * limit;
+
+    let conditions = ["p.status != 'archived'"];
+    const params = [];
+
+    if (filter === 'sponsored') {
+      conditions.push('sp_prod.is_sponsored = 1');
+    } else if (filter === 'non_sponsored') {
+      conditions.push('(sp_prod.is_sponsored IS NULL OR sp_prod.is_sponsored = 0)');
+    }
+
+    if (search) {
+      conditions.push('p.name LIKE ?');
+      params.push(`%${search}%`);
+    }
+
+    const whereClause = 'WHERE ' + conditions.join(' AND ');
+
+    const total = db.prepare(`
+      SELECT COUNT(*) AS c FROM products p
+      LEFT JOIN sponsored_products sp_prod ON sp_prod.product_id = p.id
+      ${whereClause}
+    `).get(...params).c;
+
+    const sponsoredCount = db.prepare("SELECT COUNT(*) AS c FROM sponsored_products WHERE is_sponsored = 1").get().c;
+
+    const rows = db.prepare(`
+      SELECT p.id, p.name, p.price_paise, p.seller_id,
+        COALESCE(u.full_name, '') AS seller_name,
+        COALESCE(cat.name, 'Uncategorised') AS category_name,
+        COALESCE(sp_prod.is_sponsored, 0) AS is_sponsored
+      FROM products p
+      LEFT JOIN users u ON u.id = p.seller_id
+      LEFT JOIN categories cat ON cat.id = p.category_id
+      LEFT JOIN sponsored_products sp_prod ON sp_prod.product_id = p.id
+      ${whereClause}
+      ORDER BY p.created_at DESC
+      LIMIT ? OFFSET ?
+    `).all(...params, limit, offset);
+
+    const products = rows.map(r => ({
+      id: r.id,
+      sku: `PROD-${r.id}`,
+      name: r.name,
+      seller_id: r.seller_id,
+      seller_name: r.seller_name,
+      category_name: r.category_name,
+      price_paise: r.price_paise,
+      price_display: formatMoney(r.price_paise),
+      is_sponsored: !!r.is_sponsored,
+      sponsored_status_label: r.is_sponsored ? 'Sponsored' : '—'
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: { products, total, sponsored_count: sponsoredCount, page: parseInt(page), per_page: limit, total_pages: Math.ceil(total / limit) || 1 }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/products error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 22: PATCH /api/admin/products/:product_id/sponsored
+app.patch('/api/admin/products/:product_id/sponsored', authenticateAdminToken, (req, res) => {
+  try {
+    const productId = parseInt(req.params.product_id);
+    const { is_sponsored } = req.body;
+    if (typeof is_sponsored !== 'boolean') {
+      return res.status(400).json({ error: true, message: 'is_sponsored must be a boolean', code: 'VALIDATION_ERROR' });
+    }
+
+    const product = db.prepare('SELECT * FROM products WHERE id = ?').get(productId);
+    if (!product) return res.status(404).json({ error: true, message: 'Product not found', code: 'NOT_FOUND' });
+
+    const existing = db.prepare('SELECT is_sponsored FROM sponsored_products WHERE product_id = ?').get(productId);
+    const oldValue = existing ? !!existing.is_sponsored : false;
+
+    if (is_sponsored) {
+      db.prepare(`
+        INSERT OR REPLACE INTO sponsored_products (product_id, is_sponsored, sponsored_at, sponsored_by, updated_at)
+        VALUES (?, 1, datetime('now'), ?, datetime('now'))
+      `).run(productId, req.admin.id);
+    } else {
+      db.prepare(`
+        INSERT OR REPLACE INTO sponsored_products (product_id, is_sponsored, sponsored_at, sponsored_by, updated_at)
+        VALUES (?, 0, NULL, NULL, datetime('now'))
+      `).run(productId);
+    }
+
+    writeAuditLog(
+      'admin.product.sponsored_toggled', req.admin.id, req.admin.display_name,
+      'product', productId, `Product: ${product.name}`,
+      { is_sponsored: oldValue },
+      { is_sponsored }
+    );
+
+    const sponsoredCount = db.prepare("SELECT COUNT(*) AS c FROM sponsored_products WHERE is_sponsored = 1").get().c;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        product_id: productId,
+        is_sponsored,
+        sponsored_status_label: is_sponsored ? 'Sponsored' : '—',
+        sponsored_count: sponsoredCount
+      }
+    });
+  } catch (err) {
+    console.error('PATCH /api/admin/products/:product_id/sponsored error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// Helper: map event_type → event_label
+function auditEventLabel(eventType) {
+  const map = {
+    'admin.seller.banned': 'Seller Banned',
+    'admin.seller.unbanned': 'Seller Unbanned',
+    'admin.order.status_overridden': 'Order Override',
+    'admin.order.refund_flagged': 'Order Flagged',
+    'admin.product.sponsored_toggled': 'Sponsored Toggle',
+    'admin.category.created': 'Category Created',
+    'admin.category.updated': 'Category Change',
+    'admin.category.deleted': 'Category Deleted',
+    'admin.dashboard.stats_viewed': 'Stats Viewed',
+    'admin.session.login': 'Admin Login'
+  };
+  return map[eventType] || eventType;
+}
+
+// TASK 23: GET /api/admin/audit-logs (+ GET /api/admin/audit-logs/:log_id/diff)
+app.get('/api/admin/audit-logs', authenticateAdminToken, (req, res) => {
+  try {
+    const { event_type, actor, from_date, to_date, page = 1, per_page = 20 } = req.query;
+    const limit = parseInt(per_page) || 20;
+    const offset = (parseInt(page) - 1) * limit;
+
+    let conditions = [];
+    const params = [];
+
+    if (event_type) { conditions.push('event_type = ?'); params.push(event_type); }
+    if (actor) { conditions.push('actor_name LIKE ?'); params.push(`%${actor}%`); }
+    if (from_date) { conditions.push("date(created_at) >= ?"); params.push(from_date); }
+    if (to_date) { conditions.push("date(created_at) <= ?"); params.push(to_date); }
+
+    const whereClause = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
+
+    const total = db.prepare(`SELECT COUNT(*) AS c FROM audit_logs ${whereClause}`).get(...params).c;
+
+    const rows = db.prepare(`
+      SELECT id, event_type, actor_id, actor_name, target_type, target_label, created_at,
+        (before_json IS NOT NULL OR after_json IS NOT NULL) AS has_diff
+      FROM audit_logs
+      ${whereClause}
+      ORDER BY created_at DESC
+      LIMIT ? OFFSET ?
+    `).all(...params, limit, offset);
+
+    const logs = rows.map(r => ({
+      id: r.id,
+      event_type: r.event_type,
+      event_label: auditEventLabel(r.event_type),
+      actor_name: r.actor_name,
+      actor_role: 'Admin',
+      target_label: r.target_label,
+      timestamp: r.created_at,
+      timestamp_display: r.created_at ? r.created_at.replace('T', ' ').slice(0, 19) : null,
+      has_diff: !!r.has_diff,
+      before_json: null,
+      after_json: null
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: { logs, total, page: parseInt(page), per_page: limit, total_pages: Math.ceil(total / limit) || 1 }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/audit-logs error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+app.get('/api/admin/audit-logs/:log_id/diff', authenticateAdminToken, (req, res) => {
+  try {
+    const logId = parseInt(req.params.log_id);
+    const log = db.prepare('SELECT id, before_json, after_json FROM audit_logs WHERE id = ?').get(logId);
+    if (!log) return res.status(404).json({ error: true, message: 'Log not found', code: 'NOT_FOUND' });
+    return res.status(200).json({ success: true, data: { id: log.id, before_json: log.before_json, after_json: log.after_json } });
+  } catch (err) {
+    console.error('GET /api/admin/audit-logs/:log_id/diff error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 24: GET /api/admin/payment-health
+app.get('/api/admin/payment-health', authenticateAdminToken, (req, res) => {
+  try {
+    const latest = db.prepare('SELECT * FROM payment_health_logs ORDER BY checked_at DESC LIMIT 1').get();
+    const prev = db.prepare('SELECT api_response_ms FROM payment_health_logs ORDER BY checked_at DESC LIMIT 1 OFFSET 1').get();
+
+    const statusLabelMap = { healthy: 'All Systems Operational', degraded: 'Degraded Performance', down: 'System Down' };
+    const overallStatus = latest ? latest.status : 'healthy';
+    const statusLabel = statusLabelMap[overallStatus] || 'Unknown';
+
+    let apiTrend = '+0ms';
+    if (latest && prev && latest.api_response_ms != null && prev.api_response_ms != null) {
+      const delta = latest.api_response_ms - prev.api_response_ms;
+      apiTrend = (delta >= 0 ? '+' : '') + delta + 'ms';
+    }
+
+    // Webhook status from last check
+    const webhookStatus = latest ? (latest.webhook_status || 'receiving') : 'receiving';
+
+    let lastWebhookAgo = null;
+    if (latest && latest.last_webhook_at) {
+      lastWebhookAgo = formatJoinedAgo(latest.last_webhook_at);
+    }
+
+    // Next auto-check (60 seconds cycle)
+    let nextAutoCheckInSeconds = 60;
+    if (latest && latest.checked_at) {
+      const lastCheckDate = new Date(latest.checked_at.replace(' ', 'T') + 'Z');
+      const elapsed = Math.floor((Date.now() - lastCheckDate.getTime()) / 1000);
+      nextAutoCheckInSeconds = Math.max(0, 60 - elapsed);
+    }
+
+    // Webhook event log (from raw_payload rows)
+    const webhookRows = db.prepare(`
+      SELECT check_type, status, last_txn_id, last_txn_status, checked_at
+      FROM payment_health_logs
+      WHERE raw_payload IS NOT NULL
+      ORDER BY checked_at DESC
+      LIMIT 10
+    `).all();
+
+    const webhookEventLog = webhookRows.map(r => ({
+      event_type: r.check_type === 'manual' ? 'health.check.manual' : 'health.check.auto',
+      txn_id: r.last_txn_id || 'N/A',
+      timestamp: r.checked_at,
+      time_display: r.checked_at ? r.checked_at.slice(11, 19) : null,
+      severity: r.status === 'healthy' ? 'info' : r.status === 'degraded' ? 'warning' : 'error'
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        overall_status: overallStatus,
+        status_label: statusLabel,
+        last_checked_at: latest ? latest.checked_at : null,
+        last_checked_display: latest && latest.checked_at ? latest.checked_at.replace('T', ' ').slice(0, 19) : null,
+        region: latest ? (latest.region || 'India (South)') : 'India (South)',
+        api_response_ms: latest ? latest.api_response_ms : null,
+        api_response_trend: apiTrend,
+        api_response_range: '100ms - 500ms',
+        webhook_status: webhookStatus,
+        last_webhook_at: latest ? latest.last_webhook_at : null,
+        last_webhook_ago: lastWebhookAgo || 'No data',
+        last_test_txn_id: latest ? latest.last_txn_id : null,
+        last_test_txn_status: latest ? latest.last_txn_status : null,
+        last_test_txn_time: 'N/A',
+        webhook_event_log: webhookEventLog,
+        next_auto_check_in_seconds: nextAutoCheckInSeconds
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/payment-health error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// TASK 25: POST /api/admin/payment-health/run-check
+app.post('/api/admin/payment-health/run-check', rateLimit(6), authenticateAdminToken, async (req, res) => {
+  try {
+    const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
+    const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+
+    let apiResponseMs = null;
+    let overallStatus = 'healthy';
+    let webhookStatus = 'receiving';
+    let isMock = false;
+    let mockReason = null;
+
+    if (!razorpayKeyId || !razorpayKeySecret) {
+      // Return mock
+      apiResponseMs = Math.floor(Math.random() * 200) + 50;
+      isMock = true;
+      mockReason = 'Razorpay credentials not configured';
+    } else {
+      const start = Date.now();
+      try {
+        const basicAuth = Buffer.from(`${razorpayKeyId}:${razorpayKeySecret}`).toString('base64');
+        const rzpRes = await fetch('https://api.razorpay.com/v1/orders?count=1', {
+          headers: { 'Authorization': `Basic ${basicAuth}` }
+        });
+        apiResponseMs = Date.now() - start;
+        if (!rzpRes.ok) { overallStatus = 'degraded'; }
+      } catch (e) {
+        apiResponseMs = Date.now() - start;
+        overallStatus = 'down';
+      }
+    }
+
+    // Determine webhook_status from last known webhook
+    const lastWebhookRow = db.prepare("SELECT last_webhook_at FROM payment_health_logs WHERE last_webhook_at IS NOT NULL ORDER BY checked_at DESC LIMIT 1").get();
+    if (lastWebhookRow && lastWebhookRow.last_webhook_at) {
+      const lastMs = Date.now() - new Date(lastWebhookRow.last_webhook_at.replace(' ', 'T') + 'Z').getTime();
+      const lastMins = lastMs / 60000;
+      if (lastMins < 10) webhookStatus = 'receiving';
+      else if (lastMins < 30) webhookStatus = 'delayed';
+      else webhookStatus = 'stopped';
+    }
+
+    // Determine overall_status
+    if (!isMock) {
+      if (apiResponseMs < 500 && webhookStatus === 'receiving') overallStatus = 'healthy';
+      else if (apiResponseMs > 1000 || webhookStatus === 'stopped') overallStatus = 'down';
+      else overallStatus = 'degraded';
+    }
+
+    const statusLabelMap = { healthy: 'All Systems Operational', degraded: 'Degraded Performance', down: 'System Down' };
+
+    db.prepare(`
+      INSERT INTO payment_health_logs (check_type, status, api_response_ms, webhook_status, region)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('manual', overallStatus, apiResponseMs, webhookStatus, 'India (South)');
+
+    const responseData = {
+      overall_status: overallStatus,
+      status_label: statusLabelMap[overallStatus],
+      api_response_ms: apiResponseMs,
+      webhook_status: webhookStatus,
+      checked_at: new Date().toISOString(),
+      next_auto_check_in_seconds: 60
+    };
+
+    if (isMock) {
+      responseData.mock = true;
+      responseData.mock_reason = mockReason;
+    }
+
+    return res.status(200).json({ success: true, data: responseData });
+  } catch (err) {
+    console.error('POST /api/admin/payment-health/run-check error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
 });
 
