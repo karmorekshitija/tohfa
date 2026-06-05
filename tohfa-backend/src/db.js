@@ -886,5 +886,25 @@ const migrateOrderFlags = () => {
 };
 migrateOrderFlags();
 
+// Task 06: Migration for payment_health_logs table
+const migratePaymentHealthLogs = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS payment_health_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      check_type TEXT NOT NULL DEFAULT 'auto',
+      status TEXT NOT NULL,
+      api_response_ms INTEGER,
+      webhook_status TEXT,
+      last_webhook_at TEXT,
+      last_txn_id TEXT,
+      last_txn_status TEXT,
+      region TEXT DEFAULT 'India (South)',
+      raw_payload TEXT,
+      checked_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+};
+migratePaymentHealthLogs();
+
 module.exports = db;
 
