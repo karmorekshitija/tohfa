@@ -778,5 +778,27 @@ const migrateAdminUsers = () => {
 };
 migrateAdminUsers();
 
+// Task 02: Migration for audit_logs table
+const migrateAuditLogs = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS audit_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      event_type TEXT NOT NULL,
+      actor_id INTEGER NOT NULL,
+      actor_name TEXT NOT NULL,
+      target_type TEXT NOT NULL,
+      target_id TEXT,
+      target_label TEXT,
+      before_json TEXT,
+      after_json TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_event_type ON audit_logs(event_type);
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_actor_id ON audit_logs(actor_id);
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
+  `);
+};
+migrateAuditLogs();
+
 module.exports = db;
 
