@@ -150,4 +150,20 @@ const migrateProducts = () => {
 
 migrateProducts();
 
+// Task 03: Migration for product_images table
+const migrateProductImages = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS product_images (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id  INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+      url         TEXT NOT NULL,
+      is_primary  INTEGER DEFAULT 0,
+      sort_order  INTEGER DEFAULT 0
+    );
+    CREATE INDEX IF NOT EXISTS idx_product_images_product ON product_images(product_id);
+  `);
+};
+
+migrateProductImages();
+
 module.exports = db;
