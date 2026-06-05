@@ -1,0 +1,199 @@
+<body class="bg-surface text-on-background min-h-screen flex flex-col selection:bg-secondary-container">
+<!-- TopNavBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="#">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="#" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <div class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0">
+      A
+    </div>
+  </div>
+</header>
+<main class="flex-grow bg-white">
+<!-- Page Heading -->
+<section class="relative pt-xl pb-lg px-margin-desktop max-w-[1440px] mx-auto overflow-hidden">
+<!-- Dried Bouquet Watermark -->
+<div class="absolute right-0 top-0 opacity-[0.09] pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+<img class="w-96 grayscale" data-alt="A delicate, artistic macro photograph of a dried wildflower bouquet against a clean white background. The botanical details like petals and stems are crisp yet soft, creating a vintage herbalist aesthetic. The lighting is bright and even, reinforcing a minimalist, high-end studio feel with earthy, organic textures and muted tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFzy6Bk7lLfRfZkQLEHDhCi6P35UKR0jPZKGhebJtK4xHxoUu8JshgQiOLaAaacLPOGWoynaOqAkU3hq6ERTgjT2ndbqXVB6euDVW30ZxlIaag4woHRRu7TXmngVuLZ8JperE0DR7Gmm4NyYdcaY7kKkFdhAUQfcv1EpBeN1BfgIqGWrzR8g0FpV-VZWPQSdUlBjooGDx0yiWY-_fyVq8kfWmbtzDu-zq9xu9y_BV6t5COk24R7I7eYVkWHTmkX8JfCHxqhcbo3qE">
+</div>
+<div class="relative z-10">
+<p class="font-label-caps text-label-caps text-secondary mb-xs">YOUR COLLECTION ✦</p>
+<div class="flex items-baseline gap-sm">
+<h1 class="font-headline-lg text-headline-lg text-primary">Saved makes</h1>
+<span class="font-data-price text-data-price text-on-tertiary-fixed-variant opacity-70">(7 saved)</span>
+</div>
+</div>
+</section>
+<!-- Product Grid with Wax-Tape Watermark Layer -->
+<section class="relative px-margin-desktop py-xl max-w-[1440px] mx-auto">
+<!-- Subtle Ink-Sketch / Wax-Tape Watermark -->
+<div class="absolute inset-0 ink-sketch-overlay wax-tape pointer-events-none opacity-50"></div>
+<div class="grid grid-cols-4 gap-xl relative z-10">
+<!-- Wishlist Item 1 -->
+<div class="bg-[#FCFAF5] p-lg rounded-xl border border-outline-variant hover:shadow-[0_8px_30px_rgb(58,51,40,0.08)] transition-all group">
+<div class="relative aspect-square overflow-hidden rounded-lg mb-md">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A hand-thrown ceramic tea bowl with a unique wabi-sabi glaze in earthy sage and cream tones. The bowl sits on a rustic wooden surface with soft side lighting casting gentle shadows, highlighting the tactile texture of the clay. The atmosphere is quiet, intentional, and reflects the artisan studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4ch6V_q9BfLf7iYlcOM39BR9PMKZlhpSTLWBUHLT_MBalE3jkDkOpxj6qMCZvj5w0R87oyduLg9AncOf47URdfdSZs3GLPEmkTAz1NfXXWCJ6_UhOvKCxjvzdsqqSCGEZa7Wgnk3YN6U34_E35fh38Xrr3xhTnFSONCtQgsyhjw51xyzq1q9vqRLPYWt2fZHD6aFB6-65FCSBCZm30VMQ0YhVUvZpiMraq1y6meM1yz1HLcwMzfstoD7aQzoDAXVYEmujzEON3Tk">
+<button class="absolute top-sm right-sm w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined active-heart">favorite</span>
+</button>
+</div>
+<div class="flex flex-col gap-xs mb-md">
+<h3 class="font-lora text-title-serif text-on-background">Woven Sage Tea Bowl</h3>
+<p class="font-data-price text-data-price text-on-tertiary-fixed-variant">$48.00</p>
+</div>
+<button class="w-full py-sm px-md border border-secondary text-secondary font-body-md text-body-md rounded-lg hover:bg-secondary hover:text-white transition-all active:scale-[0.98]">
+                        Add to cart
+                    </button>
+</div>
+<!-- Wishlist Item 2 -->
+<div class="bg-[#FCFAF5] p-lg rounded-xl border border-outline-variant hover:shadow-[0_8px_30px_rgb(58,51,40,0.08)] transition-all group">
+<div class="relative aspect-square overflow-hidden rounded-lg mb-md">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Handcrafted beeswax candles with natural textures, tied together with raw twine and a small sprig of dried lavender. The candles have a rich golden-yellow hue and sit in a sunlit corner of a studio, surrounded by natural wood and soft shadows. The overall vibe is artisanal and warm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAikgv3RWh_30OmTIA_0LwZfElC-XTOtHW7RRjo649rYPYhTx_Qr5PFFl8qQJbUpEsdNYk6aaBFYT-HiBg3KFu_kBwLQ0jApJY0dvEl_jnwWA8t0daiBZ3HrI4AL6sFyzSRSx49veEsN6SDW_ygWDz2g2cEuAmSoPzdG5EcNXbZp1NwLi3CnnXGHWGc87UVcUNVQ4ojCKUk69o93vwnf8wLvRgf-2Z_ebnkQHywXs1ivpsx0ViIwC8h4hoazfBGPuYHVpQhd6sVykk">
+<button class="absolute top-sm right-sm w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined active-heart">favorite</span>
+</button>
+</div>
+<div class="flex flex-col gap-xs mb-md">
+<h3 class="font-lora text-title-serif text-on-background">Wildflower Honey Pillars</h3>
+<p class="font-data-price text-data-price text-on-tertiary-fixed-variant">$32.00</p>
+</div>
+<button class="w-full py-sm px-md border border-secondary text-secondary font-body-md text-body-md rounded-lg hover:bg-secondary hover:text-white transition-all active:scale-[0.98]">
+                        Add to cart
+                    </button>
+</div>
+<!-- Wishlist Item 3 -->
+<div class="bg-[#FCFAF5] p-lg rounded-xl border border-outline-variant hover:shadow-[0_8_30px_rgb(58,51,40,0.08)] transition-all group">
+<div class="relative aspect-square overflow-hidden rounded-lg mb-md">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A minimalist linen journal with a forest green fabric cover and hand-stitched binding. It lies open on a clean desk next to a vintage brass fountain pen. The paper inside is thick and off-white with a slight tooth. The lighting is soft morning light, emphasizing a literary and thoughtful mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2aHgUV5-V-nZ4ipHVxCXseh5UgiRak-iKI619PlWFe_bq7GvwGYTGOh5EdN-fIgppx4hcQufUQfIKkFb9vgogPMEbsUYCkv0lSy7YszzpinoFTWNrSAwLh7scqRYBkEtJSaTs8riaRxvXLimhfCSZWp-EmCsmeXPC-B1EWpjFv5W8D1aFBu487dQtMfo4koFTXG1AC-u8k26geR4SwmmNwsM7dHhsIDtiwQ8H02aFIz1jAUWSQbVm_U4NIF025dJeLUUhYLfV53o">
+<button class="absolute top-sm right-sm w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined active-heart">favorite</span>
+</button>
+</div>
+<div class="flex flex-col gap-xs mb-md">
+<h3 class="font-lora text-title-serif text-on-background">Artisan Linen Notebook</h3>
+<p class="font-data-price text-data-price text-on-tertiary-fixed-variant">$24.00</p>
+</div>
+<button class="w-full py-sm px-md border border-secondary text-secondary font-body-md text-body-md rounded-lg hover:bg-secondary hover:text-white transition-all active:scale-[0.98]">Added ✦</button>
+</div>
+<!-- Wishlist Item 4 -->
+<div class="bg-[#FCFAF5] p-lg rounded-xl border border-outline-variant hover:shadow-[0_8px_30px_rgb(58,51,40,0.08)] transition-all group">
+<div class="relative aspect-square overflow-hidden rounded-lg mb-md">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Handcrafted brass measuring spoons with a hammered texture and a dark patina finish. They are laid out on a piece of dark indigo linen fabric. The metal reflects soft, warm studio light, suggesting a high-quality, long-lasting kitchen tool made with intention." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzAsWQrV_OmQC2Wfi5Y-tOmZpPnDHabmJrswm5inK4K9uzQYMFtuxuHzqb_vsgn8MCjx-ukLKajCaxDXaERP71Qz-wTbUFzhhtDLTgF_B30827IjMvxjvJpiemX7CD-sSRz2GUedCMeO80Z2b9lG6H7ANzF_5OU8-2iMyqEYkoGt3dSwll64O1iglrHnIrZujRvLJiEJ9tfwnzo4rd7mXSrpxBrfnrvW6CqtNVqgZc4vqAbxBJ16WgxtSH0alWdSrY9n7ZMyJDAyc">
+<button class="absolute top-sm right-sm w-10 h-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined active-heart">favorite</span>
+</button>
+</div>
+<div class="flex flex-col gap-xs mb-md">
+<h3 class="font-lora text-title-serif text-on-background">Hammered Brass Spoons</h3>
+<p class="font-data-price text-data-price text-on-tertiary-fixed-variant">$65.00</p>
+</div>
+<button class="w-full py-sm px-md border border-secondary text-secondary font-body-md text-body-md rounded-lg hover:bg-secondary hover:text-white transition-all active:scale-[0.98]">
+                        Add to cart
+                    </button>
+</div>
+</div>
+</section>
+<!-- Empty State Demo Section -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto text-center">
+<div class="border-t border-outline-variant pt-xl flex flex-col items-center">
+<div class="relative mb-lg">
+<!-- Chibi Bunny Mascot + Bouquet -->
+<div class="w-48 h-48 bg-surface-container-low rounded-full flex items-center justify-center relative">
+<span class="text-7xl">🐰</span>
+<div class="absolute -bottom-2 -right-4 text-4xl">🪴</div>
+<!-- Decorative bouquet motif -->
+<div class="absolute -top-4 -left-6 opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary">spa</span>
+</div>
+</div>
+</div>
+<h2 class="font-lora text-headline-lg italic text-primary mb-sm">Nothing saved yet ✦</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-lg">
+                    Tap the heart on any make to keep it here. Your collection of intentional gifts starts with a single spark.
+                </p>
+<button class="bg-primary text-white font-body-md text-body-md px-xl py-md rounded-lg hover:opacity-90 transition-opacity active:scale-95 shadow-lg shadow-primary/10">
+                    Start browsing
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant w-full mt-auto">
+
+</footer>
+<script>
+        // Micro-interaction for add to cart feedback
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.trim() === 'Add to cart') {
+                button.addEventListener('click', function() {
+                    const originalText = this.textContent;
+                    this.textContent = 'Added ✦';
+                    this.classList.add('bg-secondary', 'text-white');
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('bg-secondary', 'text-white');
+                    }, 2000);
+                });
+            }
+        });
+
+        // Toggle heart fill
+        document.querySelectorAll('.material-symbols-outlined.active-heart').forEach(heart => {
+            heart.parentElement.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isFilled = heart.style.fontVariationSettings.includes("'FILL' 1");
+                heart.style.fontVariationSettings = isFilled ? "'FILL' 0" : "'FILL' 1";
+                if (isFilled) {
+                    heart.classList.remove('text-primary');
+                    heart.classList.add('text-outline');
+                } else {
+                    heart.classList.add('text-primary');
+                    heart.classList.remove('text-outline');
+                }
+            });
+        });
+    </script>
+
+
+</body>
