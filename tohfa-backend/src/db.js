@@ -850,5 +850,23 @@ const migratePart2Categories = () => {
 };
 migratePart2Categories();
 
+// Task 04: Migration for sponsored_products table
+const migrateSponsoredProducts = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS sponsored_products (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id INTEGER NOT NULL UNIQUE REFERENCES products(id) ON DELETE CASCADE,
+      is_sponsored INTEGER NOT NULL DEFAULT 0,
+      sponsored_at TEXT,
+      sponsored_by INTEGER REFERENCES admin_users(id),
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_sponsored_product_id ON sponsored_products(product_id);
+    CREATE INDEX IF NOT EXISTS idx_sponsored_is_sponsored ON sponsored_products(is_sponsored);
+  `);
+};
+migrateSponsoredProducts();
+
 module.exports = db;
 
