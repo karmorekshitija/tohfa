@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tohfa - Printable Receipt #TF-2024-8842</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Merriweather:ital,wght@0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;1,700&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#255338", // Forest Green
+                        "secondary": "#49663f",
+                        "tertiary": "#573b81",
+                        "background": "#ffffff",
+                        "surface": "#fff8f3",
+                        "surface-ivory": "#f9f6f1",
+                        "sage": "#717972",
+                        "sage-soft": "#c1c9c0",
+                        "gold": "#b08d57",
+                        "gold-soft": "#f9ecdc",
+                        "on-surface": "#211b11",
+                        "on-surface-variant": "#414942",
+                        "outline": "#717972",
+                        "outline-variant": "#c1c9c0"
+                    },
+                    "fontFamily": {
+                        "title-serif": ["Merriweather", "serif"],
+                        "headline-lg": ["Playfair Display", "serif"],
+                        "data-price": ["Space Mono", "monospace"],
+                        "label-caps": ["Cinzel", "serif"],
+                        "body-md": ["DM Sans", "sans-serif"],
+                        "artisan-serif": ["Lora", "serif"]
+                    },
+                    "fontSize": {
+                        "receipt-label": ["18px", {"lineHeight": "24px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "table-header": ["10px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "order-meta": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            body {
+                background: white;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        body {
+            background-color: #f3f4f6; /* Grey background for screen preview only */
+            -webkit-print-color-adjust: exact;
+        }
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 20px auto;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        @media print {
+            .a4-page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+        .botanical-watermark {
+            background-image: radial-gradient(circle at 50% 50%, rgba(113, 121, 114, 0.05) 0%, transparent 70%);
+            mask-image: linear-gradient(to bottom, black, transparent);
+        }
+        .wax-seal {
+            border: 1.5px solid #255338;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Screen Preview Only Notification -->
+<div class="no-print bg-primary text-white p-4 text-center sticky top-0 z-50">
+<p class="font-label-caps text-[12px]">Tohfa Merchant Studio • Print Layout Preview</p>
+</div>
+<!-- Main Receipt Canvas -->
+<main class="a4-page overflow-hidden">
+<!-- Header Section -->
+<header class="relative mb-12 text-center">
+<!-- Watermark -->
+<div class="absolute inset-x-0 -top-10 h-32 flex justify-center items-center pointer-events-none opacity-[0.08]">
+<span class="material-symbols-outlined text-[120px] text-sage">eco</span>
+</div>
+<div class="pt-8 mb-4">
+<h1 class="font-headline-lg text-[42px] italic text-primary leading-none">
+                    Tohfa<span class="text-gold">.</span>
+</h1>
+</div>
+<div class="w-full h-px bg-outline-variant/50 max-w-[200px] mx-auto mb-8"></div>
+<div class="flex flex-col items-center gap-2">
+<h2 class="font-label-caps text-receipt-label text-primary">RECEIPT</h2>
+<div class="font-data-price text-order-meta text-on-surface-variant">
+                    Order #TF-2024-8842 <span class="mx-2 text-outline-variant">·</span> November 16, 2024
+                </div>
+</div>
+</header>
+<!-- Shipping & Billing Info -->
+<section class="grid grid-cols-2 gap-12 mb-16 border-b border-outline-variant/30 pb-12">
+<div>
+<h3 class="font-label-caps text-[11px] text-sage mb-4 uppercase">Billed to</h3>
+<div class="space-y-1 text-[14px] leading-relaxed">
+<p class="font-bold">Aarav Sharma</p>
+<p>42 Magnolia Gardens</p>
+<p>Bandra West, Mumbai</p>
+<p>Maharashtra, 400050</p>
+<p class="pt-2 italic text-on-surface-variant">aarav.sharma@email.com</p>
+</div>
+</div>
+<div>
+<h3 class="font-label-caps text-[11px] text-sage mb-4 uppercase">Shipped to</h3>
+<div class="space-y-1 text-[14px] leading-relaxed">
+<p class="font-bold">Aarav Sharma</p>
+<p>42 Magnolia Gardens</p>
+<p>Bandra West, Mumbai</p>
+<p>Maharashtra, 400050</p>
+<p class="pt-2 text-on-surface-variant">Contact: +91 98XXX XXX01</p>
+</div>
+</div>
+</section>
+<!-- Items Table -->
+<section class="mb-12">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-primary">
+<th class="font-label-caps text-table-header py-4 text-primary">ITEM</th>
+<th class="font-label-caps text-table-header py-4 text-primary text-center">QTY</th>
+<th class="font-label-caps text-table-header py-4 text-primary text-right">UNIT</th>
+<th class="font-label-caps text-table-header py-4 text-primary text-right">AMOUNT</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr>
+<td class="py-6">
+<p class="font-artisan-serif text-[16px] text-primary">Midnight Lily Ceramics (Set of 2)</p>
+<p class="text-[12px] text-on-surface-variant mt-1 italic">Hand-thrown stoneware with indigo floral wash</p>
+</td>
+<td class="py-6 font-data-price text-[14px] text-center">1</td>
+<td class="py-6 font-data-price text-[14px] text-right">₹1,850</td>
+<td class="py-6 font-data-price text-[14px] text-right">₹1,850</td>
+</tr>
+<tr>
+<td class="py-6">
+<p class="font-artisan-serif text-[16px] text-primary">Organic Cotton Loom Wrap</p>
+<p class="text-[12px] text-on-surface-variant mt-1 italic">300TC herbal dyed charcoal wrap</p>
+</td>
+<td class="py-6 font-data-price text-[14px] text-center">1</td>
+<td class="py-6 font-data-price text-[14px] text-right">₹850</td>
+<td class="py-6 font-data-price text-[14px] text-right">₹850</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- Totals Section -->
+<section class="flex justify-end mb-24">
+<div class="w-full max-w-[280px]">
+<div class="flex justify-between py-2">
+<span class="font-artisan-serif text-[14px] text-on-surface-variant">Subtotal</span>
+<span class="font-data-price text-[14px]">₹2,700</span>
+</div>
+<div class="flex justify-between py-2">
+<span class="font-artisan-serif text-[14px] text-on-surface-variant">Shipping</span>
+<span class="font-data-price text-[14px]">₹0</span>
+</div>
+<div class="flex justify-between py-4 mt-2 border-t border-outline-variant/50">
+<span class="font-label-caps text-[14px] text-primary">Total Amount</span>
+<span class="font-data-price text-[20px] font-bold text-gold">₹2,700</span>
+</div>
+</div>
+</section>
+<!-- Footer Area -->
+<footer class="mt-auto pt-12 border-t border-outline-variant/20 relative">
+<div class="flex flex-col items-center gap-6">
+<p class="font-artisan-serif text-[14px] text-primary">Midnight Lily Studio</p>
+<div class="flex items-center gap-3">
+<div class="h-px w-8 bg-outline-variant"></div>
+<p class="font-artisan-serif italic text-[14px] text-on-surface-variant">
+                        Made with care, thank you ✦
+                    </p>
+<div class="h-px w-8 bg-outline-variant"></div>
+</div>
+</div>
+<!-- Corner Detail (Wax Seal Motif) -->
+<div class="absolute bottom-4 right-0 flex items-center gap-4 opacity-40">
+<div class="text-right">
+<p class="font-label-caps text-[9px] text-sage leading-tight">AUTHENTIC<br>ARTISAN GOODS</p>
+</div>
+<div class="wax-seal">
+<span class="material-symbols-outlined text-[24px] text-primary" style="font-variation-settings: 'FILL' 1;">
+                        verified
+                    </span>
+</div>
+</div>
+</footer>
+<!-- Bottom Border Accent -->
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary"></div>
+</main>
+<!-- Invisible trigger for auto-print on load if needed or manual button for preview -->
+<div class="no-print fixed bottom-8 right-8 flex gap-4">
+<button class="bg-primary text-white font-label-caps px-8 py-4 shadow-xl hover:opacity-90 transition-all flex items-center gap-2" onclick="window.print()">
+<span class="material-symbols-outlined">print</span>
+            PRINT RECEIPT
+        </button>
+</div>
+</body></html>
