@@ -3052,6 +3052,89 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// Multer configuration for avatars upload
+const avatarsStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, avatarsDir);
+  },
+  filename: (req, file, cb) => {
+    const userId = req.user.user_id;
+    const uniqueSuffix = Date.now();
+    cb(null, `avatar-${userId}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  }
+});
+const uploadAvatar = multer({
+  storage: avatarsStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|webp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    if (extname && mimetype) {
+      return cb(null, true);
+    }
+    cb(new Error('Only JPEG, PNG and WebP images are allowed'));
+  }
+});
+
+const uploadAvatarMiddleware = (req, res, next) => {
+  uploadAvatar.single('avatar')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({
+          error: true,
+          message: "File exceeds 5MB",
+          code: "FILE_TOO_LARGE"
+        });
+      }
+      return res.status(400).json({
+        error: true,
+        message: err.message,
+        code: "UPLOAD_ERROR"
+      });
+    }
+    next();
+  });
+};
+
+// TASK 49: POST /api/profile/me/avatar
+app.post('/api/profile/me/avatar', rateLimit(60), authenticateToken, uploadAvatarMiddleware, (req, res) => {
+  const userId = req.user.user_id;
+
+  if (!req.file) {
+    return res.status(400).json({
+      error: true,
+      message: "No file uploaded",
+      code: "FILE_REQUIRED"
+    });
+  }
+
+  try {
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const avatarUrl = `${protocol}://${host}/uploads/avatars/${req.file.filename}`;
+
+    db.prepare("UPDATE users SET avatar_url = ? WHERE id = ?").run(avatarUrl, userId);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        avatar_url: avatarUrl
+      }
+    });
+  } catch (err) {
+    console.error('Error uploading avatar:', err);
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

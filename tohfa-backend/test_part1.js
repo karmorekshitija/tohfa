@@ -1733,6 +1733,66 @@ async function runTests() {
     }
 
     console.log('✓ Task 48 Passed: PATCH /api/profile/me');
+
+    // --- TASK 49 TESTS: POST /api/profile/me/avatar ---
+    console.log('--- Testing TASK 49: POST /api/profile/me/avatar ---');
+
+    // 1. Unauthenticated avatar upload
+    const unauthAvatarRes = await fetch(`${baseUrl}/api/profile/me/avatar`, {
+      method: 'POST'
+    });
+    if (unauthAvatarRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth avatar, got ${unauthAvatarRes.status}`);
+    }
+
+    // 2. Missing avatar file field
+    const emptyAvatarRes = await fetch(`${baseUrl}/api/profile/me/avatar`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (emptyAvatarRes.status !== 400) {
+      throw new Error(`Expected 400 for missing avatar file, got ${emptyAvatarRes.status}`);
+    }
+
+    // 3. Invalid file type
+    const invalidAvatarFd = new FormData();
+    const fakeTextFile = new Blob([Buffer.from('hello')], { type: 'text/plain' });
+    invalidAvatarFd.append('avatar', fakeTextFile, 'test.txt');
+
+    const invalidAvatarRes = await fetch(`${baseUrl}/api/profile/me/avatar`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` },
+      body: invalidAvatarFd
+    });
+    if (invalidAvatarRes.status !== 400) {
+      throw new Error(`Expected 400 for invalid file type, got ${invalidAvatarRes.status}`);
+    }
+
+    // 4. Successful upload
+    const validAvatarFd = new FormData();
+    const fakeImage = new Blob([Buffer.alloc(100)], { type: 'image/png' });
+    validAvatarFd.append('avatar', fakeImage, 'avatar.png');
+
+    const validAvatarRes = await fetch(`${baseUrl}/api/profile/me/avatar`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` },
+      body: validAvatarFd
+    });
+    const validAvatarData = await validAvatarRes.json();
+    if (validAvatarRes.status !== 200 || !validAvatarData.success || !validAvatarData.data.avatar_url) {
+      throw new Error(`Expected successful avatar upload, got status ${validAvatarRes.status}: ${JSON.stringify(validAvatarData)}`);
+    }
+
+    // 5. Verify GET profile has updated avatar_url
+    const verifyAvatarGetRes = await fetch(`${baseUrl}/api/profile/me`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const verifyAvatarGetData = await verifyAvatarGetRes.json();
+    if (verifyAvatarGetData.data.avatar_url !== validAvatarData.data.avatar_url) {
+      throw new Error(`Expected avatar_url to be updated in GET profile, got ${verifyAvatarGetData.data.avatar_url}`);
+    }
+
+    console.log('✓ Task 49 Passed: POST /api/profile/me/avatar');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
