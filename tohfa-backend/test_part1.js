@@ -1916,6 +1916,44 @@ async function runTests() {
     }
 
     console.log('✓ Task 52 Passed: POST /api/follows/:userId');
+
+    // --- TASK 53 TESTS: DELETE /api/follows/:userId ---
+    console.log('--- Testing TASK 53: DELETE /api/follows/:userId ---');
+
+    // 1. Unauthenticated unfollow request
+    const unauthUnfollowRes = await fetch(`${baseUrl}/api/follows/${sellerId}`, {
+      method: 'DELETE'
+    });
+    if (unauthUnfollowRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth unfollow, got ${unauthUnfollowRes.status}`);
+    }
+
+    // 2. Unfollow non-existent user
+    const nonexistentUnfollowRes = await fetch(`${baseUrl}/api/follows/99999`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentUnfollowRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent unfollow, got ${nonexistentUnfollowRes.status}`);
+    }
+
+    // 3. Successful unfollow
+    const successUnfollowRes = await fetch(`${baseUrl}/api/follows/${sellerId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const successUnfollowData = await successUnfollowRes.json();
+    if (successUnfollowRes.status !== 200 || !successUnfollowData.success || successUnfollowData.data.following !== false) {
+      throw new Error(`Expected success for unfollow: ${JSON.stringify(successUnfollowData)}`);
+    }
+
+    // Verify database does not have it
+    const unfollowCheck = db.prepare("SELECT 1 FROM follows WHERE follower_id = ? AND following_id = ?").get(buyerId, sellerId);
+    if (unfollowCheck) {
+      throw new Error(`Expected follow record in db to be deleted, but still found`);
+    }
+
+    console.log('✓ Task 53 Passed: DELETE /api/follows/:userId');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
