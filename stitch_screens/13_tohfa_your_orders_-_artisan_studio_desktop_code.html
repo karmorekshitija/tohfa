@@ -1,0 +1,218 @@
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="#">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="#" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <div class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0">
+      A
+    </div>
+  </div>
+</header>
+<main class="relative min-h-screen pt-[100px] pb-xl px-margin-desktop">
+<!-- Global Botanical Watermark -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.09] flex justify-center items-center z-0">
+<img class="w-1/2 grayscale rotate-12" data-alt="A detailed, vintage botanical illustration of a wild sprig of leaves and berries, rendered in a delicate charcoal sketch style. The image has no background and is intended to serve as a faint, ethereal watermark for a sophisticated artisan studio's digital journal interface. The mood is quiet, historical, and deeply connected to nature's craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOCbfaMKJN83v3XWGJIG_8XsbxwvXuAPzTPuSOOjTqmzITogIaRnAOdbUJ1nZ7HMDvpmsAJ1SiYT7-ksprmmImmv48X0MaAzcb0_fmT9FcUn7NN_amPPtk__CC9rRkFXibzUB3J7c2KVpK71djTj48oqn0HOaBPhswQj84yrzdR-V8WW4NykmSYcBsC7RxOFBohbw7j-fCAczaSif0va3TL-LxzRdT_lYneQdTklnC3EzkuqcWzB_gm52Kb1WATG_fobJvbL_uSSM">
+</div>
+<!-- Content Container -->
+<div class="relative z-10 max-w-4xl mx-auto">
+<!-- Header Section -->
+<section class="text-center mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-lg">Your orders</h1>
+<!-- Filter Pills -->
+<div class="flex justify-center items-center space-x-sm">
+<button class="bg-primary text-white px-lg py-sm rounded-full font-label-caps text-label-caps transition-transform active:scale-95">All</button>
+<button class="bg-[#FCFAF5] border border-outline-variant text-primary px-lg py-sm rounded-full font-label-caps text-label-caps hover:bg-surface-container-low transition-colors">Active</button>
+<button class="bg-[#FCFAF5] border border-outline-variant text-primary px-lg py-sm rounded-full font-label-caps text-label-caps hover:bg-surface-container-low transition-colors">Delivered</button>
+<button class="bg-[#FCFAF5] border border-outline-variant text-primary px-lg py-sm rounded-full font-label-caps text-label-caps hover:bg-surface-container-low transition-colors">Cancelled</button>
+</div>
+</section>
+<!-- Orders List -->
+<div class="bg-white rounded-xl p-lg space-y-lg">
+<!-- Order Card 1: Delivered -->
+<div class="group relative bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-md flex items-center justify-between order-card-shadow transition-transform hover:-translate-y-1">
+<div class="flex items-center space-x-lg">
+<!-- Overlapping Thumbnails -->
+<div class="relative w-16 h-12">
+<img class="absolute left-0 top-1 w-8 h-8 rounded-lg object-cover border border-white z-30" data-alt="A high-quality product photograph of a handcrafted solid brass diya with intricate traditional engravings, glowing warmly under soft studio light. The metal surface reflects a gentle amber hue, highlighting the artisan's manual polishing. The setting is minimalist and upscale, reflecting the Tohfa brand's heritage-meets-modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGZTdej-6N2ACkR9IbVxd7gu5qSu4FNe5lwv6v4v7AAHKZVQT8l0T-jagUfLqaj8CHwt9pAzzdFl4hOZExk3jW0fVa9oZo_rMO88NobDArWYIp56eAjcmJdV8zdXtvmxdWy_zGewBperuB0lp4Ynf3ys4lLCs_YL3K8T2z_EXrA4hkD6op_BOcO3cYVr_LSMPqld7LybomupDic1cMndOuMjjvVYaxvxkhrw6UuXFj9wfkODiBps5YYmYjR1nmBgcQYpgFEPfqfNI">
+<img class="absolute left-3 top-0 w-8 h-8 rounded-lg object-cover border border-white z-20" data-alt="A small, hand-painted ceramic bowl with delicate floral patterns in deep indigo ink. The glaze is glossy, catching soft, natural daylight. This handcrafted item sits atop a weathered wooden surface, evoking a sense of timeless craftsmanship and soulful utility in a modern home." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfflqr1HA8RsAhKCuVQYAOrOCQOnWlQW1qUJRMdaobAwNjruPojQT3Uh0aTiZt0R5ML9GYfbUyn4xUKmmlGQHmZXz3pxixzHyKwx52yvaeq2KPQeOZjqVRFxeXhyUKEkYWsTGeySqIWhl-IonEvqO6-xEGLES485nj1QEji7Tvkxstks9tH-HBQCOJXI_6mz9YULg6R8rYviDHsFBnm6lmHw3Zj12HXANrEEiyMP5YSxyfWEUn_WoX5AY9o68TUT190idUOzOXFSU">
+<img class="absolute left-6 top-1 w-8 h-8 rounded-lg object-cover border border-white z-10 opacity-60" data-alt="A bundle of organic hand-rolled incense sticks tied with a simple jute twine and a sprig of dried lavender. The aesthetic is rustic and peaceful, shot in high-key lighting that emphasizes the natural textures and the earthy palette of the Tohfa Artisan Studio brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbwwcf-5ckNTw4ZxjW7LP6NNf92qUTiyAhQWV05l2fE4JkpI-HMJmpqxJAancNw1R_FuKz0OJYotJi8dicor7mFGLDSfr6rrplvfHsXMb8vc7MfTmkY3_Bw69kXOD4irSN5koCAdAeNwyLW4Bt0xlOSXIN9KtbhcssyLfhu7IACe2j3SYqN-4FyxQ0IMdzgVwjsg9mK595UdfVak6AAxGIj6uNTh7eKLg7RmTwNHJMVET-hK9hS9GKhaUhOx8aXvN4cHgdTDdyMLE">
+</div>
+<!-- Order Details -->
+<div>
+<p class="font-data-price text-[12px] text-outline uppercase tracking-wider">#TF-9821-H</p>
+<p class="text-on-surface-variant text-sm mb-1">Oct 12, 2023</p>
+<p class="font-title-serif text-title-serif text-on-surface leading-tight">Brass diya + 2 more</p>
+</div>
+</div>
+<div class="flex items-center space-x-xl">
+<!-- Status Pill -->
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
+<!-- Price -->
+<span class="font-data-price text-tertiary text-lg font-bold">₹2,450</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">chevron_right</span>
+</div>
+</div>
+<!-- Order Card 2: Processing (with Wax Tape) -->
+<div class="group relative bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-md flex items-center justify-between order-card-shadow transition-transform hover:-translate-y-1">
+<!-- Wax Tape Decoration -->
+<div class="absolute -top-3 left-1/4 w-20 h-6 wax-tape border border-outline/10 z-0"></div>
+<div class="flex items-center space-x-lg z-10">
+<div class="relative w-16 h-12">
+<img class="absolute left-0 top-1 w-8 h-8 rounded-lg object-cover border border-white z-30" data-alt="A stack of hand-pressed stationery cards made from thick, ivory-toned recycled paper with deckled edges. The texture is palpable and inviting, suggesting the tactile quality of a letterpress studio. Shot from a side angle to show the density and organic beauty of the paper stock." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeV6DpSwa6o--bazf396FgJi8KaEySRDUjEit3VL0RNVnh-2x2yztp4RvJgIdHLVer35_RGvbiBH1v50gaz5-qaJ0Pgb7JWva2KpyL28T3MeUMqyPjZ0T7zzK34s0VnCkrfxFCKcs8-3EvzEhtQIGRiJOBJ20FoIfGJYrrf3tJhcRVkQ7CWYusLczHVabKMWJTWTr6cpzUcYN-gWjxQkRq7sbPAkKHoHoBYkky21rSUNSp8ossjfbrvFlYEEdjCeHoxLCu74a1mZI">
+<img class="absolute left-3 top-0 w-8 h-8 rounded-lg object-cover border border-white z-20" data-alt="A small jar of organic, single-origin honey with a hand-lettered label and a wax-sealed lid. The honey is a deep amber color, illuminated from behind to showcase its clarity and purity. The setting is a bright, sun-filled pantry with a rustic, warm atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP5mPtpBt8gEY5BmmOUpnG99R-Nlxo4vjzc9twyE43FT92sWInW69k2ryFIJmSslPMIc0exyjOT4hwt3dIFRCZ6q1gyJxjwBFLRf8Op9ZY-SyOuT-i5jzd3nBw3tahTmhCJQ39NyuI7FE8-mo61KSmHaEVwCtBg_zOi_TDc4T16C4FCt01afBpEYsAAW4aDkjP6RP2xObV8oJHf-kdadDdSfINKYl5hwUZYFkyu7B2vAV2kP0u4lAvs7DMToKcoqcgKzFtxmF32ck">
+</div>
+<div>
+<p class="font-data-price text-[12px] text-outline uppercase tracking-wider">#TF-1044-K</p>
+<p class="text-on-surface-variant text-sm mb-1">Yesterday, 4:15 PM</p>
+<p class="font-title-serif text-title-serif text-on-surface leading-tight">Journal Set + Artisan Honey</p>
+</div>
+</div>
+<div class="flex items-center space-x-xl z-10">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
+<span class="font-data-price text-tertiary text-lg font-bold">₹1,890</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">chevron_right</span>
+</div>
+</div>
+<!-- Order Card 3: Shipped -->
+<div class="group relative bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-md flex items-center justify-between order-card-shadow transition-transform hover:-translate-y-1">
+<div class="flex items-center space-x-lg">
+<div class="relative w-16 h-12">
+<img class="absolute left-0 top-1 w-8 h-8 rounded-lg object-cover border border-white z-30" data-alt="A hand-carved teak wood serving spoon with a minimalist, ergonomic design. The wood grain is prominent and beautiful, treated with natural beeswax to give it a soft, satin finish. It is placed on a piece of white linen, highlighting the contrast between the dark wood and the airy fabric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcwboXKmTGAQ-o49D-9V7iinL2yT9A2qzjh1mGCYxMERdPdNLEvJAZXMP5oKWsNaKWmcnySoAyV450zEngfcUp31oDywX-fSwLosvT35uZABvf3tvj2UFw0Etoi7c8SbR3w-DZWmcDRlSMtmFsZAgjPAVkuGr5xLAgPkCotih3s3T9W3ZRGU-qAhZT6xzgoojgqk88Wt_o26BZyMndzKxCyY7M4UU5thQQg03kKVsS1dJrh5sn-2D4EORB1NyH-smsfzSXKKO4y6U">
+</div>
+<div>
+<p class="font-data-price text-[12px] text-outline uppercase tracking-wider">#TF-0552-S</p>
+<p class="text-on-surface-variant text-sm mb-1">Nov 2, 2023</p>
+<p class="font-title-serif text-title-serif text-on-surface leading-tight">Hand-carved Teak Spoon</p>
+</div>
+</div>
+<div class="flex items-center space-x-xl">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
+<span class="font-data-price text-tertiary text-lg font-bold">₹950</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">chevron_right</span>
+</div>
+</div>
+<!-- Order Card 4: Awaiting Payment (with Wax Tape) -->
+<div class="group relative bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-md flex items-center justify-between order-card-shadow transition-transform hover:-translate-y-1">
+<div class="absolute -top-3 right-1/4 w-20 h-6 wax-tape border border-outline/10 z-0"></div>
+<div class="flex items-center space-x-lg z-10">
+<div class="relative w-16 h-12">
+<img class="absolute left-0 top-1 w-8 h-8 rounded-lg object-cover border border-white z-30" data-alt="A luxury hand-poured candle in a matte black ceramic vessel, with a wooden wick that suggests a crackling fire when lit. The label is a minimalist white band with elegant serif typography. The lighting is moody and dramatic, focusing on the texture of the wax and the ceramic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4qxn7mSNjfTqnEhhj1UfImRq5LnttNlzDT6pDsNA2o3kgsS4ezlmvO1IyVMKQq7Q8_t2ZPJraMWXAL2rlEkozOjgmINz8F6-AgNXJoxdrs58PNkBs1APxsrmLRrDF4aEN-oMDO_H1pJS2S8BJZyA6F11Z3EgFk2K8JiOylnd3BDJvR10EmKtLioxPK-aRi_OpeBJR98C9a_A8Ob9xVmhkKQPasosuTnUFzAe7Br4m0lpqHVVtOv6Hubnr78Cit3eu5FV4d86XZrE">
+</div>
+<div>
+<p class="font-data-price text-[12px] text-outline uppercase tracking-wider">#TF-3391-P</p>
+<p class="text-on-surface-variant text-sm mb-1">Nov 5, 2023</p>
+<p class="font-title-serif text-title-serif text-on-surface leading-tight">Noir Soy Candle</p>
+</div>
+</div>
+<div class="flex items-center space-x-xl z-10">
+<span class="bg-[#F9ECDC] text-[#B8860B] px-md py-1 rounded-full text-[12px] font-bold uppercase tracking-tight">Awaiting Payment</span>
+<span class="font-data-price text-tertiary text-lg font-bold">₹1,200</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">chevron_right</span>
+</div>
+</div>
+<!-- Order Card 5: Cancelled -->
+<div class="group relative bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-md flex items-center justify-between order-card-shadow transition-transform hover:-translate-y-1 opacity-70">
+<div class="flex items-center space-x-lg">
+<div class="relative w-16 h-12 grayscale">
+<img class="absolute left-0 top-1 w-8 h-8 rounded-lg object-cover border border-white z-30" data-alt="A small indigo-patterned ceramic bowl, now shown in a slightly darker, muted context. The grayscale filter emphasizes the form and pattern without the vibrancy of color, fitting for a cancelled order state in the UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNTVyg7J9H2GhS-l6WwTmYZdo4kDBtRotDa6Oaly_5CPSn36tnyD16IReVBJHdJswJK-OxftBP22jmC-kYzMb1Puc9rAT9ThAyZGyStD607x6n8c3Cc6bFltlTwOKl1XWSc-aD8n3RPngS--TStVQjOMHXwyyAUAkFPk-IecfAffqtoiWJTFQpSprcIMbEteH90_m17isQ8ngyErDGClUZkKqzaMG2w1kZ5I9HAgnPVtk-2vNfphiLVQ1iTzxZsHgmapSPoT9C8XY">
+</div>
+<div>
+<p class="font-data-price text-[12px] text-outline uppercase tracking-wider">#TF-0012-C</p>
+<p class="text-on-surface-variant text-sm mb-1">Sep 28, 2023</p>
+<p class="font-title-serif text-title-serif text-on-surface leading-tight line-through">Ceramic Bowl</p>
+</div>
+</div>
+<div class="flex items-center space-x-xl">
+<span class="bg-[#F9ECDC] text-[#A64B2A] px-md py-1 rounded-full text-[12px] font-bold uppercase tracking-tight">Cancelled</span>
+<span class="font-data-price text-outline text-lg font-bold line-through">₹450</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Empty State Suggestion (Optional but professional) -->
+<div class="mt-xl text-center space-y-md">
+<p class="text-on-surface-variant italic font-body-md opacity-60">Looking for something specific? Our artisans are always creating.</p>
+<button class="text-tertiary font-bold border-b border-tertiary/30 hover:border-tertiary transition-all pb-1">Browse the Studio</button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-xl py-xl border-t border-outline-variant/30 flex flex-col items-center justify-center space-y-lg relative z-20">
+<div class="flex space-x-xl">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] font-label-caps uppercase tracking-widest" href="#">About</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] font-label-caps uppercase tracking-widest" href="#">Shipping</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] font-label-caps uppercase tracking-widest" href="#">Returns</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] font-label-caps uppercase tracking-widest" href="#">Privacy</a>
+</div>
+<div class="text-center">
+<p class="text-outline text-sm italic font-body-md">Handcrafted with intention in the heart of the studio.</p>
+<p class="text-outline text-[11px] font-data-price mt-sm uppercase tracking-tighter">© 2024 TOHFA ARTISAN STUDIO • ALL RIGHTS RESERVED</p>
+</div>
+<!-- Subtle botanical sprig in footer -->
+<div class="opacity-20">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'wght' 200;">potted_plant</span>
+</div>
+</footer>
+<script>
+        // Micro-interactions for buttons and filters
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.add('scale-95');
+                setTimeout(() => this.classList.remove('scale-95'), 100);
+            });
+        });
+
+        // Subtle parallax effect for the botanical watermark
+        window.addEventListener('scroll', () => {
+            const scroll = window.pageYOffset;
+            const watermark = document.querySelector('.fixed.inset-0 img');
+            if(watermark) {
+                watermark.style.transform = `translateY(${scroll * 0.1}px) rotate(12deg)`;
+            }
+        });
+    </script>
+
+
+</body>
