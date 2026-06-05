@@ -2922,6 +2922,59 @@ app.get('/api/reels/saved', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 47: GET /api/profile/me
+app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+
+  try {
+    const user = db.prepare(`
+      SELECT id, email, role, avatar_url, created_at,
+             COALESCE(display_name, full_name) AS display_name
+      FROM users WHERE id = ?
+    `).get(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+        code: "USER_NOT_FOUND"
+      });
+    }
+
+    const followingCount = db.prepare("SELECT COUNT(*) AS count FROM follows WHERE follower_id = ?").get(userId).count;
+    const followersCount = db.prepare("SELECT COUNT(*) AS count FROM follows WHERE following_id = ?").get(userId).count;
+    const wishlistCount = db.prepare("SELECT COUNT(*) AS count FROM wishlists WHERE user_id = ?").get(userId).count;
+    const savedReelsCount = db.prepare("SELECT COUNT(*) AS count FROM saved_reels WHERE user_id = ?").get(userId).count;
+    const activeOrdersCount = db.prepare("SELECT COUNT(*) AS count FROM orders WHERE buyer_id = ? AND status IN ('Processing', 'Shipped')").get(userId).count;
+    const addressCount = db.prepare("SELECT COUNT(*) AS count FROM addresses WHERE user_id = ?").get(userId).count;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: user.id,
+        display_name: user.display_name,
+        email: user.email,
+        avatar_url: user.avatar_url,
+        role: user.role,
+        following_count: followingCount,
+        followers_count: followersCount,
+        wishlist_count: wishlistCount,
+        saved_reels_count: savedReelsCount,
+        active_orders_count: activeOrdersCount,
+        address_count: addressCount,
+        created_at: new Date(user.created_at + 'Z').toISOString()
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching profile:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

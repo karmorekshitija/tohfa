@@ -1649,6 +1649,30 @@ async function runTests() {
     }
 
     console.log('✓ Task 46 Passed: GET /api/reels/saved');
+
+    // --- TASK 47 TESTS: GET /api/profile/me ---
+    console.log('--- Testing TASK 47: GET /api/profile/me ---');
+
+    // 1. Unauthenticated profile fetch
+    const unauthProfileRes = await fetch(`${baseUrl}/api/profile/me`);
+    if (unauthProfileRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth profile fetch, got ${unauthProfileRes.status}`);
+    }
+
+    // 2. Authenticated profile fetch
+    const profileRes = await fetch(`${baseUrl}/api/profile/me`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const profileData = await profileRes.json();
+    if (profileRes.status !== 200 || !profileData.success) {
+      throw new Error(`Profile fetch failed: ${JSON.stringify(profileData)}`);
+    }
+    const prof = profileData.data;
+    if (prof.display_name !== 'Test Buyer' || prof.email !== 'buyer@test.com' || prof.saved_reels_count !== 1) {
+      throw new Error(`Unexpected profile details: ${JSON.stringify(prof)}`);
+    }
+
+    console.log('✓ Task 47 Passed: GET /api/profile/me');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

@@ -29,6 +29,20 @@ const migrateUsers = () => {
 
 migrateUsers();
 
+// Task 48 columns migration for users
+try {
+  db.exec("ALTER TABLE users ADD COLUMN display_name TEXT;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN bio TEXT;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN location TEXT;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN ships_in_days INTEGER DEFAULT 3;");
+} catch (e) {}
+
 // Task 02: Migration for refresh_tokens table
 const migrateRefreshTokens = () => {
   db.exec(`
