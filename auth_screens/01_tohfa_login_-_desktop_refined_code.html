@@ -1,0 +1,262 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tohfa | Login - Return to the Nest</title>
+<!-- External Resources -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Lora:wght@400;500&amp;family=Cinzel:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#717972",
+                        "on-primary-container": "#b7e9c6",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "surface-dim": "#d9dad6",
+                        "background": "#f9faf5",
+                        "tertiary-fixed": "#ffdadc",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1a1c1a",
+                        "surface-ivory": "#FCFAF5",
+                        "primary-deep": "#2E5340",
+                        "sage-soft": "#C5D6BC",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "inverse-surface": "#2e312e",
+                        "surface-container-high": "#e7e9e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1ed",
+                        "text-default": "#3A3328",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#062103",
+                        "on-primary-fixed-variant": "#214f36",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "inverse-primary": "#a0d2b0",
+                        "on-secondary-container": "#4d6a43",
+                        "secondary": "#49663f",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#6b373d",
+                        "on-surface-variant": "#414942",
+                        "primary": "#255338",
+                        "on-background": "#1a1c1a",
+                        "highlight-gold": "#C8973A",
+                        "tertiary-container": "#8a5157",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#360d14",
+                        "text-faint": "#9A8F7A",
+                        "on-primary-fixed": "#002110",
+                        "surface-bright": "#f9faf5",
+                        "surface": "#f9faf5",
+                        "surface-container-low": "#f3f4f0",
+                        "bg-primary": "#FFFFFF",
+                        "accent-violet": "#7B5EA7",
+                        "text-muted": "#6E6453",
+                        "tertiary-fixed-dim": "#fcb4ba",
+                        "surface-container": "#edeeea",
+                        "secondary-fixed": "#caecbb",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e3df",
+                        "on-primary": "#ffffff",
+                        "gold-soft": "#EBD7AE",
+                        "violet-soft": "#D8CBE9",
+                        "secondary-container": "#c8e9b8",
+                        "on-tertiary-container": "#ffd2d5",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#3d6b4f",
+                        "tertiary": "#6e3a40",
+                        "surface-container-highest": "#e2e3df",
+                        "danger-terracotta": "#B14B3E",
+                        "bg-cream-deep": "#F1EADD",
+                        "outline-variant": "#c1c9c0",
+                        "surface-tint": "#3a684c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "container-padding": "20px",
+                        "section-gap": "48px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-ui": ["DM Sans"],
+                        "card-title": ["Lora"],
+                        "body-main": ["DM Sans"],
+                        "eyebrow-caps": ["Cinzel"],
+                        "data-meta": ["Space Mono"],
+                        "artisan-name": ["Lora"],
+                        "product-title": ["Playfair Display"],
+                        "hero-title": ["Playfair Display"],
+                        "data-price": ["Space Mono"],
+                        "section-heading": ["Playfair Display"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .watercolor-ink {
+            background-image: radial-gradient(circle at 10% 20%, rgba(197, 214, 188, 0.1) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(123, 94, 167, 0.05) 0%, transparent 40%);
+        }
+        .parchment-card {
+            box-shadow: 0 10px 30px -5px rgba(58, 51, 40, 0.15);
+        }
+        .sketch-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.08;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-primary selection:bg-gold-soft selection:text-primary-deep overflow-x-hidden watercolor-ink bg-white">
+<!-- TopNavBar -->
+
+<!-- Main Content: Login Canvas -->
+<main class="min-h-[calc(100vh-160px)] flex items-center justify-center py-section-gap px-container-padding relative bg-white watercolor-ink" style="background-image: radial-gradient(circle at 10% 20%, rgba(197, 214, 188, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(123, 94, 167, 0.04) 0%, transparent 40%);">
+<!-- Parchment Card -->
+<div class="parchment-card relative bg-surface-ivory border border-sage-soft rounded-xl p-8 md:p-12 w-full max-w-md z-10 overflow-hidden" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+<div class="absolute inset-0 sketch-overlay"></div>
+<!-- Scissor Motif -->
+<div class="flex justify-center mb-stack-md">
+<span class="material-symbols-outlined text-primary-deep text-3xl opacity-60">content_cut</span>
+</div>
+<!-- Header Section -->
+<div class="text-center mb-stack-md">
+<p class="font-hero-title text-product-title italic text-primary">Tohfa<span class="text-highlight-gold">.</span></p>
+<p class="font-eyebrow-caps text-eyebrow-caps text-text-muted mt-2 tracking-widest">WELCOME BACK</p>
+<h1 class="font-hero-title text-hero-title text-primary-deep mt-stack-sm">Return to the nest</h1>
+</div>
+<!-- Login Form -->
+<form class="space-y-stack-md relative z-20">
+<!-- Email Field -->
+<div>
+<label class="block font-label-ui text-label-ui text-text-default mb-2" for="email">Email address</label>
+<input class="w-full bg-surface-ivory border border-sage-soft rounded-lg px-4 py-3 font-body-main text-body-main focus:ring-2 focus:ring-accent-violet focus:border-transparent transition-all outline-none" id="email" name="email" placeholder="your@email.com" type="email">
+</div>
+<!-- Password Field -->
+<div class="relative">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-ui text-label-ui text-text-default" for="password">Password</label>
+<a class="font-label-ui text-label-ui text-accent-violet hover:underline underline-offset-4" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-ivory border border-sage-soft rounded-lg px-4 py-3 font-body-main text-body-main focus:ring-2 focus:ring-accent-violet focus:border-transparent transition-all outline-none" id="password" name="password" placeholder="••••••••" type="password">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" id="password-toggle-icon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Login Button -->
+<button class="w-full bg-primary text-white font-label-ui text-label-ui py-4 rounded-lg hover:bg-primary-deep transition-all duration-300 shadow-lg active:scale-95 flex justify-center items-center gap-2 mt-4" type="submit">
+                    Log in
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="flex items-center my-stack-md opacity-30">
+<div class="flex-1 border-t border-sage-soft"></div>
+<span class="px-3 font-data-meta text-data-meta text-text-muted">or</span>
+<div class="flex-1 border-t border-sage-soft"></div>
+</div>
+<!-- Card Footer -->
+<div class="text-center space-y-4 relative z-20">
+<p class="font-body-main text-body-main text-text-muted">
+                    New here? <a class="text-accent-violet font-bold hover:underline underline-offset-4" href="#">Create an account</a>
+</p>
+<div class="pt-2">
+<a class="font-eyebrow-caps text-eyebrow-caps text-primary hover:text-highlight-gold transition-colors tracking-widest flex items-center justify-center gap-2" href="#">
+                        ✦ SELL ON TOHFA
+                    </a>
+</div>
+</div>
+<!-- Sleeping Cat Illustration -->
+<div class="absolute -bottom-2 -right-4 w-32 md:w-40 pointer-events-none transform rotate-[-5deg]">
+<img alt="Sleeping chibi cat" class="w-full h-auto drop-shadow-sm" src="https://lh3.googleusercontent.com/aida/ADBb0uguL628U-zz3tGpzegERPAMsrnAPYOBSCfxEaw1TqKdEbn5rxGmPytFgXj6JwfQX_MO-7DOXQBXBOJodYciMHF3sQVz58CfMgL53mE7rgEoSSOdGVMEd3N-_MQuYiIvbOX7Yj_1PawgpcXr59jivk-uzSimXee9IxwpDapu1mVdxof-OPqc8se15_5vWFIBZiOjQQpFj8lYfLlS4S33T03fqOP3tT_ZuMWxCuE00uiXapAr7HwnpEVSJowe">
+</div>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute top-20 left-10 opacity-20 pointer-events-none hidden lg:block">
+<span class="material-symbols-outlined text-highlight-gold text-6xl">palette</span>
+</div>
+<div class="absolute bottom-20 right-20 opacity-20 pointer-events-none hidden lg:block">
+<span class="material-symbols-outlined text-primary-deep text-6xl">spa</span>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-section-gap bg-surface-container dark:bg-surface-dim">
+<div class="bg-bg-cream-deep dark:bg-surface-container-high w-full py-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md px-container-padding py-12 max-w-7xl mx-auto text-center md:text-left">
+<div class="flex flex-col gap-4">
+<a class="font-hero-title text-section-heading italic text-primary" href="#">Tohfa</a>
+<p class="font-body-main text-body-main text-on-surface">Supporting the soulful work of local artisans and bringing warmth into every home.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-eyebrow-caps text-eyebrow-caps mb-2">QUICK LINKS</h4>
+<div class="flex flex-col gap-2">
+<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Our Story</a>
+<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Sustainability</a>
+<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Support</a>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-eyebrow-caps text-eyebrow-caps mb-2">POLICIES</h4>
+<div class="flex flex-col gap-2">
+<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Shipping</a>
+<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Terms</a>
+<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Privacy</a>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-container-padding border-t border-sage-soft pt-8 pb-4 text-center">
+<p class="font-body-main text-body-main text-text-muted">© 2024 Tohfa Artisan Marketplace. Crafted with heart.</p>
+</div>
+</div>
+</footer>
+<script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('password-toggle-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = 'visibility';
+            }
+        }
+
+        // Lightweight hover animation for the card
+        const card = document.querySelector('.parchment-card');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 30;
+            const rotateY = (centerX - x) / 30;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+    </script>
+
+
+</body></html>

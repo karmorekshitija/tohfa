@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Lora:wght@400;500&amp;family=DM+Sans:wght@400;500&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "primary-fixed": "#bceecb",
+                "text-faint": "#9A8F7A",
+                "error": "#ba1a1a",
+                "on-primary": "#ffffff",
+                "secondary-fixed-dim": "#afd0a0",
+                "text-muted": "#6E6453",
+                "primary": "#255338",
+                "tertiary-container": "#8a5157",
+                "on-secondary-container": "#4d6a43",
+                "error-container": "#ffdad6",
+                "on-primary-fixed": "#002110",
+                "on-tertiary-fixed-variant": "#6b373d",
+                "inverse-on-surface": "#f0f1ed",
+                "on-secondary": "#ffffff",
+                "highlight-gold": "#C8973A",
+                "surface-container-highest": "#e2e3df",
+                "surface-bright": "#f9faf5",
+                "outline": "#717972",
+                "text-default": "#3A3328",
+                "secondary-fixed": "#caecbb",
+                "on-background": "#1a1c1a",
+                "on-secondary-fixed-variant": "#324e29",
+                "primary-container": "#3d6b4f",
+                "surface-container": "#edeeea",
+                "surface-container-low": "#f3f4f0",
+                "on-secondary-fixed": "#062103",
+                "on-surface-variant": "#414942",
+                "background": "#f9faf5",
+                "primary-deep": "#2E5340",
+                "tertiary-fixed": "#ffdadc",
+                "surface-container-lowest": "#ffffff",
+                "danger-terracotta": "#B14B3E",
+                "surface": "#f9faf5",
+                "surface-container-high": "#e7e9e4",
+                "tertiary-fixed-dim": "#fcb4ba",
+                "outline-variant": "#c1c9c0",
+                "on-tertiary-fixed": "#360d14",
+                "primary-fixed-dim": "#a0d2b0",
+                "secondary": "#49663f",
+                "inverse-surface": "#2e312e",
+                "gold-soft": "#EBD7AE",
+                "surface-tint": "#3a684c",
+                "on-primary-container": "#b7e9c6",
+                "accent-violet": "#7B5EA7",
+                "inverse-primary": "#a0d2b0",
+                "violet-soft": "#D8CBE9",
+                "bg-cream-deep": "#F1EADD",
+                "surface-variant": "#e2e3df",
+                "tertiary": "#6e3a40",
+                "sage-soft": "#C5D6BC",
+                "on-tertiary": "#ffffff",
+                "on-error-container": "#93000a",
+                "bg-primary": "#FFFFFF",
+                "secondary-container": "#c8e9b8",
+                "surface-dim": "#d9dad6",
+                "on-surface": "#1a1c1a",
+                "on-primary-fixed-variant": "#214f36",
+                "surface-ivory": "#FCFAF5",
+                "on-error": "#ffffff",
+                "on-tertiary-container": "#ffd2d5"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "fontFamily": {
+                "eyebrow-caps": ["Cinzel"],
+                "label-ui": ["DM Sans"],
+                "product-title": ["Playfair Display"],
+                "body-main": ["DM Sans"],
+                "hero-title": ["Playfair Display"],
+                "artisan-name": ["Lora"],
+                "section-heading": ["Playfair Display"],
+                "data-price": ["Space Mono"],
+                "data-meta": ["Space Mono"],
+                "card-title": ["Lora"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-wash {
+            background: radial-gradient(circle at top right, rgba(197, 214, 188, 0.15) 0%, transparent 60%);
+        }
+        .parchment-shadow {
+            box-shadow: 0 10px 25px -5px rgba(58, 51, 40, 0.1), 0 8px 10px -6px rgba(58, 51, 40, 0.1);
+        }
+        .sketch-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+            opacity: 0.05;
+        }
+    </style>
+</head>
+<body class="bg-bg-primary text-text-default font-body-main selection:bg-violet-soft selection:text-accent-violet">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-outline-variant px-10 py-3 bg-white sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<h1 class="text-primary-deep text-2xl font-bold italic font-hero-title">Tohfa<span class="text-highlight-gold ml-0.5">.</span></h1>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-text-muted flex border-none bg-surface-container items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-default focus:outline-0 focus:ring-0 border-none bg-surface-container focus:border-none h-full placeholder:text-text-faint px-4 rounded-l-none border-l-0 pl-2 text-label-ui font-normal" placeholder="Search crafts..." value="">
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-text-default text-label-ui font-medium hover:text-primary transition-colors" href="#">Shop</a>
+<a class="text-text-default text-label-ui font-medium hover:text-primary transition-colors" href="#">Artisans</a>
+<a class="text-text-default text-label-ui font-medium hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="text-text-default text-label-ui font-medium hover:text-primary transition-colors" href="#">Collections</a>
+</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-text-muted cursor-pointer hover:text-accent-violet">favorite</span>
+<div class="relative">
+<span class="material-symbols-outlined text-text-muted cursor-pointer hover:text-accent-violet">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-highlight-gold"></span>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-label-ui font-bold tracking-tight hover:bg-primary-deep transition-all">
+<span>Log in</span>
+</button>
+</div>
+</div>
+</header>
+<main class="min-h-screen ink-wash relative flex items-center justify-center py-16 px-4">
+<!-- Sketch Watermark -->
+<div class="absolute inset-0 pointer-events-none sketch-overlay"></div>
+<!-- Signup Card Container -->
+<div class="relative w-full max-w-[500px]">
+<!-- Chibi Bunny Illustration -->
+<div class="absolute -left-12 bottom-20 z-20 pointer-events-none transform -rotate-12 hidden md:block">
+<img alt="Chibi bunny" class="w-32 h-32 object-contain filter drop-shadow-md" data-alt="A charming and minimalist chibi-style bunny illustration peeking from behind a white card edge. The bunny has soft pastel cream fur with delicate pink ears and large, curious dark eyes. The art style is inspired by Japanese kawaii aesthetics, with soft lines and a clean, warm-toned color palette of ivory, sage, and pale gold to match a high-end artisan brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCadk-2drJq0LYoijz6rryq0fOWvUwrHaReluSNvikJubW_NPyM710x2mUyZgcAgx-UDJ6DfWLpBLly2qYjCPJ4t4lFR22keOevG5dUvxd1kQUqfxUC2EiN1tTqhsOKVcbY9vhNI2DC3ZOX7q_Q0qF0B3uvvhTjJdHO8YCzGMBeX8UiY9vXA1f1ExGyF7KAvVxWYHYe4Ar4_dmpF7kiHPfB2vruB6SXhg6-BtWdB2FobpBi8uemsnyP7TuppH-gwE9oHPZN00t1B_eV">
+</div>
+<!-- The Parchment Card -->
+<div class="bg-surface-ivory border border-sage-soft rounded-xl parchment-shadow p-8 md:p-12 relative overflow-hidden">
+<!-- Watercolor subtle wash in corner -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-violet-soft/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+<!-- Header Section -->
+<div class="text-center mb-10 relative">
+<div class="inline-flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary-deep mr-2 opacity-60">brush</span>
+<h2 class="text-primary-deep text-3xl font-bold italic font-hero-title">Tohfa<span class="text-highlight-gold ml-0.5">.</span></h2>
+</div>
+<p class="font-eyebrow-caps text-text-faint tracking-widest text-[10px] mb-2 uppercase">Begin Your Collection</p>
+<h3 class="font-section-heading text-text-default text-2xl leading-tight">Join our community of craft lovers</h3>
+</div>
+<!-- Signup Form -->
+<form class="space-y-6 relative z-10" onsubmit="event.preventDefault();">
+<!-- Full Name -->
+<div class="space-y-1.5">
+<label class="font-label-ui text-text-muted text-sm ml-1">Full Name</label>
+<input class="w-full bg-white border border-sage-soft rounded-lg px-4 py-3.5 text-text-default focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-text-faint font-body-main" placeholder="Enter your full name" type="text">
+</div>
+<!-- Email Address -->
+<div class="space-y-1.5">
+<label class="font-label-ui text-text-muted text-sm ml-1">Email Address</label>
+<input class="w-full bg-white border border-sage-soft rounded-lg px-4 py-3.5 text-text-default focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-text-faint font-body-main" placeholder="example@toufa.com" type="email">
+</div>
+<!-- Password -->
+<div class="space-y-1.5">
+<label class="font-label-ui text-text-muted text-sm ml-1">Password</label>
+<div class="relative">
+<input class="w-full bg-white border border-sage-soft rounded-lg px-4 py-3.5 text-text-default focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-text-faint font-body-main" id="password-input" placeholder="Create a password" type="password">
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-text-faint hover:text-text-muted" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined text-xl" id="password-icon">visibility</span>
+</button>
+</div>
+<p class="text-[11px] font-data-meta text-text-faint mt-1.5 italic px-1">Must be at least 8 characters long.</p>
+</div>
+<!-- Submit Action -->
+<button class="w-full bg-primary hover:bg-primary-deep text-white font-bold py-4 rounded-lg shadow-md hover:shadow-lg transform active:scale-[0.98] transition-all font-body-main mt-4">
+                        Create account
+                    </button>
+</form>
+<!-- Footer Links -->
+<div class="mt-10 pt-8 border-t border-sage-soft/30 text-center space-y-4">
+<p class="text-sm font-body-main text-text-muted">
+                        Already have an account? 
+                        <a class="text-accent-violet font-medium underline underline-offset-4 hover:text-primary transition-colors" href="#">Log in</a>
+</p>
+<div class="pt-2">
+<a class="font-eyebrow-caps text-text-faint hover:text-highlight-gold transition-colors text-[11px] flex items-center justify-center gap-2" href="#">
+                            ✦ SELL ON TOHFA INSTEAD
+                        </a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Artisan Collective Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant py-16 px-10">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="space-y-6">
+<h2 class="text-primary-deep text-2xl font-bold italic font-hero-title">Tohfa<span class="text-highlight-gold ml-0.5">.</span></h2>
+<p class="text-text-muted font-body-main leading-relaxed">
+                    Connecting curators of character with the world's most dedicated artisans. Every piece tells a story of tradition, patience, and the maker's hand.
+                </p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-text-muted hover:text-accent-violet cursor-pointer">palette</span>
+<span class="material-symbols-outlined text-text-muted hover:text-accent-violet cursor-pointer">cut</span>
+<span class="material-symbols-outlined text-text-muted hover:text-accent-violet cursor-pointer">auto_fix_high</span>
+</div>
+</div>
+<div class="space-y-6">
+<h4 class="font-eyebrow-caps text-primary text-xs uppercase tracking-widest">Explore</h4>
+<ul class="space-y-3 font-body-main text-sm text-text-default">
+<li><a class="hover:text-accent-violet transition-colors" href="#">Ceramics &amp; Pottery</a></li>
+<li><a class="hover:text-accent-violet transition-colors" href="#">Hand-Woven Textiles</a></li>
+<li><a class="hover:text-accent-violet transition-colors" href="#">Fine Woodwork</a></li>
+<li><a class="hover:text-accent-violet transition-colors" href="#">Jewelry &amp; Metalwork</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h4 class="font-eyebrow-caps text-primary text-xs uppercase tracking-widest">Collective</h4>
+<ul class="space-y-3 font-body-main text-sm text-text-default">
+<li><a class="hover:text-accent-violet transition-colors" href="#">Artisan Spotlight</a></li>
+<li><a class="hover:text-accent-violet transition-colors" href="#">Sustainability Promise</a></li>
+<li><a class="hover:text-accent-violet transition-colors" href="#">Studio Journal</a></li>
+<li><a class="hover:text-accent-violet transition-colors" href="#">Join the Maker Guild</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h4 class="font-eyebrow-caps text-primary text-xs uppercase tracking-widest">The Studio</h4>
+<div class="bg-white p-6 rounded-xl border border-sage-soft shadow-sm">
+<p class="text-sm font-label-ui text-text-default mb-4">Subscribe for early access to curated collections.</p>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-primary" placeholder="Your email" type="email">
+<button class="bg-primary text-white p-2 rounded-md">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-data-meta text-[11px] text-text-faint uppercase">© 2024 TOHFA ARTISAN STUDIO • CRAFTED WITH CARE</p>
+<div class="flex gap-6 font-data-meta text-[11px] text-text-faint uppercase">
+<a class="hover:text-text-muted" href="#">Privacy</a>
+<a class="hover:text-text-muted" href="#">Terms</a>
+<a class="hover:text-text-muted" href="#">Accessibility</a>
+</div>
+</div>
+</footer>
+<script>
+        function togglePassword() {
+            const input = document.getElementById('password-input');
+            const icon = document.getElementById('password-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerText = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.innerText = 'visibility';
+            }
+        }
+    </script>
+</body></html>
