@@ -2588,6 +2588,54 @@ app.post('/api/reels', rateLimit(60), authenticateToken, uploadReelMiddleware, (
   }
 });
 
+// TASK 41: POST /api/reels/:id/like (toggle)
+app.post('/api/reels/:id/like', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const reelId = req.params.id;
+
+  try {
+    const reel = db.prepare("SELECT id, like_count FROM reels WHERE id = ?").get(reelId);
+    if (!reel) {
+      return res.status(404).json({
+        error: true,
+        message: "Reel not found",
+        code: "REEL_NOT_FOUND"
+      });
+    }
+
+    const existingLike = db.prepare("SELECT id FROM reel_likes WHERE reel_id = ? AND user_id = ?").get(reelId, userId);
+    let liked = false;
+    let newLikeCount = reel.like_count || 0;
+
+    if (existingLike) {
+      db.prepare("DELETE FROM reel_likes WHERE reel_id = ? AND user_id = ?").run(reelId, userId);
+      newLikeCount = Math.max(0, newLikeCount - 1);
+      db.prepare("UPDATE reels SET like_count = ? WHERE id = ?").run(newLikeCount, reelId);
+      liked = false;
+    } else {
+      db.prepare("INSERT INTO reel_likes (reel_id, user_id) VALUES (?, ?)").run(reelId, userId);
+      newLikeCount = newLikeCount + 1;
+      db.prepare("UPDATE reels SET like_count = ? WHERE id = ?").run(newLikeCount, reelId);
+      liked = true;
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        liked,
+        like_count: newLikeCount
+      }
+    });
+  } catch (err) {
+    console.error('Error liking/unliking reel:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

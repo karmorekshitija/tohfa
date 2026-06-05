@@ -1374,6 +1374,49 @@ async function runTests() {
     }
 
     console.log('✓ Task 40 Passed: POST /api/reels');
+
+    // --- TASK 41 TESTS: POST /api/reels/:id/like ---
+    console.log('--- Testing TASK 41: POST /api/reels/:id/like ---');
+    const newReelId = validUploadData.data.id;
+
+    // 1. Unauthenticated like
+    const unauthLikeRes = await fetch(`${baseUrl}/api/reels/${newReelId}/like`, {
+      method: 'POST'
+    });
+    if (unauthLikeRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth like, got ${unauthLikeRes.status}`);
+    }
+
+    // 2. Non-existent reel like
+    const nonexistentLikeRes = await fetch(`${baseUrl}/api/reels/99999/like`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentLikeRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent reel like, got ${nonexistentLikeRes.status}`);
+    }
+
+    // 3. Like reel
+    const likeRes = await fetch(`${baseUrl}/api/reels/${newReelId}/like`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const likeData = await likeRes.json();
+    if (likeRes.status !== 200 || !likeData.success || likeData.data.liked !== true || likeData.data.like_count !== 1) {
+      throw new Error(`Like failed: ${JSON.stringify(likeData)}`);
+    }
+
+    // 4. Unlike reel
+    const unlikeRes = await fetch(`${baseUrl}/api/reels/${newReelId}/like`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const unlikeData = await unlikeRes.json();
+    if (unlikeRes.status !== 200 || !unlikeData.success || unlikeData.data.liked !== false || unlikeData.data.like_count !== 0) {
+      throw new Error(`Unlike failed: ${JSON.stringify(unlikeData)}`);
+    }
+
+    console.log('✓ Task 41 Passed: POST /api/reels/:id/like (toggle)');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
