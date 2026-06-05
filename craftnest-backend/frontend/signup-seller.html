@@ -1,343 +1,371 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Join CraftNest | Seller Registration</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&amp;family=EB+Garamond:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-    <!-- Material Symbols -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tohfa - Become a Maker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Cinzel:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             "colors": {
-              "surface-container-lowest": "#ffffff",
-              "surface-container": "#f4ede3",
-              "outline": "#76786e",
-              "outline-variant": "#c6c7bb",
-              "primary-container": "#a8b48e",
-              "on-primary-container": "#3c4628",
-              "secondary": "#705673",
-              "error-container": "#ffdad6",
-              "on-error-container": "#93000a",
-              "error": "#ba1a1a",
-              "primary": "#576242",
-              "on-primary": "#ffffff",
-              "background": "#fff8f1",
-              "on-surface": "#1e1b15",
-              "on-surface-variant": "#45483f"
+                "on-surface": "#1a1c1a",
+                "surface-container-high": "#e7e9e4",
+                "on-primary": "#ffffff",
+                "surface-container-highest": "#e2e3df",
+                "surface-bright": "#f9faf5",
+                "on-error": "#ffffff",
+                "on-primary-fixed": "#002110",
+                "primary-container": "#3d6b4f",
+                "secondary-fixed-dim": "#afd0a0",
+                "inverse-surface": "#2e312e",
+                "outline-variant": "#c1c9c0",
+                "primary-fixed": "#bceecb",
+                "surface": "#f9faf5",
+                "on-secondary-fixed-variant": "#324e29",
+                "background": "#f9faf5",
+                "gold-soft": "#EBD7AE",
+                "error": "#ba1a1a",
+                "text-muted": "#6E6453",
+                "on-tertiary": "#ffffff",
+                "on-background": "#1a1c1a",
+                "surface-container": "#edeeea",
+                "on-primary-fixed-variant": "#214f36",
+                "violet-soft": "#D8CBE9",
+                "text-faint": "#9A8F7A",
+                "secondary-fixed": "#caecbb",
+                "surface-container-low": "#f3f4f0",
+                "bg-cream-deep": "#F1EADD",
+                "bg-primary": "#FFFFFF",
+                "secondary": "#49663f",
+                "on-tertiary-container": "#ffd2d5",
+                "error-container": "#ffdad6",
+                "primary-fixed-dim": "#a0d2b0",
+                "tertiary": "#6e3a40",
+                "surface-tint": "#3a684c",
+                "on-tertiary-fixed": "#360d14",
+                "highlight-gold": "#C8973A",
+                "primary": "#255338",
+                "on-secondary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "inverse-on-surface": "#f0f1ed",
+                "surface-variant": "#e2e3df",
+                "sage-soft": "#C5D6BC",
+                "tertiary-container": "#8a5157",
+                "tertiary-fixed-dim": "#fcb4ba",
+                "tertiary-fixed": "#ffdadc",
+                "on-secondary-container": "#4d6a43",
+                "on-error-container": "#93000a",
+                "on-primary-container": "#b7e9c6",
+                "accent-violet": "#7B5EA7",
+                "primary-deep": "#2E5340",
+                "text-default": "#3A3328",
+                "on-surface-variant": "#414942",
+                "inverse-primary": "#a0d2b0",
+                "on-secondary-fixed": "#062103",
+                "secondary-container": "#c8e9b8",
+                "danger-terracotta": "#B14B3E",
+                "on-tertiary-fixed-variant": "#6b373d",
+                "outline": "#717972",
+                "surface-ivory": "#FCFAF5"
             },
             "borderRadius": {
-              "DEFAULT": "0.5rem",
-              "lg": "0.75rem",
-              "xl": "1.5rem",
-              "full": "9999px"
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
             },
             "spacing": {
-              "unit": "8px",
-              "gutter": "24px",
-              "margin-mobile": "20px",
-              "margin-desktop": "80px"
+                "stack-md": "16px",
+                "stack-sm": "8px",
+                "gutter": "16px",
+                "container-padding": "20px",
+                "section-gap": "48px"
             },
             "fontFamily": {
-              "headline-md": ["EB Garamond"],
-              "body-md": ["Be Vietnam Pro"],
-              "headline-lg": ["EB Garamond"],
-              "display-lg": ["EB Garamond"],
-              "body-lg": ["Be Vietnam Pro"],
-              "label-sm": ["Be Vietnam Pro"]
+                "card-title": ["Lora"],
+                "artisan-name": ["Lora"],
+                "data-meta": ["Space Mono"],
+                "section-heading": ["Playfair Display"],
+                "data-price": ["Space Mono"],
+                "body-main": ["DM Sans"],
+                "product-title": ["Playfair Display"],
+                "hero-title": ["Playfair Display"],
+                "eyebrow-caps": ["Cinzel"],
+                "label-ui": ["DM Sans"]
+            },
+            "fontSize": {
+                "card-title": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                "artisan-name": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "data-meta": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "section-heading": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                "data-price": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "product-title": ["20px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "hero-title": ["40px", {"lineHeight": "48px", "fontWeight": "300"}],
+                "eyebrow-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
             }
-          }
-        }
+          },
+        },
       }
     </script>
-    <!-- Custom theme styles -->
-    <link href="signup-buyer.css" rel="stylesheet"/>
+<style>
+      .sketch-overlay {
+        background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        opacity: 0.08;
+        pointer-events: none;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #FCFAF5;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #C5D6BC;
+        border-radius: 10px;
+      }
+    </style>
 </head>
-<body class="botanical-bg paper-texture font-body-md text-on-surface min-h-screen flex items-center justify-center p-5 md:p-10 relative overflow-x-hidden">
-
-    <!-- Decorative Botanical Sprigs -->
-    <div class="absolute top-0 left-0 w-64 h-64 opacity-10 pointer-events-none select-none -translate-x-1/4 -translate-y-1/4 rotate-12 z-0">
-        <img class="w-full h-full object-contain" alt="Botanical Line Art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_SD2xwVeJ3fsFyJEuk-3J3oW6PIEZdRhVnpyl_GMOwGqWeh8VM3RW5BWk17kw74HWD4XdL-njooX2FFKWQxVhhQmdjI4gOFc5bg_fl-jcIyPdPRVvkVmic-B0Q7GlgqORYcLhOD7rEs6if1B1zs7lk9te70a9ghECFYe9T2WavpA5Uhk6MUWGl1O2VKJS7BeytweT1PdC2oYiMDj3BxVAfqpoz0uXthTYs2eRWq7ktWVuB98bllN_M4cNLDXRKmMEiTMPPsOe90E"/>
-    </div>
-    <div class="absolute bottom-0 right-0 w-80 h-80 opacity-10 pointer-events-none select-none translate-x-1/4 translate-y-1/4 -rotate-12 z-0">
-        <img class="w-full h-full object-contain" alt="Botanical Line Art 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvK5Z6vmL2WV2TwCCqDh3VaI2QXnU1wlU2umhl3ogQ9MyTNhtEkMHPTUpSZRP_sikj6Fa04AbNF2w2SzvNPJoNZAbGarUpx2mQ0EAoiv-RGsQWz91Hmm6MwlX0G_9tT-1zyIwWx0Q-ZNlDo7hM_jRDY1pqc_CwpXo-IsIyThGtkCdP5u4HMuryJUhRPf1dyOZj8j4sN_0TwB4jWtvYW3hUn68qjmjMt2lFs9Q2rlC2G8sAprqswhnbFNhjPPB1BPeL5cpL-uHUQ8Q"/>
-    </div>
-
-    <!-- Main Container -->
-    <main class="w-full max-w-[440px] z-10 signup-card">
-        <div class="bg-surface-container-lowest border border-outline-variant p-8 md:p-10 rounded-lg shadow-sm relative">
-            
-            <!-- Logo Section -->
-            <header class="text-center mb-6">
-                <h1 class="font-headline-lg text-[32px] md:text-[36px] text-primary tracking-tight mb-1">CraftNest</h1>
-                <p class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-widest">Artisanal Marketplace</p>
-            </header>
-
-            <!-- Title & Cute Scrapbook Washi Tape Badge -->
-            <div class="flex flex-col items-center mb-8 relative">
-                <span class="washi-tape px-4 py-1.5 text-xs font-label-sm uppercase tracking-wider mb-2 inline-block">
-                    Seller Signup
-                </span>
-                <p class="font-body-md text-sm text-on-surface-variant text-center">Create a studio account to showcase and sell your unique, beautiful, and sustainable handmade crafts.</p>
-            </div>
-
-            <!-- General Error Alert Banner -->
-            <div id="general-error" class="hidden bg-error-container border border-error text-on-error-container p-4 rounded-md mb-6 flex items-start gap-2.5">
-                <span class="material-symbols-outlined text-[20px] text-error shrink-0 mt-0.5">warning</span>
-                <p id="general-error-text" class="font-body-md text-[13px] leading-relaxed"></p>
-            </div>
-
-            <!-- Sign Up Form -->
-            <form class="space-y-5" id="signup-form" novalidate>
-                <!-- Full Name Field -->
-                <div>
-                    <label class="block font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider mb-1.5" for="full_name">Full Name</label>
-                    <input class="w-full bg-transparent border border-outline-variant px-4 py-3 rounded text-sm focus:border-primary transition-all" id="full_name" name="full_name" placeholder="Eliza Bennett" required type="text"/>
-                    <!-- Inline Error -->
-                    <p id="name-error" class="hidden text-error text-[12px] font-body-md mt-1.5 flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[15px]">error</span>
-                        <span id="name-error-text">Full name is required.</span>
+<body class="bg-background min-h-screen flex items-center justify-center p-gutter md:p-section-gap font-body-main text-text-default selection:bg-sage-soft">
+<div class="fixed inset-0 sketch-overlay z-0"></div>
+<main class="relative z-10 w-full max-w-6xl">
+<div class="bg-surface-ivory rounded-[18px] border border-sage-soft shadow-[0_12px_48px_rgba(58,51,40,0.08)] overflow-hidden flex flex-col md:flex-row">
+<div class="w-full md:w-[45%] bg-[#F1EADD]/30 p-10 flex flex-col items-center justify-center text-center space-y-8">
+<div class="max-w-xs mx-auto">
+<img alt="A charming chibi-style illustration of a female artisan with a large paintbrush, paints, and sketches around her, evoking a warm and creative handmade atmosphere." class="w-full h-auto drop-shadow-xl transform transition-transform hover:scale-105 duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uj1kputdb4lWq27cbAxsPA-EVvMX3LQZKjfwN5ShB1mw-RlzKhBmGXkBZri5dou95i_-J1vZT-KwKE1Mta-fWeW8ItEjgXtYdFEeRi3Qs-aGJWi1Xg-FA2Te45Xg3HzmJxjLdgxO76vyAURTos4Anm4Xj8_nmW41pN_jYMWoKZK30r7K6eAT55NXFtUeS2e1_ty1tjqd3vUIN4KmOv6Umhiz-Qn8P4CrFufIO903PI4iNc5bsa7l0hNEw">
+</div>
+<div class="space-y-4">
+<span class="font-eyebrow-caps text-eyebrow-caps text-text-muted">Since 2024</span>
+<p class="font-artisan-name text-artisan-name italic text-primary-deep px-6">
+                        "Your studio is a story waiting to be told. We provide the shelves, you provide the soul."
                     </p>
-                </div>
+</div>
+</div>
+<div class="w-full md:w-[55%] p-8 md:p-14 bg-surface-ivory relative">
+<header class="mb-12">
+<span class="font-eyebrow-caps text-eyebrow-caps text-primary-deep block mb-2">Become a Maker</span>
+<h1 class="font-hero-title text-hero-title text-primary-deep leading-tight">Open your shop ✦</h1>
+<p class="font-artisan-name text-artisan-name italic text-text-muted mt-2">Share your craft with people who'll treasure it.</p>
+</header>
 
-                <!-- Email Field -->
-                <div>
-                    <label class="block font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider mb-1.5" for="email">Email Address</label>
-                    <input class="w-full bg-transparent border border-outline-variant px-4 py-3 rounded text-sm focus:border-primary transition-all" id="email" name="email" placeholder="eliza@craftnest.com" required type="email"/>
-                    <!-- Inline Error -->
-                    <p id="email-error" class="hidden text-error text-[12px] font-body-md mt-1.5 flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[15px]">error</span>
-                        <span id="email-error-text">Email address is invalid or already registered.</span>
-                    </p>
-                </div>
+<!-- General Error Banner -->
+<div id="general-error" class="hidden bg-error-container border border-error text-on-error-container p-4 rounded-md mb-6 flex items-start gap-2.5">
+    <span class="material-symbols-outlined text-[20px] text-error shrink-0 mt-0.5">warning</span>
+    <p id="general-error-text" class="font-body-main text-[13px] leading-relaxed"></p>
+</div>
 
-                <!-- Password Field -->
-                <div>
-                    <label class="block font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider mb-1.5" for="password">Password</label>
-                    <input class="w-full bg-transparent border border-outline-variant px-4 py-3 rounded text-sm focus:border-primary transition-all" id="password" name="password" placeholder="••••••••" required type="password"/>
-                    
-                    <!-- Dynamic Password Requirement Helper -->
-                    <div class="mt-2.5 space-y-1.5">
-                        <div id="req-length" class="requirement-item invalid">
-                            <span class="material-symbols-outlined text-[14px]">circle</span>
-                            <span>Must be at least 8 characters long</span>
-                        </div>
-                    </div>
-
-                    <!-- Inline Error -->
-                    <p id="password-error" class="hidden text-error text-[12px] font-body-md mt-1.5 flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[15px]">error</span>
-                        <span id="password-error-text">Password must satisfy all security requirements.</span>
-                    </p>
-                </div>
-
-                <!-- Action Button -->
-                <button class="w-full bg-primary-container text-on-primary-container py-3.5 rounded font-label-sm text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-98 font-semibold shadow-sm" type="submit" id="submit-btn">
-                    Create Studio Account
-                </button>
-            </form>
-
-            <!-- Footer Section -->
-            <footer class="mt-8 pt-6 border-t border-outline-variant text-center">
-                <p class="font-body-md text-sm text-on-surface-variant">
-                    Already a member of the nest? 
-                    <a class="text-primary font-semibold hover:underline ml-1" href="login.html">Login here</a>
-                </p>
-            </footer>
-        </div>
-
-        <!-- Back to Explore Button -->
-        <div class="mt-6 text-center">
-            <a class="inline-flex items-center gap-1.5 font-label-sm text-[11px] text-on-surface-variant hover:text-primary transition-colors uppercase tracking-wider" href="/">
-                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-                Back to Explore
-            </a>
-        </div>
-    </main>
-
-    <script>
-        // API Base URL config
+<form class="space-y-10" id="signup-form">
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="font-data-meta text-data-meta text-text-faint px-2 py-1 border border-sage-soft rounded-full">Step 01</span>
+<h3 class="font-label-ui text-label-ui uppercase tracking-widest text-text-muted">Your Account</h3>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="space-y-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Full name</label>
+<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none text-body-main" placeholder="e.g. Elena Rossi" type="text" id="full_name" required>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Email address</label>
+<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none text-body-main" placeholder="hello@maker.com" type="email" id="email" required>
+</div>
+<div class="space-y-1.5 relative">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Password</label>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none text-body-main" id="password-field" placeholder="••••••••" type="password" required>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-text-faint hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" id="pass-icon">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<div class="relative py-4">
+<div aria-hidden="true" class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-sage-soft/50"></div>
+</div>
+<div class="relative flex justify-center">
+<span class="bg-surface-ivory px-4 font-eyebrow-caps text-eyebrow-caps text-sage-soft tracking-[0.2em]">Your Shop</span>
+</div>
+</div>
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="font-data-meta text-data-meta text-text-faint px-2 py-1 border border-sage-soft rounded-full">Step 02</span>
+<h3 class="font-label-ui text-label-ui uppercase tracking-widest text-text-muted">Shop Details</h3>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="space-y-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Shop name</label>
+<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none text-body-main" placeholder="e.g. The Ceramic Nook" type="text" id="shop_name" required>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Shop Bio</label>
+<textarea class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none text-body-main resize-none" placeholder="Tell us a bit about your craft and inspiration..." rows="3" id="shop_bio"></textarea>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Ships in (days)</label>
+<div class="flex items-center bg-white/50 border border-sage-soft rounded-lg overflow-hidden h-[50px]">
+<button class="px-4 h-full hover:bg-sage-soft/20 transition-colors text-text-muted" onclick="decrementShips()" type="button">—</button>
+<input class="w-full text-center border-none bg-transparent focus:ring-0 font-data-meta text-data-price" max="30" min="1" type="number" id="ships_in_days" value="7">
+<button class="px-4 h-full hover:bg-sage-soft/20 transition-colors text-text-muted" onclick="incrementShips()" type="button">+</button>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1">Instagram handle</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-faint font-data-meta">@</span>
+<input class="w-full pl-9 pr-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none text-body-main" placeholder="yourcraft" type="text" id="instagram_handle">
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="bg-surface-container-low/50 border border-sage-soft/30 p-4 rounded-lg">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-highlight-gold shrink-0">info</span>
+<p class="font-data-meta text-data-meta text-text-muted">Payout details and tax documentation will be requested once your shop is approved and you make your first sale.</p>
+</div>
+</div>
+<div class="pt-6 space-y-6">
+<button class="w-full bg-primary py-5 rounded-lg text-white font-label-ui hover:bg-primary-deep transition-all transform active:scale-[0.98] shadow-lg shadow-primary/10" type="submit" id="submit-btn">
+                            Create maker account
+                        </button>
+<div class="text-center">
+<a class="font-label-ui text-accent-violet hover:underline decoration-sage-soft underline-offset-4 transition-all" href="signup-buyer.html">
+                                Just here to shop? Create a buyer account
+                            </a>
+</div>
+</div>
+</form>
+</div>
+</div>
+<footer class="mt-8 text-center">
+<p class="font-data-meta text-data-meta text-text-faint">
+                © 2024 Tohfa Artisan Marketplace. Built with love for the handcrafted.
+            </p>
+</footer>
+</main>
+<script>
         const API_BASE_URL = window.location.origin;
 
-        // Selectors
-        const signupForm = document.getElementById('signup-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const nameInput = document.getElementById('full_name');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-
-        // Error message elements
-        const nameError = document.getElementById('name-error');
-        const nameErrorText = document.getElementById('name-error-text');
-        const emailError = document.getElementById('email-error');
-        const emailErrorText = document.getElementById('email-error-text');
-        const passwordError = document.getElementById('password-error');
-        const passwordErrorText = document.getElementById('password-error-text');
-        const generalError = document.getElementById('general-error');
-        const generalErrorText = document.getElementById('general-error-text');
-
-        // Requirement items
-        const reqLength = document.getElementById('req-length');
-
-        // Dynamic Real-time validation for Password input
-        passwordInput.addEventListener('input', function() {
-            const val = passwordInput.value;
-            if (val.length >= 8) {
-                reqLength.classList.remove('invalid');
-                reqLength.classList.add('valid');
-                reqLength.querySelector('.material-symbols-outlined').textContent = 'check_circle';
+        function togglePassword() {
+            const field = document.getElementById('password-field');
+            const icon = document.getElementById('pass-icon');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.innerText = 'visibility_off';
             } else {
-                reqLength.classList.remove('valid');
-                reqLength.classList.add('invalid');
-                reqLength.querySelector('.material-symbols-outlined').textContent = 'circle';
+                field.type = 'password';
+                icon.innerText = 'visibility';
+            }
+        }
+
+        function decrementShips() {
+            const input = document.getElementById('ships_in_days');
+            let val = parseInt(input.value) || 7;
+            if (val > 1) input.value = val - 1;
+        }
+
+        function incrementShips() {
+            const input = document.getElementById('ships_in_days');
+            let val = parseInt(input.value) || 7;
+            if (val < 30) input.value = val + 1;
+        }
+
+        // Atmospheric parallax effect for the chibi
+        document.addEventListener('mousemove', (e) => {
+            const artisan = document.querySelector('img');
+            if (artisan) {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                artisan.style.transform = `translate(${moveX}px, ${moveY}px)`;
             }
         });
 
-        // Helper to reset error states
-        function clearErrors() {
-            generalError.classList.add('hidden');
-            
-            nameError.classList.add('hidden');
-            nameInput.classList.remove('input-error');
-            
-            emailError.classList.add('hidden');
-            emailInput.classList.remove('input-error');
-            
-            passwordError.classList.add('hidden');
-            passwordInput.classList.remove('input-error');
-        }
-
         // Form Submit Handler
+        const signupForm = document.getElementById('signup-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const generalError = document.getElementById('general-error');
+        const generalErrorText = document.getElementById('general-error-text');
+
         signupForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            clearErrors();
+            generalError.classList.add('hidden');
 
-            let hasErrors = false;
+            const full_name = document.getElementById('full_name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password-field').value;
+            const shop_name = document.getElementById('shop_name').value.trim();
+            const shop_bio = document.getElementById('shop_bio').value.trim();
+            const ships_in_days = parseInt(document.getElementById('ships_in_days').value) || 7;
+            let instagram_handle = document.getElementById('instagram_handle').value.trim();
 
-            // 1. Client-Side Validation
-            if (!nameInput.value.trim()) {
-                nameErrorText.textContent = "Full name is required.";
-                nameError.classList.remove('hidden');
-                nameInput.classList.add('input-error');
-                hasErrors = true;
+            if (!full_name || !email || !password || !shop_name) {
+                generalErrorText.textContent = "Please fill in all required fields.";
+                generalError.classList.remove('hidden');
+                return;
             }
 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailInput.value.trim() || !emailRegex.test(emailInput.value)) {
-                emailErrorText.textContent = "Please enter a valid email address.";
-                emailError.classList.remove('hidden');
-                emailInput.classList.add('input-error');
-                hasErrors = true;
+            if (password.length < 8) {
+                generalErrorText.textContent = "Password must be at least 8 characters.";
+                generalError.classList.remove('hidden');
+                return;
             }
 
-            if (passwordInput.value.length < 8) {
-                passwordErrorText.textContent = "Password must be at least 8 characters.";
-                passwordError.classList.remove('hidden');
-                passwordInput.classList.add('input-error');
-                hasErrors = true;
+            // Remove leading @ if user typed it
+            if (instagram_handle.startsWith('@')) {
+                instagram_handle = instagram_handle.substring(1);
             }
 
-            if (hasErrors) return;
-
-            // Update UI to submitting state
             const originalText = submitBtn.innerText;
-            submitBtn.innerText = 'CREATING STUDIO ACCOUNT...';
-            submitBtn.style.opacity = '0.7';
+            submitBtn.innerText = 'CREATING MAKER ACCOUNT...';
             submitBtn.disabled = true;
 
             try {
-                const payload = {
-                    email: emailInput.value.trim(),
-                    password: passwordInput.value,
-                    full_name: nameInput.value.trim(),
-                    role: "seller"
-                };
-
-                const response = await fetch(`${API_BASE_URL}/api/v1/auth/signup`, {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register/seller`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        full_name,
+                        email,
+                        password,
+                        shop_name,
+                        shop_bio: shop_bio || null,
+                        ships_in_days,
+                        instagram_handle: instagram_handle || null
+                    })
                 });
 
                 const data = await response.json();
 
-                if (response.status === 201) {
-                    // Success! Store access_token and refresh_token in sessionStorage (NOT localStorage)
-                    sessionStorage.setItem('access_token', data.access_token);
-                    sessionStorage.setItem('refresh_token', data.refresh_token);
+                if (response.status === 201 && data.success) {
+                    sessionStorage.setItem('access_token', data.data.access_token);
+                    sessionStorage.setItem('refresh_token', data.data.refresh_token);
+                    sessionStorage.setItem('user', JSON.stringify(data.data.user));
                     
-                    // Redirect to seller-dashboard.html
                     window.location.href = '/seller-dashboard.html';
-                } 
-                else if (response.status === 409) {
-                    // Conflict: Email already registered
-                    emailErrorText.textContent = "Email already registered.";
-                    emailError.classList.remove('hidden');
-                    emailInput.classList.add('input-error');
-                } 
-                else if (response.status === 422) {
-                    // Validation Errors from FastAPI
-                    if (data && Array.isArray(data.detail)) {
-                        data.detail.forEach(err => {
-                            const field = err.loc[err.loc.length - 1];
-                            const msg = err.msg;
-
-                            if (field === 'email') {
-                                emailErrorText.textContent = msg;
-                                emailError.classList.remove('hidden');
-                                emailInput.classList.add('input-error');
-                            } else if (field === 'password') {
-                                passwordErrorText.textContent = msg;
-                                passwordError.classList.remove('hidden');
-                                passwordInput.classList.add('input-error');
-                            } else if (field === 'full_name') {
-                                nameErrorText.textContent = msg;
-                                nameError.classList.remove('hidden');
-                                nameInput.classList.add('input-error');
-                            } else {
-                                // Add to general error
-                                generalErrorText.innerText = msg;
-                                generalError.classList.remove('hidden');
-                            }
-                        });
-                    } else {
-                        generalErrorText.textContent = data.detail || "Validation failed.";
-                        generalError.classList.remove('hidden');
-                    }
-                } 
-                else if (response.status === 429) {
-                    // Rate limit triggered
-                    generalErrorText.textContent = data.detail || "Too many registration attempts. Please wait before trying again.";
-                    generalError.classList.remove('hidden');
-                } 
-                else {
-                    // Other unexpected statuses
-                    generalErrorText.textContent = data.detail || "An unexpected error occurred. Please try again.";
+                } else {
+                    generalErrorText.textContent = data.message || "Registration failed.";
                     generalError.classList.remove('hidden');
                 }
-
-            } catch (error) {
-                // Connection or other fetch failures
-                console.error("Signup request failed:", error);
-                generalErrorText.textContent = `Unable to connect to the backend server. Please verify the server is running on ${API_BASE_URL} and try again.`;
+            } catch (err) {
+                console.error("Seller signup failed:", err);
+                generalErrorText.textContent = "Unable to connect to the server. Please try again later.";
                 generalError.classList.remove('hidden');
             } finally {
-                // Reset button UI
                 submitBtn.innerText = originalText;
-                submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
             }
         });
     </script>
-</body>
-</html>
+</body></html>
