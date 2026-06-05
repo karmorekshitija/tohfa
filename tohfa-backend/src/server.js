@@ -418,6 +418,92 @@ app.post('/api/auth/logout', authenticateToken, (req, res) => {
   }
 });
 
+// TASK 07: POST /api/auth/refresh
+app.post('/api/auth/refresh', rateLimit(30), (req, res) => {
+  const { refresh_token } = req.body;
+  
+  if (!refresh_token || typeof refresh_token !== 'string') {
+    return res.status(400).json({
+      error: true,
+      message: "Missing refresh_token",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const hashedRefreshToken = crypto.createHash('sha256').update(refresh_token).digest('hex');
+    
+    // Look up token
+    const tokenRecord = db.prepare('SELECT * FROM refresh_tokens WHERE token_hash = ?').get(hashedRefreshToken);
+    if (!tokenRecord) {
+      return res.status(401).json({
+        error: true,
+        message: "Invalid, expired, or already used token",
+        code: "INVALID_REFRESH_TOKEN"
+      });
+    }
+    
+    // Check if expired
+    const now = new Date();
+    const expiresAt = new Date(tokenRecord.expires_at);
+    if (expiresAt < now) {
+      db.prepare('DELETE FROM refresh_tokens WHERE id = ?').run(tokenRecord.id);
+      return res.status(401).json({
+        error: true,
+        message: "Invalid, expired, or already used token",
+        code: "INVALID_REFRESH_TOKEN"
+      });
+    }
+    
+    // Look up user
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(tokenRecord.user_id);
+    if (!user) {
+      return res.status(401).json({
+        error: true,
+        message: "User not found",
+        code: "INVALID_REFRESH_TOKEN"
+      });
+    }
+    
+    // Check status
+    if (user.is_banned === 1) {
+      return res.status(403).json({
+        error: true,
+        message: "Account banned",
+        code: "ACCOUNT_BANNED"
+      });
+    }
+    
+    if (user.is_active === 0) {
+      return res.status(403).json({
+        error: true,
+        message: "Account inactive",
+        code: "ACCOUNT_INACTIVE"
+      });
+    }
+    
+    // Rotate token: delete old, generate new pair
+    db.prepare('DELETE FROM refresh_tokens WHERE id = ?').run(tokenRecord.id);
+    
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        access_token: accessToken,
+        refresh_token: newRefreshToken
+      }
+    });
+  } catch (err) {
+    console.error('Error in token refresh:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

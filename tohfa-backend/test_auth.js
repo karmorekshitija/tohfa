@@ -332,6 +332,72 @@ async function runTests() {
     }
     console.log('✓ Test 14 Passed: Logout with missing refresh token rejected');
     
+    // Test 15: Successful refresh token rotation
+    // Let's log in to get a fresh refresh token
+    const loginRes2 = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'john@example.com',
+        password: 'password123'
+      })
+    });
+    const loginData2 = await loginRes2.json();
+    const originalRt = loginData2.data.refresh_token;
+    
+    const res15 = await fetch(`${baseUrl}/api/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        refresh_token: originalRt
+      })
+    });
+    
+    console.log('Test 15 Status:', res15.status);
+    const body15 = await res15.json();
+    if (res15.status !== 200 || !body15.success || !body15.data.access_token || !body15.data.refresh_token) {
+      throw new Error(`Expected 200 with new tokens, got ${res15.status} ${JSON.stringify(body15)}`);
+    }
+    console.log('✓ Test 15 Passed: Token refresh rotation succeeded');
+
+    // Test 16: Try to use the rotated (used) refresh token again
+    const res16 = await fetch(`${baseUrl}/api/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        refresh_token: originalRt
+      })
+    });
+    
+    console.log('Test 16 Status:', res16.status);
+    const body16 = await res16.json();
+    if (res16.status !== 401 || body16.code !== 'INVALID_REFRESH_TOKEN') {
+      throw new Error(`Expected 401 with INVALID_REFRESH_TOKEN for reuse, got ${res16.status} ${JSON.stringify(body16)}`);
+    }
+    console.log('✓ Test 16 Passed: Reusing a rotated refresh token is correctly rejected');
+
+    // Test 17: Expired refresh token
+    // Create an expired token in the database manually
+    const expiredRt = 'expired_token_abc_123';
+    const hashedExpiredRt = require('crypto').createHash('sha256').update(expiredRt).digest('hex');
+    const pastExpiresAt = new Date(Date.now() - 60000).toISOString(); // 1 minute in the past
+    db.prepare('INSERT INTO refresh_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)').run(loginData2.data.user.id, hashedExpiredRt, pastExpiresAt);
+    
+    const res17 = await fetch(`${baseUrl}/api/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        refresh_token: expiredRt
+      })
+    });
+    
+    console.log('Test 17 Status:', res17.status);
+    const body17 = await res17.json();
+    if (res17.status !== 401 || body17.code !== 'INVALID_REFRESH_TOKEN') {
+      throw new Error(`Expected 401 with INVALID_REFRESH_TOKEN for expired token, got ${res17.status}`);
+    }
+    console.log('✓ Test 17 Passed: Expired refresh token is rejected');
+    
   } catch (err) {
     console.error('❌ Test failed:', err.message);
     exitCode = 1;
