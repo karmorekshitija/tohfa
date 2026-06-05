@@ -868,5 +868,23 @@ const migrateSponsoredProducts = () => {
 };
 migrateSponsoredProducts();
 
+// Task 05: Migration for order_flags table
+const migrateOrderFlags = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS order_flags (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id TEXT NOT NULL UNIQUE,
+      flag_type TEXT NOT NULL DEFAULT 'refund_review',
+      flagged_by INTEGER NOT NULL REFERENCES admin_users(id),
+      flagged_at TEXT NOT NULL DEFAULT (datetime('now')),
+      resolved_at TEXT,
+      notes TEXT
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_order_flags_order_id ON order_flags(order_id);
+    CREATE INDEX IF NOT EXISTS idx_order_flags_flag_type ON order_flags(flag_type);
+  `);
+};
+migrateOrderFlags();
+
 module.exports = db;
 
