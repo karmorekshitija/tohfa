@@ -344,4 +344,20 @@ const migrateReelComments = () => {
 
 migrateReelComments();
 
+// Task 13: Migration for saved_reels table
+const migrateSavedReels = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS saved_reels (
+      id        INTEGER PRIMARY KEY AUTOINCREMENT,
+      reel_id   INTEGER NOT NULL REFERENCES reels(id) ON DELETE CASCADE,
+      user_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      saved_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(reel_id, user_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_saved_reels_user ON saved_reels(user_id);
+  `);
+};
+
+migrateSavedReels();
+
 module.exports = db;
