@@ -257,11 +257,10 @@
                 const payload = {
                     email: emailInput.value.trim(),
                     password: passwordInput.value,
-                    full_name: nameInput.value.trim(),
-                    role: "buyer"
+                    full_name: nameInput.value.trim()
                 };
 
-                const response = await fetch(`${API_BASE_URL}/api/v1/auth/signup`, {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register/buyer`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -271,65 +270,41 @@
 
                 const data = await response.json();
 
-                if (response.status === 201) {
+                if (response.status === 201 && data.success) {
                     // Success! Store tokens in sessionStorage (NOT localStorage)
-                    sessionStorage.setItem('access_token', data.access_token);
-                    sessionStorage.setItem('refresh_token', data.refresh_token);
+                    sessionStorage.setItem('access_token', data.data.access_token);
+                    sessionStorage.setItem('refresh_token', data.data.refresh_token);
+                    sessionStorage.setItem('user', JSON.stringify(data.data.user));
                     
                     // Redirect to home.html
                     window.location.href = '/home.html';
                 } 
                 else if (response.status === 409) {
                     // Conflict: Email already registered
-                    emailErrorText.textContent = "Email already registered.";
+                    emailErrorText.textContent = data.message || "Email already registered.";
                     emailError.classList.remove('hidden');
                     emailInput.classList.add('input-error');
                 } 
-                else if (response.status === 422) {
-                    // Validation Errors from FastAPI
-                    if (data && Array.isArray(data.detail)) {
-                        data.detail.forEach(err => {
-                            const field = err.loc[err.loc.length - 1];
-                            const msg = err.msg;
-
-                            if (field === 'email') {
-                                emailErrorText.textContent = msg;
-                                emailError.classList.remove('hidden');
-                                emailInput.classList.add('input-error');
-                            } else if (field === 'password') {
-                                passwordErrorText.textContent = msg;
-                                passwordError.classList.remove('hidden');
-                                passwordInput.classList.add('input-error');
-                            } else if (field === 'full_name') {
-                                nameErrorText.textContent = msg;
-                                nameError.classList.remove('hidden');
-                                nameInput.classList.add('input-error');
-                            } else {
-                                // Add to general error
-                                generalErrorText.innerText = msg;
-                                generalError.classList.remove('hidden');
-                            }
-                        });
-                    } else {
-                        generalErrorText.textContent = data.detail || "Validation failed.";
-                        generalError.classList.remove('hidden');
-                    }
+                else if (response.status === 400) {
+                    // Validation errors
+                    generalErrorText.textContent = data.message || "Validation failed.";
+                    generalError.classList.remove('hidden');
                 } 
                 else if (response.status === 429) {
                     // Rate limit triggered
-                    generalErrorText.textContent = data.detail || "Too many registration attempts. Please wait before trying again.";
+                    generalErrorText.textContent = data.message || "Too many registration attempts. Please wait before trying again.";
                     generalError.classList.remove('hidden');
                 } 
                 else {
                     // Other unexpected statuses
-                    generalErrorText.textContent = data.detail || "An unexpected error occurred. Please try again.";
+                    generalErrorText.textContent = data.message || "An unexpected error occurred. Please try again.";
                     generalError.classList.remove('hidden');
                 }
 
             } catch (error) {
                 // Connection or other fetch failures
                 console.error("Signup request failed:", error);
-                generalErrorText.textContent = "Unable to connect to the backend server. Please verify the server is running on http://localhost:8000 and try again.";
+                generalErrorText.textContent = "Unable to connect to the backend server. Please verify the server is running and try again.";
                 generalError.classList.remove('hidden');
             } finally {
                 // Reset button UI
