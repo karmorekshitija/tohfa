@@ -391,4 +391,23 @@ const migrateFollows = () => {
 
 migrateFollows();
 
+// Task 54: Migration for notifications table
+const migrateNotifications = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS notifications (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      type       TEXT NOT NULL,
+      message    TEXT NOT NULL,
+      icon       TEXT DEFAULT 'notifications',
+      link_url   TEXT,
+      is_read    INTEGER DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);
+  `);
+};
+
+migrateNotifications();
+
 module.exports = db;

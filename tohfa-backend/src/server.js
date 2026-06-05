@@ -3391,6 +3391,76 @@ app.delete('/api/follows/:userId', rateLimit(60), authenticateToken, (req, res) 
   }
 });
 
+// TASK 54: GET /api/notifications
+app.get('/api/notifications', rateLimit(60), authenticateToken, (req, res) => {
+  const authUserId = req.user.user_id;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit, 10) || 30;
+
+  try {
+    const unreadCount = db.prepare("SELECT COUNT(*) AS count FROM notifications WHERE user_id = ? AND is_read = 0").get(authUserId).count;
+
+    let sql = `
+      SELECT id, type, icon, message, is_read, created_at, link_url
+      FROM notifications
+      WHERE user_id = ?
+    `;
+    const sqlParams = [authUserId];
+
+    if (cursor) {
+      sql += ` AND id < ?`;
+      sqlParams.push(cursor);
+    }
+
+    sql += ` ORDER BY id DESC LIMIT ?`;
+    sqlParams.push(limit + 1);
+
+    const rows = db.prepare(sql).all(...sqlParams);
+
+    const hasMore = rows.length > limit;
+    if (hasMore) {
+      rows.pop();
+    }
+
+    const iconMap = {
+      order_shipped: "package_2",
+      review_liked: "favorite",
+      review_request: "star",
+      promo: "local_florist"
+    };
+
+    const notifications = rows.map(row => ({
+      id: row.id,
+      type: row.type,
+      icon: iconMap[row.type] || row.icon || 'notifications',
+      message: row.message,
+      is_read: !!row.is_read,
+      created_at: row.created_at,
+      time_ago: formatTimeAgo(row.created_at),
+      link_url: row.link_url
+    }));
+
+    const nextCursor = hasMore && rows.length > 0 ? String(rows[rows.length - 1].id) : null;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        notifications,
+        unread_count: unreadCount,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching notifications:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

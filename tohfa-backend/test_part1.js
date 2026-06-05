@@ -1954,6 +1954,41 @@ async function runTests() {
     }
 
     console.log('✓ Task 53 Passed: DELETE /api/follows/:userId');
+
+    // --- TASK 54 TESTS: GET /api/notifications ---
+    console.log('--- Testing TASK 54: GET /api/notifications ---');
+    db.prepare('DELETE FROM notifications').run();
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, message, is_read, created_at, link_url)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(buyerId, 'order_shipped', 'Your handcrafted Terracotta Vase has been shipped.', 0, '2024-11-16T10:00:00.000Z', '/orders/55');
+
+    // 1. Unauthenticated notification request
+    const unauthNotifRes = await fetch(`${baseUrl}/api/notifications`);
+    if (unauthNotifRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth notifications, got ${unauthNotifRes.status}`);
+    }
+
+    // 2. Successful notifications fetch (authenticated)
+    const successNotifRes = await fetch(`${baseUrl}/api/notifications?limit=10`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const successNotifData = await successNotifRes.json();
+    if (successNotifRes.status !== 200 || !successNotifData.success) {
+      throw new Error(`Expected 200 for notifications: ${JSON.stringify(successNotifData)}`);
+    }
+
+    const notifs = successNotifData.data.notifications;
+    if (notifs.length !== 1) {
+      throw new Error(`Expected 1 notification, got: ${notifs.length}`);
+    }
+
+    const n1 = notifs[0];
+    if (n1.type !== 'order_shipped' || n1.icon !== 'package_2' || n1.is_read !== false || n1.link_url !== '/orders/55' || successNotifData.data.unread_count !== 1) {
+      throw new Error(`Unexpected notification shape or properties: ${JSON.stringify(n1)} (unread count: ${successNotifData.data.unread_count})`);
+    }
+
+    console.log('✓ Task 54 Passed: GET /api/notifications');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
