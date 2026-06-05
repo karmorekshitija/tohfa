@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Tohfa — Part 2: Admin Panel — Antigravity Prompt</title>
+<style>
+  body { font-family: monospace; background: #0d1117; color: #c9d1d9; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+  h1 { color: #58a6ff; border-bottom: 2px solid #58a6ff; padding-bottom: 0.5rem; }
+  pre { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 1.2rem; white-space: pre-wrap; word-break: break-word; line-height: 1.6; }
+  .warn { color: #f0883e; }
+  .ok   { color: #3fb950; }
+  .task { color: #d2a8ff; }
+  .rule { color: #79c0ff; }
+</style>
+</head>
+<body>
+<h1>Tohfa — prompts-part2-admin.html</h1>
+<pre>
+<!-- ============================================================
+SYSTEM RULE FOR ANTIGRAVITY — READ THIS FIRST:
+Always use non-interactive flags for ALL terminal commands
+(-y, --yes, --no-input, --force).
+Never pause for confirmation. Never wait for user input.
+This applies to every single command in this entire file.
+============================================================ -->
+
+================================================================
+PART 2 — ADMIN PANEL
+================================================================
+Run order:  Run AFTER Parts 3, 1, and 4 are complete.
+            Auth (Part 3) must be fully working first.
+            Products, Sellers, and Orders data must exist
+            (from Parts 1 and 4) before admin routes query them.
+
+Total tasks:    26
+DB migrations:   7
+API routes:     17
+UI fixes:        2
+================================================================
+TABLE OF CONTENTS
+================================================================
+[ ] Task 01: DB — admin_users table
+[ ] Task 02: DB — audit_logs table
+[ ] Task 03: DB — categories table (extend existing)
+[ ] Task 04: DB — sponsored_products table
+[ ] Task 05: DB — order_flags table
+[ ] Task 06: DB — payment_health_logs table
+[ ] Task 07: DB — seller_bans table
+[ ] Task 08: POST   /api/admin/auth/login
+[ ] Task 09: GET    /api/admin/sellers
+[ ] Task 10: GET    /api/admin/sellers/:seller_id
+[ ] Task 11: POST   /api/admin/sellers/:seller_id/ban
+[ ] Task 12: POST   /api/admin/sellers/:seller_id/unban
+[ ] Task 13: GET    /api/admin/orders
+[ ] Task 14: GET    /api/admin/orders/:order_id
+[ ] Task 15: PATCH  /api/admin/orders/:order_id/status
+[ ] Task 16: POST   /api/admin/orders/:order_id/flag-refund
+[ ] Task 17: GET    /api/admin/categories
+[ ] Task 18: POST   /api/admin/categories
+[ ] Task 19: PATCH  /api/admin/categories/:category_id
+[ ] Task 20: DELETE /api/admin/categories/:category_id
+[ ] Task 21: GET    /api/admin/products
+[ ] Task 22: PATCH  /api/admin/products/:product_id/sponsored
+[ ] Task 23: GET    /api/admin/audit-logs
+[ ] Task 24: GET    /api/admin/payment-health
+[ ] Task 25: POST   /api/admin/payment-health/run-check
+[ ] Task 26: UI FIX — Standardise Admin Sidebar across all screens
+================================================================
+
+
+================================================================
+GLOBAL SPECIFICATION — READ BEFORE ANY TASK
+================================================================
+App name:    Tohfa
+Backend:     Node.js + SQLite
+Auth:        JWT access tokens (15-min expiry) + refresh tokens
+             Refresh endpoint: POST /api/auth/refresh
+             Token storage: sessionStorage (frontend handles)
+
+Admin auth:  Separate JWT role claim: { role: "admin" }
+             All /api/admin/* routes require admin JWT.
+             Return 403 if token is valid but role !== "admin".
+
+Payments:    Razorpay only
+Currency:    All amounts stored in paise (1 rupee = 100 paise).
+             Display as ₹ with 2 decimal places.
+             EXCEPTION: The admin frontend renders amounts already
+             formatted as strings (e.g. "₹12,450") — the backend
+             must return amount_paise (integer) AND
+             amount_display (string "₹X,XX,XXX") in every route
+             that surfaces money.
+
+API base URL: /api (all routes prefixed with /api)
+Auth header:  Authorization: Bearer [token]
+
+ERROR RESPONSE FORMAT (same on every endpoint):
+{
+  "error": true,
+  "message": "Human readable message",
+  "code": "ERROR_CODE"
+}
+
+SUCCESS RESPONSE FORMAT:
+{
+  "success": true,
+  "data": { ... }
+}
+
+ADMIN SIDEBAR STANDARD (apply to ALL admin screens):
+Navigation items (in order):
+  1. icon: grid_view        label: Dashboard      route: /admin
+  2. icon: group            label: Sellers        route: /admin/sellers
+  3. icon: shopping_cart    label: Orders         route: /admin/orders
+  4. icon: category         label: Categories     route: /admin/categories
+  5. icon: inventory_2      label: Products       route: /admin/products
+  6. icon: history_edu      label: Audit Logs     route: /admin/audit-logs
+  7. icon: settings         label: Settings       route: /admin/settings
+
+NOTE: Payment Health screen uses a DIFFERENT sidebar
+  (Transactions / Payouts / Settlements / Settings).
+  That is intentional — it is a sub-section sidebar.
+  Do NOT replace it with the main sidebar.
+
+Active sidebar item:  bg-[#3D6B4F] text-white rounded-full
+Inactive sidebar item: text-on-surface-variant
+                       hover:bg-surface-container-low rounded-full
+Font for labels:       font-serif-ui-sm (Lora, 16px)
+Icons:                 Material Symbols Outlined
+
+Admin avatar chip (bottom of sidebar):
+  Initials "TA" | Label: "Tohfa Admin" | Sub: "Master Access"
+================================================================
+
+
+================================================================
+TASK 01: DB — admin_users table
+TYPE: DB MIGRATION
+NEEDED BY: Task 08 (admin login)
+================================================================
+
+DATABASE:
+Table name: admin_users
+Fields:
+  id           INTEGER PRIMARY KEY AUTOINCREMENT
+  username     TEXT NOT NULL UNIQUE
+  email        TEXT NOT NULL UNIQUE
+  password_hash TEXT NOT NULL
+  role         TEXT NOT NULL DEFAULT 'admin'
+               -- values: 'admin', 'super_admin'
+  display_name TEXT NOT NULL DEFAULT 'Tohfa Admin'
+  is_active    INTEGER NOT NULL DEFAULT 1
+  last_login_at TEXT
+  created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+
+Indexes:
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_admin_users_email ON admin_users(email);
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_admin_users_username ON admin_users(username);
+
+Migration:
+  CREATE TABLE IF NOT EXISTS admin_users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'admin',
+    display_name TEXT NOT NULL DEFAULT 'Tohfa Admin',
+    is_active INTEGER NOT NULL DEFAULT 1,
+    last_login_at TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+Seed:
+  INSERT OR IGNORE INTO admin_users
+    (username, email, password_hash, display_name, role)
+  VALUES
+    ('admin', 'admin@tohfa.in',
+     /* bcrypt hash of 'TohfaAdmin@123' */
+     '$2b$10$PLACEHOLDER_REPLACE_WITH_REAL_HASH',
+     'Tohfa Admin', 'super_admin');
+
+⚠️ IMPORTANT: Replace the password hash placeholder with a real
+   bcrypt hash of a secure password before deploying to production.
+
+COMMIT: feat: add admin_users table with seed admin account
+
+================================================================
+
+
+================================================================
+TASK 02: DB — audit_logs table
+TYPE: DB MIGRATION
+NEEDED BY: Task 23 (GET audit logs), every admin action route
+           (Tasks 11, 12, 15, 16, 18, 19, 20, 22)
+================================================================
+
+DATABASE:
+Table name: audit_logs
+Fields:
+  id           INTEGER PRIMARY KEY AUTOINCREMENT
+  event_type   TEXT NOT NULL
+               -- values (from screen):
+               --   admin.seller.banned
+               --   admin.seller.unbanned
+               --   admin.order.status_overridden
+               --   admin.order.refund_flagged
+               --   admin.product.sponsored_toggled
+               --   admin.category.created
+               --   admin.category.updated
+               --   admin.category.deleted
+               --   admin.dashboard.stats_viewed
+  actor_id     INTEGER NOT NULL   -- admin_users.id
+  actor_name   TEXT NOT NULL      -- denormalised for fast display
+  target_type  TEXT NOT NULL      -- 'seller' | 'order' | 'product' | 'category' | 'dashboard'
+  target_id    TEXT               -- e.g. seller_id, order_id, product_id
+  target_label TEXT               -- human-readable: "Seller: Priya Shah", "Order: ORD-4521"
+  before_json  TEXT               -- JSON string of state before action
+  after_json   TEXT               -- JSON string of state after action
+  created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+
+Indexes:
+  CREATE INDEX IF NOT EXISTS idx_audit_logs_event_type ON audit_logs(event_type);
+  CREATE INDEX IF NOT EXISTS idx_audit_logs_actor_id ON audit_logs(actor_id);
+  CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
+
+Migration:
+  CREATE TABLE IF NOT EXISTS audit_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event_type TEXT NOT NULL,
+    actor_id INTEGER NOT NULL,
+    actor_name TEXT NOT NULL,
+    target_type TEXT NOT NULL,
+    target_id TEXT,
+    target_label TEXT,
+    before_json TEXT,
+    after_json TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+COMMIT: feat: add audit_logs table
+
+================================================================
+
+
+================================================================
+TASK 03: DB — categories table
+TYPE: DB MIGRATION
+NEEDED BY: Tasks 17–20
+================================================================
+
+DATABASE:
+Table name: categories
+Fields:
+  id           INTEGER PRIMARY KEY AUTOINCREMENT
+  display_name TEXT NOT NULL
+  slug         TEXT NOT NULL UNIQUE
+  emoji_icon   TEXT NOT NULL DEFAULT '🏷️'
+  description  TEXT
+  sort_order   INTEGER NOT NULL DEFAULT 0
+  is_active    INTEGER NOT NULL DEFAULT 1
+               -- 0 = Hidden, 1 = Active (matches "Status" column on screen)
+  product_count INTEGER NOT NULL DEFAULT 0
+               -- denormalised counter; update on product insert/delete
+  created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+
+Indexes:
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
+  CREATE INDEX IF NOT EXISTS idx_categories_sort_order ON categories(sort_order);
+
+Migration:
+  CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    display_name TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    emoji_icon TEXT NOT NULL DEFAULT '🏷️',
+    description TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    is_active INTEGER NOT NULL DEFAULT 1,
+    product_count INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+Seed (matches screen data):
+  INSERT OR IGNORE INTO categories (display_name, slug, emoji_icon, sort_order, is_active, product_count)
+  VALUES
+    ('Ceramics', 'ceramics-pottery', '🏺', 1, 1, 42),
+    ('Hand-Knits', 'hand-knits', '🧶', 2, 1, 12),
+    ('Heirloom Jewelry', 'jewelry', '💍', 3, 0, 0),
+    ('Wall Art', 'wall-art-prints', '🖼️', 4, 1, 29);
+
+COMMIT: feat: add categories table with seed data
+
+================================================================
+
+
+================================================================
+TASK 04: DB — sponsored_products table
+TYPE: DB MIGRATION
+NEEDED BY: Task 22 (toggle sponsored), Task 21 (list products)
+================================================================
+
+DATABASE:
+Table name: sponsored_products
+Fields:
+  id           INTEGER PRIMARY KEY AUTOINCREMENT
+  product_id   INTEGER NOT NULL UNIQUE  -- FK → products.id
+  is_sponsored INTEGER NOT NULL DEFAULT 0
+  sponsored_at TEXT
+  sponsored_by INTEGER               -- admin_users.id
+  created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+
+Indexes:
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_sponsored_product_id
+    ON sponsored_products(product_id);
+  CREATE INDEX IF NOT EXISTS idx_sponsored_is_sponsored
+    ON sponsored_products(is_sponsored);
+
+Migration:
+  CREATE TABLE IF NOT EXISTS sponsored_products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL UNIQUE,
+    is_sponsored INTEGER NOT NULL DEFAULT 0,
+    sponsored_at TEXT,
+    sponsored_by INTEGER,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+COMMIT: feat: add sponsored_products table
+
+================================================================
+
+
+================================================================
+TASK 05: DB — order_flags table
+TYPE: DB MIGRATION
+NEEDED BY: Task 16 (flag for refund), Task 13/14 (order lists)
+================================================================
+
+DATABASE:
+Table name: order_flags
+Fields:
+  id           INTEGER PRIMARY KEY AUTOINCREMENT
+  order_id     TEXT NOT NULL UNIQUE   -- FK → orders.order_id
+  flag_type    TEXT NOT NULL DEFAULT 'refund_review'
+  flagged_by   INTEGER NOT NULL       -- admin_users.id
+  flagged_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  resolved_at  TEXT
+  notes        TEXT
+
+Indexes:
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_order_flags_order_id
+    ON order_flags(order_id);
+  CREATE INDEX IF NOT EXISTS idx_order_flags_flag_type
+    ON order_flags(flag_type);
+
+Migration:
+  CREATE TABLE IF NOT EXISTS order_flags (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id TEXT NOT NULL UNIQUE,
+    flag_type TEXT NOT NULL DEFAULT 'refund_review',
+    flagged_by INTEGER NOT NULL,
+    flagged_at TEXT NOT NULL DEFAULT (datetime('now')),
+    resolved_at TEXT,
+    notes TEXT
+  );
+
+COMMIT: feat: add order_flags table
+
+================================================================
+
+
+================================================================
+TASK 06: DB — payment_health_logs table
+TYPE: DB MIGRATION
+NEEDED BY: Task 24 (payment health), Task 25 (run check)
+================================================================
+
+DATABASE:
+Table name: payment_health_logs
+Fields:
+  id              INTEGER PRIMARY KEY AUTOINCREMENT
+  check_type      TEXT NOT NULL DEFAULT 'auto'
+                  -- 'auto' | 'manual'
+  status          TEXT NOT NULL
+                  -- 'healthy' | 'degraded' | 'down'
+  api_response_ms INTEGER
+  webhook_status  TEXT
+                  -- 'receiving' | 'delayed' | 'stopped'
+  last_webhook_at TEXT
+  last_txn_id     TEXT
+  last_txn_status TEXT
+                  -- 'verified' | 'failed'
+  region          TEXT DEFAULT 'India (South)'
+  raw_payload     TEXT  -- full JSON from Razorpay if available
+  checked_at      TEXT NOT NULL DEFAULT (datetime('now'))
+
+Migration:
+  CREATE TABLE IF NOT EXISTS payment_health_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    check_type TEXT NOT NULL DEFAULT 'auto',
+    status TEXT NOT NULL,
+    api_response_ms INTEGER,
+    webhook_status TEXT,
+    last_webhook_at TEXT,
+    last_txn_id TEXT,
+    last_txn_status TEXT,
+    region TEXT DEFAULT 'India (South)',
+    raw_payload TEXT,
+    checked_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+COMMIT: feat: add payment_health_logs table
+
+================================================================
+
+
+================================================================
+TASK 07: DB — seller_bans table
+TYPE: DB MIGRATION
+NEEDED BY: Tasks 11, 12 (ban/unban seller)
+================================================================
+
+DATABASE:
+Table name: seller_bans
+Fields:
+  id           INTEGER PRIMARY KEY AUTOINCREMENT
+  seller_id    INTEGER NOT NULL    -- FK → users.id (seller)
+  banned_by    INTEGER NOT NULL    -- FK → admin_users.id
+  ban_reason   TEXT NOT NULL
+  banned_at    TEXT NOT NULL DEFAULT (datetime('now'))
+  unbanned_at  TEXT
+  unbanned_by  INTEGER             -- FK → admin_users.id
+
+Indexes:
+  CREATE INDEX IF NOT EXISTS idx_seller_bans_seller_id
+    ON seller_bans(seller_id);
+
+Migration:
+  CREATE TABLE IF NOT EXISTS seller_bans (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id INTEGER NOT NULL,
+    banned_by INTEGER NOT NULL,
+    ban_reason TEXT NOT NULL,
+    banned_at TEXT NOT NULL DEFAULT (datetime('now')),
+    unbanned_at TEXT,
+    unbanned_by INTEGER
+  );
+
+COMMIT: feat: add seller_bans table
+
+================================================================
+
+
+================================================================
+TASK 08: POST /api/admin/auth/login
+TYPE: API ROUTE
+NEEDED BY: Admin login (separate from buyer/seller login)
+================================================================
+
+ENDPOINT:
+Method + URL: POST /api/admin/auth/login
+Auth required: NO (this IS the auth)
+Rate limit: 10 requests per minute per IP
+
+REQUEST:
+{
+  "username": "string",   // or email — accept either
+  "password": "string"
+}
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "access_token": "string",     // JWT, 15-min expiry, role: "admin"
+    "refresh_token": "string",    // JWT, 7-day expiry
+    "admin": {
+      "id": 1,
+      "username": "admin",
+      "display_name": "Tohfa Admin",
+      "role": "super_admin"
+    }
+  }
+}
+
+RESPONSE (errors):
+  400: username or password missing
+  401: invalid credentials (always say "Invalid username or password" — do NOT reveal which field is wrong)
+  403: account is inactive (is_active = 0)
+  429: rate limit exceeded
+
+BUSINESS LOGIC:
+1. Accept either username or email in the "username" field.
+2. Look up admin_users by username OR email.
+3. If not found → 401.
+4. Compare password with bcrypt.compare().
+5. If mismatch → 401.
+6. If is_active = 0 → 403.
+7. Generate access token (JWT) with payload:
+     { sub: admin.id, role: admin.role, type: "admin_access" }
+     Expiry: 15 minutes.
+8. Generate refresh token (JWT) with payload:
+     { sub: admin.id, type: "admin_refresh" }
+     Expiry: 7 days.
+9. Update last_login_at on the admin_users row.
+10. Write audit log entry:
+     event_type: "admin.session.login"
+     actor_id: admin.id
+     target_type: "dashboard"
+     target_label: "Admin Login"
+11. Return 200 with tokens and admin object.
+
+FRONTEND MATCH CHECK:
+Admin panel is a web panel (not mobile).
+Tokens stored in sessionStorage under keys:
+  "tohfa_admin_token" and "tohfa_admin_refresh".
+Order Detail screen has: window.location.href = '/login'
+when token is missing — ensure the login route matches
+the frontend redirect path.
+
+COMMIT: feat: POST /api/admin/auth/login
+
+================================================================
+
+
+================================================================
+TASK 09: GET /api/admin/sellers
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_sellers_directory screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/sellers
+Auth required: YES (admin JWT)
+
+QUERY PARAMS:
+  status   — filter by: "all" | "active" | "banned"  (default: "all")
+  search   — search by seller name or email (optional)
+  page     — integer, default 1
+  per_page — integer, default 20
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "sellers": [
+      {
+        "id": 1,
+        "display_name": "Kavita Arts",
+        "sub_label": "Pottery Artisan",        // seller's craft tagline
+        "email": "kavita.p@artisan.com",
+        "avatar_initials": "KA",               // first letters of display_name words
+        "status": "active",                    // "active" | "banned"
+        "product_count": 42,
+        "joined_at": "2024-02-01T00:00:00Z",
+        "joined_ago": "3 months ago",          // human-readable relative time
+        "total_sales_paise": 12450000,
+        "total_sales_display": "₹1,24,500"
+      }
+    ],
+    "total": 143,
+    "page": 1,
+    "per_page": 20,
+    "total_pages": 8
+  }
+}
+
+RESPONSE (errors):
+  401: missing or invalid token
+  403: not admin role
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Join users table (sellers) with seller_bans for status.
+3. Apply status filter if provided.
+4. Apply search filter (LIKE on display_name or email).
+5. Compute avatar_initials: split display_name by space, take first char of each word, uppercase, max 2 chars.
+6. Compute joined_ago as relative time string (e.g. "3 months ago").
+7. Paginate results.
+8. Return list.
+
+FRONTEND MATCH CHECK:
+Screen shows columns:
+  Avatar + Name | Email | Status | Products | Joined | Sales | Actions
+Fields must match: display_name, sub_label, email, status,
+  product_count, joined_ago, total_sales_display, avatar_initials.
+
+COMMIT: feat: GET /api/admin/sellers
+
+================================================================
+
+
+================================================================
+TASK 10: GET /api/admin/sellers/:seller_id
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_seller_detail_updated_sidebar screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/sellers/:seller_id
+Auth required: YES (admin JWT)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "display_name": "Kavita Arts",
+    "avatar_initials": "KA",
+    "email": "kavita.p@artisan.com",
+    "phone": "+91 98765 43210",
+    "joined_at": "2024-02-01T00:00:00Z",
+    "joined_display": "Feb 2024",
+    "bio": "A master potter specialising in terracotta and glazed stoneware...",
+    "status": "active",                        // "active" | "banned"
+    "total_products": 42,
+    "total_sales_paise": 12450000,
+    "total_sales_display": "₹1,24,500",
+    "all_time_revenue_paise": 9820000,
+    "all_time_revenue_display": "₹98,200",
+    "recent_products": [
+      {
+        "id": 101,
+        "name": "Terracotta Earth Pot",
+        "price_paise": 245000,
+        "price_display": "₹2,450",
+        "stock_status": "in_stock"    // "in_stock" | "low_stock" | "sold_out"
+      }
+    ],
+    "ban_history": [
+      {
+        "banned_at": "2024-05-01T00:00:00Z",
+        "ban_reason": "Policy violation",
+        "unbanned_at": "2024-05-15T00:00:00Z"
+      }
+    ]
+  }
+}
+
+RESPONSE (errors):
+  401: missing or invalid token
+  403: not admin role
+  404: seller not found
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up seller by id in users table.
+3. If not found or role != 'seller' → 404.
+4. Fetch last 5 products for recent_products list.
+5. Compute stock_status from product's stock_quantity field:
+     0 → sold_out, 1–5 → low_stock, 6+ → in_stock.
+6. Fetch ban_history from seller_bans table.
+7. Return full seller detail object.
+
+FRONTEND MATCH CHECK:
+Screen shows: display_name, email, phone, joined_display, bio,
+  total_products, total_sales_display, status, all_time_revenue_display,
+  recent_products (name, price_display, stock_status),
+  ban/unban action button.
+
+COMMIT: feat: GET /api/admin/sellers/:seller_id
+
+================================================================
+
+
+================================================================
+TASK 11: POST /api/admin/sellers/:seller_id/ban
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_seller_detail_updated_sidebar (Ban This Seller button)
+================================================================
+
+ENDPOINT:
+Method + URL: POST /api/admin/sellers/:seller_id/ban
+Auth required: YES (admin JWT)
+
+REQUEST:
+{
+  "ban_reason": "string"   // required — shown on screen as "Reason for ban"
+}
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "seller_id": 1,
+    "status": "banned",
+    "banned_at": "2025-01-15T14:32:07Z"
+  }
+}
+
+RESPONSE (errors):
+  400: ban_reason is missing or empty
+  401: missing or invalid token
+  403: not admin role
+  404: seller not found
+  409: seller is already banned
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up seller — 404 if not found.
+3. If seller already has status = 'banned' → 409.
+4. In a transaction:
+   a. Update users.status = 'banned' (or equivalent field).
+   b. Deactivate all seller's products (set is_active = 0).
+   c. Deactivate all seller's reels if reels table exists.
+   d. Insert row into seller_bans.
+   e. Write audit log:
+        event_type: "admin.seller.banned"
+        actor_id: [admin id from token]
+        actor_name: [admin display_name]
+        target_type: "seller"
+        target_id: seller_id
+        target_label: "Seller: [display_name]"
+        before_json: { "status": "active" }
+        after_json: { "status": "banned", "ban_reason": "...", "updated_at": "..." }
+5. Return 200.
+
+FRONTEND MATCH CHECK:
+Screen warning text: "This will deactivate all their products
+  and reels immediately."
+ban_reason field is shown in the form before confirming.
+after_json shape must match what the audit log diff renders:
+  { "status": "active" → "banned", "ban_reason": "...", "updated_at": "..." }
+
+COMMIT: feat: POST /api/admin/sellers/:seller_id/ban
+
+================================================================
+
+
+================================================================
+TASK 12: POST /api/admin/sellers/:seller_id/unban
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_sellers_directory (Unban button)
+================================================================
+
+ENDPOINT:
+Method + URL: POST /api/admin/sellers/:seller_id/unban
+Auth required: YES (admin JWT)
+
+REQUEST: (no body required)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "seller_id": 1,
+    "status": "active",
+    "unbanned_at": "2025-01-15T15:00:00Z"
+  }
+}
+
+RESPONSE (errors):
+  401: missing or invalid token
+  403: not admin role
+  404: seller not found
+  409: seller is not banned
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up seller — 404 if not found.
+3. If seller status != 'banned' → 409.
+4. In a transaction:
+   a. Update users.status = 'active'.
+   b. Reactivate seller's products (set is_active = 1).
+   c. Update seller_bans row: set unbanned_at, unbanned_by.
+   d. Write audit log:
+        event_type: "admin.seller.unbanned"
+        before_json: { "status": "banned" }
+        after_json: { "status": "active" }
+5. Return 200.
+
+COMMIT: feat: POST /api/admin/sellers/:seller_id/unban
+
+================================================================
+
+
+================================================================
+TASK 13: GET /api/admin/orders
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_orders_management_updated_sidebar screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/orders
+Auth required: YES (admin JWT)
+
+QUERY PARAMS:
+  status        — filter: "all" | "pending" | "processing" | "shipped"
+                           | "delivered" | "cancelled" | "refund_flagged"
+                  (default: "all")
+  from_date     — ISO date string (optional)
+  to_date       — ISO date string (optional)
+  search        — search by order_id (optional)
+  page          — integer, default 1
+  per_page      — integer, default 10
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "orders": [
+      {
+        "order_id": "ORD-89210",
+        "buyer_name": "Kavita A.",
+        "seller_name": "Earth & Fire Pottery",
+        "amount_paise": 420000,
+        "amount_display": "₹4,200",
+        "status": "delivered",
+        "is_refund_flagged": false,
+        "created_at": "2025-01-13T10:00:00Z",
+        "created_ago": "2 days ago"
+      }
+    ],
+    "total": 248,
+    "page": 1,
+    "per_page": 10,
+    "total_pages": 25,
+    "refund_flagged_count": 4
+  }
+}
+
+RESPONSE (errors):
+  401: missing or invalid token
+  403: not admin role
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Join orders with order_flags to set is_refund_flagged.
+3. If status = "refund_flagged": filter to orders that have a row
+   in order_flags (regardless of order status field).
+4. Apply date range filter if provided.
+5. Apply search filter on order_id if provided.
+6. Always include refund_flagged_count in every response
+   (count of orders with unresolved flags) — used for the
+   warning banner "4 orders are flagged for refund review."
+7. Return paginated list.
+
+FRONTEND MATCH CHECK:
+Screen shows columns: Order ID | Buyer | Seller | Amount | Status |
+  Flag | Date | Actions (visibility icon)
+status pill values used: delivered, warning refund_flagged,
+  processing, shipped, pending, cancelled.
+is_refund_flagged drives the "warning" icon in the Flag column.
+refund_flagged_count drives the top warning banner.
+
+COMMIT: feat: GET /api/admin/orders
+
+================================================================
+
+
+================================================================
+TASK 14: GET /api/admin/orders/:order_id
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_order_detail_updated_sidebar screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/orders/:order_id
+Auth required: YES (admin JWT)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "order_id": "ORD-89215",
+    "status": "processing",
+    "created_at": "2026-05-30T14:22:10Z",
+    "created_display": "Saturday, May 30, 2026 - 14:22:10",
+    "is_refund_flagged": true,
+    "buyer": {
+      "id": 5,
+      "name": "Rohan Mehra",
+      "email": "rohan.m@example.com"
+    },
+    "seller": {
+      "id": 3,
+      "shop_name": "Silk Lore",
+      "tagline": "The Indigo Loom"
+    },
+    "line_items": [
+      {
+        "product_id": 42,
+        "product_name": "Indigo Hand-loomed Silk Scarf",
+        "quantity": 1,
+        "unit_price_paise": 1245000,
+        "unit_price_display": "₹12,450"
+      }
+    ],
+    "subtotal_paise": 1245000,
+    "subtotal_display": "₹12,450",
+    "shipping_paise": 0,
+    "shipping_display": "₹0 (Free)",
+    "total_paise": 1245000,
+    "total_display": "₹12,450",
+    "journey": [
+      {
+        "step": "order_placed",
+        "label": "Order Placed",
+        "icon": "check",
+        "timestamp": "2026-05-30T14:22:10Z",
+        "display": "May 30, 14:22",
+        "note": null,
+        "completed": true
+      },
+      {
+        "step": "payment_confirmed",
+        "label": "Payment Confirmed",
+        "icon": "payments",
+        "timestamp": "2026-05-30T14:30:00Z",
+        "display": "May 30, 14:30",
+        "note": null,
+        "completed": true
+      },
+      {
+        "step": "processing",
+        "label": "Processing",
+        "icon": "settings_suggest",
+        "timestamp": "2026-05-30T16:45:00Z",
+        "display": "May 30, 16:45",
+        "note": "Artisan is preparing the silk threads...",
+        "completed": true
+      },
+      {
+        "step": "shipped",
+        "label": "Shipped",
+        "icon": "local_shipping",
+        "timestamp": null,
+        "display": "Pending",
+        "note": null,
+        "completed": false
+      },
+      {
+        "step": "delivered",
+        "label": "Delivered",
+        "icon": "inventory_2",
+        "timestamp": null,
+        "display": "Estimated June 4",
+        "note": null,
+        "completed": false
+      }
+    ],
+    "admin_internal": {
+      "last_viewed_by": "Admin Sarah",
+      "last_viewed_at": "2026-05-30T15:00:00Z",
+      "previous_log_count": 3
+    }
+  }
+}
+
+RESPONSE (errors):
+  401: missing or invalid token
+  403: not admin role
+  404: order not found
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Fetch order with buyer, seller, line items.
+3. Build journey array from order_events table or derive from
+   status history. Steps in fixed order:
+   order_placed → payment_confirmed → processing → shipped → delivered.
+4. Mark steps as completed = true up to and including current status.
+5. Update admin_internal.last_viewed_by/at with current admin.
+6. Return full order detail.
+
+FRONTEND MATCH CHECK:
+Fields: order_id, status, created_display, buyer.name,
+  buyer.email, seller.shop_name, seller.tagline,
+  line_items (product_name, quantity, unit_price_display),
+  subtotal_display, shipping_display, total_display,
+  journey array, admin_internal.
+Status override dropdown options: Processing, In Transit,
+  Delivered, Cancelled, On Hold — see Task 15.
+
+COMMIT: feat: GET /api/admin/orders/:order_id
+
+================================================================
+
+
+================================================================
+TASK 15: PATCH /api/admin/orders/:order_id/status
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_order_detail (Force Status Change / Override Status button)
+================================================================
+
+ENDPOINT:
+Method + URL: PATCH /api/admin/orders/:order_id/status
+Auth required: YES (admin JWT)
+
+REQUEST:
+{
+  "new_status": "string"
+  // valid values: "processing" | "in_transit" | "delivered"
+  //               | "cancelled" | "on_hold"
+}
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "order_id": "ORD-89215",
+    "old_status": "processing",
+    "new_status": "delivered",
+    "overridden_at": "2025-01-15T14:32:07Z",
+    "overridden_by": "Admin Sarah"
+  }
+}
+
+RESPONSE (errors):
+  400: new_status is missing or not a valid value
+  401: missing or invalid token
+  403: not admin role
+  404: order not found
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up order — 404 if not found.
+3. Validate new_status against allowed values.
+4. Capture old_status.
+5. Update orders.status = new_status.
+6. Write audit log:
+     event_type: "admin.order.status_overridden"
+     target_type: "order"
+     target_id: order_id
+     target_label: "Order: [order_id]"
+     before_json: { "status": "[old_status]" }
+     after_json: { "status": "[new_status]", "overridden_by": "...", "updated_at": "..." }
+7. Return 200.
+
+NOTE: Screen says "This bypasses normal transition rules and is
+  audit-logged." — no transition validation needed, any →any allowed.
+
+FRONTEND MATCH CHECK:
+Dropdown options on screen: Processing | In Transit | Delivered |
+  Cancelled | On Hold.
+Map these display labels → snake_case values:
+  "Processing"  → "processing"
+  "In Transit"  → "in_transit"
+  "Delivered"   → "delivered"
+  "Cancelled"   → "cancelled"
+  "On Hold"     → "on_hold"
+
+COMMIT: feat: PATCH /api/admin/orders/:order_id/status
+
+================================================================
+
+
+================================================================
+TASK 16: POST /api/admin/orders/:order_id/flag-refund
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_order_detail (Flag for Refund Review button)
+================================================================
+
+ENDPOINT:
+Method + URL: POST /api/admin/orders/:order_id/flag-refund
+Auth required: YES (admin JWT)
+
+REQUEST: (no body required)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "order_id": "ORD-89215",
+    "is_refund_flagged": true,
+    "flagged_at": "2025-01-15T14:32:07Z"
+  }
+}
+
+RESPONSE (errors):
+  401: missing or invalid token
+  403: not admin role
+  404: order not found
+  409: order already flagged
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up order — 404 if not found.
+3. Check order_flags — if already flagged → 409.
+4. Insert row into order_flags (flag_type: 'refund_review').
+5. Write audit log:
+     event_type: "admin.order.refund_flagged"
+     target_type: "order"
+     target_id: order_id
+6. Return 200.
+
+COMMIT: feat: POST /api/admin/orders/:order_id/flag-refund
+
+================================================================
+
+
+================================================================
+TASK 17: GET /api/admin/categories
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_categories_manager_updated_sidebar screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/categories
+Auth required: YES (admin JWT)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "categories": [
+      {
+        "id": 1,
+        "display_name": "Ceramics",
+        "slug": "ceramics-pottery",
+        "emoji_icon": "🏺",
+        "description": null,
+        "sort_order": 1,
+        "is_active": true,
+        "status_label": "Active",        // "Active" | "Hidden"
+        "product_count": 42
+      }
+    ],
+    "total": 4
+  }
+}
+
+RESPONSE (errors):
+  401, 403
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Fetch all categories ordered by sort_order ASC.
+3. Map is_active (1/0) → status_label ("Active" / "Hidden").
+4. Return list.
+
+FRONTEND MATCH CHECK:
+Table columns: Icon | Display Name | Slug | Products | Sort | Status | Actions
+Fields: emoji_icon, display_name, slug, product_count,
+  sort_order, status_label (shown as pill).
+
+COMMIT: feat: GET /api/admin/categories
+
+================================================================
+
+
+================================================================
+TASK 18: POST /api/admin/categories
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_categories_manager (New Category form / Save Category button)
+================================================================
+
+ENDPOINT:
+Method + URL: POST /api/admin/categories
+Auth required: YES (admin JWT)
+
+REQUEST:
+{
+  "emoji_icon": "🏺",          // required
+  "display_name": "Ceramics",  // required
+  "slug": "ceramics-pottery",  // required — URL-safe
+  "description": "string",     // optional
+  "sort_order": 1,             // required
+  "is_active": true            // required
+}
+
+RESPONSE (success 201):
+{
+  "success": true,
+  "data": {
+    "id": 5,
+    "display_name": "Ceramics",
+    "slug": "ceramics-pottery",
+    "emoji_icon": "🏺",
+    "sort_order": 1,
+    "is_active": true,
+    "status_label": "Active",
+    "product_count": 0
+  }
+}
+
+RESPONSE (errors):
+  400: missing required fields or invalid slug (must match [a-z0-9-]+)
+  401, 403
+  409: slug already exists
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Validate all required fields.
+3. Validate slug format: /^[a-z0-9-]+$/.
+4. Check slug uniqueness — 409 if duplicate.
+5. Insert category.
+6. Write audit log:
+     event_type: "admin.category.created"
+7. Return 201.
+
+FRONTEND MATCH CHECK:
+Form fields: emoji_icon (with "Click to Change" picker),
+  Display Name, Slug (URL: /category/[slug]), Description,
+  Sort Order, Active toggle.
+Buttons: Save Category | Cancel.
+
+COMMIT: feat: POST /api/admin/categories
+
+================================================================
+
+
+================================================================
+TASK 19: PATCH /api/admin/categories/:category_id
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_categories_manager (edit pencil button per row)
+================================================================
+
+ENDPOINT:
+Method + URL: PATCH /api/admin/categories/:category_id
+Auth required: YES (admin JWT)
+
+REQUEST (all fields optional — only include what's changing):
+{
+  "emoji_icon": "🏺",
+  "display_name": "Ceramics",
+  "slug": "ceramics-pottery",
+  "description": "string",
+  "sort_order": 1,
+  "is_active": true
+}
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": { /* updated category object — same shape as Task 17 item */ }
+}
+
+RESPONSE (errors):
+  400: invalid slug format
+  401, 403
+  404: category not found
+  409: slug conflict with another category
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up category — 404 if not found.
+3. If slug is being changed, check uniqueness.
+4. Build partial UPDATE from only fields that are present in request.
+5. Update updated_at.
+6. Write audit log:
+     event_type: "admin.category.updated"
+     before_json: old values
+     after_json: new values
+7. Return updated category.
+
+COMMIT: feat: PATCH /api/admin/categories/:category_id
+
+================================================================
+
+
+================================================================
+TASK 20: DELETE /api/admin/categories/:category_id
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_categories_manager (delete trash button per row)
+================================================================
+
+ENDPOINT:
+Method + URL: DELETE /api/admin/categories/:category_id
+Auth required: YES (admin JWT)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "deleted_id": 3,
+    "display_name": "Heirloom Jewelry"
+  }
+}
+
+RESPONSE (errors):
+  400: cannot delete a category that has active products
+       (return product_count so frontend can show a message)
+  401, 403
+  404: category not found
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up category — 404 if not found.
+3. Count active products in this category.
+   If count > 0 → 400 with message:
+   "Cannot delete: this category has [N] active products."
+4. Delete category row.
+5. Write audit log:
+     event_type: "admin.category.deleted"
+6. Return 200.
+
+COMMIT: feat: DELETE /api/admin/categories/:category_id
+
+================================================================
+
+
+================================================================
+TASK 21: GET /api/admin/products
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_products_sponsored_management screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/products
+Auth required: YES (admin JWT)
+
+QUERY PARAMS:
+  filter    — "all" | "sponsored" | "non_sponsored"  (default: "all")
+  search    — search by product name (optional)
+  page      — integer, default 1
+  per_page  — integer, default 20
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "products": [
+      {
+        "id": 101,
+        "sku": "CERA-901",
+        "name": "Indigo Crackle Ceramic Bowl",
+        "seller_id": 1,
+        "seller_name": "Earth & Fire Studios",
+        "category_name": "Pottery",
+        "price_paise": 245000,
+        "price_display": "₹2,450",
+        "is_sponsored": true,
+        "sponsored_status_label": "Sponsored"  // "Sponsored" | "—"
+      }
+    ],
+    "total": 124,
+    "sponsored_count": 42,
+    "page": 1,
+    "per_page": 20,
+    "total_pages": 7
+  }
+}
+
+RESPONSE (errors):
+  401, 403
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. JOIN products with sponsored_products (LEFT JOIN) to get is_sponsored.
+3. Apply filter if provided.
+4. Apply search if provided (LIKE on product name).
+5. sponsored_count = total across all products regardless of filter.
+6. Return paginated list.
+
+FRONTEND MATCH CHECK:
+Table columns: Product Details | Seller | Category | Price | Sponsored | Status | Action
+Fields: name, sku, seller_name, category_name, price_display,
+  is_sponsored (toggle switch), sponsored_status_label.
+Screen note: "These appear at the top of /browse/home for all users."
+sponsored_count drives the summary chip:
+  "✦ 42 products are currently sponsored and receiving priority placement."
+
+COMMIT: feat: GET /api/admin/products
+
+================================================================
+
+
+================================================================
+TASK 22: PATCH /api/admin/products/:product_id/sponsored
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_products_sponsored_management (toggle switch per row)
+================================================================
+
+ENDPOINT:
+Method + URL: PATCH /api/admin/products/:product_id/sponsored
+Auth required: YES (admin JWT)
+
+REQUEST:
+{
+  "is_sponsored": true   // boolean — the new desired state
+}
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "product_id": 101,
+    "is_sponsored": true,
+    "sponsored_status_label": "Sponsored",
+    "sponsored_count": 43   // updated platform-wide count
+  }
+}
+
+RESPONSE (errors):
+  400: is_sponsored not a boolean
+  401, 403
+  404: product not found
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Look up product — 404 if not found.
+3. Upsert into sponsored_products:
+   - If is_sponsored = true: set is_sponsored = 1,
+     sponsored_at = now, sponsored_by = admin id.
+   - If is_sponsored = false: set is_sponsored = 0,
+     sponsored_at = null.
+4. Write audit log:
+     event_type: "admin.product.sponsored_toggled"
+     before_json: { "is_sponsored": [old value] }
+     after_json: { "is_sponsored": [new value] }
+5. Count total sponsored products and return as sponsored_count.
+
+FRONTEND MATCH CHECK:
+Toggle switch (.switch-input) per product row.
+On checked → row updates to show "star Sponsored" badge.
+sponsored_count updates the summary chip at the bottom.
+Cancel Changes / Save Changes buttons on screen —
+⚠️ AMBIGUOUS — the screen appears to batch changes.
+  Implement as immediate per-toggle save.
+  The Cancel/Save buttons should be treated as UI-only
+  if there is no batch endpoint in other parts.
+
+COMMIT: feat: PATCH /api/admin/products/:product_id/sponsored
+
+================================================================
+
+
+================================================================
+TASK 23: GET /api/admin/audit-logs
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_audit_logs_updated_sidebar screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/audit-logs
+Auth required: YES (admin JWT)
+
+QUERY PARAMS:
+  event_type  — filter by event_type string (optional)
+                e.g. "admin.seller.banned"
+  actor       — filter by actor_name (optional)
+  from_date   — ISO date string (optional)
+  to_date     — ISO date string (optional)
+  page        — integer, default 1
+  per_page    — integer, default 20
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "logs": [
+      {
+        "id": 1,
+        "event_type": "admin.seller.banned",
+        "event_label": "Seller Banned",      // human-readable event name
+        "actor_name": "Arjun Mehta",
+        "actor_role": "Admin",
+        "target_label": "Seller: Priya Shah",
+        "timestamp": "2025-01-15T14:32:07Z",
+        "timestamp_display": "2025-01-15 14:32:07",
+        "has_diff": true,                    // true if before_json or after_json present
+        "before_json": null,                 // null until "View diff" is clicked (lazy load)
+        "after_json": null
+      }
+    ],
+    "total": 1432,
+    "page": 1,
+    "per_page": 20,
+    "total_pages": 72
+  }
+}
+
+SEPARATE ENDPOINT for lazy-loading diff:
+Method + URL: GET /api/admin/audit-logs/:log_id/diff
+Auth required: YES (admin JWT)
+RESPONSE:
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "before_json": "{ \"status\": \"active\" }",
+    "after_json": "{ \"status\": \"banned\", \"ban_reason\": \"Multiple policy violations\", \"updated_at\": \"...\" }"
+  }
+}
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Fetch audit_logs with filters, ordered by created_at DESC.
+3. In list response: return before_json and after_json as null.
+   They are populated only via the /diff sub-route.
+4. Map event_type → event_label:
+     admin.seller.banned            → "Seller Banned"
+     admin.seller.unbanned          → "Seller Unbanned"
+     admin.order.status_overridden  → "Order Override"
+     admin.order.refund_flagged     → "Order Flagged"
+     admin.product.sponsored_toggled→ "Sponsored Toggle"
+     admin.category.created         → "Category Created"
+     admin.category.updated         → "Category Change"
+     admin.category.deleted         → "Category Deleted"
+     admin.dashboard.stats_viewed   → "Stats Viewed"
+     (anything else)                → event_type as-is
+
+FRONTEND MATCH CHECK:
+Filter dropdown options: All Events | admin.seller.banned |
+  admin.order.status_overridden | admin.product.sponsored_toggled
+Table columns: Timestamp | Event | Actor | Target | Change
+  (Change column = "View diff" button or "No diff").
+"View diff" triggers lazy load — use the /diff endpoint.
+Screen note: "The before_json/after_json only loads when the
+  'View diff' is clicked — lazy loaded to keep table fast."
+Pagination: "Showing 20 of 1,432 log entries"
+
+COMMIT: feat: GET /api/admin/audit-logs + GET /api/admin/audit-logs/:log_id/diff
+
+================================================================
+
+
+================================================================
+TASK 24: GET /api/admin/payment-health
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_payment_health_updated_sidebar screen
+================================================================
+
+ENDPOINT:
+Method + URL: GET /api/admin/payment-health
+Auth required: YES (admin JWT)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "overall_status": "healthy",         // "healthy" | "degraded" | "down"
+    "status_label": "All Systems Operational",
+    "last_checked_at": "2025-01-22T10:45:12Z",
+    "last_checked_display": "2025-01-22 10:45:12",
+    "region": "India (South)",
+    "api_response_ms": 124,
+    "api_response_trend": "+2ms",         // delta from previous check
+    "api_response_range": "100ms - 250ms",
+    "webhook_status": "receiving",        // "receiving" | "delayed" | "stopped"
+    "last_webhook_at": "2025-01-22T10:41:00Z",
+    "last_webhook_ago": "4 mins ago",
+    "last_test_txn_id": "txn_89215091",
+    "last_test_txn_status": "verified",   // "verified" | "failed"
+    "last_test_txn_time": "10:30 AM Today",
+    "webhook_event_log": [
+      {
+        "event_type": "payment.captured",
+        "txn_id": "txn_9012354",
+        "timestamp": "2025-01-22T10:42:01Z",
+        "time_display": "10:42:01",
+        "severity": "info"                // "info" | "warning" | "error"
+      },
+      {
+        "event_type": "order.paid",
+        "txn_id": "ord_552190",
+        "timestamp": "2025-01-22T10:41:55Z",
+        "time_display": "10:41:55",
+        "severity": "info"
+      },
+      {
+        "event_type": "refund.processed",
+        "txn_id": "ref_221094",
+        "timestamp": "2025-01-22T10:35:12Z",
+        "time_display": "10:35:12",
+        "severity": "info"
+      },
+      {
+        "event_type": "payment.failed",
+        "txn_id": "txn_9012350",
+        "timestamp": "2025-01-22T10:32:45Z",
+        "time_display": "10:32:45",
+        "severity": "info"
+      },
+      {
+        "event_type": "payout.initiated",
+        "txn_id": "payout_11029",
+        "timestamp": "2025-01-22T10:30:00Z",
+        "time_display": "10:30:00",
+        "severity": "info"
+      }
+    ],
+    "next_auto_check_in_seconds": 45
+  }
+}
+
+RESPONSE (errors):
+  401, 403
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Fetch the most recent row from payment_health_logs.
+3. Fetch last 10 webhook events from payment_health_logs
+   where raw_payload is not null.
+4. Calculate next_auto_check_in_seconds:
+   60 - (seconds elapsed since last check), min 0.
+5. Return assembled object.
+
+NOTE: Actual Razorpay API polling is handled in Task 25 (run-check).
+  This route only reads from the local cache.
+
+COMMIT: feat: GET /api/admin/payment-health
+
+================================================================
+
+
+================================================================
+TASK 25: POST /api/admin/payment-health/run-check
+TYPE: API ROUTE
+NEEDED BY: tohfa_admin_payment_health (Run Health Check Now button)
+================================================================
+
+ENDPOINT:
+Method + URL: POST /api/admin/payment-health/run-check
+Auth required: YES (admin JWT)
+Rate limit: 6 requests per minute (prevent button spam)
+
+REQUEST: (no body required)
+
+RESPONSE (success 200):
+{
+  "success": true,
+  "data": {
+    "overall_status": "healthy",
+    "status_label": "All Systems Operational",
+    "api_response_ms": 118,
+    "webhook_status": "receiving",
+    "checked_at": "2025-01-22T10:46:00Z",
+    "next_auto_check_in_seconds": 60
+  }
+}
+
+BUSINESS LOGIC:
+1. Verify admin JWT.
+2. Ping Razorpay API (GET https://api.razorpay.com/v1/orders?count=1)
+   with Razorpay key_id and key_secret from environment variables.
+   Measure response time in ms.
+3. Determine webhook_status:
+   - If last webhook received < 10 mins ago → "receiving"
+   - 10–30 mins ago → "delayed"
+   - 30+ mins ago → "stopped"
+4. Determine overall_status:
+   - api_response_ms < 500 AND webhook = "receiving" → "healthy"
+   - api_response_ms 500–1000 OR webhook = "delayed" → "degraded"
+   - api_response_ms > 1000 OR webhook = "stopped" → "down"
+5. Insert row into payment_health_logs.
+6. Return summary.
+
+ENV VARS REQUIRED (add to .env.example):
+  RAZORPAY_KEY_ID=
+  RAZORPAY_KEY_SECRET=
+
+⚠️ AMBIGUOUS: If Razorpay credentials are not configured in .env,
+  return a mock healthy response with a note in the data object:
+  "mock": true, "mock_reason": "Razorpay credentials not configured"
+
+COMMIT: feat: POST /api/admin/payment-health/run-check
+
+================================================================
+
+
+================================================================
+TASK 26: UI FIX — Standardise Admin Sidebar across all screens
+TYPE: UI FIX
+================================================================
+
+SCREENS AFFECTED:
+  1. tohfa_admin_audit_logs_updated_sidebar/code.html
+  2. tohfa_admin_categories_manager_updated_sidebar/code.html
+  3. tohfa_admin_order_detail_updated_sidebar/code.html
+  4. tohfa_admin_orders_management_updated_sidebar/code.html
+  5. tohfa_admin_products_sponsored_management/code.html
+  6. tohfa_admin_seller_detail_updated_sidebar/code.html
+  7. tohfa_admin_sellers_directory/code.html
+
+  NOTE: tohfa_admin_payment_health_updated_sidebar is intentionally
+  excluded — it uses a different sidebar (payments sub-section).
+
+CURRENT PROBLEMS FOUND:
+  A) Sidebar label casing is inconsistent:
+       - Some screens: "Tohfa Admin Console" (sentence case)
+       - Some screens: "Tohfa ADMIN CONSOLE" (partial caps)
+  B) Active sidebar item styling differs:
+       - Some screens: bg-[#3D6B4F] text-white rounded-full
+       - Some screens: bg-primary-container text-on-primary rounded-full
+       - Some screens: bg-forest-green text-white rounded-full shadow-md
+  C) Nav icon for Sellers:
+       - Most screens: icon "group"
+       - categories_manager: icon "groups" (plural)
+  D) Nav icon for Dashboard:
+       - Most screens: icon "grid_view"
+       - Some screens: icon "dashboard"
+  E) Nav icon for Orders:
+       - Most screens: icon "shopping_cart"
+       - order_detail screen: icon "shopping_bag"
+  F) Nav icon for Audit Logs:
+       - Most screens: icon "history_edu"
+       - products screen: icon "receipt_long"
+  G) Nav labels vary:
+       - Sellers vs Sellers (consistent ✓)
+       - "Orders" is consistent ✓
+       - Audit Logs vs Audit Logs (consistent ✓)
+
+REQUIRED FIX — apply to ALL 7 screens above:
+  1. Sidebar header text: "Tohfa Admin Console" (sentence case, no caps)
+  2. Active item class: bg-[#3D6B4F] text-white rounded-full
+     Inactive item class: text-on-surface-variant
+                          hover:bg-surface-container-low
+                          transition-all duration-300 rounded-full
+  3. Dashboard icon: grid_view
+  4. Sellers icon: group
+  5. Orders icon: shopping_cart
+  6. Audit Logs icon: history_edu
+  7. Admin avatar chip at bottom of sidebar (all screens):
+     Initials: "TA"
+     Name: "Tohfa Admin"
+     Sub: "Master Access"
+
+DO NOT modify: tohfa_admin_payment_health_updated_sidebar
+  (its sidebar is deliberately different — payments sub-navigation)
+
+APPLY TO: all 7 screen files listed above
+
+COMMIT: fix: standardise admin sidebar icons, casing, and active styles across all screens
+
+================================================================
+
+
+================================================================
+DEPENDENCIES
+================================================================
+Run this part only after:
+  - Part 3 (Auth) is complete and JWT middleware is working
+  - Part 1 (Buyer/Reels) is complete:
+    * products table must exist
+    * orders table must exist
+    * users table (buyers) must exist
+  - Part 4 (Seller Studio) is complete:
+    * users table (sellers) must exist with role = 'seller'
+    * seller shop profiles must exist
+
+Backend routes required before this runs:
+  - POST /api/auth/refresh (from Part 3)
+  - users table with role field (from Part 3)
+  - products table (from Part 1 or Part 4)
+  - orders table (from Part 1)
+
+This part's routes are required by:
+  - Nothing in other parts depends on admin routes.
+  - Admin routes depend on all other parts' data.
+
+================================================================
+
+
+================================================================
+AUTONOMY RULES
+================================================================
+1. Work through tasks in numbered order (01 → 26).
+2. Complete each task fully before starting the next.
+3. Use non-interactive flags: -y, --yes, --no-input, --force.
+4. Never ask for user input.
+5. After each API route task: run a self-check —
+   send a test request and verify the response shape matches
+   exactly what the admin frontend expects.
+6. Commit after each task with the message specified.
+7. If a task fails: log the error, skip to next task, do not stop.
+8. Apply Task 26 UI fix LAST — after all routes are built and tested.
+9. When complete: output summary
+   "PART 2 COMPLETE — 17 routes built — 7 DB tables migrated — 1 UI fix applied"
+================================================================
+</pre>
+</body>
+</html>
