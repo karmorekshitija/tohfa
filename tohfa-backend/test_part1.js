@@ -1465,6 +1465,81 @@ async function runTests() {
     }
 
     console.log('✓ Task 42 Passed: GET /api/reels/:id/comments');
+
+    // --- TASK 43 TESTS: POST /api/reels/:id/comments ---
+    console.log('--- Testing TASK 43: POST /api/reels/:id/comments ---');
+
+    // 1. Unauthenticated post
+    const unauthAddCommentRes = await fetch(`${baseUrl}/api/reels/${newReelId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body: 'Nice reel!' })
+    });
+    if (unauthAddCommentRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth add comment, got ${unauthAddCommentRes.status}`);
+    }
+
+    // 2. Non-existent reel comment
+    const nonexistentAddCommentRes = await fetch(`${baseUrl}/api/reels/99999/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${buyerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ body: 'Nice reel!' })
+    });
+    if (nonexistentAddCommentRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent reel comment, got ${nonexistentAddCommentRes.status}`);
+    }
+
+    // 3. Empty body
+    const emptyCommentRes = await fetch(`${baseUrl}/api/reels/${newReelId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${buyerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ body: '' })
+    });
+    if (emptyCommentRes.status !== 400) {
+      throw new Error(`Expected 400 for empty comment body, got ${emptyCommentRes.status}`);
+    }
+
+    // 4. Too long body (>300 chars)
+    const longCommentRes = await fetch(`${baseUrl}/api/reels/${newReelId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${buyerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ body: 'a'.repeat(301) })
+    });
+    if (longCommentRes.status !== 400) {
+      throw new Error(`Expected 400 for too long comment body, got ${longCommentRes.status}`);
+    }
+
+    // 5. Successful comment post
+    const addCommentRes = await fetch(`${baseUrl}/api/reels/${newReelId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${buyerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ body: 'Outstanding crafts! ✦' })
+    });
+    const addCommentData = await addCommentRes.json();
+    if (addCommentRes.status !== 200 || !addCommentData.success || addCommentData.data.body !== 'Outstanding crafts! ✦' || addCommentData.data.user_name !== 'Test Buyer') {
+      throw new Error(`Expected successful comment add, got: ${JSON.stringify(addCommentData)}`);
+    }
+
+    // 6. Verify comment count has increased
+    const verifyCommentsRes = await fetch(`${baseUrl}/api/reels/${newReelId}/comments?limit=10`);
+    const verifyCommentsData = await verifyCommentsRes.json();
+    if (verifyCommentsData.data.comment_count !== 3) {
+      throw new Error(`Expected comment count to be 3, got: ${verifyCommentsData.data.comment_count}`);
+    }
+
+    console.log('✓ Task 43 Passed: POST /api/reels/:id/comments');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

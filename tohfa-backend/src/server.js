@@ -2732,6 +2732,76 @@ app.get('/api/reels/:id/comments', rateLimit(60), (req, res) => {
   }
 });
 
+// TASK 43: POST /api/reels/:id/comments
+app.post('/api/reels/:id/comments', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const reelId = req.params.id;
+  const bodyStr = req.body.body;
+
+  if (!bodyStr || typeof bodyStr !== 'string' || bodyStr.trim() === '') {
+    return res.status(400).json({
+      error: true,
+      message: "body is required",
+      code: "BODY_REQUIRED"
+    });
+  }
+
+  if (bodyStr.length > 300) {
+    return res.status(400).json({
+      error: true,
+      message: "body exceeds 300 characters",
+      code: "BODY_TOO_LONG"
+    });
+  }
+
+  try {
+    const reel = db.prepare("SELECT id FROM reels WHERE id = ?").get(reelId);
+    if (!reel) {
+      return res.status(404).json({
+        error: true,
+        message: "Reel not found",
+        code: "REEL_NOT_FOUND"
+      });
+    }
+
+    const insertResult = db.prepare(`
+      INSERT INTO reel_comments (reel_id, user_id, body)
+      VALUES (?, ?, ?)
+    `).run(reelId, userId, bodyStr);
+
+    db.prepare("UPDATE reels SET comment_count = comment_count + 1 WHERE id = ?").run(reelId);
+
+    const commentId = insertResult.lastInsertRowid;
+    const comment = db.prepare(`
+      SELECT 
+        rc.id, rc.body, rc.created_at,
+        u.full_name AS user_name, u.avatar_url
+      FROM reel_comments rc
+      JOIN users u ON rc.user_id = u.id
+      WHERE rc.id = ?
+    `).get(commentId);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: comment.id,
+        user_name: comment.user_name,
+        avatar_url: comment.avatar_url,
+        body: comment.body,
+        created_at: new Date(comment.created_at + 'Z').toISOString(),
+        time_ago: "Just now"
+      }
+    });
+  } catch (err) {
+    console.error('Error adding reel comment:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
