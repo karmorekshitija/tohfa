@@ -3,7 +3,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Flora &amp; Craft - Reels Discovery</title>
+<title>Tohfa - Reels Discovery</title>
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Google Fonts -->
@@ -120,44 +120,25 @@
         <nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
             <div class="flex items-center gap-unit cursor-pointer" onclick="window.location.href='home.html'">
                 <span class="material-symbols-outlined text-primary text-3xl">filter_vintage</span>
-                <h1 class="font-headline-lg text-headline-lg text-primary select-none">Flora &amp; Craft</h1>
+                <h1 class="font-headline-lg text-headline-lg text-primary select-none" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></h1>
             </div>
-            
+
             <!-- Center Navigation Links -->
-            <div class="flex items-center gap-8">
-    <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="shop.html">Shop</a>
-    <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="about.html">About</a>
-    <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="contact.html">Contact</a>
-    <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="home.html">Home</a>
-    <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="category.html">Category</a>
-    <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="reels.html">Reels</a>
-    <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="profile.html">Profile</a>
-</div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="home.html">Home</a>
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="category.html">Category</a>
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="reels.html">Reels</a>
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" id="navbar-dashboard-link" href="profile.html">Profile</a>
+            </div>
 
             <!-- Right Action Icons / Auth State -->
             <div class="flex items-center gap-6">
-                <!-- Search Icon with input -->
-                <div class="relative hidden sm:flex items-center">
-                    <input type="text" id="global-search-input" placeholder="Search products..." class="bg-surface-container-low border border-outline-variant/30 rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary w-48 transition-all"/>
-                    <button onclick="triggerSearch()" class="absolute right-2 text-secondary hover:text-primary flex items-center">
-                        <span class="material-symbols-outlined text-[20px]">search</span>
-                    </button>
-                </div>
-                
                 <button onclick="window.location.href='wishlist.html'" class="text-secondary hover:text-primary transition-colors flex items-center relative">
-    <span class="material-symbols-outlined">favorite</span>
-    <span id="wishlist-count-badge" class="hidden absolute -top-1.5 -right-1.5 bg-error text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-</button>
-<button onclick="window.location.href='cart.html'" class="text-secondary hover:text-primary transition-colors flex items-center ml-2">
-    <span class="material-symbols-outlined">shopping_bag</span>
-</button>
-<div id="auth-buttons" class="flex items-center gap-2"></div>
                     <span class="material-symbols-outlined">favorite</span>
-                    <span id="wishlist-count-badge" class="hidden absolute -top-1.5 -right-1.5 bg-error text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
                 </button>
-                
+
                 <div id="auth-buttons" class="flex items-center gap-2"></div>
-                
+
                 <button class="md:hidden text-secondary" id="mobile-menu-btn">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
@@ -389,19 +370,6 @@
             }
         }
 
-    function triggerSearch() {
-        const input = document.getElementById('global-search-input');
-        const query = input.value.trim();
-        if (query.length >= 2) {
-            window.location.href = `category.html?search=${encodeURIComponent(query)}`;
-        }
-    }
-
-    document.getElementById('global-search-input')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            triggerSearch();
-        }
-    });
 
     window.addEventListener('DOMContentLoaded', () => {
         checkAuthState();
