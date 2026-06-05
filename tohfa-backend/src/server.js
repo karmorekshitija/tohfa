@@ -2317,6 +2317,119 @@ app.delete('/api/wishlist/:productId', rateLimit(60), authenticateToken, (req, r
   }
 });
 
+// TASK 39: GET /api/reels/feed
+app.get('/api/reels/feed', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  const userId = req.user ? req.user.user_id : null;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit, 10) || 10;
+
+  try {
+    let sql = `
+      SELECT 
+        r.id, r.video_url, r.thumbnail_url, r.caption, r.duration_secs,
+        r.like_count, r.comment_count, r.save_count, r.seller_id, r.product_id,
+        r.created_at,
+        u.avatar_url AS seller_avatar,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name,
+        p.name AS product_name, p.price_paise AS product_price_paise
+    `;
+
+    const sqlParams = [];
+
+    if (userId) {
+      sql += `,
+        ((SELECT 1 FROM reel_likes WHERE reel_id = r.id AND user_id = ?) IS NOT NULL) AS is_liked,
+        ((SELECT 1 FROM saved_reels WHERE reel_id = r.id AND user_id = ?) IS NOT NULL) AS is_saved,
+        ((SELECT 1 FROM follows WHERE follower_id = ? AND following_id = r.seller_id) IS NOT NULL) AS is_followed
+      `;
+      sqlParams.push(userId, userId, userId);
+    } else {
+      sql += `,
+        0 AS is_liked,
+        0 AS is_saved,
+        0 AS is_followed
+      `;
+    }
+
+    sql += `
+      FROM reels r
+      JOIN users u ON r.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      LEFT JOIN products p ON r.product_id = p.id
+      WHERE r.status = 'active'
+    `;
+
+    if (cursor) {
+      const cursorReel = db.prepare("SELECT created_at, id FROM reels WHERE id = ?").get(cursor);
+      if (cursorReel) {
+        sql += ` AND (r.created_at < ? OR (r.created_at = ? AND r.id < ?))`;
+        sqlParams.push(cursorReel.created_at, cursorReel.created_at, cursorReel.id);
+      }
+    }
+
+    sql += ` ORDER BY r.created_at DESC, r.id DESC LIMIT ?`;
+    sqlParams.push(limit + 1);
+
+    const rows = db.prepare(sql).all(...sqlParams);
+
+    const hasMore = rows.length > limit;
+    if (hasMore) {
+      rows.pop();
+    }
+
+    const reels = rows.map(row => {
+      const r = {
+        id: row.id,
+        video_url: row.video_url,
+        thumbnail_url: row.thumbnail_url,
+        caption: row.caption,
+        duration_secs: row.duration_secs,
+        like_count: row.like_count || 0,
+        comment_count: row.comment_count || 0,
+        save_count: row.save_count || 0,
+        is_liked: !!row.is_liked,
+        is_saved: !!row.is_saved,
+        seller: {
+          id: row.seller_id,
+          seller_name: row.seller_name,
+          avatar_url: row.seller_avatar,
+          is_followed: !!row.is_followed
+        }
+      };
+
+      if (row.product_id) {
+        r.linked_product = {
+          id: row.product_id,
+          name: row.product_name,
+          price_paise: row.product_price_paise
+        };
+      } else {
+        r.linked_product = null;
+      }
+
+      return r;
+    });
+
+    const nextCursor = hasMore && reels.length > 0 ? String(reels[reels.length - 1].id) : null;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        reels,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching reels feed:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

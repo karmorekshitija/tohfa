@@ -1263,6 +1263,55 @@ async function runTests() {
     }
 
     console.log('✓ Task 38 Passed: DELETE /api/wishlist/:productId');
+
+    // --- TASK 39 TESTS: GET /api/reels/feed ---
+    console.log('--- Testing TASK 39: GET /api/reels/feed ---');
+    // Clear and insert mock reels
+    db.prepare('DELETE FROM reels').run();
+    db.prepare(`
+      INSERT INTO reels (seller_id, product_id, caption, video_url, duration_secs, like_count)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(sellerId, newProductId, 'Awesome handcrafted mug!', 'https://example.com/video1.mp4', 15, 10);
+    
+    db.prepare(`
+      INSERT INTO reels (seller_id, product_id, caption, video_url, duration_secs, like_count)
+      VALUES (?, NULL, ?, ?, ?, ?)
+    `).run(sellerId, 'Clay modeling 101', 'https://example.com/video2.mp4', 45, 20);
+
+    // 1. Unauthenticated feed fetch
+    const unauthFeedRes = await fetch(`${baseUrl}/api/reels/feed?limit=10`);
+    const unauthFeedData = await unauthFeedRes.json();
+    if (unauthFeedRes.status !== 200 || !unauthFeedData.success || unauthFeedData.data.reels.length !== 2) {
+      throw new Error(`Expected 2 reels in unauth feed, got: ${JSON.stringify(unauthFeedData)}`);
+    }
+    const r1 = unauthFeedData.data.reels[0];
+    if (r1.is_liked !== false || r1.seller.seller_name !== 'Stoneware Studio') {
+      throw new Error(`Unexpected reel feed values: ${JSON.stringify(r1)}`);
+    }
+
+    // 2. Authenticated feed fetch
+    const authFeedRes = await fetch(`${baseUrl}/api/reels/feed?limit=10`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const authFeedData = await authFeedRes.json();
+    if (authFeedRes.status !== 200 || !authFeedData.success) {
+      throw new Error(`Expected 200 for auth feed: ${JSON.stringify(authFeedData)}`);
+    }
+
+    // 3. Cursor pagination check
+    const page1Res = await fetch(`${baseUrl}/api/reels/feed?limit=1`);
+    const page1Data = await page1Res.json();
+    if (page1Data.data.reels.length !== 1 || page1Data.data.has_more !== true || !page1Data.data.next_cursor) {
+      throw new Error(`Cursor pagination failed on page 1: ${JSON.stringify(page1Data)}`);
+    }
+
+    const page2Res = await fetch(`${baseUrl}/api/reels/feed?limit=1&cursor=${page1Data.data.next_cursor}`);
+    const page2Data = await page2Res.json();
+    if (page2Data.data.reels.length !== 1 || page2Data.data.has_more !== false) {
+      throw new Error(`Cursor pagination failed on page 2: ${JSON.stringify(page2Data)}`);
+    }
+
+    console.log('✓ Task 39 Passed: GET /api/reels/feed');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
