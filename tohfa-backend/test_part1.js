@@ -617,6 +617,50 @@ async function runTests() {
 
     console.log('✓ Task 26 Passed: PUT /api/addresses/:id');
 
+    // --- TASK 27 TESTS: DELETE /api/addresses/:id ---
+    console.log('--- Testing TASK 27: DELETE /api/addresses/:id ---');
+    // Test unauthenticated DELETE
+    const unauthDelAddRes = await fetch(`${baseUrl}/api/addresses/${newAddressId}`, {
+      method: 'DELETE'
+    });
+    console.log('Unauth Delete Address Status:', unauthDelAddRes.status);
+    if (unauthDelAddRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated DELETE address, got ${unauthDelAddRes.status}`);
+    }
+
+    // Test DELETE not owner (using sellerToken)
+    const notOwnerDelAddRes = await fetch(`${baseUrl}/api/addresses/${newAddressId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${sellerToken}` }
+    });
+    console.log('Not Owner Delete Address Status:', notOwnerDelAddRes.status);
+    if (notOwnerDelAddRes.status !== 403) {
+      throw new Error(`Expected 403 for non-owner DELETE address, got ${notOwnerDelAddRes.status}`);
+    }
+
+    // Test DELETE nonexistent address
+    const nonexistentDelAddRes = await fetch(`${baseUrl}/api/addresses/999999`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Nonexistent Delete Address Status:', nonexistentDelAddRes.status);
+    if (nonexistentDelAddRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent DELETE address, got ${nonexistentDelAddRes.status}`);
+    }
+
+    // Test valid DELETE
+    const delAddRes = await fetch(`${baseUrl}/api/addresses/${newAddressId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Delete Address Status:', delAddRes.status);
+    const delAddData = await delAddRes.json();
+    if (delAddRes.status !== 200 || !delAddData.success) {
+      throw new Error(`Valid DELETE address failed: ${JSON.stringify(delAddData)}`);
+    }
+
+    console.log('✓ Task 27 Passed: DELETE /api/addresses/:id');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

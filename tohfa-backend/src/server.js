@@ -1415,6 +1415,44 @@ app.put('/api/addresses/:id', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 27: DELETE /api/addresses/:id
+app.delete('/api/addresses/:id', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  
+  try {
+    const address = db.prepare('SELECT user_id FROM addresses WHERE id = ?').get(id);
+    if (!address) {
+      return res.status(404).json({
+        error: true,
+        message: "Address not found",
+        code: "ADDRESS_NOT_FOUND"
+      });
+    }
+    
+    if (address.user_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your address",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    db.prepare('DELETE FROM addresses WHERE id = ?').run(id);
+    
+    return res.status(200).json({
+      success: true
+    });
+  } catch (err) {
+    console.error('Error deleting address:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
