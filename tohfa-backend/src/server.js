@@ -711,6 +711,137 @@ app.get('/api/categories', rateLimit(120), (req, res) => {
   }
 });
 
+// TASK 17: GET /api/categories/:slug/products
+app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  const { slug } = req.params;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit) || 20;
+  const sort = req.query.sort || 'newest';
+  const sub = req.query.sub;
+  
+  try {
+    // 1. Resolve category
+    const category = db.prepare('SELECT * FROM categories WHERE slug = ?').get(slug);
+    if (!category) {
+      return res.status(404).json({
+        error: true,
+        message: "Category not found",
+        code: "CATEGORY_NOT_FOUND"
+      });
+    }
+    
+    // 2. Build query
+    let queryParts = [];
+    let queryParams = [category.id];
+    
+    if (sub) {
+      queryParts.push("(p.name LIKE ? OR p.description LIKE ?)");
+      queryParams.push(`%${sub}%`, `%${sub}%`);
+    }
+    
+    if (cursor) {
+      const lastProduct = db.prepare("SELECT * FROM products WHERE id = ?").get(cursor);
+      if (lastProduct) {
+        if (sort === 'newest') {
+          queryParts.push("(p.created_at < ? OR (p.created_at = ? AND p.id < ?))");
+          queryParams.push(lastProduct.created_at, lastProduct.created_at, lastProduct.id);
+        } else if (sort === 'price_asc') {
+          queryParts.push("(p.price_paise > ? OR (p.price_paise = ? AND p.id > ?))");
+          queryParams.push(lastProduct.price_paise, lastProduct.price_paise, lastProduct.id);
+        } else if (sort === 'price_desc') {
+          queryParts.push("(p.price_paise < ? OR (p.price_paise = ? AND p.id < ?))");
+          queryParams.push(lastProduct.price_paise, lastProduct.price_paise, lastProduct.id);
+        } else if (sort === 'top_rated') {
+          queryParts.push("(p.avg_rating < ? OR (p.avg_rating = ? AND p.id < ?))");
+          queryParams.push(lastProduct.avg_rating, lastProduct.avg_rating, lastProduct.id);
+        }
+      }
+    }
+    
+    let orderBy = 'p.created_at DESC, p.id DESC';
+    if (sort === 'price_asc') {
+      orderBy = 'p.price_paise ASC, p.id ASC';
+    } else if (sort === 'price_desc') {
+      orderBy = 'p.price_paise DESC, p.id DESC';
+    } else if (sort === 'top_rated') {
+      orderBy = 'p.avg_rating DESC, p.id DESC';
+    }
+    
+    let userId = req.user ? req.user.user_id : null;
+    let sql = `
+      SELECT 
+        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.review_count, p.status, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name,
+        (p.ships_in_days <= 1) AS ready_to_ship
+    `;
+    if (userId) {
+      sql += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      sql += `, 0 AS is_wishlisted`;
+    }
+    sql += `
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE p.category_id = ? AND p.status = 'active'
+    `;
+    
+    if (queryParts.length > 0) {
+      sql += ' AND ' + queryParts.join(' AND ');
+    }
+    
+    sql += ` ORDER BY ${orderBy} LIMIT ?`;
+    
+    let finalParams = [];
+    if (userId) {
+      finalParams.push(userId);
+    }
+    finalParams.push(category.id);
+    finalParams.push(...queryParams.slice(1));
+    finalParams.push(limit + 1); // Fetch limit + 1 to check if has_more
+    
+    const products = db.prepare(sql).all(...finalParams);
+    
+    const hasMore = products.length > limit;
+    if (hasMore) {
+      products.pop();
+    }
+    
+    products.forEach(p => {
+      p.is_wishlisted = !!p.is_wishlisted;
+      p.ready_to_ship = !!p.ready_to_ship;
+    });
+    
+    const nextCursor = hasMore && products.length > 0 ? String(products[products.length - 1].id) : null;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        category: {
+          id: category.id,
+          name: category.name,
+          slug: category.slug,
+          item_count: category.item_count
+        },
+        products,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching category products:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -94,6 +94,43 @@ async function runTests() {
     }
     console.log('✓ Task 16 Passed: GET /api/categories');
 
+    // --- TASK 17 TESTS: GET /api/categories/:slug/products ---
+    console.log('--- Testing TASK 17: GET /api/categories/:slug/products ---');
+    // We need to insert a product to test the category products list
+    const ceramicsCategory = db.prepare("SELECT id FROM categories WHERE slug = 'ceramics-pottery'").get();
+    db.prepare(`
+      INSERT INTO products (seller_id, category_id, name, description, price_paise, stock_qty, ships_in_days, status)
+      VALUES (?, ?, 'Speckled Moon Bowl', 'Handmade clay bowl', 4800, 5, 1, 'active')
+    `).run(sellerId, ceramicsCategory.id);
+    const newProductId = db.prepare("SELECT last_insert_rowid() as id").get().id;
+    
+    // Insert an image for the product
+    db.prepare(`
+      INSERT INTO product_images (product_id, url, is_primary)
+      VALUES (?, 'https://example.com/image.jpg', 1)
+    `).run(newProductId);
+
+    const catProdRes = await fetch(`${baseUrl}/api/categories/ceramics-pottery/products`);
+    console.log('Category Products Status:', catProdRes.status);
+    const catProdData = await catProdRes.json();
+    if (catProdRes.status !== 200 || !catProdData.success || catProdData.data.products.length !== 1) {
+      throw new Error(`Category Products response invalid: ${JSON.stringify(catProdData)}`);
+    }
+    const product = catProdData.data.products[0];
+    if (product.name !== 'Speckled Moon Bowl' || product.price_paise !== 4800 || product.ready_to_ship !== true || product.image_url !== 'https://example.com/image.jpg') {
+      throw new Error(`Product fields mismatch in category feed: ${JSON.stringify(product)}`);
+    }
+
+    // Test nonexistent category slug (404)
+    const nonexistentCatProdRes = await fetch(`${baseUrl}/api/categories/nonexistent-slug/products`);
+    console.log('Nonexistent Category Products Status:', nonexistentCatProdRes.status);
+    const nonexistentCatProdData = await nonexistentCatProdRes.json();
+    if (nonexistentCatProdRes.status !== 404 || nonexistentCatProdData.code !== 'CATEGORY_NOT_FOUND') {
+      throw new Error(`Expected 404 with CATEGORY_NOT_FOUND, got ${nonexistentCatProdRes.status}`);
+    }
+
+    console.log('✓ Task 17 Passed: GET /api/categories/:slug/products');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
