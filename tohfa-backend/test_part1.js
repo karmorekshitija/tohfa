@@ -1989,6 +1989,38 @@ async function runTests() {
     }
 
     console.log('✓ Task 54 Passed: GET /api/notifications');
+
+    // --- TASK 55 TESTS: PATCH /api/notifications/read-all ---
+    console.log('--- Testing TASK 55: PATCH /api/notifications/read-all ---');
+
+    // 1. Unauthenticated mark all read
+    const unauthReadAllRes = await fetch(`${baseUrl}/api/notifications/read-all`, {
+      method: 'PATCH'
+    });
+    if (unauthReadAllRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth read-all, got ${unauthReadAllRes.status}`);
+    }
+
+    // 2. Successful mark all read
+    const successReadAllRes = await fetch(`${baseUrl}/api/notifications/read-all`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const successReadAllData = await successReadAllRes.json();
+    if (successReadAllRes.status !== 200 || !successReadAllData.success || successReadAllData.data.updated_count !== 1) {
+      throw new Error(`Expected updated_count to be 1, got: ${JSON.stringify(successReadAllData)}`);
+    }
+
+    // Verify unread count is now 0
+    const verifyReadAllRes = await fetch(`${baseUrl}/api/notifications`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const verifyReadAllData = await verifyReadAllRes.json();
+    if (verifyReadAllData.data.unread_count !== 0) {
+      throw new Error(`Expected unread count to be 0 after read-all, got ${verifyReadAllData.data.unread_count}`);
+    }
+
+    console.log('✓ Task 55 Passed: PATCH /api/notifications/read-all');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
