@@ -1142,6 +1142,74 @@ app.post('/api/cart/items', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 22: PATCH /api/cart/items/:id
+app.patch('/api/cart/items/:id', rateLimit(120), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  const { quantity } = req.body;
+  
+  if (quantity === undefined || quantity === null || !Number.isInteger(quantity) || quantity < 1) {
+    return res.status(400).json({
+      error: true,
+      message: "quantity must be an integer >= 1",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const cartItem = db.prepare('SELECT * FROM cart_items WHERE id = ?').get(id);
+    if (!cartItem) {
+      return res.status(404).json({
+        error: true,
+        message: "Cart item not found",
+        code: "CART_ITEM_NOT_FOUND"
+      });
+    }
+    
+    if (cartItem.user_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your cart item",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    const product = db.prepare('SELECT stock_qty FROM products WHERE id = ?').get(cartItem.product_id);
+    if (!product) {
+      return res.status(404).json({
+        error: true,
+        message: "Product not found",
+        code: "PRODUCT_NOT_FOUND"
+      });
+    }
+    
+    if (quantity > product.stock_qty) {
+      return res.status(422).json({
+        error: true,
+        message: "Requested quantity exceeds stock",
+        code: "INSUFFICIENT_STOCK"
+      });
+    }
+    
+    db.prepare('UPDATE cart_items SET quantity = ?, added_at = CURRENT_TIMESTAMP WHERE id = ?').run(quantity, id);
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: parseInt(id),
+        quantity
+      }
+    });
+  } catch (err) {
+    console.error('Error updating cart item:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

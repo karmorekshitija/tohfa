@@ -337,6 +337,70 @@ async function runTests() {
 
     console.log('✓ Task 21 Passed: POST /api/cart/items');
 
+    // --- TASK 22 TESTS: PATCH /api/cart/items/:id ---
+    console.log('--- Testing TASK 22: PATCH /api/cart/items/:id ---');
+    // Get the cart item ID from the previous test
+    const cartItemId = addCartData.data.cart_item_id;
+
+    // Test valid PATCH update
+    const patchRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ quantity: 3 })
+    });
+    console.log('Patch Status:', patchRes.status);
+    const patchData = await patchRes.json();
+    if (patchRes.status !== 200 || !patchData.success || patchData.data.quantity !== 3) {
+      throw new Error(`PATCH failed: ${JSON.stringify(patchData)}`);
+    }
+
+    // Test PATCH exceeding stock (stock is 5)
+    const patchExceedRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ quantity: 6 })
+    });
+    console.log('Patch Exceed Status:', patchExceedRes.status);
+    if (patchExceedRes.status !== 422) {
+      throw new Error(`Expected 422 for PATCH exceeding stock, got ${patchExceedRes.status}`);
+    }
+
+    // Test PATCH not owner (use sellerToken, who is a registered user)
+    const patchUnauthRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sellerToken}`
+      },
+      body: JSON.stringify({ quantity: 2 })
+    });
+    console.log('Patch Not Owner Status:', patchUnauthRes.status);
+    if (patchUnauthRes.status !== 403) {
+      throw new Error(`Expected 403 for PATCH from non-owner, got ${patchUnauthRes.status}`);
+    }
+
+    // Test PATCH nonexistent cart item
+    const patchNonexistentRes = await fetch(`${baseUrl}/api/cart/items/999999`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ quantity: 2 })
+    });
+    console.log('Patch Nonexistent Status:', patchNonexistentRes.status);
+    if (patchNonexistentRes.status !== 404) {
+      throw new Error(`Expected 404 for PATCH nonexistent item, got ${patchNonexistentRes.status}`);
+    }
+
+    console.log('✓ Task 22 Passed: PATCH /api/cart/items/:id');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
