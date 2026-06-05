@@ -1753,6 +1753,97 @@ app.get('/api/orders/:id', rateLimit(120), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 31: POST /api/orders/:id/cancel
+app.post('/api/orders/:id/cancel', rateLimit(60), authenticateToken, async (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  const { reason } = req.body;
+  
+  if (!reason || typeof reason !== 'string' || reason.trim() === '') {
+    return res.status(400).json({
+      error: true,
+      message: "reason is required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(id);
+    if (!order) {
+      return res.status(404).json({
+        error: true,
+        message: "Order not found",
+        code: "ORDER_NOT_FOUND"
+      });
+    }
+    
+    if (order.buyer_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your order",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    if (order.status !== 'Awaiting Payment' && order.status !== 'Processing') {
+      return res.status(422).json({
+        error: true,
+        message: "Order cannot be cancelled — already Shipped or Delivered",
+        code: "ORDER_NOT_CANCELLABLE"
+      });
+    }
+    
+    const cancelTx = db.transaction(() => {
+      db.prepare(`
+        UPDATE orders 
+        SET status = 'Cancelled', cancel_reason = ?, cancelled_at = datetime('now'), updated_at = datetime('now') 
+        WHERE id = ?
+      `).run(reason, id);
+      
+      const items = db.prepare('SELECT product_id, quantity FROM order_items WHERE order_id = ?').all(id);
+      const updateStock = db.prepare('UPDATE products SET stock_qty = stock_qty + ? WHERE id = ?');
+      for (const item of items) {
+        updateStock.run(item.quantity, item.product_id);
+      }
+    });
+    
+    cancelTx();
+    
+    if (order.razorpay_payment_id) {
+      console.log(`[RAZORPAY REFUND] Initiating refund for payment ${order.razorpay_payment_id}`);
+      if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+        try {
+          const auth = Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString('base64');
+          await fetch(`https://api.razorpay.com/v1/payments/${order.razorpay_payment_id}/refund`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Basic ${auth}`
+            }
+          });
+        } catch (err) {
+          console.error('Razorpay refund API call failed:', err);
+        }
+      }
+    }
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: parseInt(id),
+        status: 'Cancelled'
+      }
+    });
+  } catch (err) {
+    console.error('Error cancelling order:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

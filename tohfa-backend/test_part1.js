@@ -849,6 +849,85 @@ async function runTests() {
 
     console.log('✓ Task 30 Passed: GET /api/orders/:id');
 
+    // --- TASK 31 TESTS: POST /api/orders/:id/cancel ---
+    console.log('--- Testing TASK 31: POST /api/orders/:id/cancel ---');
+    // Test unauthenticated cancel
+    const unauthCancelRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/cancel`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason: 'Changed my mind' })
+    });
+    console.log('Unauth Cancel Status:', unauthCancelRes.status);
+    if (unauthCancelRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated cancel, got ${unauthCancelRes.status}`);
+    }
+
+    // Test missing reason
+    const missingReasonCancelRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/cancel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({})
+    });
+    console.log('Missing Reason Cancel Status:', missingReasonCancelRes.status);
+    if (missingReasonCancelRes.status !== 400) {
+      throw new Error(`Expected 400 for missing reason, got ${missingReasonCancelRes.status}`);
+    }
+
+    // Test not owner cancel (using sellerToken)
+    const notOwnerCancelRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/cancel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sellerToken}`
+      },
+      body: JSON.stringify({ reason: 'Changed my mind' })
+    });
+    console.log('Not Owner Cancel Status:', notOwnerCancelRes.status);
+    if (notOwnerCancelRes.status !== 403) {
+      throw new Error(`Expected 403 for non-owner cancel, got ${notOwnerCancelRes.status}`);
+    }
+
+    // Test valid cancel
+    const initialStock = db.prepare("SELECT stock_qty FROM products WHERE id = ?").get(newProductId).stock_qty;
+    const cancelRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/cancel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ reason: 'Found a better price' })
+    });
+    console.log('Cancel Status:', cancelRes.status);
+    const cancelData = await cancelRes.json();
+    if (cancelRes.status !== 200 || !cancelData.success || cancelData.data.status !== 'Cancelled') {
+      throw new Error(`Valid cancel failed: ${JSON.stringify(cancelData)}`);
+    }
+
+    // Verify stock was restored (+2 quantity from the order)
+    const finalStock = db.prepare("SELECT stock_qty FROM products WHERE id = ?").get(newProductId).stock_qty;
+    if (finalStock !== initialStock + 2) {
+      throw new Error(`Expected stock to be restored to ${initialStock + 2}, got ${finalStock}`);
+    }
+
+    // Test cancel already cancelled order (should fail with 422)
+    const recancelRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/cancel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ reason: 'Recancel' })
+    });
+    console.log('Recancel Status:', recancelRes.status);
+    if (recancelRes.status !== 422) {
+      throw new Error(`Expected 422 for recancel, got ${recancelRes.status}`);
+    }
+
+    console.log('✓ Task 31 Passed: POST /api/orders/:id/cancel');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
