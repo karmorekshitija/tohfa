@@ -1,0 +1,611 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Orders | TOFA Seller Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=Space+Mono&amp;family=Lora:ital,wght@0,400;1,400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e2e3df",
+                        "on-primary-fixed": "#002110",
+                        "primary-container": "#3d6b4f",
+                        "surface-bright": "#f9faf5",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#70539b",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "inverse-surface": "#2e312e",
+                        "tertiary": "#573b81",
+                        "surface-tint": "#3a684c",
+                        "on-tertiary-fixed": "#270550",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-surface": "#1a1c1a",
+                        "surface-dim": "#d9dad6",
+                        "primary": "#255338",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e2e3df",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-high": "#e7e9e4",
+                        "surface-container": "#edeeea",
+                        "on-primary-fixed-variant": "#214f36",
+                        "secondary-container": "#c8e9b8",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-background": "#1a1c1a",
+                        "surface-container-low": "#f3f4f0",
+                        "secondary": "#49663f",
+                        "on-tertiary-container": "#e8d6ff",
+                        "outline": "#717972",
+                        "secondary-fixed": "#caecbb",
+                        "primary-fixed": "#bceecb",
+                        "surface": "#f9faf5",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "outline-variant": "#c1c9c0",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-secondary-container": "#4d6a43",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#b7e9c6",
+                        "on-surface-variant": "#414942",
+                        "inverse-primary": "#a0d2b0",
+                        "on-secondary-fixed": "#062103",
+                        "error": "#ba1a1a",
+                        "background": "#f9faf5",
+                        "parchment": "#F7F3EC"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "container-max-width": "1280px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Space Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-sm": ["DM Sans"],
+                        "body-lg": ["DM Sans"],
+                        "label-caps": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "artisan": ["Lora"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .parchment-texture {
+            background-color: #f9faf5;
+            background-image: radial-gradient(#eceae0 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+        }
+        .watercolor-line {
+            background: linear-gradient(90deg, transparent 0%, #8FAF82 50%, transparent 100%);
+            height: 2px;
+            filter: blur(0.5px);
+        }
+        .flower-watermark {
+            pointer-events: none;
+            opacity: 0.08;
+            filter: sepia(0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<!-- Standardised Left Sidebar (Task 37) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+  <div class="px-4 mb-8 flex flex-col items-center">
+    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="02_tofa_seller_studio_-_home_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="14_tofa_seller_studio_-_catalog_unified_layout_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="09_tofa_seller_studio_-_orders_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="07_tofa_seller_studio_-_analytics_enhanced_style_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="04_tofa_seller_studio_-_store_config_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="11_tofa_seller_studio_-_profile__settings_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+    </a>
+  </nav>
+  <div class="px-2 mt-auto pt-6">
+    <button class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+      View Store
+    </button>
+  </div>
+</aside>
+<!-- Top App Bar -->
+<!-- Standardised Page Header Bar (Task 38) -->
+<header class="flex justify-between items-center py-4 px-8 bg-parchment border-b border-outline-variant/30 sticky top-0 z-40">
+  <h2 class="font-headline-sm text-primary font-serif">Orders</h2>
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">search</span>
+    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary/30 text-tertiary text-[12px] font-bold hover:bg-tertiary/10 transition-all" id="zai-toggle-btn">
+      <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+      ZAI Mode
+    </button>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">help_outline</span>
+  </div>
+</header>
+<!-- Main Content Canvas -->
+<main class="mt-[72px] p-margin-desktop min-h-screen relative overflow-hidden ml-[130px]">
+<!-- Decorative Watermark -->
+<img class="absolute -right-20 top-40 w-80 flower-watermark select-none" data-alt="A delicate, minimalist line-art illustration of a pressed wildflower, featuring fine petals and a slender stem. The image is rendered with a light-handed, scholar-journal style, with subtle sepia tones and an airy, organic feel that creates a background watermark for a luxury botanical brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyDdlXdbslOLlYz-yhKuzF6V88y33AIEu-GSHtLoJ-t13NeyBecZgzlqssIyon1vmgS6pJDyl27XSbx-ESsI7H3l-iMF9ge88j1Vy9PWLEjZGjOnGw73jG0SM6DI4TfjfAsdDz5uNlpoNRaWWGXzzzLEnzCg25-jxEUMcmMsn_TbJK7dRkoMw_Q6ZOG9zJcQT4E0fp5-w_7kpJZ9rmpNQnBbL9NRz57MJfzon8rXNIGkjk-w7sR61v5Gqey5D23P7A0ce0Q9f-O0g">
+<!-- Header Section -->
+<section class="flex justify-between items-end mb-8">
+<div>
+<div class="flex items-center space-x-4 mb-2">
+<h1 class="font-headline-md text-display-lg-mobile text-primary">Orders</h1>
+<span class="font-data-mono text-data-mono bg-secondary-container px-3 py-1 rounded-full text-on-secondary-container">24 TOTAL</span>
+</div>
+<div class="flex space-x-2">
+<button class="px-5 py-2 rounded-full font-body-sm text-sm bg-surface-container-high text-on-surface-variant border border-outline-variant hover:border-primary transition-colors">All (24)</button>
+<button class="px-5 py-2 rounded-full font-body-sm text-sm bg-primary text-on-primary border border-primary shadow-sm">Crafting (3)</button>
+<button class="px-5 py-2 rounded-full font-body-sm text-sm bg-surface-container-high text-on-surface-variant border border-outline-variant hover:border-primary transition-colors">Shipped (8)</button>
+<button class="px-5 py-2 rounded-full font-body-sm text-sm bg-surface-container-high text-on-surface-variant border border-outline-variant hover:border-primary transition-colors">Delivered (11)</button>
+<button class="px-5 py-2 rounded-full font-body-sm text-sm bg-surface-container-high text-on-surface-variant border border-outline-variant hover:border-primary transition-colors">Cancelled (2)</button>
+</div>
+</div>
+<button class="flex items-center px-6 py-2.5 rounded-full border border-secondary text-primary font-bold text-sm hover:bg-secondary/5 transition-all">
+<span class="material-symbols-outlined mr-2 text-lg" data-icon="download">download</span>
+                Export CSV
+            </button>
+</section>
+<!-- KPI Bento -->
+<section class="grid grid-cols-3 gap-gutter mb-10">
+<div class="bg-surface-container-low p-6 rounded-xl border border-secondary/20 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-error/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<p class="text-sm font-label-caps uppercase text-outline">Pending Action</p>
+<span class="px-2 py-0.5 text-[10px] bg-error text-on-error rounded font-bold">ACT NOW</span>
+</div>
+<div class="flex items-baseline space-x-2">
+<p class="font-data-mono text-headline-md text-error">3</p>
+<p class="text-xs text-on-surface-variant">Orders need shipping labels</p>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-secondary/20 shadow-sm">
+<p class="text-sm font-label-caps uppercase text-outline mb-4">Avg Dispatch Time</p>
+<div class="flex items-baseline space-x-2">
+<p class="font-data-mono text-headline-md">1.4 <span class="text-lg">days</span></p>
+<span class="text-primary text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                        12%
+                    </span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2">v.s. last 30 days average</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-secondary/20 shadow-sm">
+<p class="text-sm font-label-caps uppercase text-outline mb-4">On-time Rate</p>
+<div class="flex items-baseline space-x-2">
+<p class="font-data-mono text-headline-md text-primary">94%</p>
+<span class="text-primary text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_upward">arrow_upward</span>
+                        2.1%
+                    </span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2">High accuracy maintained</p>
+</div>
+</section>
+<!-- Filters -->
+<section class="flex flex-wrap items-center gap-4 mb-6">
+<div class="flex bg-surface-container rounded-full p-1 border border-outline-variant/30">
+<button class="px-4 py-1.5 rounded-full text-xs font-bold bg-surface text-primary shadow-sm">7d</button>
+<button class="px-4 py-1.5 rounded-full text-xs font-normal text-on-surface-variant hover:text-primary">30d</button>
+<button class="px-4 py-1.5 rounded-full text-xs font-normal text-on-surface-variant hover:text-primary">90d</button>
+</div>
+<div class="relative flex-1 max-w-md">
+<input class="w-full bg-transparent border border-secondary/40 rounded-full px-10 py-2.5 text-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all" placeholder="Search by order # or buyer..." type="text">
+<span class="material-symbols-outlined absolute left-3.5 top-2.5 text-outline text-lg" data-icon="search">search</span>
+</div>
+</section>
+<!-- Orders Table -->
+<section class="bg-surface-container-lowest rounded-2xl border border-secondary/20 shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-secondary/10">
+<tr>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Order #</th>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Product</th>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Buyer</th>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Date</th>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Total</th>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Status</th>
+<th class="px-6 py-4 font-label-caps text-xs text-outline">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-secondary/5">
+<!-- Row 1: Expanded -->
+<tr class="bg-primary/5">
+<td class="px-6 py-4 font-data-mono text-sm text-primary">#TF-9281</td>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Ceramic pot product" class="w-8 h-8 rounded object-cover border border-secondary/20" data-alt="A beautiful, handcrafted ceramic planter featuring intricate moss-green glazes and botanical motifs. The product is shot in soft, natural morning light on a warm parchment background, emphasizing its organic texture and artisan quality. It represents high-end home decor with a serene, nature-inspired aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdXE5VItFeJNeQbR3--stFkVIbulkJuqByr1mqHgXHlCy5VbA85h6HKFaR3Usffffg_ML5S9j4LB6o11rcj2GuI-UeEh2r6dWW2egpDywF5npgqD81G_RUDAo3lgtlX3OG-R6otbPa7HORnrtCalaA7w94aj1ng__q86xJet4iVDKuGOAyO0NFt-TKbhJTV2yH2qrPe64CuVWVQjraxtNVpUiS5klr-WDzHOF8rwjGj48TWtk4E9QLoD3cOBFC73oXQXlvMKPkfVU">
+<span class="font-body-md text-sm">Moss-Glazed Fern Pot</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant italic">@flora_enthusiast</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 12, 2023</td>
+<td class="px-6 py-4 font-data-mono text-sm">₹4,250.00</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-[#C8973A]/10 text-[#C8973A] border border-[#C8973A]/20">BEING CRAFTED</span>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="keyboard_arrow_up">keyboard_arrow_up</button>
+</td>
+</tr>
+<!-- Expanded Detail View -->
+<tr class="bg-primary/5">
+<td class="px-6 pb-8 pt-2" colspan="7">
+<div class="grid grid-cols-12 gap-8 bg-surface-container-low/50 p-8 rounded-xl border border-primary/10">
+<!-- Tracking Timeline -->
+<div class="col-span-12 mb-8">
+<p class="text-xs font-label-caps text-outline mb-6">Tracking Progress</p>
+<div class="relative flex justify-between items-center max-w-4xl mx-auto">
+<div class="absolute left-0 right-0 h-0.5 watercolor-line -z-0 top-1/2 -translate-y-1/2"></div>
+<!-- Node 1 -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<span class="text-[10px] mt-2 font-bold text-primary">Ordered</span>
+</div>
+<!-- Node 2 (Active) -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-6 h-6 rounded-full bg-primary ring-8 ring-primary/20 shadow-[0_0_15px_rgba(37,83,56,0.4)] flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-primary" data-icon="brush" style="font-variation-settings: &quot;FILL&quot; 1;">brush</span>
+</div>
+<span class="text-[10px] mt-2 font-bold text-primary">Crafting</span>
+</div>
+<!-- Node 3 -->
+<div class="relative z-10 flex flex-col items-center opacity-40">
+<div class="w-4 h-4 rounded-full bg-outline-variant"></div>
+<span class="text-[10px] mt-2 font-normal text-outline">Shipped</span>
+</div>
+<!-- Node 4 -->
+<div class="relative z-10 flex flex-col items-center opacity-40">
+<div class="w-4 h-4 rounded-full bg-outline-variant"></div>
+<span class="text-[10px] mt-2 font-normal text-outline">Out for delivery</span>
+</div>
+<!-- Node 5 -->
+<div class="relative z-10 flex flex-col items-center opacity-40">
+<div class="w-4 h-4 rounded-full bg-outline-variant"></div>
+<span class="text-[10px] mt-2 font-normal text-outline">Delivered</span>
+</div>
+</div>
+</div>
+<!-- Detail Columns -->
+<div class="col-span-4 space-y-4">
+<div>
+<p class="text-xs font-label-caps text-outline mb-2">Buyer Details</p>
+<p class="text-sm font-bold">Ananya Sharma</p>
+<p class="text-xs text-on-surface-variant">12, Lotus Apartments, Jayanagar<br>Bengaluru, KA 560041</p>
+</div>
+<button class="flex items-center px-4 py-2 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold hover:brightness-95 transition-all">
+<span class="material-symbols-outlined text-sm mr-2" data-icon="chat">chat</span>
+                                        Message Buyer
+                                    </button>
+</div>
+<div class="col-span-8">
+<div class="grid grid-cols-2 gap-6">
+<div>
+<p class="text-xs font-label-caps text-outline mb-2">Artisan's Note</p>
+<textarea class="w-full h-24 bg-surface rounded-lg border border-secondary/20 p-3 font-artisan italic text-sm focus:ring-1 focus:ring-primary focus:border-primary resize-none placeholder:text-outline-variant/50" placeholder="Personalize this shipment with a hand-written note..."></textarea>
+</div>
+<div>
+<p class="text-xs font-label-caps text-outline mb-2">Tracking Information</p>
+<input class="w-full bg-surface rounded-lg border border-secondary/20 p-3 text-sm font-data-mono mb-4 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Enter tracking # (e.g. BLUEDART001)" type="text">
+<button class="w-full py-2.5 bg-primary text-on-primary rounded-lg font-bold text-sm hover:brightness-110 transition-all">
+                                                Update Order Status
+                                            </button>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2: Shipped -->
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-6 py-4 font-data-mono text-sm text-on-surface">#TF-9280</td>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Dried flower bundle" class="w-8 h-8 rounded object-cover border border-secondary/20" data-alt="A meticulously arranged bundle of dried wildflowers, featuring eucalyptus leaves and golden craspedia globosa. The lighting is soft and ethereal, set against a warm parchment background that evokes the aesthetic of a classic botanical journal. The composition is artistic and scholarly, perfect for a high-end atelier showcase." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2HYfKfdXm52TXPgfG9x8oPtBb2YsWGChhKOoB4coj5B28Z_yH6yaQCDMHqFQGOWXGScydZnuXgmS016yfksSEcOM3PCstS575kXFaAm2iwUpFjHaD8m2Irob8ARx2TTrSFQrOuCH4yQOa-Z7MbzKfH55S_W4PkiKJ0Pm5RHCL0l7ecUV9xmLeHk26HFxm4-6Yfobp2-8LBiAYztEOlYoLs6q2qsL_CzDRsaG-ybqswe4k6xzPbRKRONa6-IU8HGWgoVIwgD4mSCM">
+<span class="font-body-md text-sm">Winter Solstice Bundle</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant italic">@nature_collector</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 11, 2023</td>
+<td class="px-6 py-4 font-data-mono text-sm">₹2,800.00</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-tertiary/10 text-tertiary border border-tertiary/20 uppercase">On its way</span>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="keyboard_arrow_down">keyboard_arrow_down</button>
+</td>
+</tr>
+<!-- Row 3: Delivered -->
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-6 py-4 font-data-mono text-sm text-on-surface">#TF-9279</td>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Botanical sketch set" class="w-8 h-8 rounded object-cover border border-secondary/20" data-alt="A collection of fine-art botanical sketch prints on heavy, textured cream paper. Each piece features detailed line art of diverse flora, reminiscent of 19th-century scientific illustrations. The mood is scholarly and quiet, with a palette of deep greens and earthy browns, presented in a minimalist, high-end editorial layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJpSk4s_napPYiuXkFCBCjwYJqdNtWtKr6zkxu0nAUK5ieGoAIQ3mqYc_IJlwsNtpOt0pslFboh0p7LDIx9fcZM-xIYXu5IR8AOAb1BCoIXNAc38HNtHE1_LJl3L3yzTAc-NlOh102MjDpk5XzbJJRKh6D81u2soac_ob7iEB8PecLdiRo0XHJ_j_002W2nrt33oTOMt8F9i8jG8MbhgnLkxhb9AwzvLefjfeUiHFkhqmaFYfgfyzb3lI4AASi_5TBc2Sv0Qxs5ks">
+<span class="font-body-md text-sm">A4 Botanical Sketch Set</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant italic">@botany_nerd</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 10, 2023</td>
+<td class="px-6 py-4 font-data-mono text-sm">₹1,500.00</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary border border-primary/20 uppercase">Delivered</span>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="keyboard_arrow_down">keyboard_arrow_down</button>
+</td>
+</tr>
+<!-- Row 4: Cancelled -->
+<tr class="hover:bg-surface-container-high/50 transition-colors opacity-70">
+<td class="px-6 py-4 font-data-mono text-sm text-on-surface">#TF-9278</td>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Terrarium kit" class="w-8 h-8 rounded object-cover border border-secondary/20" data-alt="An artisan terrarium kit featuring glass vessels, polished stones, and moss layers. The image is captured with a shallow depth of field, highlighting the tactile elements of the kit. The lighting is soft and golden, maintaining a warm parchment aesthetic. It embodies a luxury hobbyist craft, scholarly yet whimsical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDskYITs7XwntEMGkbyp8gzXn8ZMnAMysZEWx8t45wxmN4EHsHBlslVl762zTfMn3-4AABa8xeVrgMPX_FMOiqjX4vD9HWAPrMjbmJVaA74eg4yc6jgG33Pf_bBp3F10YRJ-BPgGpIT3FpTmSmfI7vA0HH1l6P3BtcmAmJoqIE_VdYHgN_1HbcOigM25kcEUG4Pg8r3z5wiGMv1--zYRSo_FsOFcN3WgYb6pnLd5thRiHHOxWSO5YeUOdotlc4QkZtgOnd_cp5j1sQ">
+<span class="font-body-md text-sm">Large Terrarium DIY Kit</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant italic">@garden_spirit</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 09, 2023</td>
+<td class="px-6 py-4 font-data-mono text-sm">₹8,900.00</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-error/10 text-error border border-error/20 uppercase">Cancelled</span>
+</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="keyboard_arrow_down">keyboard_arrow_down</button>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- Decorative Floral Divider -->
+<div class="flex items-center justify-center space-x-4 py-16 opacity-30 select-none">
+<span class="h-px w-24 bg-gradient-to-r from-transparent to-secondary"></span>
+<span class="material-symbols-outlined text-secondary" data-icon="local_florist">local_florist</span>
+<span class="h-px w-24 bg-gradient-to-l from-transparent to-secondary"></span>
+</div>
+<!-- Chibi Bunny Accent -->
+<div class="fixed bottom-0 right-12 z-50 transform translate-y-2 pointer-events-none group">
+<div class="bg-primary-container p-2 rounded-t-full shadow-lg border-2 border-on-primary-container relative">
+<!-- Simple SVG-like shape representation of the bunny peeking -->
+<div class="w-12 h-12 flex items-center justify-center relative overflow-hidden">
+<span class="material-symbols-outlined text-4xl text-on-primary-container" data-icon="flutter_dash">flutter_dash</span>
+</div>
+<div class="absolute -top-12 -left-4 bg-surface px-3 py-1 rounded-full border border-secondary/20 text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Ready for shipping?
+                </div>
+</div>
+</div>
+</main>
+<!-- Bulk Actions Bottom Bar -->
+<div class="fixed bottom-0 left-[176px] right-0 bg-primary-container text-on-primary-container py-4 px-gutter shadow-[0_-10px_30px_rgba(0,0,0,0.1)] transform translate-y-0 transition-transform z-[100] flex items-center justify-between left-\[130px\]" id="bulk-bar">
+<div class="flex items-center space-x-8">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+<p class="font-bold text-sm">3 Orders Selected</p>
+</div>
+<div class="relative">
+<input class="bg-on-primary-container/10 border-on-primary-container/30 border rounded-lg px-4 py-1.5 text-xs w-48 placeholder:text-on-primary-container/50 focus:ring-0 focus:border-on-primary-container transition-all" placeholder="Bulk Tracking Prefix..." type="text">
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="px-6 py-2 rounded-lg bg-surface text-primary font-bold text-sm hover:bg-surface-bright transition-all shadow-sm">
+                Mark 3 as Shipped
+            </button>
+<button class="material-symbols-outlined hover:bg-on-primary-container/20 rounded-full p-1 transition-colors" data-icon="close" onclick="document.getElementById('bulk-bar').style.transform = 'translateY(100%)'">close</button>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for the bulk bar visibility
+        let lastScrollTop = 0;
+        const bulkBar = document.getElementById('bulk-bar');
+        
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                bulkBar.style.transform = 'translateY(100%)';
+            } else {
+                bulkBar.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Toggle Expand Logic (Visual Only Placeholder)
+        document.querySelectorAll('table tbody tr:not([colspan])').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if (e.target.closest('button') || e.target.closest('input')) return;
+                // Interaction logic could be added here to collapse/expand rows
+            });
+        });
+    </script>
+
+
+
+
+
+<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const token = sessionStorage.getItem('access_token');
+  
+  // 1. Auth check: if no token is found, redirect to login
+  if (!token && (window.location.protocol.startsWith('http'))) {
+    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    return;
+  }
+  
+  // 2. Handle ZAI Mode State & UI Sync
+  let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+  updateZaiUI(zaiEnabled);
+  
+  if (token) {
+    fetch('/api/seller/dashboard', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.success && data.data && data.data.seller) {
+        const dbEnabled = !!data.data.seller.zai_mode_enabled;
+        localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
+        updateZaiUI(dbEnabled);
+      }
+    })
+    .catch(err => console.error("Error syncing ZAI Mode:", err));
+  }
+  
+  // 3. Set up click listener on toggle button
+  const toggleBtn = document.getElementById('zai-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isEnabled = toggleBtn.classList.contains('bg-tertiary');
+      const nextEnabled = !isEnabled;
+      
+      updateZaiUI(nextEnabled);
+      localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+      
+      if (token) {
+        fetch('/api/seller/zai-mode', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ enabled: nextEnabled })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.success) {
+            console.error("Failed to update ZAI Mode in DB");
+          }
+        })
+        .catch(err => console.error("Error updating ZAI Mode:", err));
+      }
+    });
+  }
+  
+  function updateZaiUI(enabled) {
+    const btn = document.getElementById('zai-toggle-btn');
+    if (btn) {
+      if (enabled) {
+        btn.classList.add('bg-tertiary', 'text-white');
+        btn.classList.remove('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        btn.classList.remove('bg-tertiary', 'text-white');
+        btn.classList.add('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+      }
+    }
+    
+    // Find all zai tips / cards on the page and show/hide them
+    const selectors = [
+      '.zai-tip-card',
+      '[class*="zai-tip"]',
+      '[id*="zai-tip"]',
+      'aside .bg-tertiary-container\/10',
+      'section .bg-tertiary-fixed-dim\/40',
+      'div .bg-on-tertiary-fixed\/10'
+    ];
+    selectors.forEach(sel => {
+      try {
+        const els = document.querySelectorAll(sel);
+        els.forEach(el => {
+          if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+          el.style.display = enabled ? '' : 'none';
+        });
+      } catch (e) {}
+    });
+  }
+  
+  // 4. Handle View Store button relative link click or navigation
+  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
+  if (viewStoreBtn) {
+    viewStoreBtn.addEventListener('click', () => {
+      if (token) {
+        fetch('/api/seller/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.success && data.data && data.data.store_slug) {
+            window.location.href = '/' + data.data.store_slug;
+          } else {
+            window.location.href = '/';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = '/';
+        });
+      } else {
+        window.location.href = '/';
+      }
+    });
+  }
+});
+</script>
+
+</body></html>
