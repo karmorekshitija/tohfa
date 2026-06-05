@@ -532,6 +532,91 @@ async function runTests() {
 
     console.log('✓ Task 25 Passed: POST /api/addresses');
 
+    // --- TASK 26 TESTS: PUT /api/addresses/:id ---
+    console.log('--- Testing TASK 26: PUT /api/addresses/:id ---');
+    // Test valid PUT
+    const putAddRes = await fetch(`${baseUrl}/api/addresses/${newAddressId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Arjun Varma 2 Updated',
+        line1: 'Flat 505, Rose Wood',
+        city: 'Mumbai',
+        state: 'MH',
+        pincode: '400001',
+        is_default: true
+      })
+    });
+    console.log('Put Address Status:', putAddRes.status);
+    const putAddData = await putAddRes.json();
+    if (putAddRes.status !== 200 || !putAddData.success || putAddData.data.full_name !== 'Arjun Varma 2 Updated') {
+      throw new Error(`PUT address failed: ${JSON.stringify(putAddData)}`);
+    }
+
+    // Test invalid PUT (missing city)
+    const invalidPutAddRes = await fetch(`${baseUrl}/api/addresses/${newAddressId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Arjun Varma 2 Updated',
+        line1: 'Flat 505, Rose Wood',
+        state: 'MH',
+        pincode: '400001'
+      })
+    });
+    console.log('Invalid Put Address Status:', invalidPutAddRes.status);
+    if (invalidPutAddRes.status !== 400) {
+      throw new Error(`Expected 400 for invalid address PUT, got ${invalidPutAddRes.status}`);
+    }
+
+    // Test PUT not owner (using sellerToken)
+    const notOwnerPutAddRes = await fetch(`${baseUrl}/api/addresses/${newAddressId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sellerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Arjun Varma 2 Updated',
+        line1: 'Flat 505, Rose Wood',
+        city: 'Mumbai',
+        state: 'MH',
+        pincode: '400001'
+      })
+    });
+    console.log('Not Owner Put Address Status:', notOwnerPutAddRes.status);
+    if (notOwnerPutAddRes.status !== 403) {
+      throw new Error(`Expected 403 for non-owner PUT address, got ${notOwnerPutAddRes.status}`);
+    }
+
+    // Test PUT nonexistent address
+    const nonexistentPutAddRes = await fetch(`${baseUrl}/api/addresses/999999`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Arjun Varma 2 Updated',
+        line1: 'Flat 505, Rose Wood',
+        city: 'Mumbai',
+        state: 'MH',
+        pincode: '400001'
+      })
+    });
+    console.log('Nonexistent Put Address Status:', nonexistentPutAddRes.status);
+    if (nonexistentPutAddRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent PUT address, got ${nonexistentPutAddRes.status}`);
+    }
+
+    console.log('✓ Task 26 Passed: PUT /api/addresses/:id');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
