@@ -288,4 +288,28 @@ const migrateWishlists = () => {
 
 migrateWishlists();
 
+// Task 10: Migration for reels table
+const migrateReels = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reels (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id       INTEGER NOT NULL REFERENCES users(id),
+      product_id      INTEGER REFERENCES products(id),
+      caption         TEXT,
+      video_url       TEXT NOT NULL,
+      thumbnail_url   TEXT,
+      duration_secs   INTEGER,
+      like_count      INTEGER DEFAULT 0,
+      comment_count   INTEGER DEFAULT 0,
+      save_count      INTEGER DEFAULT 0,
+      status          TEXT DEFAULT 'active',
+      created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_reels_seller ON reels(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_reels_created ON reels(created_at DESC);
+  `);
+};
+
+migrateReels();
+
 module.exports = db;
