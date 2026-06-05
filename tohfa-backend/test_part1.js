@@ -401,6 +401,50 @@ async function runTests() {
 
     console.log('✓ Task 22 Passed: PATCH /api/cart/items/:id');
 
+    // --- TASK 23 TESTS: DELETE /api/cart/items/:id ---
+    console.log('--- Testing TASK 23: DELETE /api/cart/items/:id ---');
+    // Test unauthenticated DELETE
+    const unauthDelRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+      method: 'DELETE'
+    });
+    console.log('Unauth Delete Status:', unauthDelRes.status);
+    if (unauthDelRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated DELETE, got ${unauthDelRes.status}`);
+    }
+
+    // Test DELETE not owner (using sellerToken)
+    const notOwnerDelRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${sellerToken}` }
+    });
+    console.log('Not Owner Delete Status:', notOwnerDelRes.status);
+    if (notOwnerDelRes.status !== 403) {
+      throw new Error(`Expected 403 for non-owner DELETE, got ${notOwnerDelRes.status}`);
+    }
+
+    // Test DELETE nonexistent item
+    const nonexistentDelRes = await fetch(`${baseUrl}/api/cart/items/999999`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Nonexistent Delete Status:', nonexistentDelRes.status);
+    if (nonexistentDelRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent DELETE, got ${nonexistentDelRes.status}`);
+    }
+
+    // Test valid DELETE
+    const delRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Delete Status:', delRes.status);
+    const delData = await delRes.json();
+    if (delRes.status !== 200 || !delData.success || delData.data.item_count !== 0) {
+      throw new Error(`Valid DELETE failed: ${JSON.stringify(delData)}`);
+    }
+
+    console.log('✓ Task 23 Passed: DELETE /api/cart/items/:id');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

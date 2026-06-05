@@ -1210,6 +1210,49 @@ app.patch('/api/cart/items/:id', rateLimit(120), authenticateToken, (req, res) =
   }
 });
 
+// TASK 23: DELETE /api/cart/items/:id
+app.delete('/api/cart/items/:id', rateLimit(120), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  
+  try {
+    const cartItem = db.prepare('SELECT user_id FROM cart_items WHERE id = ?').get(id);
+    if (!cartItem) {
+      return res.status(404).json({
+        error: true,
+        message: "Cart item not found",
+        code: "CART_ITEM_NOT_FOUND"
+      });
+    }
+    
+    if (cartItem.user_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your cart item",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    db.prepare('DELETE FROM cart_items WHERE id = ?').run(id);
+    
+    const itemCount = db.prepare('SELECT SUM(quantity) as count FROM cart_items WHERE user_id = ?').get(userId).count || 0;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        item_count: itemCount
+      }
+    });
+  } catch (err) {
+    console.error('Error deleting cart item:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
