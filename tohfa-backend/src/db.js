@@ -82,4 +82,46 @@ const migratePasswordResetTokens = () => {
 
 migratePasswordResetTokens();
 
+// Task 01: Migration for categories table
+const migrateCategories = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS categories (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      name        TEXT NOT NULL UNIQUE,
+      slug        TEXT NOT NULL UNIQUE,
+      description TEXT,
+      icon_emoji  TEXT,
+      item_count  INTEGER DEFAULT 0,
+      created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
+  `);
+
+  const count = db.prepare("SELECT COUNT(*) as count FROM categories").get().count;
+  if (count === 0) {
+    const insert = db.prepare(`
+      INSERT INTO categories (name, slug, description, icon_emoji, item_count)
+      VALUES (?, ?, ?, ?, 0)
+    `);
+    const seed = [
+      ['Textile Arts', 'textile-arts', 'Crochet, knitting, weaving & loom work', '🧶'],
+      ['Jewellery', 'jewellery', 'Handcrafted rings, necklaces & bangles', '💍'],
+      ['Ceramics & Pottery', 'ceramics-pottery', 'Wheel-thrown stoneware & hand-built clay', '🏺'],
+      ['Journals & Stationery', 'journals-stationery', 'Notebooks, journals & hand-pressed cards', '📓'],
+      ['Candles & Fragrance', 'candles-fragrance', 'Soy candles, incense & botanical wax', '🕯️'],
+      ['Paintings', 'paintings', 'Original artwork & hand-illustrated prints', '🖼️'],
+      ['Customized Gifts', 'customized-gifts', 'Personalised & bespoke handmade pieces', '🎁'],
+      ['Home Decor', 'home-decor', 'Hand-carved, woven & crafted home objects', '🏡']
+    ];
+    const insertTransaction = db.transaction((data) => {
+      for (const row of data) {
+        insert.run(row[0], row[1], row[2], row[3]);
+      }
+    });
+    insertTransaction(seed);
+  }
+};
+
+migrateCategories();
+
 module.exports = db;
