@@ -272,4 +272,20 @@ const migrateReviews = () => {
 
 migrateReviews();
 
+// Task 09: Migration for wishlists table
+const migrateWishlists = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS wishlists (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      product_id  INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+      added_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(user_id, product_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_wishlist_user ON wishlists(user_id);
+  `);
+};
+
+migrateWishlists();
+
 module.exports = db;
