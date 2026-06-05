@@ -1222,6 +1222,47 @@ async function runTests() {
     }
 
     console.log('✓ Task 37 Passed: POST /api/wishlist/:productId');
+
+    // --- TASK 38 TESTS: DELETE /api/wishlist/:productId ---
+    console.log('--- Testing TASK 38: DELETE /api/wishlist/:productId ---');
+
+    // 1. Unauthenticated DELETE
+    const unauthWishlistDelRes = await fetch(`${baseUrl}/api/wishlist/${newProductId}`, {
+      method: 'DELETE'
+    });
+    if (unauthWishlistDelRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated wishlist DELETE, got ${unauthWishlistDelRes.status}`);
+    }
+
+    // 2. Non-existent product DELETE
+    const nonexistentWishlistDelRes = await fetch(`${baseUrl}/api/wishlist/99999`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentWishlistDelRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent product wishlist DELETE, got ${nonexistentWishlistDelRes.status}`);
+    }
+
+    // 3. Successful DELETE
+    const wishlistDelRes = await fetch(`${baseUrl}/api/wishlist/${newProductId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const wishlistDelData = await wishlistDelRes.json();
+    if (wishlistDelRes.status !== 200 || !wishlistDelData.success || wishlistDelData.data.wishlisted !== false) {
+      throw new Error(`Wishlist DELETE failed: ${JSON.stringify(wishlistDelData)}`);
+    }
+
+    // Verify it's actually removed from wishlist
+    const verifyWishlistRes = await fetch(`${baseUrl}/api/wishlist`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const verifyWishlistData = await verifyWishlistRes.json();
+    if (verifyWishlistData.data.count !== 0) {
+      throw new Error(`Expected wishlist count to be 0 after DELETE, got ${verifyWishlistData.data.count}`);
+    }
+
+    console.log('✓ Task 38 Passed: DELETE /api/wishlist/:productId');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
