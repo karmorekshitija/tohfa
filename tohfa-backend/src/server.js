@@ -383,6 +383,32 @@ function authenticateToken(req, res, next) {
   });
 }
 
+// Optional Authentication middleware
+function optionalAuthenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    req.user = null;
+    return next();
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      req.user = null;
+      return next();
+    }
+    
+    const dbUser = db.prepare('SELECT is_active, is_banned FROM users WHERE id = ?').get(user.user_id);
+    if (dbUser && dbUser.is_banned === 0 && dbUser.is_active === 1) {
+      req.user = user;
+    } else {
+      req.user = null;
+    }
+    next();
+  });
+}
+
 // TASK 06: POST /api/auth/logout
 app.post('/api/auth/logout', authenticateToken, (req, res) => {
   const { refresh_token } = req.body;
@@ -594,6 +620,69 @@ app.post('/api/auth/reset-password', rateLimit(10), async (req, res) => {
     });
   } catch (err) {
     console.error('Error in reset password:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// TASK 15: GET /api/home/feed
+app.get('/api/home/feed', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  try {
+    const hour = new Date().getHours();
+    let greeting = "Good evening";
+    if (hour < 12) {
+      greeting = "Good morning";
+    } else if (hour < 17) {
+      greeting = "Good afternoon";
+    }
+    
+    const userId = req.user ? req.user.user_id : null;
+    let queryStr = `
+      SELECT 
+        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.review_count, p.status, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name
+    `;
+    if (userId) {
+      queryStr += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      queryStr += `, 0 AS is_wishlisted`;
+    }
+    queryStr += `
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE p.status = 'active'
+      ORDER BY p.created_at DESC
+      LIMIT 12
+    `;
+    
+    const stmt = db.prepare(queryStr);
+    const products = userId ? stmt.all(userId) : stmt.all();
+    
+    products.forEach(p => {
+      p.is_wishlisted = !!p.is_wishlisted;
+    });
+    
+    // Query all categories
+    const categories = db.prepare("SELECT * FROM categories ORDER BY item_count DESC").all();
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        greeting,
+        featured_products: products,
+        categories
+      }
+    });
+  } catch (err) {
+    console.error('Error in home feed:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",
