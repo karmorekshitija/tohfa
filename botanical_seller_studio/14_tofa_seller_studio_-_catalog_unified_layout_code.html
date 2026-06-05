@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Seller Studio - Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&amp;family=Space+Mono:ital,wght@0,400;0,700&amp;family=Lora:ital,wght@0,400;0,500;0,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#3d6b4f",
+                        "background": "#f9faf5",
+                        "surface": "#f9faf5",
+                        "primary": "#255338",
+                        "outline-variant": "#c1c9c0",
+                        "on-surface": "#1a1c1a",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-tertiary-fixed": "#270550",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#4d6a43",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "secondary-container": "#c8e9b8",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#a0d2b0",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1c1a",
+                        "tertiary": "#573b81",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e312e",
+                        "surface-container-high": "#e7e9e4",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d9dad6",
+                        "secondary": "#49663f",
+                        "tertiary-fixed": "#ecdcff",
+                        "surface-container": "#edeeea",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface-container-highest": "#e2e3df",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "surface-bright": "#f9faf5",
+                        "outline": "#717972",
+                        "on-surface-variant": "#414942",
+                        "tertiary-container": "#70539b",
+                        "surface-variant": "#e2e3df",
+                        "surface-container-low": "#f3f4f0",
+                        "on-primary-container": "#b7e9c6",
+                        "primary-fixed": "#bceecb",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface-tint": "#3a684c",
+                        "on-secondary-fixed": "#062103",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-primary-fixed": "#002110",
+                        "parchment": "#F7F3EC",
+                        "forest": "#3D6B4F",
+                        "sage": "#8FAF82",
+                        "gold": "#C8973A"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "round-eight": "0.5rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "container-max-width": "1280px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Space Mono"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "ui-serif": ["Lora", "serif"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-watermark {
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3D6B4F !important;
+            box-shadow: 0 0 0 1px rgba(61, 107, 79, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md min-h-screen flex overflow-hidden">
+<!-- SideNav -->
+<!-- Standardised Left Sidebar (Task 37) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+  <div class="px-4 mb-8 flex flex-col items-center">
+    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="02_tofa_seller_studio_-_home_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="14_tofa_seller_studio_-_catalog_unified_layout_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="09_tofa_seller_studio_-_orders_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="07_tofa_seller_studio_-_analytics_enhanced_style_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="04_tofa_seller_studio_-_store_config_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="11_tofa_seller_studio_-_profile__settings_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+    </a>
+  </nav>
+  <div class="px-2 mt-auto pt-6">
+    <button class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+      View Store
+    </button>
+  </div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative bg-parchment ml-[130px]">
+<!-- Botanical Watermark Overlay -->
+<div class="absolute bottom-4 right-4 pointer-events-none opacity-[0.08] w-48 h-48 z-0">
+<img alt="Botanical illustration" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5jBWNJUR5FjAR11VzQVyUvGPWJuIP9bSNFxTsbqeoGuVTByNaKCcTHBEUjwr_EwzDHFSyQSj99b2WwBcsHfY8i7l4QgNFS6utBGJkYOzyn7s4AD9l4cmzS_C5ngydg06MtIcBDPG8NHqXxZuJABYbGFU5GpBDY7YSfNgF4s0hZUQtz3WntZ1GBX2TKi41CcAw-aX-ujbULBUmVRvg8zEtE7xz2CRCxx383Hxi-G_-LzXFD1Ii23ZiCWYI6ESX63EA4RHI_jaidbM"/>
+</div>
+<!-- Header -->
+<!-- Standardised Page Header Bar (Task 38) -->
+<header class="flex justify-between items-center py-4 px-8 bg-parchment border-b border-outline-variant/30 sticky top-0 z-40">
+  <h2 class="font-headline-sm text-primary font-serif">Catalog</h2>
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">search</span>
+    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary/30 text-tertiary text-[12px] font-bold hover:bg-tertiary/10 transition-all" id="zai-toggle-btn">
+      <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+      ZAI Mode
+    </button>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">help_outline</span>
+    <div class="h-6 w-[1px] bg-outline-variant/30 mx-1"></div>
+    <button class="px-4 py-1.5 border border-sage/40 rounded-full text-xs font-bold text-on-surface-variant hover:bg-sage/10 transition-colors">Bulk Actions</button>
+    <a href="13_tofa_seller_studio_-_create_listing_full_wizard_code.html" class="px-4 py-1.5 bg-forest text-white rounded-full text-xs font-bold shadow-md flex items-center gap-1">
+      <span class="material-symbols-outlined text-xs">add</span> New Listing
+    </a>
+  </div>
+</header>
+<!-- Catalog Stats/Quick Info (Optional but matches the spacing of the stepper) -->
+<div class="bg-parchment/60 border-b border-sage/10 py-6 px-12 z-10">
+<div class="max-w-5xl mx-auto flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="bg-primary/10 px-4 py-2 rounded-lg border border-sage/20">
+<span class="text-[10px] font-bold text-forest uppercase tracking-widest block">Total Listings</span>
+<span class="font-display-lg text-2xl text-primary leading-tight">12</span>
+</div>
+<div class="bg-gold/10 px-4 py-2 rounded-lg border border-gold/20">
+<span class="text-[10px] font-bold text-gold uppercase tracking-widest block">Low Stock</span>
+<span class="font-display-lg text-2xl text-gold leading-tight">3</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-white border border-sage/20 rounded-full px-4 py-1.5 focus-within:border-forest transition-colors w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-lg mr-2">search</span>
+<input class="bg-transparent border-none outline-none text-body-sm w-full focus:ring-0" placeholder="Search entries..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto flex custom-scrollbar relative z-10">
+<div class="flex-1 p-12 max-w-5xl space-y-8">
+<!-- Filters Bar -->
+<div class="flex flex-wrap items-center gap-3">
+<select class="bg-white border border-sage/30 rounded-lg px-4 py-2 text-sm font-medium text-on-surface-variant focus:ring-0 cursor-pointer">
+<option>Status: All</option>
+<option>Active</option>
+<option>Paused</option>
+<option>Draft</option>
+</select>
+<select class="bg-white border border-sage/30 rounded-lg px-4 py-2 text-sm font-medium text-on-surface-variant focus:ring-0 cursor-pointer">
+<option>Category: All</option>
+<option>Botanical Prints</option>
+<option>Pressed Flowers</option>
+<option>Sculptures</option>
+</select>
+<select class="bg-white border border-sage/30 rounded-lg px-4 py-2 text-sm font-medium text-on-surface-variant focus:ring-0 cursor-pointer">
+<option>Sort: Newest First</option>
+<option>Price: Low to High</option>
+<option>Stock: Low to High</option>
+</select>
+</div>
+<!-- Product Table -->
+<div class="bg-white/60 rounded-xl border border-sage/20 shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/40 border-b border-sage/20">
+<th class="py-4 px-6 w-12"><input class="rounded border-sage text-forest focus:ring-forest" type="checkbox"/></th>
+<th class="py-4 px-4 font-label-caps uppercase text-on-surface-variant text-[10px]">Product</th>
+<th class="py-4 px-4 font-label-caps uppercase text-on-surface-variant text-[10px]">Price</th>
+<th class="py-4 px-4 font-label-caps uppercase text-on-surface-variant text-[10px]">Stock</th>
+<th class="py-4 px-4 font-label-caps uppercase text-on-surface-variant text-[10px]">Status</th>
+<th class="py-4 px-6 text-right font-label-caps uppercase text-on-surface-variant text-[10px]">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-sage/10 font-body-sm">
+<!-- Row 1 -->
+<tr class="group hover:bg-forest/5 transition-colors">
+<td class="py-4 px-6"><input class="rounded border-sage text-forest focus:ring-forest" type="checkbox"/></td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-sage/20">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHwSye58yHUIaLvt80DqLWf7K2yBztXLUfEeQWCzeE5IIkCZC35EGzib27LONukijhbPTVGjrL-9qIqJwvmx_x8aD92kn8bZqv7m2mT-e5E6gxltgUhw1w9gSKDTbUa6Wx3LrswFer0kcQCCgtfCcK-kw0_HZDFcZcHS86PrX_PsVKLiPNrkqrF3COuJg2DVkiZAxSbfgAbr7ucv-LuvUqnhdeQ4-4Ml4t8RwnA2BI7avRIxnGVo_UCkJlwm3L6LJTDBxGlqB1zPM"/>
+</div>
+<div>
+<p class="font-semibold text-primary">Golden Fern Study No. 4</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Art Print</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 font-data-mono text-on-surface">$85.00</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-rose-500"></span>
+<span class="font-data-mono text-rose-600 font-bold">1 left</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="bg-green-100 text-green-700 text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-tighter">Active</span>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-sage hover:text-forest transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-sage hover:text-forest transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="text-rose-400 hover:text-rose-600 transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-forest/5 transition-colors">
+<td class="py-4 px-6"><input class="rounded border-sage text-forest focus:ring-forest" type="checkbox"/></td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-sage/20">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTQwDkPZkEi0KTSzAh3BMQWFjio0fybhMpZMqLUz1U2CW_vz3MTcn_ERrZI6PmN2LCf1c9bmF3C49CFY7k97NE-nNFqZ0wZPxKmET7OAyBN4TdF2MJSXdznDKefDbufSaVfCFRXmLpSbFm0kvyjJuVzCVAZdjK0Pv4NBo7eSAKejnVWkFJMylwj9jldbuOuGCF7npzv83VmzVr9-V8PwuhtNNmK3vMZPMYxRj9Xci_plcdwoHY7O9xFeiv_zMeKWTZRVU8bB4lf-s"/>
+</div>
+<div>
+<p class="font-semibold text-primary">Archival Wildflower Seeds</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Curated Seeds</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 font-data-mono text-on-surface">$22.00</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-gold"></span>
+<span class="font-data-mono text-gold font-bold">4 units</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="bg-green-100 text-green-700 text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-tighter">Active</span>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-sage hover:text-forest transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-sage hover:text-forest transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="text-rose-400 hover:text-rose-600 transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-forest/5 transition-colors">
+<td class="py-4 px-6"><input class="rounded border-sage text-forest focus:ring-forest" type="checkbox"/></td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-sage/20">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiNSPrK3z_Zo_bZB8Hz-ypU1n2vbQDTjc_AMS8YFKQ4AxYBGikqYccZxIHaPOvBJOJQDtoQLKYQcq8jpLvcQyTiz9E80vfo0qATOC1CYVBhNKJpWoKre6hAQwxg6NwLxpx01otT5KemzgWDr0a5nwtM806p7VmghQOQbbYjjUW-83WuJfWDypl6dDQYzxLVVySqVJkESNaDa05tQTAMunRt6spmhGmSm5gkrbqmc9hEaeBZVuEKLvN30Lgskcz7LN7qaAIDrLAnFI"/>
+</div>
+<div>
+<p class="font-semibold text-primary">Forest Floor Ceramic Bowl</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Handmade Ceramic</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 font-data-mono text-on-surface">$140.00</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-forest"></span>
+<span class="font-data-mono text-forest font-bold">12 units</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="bg-gray-100 text-gray-500 text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-tighter">Paused</span>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-sage hover:text-forest transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="text-sage hover:text-forest transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="text-rose-400 hover:text-rose-600 transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="py-4 px-8 bg-surface-container-low/20 flex justify-center border-t border-sage/10">
+<button class="text-sage font-bold uppercase text-[10px] tracking-[0.2em] hover:text-forest transition-colors">Load more botanical treasures</button>
+</div>
+</div>
+</div>
+<!-- Right Sidebar -->
+<aside class="w-80 border-l border-sage/20 bg-white/30 p-8 flex flex-col gap-8 sticky top-0 h-full overflow-y-auto custom-scrollbar">
+<div class="space-y-6">
+<!-- Catalog Guide -->
+<div class="bg-white rounded-xl border border-sage/20 shadow-sm overflow-hidden">
+<div class="bg-forest/5 px-4 py-3 border-b border-sage/10">
+<h4 class="font-label-caps text-xs text-forest">ARTISAN TOOLS</h4>
+</div>
+<div class="p-6 space-y-4">
+<button class="w-full flex items-center gap-3 p-3 rounded-lg border border-sage/10 hover:bg-parchment transition-colors text-left group">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">print</span>
+</div>
+<span class="text-sm font-semibold text-on-surface group-hover:text-forest transition-colors">Label Print Console</span>
+</button>
+<button class="w-full flex items-center gap-3 p-3 rounded-lg border border-sage/10 hover:bg-parchment transition-colors text-left group">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">analytics</span>
+</div>
+<span class="text-sm font-semibold text-on-surface group-hover:text-forest transition-colors">Stock Forecasting</span>
+</button>
+</div>
+</div>
+<!-- ZAI Tip Box -->
+<div class="bg-tertiary-fixed/20 rounded-xl border border-tertiary/20 p-6 relative group overflow-hidden">
+<div class="flex items-center gap-2 mb-3 text-tertiary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-caps text-[10px] font-bold uppercase">ZAI Tip</span>
+</div>
+<p class="text-on-tertiary-fixed-variant text-sm font-ui-serif leading-relaxed italic">
+                            "Items with botanical identifiers in titles see 25% higher organic discovery."
+                        </p>
+</div>
+</div>
+<div class="mt-auto">
+<div class="aspect-video rounded-lg overflow-hidden border border-sage/20 mb-4 bg-surface-dim shadow-inner">
+<img alt="Inventory management" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjg8SUItOcqQCxRDPShA_U9h6uQitTEukKn6ZPk5vPY1DWhI2CXSLg-isExGOFD9T0qFacdMKMpDCZpf0PAtfzWWnsX8vcvGh28_CQ4XDB8VfjPQKraYGprZszw_NSJFYwsKXQlFWQGeUZ_1MNx29-lXPBC_LkEpZYS84ulNNvWGu_8Wxen6BebIlvLWQogs66KkEot_pspFFrgjemVOOE8W_urKbaAbYxu6S3igTrstNPKA4DayWCsbo8ygLxmOYWt8gJd25upHw"/>
+</div>
+<p class="text-[11px] text-on-surface-variant text-center px-4 italic">Learn more about <span class="text-forest underline cursor-pointer hover:text-primary">Archival Standards</span>.</p>
+</div>
+</aside>
+</div>
+<!-- Footer Actions -->
+<footer class="border-t border-sage/20 px-12 py-6 bg-white flex justify-between items-center shrink-0 z-20">
+<button class="flex items-center gap-2 text-forest font-bold font-label-caps hover:gap-3 transition-all">
+<span class="material-symbols-outlined">arrow_back</span>
+                Back to Dashboard
+            </button>
+<div class="flex gap-4">
+<button class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps hover:bg-parchment transition-colors">
+                    Export CSV
+                </button>
+<button class="px-10 py-3 rounded-full bg-forest text-white font-label-caps shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+                    Create Collection
+                    <span class="material-symbols-outlined text-sm">auto_stories</span>
+</button>
+</div>
+</footer>
+</main>
+<!-- Character Accent -->
+<div class="fixed bottom-0 right-10 z-[70] pointer-events-none transform translate-y-2">
+<div class="relative w-24 h-24">
+<div class="absolute bottom-0 w-full flex justify-center">
+<img alt="Bunny Mascot" class="w-16 h-16 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYaFNvAD7YrFVSxKp15-VxW6mVgFrAmpIs-u_OKLhkU3aVoYU6klQ6uWUlmzfG3Rs9pZq9XDYU71jn9yhmVY2A6dyAr2SYuD-74Wn9tRHBKI9seO9L025K6hJ9wijO_PCPwb2Wd53gTVay1v67xIMGs5tbyDOuM6VZLB-d-DT9ikbKG_MxPeWRZmFK34MMVk-c1_Qiv3IiZ2XUfQWAXOz5VsYVeQmeTAoDELqTJEQA2_thsgRXVrKgd1szwoXluIV1y9Jzs0ftqzY"/>
+</div>
+</div>
+</div>
+<script>
+        // Interactive states for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+
+<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const token = sessionStorage.getItem('access_token');
+  
+  // 1. Auth check: if no token is found, redirect to login
+  if (!token && (window.location.protocol.startsWith('http'))) {
+    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    return;
+  }
+  
+  // 2. Handle ZAI Mode State & UI Sync
+  let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+  updateZaiUI(zaiEnabled);
+  
+  if (token) {
+    fetch('/api/seller/dashboard', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.success && data.data && data.data.seller) {
+        const dbEnabled = !!data.data.seller.zai_mode_enabled;
+        localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
+        updateZaiUI(dbEnabled);
+      }
+    })
+    .catch(err => console.error("Error syncing ZAI Mode:", err));
+  }
+  
+  // 3. Set up click listener on toggle button
+  const toggleBtn = document.getElementById('zai-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isEnabled = toggleBtn.classList.contains('bg-tertiary');
+      const nextEnabled = !isEnabled;
+      
+      updateZaiUI(nextEnabled);
+      localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+      
+      if (token) {
+        fetch('/api/seller/zai-mode', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ enabled: nextEnabled })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.success) {
+            console.error("Failed to update ZAI Mode in DB");
+          }
+        })
+        .catch(err => console.error("Error updating ZAI Mode:", err));
+      }
+    });
+  }
+  
+  function updateZaiUI(enabled) {
+    const btn = document.getElementById('zai-toggle-btn');
+    if (btn) {
+      if (enabled) {
+        btn.classList.add('bg-tertiary', 'text-white');
+        btn.classList.remove('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        btn.classList.remove('bg-tertiary', 'text-white');
+        btn.classList.add('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+      }
+    }
+    
+    // Find all zai tips / cards on the page and show/hide them
+    const selectors = [
+      '.zai-tip-card',
+      '[class*="zai-tip"]',
+      '[id*="zai-tip"]',
+      'aside .bg-tertiary-container\/10',
+      'section .bg-tertiary-fixed-dim\/40',
+      'div .bg-on-tertiary-fixed\/10'
+    ];
+    selectors.forEach(sel => {
+      try {
+        const els = document.querySelectorAll(sel);
+        els.forEach(el => {
+          if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+          el.style.display = enabled ? '' : 'none';
+        });
+      } catch (e) {}
+    });
+  }
+  
+  // 4. Handle View Store button relative link click or navigation
+  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
+  if (viewStoreBtn) {
+    viewStoreBtn.addEventListener('click', () => {
+      if (token) {
+        fetch('/api/seller/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.success && data.data && data.data.store_slug) {
+            window.location.href = '/' + data.data.store_slug;
+          } else {
+            window.location.href = '/';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = '/';
+        });
+      } else {
+        window.location.href = '/';
+      }
+    });
+  }
+});
+</script>
+
+</body></html>
