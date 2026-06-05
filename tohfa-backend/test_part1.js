@@ -84,6 +84,16 @@ async function runTests() {
     }
     console.log('✓ Task 15 Passed: GET /api/home/feed');
 
+    // --- TASK 16 TESTS: GET /api/categories ---
+    console.log('--- Testing TASK 16: GET /api/categories ---');
+    const catRes = await fetch(`${baseUrl}/api/categories`);
+    console.log('Categories Status:', catRes.status);
+    const catData = await catRes.json();
+    if (catRes.status !== 200 || !catData.success || !Array.isArray(catData.data.categories) || catData.data.categories.length !== 8) {
+      throw new Error(`Categories response invalid: ${JSON.stringify(catData)}`);
+    }
+    console.log('✓ Task 16 Passed: GET /api/categories');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
