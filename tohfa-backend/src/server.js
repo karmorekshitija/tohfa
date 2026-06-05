@@ -1276,6 +1276,67 @@ app.get('/api/addresses', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 25: POST /api/addresses
+app.post('/api/addresses', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { full_name, line1, line2, city, state, pincode, phone, is_default } = req.body;
+  
+  if (!full_name || typeof full_name !== 'string' || full_name.trim() === '' ||
+      !line1 || typeof line1 !== 'string' || line1.trim() === '' ||
+      !city || typeof city !== 'string' || city.trim() === '' ||
+      !state || typeof state !== 'string' || state.trim() === '' ||
+      !pincode || typeof pincode !== 'string' || pincode.trim() === '') {
+    return res.status(400).json({
+      error: true,
+      message: "full_name, line1, city, state, and pincode are required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  const finalLine2 = (line2 && typeof line2 === 'string') ? line2 : null;
+  const finalPhone = (phone && typeof phone === 'string') ? phone : null;
+  const isDefaultVal = is_default ? 1 : 0;
+  
+  try {
+    const insertTransaction = db.transaction(() => {
+      if (isDefaultVal === 1) {
+        db.prepare('UPDATE addresses SET is_default = 0 WHERE user_id = ?').run(userId);
+      }
+      
+      const info = db.prepare(`
+        INSERT INTO addresses (user_id, full_name, line1, line2, city, state, pincode, phone, is_default)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(userId, full_name, line1, finalLine2, city, state, pincode, finalPhone, isDefaultVal);
+      
+      return info.lastInsertRowid;
+    });
+    
+    const addressId = insertTransaction();
+    
+    return res.status(201).json({
+      success: true,
+      data: {
+        id: addressId,
+        full_name,
+        line1,
+        line2: finalLine2,
+        city,
+        state,
+        pincode,
+        phone: finalPhone,
+        is_default: isDefaultVal
+      }
+    });
+  } catch (err) {
+    console.error('Error creating address:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

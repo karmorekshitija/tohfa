@@ -476,6 +476,62 @@ async function runTests() {
 
     console.log('✓ Task 24 Passed: GET /api/addresses');
 
+    // --- TASK 25 TESTS: POST /api/addresses ---
+    console.log('--- Testing TASK 25: POST /api/addresses ---');
+    // Test valid POST
+    const postAddRes = await fetch(`${baseUrl}/api/addresses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Arjun Varma 2',
+        line1: 'Flat 505, Rose Wood',
+        city: 'Mumbai',
+        state: 'MH',
+        pincode: '400001',
+        is_default: true
+      })
+    });
+    console.log('Post Address Status:', postAddRes.status);
+    const postAddData = await postAddRes.json();
+    if (postAddRes.status !== 201 || !postAddData.success || postAddData.data.is_default !== 1 || postAddData.data.full_name !== 'Arjun Varma 2') {
+      throw new Error(`POST address failed: ${JSON.stringify(postAddData)}`);
+    }
+    const newAddressId = postAddData.data.id;
+
+    // Verify the first address was set to is_default = 0
+    const checkAddRes = await fetch(`${baseUrl}/api/addresses`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const checkAddData = await checkAddRes.json();
+    const prevAddress = checkAddData.data.addresses.find(a => a.full_name === 'Arjun Varma');
+    if (!prevAddress || prevAddress.is_default !== 0) {
+      throw new Error(`Expected previous address to have is_default=0, got: ${JSON.stringify(prevAddress)}`);
+    }
+
+    // Test invalid POST (missing line1)
+    const invalidPostAddRes = await fetch(`${baseUrl}/api/addresses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Arjun Varma 2',
+        city: 'Mumbai',
+        state: 'MH',
+        pincode: '400001'
+      })
+    });
+    console.log('Invalid Post Address Status:', invalidPostAddRes.status);
+    if (invalidPostAddRes.status !== 400) {
+      throw new Error(`Expected 400 for invalid address POST, got ${invalidPostAddRes.status}`);
+    }
+
+    console.log('✓ Task 25 Passed: POST /api/addresses');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
