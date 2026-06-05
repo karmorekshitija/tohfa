@@ -3,9 +3,9 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Seller Profile | CraftNest</title>
+<title>Seller Studio | Tohfa</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -110,7 +110,7 @@
 <!-- Top Navigation -->
 <nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
 <div class="h-8 flex items-center">
-<span class="font-headline-lg text-on-background text-2xl" style="font-family: 'EB Garamond', serif;">CraftNest Studio</span>
+<span class="font-headline-lg text-on-background text-2xl" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></span>
 </div>
 <div class="flex gap-4 items-center">
 <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Logout">
@@ -270,7 +270,7 @@
 </main>
 <!-- Simple Footer -->
 <footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
-<p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2024 CraftNest Artisan Studio</p>
+<p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
 </footer>
 
 <script>
@@ -285,7 +285,7 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+                const response = await fetch(`${API_BASE_URL}/api/profile/me`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -296,7 +296,8 @@
                     throw new Error("Unauthorized");
                 }
 
-                const user = await response.json();
+                const resp = await response.json();
+                const user = resp.data || resp;
                 
                 // If user is a buyer, redirect them to the buyer profile!
                 if (user.role !== 'seller') {
@@ -338,7 +339,7 @@
                 }
 
                 try {
-                    await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
+                    await fetch(`${API_BASE_URL}/api/auth/logout`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
