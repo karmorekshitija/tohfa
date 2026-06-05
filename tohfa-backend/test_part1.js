@@ -1417,6 +1417,54 @@ async function runTests() {
     }
 
     console.log('✓ Task 41 Passed: POST /api/reels/:id/like (toggle)');
+
+    // --- TASK 42 TESTS: GET /api/reels/:id/comments ---
+    console.log('--- Testing TASK 42: GET /api/reels/:id/comments ---');
+    db.prepare('DELETE FROM reel_comments').run();
+    db.prepare("UPDATE reels SET comment_count = 0 WHERE id = ?").run(newReelId);
+
+    // Insert mock comments
+    db.prepare(`
+      INSERT INTO reel_comments (reel_id, user_id, body)
+      VALUES (?, ?, ?)
+    `).run(newReelId, buyerId, 'Beautiful video!');
+    db.prepare(`
+      INSERT INTO reel_comments (reel_id, user_id, body)
+      VALUES (?, ?, ?)
+    `).run(newReelId, sellerId, 'Thank you so much!');
+    db.prepare("UPDATE reels SET comment_count = 2 WHERE id = ?").run(newReelId);
+
+    // 1. Non-existent reel comments
+    const nonexistentCommentsRes = await fetch(`${baseUrl}/api/reels/99999/comments`);
+    if (nonexistentCommentsRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent reel comments, got ${nonexistentCommentsRes.status}`);
+    }
+
+    // 2. Successful fetch
+    const commentsRes = await fetch(`${baseUrl}/api/reels/${newReelId}/comments?limit=10`);
+    const commentsData = await commentsRes.json();
+    if (commentsRes.status !== 200 || !commentsData.success || commentsData.data.comment_count !== 2 || commentsData.data.comments.length !== 2) {
+      throw new Error(`Expected 2 comments, got: ${JSON.stringify(commentsData)}`);
+    }
+    const c1 = commentsData.data.comments[0]; // Newest first
+    if (c1.body !== 'Thank you so much!' || !c1.time_ago || !c1.user_name) {
+      throw new Error(`Unexpected comment structure: ${JSON.stringify(c1)}`);
+    }
+
+    // 3. Cursor pagination
+    const commentPage1Res = await fetch(`${baseUrl}/api/reels/${newReelId}/comments?limit=1`);
+    const commentPage1Data = await commentPage1Res.json();
+    if (commentPage1Data.data.comments.length !== 1 || commentPage1Data.data.has_more !== true || !commentPage1Data.data.next_cursor) {
+      throw new Error(`Comment pagination failed on page 1: ${JSON.stringify(commentPage1Data)}`);
+    }
+
+    const commentPage2Res = await fetch(`${baseUrl}/api/reels/${newReelId}/comments?limit=1&cursor=${commentPage1Data.data.next_cursor}`);
+    const commentPage2Data = await commentPage2Res.json();
+    if (commentPage2Data.data.comments.length !== 1 || commentPage2Data.data.has_more !== false) {
+      throw new Error(`Comment pagination failed on page 2: ${JSON.stringify(commentPage2Data)}`);
+    }
+
+    console.log('✓ Task 42 Passed: GET /api/reels/:id/comments');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

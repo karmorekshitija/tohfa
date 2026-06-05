@@ -61,6 +61,28 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
+function formatTimeAgo(dateStr) {
+  if (!dateStr) return 'Just now';
+  let cleanDateStr = dateStr;
+  if (dateStr.indexOf(' ') > 0 && dateStr.indexOf('T') === -1) {
+    cleanDateStr = dateStr.replace(' ', 'T') + 'Z';
+  } else if (dateStr.indexOf('Z') === -1) {
+    cleanDateStr = dateStr + 'Z';
+  }
+  const date = new Date(cleanDateStr);
+  const now = new Date();
+  const diffMs = now - date;
+  if (diffMs < 0) return 'Just now';
+  const diffSecs = Math.floor(diffMs / 1000);
+  if (diffSecs < 60) return 'Just now';
+  const diffMins = Math.floor(diffSecs / 60);
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays}d ago`;
+}
+
 function generateTokens(user) {
   const accessToken = jwt.sign(
     { user_id: user.id, email: user.email, role: user.role },
@@ -2628,6 +2650,80 @@ app.post('/api/reels/:id/like', rateLimit(60), authenticateToken, (req, res) => 
     });
   } catch (err) {
     console.error('Error liking/unliking reel:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// TASK 42: GET /api/reels/:id/comments
+app.get('/api/reels/:id/comments', rateLimit(60), (req, res) => {
+  const reelId = req.params.id;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit, 10) || 30;
+
+  try {
+    const reel = db.prepare("SELECT id, comment_count FROM reels WHERE id = ?").get(reelId);
+    if (!reel) {
+      return res.status(404).json({
+        error: true,
+        message: "Reel not found",
+        code: "REEL_NOT_FOUND"
+      });
+    }
+
+    let sql = `
+      SELECT 
+        rc.id, rc.user_id, rc.body, rc.created_at,
+        u.full_name AS user_name, u.avatar_url
+      FROM reel_comments rc
+      JOIN users u ON rc.user_id = u.id
+      WHERE rc.reel_id = ?
+    `;
+
+    const sqlParams = [reelId];
+
+    if (cursor) {
+      sql += ` AND rc.id < ?`;
+      sqlParams.push(cursor);
+    }
+
+    sql += ` ORDER BY rc.id DESC LIMIT ?`;
+    sqlParams.push(limit + 1);
+
+    const rows = db.prepare(sql).all(...sqlParams);
+
+    const hasMore = rows.length > limit;
+    if (hasMore) {
+      rows.pop();
+    }
+
+    const comments = rows.map(row => ({
+      id: row.id,
+      user_id: row.user_id,
+      user_name: row.user_name,
+      avatar_url: row.avatar_url,
+      body: row.body,
+      created_at: new Date(row.created_at + 'Z').toISOString(),
+      time_ago: formatTimeAgo(row.created_at)
+    }));
+
+    const nextCursor = hasMore && comments.length > 0 ? String(comments[comments.length - 1].id) : null;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        reel_id: parseInt(reelId, 10),
+        comment_count: reel.comment_count || 0,
+        comments,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching reel comments:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",
