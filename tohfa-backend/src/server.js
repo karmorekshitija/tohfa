@@ -18,6 +18,29 @@ const app = express();
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
+// Serve standard static screens for interactive flow
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'stitch_screens', '20_tohfa_home_feed_-_pure_white_background_code.html'));
+});
+app.get('/category', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'stitch_screens', '12_tohfa_category_page_-_desktop_infinite_scroll_code.html'));
+});
+app.get('/reels', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'stitch_screens', '23_tohfa_reels_-_artisan_studio_desktop_experience_code.html'));
+});
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'stitch_screens', '21_tohfa_buyer_profile_-_artisan_studio_desktop_code.html'));
+});
+app.get('/cart', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'stitch_screens', '19_tohfa_cart__checkout_-_artisan_studio_desktop_code.html'));
+});
+app.get('/wishlist', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'stitch_screens', '05_tohfa_wishlist_-_desktop_web_app_code.html'));
+});
+
+// Serve all other stitch files under /stitch/
+app.use('/stitch', express.static(path.join(__dirname, '..', '..', 'stitch_screens')));
+
 const JWT_SECRET = process.env.JWT_SECRET || 'tohfa_super_secret_key_987654321';
 const BCRYPT_SALT_ROUNDS = 12;
 
