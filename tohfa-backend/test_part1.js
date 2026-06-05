@@ -1540,6 +1540,47 @@ async function runTests() {
     }
 
     console.log('✓ Task 43 Passed: POST /api/reels/:id/comments');
+
+    // --- TASK 44 TESTS: POST /api/reels/:id/save ---
+    console.log('--- Testing TASK 44: POST /api/reels/:id/save ---');
+
+    // 1. Unauthenticated save
+    const unauthSaveRes = await fetch(`${baseUrl}/api/reels/${newReelId}/save`, {
+      method: 'POST'
+    });
+    if (unauthSaveRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth save, got ${unauthSaveRes.status}`);
+    }
+
+    // 2. Non-existent reel save
+    const nonexistentSaveRes = await fetch(`${baseUrl}/api/reels/99999/save`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentSaveRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent reel save, got ${nonexistentSaveRes.status}`);
+    }
+
+    // 3. Successful save
+    db.prepare('DELETE FROM saved_reels').run();
+    db.prepare("UPDATE reels SET save_count = 0 WHERE id = ?").run(newReelId);
+
+    const saveRes = await fetch(`${baseUrl}/api/reels/${newReelId}/save`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const saveData = await saveRes.json();
+    if (saveRes.status !== 200 || !saveData.success || saveData.data.saved !== true) {
+      throw new Error(`Save failed: ${JSON.stringify(saveData)}`);
+    }
+
+    // Verify save_count is updated in DB
+    const verifySaveCount = db.prepare("SELECT save_count FROM reels WHERE id = ?").get(newReelId).save_count;
+    if (verifySaveCount !== 1) {
+      throw new Error(`Expected save_count to be 1, got ${verifySaveCount}`);
+    }
+
+    console.log('✓ Task 44 Passed: POST /api/reels/:id/save');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

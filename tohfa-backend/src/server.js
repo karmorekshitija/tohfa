@@ -2802,6 +2802,43 @@ app.post('/api/reels/:id/comments', rateLimit(60), authenticateToken, (req, res)
   }
 });
 
+// TASK 44: POST /api/reels/:id/save
+app.post('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const reelId = req.params.id;
+
+  try {
+    const reel = db.prepare("SELECT id FROM reels WHERE id = ?").get(reelId);
+    if (!reel) {
+      return res.status(404).json({
+        error: true,
+        message: "Reel not found",
+        code: "REEL_NOT_FOUND"
+      });
+    }
+
+    const existing = db.prepare("SELECT id FROM saved_reels WHERE reel_id = ? AND user_id = ?").get(reelId, userId);
+    if (!existing) {
+      db.prepare("INSERT INTO saved_reels (reel_id, user_id) VALUES (?, ?)").run(reelId, userId);
+      db.prepare("UPDATE reels SET save_count = save_count + 1 WHERE id = ?").run(reelId);
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        saved: true
+      }
+    });
+  } catch (err) {
+    console.error('Error saving reel:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
