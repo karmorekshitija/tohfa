@@ -800,5 +800,55 @@ const migrateAuditLogs = () => {
 };
 migrateAuditLogs();
 
+// Task 03: DB — categories table (extend existing)
+const migratePart2Categories = () => {
+  const alters = [
+    "ALTER TABLE categories ADD COLUMN display_name TEXT",
+    "ALTER TABLE categories ADD COLUMN emoji_icon TEXT DEFAULT '🏷️'",
+    "ALTER TABLE categories ADD COLUMN sort_order INTEGER DEFAULT 0",
+    "ALTER TABLE categories ADD COLUMN is_active INTEGER DEFAULT 1",
+    "ALTER TABLE categories ADD COLUMN product_count INTEGER DEFAULT 0",
+    "ALTER TABLE categories ADD COLUMN updated_at TEXT"
+  ];
+  for (const sql of alters) {
+    try {
+      db.exec(sql);
+    } catch (e) {}
+  }
+
+  // Populate data for old columns to new columns
+  try {
+    db.exec("UPDATE categories SET display_name = name WHERE display_name IS NULL;");
+    db.exec("UPDATE categories SET emoji_icon = icon_emoji WHERE emoji_icon IS NULL OR emoji_icon = '🏷️';");
+    db.exec("UPDATE categories SET product_count = item_count WHERE product_count IS NULL OR product_count = 0;");
+    db.exec("UPDATE categories SET updated_at = datetime('now') WHERE updated_at IS NULL;");
+  } catch (e) {}
+
+  // Seed / Insert or update categories
+  const seedCategories = [
+    ['Ceramics', 'ceramics-pottery', '🏺', 1, 1, 42],
+    ['Hand-Knits', 'hand-knits', '🧶', 2, 1, 12],
+    ['Heirloom Jewelry', 'jewelry', '💍', 3, 0, 0],
+    ['Wall Art', 'wall-art-prints', '🖼️', 4, 1, 29]
+  ];
+
+  for (const cat of seedCategories) {
+    const existing = db.prepare("SELECT id FROM categories WHERE slug = ?").get(cat[1]);
+    if (existing) {
+      db.prepare(`
+        UPDATE categories 
+        SET display_name = ?, emoji_icon = ?, sort_order = ?, is_active = ?, product_count = ?, name = ?, updated_at = datetime('now')
+        WHERE id = ?
+      `).run(cat[0], cat[2], cat[3], cat[4], cat[5], cat[0], existing.id);
+    } else {
+      db.prepare(`
+        INSERT INTO categories (display_name, slug, emoji_icon, sort_order, is_active, product_count, name)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).run(cat[0], cat[1], cat[2], cat[3], cat[4], cat[5], cat[0]);
+    }
+  }
+};
+migratePart2Categories();
+
 module.exports = db;
 
