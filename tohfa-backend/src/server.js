@@ -1007,6 +1007,59 @@ app.get('/api/products/:id', rateLimit(120), optionalAuthenticateToken, (req, re
   }
 });
 
+// TASK 20: GET /api/cart
+app.get('/api/cart', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  
+  try {
+    const sql = `
+      SELECT 
+        ci.id, ci.product_id, ci.quantity,
+        p.name, p.price_paise, p.stock_qty, p.ships_in_days, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name
+      FROM cart_items ci
+      JOIN products p ON ci.product_id = p.id
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE ci.user_id = ? AND p.status != 'archived'
+    `;
+    
+    const items = db.prepare(sql).all(userId);
+    
+    items.forEach(item => {
+      item.quantity_warning = item.quantity > item.stock_qty;
+    });
+    
+    const subtotal_paise = items.reduce((sum, item) => sum + item.price_paise * item.quantity, 0);
+    const item_count = items.reduce((sum, item) => sum + item.quantity, 0);
+    
+    const shipping_paise = (subtotal_paise === 0) ? 0 : (subtotal_paise < 50000 ? 12000 : 0);
+    const total_paise = subtotal_paise + shipping_paise;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        items,
+        item_count,
+        subtotal_paise,
+        shipping_paise,
+        total_paise
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching cart:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

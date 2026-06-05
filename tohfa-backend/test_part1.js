@@ -212,6 +212,61 @@ async function runTests() {
 
     console.log('✓ Task 19 Passed: GET /api/products/:id');
 
+    // --- TASK 20 TESTS: GET /api/cart ---
+    console.log('--- Testing TASK 20: GET /api/cart ---');
+    // Test unauthenticated
+    const unauthCartRes = await fetch(`${baseUrl}/api/cart`);
+    console.log('Unauth Cart Status:', unauthCartRes.status);
+    if (unauthCartRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated cart access, got ${unauthCartRes.status}`);
+    }
+
+    // Insert cart item for buyer
+    db.prepare(`
+      INSERT INTO cart_items (user_id, product_id, quantity)
+      VALUES (?, ?, 1)
+    `).run(buyerId, newProductId);
+
+    // Fetch cart authenticated
+    const cartRes = await fetch(`${baseUrl}/api/cart`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Cart Status:', cartRes.status);
+    const cartData = await cartRes.json();
+    if (cartRes.status !== 200 || !cartData.success) {
+      throw new Error(`Cart fetch failed: ${JSON.stringify(cartData)}`);
+    }
+    const cart = cartData.data;
+    if (cart.item_count !== 1 || cart.subtotal_paise !== 4800 || cart.shipping_paise !== 12000 || cart.total_paise !== 16800) {
+      throw new Error(`Cart calculations mismatch: ${JSON.stringify(cart)}`);
+    }
+
+    // Update quantity to exceed stock to test quantity warning
+    db.prepare(`UPDATE cart_items SET quantity = 10 WHERE user_id = ? AND product_id = ?`).run(buyerId, newProductId);
+    const warningCartRes = await fetch(`${baseUrl}/api/cart`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const warningCartData = await warningCartRes.json();
+    if (warningCartData.data.items[0].quantity_warning !== true) {
+      throw new Error(`Expected quantity_warning to be true, got: ${warningCartData.data.items[0].quantity_warning}`);
+    }
+
+    // Restore quantity and test free shipping (subtotal >= 50000 paise)
+    db.prepare(`UPDATE cart_items SET quantity = 11 WHERE user_id = ? AND product_id = ?`).run(buyerId, newProductId);
+    // price = 4800, 4800 * 11 = 52800 paise > 50000 paise
+    const freeShippingCartRes = await fetch(`${baseUrl}/api/cart`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const freeShippingCartData = await freeShippingCartRes.json();
+    if (freeShippingCartData.data.shipping_paise !== 0 || freeShippingCartData.data.total_paise !== 52800) {
+      throw new Error(`Expected free shipping, got shipping: ${freeShippingCartData.data.shipping_paise}`);
+    }
+
+    // Clean up cart for buyer for future tests
+    db.prepare(`DELETE FROM cart_items WHERE user_id = ?`).run(buyerId);
+
+    console.log('✓ Task 20 Passed: GET /api/cart');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
