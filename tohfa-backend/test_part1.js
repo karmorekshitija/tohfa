@@ -445,6 +445,37 @@ async function runTests() {
 
     console.log('✓ Task 23 Passed: DELETE /api/cart/items/:id');
 
+    // --- TASK 24 TESTS: GET /api/addresses ---
+    console.log('--- Testing TASK 24: GET /api/addresses ---');
+    // Test unauthenticated GET
+    const unauthAddRes = await fetch(`${baseUrl}/api/addresses`);
+    console.log('Unauth Addresses Status:', unauthAddRes.status);
+    if (unauthAddRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated addresses fetch, got ${unauthAddRes.status}`);
+    }
+
+    // Insert address via DB
+    db.prepare(`
+      INSERT INTO addresses (user_id, full_name, line1, line2, city, state, pincode, phone, is_default)
+      VALUES (?, 'Arjun Varma', 'Flat 402, Lotus Residency', '12th Main Road, Indiranagar', 'Bangalore', 'KA', '560038', '+91 98765 43210', 1)
+    `).run(buyerId);
+
+    // Fetch addresses authenticated
+    const addRes = await fetch(`${baseUrl}/api/addresses`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Addresses Status:', addRes.status);
+    const addData = await addRes.json();
+    if (addRes.status !== 200 || !addData.success || addData.data.addresses.length !== 1) {
+      throw new Error(`Addresses fetch failed: ${JSON.stringify(addData)}`);
+    }
+    const address = addData.data.addresses[0];
+    if (address.full_name !== 'Arjun Varma' || address.city !== 'Bangalore' || address.is_default !== 1) {
+      throw new Error(`Address details mismatch: ${JSON.stringify(address)}`);
+    }
+
+    console.log('✓ Task 24 Passed: GET /api/addresses');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

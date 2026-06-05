@@ -1253,6 +1253,29 @@ app.delete('/api/cart/items/:id', rateLimit(120), authenticateToken, (req, res) 
   }
 });
 
+// TASK 24: GET /api/addresses
+app.get('/api/addresses', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  
+  try {
+    const addresses = db.prepare('SELECT id, full_name, line1, line2, city, state, pincode, phone, is_default FROM addresses WHERE user_id = ? ORDER BY is_default DESC, created_at DESC').all(userId);
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        addresses
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching addresses:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
