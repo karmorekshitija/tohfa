@@ -661,6 +661,108 @@ async function runTests() {
 
     console.log('✓ Task 27 Passed: DELETE /api/addresses/:id');
 
+    // --- TASK 28 TESTS: POST /api/orders ---
+    console.log('--- Testing TASK 28: POST /api/orders ---');
+    // We need an address and cart items to test orders
+    const orderAddressRes = await fetch(`${baseUrl}/api/addresses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        full_name: 'Buyer Delivery Address',
+        line1: '123 Buyer Lane',
+        city: 'Delhi',
+        state: 'DL',
+        pincode: '110001'
+      })
+    });
+    const orderAddressData = await orderAddressRes.json();
+    const orderAddressId = orderAddressData.data.id;
+
+    // Test POST order with empty cart (should fail with 422)
+    const emptyCartOrderRes = await fetch(`${baseUrl}/api/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ address_id: orderAddressId })
+    });
+    console.log('Empty Cart Order Status:', emptyCartOrderRes.status);
+    if (emptyCartOrderRes.status !== 422) {
+      throw new Error(`Expected 422 for empty cart order, got ${emptyCartOrderRes.status}`);
+    }
+
+    // Add item to cart
+    await fetch(`${baseUrl}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ product_id: newProductId, quantity: 2 })
+    });
+
+    // Test valid order placement
+    const orderRes = await fetch(`${baseUrl}/api/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ address_id: orderAddressId })
+    });
+    console.log('Order Placement Status:', orderRes.status);
+    const orderData = await orderRes.json();
+    if (orderRes.status !== 200 || !orderData.success) {
+      throw new Error(`Order placement failed: ${JSON.stringify(orderData)}`);
+    }
+    const createdOrderId = orderData.data.order_id;
+    if (!orderData.data.order_ref || !orderData.data.razorpay_order_id || orderData.data.status !== 'Awaiting Payment' || orderData.data.subtotal_paise !== 9600 || orderData.data.shipping_paise !== 12000 || orderData.data.total_paise !== 21600) {
+      throw new Error(`Order details mismatch: ${JSON.stringify(orderData)}`);
+    }
+
+    // Verify cart is empty now
+    const checkEmptyCartRes = await fetch(`${baseUrl}/api/cart`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const checkEmptyCartData = await checkEmptyCartRes.json();
+    if (checkEmptyCartData.data.items.length !== 0) {
+      throw new Error(`Expected cart to be empty after order, got ${checkEmptyCartData.data.items.length} items`);
+    }
+
+    // Test missing address_id (400)
+    const missingAddressRes = await fetch(`${baseUrl}/api/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({})
+    });
+    console.log('Missing address_id Status:', missingAddressRes.status);
+    if (missingAddressRes.status !== 400) {
+      throw new Error(`Expected 400 for missing address_id, got ${missingAddressRes.status}`);
+    }
+
+    // Test nonexistent address_id (404)
+    const nonexistentAddressRes = await fetch(`${baseUrl}/api/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ address_id: 999999 })
+    });
+    console.log('Nonexistent address_id Status:', nonexistentAddressRes.status);
+    if (nonexistentAddressRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent address_id, got ${nonexistentAddressRes.status}`);
+    }
+
+    console.log('✓ Task 28 Passed: POST /api/orders');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

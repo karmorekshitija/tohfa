@@ -1453,6 +1453,173 @@ app.delete('/api/addresses/:id', rateLimit(60), authenticateToken, (req, res) =>
   }
 });
 
+// TASK 28: POST /api/orders
+app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
+  const userId = req.user.user_id;
+  const { address_id, cart_item_ids } = req.body;
+  
+  if (address_id === undefined || address_id === null) {
+    return res.status(400).json({
+      error: true,
+      message: "address_id required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    // 1. Validate address belongs to user
+    const address = db.prepare('SELECT id, user_id FROM addresses WHERE id = ?').get(address_id);
+    if (!address || address.user_id !== userId) {
+      return res.status(404).json({
+        error: true,
+        message: "Address not found",
+        code: "ADDRESS_NOT_FOUND"
+      });
+    }
+    
+    // 2. Fetch cart items (or specified subset)
+    let cartItems = [];
+    if (cart_item_ids && Array.isArray(cart_item_ids) && cart_item_ids.length > 0) {
+      const placeholders = cart_item_ids.map(() => '?').join(',');
+      const sql = `
+        SELECT ci.id, ci.product_id, ci.quantity, p.name, p.price_paise, p.stock_qty, p.status,
+        (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1 LIMIT 1) AS image_url
+        FROM cart_items ci
+        JOIN products p ON ci.product_id = p.id
+        WHERE ci.user_id = ? AND ci.id IN (${placeholders}) AND p.status != 'archived'
+      `;
+      cartItems = db.prepare(sql).all(userId, ...cart_item_ids);
+      if (cartItems.length !== cart_item_ids.length) {
+        return res.status(422).json({
+          error: true,
+          message: "Cart items out of stock or not found",
+          code: "INVALID_CART_ITEMS"
+        });
+      }
+    } else {
+      const sql = `
+        SELECT ci.id, ci.product_id, ci.quantity, p.name, p.price_paise, p.stock_qty, p.status,
+        (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1 LIMIT 1) AS image_url
+        FROM cart_items ci
+        JOIN products p ON ci.product_id = p.id
+        WHERE ci.user_id = ? AND p.status != 'archived'
+      `;
+      cartItems = db.prepare(sql).all(userId);
+    }
+    
+    if (cartItems.length === 0) {
+      return res.status(422).json({
+        error: true,
+        message: "Cart is empty / items out of stock",
+        code: "EMPTY_CART"
+      });
+    }
+    
+    // 3. Verify stock_qty >= quantity
+    for (const item of cartItems) {
+      if (item.quantity > item.stock_qty || item.status !== 'active') {
+        return res.status(422).json({
+          error: true,
+          message: `Requested quantity exceeds stock for ${item.name}`,
+          code: "INSUFFICIENT_STOCK"
+        });
+      }
+    }
+    
+    // 4. Calculate subtotal, shipping
+    const subtotal_paise = cartItems.reduce((sum, item) => sum + item.price_paise * item.quantity, 0);
+    const shipping_paise = subtotal_paise >= 50000 ? 0 : 12000;
+    const total_paise = subtotal_paise + shipping_paise;
+    
+    // 5. Generate order_ref
+    const year = new Date().getFullYear();
+    const order_ref = `TF-${year}-${Math.floor(1000 + Math.random() * 9000)}`;
+    
+    // 8. Create Razorpay order (or mock)
+    let razorpayOrderId = null;
+    if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+      try {
+        const auth = Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString('base64');
+        const rpRes = await fetch('https://api.razorpay.com/v1/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${auth}`
+          },
+          body: JSON.stringify({
+            amount: total_paise,
+            currency: 'INR',
+            receipt: order_ref
+          })
+        });
+        if (rpRes.ok) {
+          const rpData = await rpRes.json();
+          razorpayOrderId = rpData.id;
+        }
+      } catch (err) {
+        console.error('Error generating real Razorpay order ID:', err);
+      }
+    }
+    
+    if (!razorpayOrderId) {
+      razorpayOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
+    }
+    
+    // 6, 7, 9. INSERT order and order_items, delete cart items
+    const orderId = db.transaction(() => {
+      const orderInfo = db.prepare(`
+        INSERT INTO orders (order_ref, buyer_id, address_id, status, subtotal_paise, shipping_paise, total_paise, razorpay_order_id)
+        VALUES (?, ?, ?, 'Awaiting Payment', ?, ?, ?, ?)
+      `).run(order_ref, userId, address_id, subtotal_paise, shipping_paise, total_paise, razorpayOrderId);
+      
+      const oId = orderInfo.lastInsertRowid;
+      
+      const insertOrderItem = db.prepare(`
+        INSERT INTO order_items (order_id, product_id, product_name, unit_price_paise, quantity, image_url)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `);
+      
+      for (const item of cartItems) {
+        insertOrderItem.run(oId, item.product_id, item.name, item.price_paise, item.quantity, item.image_url);
+      }
+      
+      const cartItemIds = cartItems.map(item => item.id);
+      const placeholders = cartItemIds.map(() => '?').join(',');
+      db.prepare(`DELETE FROM cart_items WHERE id IN (${placeholders})`).run(...cartItemIds);
+      
+      return oId;
+    })();
+    
+    const itemsFormatted = cartItems.map(item => ({
+      product_name: item.name,
+      quantity: item.quantity,
+      unit_price_paise: item.price_paise,
+      image_url: item.image_url
+    }));
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        order_id: orderId,
+        order_ref,
+        status: 'Awaiting Payment',
+        items: itemsFormatted,
+        subtotal_paise,
+        shipping_paise,
+        total_paise,
+        razorpay_order_id: razorpayOrderId
+      }
+    });
+  } catch (err) {
+    console.error('Error creating order:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
