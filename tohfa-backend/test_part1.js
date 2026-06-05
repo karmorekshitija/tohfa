@@ -1104,6 +1104,44 @@ async function runTests() {
 
     console.log('✓ Task 34 Passed: POST /api/payments/verify');
 
+    // --- TASK 35 TESTS: GET /api/payments/history ---
+    console.log('--- Testing TASK 35: GET /api/payments/history ---');
+    // Test unauthenticated GET
+    const unauthHistoryRes = await fetch(`${baseUrl}/api/payments/history`);
+    console.log('Unauth History Status:', unauthHistoryRes.status);
+    if (unauthHistoryRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated history fetch, got ${unauthHistoryRes.status}`);
+    }
+
+    // Fetch history authenticated
+    const historyRes = await fetch(`${baseUrl}/api/payments/history`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('History Status:', historyRes.status);
+    const historyData = await historyRes.json();
+    if (historyRes.status !== 200 || !historyData.success) {
+      throw new Error(`History fetch failed: ${JSON.stringify(historyData)}`);
+    }
+    const history = historyData.data;
+    if (history.total_spent_paise !== 0 || history.completed_order_count !== 0 || history.pending_shipment_count !== 1 || history.payments.length !== 2) {
+      throw new Error(`History values mismatch before Delivery: ${JSON.stringify(history)}`);
+    }
+
+    // Directly set order status to 'Delivered' to test spent aggregation
+    db.prepare("UPDATE orders SET status = 'Delivered' WHERE id = ?").run(payOrderId);
+
+    // Fetch history again
+    const finalHistoryRes = await fetch(`${baseUrl}/api/payments/history`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const finalHistoryData = await finalHistoryRes.json();
+    const finalHistory = finalHistoryData.data;
+    if (finalHistory.total_spent_paise !== 16800 || finalHistory.completed_order_count !== 1 || finalHistory.pending_shipment_count !== 0) {
+      throw new Error(`History values mismatch after Delivery: ${JSON.stringify(finalHistory)}`);
+    }
+
+    console.log('✓ Task 35 Passed: GET /api/payments/history');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

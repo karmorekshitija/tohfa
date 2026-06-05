@@ -2139,6 +2139,68 @@ app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, r
   }
 });
 
+// TASK 35: GET /api/payments/history
+app.get('/api/payments/history', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit) || 20;
+  
+  try {
+    let queryParts = ['o.buyer_id = ?', "o.status != 'Awaiting Payment'"];
+    let queryParams = [userId];
+    
+    if (cursor) {
+      queryParts.push("o.id < ?");
+      queryParams.push(parseInt(cursor));
+    }
+    
+    const total_spent_paise = db.prepare("SELECT SUM(total_paise) as total FROM orders WHERE buyer_id = ? AND status = 'Delivered'").get(userId).total || 0;
+    const completed_order_count = db.prepare("SELECT COUNT(*) as count FROM orders WHERE buyer_id = ? AND status = 'Delivered'").get(userId).count || 0;
+    const pending_shipment_count = db.prepare("SELECT COUNT(*) as count FROM orders WHERE buyer_id = ? AND status IN ('Processing', 'Shipped')").get(userId).count || 0;
+    
+    let sql = `
+      SELECT id AS order_id, order_ref, updated_at AS paid_at, total_paise AS amount_paise, status, razorpay_payment_id
+      FROM orders o
+      WHERE ${queryParts.join(' AND ')}
+      ORDER BY o.id DESC
+      LIMIT ?
+    `;
+    
+    queryParams.push(limit + 1);
+    
+    const orders = db.prepare(sql).all(...queryParams);
+    const hasMore = orders.length > limit;
+    if (hasMore) {
+      orders.pop();
+    }
+    
+    orders.forEach(p => {
+      p.payment_method_label = 'Razorpay';
+    });
+    
+    const nextCursor = hasMore && orders.length > 0 ? String(orders[orders.length - 1].order_id) : null;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        total_spent_paise,
+        completed_order_count,
+        pending_shipment_count,
+        payments: orders,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching payment history:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
