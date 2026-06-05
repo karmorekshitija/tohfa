@@ -253,4 +253,23 @@ const migrateOrderItems = () => {
 
 migrateOrderItems();
 
+// Task 08: Migration for reviews table
+const migrateReviews = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reviews (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id  INTEGER NOT NULL REFERENCES products(id),
+      reviewer_id INTEGER NOT NULL REFERENCES users(id),
+      order_id    INTEGER REFERENCES orders(id),
+      rating      INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+      body        TEXT,
+      created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(reviewer_id, product_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_reviews_product ON reviews(product_id);
+  `);
+};
+
+migrateReviews();
+
 module.exports = db;
