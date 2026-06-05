@@ -155,6 +155,63 @@ async function runTests() {
 
     console.log('✓ Task 18 Passed: GET /api/products/search');
 
+    // --- TASK 19 TESTS: GET /api/products/:id ---
+    console.log('--- Testing TASK 19: GET /api/products/:id ---');
+    // Fetch product with valid ID
+    const prodDetailRes = await fetch(`${baseUrl}/api/products/${newProductId}`);
+    console.log('Product Details Status:', prodDetailRes.status);
+    const prodDetailData = await prodDetailRes.json();
+    if (prodDetailRes.status !== 200 || !prodDetailData.success) {
+      throw new Error(`Product details fetch failed: ${JSON.stringify(prodDetailData)}`);
+    }
+    const prodDetails = prodDetailData.data;
+    if (prodDetails.name !== 'Speckled Moon Bowl' || prodDetails.price_paise !== 4800 || prodDetails.seller.seller_name !== 'Stoneware Studio' || prodDetails.category.slug !== 'ceramics-pottery' || prodDetails.is_wishlisted !== false) {
+      throw new Error(`Product details mismatch: ${JSON.stringify(prodDetails)}`);
+    }
+
+    // Insert a review to test recent_reviews
+    db.prepare(`
+      INSERT INTO reviews (product_id, reviewer_id, rating, body)
+      VALUES (?, ?, 5, 'Absolutely perfect!')
+    `).run(newProductId, buyerId);
+
+    // Fetch product with review, authenticated to check is_wishlisted after wishlisting
+    db.prepare(`INSERT INTO wishlists (user_id, product_id) VALUES (?, ?)`).run(buyerId, newProductId);
+
+    const authProdDetailRes = await fetch(`${baseUrl}/api/products/${newProductId}`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Auth Product Details Status:', authProdDetailRes.status);
+    const authProdDetailData = await authProdDetailRes.json();
+    if (authProdDetailRes.status !== 200 || !authProdDetailData.success) {
+      throw new Error(`Auth product details fetch failed: ${JSON.stringify(authProdDetailData)}`);
+    }
+    const authProdDetails = authProdDetailData.data;
+    if (authProdDetails.is_wishlisted !== true || authProdDetails.recent_reviews.length !== 1 || authProdDetails.recent_reviews[0].reviewer_name !== 'Test Buyer') {
+      throw new Error(`Auth product details mismatch: ${JSON.stringify(authProdDetails)}`);
+    }
+
+    // Update stock to 0 and verify status becomes 'sold_out'
+    db.prepare("UPDATE products SET stock_qty = 0 WHERE id = ?").run(newProductId);
+    const soldOutRes = await fetch(`${baseUrl}/api/products/${newProductId}`);
+    const soldOutData = await soldOutRes.json();
+    if (soldOutData.data.status !== 'sold_out') {
+      throw new Error(`Expected status to be 'sold_out', got: ${soldOutData.data.status}`);
+    }
+
+    // Reset stock qty back
+    db.prepare("UPDATE products SET stock_qty = 5 WHERE id = ?").run(newProductId);
+
+    // Test nonexistent product (404)
+    const nonexistentProdRes = await fetch(`${baseUrl}/api/products/999999`);
+    console.log('Nonexistent Product Status:', nonexistentProdRes.status);
+    const nonexistentProdData = await nonexistentProdRes.json();
+    if (nonexistentProdRes.status !== 404 || nonexistentProdData.code !== 'PRODUCT_NOT_FOUND') {
+      throw new Error(`Expected 404 with PRODUCT_NOT_FOUND, got ${nonexistentProdRes.status}`);
+    }
+
+    console.log('✓ Task 19 Passed: GET /api/products/:id');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

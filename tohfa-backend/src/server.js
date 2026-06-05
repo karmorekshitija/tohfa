@@ -910,6 +910,103 @@ app.get('/api/products/search', rateLimit(60), (req, res) => {
   }
 });
 
+// TASK 19: GET /api/products/:id
+app.get('/api/products/:id', rateLimit(120), optionalAuthenticateToken, (req, res) => {
+  const { id } = req.params;
+  const userId = req.user ? req.user.user_id : null;
+  
+  try {
+    // 1. SELECT product by id WHERE status != 'archived'
+    let query = `
+      SELECT 
+        p.id, p.seller_id, p.category_id, p.name, p.description, p.price_paise, p.stock_qty, p.ships_in_days, p.avg_rating, p.review_count, p.status,
+        c.name AS category_name, c.slug AS category_slug,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name, u.avatar_url, sp.shop_bio AS shop_tagline
+    `;
+    if (userId) {
+      query += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      query += `, 0 AS is_wishlisted`;
+    }
+    query += `
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      LEFT JOIN categories c ON p.category_id = c.id
+      WHERE p.id = ? AND p.status != 'archived'
+    `;
+    
+    const stmt = db.prepare(query);
+    const productData = userId ? stmt.get(userId, id) : stmt.get(id);
+    
+    if (!productData) {
+      return res.status(404).json({
+        error: true,
+        message: "Product not found",
+        code: "PRODUCT_NOT_FOUND"
+      });
+    }
+    
+    // 7. If stock_qty=0 set status to 'sold_out' in response
+    let status = productData.status;
+    if (productData.stock_qty === 0) {
+      status = 'sold_out';
+    }
+    
+    // 2. Join all images (order by sort_order)
+    const images = db.prepare('SELECT url, is_primary, sort_order FROM product_images WHERE product_id = ? ORDER BY sort_order ASC').all(id);
+    
+    // 5. Select 3 most recent reviews
+    const recentReviews = db.prepare(`
+      SELECT u.full_name AS reviewer_name, r.rating, r.body, r.created_at
+      FROM reviews r
+      JOIN users u ON r.reviewer_id = u.id
+      WHERE r.product_id = ?
+      ORDER BY r.created_at DESC, r.id DESC
+      LIMIT 3
+    `).all(id);
+    
+    // Formatting response
+    const productResponse = {
+      id: productData.id,
+      name: productData.name,
+      description: productData.description,
+      price_paise: productData.price_paise,
+      stock_qty: productData.stock_qty,
+      ships_in_days: productData.ships_in_days,
+      avg_rating: productData.avg_rating,
+      review_count: productData.review_count,
+      is_wishlisted: !!productData.is_wishlisted,
+      status: status,
+      images: images,
+      seller: {
+        id: productData.seller_id,
+        seller_name: productData.seller_name,
+        avatar_url: productData.avatar_url,
+        shop_tagline: productData.shop_tagline
+      },
+      category: {
+        id: productData.category_id,
+        name: productData.category_name,
+        slug: productData.category_slug
+      },
+      recent_reviews: recentReviews
+    };
+    
+    return res.status(200).json({
+      success: true,
+      data: productResponse
+    });
+  } catch (err) {
+    console.error('Error fetching product details:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
