@@ -18,21 +18,29 @@ async function runTests() {
     // --- Test Task 42: POST /api/seller/become ---
     console.log('--- Testing TASK 42: POST /api/seller/become ---');
     // Login as buyer
+    console.log('Logging in as buyer...');
     const loginRes = await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'seller4@test.com', password: 'TestPass123' })
     });
-    const loginData = await loginRes.json();
+    console.log('Login Response Status:', loginRes.status);
+    const loginText = await loginRes.text();
+    console.log('Login Response Text:', loginText);
+    const loginData = JSON.parse(loginText);
     const token = loginData.data.access_token;
 
     // Become seller
+    console.log('Sending become request...');
     const becomeRes = await fetch(`${baseUrl}/api/seller/become`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ display_name: 'Test Studio 4', handle: 'test_studio_4', store_currency: 'INR' })
     });
-    const becomeData = await becomeRes.json();
+    console.log('Become Response Status:', becomeRes.status);
+    const becomeText = await becomeRes.text();
+    console.log('Become Response Text:', becomeText);
+    const becomeData = JSON.parse(becomeText);
     if (becomeRes.status !== 201 || !becomeData.success) throw new Error(`Task 42 fail: ${JSON.stringify(becomeData)}`);
     if (!becomeData.data.seller_id || !becomeData.data.handle || !becomeData.data.store_slug) throw new Error(`Task 42 shape fail: ${JSON.stringify(becomeData.data)}`);
     console.log('✓ Task 42 Passed: POST /api/seller/become');
@@ -247,7 +255,7 @@ async function runTests() {
 
     console.log('\n✅ ALL PART 4 API SMOKE TESTS PASSED');
   } catch (err) {
-    console.error('❌ Smoke test failed:', err.message);
+    console.error('❌ Smoke test failed:', err.stack);
     exitCode = 1;
   } finally {
     server.close(() => {
