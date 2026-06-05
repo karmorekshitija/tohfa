@@ -763,6 +763,49 @@ async function runTests() {
 
     console.log('✓ Task 28 Passed: POST /api/orders');
 
+    // --- TASK 29 TESTS: GET /api/orders ---
+    console.log('--- Testing TASK 29: GET /api/orders ---');
+    // Test unauthenticated GET
+    const unauthOrdersRes = await fetch(`${baseUrl}/api/orders`);
+    console.log('Unauth Orders Status:', unauthOrdersRes.status);
+    if (unauthOrdersRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated orders fetch, got ${unauthOrdersRes.status}`);
+    }
+
+    // Fetch orders authenticated
+    const ordersRes = await fetch(`${baseUrl}/api/orders`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Orders Status:', ordersRes.status);
+    const ordersData = await ordersRes.json();
+    if (ordersRes.status !== 200 || !ordersData.success || ordersData.data.orders.length !== 1) {
+      throw new Error(`Orders fetch failed: ${JSON.stringify(ordersData)}`);
+    }
+    const orderItem = ordersData.data.orders[0];
+    if (orderItem.id !== createdOrderId || orderItem.status !== 'Awaiting Payment' || orderItem.item_count !== 2) {
+      throw new Error(`Order item mismatch: ${JSON.stringify(orderItem)}`);
+    }
+
+    // Test filter status=active (should return 1 order)
+    const activeOrdersRes = await fetch(`${baseUrl}/api/orders?status=active`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const activeOrdersData = await activeOrdersRes.json();
+    if (activeOrdersData.data.orders.length !== 1) {
+      throw new Error(`Expected 1 active order, got ${activeOrdersData.data.orders.length}`);
+    }
+
+    // Test filter status=Delivered (should return 0 orders)
+    const deliveredOrdersRes = await fetch(`${baseUrl}/api/orders?status=Delivered`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const deliveredOrdersData = await deliveredOrdersRes.json();
+    if (deliveredOrdersData.data.orders.length !== 0) {
+      throw new Error(`Expected 0 delivered orders, got ${deliveredOrdersData.data.orders.length}`);
+    }
+
+    console.log('✓ Task 29 Passed: GET /api/orders');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

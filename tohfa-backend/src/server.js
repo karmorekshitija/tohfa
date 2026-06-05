@@ -1620,6 +1620,71 @@ app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
   }
 });
 
+// TASK 29: GET /api/orders
+app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const statusFilter = req.query.status;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit) || 20;
+  
+  try {
+    let queryParts = ['o.buyer_id = ?'];
+    let queryParams = [userId];
+    
+    if (statusFilter) {
+      if (statusFilter === 'active') {
+        queryParts.push("o.status IN ('Awaiting Payment', 'Processing', 'Shipped')");
+      } else if (statusFilter === 'Delivered') {
+        queryParts.push("o.status = 'Delivered'");
+      } else if (statusFilter === 'Cancelled') {
+        queryParts.push("o.status = 'Cancelled'");
+      }
+    }
+    
+    if (cursor) {
+      queryParts.push("o.id < ?");
+      queryParams.push(parseInt(cursor));
+    }
+    
+    let sql = `
+      SELECT 
+        o.id, o.order_ref, o.status, o.created_at, o.total_paise,
+        (SELECT SUM(quantity) FROM order_items WHERE order_id = o.id) AS item_count,
+        (SELECT image_url FROM order_items WHERE order_id = o.id LIMIT 1) AS preview_image_url
+      FROM orders o
+      WHERE ${queryParts.join(' AND ')}
+      ORDER BY o.id DESC
+      LIMIT ?
+    `;
+    
+    queryParams.push(limit + 1);
+    
+    const orders = db.prepare(sql).all(...queryParams);
+    const hasMore = orders.length > limit;
+    if (hasMore) {
+      orders.pop();
+    }
+    
+    const nextCursor = hasMore && orders.length > 0 ? String(orders[orders.length - 1].id) : null;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        orders,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching orders:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
