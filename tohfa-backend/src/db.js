@@ -66,4 +66,20 @@ const migrateSellerProfiles = () => {
 
 migrateSellerProfiles();
 
+// Task 08: Migration for password_reset_tokens table
+const migratePasswordResetTokens = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      token_hash TEXT NOT NULL UNIQUE,
+      expires_at TEXT NOT NULL,
+      used INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+  `);
+};
+
+migratePasswordResetTokens();
+
 module.exports = db;

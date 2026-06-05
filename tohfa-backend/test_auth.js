@@ -8,6 +8,7 @@ async function runTests() {
   // Clear tables before test
   db.prepare('DELETE FROM refresh_tokens').run();
   db.prepare('DELETE FROM seller_profiles').run();
+  db.prepare('DELETE FROM password_reset_tokens').run();
   db.prepare('DELETE FROM users').run();
   
   let exitCode = 0;
@@ -397,6 +398,60 @@ async function runTests() {
       throw new Error(`Expected 401 with INVALID_REFRESH_TOKEN for expired token, got ${res17.status}`);
     }
     console.log('✓ Test 17 Passed: Expired refresh token is rejected');
+    
+    // Test 18: Successful forgot password request (registered email)
+    const res18 = await fetch(`${baseUrl}/api/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'john@example.com'
+      })
+    });
+    
+    console.log('Test 18 Status:', res18.status);
+    const body18 = await res18.json();
+    if (res18.status !== 200 || !body18.success || body18.data.message !== 'If that email is registered, a reset link has been sent.') {
+      throw new Error(`Expected 200 with generic success message, got ${res18.status}`);
+    }
+    
+    // Check that a token was indeed inserted in the database
+    const dbToken = db.prepare('SELECT * FROM password_reset_tokens WHERE user_id = ?').get(loginData2.data.user.id);
+    if (!dbToken) {
+      throw new Error('Expected reset token to be created in database');
+    }
+    console.log('✓ Test 18 Passed: Forgot password generated token for registered email');
+
+    // Test 19: Forgot password request for non-registered email
+    const res19 = await fetch(`${baseUrl}/api/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'nonexistent@example.com'
+      })
+    });
+    
+    console.log('Test 19 Status:', res19.status);
+    const body19 = await res19.json();
+    if (res19.status !== 200 || !body19.success || body19.data.message !== 'If that email is registered, a reset link has been sent.') {
+      throw new Error(`Expected 200 with generic success message for non-registered email, got ${res19.status}`);
+    }
+    console.log('✓ Test 19 Passed: Non-registered email handled silently and returned 200');
+
+    // Test 20: Validation error (invalid email format)
+    const res20 = await fetch(`${baseUrl}/api/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'invalid-email-format'
+      })
+    });
+    
+    console.log('Test 20 Status:', res20.status);
+    const body20 = await res20.json();
+    if (res20.status !== 400 || body20.code !== 'VALIDATION_ERROR') {
+      throw new Error(`Expected 400 with VALIDATION_ERROR, got ${res20.status} ${JSON.stringify(body20)}`);
+    }
+    console.log('✓ Test 20 Passed: Invalid email rejected with 400');
     
   } catch (err) {
     console.error('❌ Test failed:', err.message);

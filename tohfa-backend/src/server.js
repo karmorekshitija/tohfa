@@ -504,6 +504,48 @@ app.post('/api/auth/refresh', rateLimit(30), (req, res) => {
   }
 });
 
+// TASK 08: POST /api/auth/forgot-password
+app.post('/api/auth/forgot-password', rateLimit(5), (req, res) => {
+  const { email } = req.body;
+  
+  if (!email || typeof email !== 'string' || !validateEmail(email)) {
+    return res.status(400).json({
+      error: true,
+      message: "Missing or invalid email",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    
+    if (user) {
+      const plainToken = crypto.randomBytes(32).toString('hex');
+      const hashedToken = crypto.createHash('sha256').update(plainToken).digest('hex');
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+      
+      db.prepare('INSERT INTO password_reset_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)')
+        .run(user.id, hashedToken, expiresAt);
+        
+      console.log(`[RESET TOKEN] user_id=${user.id} token=${plainToken} expires=${expiresAt}`);
+    }
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        message: "If that email is registered, a reset link has been sent."
+      }
+    });
+  } catch (err) {
+    console.error('Error in forgot password:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
