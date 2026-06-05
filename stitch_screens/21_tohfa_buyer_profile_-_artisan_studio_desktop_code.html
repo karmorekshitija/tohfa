@@ -1,0 +1,252 @@
+<body class="bg-surface text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="#">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="#" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <div class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0">
+      E
+    </div>
+  </div>
+</header>
+<!-- Header Section -->
+<header class="w-full relative px-margin-desktop mt-sm">
+<div class="max-w-7xl mx-auto">
+<!-- Ink Wash Banner -->
+<div class="w-full h-48 rounded-xl overflow-hidden relative shadow-sm">
+<div class="absolute inset-0 ink-wash-gradient opacity-60"></div>
+<!-- Ink line craft watermark simulation -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #414942 1px, transparent 0); background-size: 24px 24px;"></div>
+<div class="absolute bottom-0 right-0 p-lg">
+<div class="w-32 h-32 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="brush">brush</span>
+</div>
+</div>
+</div>
+<!-- Profile Info Overlay -->
+<div class="flex flex-col items-center -mt-24 pb-lg">
+<div class="relative group">
+<div class="relative group w-32 h-32 rounded-full border-[3px] border-[#255338] overflow-hidden bg-surface-container shadow-lg flex-shrink-0">
+  <img class="w-full h-full object-cover" data-alt="A portrait of a creative individual with a warm smile, captured in a studio with soft, natural lighting. The aesthetic is clean and minimalist with a tactile quality, reflecting an artisan spirit. The background is a soft ivory tone, consistent with a high-end journal style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1MlCvGNVC5kb3_0adXisBIXKR2kO5rDi5REC7Ws_jdqAl-d9k85WtM1zhT8kPt7miefUL2zB7ZWlht6gOBoOFf_yaM44xEDS_XDmP2CC3-O2XtWEbyNWU5d0aYrxHES2zAVOb4to55ZXc0JuEuYUxljiCZtgqH9k3hGJLepqGwKKZZmnmigxFXREVk5a9jUDkeBzDkZX8Z9jT_im_tJi4_Y8YVc3tbxMsxYFYLwpSOJOXUuN4y3YO7VUkGCQmkVDabJ6ip82gLbE">
+  <!-- Camera overlay on hover for edit -->
+  <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+    <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
+  </div>
+</div>
+<button class="absolute bottom-2 right-2 bg-primary text-white p-xs rounded-full border-2 border-surface artisan-card-hover">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</div>
+<div class="mt-md text-center">
+<h2 class="font-display-hero text-headline-lg text-on-surface">Elias Thorne</h2>
+<div class="flex gap-lg justify-center mt-xs font-data-price text-outline uppercase tracking-wider">
+<button class="hover:text-primary transition-colors">
+<span class="font-bold text-on-surface">124</span> Following
+                        </button>
+<button class="hover:text-primary transition-colors">
+<span class="font-bold text-on-surface">892</span> Followers
+                        </button>
+</div>
+<button class="mt-lg px-xl py-sm border-2 border-outline-variant font-label-caps text-on-surface rounded-full hover:bg-surface-container transition-all active:scale-95 artisan-card-hover">
+                        Edit Profile
+                    </button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Grid -->
+<main class="max-w-7xl mx-auto px-margin-desktop py-xl grid grid-cols-12 gap-xl">
+<!-- Left Column: Quick Links Bento Grid -->
+<section class="col-span-12 lg:col-span-8">
+<h3 class="font-title-serif text-title-serif mb-lg px-xs">Activity Hub</h3>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-gutter">
+<!-- Quick Link Cards -->
+<a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="#">
+<span class="material-symbols-outlined text-primary mb-md" data-icon="package_2">package_2</span>
+<p class="font-title-serif text-on-surface">Orders</p>
+<p class="text-xs text-outline mt-xs">2 active shipments</p>
+</a>
+<a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="#">
+<span class="material-symbols-outlined text-tertiary mb-md" data-icon="favorite">favorite</span>
+<p class="font-title-serif text-on-surface">Wishlist</p>
+<p class="text-xs text-outline mt-xs">15 curated items</p>
+</a>
+<a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="#">
+<span class="material-symbols-outlined text-secondary mb-md" data-icon="video_library">video_library</span>
+<p class="font-title-serif text-on-surface">Saved Reels</p>
+<p class="text-xs text-outline mt-xs">Process &amp; BTS</p>
+</a>
+<a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="#">
+<span class="material-symbols-outlined text-primary mb-md" data-icon="receipt_long">receipt_long</span>
+<p class="font-title-serif text-on-surface">Payments</p>
+<p class="text-xs text-outline mt-xs">Tax invoices</p>
+</a>
+<a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="#">
+<span class="material-symbols-outlined text-tertiary mb-md" data-icon="location_on">location_on</span>
+<p class="font-title-serif text-on-surface">Addresses</p>
+<p class="text-xs text-outline mt-xs">3 saved locations</p>
+</a>
+<a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="#">
+<span class="material-symbols-outlined text-secondary mb-md" data-icon="notifications">notifications</span>
+<p class="font-title-serif text-on-surface">Notifications</p>
+<p class="text-xs text-outline mt-xs">Recent alerts</p>
+</a>
+</div>
+<!-- Shipping & Payment Details -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="p-lg border border-outline-variant rounded-xl bg-surface-container-lowest relative overflow-hidden">
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-caps text-outline">Default Shipping</span>
+<button class="text-primary hover:underline text-sm font-bold">Edit</button>
+</div>
+<p class="font-title-serif text-on-surface">Studio 4B, The Grains</p>
+<p class="text-on-surface-variant mt-xs">Artisan Quarter, Kyoto 604-8021</p>
+<p class="text-on-surface-variant">Japan</p>
+<!-- Decorative ink wash dot -->
+<div class="absolute -bottom-4 -right-4 w-16 h-16 bg-primary-fixed/20 blur-2xl rounded-full"></div>
+</div>
+<div class="p-lg border border-outline-variant rounded-xl bg-surface-container-lowest flex flex-col justify-between">
+<div>
+<span class="font-label-caps text-outline mb-md block">Default Payment</span>
+<div class="flex items-center gap-md text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
+<span class="font-data-price">•••• •••• •••• 4291</span>
+</div>
+</div>
+<div class="mt-lg flex items-center justify-between">
+<span class="text-xs text-outline">Expires 09/27</span>
+<button class="text-on-surface-variant/40">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Settings & Preferences -->
+<aside class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<div class="bg-surface-container-highest/30 p-lg rounded-xl border border-surface-variant">
+<h3 class="font-title-serif text-title-serif mb-lg">Preferences</h3>
+<ul class="flex flex-col gap-xs">
+<li>
+<a class="flex items-center justify-between p-md hover:bg-surface-container rounded-lg transition-colors group" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications_active">notifications_active</span>
+<span class="font-body-md text-on-surface">Notifications</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-between p-md hover:bg-surface-container rounded-lg transition-colors group" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="help_center">help_center</span>
+<span class="font-body-md text-on-surface">Help &amp; Support</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-between p-md hover:bg-surface-container rounded-lg transition-colors group" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="info">info</span>
+<span class="font-body-md text-on-surface">About Tohfa</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+</li>
+<li class="mt-md pt-md border-t border-outline-variant">
+<button class="w-full flex items-center gap-md p-md text-error hover:bg-error-container/20 rounded-lg transition-colors group">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md font-bold">Log out</span>
+</button>
+</li>
+</ul>
+</div>
+<!-- Hand-drawn style decorative card -->
+<div class="relative p-lg bg-tertiary-fixed rounded-xl overflow-hidden shadow-sm artisan-card-hover cursor-pointer">
+<div class="relative z-10">
+<p class="font-display-hero text-xl text-on-tertiary-fixed">Join the Studio</p>
+<p class="text-sm text-on-tertiary-fixed-variant mt-xs">Become a certified Tohfa Artisan and share your craft with the world.</p>
+<button class="mt-md bg-on-tertiary-fixed text-surface px-lg py-xs rounded-full font-label-caps text-[10px] artisan-card-hover">Apply Now</button>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[100px]" data-icon="palette">palette</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer Spacer for Desktop -->
+<footer class="py-xl opacity-20 flex justify-center items-center gap-md">
+<span class="w-12 h-[1px] bg-outline"></span>
+<span class="material-symbols-outlined text-sm" data-icon="eco">eco</span>
+<span class="w-12 h-[1px] bg-outline"></span>
+</footer>
+<script>
+        // Simple micro-interaction for artisan cards
+        document.querySelectorAll('.artisan-card-hover').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Toggle active state visualization
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                navLinks.forEach(l => {
+                    l.classList.remove('text-primary', 'font-bold', 'border-b-2', 'border-primary');
+                    l.classList.add('text-on-surface-variant');
+                });
+                link.classList.remove('text-on-surface-variant');
+                link.classList.add('text-primary', 'font-bold', 'border-b-2', 'border-primary');
+            });
+        });
+    </script>
+</body>
