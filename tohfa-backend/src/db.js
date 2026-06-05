@@ -205,4 +205,34 @@ const migrateAddresses = () => {
 
 migrateAddresses();
 
+// Task 06: Migration for orders table
+const migrateOrders = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS orders (
+      id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_ref           TEXT NOT NULL UNIQUE,
+      buyer_id            INTEGER NOT NULL REFERENCES users(id),
+      address_id          INTEGER REFERENCES addresses(id),
+      status              TEXT DEFAULT 'Awaiting Payment',
+      subtotal_paise      INTEGER NOT NULL,
+      shipping_paise      INTEGER DEFAULT 0,
+      total_paise         INTEGER NOT NULL,
+      razorpay_order_id   TEXT,
+      razorpay_payment_id TEXT,
+      tracking_number     TEXT,
+      cancel_reason       TEXT,
+      cancelled_at        DATETIME,
+      shipped_at          DATETIME,
+      delivered_at        DATETIME,
+      created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at          DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_orders_buyer ON orders(buyer_id);
+    CREATE INDEX IF NOT EXISTS idx_orders_ref ON orders(order_ref);
+    CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+  `);
+};
+
+migrateOrders();
+
 module.exports = db;
