@@ -1,0 +1,130 @@
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="#">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="#" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">shopping_cart</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <div class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0">
+      A
+    </div>
+  </div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col items-center justify-center relative overflow-hidden py-xl px-margin-mobile">
+<!-- Artisan Watermarks -->
+<div class="absolute inset-0 pointer-events-none opacity-[0.08] flex items-center justify-center overflow-hidden">
+<div class="absolute top-[10%] left-[5%] transform -rotate-12 scale-150">
+<span class="material-symbols-outlined text-[120px]">content_cut</span>
+</div>
+<div class="absolute bottom-[15%] right-[8%] transform rotate-12 scale-150">
+<span class="material-symbols-outlined text-[140px]">texture</span>
+</div>
+<div class="absolute top-[60%] left-[10%] transform rotate-45 scale-125">
+<span class="material-symbols-outlined text-[100px]">filter_vintage</span>
+</div>
+</div>
+<div class="max-w-xl w-full text-center z-10 space-y-lg animate-in fade-in slide-in-from-bottom-4 duration-1000">
+<!-- Illustration -->
+<div class="mx-auto w-64 h-64 md:w-80 md:h-80 mb-md">
+<img alt="Droopy flower illustration" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR1pBJVavfx81SMKM0DCbhaVVQUw5XT_-xkUP4WQsh7hwRyQIE_gPG-Mi2PJ5zgD9KLXCTLeyXIYjYK9vzrORzuHPGZSapyKgBq6dOrsvKDhT7D2-CbTItHkE34USxHY1Y-br54Bu3VlmtHblZ9L3ylDreb6lISPmsPzuaiUbxCM3IMNF8A8AppxvlnMN4gx8kw5LcNfGMHIJ_vzerLYo41mJd7ldAXX8sVMQlPsguOvJDFyOTGrg8wdV0XFGqlGS9uarV3l4bEA0">
+</div>
+<!-- Text Content -->
+<div class="space-y-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Payment didn't go through</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto">
+                    No money was taken. You can try again whenever you're ready.
+                </p>
+</div>
+<!-- Order Reference -->
+<div class="inline-block py-xs px-md bg-surface-container rounded-lg">
+<span class="font-data-price text-data-price text-outline uppercase tracking-widest">Order Ref: #TF-2024-8842</span>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row gap-md justify-center items-center pt-md">
+<button class="w-full sm:w-auto px-xl py-md bg-primary text-white font-body-md font-bold rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-sm">
+                    Try again
+                </button>
+<button class="w-full sm:w-auto px-xl py-md bg-white border border-outline-variant text-secondary font-body-md font-bold rounded-lg hover:bg-surface-container transition-all active:scale-95">
+                    Back to basket
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-container-high w-full py-xl px-margin-mobile md:px-margin-desktop border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center gap-md max-w-7xl mx-auto">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-label-caps text-label-caps text-primary uppercase">Tohfa Artisan Studio</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-center md:text-left">
+                    © 2024 TOFA Artisan Studio. Handcrafted with intention.
+                </p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Journal</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Our Process</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Shipping Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Contact</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Sustainability</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                
+                let ripples = document.createElement('span');
+                ripples.style.left = x + 'px';
+                ripples.style.top = y + 'px';
+                this.appendChild(ripples);
+                
+                setTimeout(() => {
+                    ripples.remove();
+                }, 1000);
+            });
+        });
+    </script>
+</body>
