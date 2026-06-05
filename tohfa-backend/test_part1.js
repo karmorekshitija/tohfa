@@ -1142,6 +1142,44 @@ async function runTests() {
 
     console.log('✓ Task 35 Passed: GET /api/payments/history');
 
+    // --- TASK 36 TESTS: GET /api/wishlist ---
+    console.log('--- Testing TASK 36: GET /api/wishlist ---');
+    // Test unauthenticated GET
+    const unauthWishlistRes = await fetch(`${baseUrl}/api/wishlist`);
+    console.log('Unauth Wishlist Status:', unauthWishlistRes.status);
+    if (unauthWishlistRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated wishlist fetch, got ${unauthWishlistRes.status}`);
+    }
+
+    // Fetch wishlist authenticated
+    const wishlistRes = await fetch(`${baseUrl}/api/wishlist`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Wishlist Status:', wishlistRes.status);
+    const wishlistData = await wishlistRes.json();
+    if (wishlistRes.status !== 200 || !wishlistData.success || wishlistData.data.count !== 1) {
+      throw new Error(`Wishlist fetch failed: ${JSON.stringify(wishlistData)}`);
+    }
+    const wishlistItem = wishlistData.data.items[0];
+    if (wishlistItem.product_id !== newProductId || wishlistItem.name !== 'Speckled Moon Bowl' || wishlistItem.in_cart !== false) {
+      throw new Error(`Wishlist item details mismatch: ${JSON.stringify(wishlistItem)}`);
+    }
+
+    // Add product to cart to test in_cart flag
+    db.prepare(`INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, 1)`).run(buyerId, newProductId);
+    const wishlistWithCartRes = await fetch(`${baseUrl}/api/wishlist`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const wishlistWithCartData = await wishlistWithCartRes.json();
+    if (wishlistWithCartData.data.items[0].in_cart !== true) {
+      throw new Error(`Expected in_cart to be true in wishlist, got ${wishlistWithCartData.data.items[0].in_cart}`);
+    }
+
+    // Clean up cart item
+    db.prepare(`DELETE FROM cart_items WHERE user_id = ? AND product_id = ?`).run(buyerId, newProductId);
+
+    console.log('✓ Task 36 Passed: GET /api/wishlist');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
