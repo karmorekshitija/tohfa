@@ -1,0 +1,207 @@
+<body class="bg-background text-on-background font-body-md text-body-md overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Bar Component -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="#">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="#" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="#" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </button>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <div class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0">
+      A
+    </div>
+  </div>
+</header>
+<main class="flex-grow w-full max-w-5xl mx-auto px-margin-desktop py-xl relative">
+<!-- Header Section -->
+<section class="text-center mb-xl">
+<div class="flex items-center justify-center mb-2">
+<button class="material-symbols-outlined text-primary mr-4 hover:bg-surface-variant rounded-full p-1 transition-all">chevron_left</button>
+<h1 class="font-headline-lg text-headline-lg text-primary">Order ✦</h1>
+</div>
+<p class="font-data-price text-[12px] text-on-surface-variant opacity-60">#TF-2024-8842</p>
+</section>
+<!-- Status Timeline -->
+<section class="mb-xl px-10">
+<div class="relative flex justify-between items-center">
+<!-- Track Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-sage-soft -z-10 overflow-hidden">
+<div class="h-full bg-primary" style="width: 37.5%;"></div>
+<div class="h-full bg-gold absolute top-0" style="width: 12.5%; left: 37.5%;"></div>
+</div>
+<!-- Placed -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-[14px]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">PLACED</span>
+</div>
+<!-- Paid -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-[14px]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">PAID</span>
+</div>
+<!-- Processing (Current) -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-white border-2 border-gold flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-gold"></div>
+</div>
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
+</div>
+<!-- Shipped -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center"></div>
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
+</div>
+<!-- Delivered -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center"></div>
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg items-start">
+<!-- Left Side: Items & Shipping -->
+<div class="md:col-span-7 flex flex-col gap-lg">
+<!-- Item Card -->
+<div class="bg-ivory border border-sage-border rounded-xl p-md flex gap-md shadow-sm transition-transform active:scale-[0.98]">
+<div class="w-24 h-24 bg-surface-dim rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A high-resolution studio photograph of a handcrafted 'Midnight Lily' ceramic vase, featuring deep indigo glazes with delicate white floral patterns. The lighting is soft and warm, casting gentle shadows that emphasize the tactile, artisan-made texture of the clay. The vase sits on a clean ivory-colored surface, reflecting the refined and minimalist Tohfa brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM6XLnmYc4UMvbmEFb9YHAemupSzPh74TEyTxTpoHswdS4JAGwdOOs45wlJ-8av11WfDu3WV7U-bVaB3NGm3vlCU1T-Maoe0P-EChWBbQdbAGxaZuGTagtcwPTvp-u5rEndRzuSksLJKuGAYYGNgrUMJzXds8NLfx3YueXRXUe30RXO28Zi59d03SXHq7YatSt8BCN5QWUb8GWwKSBRCz9_2ue0Fmidapo8JZssntqsVBk3VxLSDMDCmho9s5nP4Cqq03vX4TFcR0">
+</div>
+<div class="flex flex-col justify-between flex-grow">
+<div>
+<h3 class="font-title-serif text-[14px] text-primary italic">Midnight Lily Ceramics</h3>
+<p class="font-data-price text-on-surface-variant text-[12px] mt-1">Qty 1 × ₹1,850</p>
+</div>
+<div class="self-end">
+<span class="font-data-price text-gold text-[16px] font-bold">₹1,850</span>
+</div>
+</div>
+</div>
+<!-- Shipping Card -->
+<div class="bg-ivory border border-sage-border rounded-xl p-md relative overflow-hidden">
+<!-- Wax Tape Motif -->
+<div class="absolute top-0 right-4 w-12 h-20 bg-primary opacity-[0.08] pointer-events-none transform -rotate-2" style="mask-image: linear-gradient(to bottom, black, transparent);"></div>
+<h4 class="font-label-caps text-label-caps text-primary mb-4">SHIPPED TO</h4>
+<p class="font-body-md text-[14px] text-on-surface max-w-xs leading-relaxed">
+                        Arjun Varma,<br>
+                        Flat 402, Lotus Residency,<br>
+                        12th Main Road, Indiranagar,<br>
+                        Bangalore, KA 560038
+                    </p>
+</div>
+</div>
+<!-- Right Side: Summary & Actions -->
+<div class="md:col-span-5 flex flex-col gap-lg">
+<!-- Summary Card -->
+<div class="bg-sage-wash rounded-xl p-lg relative overflow-hidden">
+<!-- Botanical Sprig Watermark -->
+<img class="absolute bottom-[-10%] right-[-10%] w-48 h-48 opacity-[0.09] botanical-watermark pointer-events-none" src="https://lh3.googleusercontent.com/aida/ADBb0uhaNAQVwxh_bAjHwfSc7GLzp6eOE6fF6BInLs0XbKyUenvcxfkhkffprYitK5BN9Tuzp-5aIeBU5rwy3lrfhvn3Q7FjzX8655eH2WK2lGYkhAVtkvqorQybh401-Ef77VzshaUXhCK7pKUJMsWUEILAB40tPFPv-fdve0r9Oyh6XRFVo7wSBCtBVAtzQPwzy3bxWHamRu7dc21ebQRbyVCPNuKDR4Gf_MylLlb3rB8fgCM1M6JyOkchbGw">
+<h4 class="font-label-caps text-label-caps text-primary mb-6">SUMMARY</h4>
+<div class="space-y-4 relative z-10">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-md">Subtotal</span>
+<span class="font-data-price text-on-surface">₹1,850</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-md">Shipping</span>
+<span class="font-data-price text-on-surface">₹120</span>
+</div>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-title-serif text-primary">Total</span>
+<span class="font-data-price text-gold text-[18px] font-bold">₹1,970</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-4">
+<button class="w-full py-3 px-6 rounded-lg border border-primary text-primary font-body-md font-medium hover:bg-primary hover:text-white transition-all active:scale-[0.97]">
+                        View receipt
+                    </button>
+<button class="w-full py-2 text-terracotta font-body-md text-sm hover:underline transition-all">
+                        Cancel order
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="mt-auto bg-surface-container-low dark:bg-surface-container-highest w-full rounded-none border-t border-outline-variant">
+<div class="flex flex-col items-center px-margin-desktop py-lg w-full gap-8">
+<div class="flex flex-col md:flex-row justify-between items-center w-full max-w-7xl">
+<!-- Brand Footer Logo -->
+<span class="font-label-caps text-label-caps text-primary dark:text-inverse-primary mb-4 md:mb-0">TOFA ARTISAN STUDIO</span>
+<!-- Footer Links -->
+<div class="flex gap-8 mb-4 md:mb-0">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">About Us</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Shipping Policy</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Artisan Terms</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Contact</a>
+</div>
+</div>
+<p class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md opacity-60 text-center max-w-md">
+                © 2024 TOFA Artisan Studio. Handcrafted with intention.
+            </p>
+<!-- Mascot Sticker -->
+<div class="pt-4 pb-2">
+<img alt="Teddy &amp; Co Mascot" class="w-16 h-16 drop-shadow-sm hover:rotate-3 transition-transform cursor-help" src="https://lh3.googleusercontent.com/aida/ADBb0uh47JLQDW_y7bhY0Oc8cfvkBSlJTorja5YDkmRjXARu4VxifKxT2DI0dldEBdZpZm2yjW-9yUaNiHoXCoUxuli3l6lJxpJeRgSKPiTMdjJuDzqTSqZ_jZ8bhn2OffHL7YzcPhkgogv4TOQVzBU847jol6Unsy3cusz_lkJjsQ-ROZG-wJsCrKf4P4wjoBuQWfioZryl5vRQL1-X_tDSp4JJIZYUQoLKtJ-Zo_PYfWjYWAihVjyHM0Ilxj4" title="Teddy &amp; Co.">
+</div>
+</div>
+</footer>
+<!-- Background Watermark -->
+<div class="fixed inset-0 pointer-events-none -z-20 overflow-hidden">
+<img class="absolute top-[60%] left-[-5%] w-[400px] h-[400px] opacity-[0.05] grayscale rotate-12" src="https://lh3.googleusercontent.com/aida/ADBb0uhaNAQVwxh_bAjHwfSc7GLzp6eOE6fF6BInLs0XbKyUenvcxfkhkffprYitK5BN9Tuzp-5aIeBU5rwy3lrfhvn3Q7FjzX8655eH2WK2lGYkhAVtkvqorQybh401-Ef77VzshaUXhCK7pKUJMsWUEILAB40tPFPv-fdve0r9Oyh6XRFVo7wSBCtBVAtzQPwzy3bxWHamRu7dc21ebQRbyVCPNuKDR4Gf_MylLlb3rB8fgCM1M6JyOkchbGw">
+</div>
+<script>
+        // Micro-interactions for order cards
+        document.querySelectorAll('.bg-ivory').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = '#255338';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '#BFCDB8';
+            });
+        });
+    </script>
+</body>
