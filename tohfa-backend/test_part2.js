@@ -43,6 +43,7 @@ async function runTests() {
 
     // Seed test orders and items
     db.prepare("DELETE FROM orders WHERE order_ref = 'ORD-TEST-99'").run();
+    db.prepare("DELETE FROM order_flags WHERE order_id = 'ORD-TEST-99'").run();
     db.prepare("INSERT INTO orders (id, order_ref, buyer_id, subtotal_paise, total_paise, status) VALUES (99, 'ORD-TEST-99', ?, ?, ?, 'processing')")
       .run(buyerUserId, 150000, 150000);
     
