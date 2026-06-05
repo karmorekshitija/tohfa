@@ -1619,6 +1619,36 @@ async function runTests() {
     }
 
     console.log('✓ Task 45 Passed: DELETE /api/reels/:id/save');
+
+    // --- TASK 46 TESTS: GET /api/reels/saved ---
+    console.log('--- Testing TASK 46: GET /api/reels/saved ---');
+
+    // 1. Unauthenticated saved fetch
+    const unauthSavedRes = await fetch(`${baseUrl}/api/reels/saved`);
+    if (unauthSavedRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth saved, got ${unauthSavedRes.status}`);
+    }
+
+    // 2. Save a reel first
+    await fetch(`${baseUrl}/api/reels/${newReelId}/save`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+
+    // 3. Fetch saved reels authenticated
+    const savedRes = await fetch(`${baseUrl}/api/reels/saved`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const savedData = await savedRes.json();
+    if (savedRes.status !== 200 || !savedData.success || savedData.data.count !== 1 || savedData.data.saved_reels.length !== 1) {
+      throw new Error(`Expected 1 saved reel, got: ${JSON.stringify(savedData)}`);
+    }
+    const sr1 = savedData.data.saved_reels[0];
+    if (sr1.id !== newReelId || sr1.seller_name !== 'Stoneware Studio') {
+      throw new Error(`Unexpected saved reel details: ${JSON.stringify(sr1)}`);
+    }
+
+    console.log('✓ Task 46 Passed: GET /api/reels/saved');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

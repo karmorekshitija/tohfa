@@ -2876,6 +2876,52 @@ app.delete('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) =
   }
 });
 
+// TASK 46: GET /api/reels/saved
+app.get('/api/reels/saved', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+
+  try {
+    const sql = `
+      SELECT 
+        r.id, r.thumbnail_url, r.caption, r.seller_id,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name,
+        sr.saved_at
+      FROM saved_reels sr
+      JOIN reels r ON sr.reel_id = r.id
+      JOIN users u ON r.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE sr.user_id = ?
+      ORDER BY sr.saved_at DESC
+    `;
+
+    const rows = db.prepare(sql).all(userId);
+
+    const savedReels = rows.map(row => ({
+      id: row.id,
+      thumbnail_url: row.thumbnail_url,
+      caption: row.caption,
+      seller_name: row.seller_name,
+      seller_id: row.seller_id,
+      saved_at: new Date(row.saved_at + 'Z').toISOString()
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        saved_reels: savedReels,
+        count: savedReels.length
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching saved reels:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
