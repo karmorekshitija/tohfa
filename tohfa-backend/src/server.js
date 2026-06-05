@@ -2247,6 +2247,45 @@ app.get('/api/wishlist', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 37: POST /api/wishlist/:productId
+app.post('/api/wishlist/:productId', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const productId = req.params.productId;
+
+  try {
+    const product = db.prepare("SELECT id FROM products WHERE id = ? AND status != 'archived'").get(productId);
+    if (!product) {
+      return res.status(404).json({
+        error: true,
+        message: "Product not found",
+        code: "PRODUCT_NOT_FOUND"
+      });
+    }
+
+    const existing = db.prepare("SELECT id FROM wishlists WHERE user_id = ? AND product_id = ?").get(userId, productId);
+    if (existing) {
+      return res.status(200).json({
+        success: true,
+        data: { wishlisted: true }
+      });
+    }
+
+    db.prepare("INSERT INTO wishlists (user_id, product_id) VALUES (?, ?)").run(userId, productId);
+
+    return res.status(200).json({
+      success: true,
+      data: { wishlisted: true }
+    });
+  } catch (err) {
+    console.error('Error adding to wishlist:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

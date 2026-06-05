@@ -1180,6 +1180,48 @@ async function runTests() {
 
     console.log('✓ Task 36 Passed: GET /api/wishlist');
 
+    // --- TASK 37 TESTS: POST /api/wishlist/:productId ---
+    console.log('--- Testing TASK 37: POST /api/wishlist/:productId ---');
+    db.prepare('DELETE FROM wishlists WHERE user_id = ? AND product_id = ?').run(buyerId, newProductId);
+
+    // 1. Unauthenticated POST
+    const unauthPostRes = await fetch(`${baseUrl}/api/wishlist/${newProductId}`, {
+      method: 'POST'
+    });
+    if (unauthPostRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated wishlist POST, got ${unauthPostRes.status}`);
+    }
+
+    // 2. Non-existent product POST
+    const nonexistentPostRes = await fetch(`${baseUrl}/api/wishlist/99999`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentPostRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent product wishlist POST, got ${nonexistentPostRes.status}`);
+    }
+
+    // 3. Successful POST
+    const postRes = await fetch(`${baseUrl}/api/wishlist/${newProductId}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const postData = await postRes.json();
+    if (postRes.status !== 200 || !postData.success || postData.data.wishlisted !== true) {
+      throw new Error(`Wishlist POST failed: ${JSON.stringify(postData)}`);
+    }
+
+    // 4. Duplicate POST (idempotent check)
+    const dupPostRes = await fetch(`${baseUrl}/api/wishlist/${newProductId}`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const dupPostData = await dupPostRes.json();
+    if (dupPostRes.status !== 200 || !dupPostData.success || dupPostData.data.wishlisted !== true) {
+      throw new Error(`Wishlist duplicate POST failed (should be idempotent): ${JSON.stringify(dupPostData)}`);
+    }
+
+    console.log('✓ Task 37 Passed: POST /api/wishlist/:productId');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
