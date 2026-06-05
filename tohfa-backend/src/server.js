@@ -3161,7 +3161,7 @@ app.get('/api/users/:id/followers', rateLimit(60), optionalAuthenticateToken, (r
         COALESCE(sp.shop_name, u.display_name, u.full_name) AS display_name
     `;
 
-    const sqlParams = [targetUserId];
+    const sqlParams = [];
 
     if (authUserId) {
       sql += `,
@@ -3178,6 +3178,7 @@ app.get('/api/users/:id/followers', rateLimit(60), optionalAuthenticateToken, (r
       LEFT JOIN seller_profiles sp ON u.id = sp.user_id
       WHERE f.following_id = ?
     `;
+    sqlParams.push(targetUserId);
 
     if (cursor) {
       sql += ` AND f.id < ?`;
@@ -3217,6 +3218,97 @@ app.get('/api/users/:id/followers', rateLimit(60), optionalAuthenticateToken, (r
     });
   } catch (err) {
     console.error('Error fetching followers:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// TASK 51: GET /api/users/:id/following
+app.get('/api/users/:id/following', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  const targetUserId = req.params.id;
+  const authUserId = req.user ? req.user.user_id : null;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit, 10) || 30;
+
+  try {
+    const targetUser = db.prepare("SELECT id FROM users WHERE id = ?").get(targetUserId);
+    if (!targetUser) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+        code: "USER_NOT_FOUND"
+      });
+    }
+
+    const totalCount = db.prepare("SELECT COUNT(*) AS count FROM follows WHERE follower_id = ?").get(targetUserId).count;
+
+    let sql = `
+      SELECT 
+        f.id AS follow_record_id,
+        u.id, u.role, u.avatar_url,
+        COALESCE(sp.shop_name, u.display_name, u.full_name) AS display_name
+    `;
+
+    const sqlParams = [];
+
+    if (authUserId) {
+      sql += `,
+        ((SELECT 1 FROM follows WHERE follower_id = ? AND following_id = u.id) IS NOT NULL) AS is_following
+      `;
+      sqlParams.push(authUserId);
+    } else {
+      sql += `, 0 AS is_following`;
+    }
+
+    sql += `
+      FROM follows f
+      JOIN users u ON f.following_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE f.follower_id = ?
+    `;
+    sqlParams.push(targetUserId);
+
+    if (cursor) {
+      sql += ` AND f.id < ?`;
+      sqlParams.push(cursor);
+    }
+
+    sql += ` ORDER BY f.id DESC LIMIT ?`;
+    sqlParams.push(limit + 1);
+
+    const rows = db.prepare(sql).all(...sqlParams);
+
+    const hasMore = rows.length > limit;
+    if (hasMore) {
+      rows.pop();
+    }
+
+    const following = rows.map(row => ({
+      id: row.id,
+      display_name: row.display_name,
+      avatar_url: row.avatar_url,
+      role: row.role,
+      role_label: row.role === 'seller' ? 'MAKER' : 'BUYER',
+      is_following: !!row.is_following
+    }));
+
+    const nextCursor = hasMore && rows.length > 0 ? String(rows[rows.length - 1].follow_record_id) : null;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        user_id: parseInt(targetUserId, 10),
+        total_count: totalCount,
+        following,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching following:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",

@@ -1831,6 +1831,43 @@ async function runTests() {
     }
 
     console.log('✓ Task 50 Passed: GET /api/users/:id/followers');
+
+    // --- TASK 51 TESTS: GET /api/users/:id/following ---
+    console.log('--- Testing TASK 51: GET /api/users/:id/following ---');
+    db.prepare('DELETE FROM follows').run();
+    db.prepare('INSERT INTO follows (follower_id, following_id) VALUES (?, ?)').run(buyerId, sellerId);
+
+    // 1. Non-existent user following
+    const nonexistentFollowingRes = await fetch(`${baseUrl}/api/users/99999/following`);
+    if (nonexistentFollowingRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent user following, got ${nonexistentFollowingRes.status}`);
+    }
+
+    // 2. Unauthenticated following fetch
+    const unauthFollowingRes = await fetch(`${baseUrl}/api/users/${buyerId}/following?limit=10`);
+    const unauthFollowingData = await unauthFollowingRes.json();
+    if (unauthFollowingRes.status !== 200 || !unauthFollowingData.success || unauthFollowingData.data.total_count !== 1 || unauthFollowingData.data.following.length !== 1) {
+      throw new Error(`Expected 1 following user, got: ${JSON.stringify(unauthFollowingData)}`);
+    }
+    const foll1 = unauthFollowingData.data.following[0];
+    if (foll1.display_name !== 'Stoneware Studio' || foll1.role_label !== 'MAKER' || foll1.is_following !== false) {
+      throw new Error(`Unexpected following details: ${JSON.stringify(foll1)}`);
+    }
+
+    // 3. Authenticated following fetch (mutual follow detection check)
+    const authFollowingRes = await fetch(`${baseUrl}/api/users/${buyerId}/following?limit=10`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const authFollowingData = await authFollowingRes.json();
+    if (authFollowingRes.status !== 200 || !authFollowingData.success) {
+      throw new Error(`Expected 200 for auth following: ${JSON.stringify(authFollowingData)}`);
+    }
+    const foll2 = authFollowingData.data.following[0];
+    if (foll2.display_name !== 'Stoneware Studio' || foll2.role_label !== 'MAKER' || foll2.is_following !== true) {
+      throw new Error(`Expected is_following to be true for Stoneware Studio: ${JSON.stringify(foll2)}`);
+    }
+
+    console.log('✓ Task 51 Passed: GET /api/users/:id/following');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
