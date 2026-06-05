@@ -470,23 +470,60 @@
 </div>
 </footer>
 <!-- BottomNavBar (Mobile Only) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(74,69,62,0.08)] rounded-t-xl">
-<div onclick="window.location.href='home.html'" class="flex flex-col items-center justify-center bg-primary-container/20 text-primary rounded-xl px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
-<span class="font-label-caps text-[10px] mt-0.5">Home</span>
-</div>
-<div onclick="window.location.href='category.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
-<span class="material-symbols-outlined">category</span>
-<span class="font-label-caps text-[10px] mt-0.5">Category</span>
-</div>
-<div onclick="window.location.href='reels.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
-<span class="material-symbols-outlined">play_circle</span>
-<span class="font-label-caps text-[10px] mt-0.5">Reels</span>
-</div>
-<div onclick="window.location.href='profile.html'" class="flex flex-col items-center justify-center text-secondary px-4 py-1.5 transition-transform duration-200 active:scale-95 cursor-pointer">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label-caps text-[10px] mt-0.5">Profile</span>
-</div>
+<!-- Standard Bottom Navigation Bar (Task 10) -->
+<nav class="standard-tab-bar" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FFFFFF; height: 64px; border-top: 1px solid #C5D6BC; display: flex; align-items: center; justify-content: space-around; z-index: 50; padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box;">
+    <!-- Tab 1: Home -->
+    <a href="home.html" class="tab-item" id="tab-home" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">home</span>
+        <span>Home</span>
+    </a>
+    <!-- Tab 2: Search -->
+    <a href="category.html" class="tab-item" id="tab-search" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">search</span>
+        <span>Search</span>
+    </a>
+    <!-- Tab 3: Reels -->
+    <a href="reels.html" class="tab-item" id="tab-reels" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">smart_display</span>
+        <span>Reels</span>
+    </a>
+    <!-- Tab 4: Wishlist -->
+    <a href="wishlist.html" class="tab-item" id="tab-wishlist" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">favorite</span>
+        <span>Wishlist</span>
+    </a>
+    <!-- Tab 5: Profile -->
+    <a href="profile.html" class="tab-item" id="tab-profile" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">account_circle</span>
+        <span>Profile</span>
+    </a>
+    <script>
+        (function() {
+            const path = window.location.pathname.split('/').pop() || 'home.html';
+            let activeId = '';
+            if (path.includes('home') || path.includes('index') || path.includes('6_home')) {
+                activeId = 'tab-home';
+            } else if (path.includes('category') || path.includes('1_categories')) {
+                activeId = 'tab-search';
+            } else if (path.includes('reel') || path.includes('2_reels')) {
+                activeId = 'tab-reels';
+            } else if (path.includes('wishlist')) {
+                activeId = 'tab-wishlist';
+            } else if (path.includes('profile') || path.includes('3_buyer_profile')) {
+                activeId = 'tab-profile';
+            }
+            if (activeId) {
+                const activeEl = document.getElementById(activeId);
+                if (activeEl) {
+                    activeEl.style.color = '#3D6B4F';
+                    const icon = activeEl.querySelector('.material-symbols-outlined');
+                    if (icon) {
+                        icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600";
+                    }
+                }
+            }
+        })();
+    </script>
 </nav>
 <script>
     // Simple Infinite Scroll Simulation
