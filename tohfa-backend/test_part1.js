@@ -131,6 +131,30 @@ async function runTests() {
 
     console.log('✓ Task 17 Passed: GET /api/categories/:slug/products');
 
+    // --- TASK 18 TESTS: GET /api/products/search ---
+    console.log('--- Testing TASK 18: GET /api/products/search ---');
+    // Test valid search query
+    const searchRes = await fetch(`${baseUrl}/api/products/search?q=Moon`);
+    console.log('Search Status:', searchRes.status);
+    const searchData = await searchRes.json();
+    if (searchRes.status !== 200 || !searchData.success || searchData.data.query !== 'Moon' || searchData.data.products.length !== 1) {
+      throw new Error(`Search response invalid: ${JSON.stringify(searchData)}`);
+    }
+    const searchProduct = searchData.data.products[0];
+    if (searchProduct.name !== 'Speckled Moon Bowl' || searchProduct.price_paise !== 4800 || searchProduct.seller_name !== 'Stoneware Studio' || searchProduct.image_url !== 'https://example.com/image.jpg') {
+      throw new Error(`Search product fields mismatch: ${JSON.stringify(searchProduct)}`);
+    }
+
+    // Test missing query param q
+    const missingSearchRes = await fetch(`${baseUrl}/api/products/search`);
+    console.log('Missing Search Status:', missingSearchRes.status);
+    const missingSearchData = await missingSearchRes.json();
+    if (missingSearchRes.status !== 400 || missingSearchData.code !== 'VALIDATION_ERROR') {
+      throw new Error(`Expected 400 with VALIDATION_ERROR, got ${missingSearchRes.status}`);
+    }
+
+    console.log('✓ Task 18 Passed: GET /api/products/search');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

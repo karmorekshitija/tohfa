@@ -842,6 +842,74 @@ app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateTok
   }
 });
 
+// TASK 18: GET /api/products/search
+app.get('/api/products/search', rateLimit(60), (req, res) => {
+  const q = req.query.q;
+  const cursor = req.query.cursor;
+  const limit = parseInt(req.query.limit) || 20;
+  
+  if (!q || typeof q !== 'string' || q.trim() === '') {
+    return res.status(400).json({
+      error: true,
+      message: "Query string q is required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    let queryParts = ["p.status = 'active'", "(p.name LIKE ? OR p.description LIKE ?)"];
+    let queryParams = [`%${q}%`, `%${q}%`];
+    
+    if (cursor) {
+      queryParts.push("p.id < ?");
+      queryParams.push(parseInt(cursor));
+    }
+    
+    let sql = `
+      SELECT 
+        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE ${queryParts.join(' AND ')}
+      ORDER BY p.id DESC
+      LIMIT ?
+    `;
+    
+    queryParams.push(limit + 1);
+    
+    const products = db.prepare(sql).all(...queryParams);
+    const hasMore = products.length > limit;
+    if (hasMore) {
+      products.pop();
+    }
+    
+    const nextCursor = hasMore && products.length > 0 ? String(products[products.length - 1].id) : null;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        query: q,
+        products,
+        next_cursor: nextCursor,
+        has_more: hasMore
+      }
+    });
+  } catch (err) {
+    console.error('Error searching products:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
