@@ -745,5 +745,38 @@ const migrateSellerMessages = () => {
 };
 migrateSellerMessages();
 
+// ============================================================
+// PART 2: ADMIN PANEL MIGRATIONS
+// ============================================================
+
+// Task 01: Migration for admin_users table
+const migrateAdminUsers = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS admin_users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'admin',
+      display_name TEXT NOT NULL DEFAULT 'Tohfa Admin',
+      is_active INTEGER NOT NULL DEFAULT 1,
+      last_login_at TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_admin_users_email ON admin_users(email);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_admin_users_username ON admin_users(username);
+  `);
+
+  const count = db.prepare("SELECT COUNT(*) as c FROM admin_users").get().c;
+  if (count === 0) {
+    db.prepare(`
+      INSERT OR IGNORE INTO admin_users (username, email, password_hash, display_name, role)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('admin', 'admin@tohfa.in', '$2b$12$I2jCrfCU3rZ4BvvvZnk.q.b1Ps7.A2/5bBlxQC2MigusgUdkiIPZ.', 'Tohfa Admin', 'super_admin');
+  }
+};
+migrateAdminUsers();
+
 module.exports = db;
 
