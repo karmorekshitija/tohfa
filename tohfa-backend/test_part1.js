@@ -267,6 +267,76 @@ async function runTests() {
 
     console.log('✓ Task 20 Passed: GET /api/cart');
 
+    // --- TASK 21 TESTS: POST /api/cart/items ---
+    console.log('--- Testing TASK 21: POST /api/cart/items ---');
+    // Test valid add
+    const addCartRes = await fetch(`${baseUrl}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ product_id: newProductId, quantity: 2 })
+    });
+    console.log('Add to Cart Status:', addCartRes.status);
+    const addCartData = await addCartRes.json();
+    if (addCartRes.status !== 200 || !addCartData.success || !addCartData.data.cart_item_id || addCartData.data.item_count !== 2) {
+      throw new Error(`Add to cart failed: ${JSON.stringify(addCartData)}`);
+    }
+
+    // Test duplicate add
+    const dupAddRes = await fetch(`${baseUrl}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ product_id: newProductId, quantity: 1 })
+    });
+    console.log('Duplicate Add Status:', dupAddRes.status);
+    const dupAddData = await dupAddRes.json();
+    if (dupAddRes.status !== 409 || dupAddData.code !== 'CART_ITEM_EXISTS') {
+      throw new Error(`Expected 409 and CART_ITEM_EXISTS for duplicate add, got ${dupAddRes.status}: ${JSON.stringify(dupAddData)}`);
+    }
+
+    // Test exceeding stock qty (stock is 5, trying to add a new product with qty=6)
+    // Insert new product with stock 5
+    db.prepare(`
+      INSERT INTO products (seller_id, category_id, name, price_paise, stock_qty, ships_in_days, status)
+      VALUES (?, ?, 'Exceed Stock Product', 1000, 5, 2, 'active')
+    `).run(sellerId, ceramicsCategory.id);
+    const exceedStockProdId = db.prepare("SELECT last_insert_rowid() as id").get().id;
+
+    const exceedStockRes = await fetch(`${baseUrl}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ product_id: exceedStockProdId, quantity: 6 })
+    });
+    console.log('Exceed Stock Add Status:', exceedStockRes.status);
+    const exceedStockData = await exceedStockRes.json();
+    if (exceedStockRes.status !== 422 || exceedStockData.code !== 'INSUFFICIENT_STOCK') {
+      throw new Error(`Expected 422 and INSUFFICIENT_STOCK, got ${exceedStockRes.status}`);
+    }
+
+    // Test invalid quantity
+    const invalidQtyRes = await fetch(`${baseUrl}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ product_id: exceedStockProdId, quantity: 0 })
+    });
+    console.log('Invalid Qty Status:', invalidQtyRes.status);
+    if (invalidQtyRes.status !== 400) {
+      throw new Error(`Expected 400 for quantity=0, got ${invalidQtyRes.status}`);
+    }
+
+    console.log('✓ Task 21 Passed: POST /api/cart/items');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

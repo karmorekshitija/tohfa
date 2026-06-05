@@ -1060,6 +1060,88 @@ app.get('/api/cart', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 21: POST /api/cart/items
+app.post('/api/cart/items', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { product_id, quantity } = req.body;
+  
+  if (product_id === undefined || product_id === null || !Number.isInteger(product_id)) {
+    return res.status(400).json({
+      error: true,
+      message: "product_id must be an integer",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  if (quantity === undefined || quantity === null || !Number.isInteger(quantity) || quantity < 1) {
+    return res.status(400).json({
+      error: true,
+      message: "quantity must be an integer >= 1",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    // 1. Validate product exists and is active
+    const product = db.prepare('SELECT status, stock_qty FROM products WHERE id = ?').get(product_id);
+    if (!product || product.status === 'archived') {
+      return res.status(404).json({
+        error: true,
+        message: "Product not found or not active",
+        code: "PRODUCT_NOT_FOUND"
+      });
+    }
+    if (product.status !== 'active') {
+      return res.status(404).json({
+        error: true,
+        message: "Product not found or not active",
+        code: "PRODUCT_NOT_FOUND"
+      });
+    }
+    
+    // 2. Check quantity <= stock_qty
+    if (quantity > product.stock_qty) {
+      return res.status(422).json({
+        error: true,
+        message: "Requested quantity exceeds stock",
+        code: "INSUFFICIENT_STOCK"
+      });
+    }
+    
+    // 3. Check if duplicate
+    const existing = db.prepare('SELECT id FROM cart_items WHERE user_id = ? AND product_id = ?').get(userId, product_id);
+    if (existing) {
+      return res.status(409).json({
+        error: true,
+        message: "Item already in cart — use PATCH to update quantity",
+        code: "CART_ITEM_EXISTS"
+      });
+    }
+    
+    const info = db.prepare('INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?)')
+      .run(userId, product_id, quantity);
+      
+    const cartItemId = info.lastInsertRowid;
+    
+    const itemCount = db.prepare('SELECT SUM(quantity) as count FROM cart_items WHERE user_id = ?').get(userId).count || 0;
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        cart_item_id: cartItemId,
+        item_count: itemCount
+      }
+    });
+  } catch (err) {
+    console.error('Error adding to cart:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
