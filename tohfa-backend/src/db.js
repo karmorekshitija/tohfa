@@ -906,5 +906,22 @@ const migratePaymentHealthLogs = () => {
 };
 migratePaymentHealthLogs();
 
+// Task 07: Migration for seller_bans table
+const migrateSellerBans = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_bans (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      banned_by INTEGER NOT NULL REFERENCES admin_users(id),
+      ban_reason TEXT NOT NULL,
+      banned_at TEXT NOT NULL DEFAULT (datetime('now')),
+      unbanned_at TEXT,
+      unbanned_by INTEGER REFERENCES admin_users(id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_seller_bans_seller_id ON seller_bans(seller_id);
+  `);
+};
+migrateSellerBans();
+
 module.exports = db;
 
