@@ -1940,6 +1940,120 @@ app.get('/api/orders/:id/receipt', rateLimit(60), authenticateToken, (req, res) 
   }
 });
 
+// TASK 33: POST /api/payments/initiate
+app.post('/api/payments/initiate', rateLimit(60), authenticateToken, async (req, res) => {
+  const userId = req.user.user_id;
+  const { order_id } = req.body;
+  
+  if (order_id === undefined || order_id === null) {
+    return res.status(400).json({
+      error: true,
+      message: "order_id is required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(order_id);
+    if (!order) {
+      return res.status(404).json({
+        error: true,
+        message: "Order not found",
+        code: "ORDER_NOT_FOUND"
+      });
+    }
+    
+    if (order.buyer_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your order",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    if (order.status !== 'Awaiting Payment') {
+      return res.status(422).json({
+        error: true,
+        message: "Order is not in Awaiting Payment status",
+        code: "ORDER_STATUS_INVALID"
+      });
+    }
+    
+    const user = db.prepare('SELECT full_name, email FROM users WHERE id = ?').get(userId);
+    const address = db.prepare('SELECT phone FROM addresses WHERE id = ?').get(order.address_id);
+    
+    const prefill = {
+      name: user ? user.full_name : '',
+      email: user ? user.email : '',
+      contact: address ? address.phone : ''
+    };
+    
+    const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_mockkey12345';
+    
+    if (order.razorpay_order_id) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          razorpay_order_id: order.razorpay_order_id,
+          amount_paise: order.total_paise,
+          currency: 'INR',
+          key_id,
+          prefill
+        }
+      });
+    }
+    
+    let razorpayOrderId = null;
+    if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+      try {
+        const auth = Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString('base64');
+        const rpRes = await fetch('https://api.razorpay.com/v1/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${auth}`
+          },
+          body: JSON.stringify({
+            amount: order.total_paise,
+            currency: 'INR',
+            receipt: order.order_ref
+          })
+        });
+        if (rpRes.ok) {
+          const rpData = await rpRes.json();
+          razorpayOrderId = rpData.id;
+        }
+      } catch (err) {
+        console.error('Error generating real Razorpay order ID in initiate:', err);
+      }
+    }
+    
+    if (!razorpayOrderId) {
+      razorpayOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
+    }
+    
+    db.prepare('UPDATE orders SET razorpay_order_id = ?, updated_at = datetime(\'now\') WHERE id = ?').run(razorpayOrderId, order_id);
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        razorpay_order_id: razorpayOrderId,
+        amount_paise: order.total_paise,
+        currency: 'INR',
+        key_id,
+        prefill
+      }
+    });
+  } catch (err) {
+    console.error('Error initiating payment:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

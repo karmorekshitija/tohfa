@@ -971,6 +971,73 @@ async function runTests() {
 
     console.log('✓ Task 32 Passed: GET /api/orders/:id/receipt');
 
+    // --- TASK 33 TESTS: POST /api/payments/initiate ---
+    console.log('--- Testing TASK 33: POST /api/payments/initiate ---');
+    // Create a new order for payment testing since the previous one is cancelled
+    await fetch(`${baseUrl}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ product_id: newProductId, quantity: 1 })
+    });
+    const newOrderRes = await fetch(`${baseUrl}/api/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ address_id: orderAddressId })
+    });
+    const newOrderData = await newOrderRes.json();
+    const payOrderId = newOrderData.data.order_id;
+
+    // Test unauthenticated initiate
+    const unauthInitRes = await fetch(`${baseUrl}/api/payments/initiate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order_id: payOrderId })
+    });
+    console.log('Unauth Initiate Status:', unauthInitRes.status);
+    if (unauthInitRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated initiate, got ${unauthInitRes.status}`);
+    }
+
+    // Test valid initiate
+    const initRes = await fetch(`${baseUrl}/api/payments/initiate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ order_id: payOrderId })
+    });
+    console.log('Initiate Status:', initRes.status);
+    const initData = await initRes.json();
+    if (initRes.status !== 200 || !initData.success) {
+      throw new Error(`Initiate payment failed: ${JSON.stringify(initData)}`);
+    }
+    if (!initData.data.razorpay_order_id || initData.data.amount_paise !== 16800 || initData.data.currency !== 'INR' || initData.data.prefill.name !== 'Test Buyer') {
+      throw new Error(`Initiate data mismatch: ${JSON.stringify(initData)}`);
+    }
+
+    // Test initiate on cancelled order (should fail with 422)
+    const cancelledInitRes = await fetch(`${baseUrl}/api/payments/initiate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({ order_id: createdOrderId })
+    });
+    console.log('Cancelled Initiate Status:', cancelledInitRes.status);
+    if (cancelledInitRes.status !== 422) {
+      throw new Error(`Expected 422 for cancelled order initiate, got ${cancelledInitRes.status}`);
+    }
+
+    console.log('✓ Task 33 Passed: POST /api/payments/initiate');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
