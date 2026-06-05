@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit Logs | Tohfa Artisan Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Lora:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#c8e9b8",
+                    "on-primary-fixed-variant": "#214f36",
+                    "surface-container-low": "#f3f4f0",
+                    "outline-variant": "#c1c9c0",
+                    "danger-terracotta": "#B14B3E",
+                    "outline": "#717972",
+                    "on-primary-fixed": "#002110",
+                    "violet-soft": "#D8CBE9",
+                    "on-surface-variant": "#414942",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#49663f",
+                    "on-secondary-container": "#4d6a43",
+                    "surface-ivory": "#FCFAF5",
+                    "on-background": "#1a1c1a",
+                    "on-error": "#ffffff",
+                    "bg-cream-deep": "#F1EADD",
+                    "on-error-container": "#93000a",
+                    "text-muted": "#6E6453",
+                    "surface-bright": "#f9faf5",
+                    "sage-soft": "#C5D6BC",
+                    "primary-container": "#3d6b4f",
+                    "tertiary-container": "#8a5157",
+                    "primary": "#255338",
+                    "on-tertiary-fixed": "#360d14",
+                    "surface-variant": "#e2e3df",
+                    "gold-soft": "#EBD7AE",
+                    "highlight-gold": "#C8973A",
+                    "inverse-surface": "#2e312e",
+                    "secondary-fixed-dim": "#afd0a0",
+                    "surface-container-highest": "#e2e3df",
+                    "text-faint": "#9A8F7A",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#6b373d",
+                    "inverse-primary": "#a0d2b0",
+                    "surface-dim": "#d9dad6",
+                    "tertiary-fixed": "#ffdadc",
+                    "on-tertiary-container": "#ffd2d5",
+                    "on-surface": "#1a1c1a",
+                    "on-secondary-fixed": "#062103",
+                    "on-primary-container": "#b7e9c6",
+                    "text-default": "#3A3328",
+                    "surface-tint": "#3a684c",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#bceecb",
+                    "background": "#f9faf5",
+                    "accent-violet": "#7B5EA7",
+                    "on-secondary-fixed-variant": "#324e29",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#edeeea",
+                    "surface": "#f9faf5",
+                    "tertiary": "#6e3a40",
+                    "tertiary-fixed-dim": "#fcb4ba",
+                    "primary-fixed-dim": "#a0d2b0",
+                    "inverse-on-surface": "#f0f1ed",
+                    "bg-primary": "#FFFFFF",
+                    "surface-container-high": "#e7e9e4",
+                    "secondary-fixed": "#caecbb",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-deep": "#2E5340"
+            },
+            "fontFamily": {
+                    "headline-md": ["Playfair Display"],
+                    "label-btn": ["DM Sans"],
+                    "serif-ui-sm": ["lora"],
+                    "data-meta": ["Space Mono"],
+                    "body-md": ["DM Sans"],
+                    "accent-caps": ["cinzel"],
+                    "headline-lg": ["Playfair Display"],
+                    "serif-ui-md": ["lora"],
+                    "body-sm": ["DM Sans"],
+                    "display-hero": ["Playfair Display"],
+                    "data-price": ["Space Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-btn": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "serif-ui-sm": ["16px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "data-meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "accent-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "serif-ui-md": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-hero": ["36px", {"lineHeight": "44px", "fontWeight": "300"}],
+                    "data-price": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-line-overlay {
+            background-image: radial-gradient(#717972 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.03;
+        }
+        .diff-code {
+            background-color: #FCFAF5;
+            border-left: 3px solid #C5D6BC;
+        }
+    </style>
+</head>
+<body class="bg-bg-primary font-body-md text-text-default selection:bg-sage-soft">
+<!-- New Sidebar Navigation per IMAGE_13 -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 py-10 px-6 z-50 w-64 border-r border-outline-variant/30 bg-[#FCFAF5]">
+<div class="mb-14">
+<h1 class="font-headline-lg text-headline-lg italic text-[#255338] leading-tight">Tohfa</h1>
+<p class="text-accent-caps font-accent-caps text-text-faint tracking-widest text-[10px] mt-1 opacity-70">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-label-btn text-label-btn">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-label-btn text-label-btn">Sellers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+<span class="font-label-btn text-label-btn">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">category</span>
+<span class="font-label-btn text-label-btn">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-label-btn text-label-btn">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span class="font-label-btn text-label-btn">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-label-btn text-label-btn">Settings</span>
+</a>
+</nav>
+<!-- Profile Footer -->
+<div class="mt-auto pt-6 border-t border-outline-variant/20 flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-sage-soft flex items-center justify-center text-primary font-bold text-xs shrink-0">TA</div>
+<div class="overflow-hidden">
+<p class="text-[13px] font-bold text-text-default truncate leading-tight">Tohfa Admin</p>
+<p class="text-[11px] text-text-faint font-data-meta truncate">Master Access</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen relative overflow-hidden">
+<!-- Aesthetic Background Texture -->
+<div class="absolute inset-0 ink-line-overlay pointer-events-none"></div>
+<!-- Page Canvas -->
+<div class="px-10 py-12 max-w-7xl mx-auto relative z-10">
+<!-- Page Identity -->
+<div class="mb-10">
+<h2 class="font-headline-lg text-headline-lg text-primary">Audit Logs</h2>
+<p class="font-serif-ui-md italic text-text-muted mt-1 opacity-80">Complete record of all admin actions on this platform</p>
+<div class="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-sage-soft rounded-md">
+<span class="material-symbols-outlined text-[16px] text-text-faint">info</span>
+<span class="text-data-meta font-data-meta text-text-muted">This is a read-only view. No actions can be taken from this page.</span>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4 p-5 bg-white border border-sage-soft rounded-xl shadow-sm">
+<div>
+<label class="block text-accent-caps font-accent-caps text-text-faint mb-2 uppercase">Event Type</label>
+<select class="w-full bg-transparent border-sage-soft rounded-lg font-body-sm text-text-default focus:ring-primary focus:border-primary">
+<option>All Events</option>
+<option>admin.seller.banned</option>
+<option>admin.order.status_overridden</option>
+<option>admin.product.sponsored_toggled</option>
+</select>
+</div>
+<div>
+<label class="block text-accent-caps font-accent-caps text-text-faint mb-2 uppercase">Actor</label>
+<div class="relative">
+<input class="w-full bg-transparent border-sage-soft rounded-lg font-body-sm text-text-default focus:ring-primary focus:border-primary" placeholder="Filter by admin name/ID" type="text"/>
+</div>
+</div>
+<div class="md:col-span-2 flex items-end gap-4">
+<div class="flex-1">
+<label class="block text-accent-caps font-accent-caps text-text-faint mb-2 uppercase">Date Range</label>
+<div class="flex items-center gap-2">
+<input class="w-full bg-transparent border-sage-soft rounded-lg font-body-sm text-text-default text-xs p-2" type="date"/>
+<span class="text-text-faint font-data-meta text-xs">to</span>
+<input class="w-full bg-transparent border-sage-soft rounded-lg font-body-sm text-text-default text-xs p-2" type="date"/>
+</div>
+</div>
+<button class="pb-2.5 text-primary hover:underline font-label-btn text-label-btn whitespace-nowrap">
+                        Reset Filters
+                    </button>
+</div>
+</div>
+<!-- Audit Log Table -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface-ivory border-b border-outline-variant text-left">
+<th class="px-6 py-4 font-accent-caps text-accent-caps text-text-faint uppercase tracking-wider">Timestamp</th>
+<th class="px-6 py-4 font-accent-caps text-accent-caps text-text-faint uppercase tracking-wider">Event</th>
+<th class="px-6 py-4 font-accent-caps text-accent-caps text-text-faint uppercase tracking-wider">Actor</th>
+<th class="px-6 py-4 font-accent-caps text-accent-caps text-text-faint uppercase tracking-wider">Target</th>
+<th class="px-6 py-4 font-accent-caps text-accent-caps text-text-faint uppercase tracking-wider">Change</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50">
+<!-- Row: Destructive Action (Banned) -->
+<tr class="bg-white hover:bg-surface-bright transition-colors border-l-2 border-l-highlight-gold/40">
+<td class="px-6 py-3 font-data-meta text-[11px] text-text-muted whitespace-nowrap">2025-01-15 14:32:07</td>
+<td class="px-6 py-3">
+<span class="px-3 py-1 bg-gold-soft text-highlight-gold text-[10px] font-bold rounded-full uppercase tracking-tight">Seller Banned</span>
+</td>
+<td class="px-6 py-3">
+<div class="flex items-center gap-1.5">
+<span class="font-body-sm text-[13px] text-text-default">Arjun Mehta</span>
+<span class="font-accent-caps text-[9px] px-1.5 py-0.5 border border-primary/20 text-primary rounded-sm bg-primary/5 uppercase">Admin</span>
+</div>
+</td>
+<td class="px-6 py-3 font-body-sm text-[13px] text-text-faint">Seller: Priya Shah</td>
+<td class="px-6 py-3">
+<button class="text-primary font-label-btn text-[12px] hover:underline flex items-center gap-1" onclick="toggleDiff('diff-1')">
+                                    View diff <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Expanded Diff Block -->
+<tr class="bg-surface-ivory" id="diff-1">
+<td class="px-8 py-4" colspan="5">
+<div class="diff-code p-4 rounded-lg font-data-meta text-[11px] leading-relaxed shadow-inner">
+<div class="flex gap-4">
+<div class="text-text-faint select-none opacity-50">1<br/>2<br/>3<br/>4<br/>5</div>
+<pre class="overflow-x-auto whitespace-pre-wrap"><code class="text-text-default">{
+  <span class="text-primary">"status"</span>: <span class="text-danger-terracotta">"active"</span> <span class="text-text-faint">→</span> <span class="text-primary">"banned"</span>,
+  <span class="text-primary">"ban_reason"</span>: <span class="text-primary">"Multiple policy violations"</span>,
+  <span class="text-primary">"updated_at"</span>: <span class="text-primary">"2025-01-15T14:32:07Z"</span>
+}</code></pre>
+</div>
+</div>
+<p class="mt-2 text-[10px] text-text-faint italic font-serif-ui-sm">The before_json/after_json only loads when the 'View diff' is clicked — lazy loaded to keep table fast.</p>
+</td>
+</tr>
+<!-- Row: Order Override -->
+<tr class="bg-white hover:bg-surface-bright transition-colors border-l-2 border-l-highlight-gold/40 h-[36px]">
+<td class="px-6 py-3 font-data-meta text-[11px] text-text-muted whitespace-nowrap">2025-01-15 13:45:12</td>
+<td class="px-6 py-3">
+<span class="px-3 py-1 bg-violet-soft text-accent-violet text-[10px] font-bold rounded-full uppercase tracking-tight">Order Override</span>
+</td>
+<td class="px-6 py-3">
+<div class="flex items-center gap-1.5">
+<span class="font-body-sm text-[13px] text-text-default">Sarah Craft</span>
+<span class="font-accent-caps text-[9px] px-1.5 py-0.5 border border-primary/20 text-primary rounded-sm bg-primary/5 uppercase">Admin</span>
+</div>
+</td>
+<td class="px-6 py-3 font-body-sm text-[13px] text-text-faint">Order: ORD-4521</td>
+<td class="px-6 py-3">
+<button class="text-primary font-label-btn text-[12px] hover:underline">View diff →</button>
+</td>
+</tr>
+<!-- Row: Seller Unbanned -->
+<tr class="bg-white hover:bg-surface-bright transition-colors h-[36px]">
+<td class="px-6 py-3 font-data-meta text-[11px] text-text-muted whitespace-nowrap">2025-01-15 12:10:00</td>
+<td class="px-6 py-3">
+<span class="px-3 py-1 bg-sage-soft text-primary text-[10px] font-bold rounded-full uppercase tracking-tight">Seller Unbanned</span>
+</td>
+<td class="px-6 py-3">
+<div class="flex items-center gap-1.5">
+<span class="font-body-sm text-[13px] text-text-default">Arjun Mehta</span>
+<span class="font-accent-caps text-[9px] px-1.5 py-0.5 border border-primary/20 text-primary rounded-sm bg-primary/5 uppercase">Admin</span>
+</div>
+</td>
+<td class="px-6 py-3 font-body-sm text-[13px] text-text-faint">Seller: Handloom Hub</td>
+<td class="px-6 py-3">
+<button class="text-primary font-label-btn text-[12px] hover:underline">View diff →</button>
+</td>
+</tr>
+<!-- Row: Category Change -->
+<tr class="bg-white hover:bg-surface-bright transition-colors h-[36px]">
+<td class="px-6 py-3 font-data-meta text-[11px] text-text-muted whitespace-nowrap">2025-01-15 10:22:55</td>
+<td class="px-6 py-3">
+<span class="px-3 py-1 bg-primary text-on-primary text-[10px] font-bold rounded-full uppercase tracking-tight">Category Change</span>
+</td>
+<td class="px-6 py-3">
+<div class="flex items-center gap-1.5">
+<span class="font-body-sm text-[13px] text-text-default">System</span>
+<span class="font-accent-caps text-[9px] px-1.5 py-0.5 border border-primary/20 text-primary rounded-sm bg-primary/5 uppercase">Bot</span>
+</div>
+</td>
+<td class="px-6 py-3 font-body-sm text-[13px] text-text-faint">Category: Terra Potteries</td>
+<td class="px-6 py-3">
+<button class="text-primary font-label-btn text-[12px] hover:underline">View diff →</button>
+</td>
+</tr>
+<!-- Row: Stats Viewed -->
+<tr class="bg-white hover:bg-surface-bright transition-colors h-[36px]">
+<td class="px-6 py-3 font-data-meta text-[11px] text-text-muted whitespace-nowrap">2025-01-15 09:15:30</td>
+<td class="px-6 py-3">
+<span class="px-3 py-1 bg-bg-cream-deep text-text-muted text-[10px] font-bold rounded-full uppercase tracking-tight border border-outline-variant/30">Stats Viewed</span>
+</td>
+<td class="px-6 py-3">
+<div class="flex items-center gap-1.5">
+<span class="font-body-sm text-[13px] text-text-default">Sarah Craft</span>
+<span class="font-accent-caps text-[9px] px-1.5 py-0.5 border border-primary/20 text-primary rounded-sm bg-primary/5 uppercase">Admin</span>
+</div>
+</td>
+<td class="px-6 py-3 font-body-sm text-[13px] text-text-faint">Dashboard: Revenue Overview</td>
+<td class="px-6 py-3">
+<span class="text-text-faint text-[12px] font-data-meta italic">No diff</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination & Load More -->
+<div class="mt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+<p class="text-data-meta font-data-meta text-text-muted">
+                    Showing <span class="text-primary font-bold">20</span> of <span class="text-primary font-bold">1,432</span> log entries
+                </p>
+<div class="flex items-center gap-6">
+<div class="flex gap-1">
+<button class="h-8 w-8 flex items-center justify-center rounded-md border border-sage-soft bg-white text-primary hover:bg-sage-soft transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="h-8 w-8 flex items-center justify-center rounded-md border border-primary bg-primary text-white font-label-btn text-xs">1</button>
+<button class="h-8 w-8 flex items-center justify-center rounded-md border border-sage-soft bg-white text-text-muted hover:bg-sage-soft transition-colors font-label-btn text-xs">2</button>
+<button class="h-8 w-8 flex items-center justify-center rounded-md border border-sage-soft bg-white text-text-muted hover:bg-sage-soft transition-colors font-label-btn text-xs">3</button>
+<button class="h-8 w-8 flex items-center justify-center rounded-md border border-sage-soft bg-white text-primary hover:bg-sage-soft transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<button class="px-6 py-2 border border-primary text-primary font-label-btn text-label-btn rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+                        Load 20 more
+                    </button>
+</div>
+</div>
+</div>
+<!-- Atmospheric Art Watermark -->
+<div class="fixed bottom-[-50px] right-[-50px] opacity-[0.04] pointer-events-none select-none z-0">
+<img class="w-[400px]" data-alt="A large, soft-focus charcoal and watercolor illustration of a weaver's loom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh3XWghMZ2e6go2eogjOlIP8kyTiQCWzhfmmOiIE8QxhG3zWbckypuekXzRTEHaoR_Oq_DjQ7lzQtEWL7je08n5gfgHspCt8JqnMISLR05cHkby_RBX6fkeKjkfHazm4a8s8f47wnUP0ZgHp4dqsBtFK8e5enhHxeKIAdp282AvqyZFoAVZUeYw-CvUCNXRl2mot_lxQ9cc-jOCgjTyAbnv0v69FGLbNm4BUQyn8YoIxC-2nFQ4tOIax7f7aPUrsNpJ27IMKFSow"/>
+</div>
+</main>
+<script>
+        function toggleDiff(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+            } else {
+                element.classList.add('hidden');
+            }
+        }
+        
+        // Ensure only the first diff is open on load, others hidden
+        document.querySelectorAll('tr[id^="diff-"]').forEach((el, index) => {
+            if(index > 0) el.classList.add('hidden');
+        });
+    </script>
+</body></html>
