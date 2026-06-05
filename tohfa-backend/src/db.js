@@ -312,4 +312,20 @@ const migrateReels = () => {
 
 migrateReels();
 
+// Task 11: Migration for reel_likes table
+const migrateReelLikes = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reel_likes (
+      id        INTEGER PRIMARY KEY AUTOINCREMENT,
+      reel_id   INTEGER NOT NULL REFERENCES reels(id) ON DELETE CASCADE,
+      user_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      liked_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(reel_id, user_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_reel_likes_reel ON reel_likes(reel_id);
+  `);
+};
+
+migrateReelLikes();
+
 module.exports = db;
