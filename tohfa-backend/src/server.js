@@ -1648,9 +1648,7 @@ app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
     
     let sql = `
       SELECT 
-        o.id, o.order_ref, o.status, o.created_at, o.total_paise,
-        (SELECT SUM(quantity) FROM order_items WHERE order_id = o.id) AS item_count,
-        (SELECT image_url FROM order_items WHERE order_id = o.id LIMIT 1) AS preview_image_url
+        o.id, o.order_ref, o.status, o.created_at, o.total_paise
       FROM orders o
       WHERE ${queryParts.join(' AND ')}
       ORDER BY o.id DESC
@@ -1665,6 +1663,20 @@ app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
       orders.pop();
     }
     
+    orders.forEach(o => {
+      const items = db.prepare('SELECT product_name, quantity, image_url FROM order_items WHERE order_id = ?').all(o.id);
+      o.item_count = items.reduce((sum, item) => sum + item.quantity, 0);
+      o.primary_image_url = items.length > 0 ? items[0].image_url : null;
+      if (items.length > 0) {
+        o.item_preview = items[0].product_name;
+        if (items.length > 1) {
+          o.item_preview += ` + ${items.length - 1} more`;
+        }
+      } else {
+        o.item_preview = '';
+      }
+    });
+    
     const nextCursor = hasMore && orders.length > 0 ? String(orders[orders.length - 1].id) : null;
     
     return res.status(200).json({
@@ -1677,6 +1689,62 @@ app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
     });
   } catch (err) {
     console.error('Error fetching orders:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// TASK 30: GET /api/orders/:id
+app.get('/api/orders/:id', rateLimit(120), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(id);
+    if (!order) {
+      return res.status(404).json({
+        error: true,
+        message: "Order not found",
+        code: "ORDER_NOT_FOUND"
+      });
+    }
+    
+    if (order.buyer_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your order",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    // Fetch order items
+    const items = db.prepare('SELECT product_id, product_name, unit_price_paise, quantity, image_url FROM order_items WHERE order_id = ?').all(id);
+    
+    // Fetch address
+    const address = db.prepare('SELECT full_name, line1, line2, city, state, pincode FROM addresses WHERE id = ?').get(order.address_id);
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: order.id,
+        order_ref: order.order_ref,
+        status: order.status,
+        created_at: order.created_at,
+        shipped_at: order.shipped_at,
+        delivered_at: order.delivered_at,
+        tracking_number: order.tracking_number,
+        items,
+        ship_to: address || null,
+        subtotal_paise: order.subtotal_paise,
+        shipping_paise: order.shipping_paise,
+        total_paise: order.total_paise
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching order details:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",

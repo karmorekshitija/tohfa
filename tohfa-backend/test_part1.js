@@ -782,7 +782,7 @@ async function runTests() {
       throw new Error(`Orders fetch failed: ${JSON.stringify(ordersData)}`);
     }
     const orderItem = ordersData.data.orders[0];
-    if (orderItem.id !== createdOrderId || orderItem.status !== 'Awaiting Payment' || orderItem.item_count !== 2) {
+    if (orderItem.id !== createdOrderId || orderItem.status !== 'Awaiting Payment' || orderItem.item_count !== 2 || orderItem.item_preview !== 'Speckled Moon Bowl') {
       throw new Error(`Order item mismatch: ${JSON.stringify(orderItem)}`);
     }
 
@@ -805,6 +805,49 @@ async function runTests() {
     }
 
     console.log('✓ Task 29 Passed: GET /api/orders');
+
+    // --- TASK 30 TESTS: GET /api/orders/:id ---
+    console.log('--- Testing TASK 30: GET /api/orders/:id ---');
+    // Test unauthenticated GET
+    const unauthOrderDetailRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}`);
+    console.log('Unauth Order Detail Status:', unauthOrderDetailRes.status);
+    if (unauthOrderDetailRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated order detail, got ${unauthOrderDetailRes.status}`);
+    }
+
+    // Fetch order details authenticated
+    const orderDetailRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Order Detail Status:', orderDetailRes.status);
+    const orderDetailData = await orderDetailRes.json();
+    if (orderDetailRes.status !== 200 || !orderDetailData.success) {
+      throw new Error(`Order detail fetch failed: ${JSON.stringify(orderDetailData)}`);
+    }
+    const details = orderDetailData.data;
+    if (details.id !== createdOrderId || details.order_ref !== orderData.data.order_ref || details.status !== 'Awaiting Payment' || details.items.length !== 1 || details.ship_to.full_name !== 'Buyer Delivery Address') {
+      throw new Error(`Order detail data mismatch: ${JSON.stringify(details)}`);
+    }
+
+    // Test GET order detail not owner (using sellerToken)
+    const notOwnerOrderDetailRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}`, {
+      headers: { 'Authorization': `Bearer ${sellerToken}` }
+    });
+    console.log('Not Owner Order Detail Status:', notOwnerOrderDetailRes.status);
+    if (notOwnerOrderDetailRes.status !== 403) {
+      throw new Error(`Expected 403 for non-owner order detail, got ${notOwnerOrderDetailRes.status}`);
+    }
+
+    // Test GET nonexistent order detail
+    const nonexistentOrderDetailRes = await fetch(`${baseUrl}/api/orders/999999`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Nonexistent Order Detail Status:', nonexistentOrderDetailRes.status);
+    if (nonexistentOrderDetailRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent order detail, got ${nonexistentOrderDetailRes.status}`);
+    }
+
+    console.log('✓ Task 30 Passed: GET /api/orders/:id');
 
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
