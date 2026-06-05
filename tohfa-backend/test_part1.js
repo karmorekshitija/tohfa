@@ -1581,6 +1581,44 @@ async function runTests() {
     }
 
     console.log('✓ Task 44 Passed: POST /api/reels/:id/save');
+
+    // --- TASK 45 TESTS: DELETE /api/reels/:id/save ---
+    console.log('--- Testing TASK 45: DELETE /api/reels/:id/save ---');
+
+    // 1. Unauthenticated unsave
+    const unauthUnsaveRes = await fetch(`${baseUrl}/api/reels/${newReelId}/save`, {
+      method: 'DELETE'
+    });
+    if (unauthUnsaveRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth unsave, got ${unauthUnsaveRes.status}`);
+    }
+
+    // 2. Non-existent reel unsave
+    const nonexistentUnsaveRes = await fetch(`${baseUrl}/api/reels/99999/save`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (nonexistentUnsaveRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent reel unsave, got ${nonexistentUnsaveRes.status}`);
+    }
+
+    // 3. Successful unsave
+    const unsaveRes = await fetch(`${baseUrl}/api/reels/${newReelId}/save`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const unsaveData = await unsaveRes.json();
+    if (unsaveRes.status !== 200 || !unsaveData.success || unsaveData.data.saved !== false) {
+      throw new Error(`Unsave failed: ${JSON.stringify(unsaveData)}`);
+    }
+
+    // Verify save_count is updated in DB
+    const verifyUnsaveCount = db.prepare("SELECT save_count FROM reels WHERE id = ?").get(newReelId).save_count;
+    if (verifyUnsaveCount !== 0) {
+      throw new Error(`Expected save_count to be 0 after unsave, got ${verifyUnsaveCount}`);
+    }
+
+    console.log('✓ Task 45 Passed: DELETE /api/reels/:id/save');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
