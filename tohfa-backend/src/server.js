@@ -4727,6 +4727,174 @@ app.post('/api/seller/become', rateLimit(5), authenticateToken, (req, res) => {
   }
 });
 
+// ============================================================
+// PART 2: ADMIN PANEL MIDDLEWARE & ROUTES
+// ============================================================
+
+function authenticateAdminToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({
+      error: true,
+      message: "Authorization token required",
+      code: "UNAUTHORIZED"
+    });
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        error: true,
+        message: "Invalid or expired authorization token",
+        code: "UNAUTHORIZED"
+      });
+    }
+    
+    if (decoded.type !== 'admin_access') {
+      return res.status(403).json({
+        error: true,
+        message: "Forbidden",
+        code: "FORBIDDEN"
+      });
+    }
+
+    if (decoded.role !== 'admin' && decoded.role !== 'super_admin') {
+      return res.status(403).json({
+        error: true,
+        message: "Forbidden",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    const adminUser = db.prepare('SELECT * FROM admin_users WHERE id = ?').get(decoded.sub);
+    if (!adminUser) {
+      return res.status(401).json({
+        error: true,
+        message: "Admin not found",
+        code: "UNAUTHORIZED"
+      });
+    }
+    
+    if (adminUser.is_active === 0) {
+      return res.status(403).json({
+        error: true,
+        message: "Account inactive",
+        code: "ACCOUNT_INACTIVE"
+      });
+    }
+    
+    req.admin = adminUser;
+    next();
+  });
+}
+
+function writeAuditLog(eventType, actorId, actorName, targetType, targetId, targetLabel, beforeJson, afterJson) {
+  try {
+    db.prepare(`
+      INSERT INTO audit_logs (event_type, actor_id, actor_name, target_type, target_id, target_label, before_json, after_json)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      eventType,
+      actorId,
+      actorName,
+      targetType,
+      targetId ? String(targetId) : null,
+      targetLabel || null,
+      beforeJson ? JSON.stringify(beforeJson) : null,
+      afterJson ? JSON.stringify(afterJson) : null
+    );
+  } catch (err) {
+    console.error('Failed to write audit log:', err);
+  }
+}
+
+// TASK 08: POST /api/admin/auth/login
+app.post('/api/admin/auth/login', rateLimit(10), async (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return res.status(400).json({
+      error: true,
+      message: "Username and password are required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const admin = db.prepare('SELECT * FROM admin_users WHERE username = ? OR email = ?').get(username, username);
+    if (!admin) {
+      return res.status(401).json({
+        error: true,
+        message: "Invalid username or password",
+        code: "INVALID_CREDENTIALS"
+      });
+    }
+    
+    const isMatch = await bcrypt.compare(password, admin.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({
+        error: true,
+        message: "Invalid username or password",
+        code: "INVALID_CREDENTIALS"
+      });
+    }
+    
+    if (admin.is_active === 0) {
+      return res.status(403).json({
+        error: true,
+        message: "Account is inactive",
+        code: "ACCOUNT_INACTIVE"
+      });
+    }
+    
+    const accessToken = jwt.sign(
+      { sub: admin.id, role: admin.role, type: "admin_access" },
+      JWT_SECRET,
+      { expiresIn: '15m' }
+    );
+    
+    const refreshToken = jwt.sign(
+      { sub: admin.id, type: "admin_refresh" },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+    
+    db.prepare("UPDATE admin_users SET last_login_at = datetime('now'), updated_at = datetime('now') WHERE id = ?").run(admin.id);
+    
+    writeAuditLog(
+      "admin.session.login",
+      admin.id,
+      admin.display_name,
+      "dashboard",
+      null,
+      "Admin Login"
+    );
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+        admin: {
+          id: admin.id,
+          username: admin.username,
+          display_name: admin.display_name,
+          role: admin.role
+        }
+      }
+    });
+  } catch (err) {
+    console.error('POST /api/admin/auth/login error:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
