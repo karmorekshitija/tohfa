@@ -1844,6 +1844,102 @@ app.post('/api/orders/:id/cancel', rateLimit(60), authenticateToken, async (req,
   }
 });
 
+// TASK 32: GET /api/orders/:id/receipt
+app.get('/api/orders/:id/receipt', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(id);
+    if (!order) {
+      return res.status(404).json({
+        error: true,
+        message: "Order not found",
+        code: "ORDER_NOT_FOUND"
+      });
+    }
+    
+    if (order.buyer_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your order",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    const address = db.prepare('SELECT full_name, line1, line2, city, state, pincode, phone FROM addresses WHERE id = ?').get(order.address_id);
+    if (!address) {
+      return res.status(404).json({
+        error: true,
+        message: "Address not found",
+        code: "ADDRESS_NOT_FOUND"
+      });
+    }
+    
+    const shipped_to = {
+      full_name: address.full_name,
+      line1: address.line1,
+      line2: address.line2 || null,
+      city: address.city,
+      state: address.state,
+      pincode: address.pincode
+    };
+    
+    const billed_to = {
+      full_name: address.full_name,
+      line1: address.line1,
+      line2: address.line2 || null,
+      city: address.city,
+      state: address.state,
+      pincode: address.pincode,
+      phone: address.phone || null
+    };
+    
+    const items = db.prepare(`
+      SELECT 
+        oi.product_name, p.description, oi.quantity, oi.unit_price_paise,
+        (oi.quantity * oi.unit_price_paise) AS amount_paise
+      FROM order_items oi
+      LEFT JOIN products p ON oi.product_id = p.id
+      WHERE oi.order_id = ?
+    `).all(id);
+    
+    const sellerInfo = db.prepare(`
+      SELECT COALESCE(sp.shop_name, u.full_name) AS seller_name
+      FROM order_items oi
+      JOIN products p ON oi.product_id = p.id
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE oi.order_id = ?
+      LIMIT 1
+    `).get(id);
+    
+    const seller_name = sellerInfo ? sellerInfo.seller_name : '';
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        order_ref: order.order_ref,
+        created_at: order.created_at,
+        billed_to,
+        shipped_to,
+        items,
+        subtotal_paise: order.subtotal_paise,
+        shipping_paise: order.shipping_paise,
+        total_paise: order.total_paise,
+        seller_name
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching order receipt:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

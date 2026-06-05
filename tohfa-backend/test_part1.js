@@ -928,6 +928,49 @@ async function runTests() {
 
     console.log('✓ Task 31 Passed: POST /api/orders/:id/cancel');
 
+    // --- TASK 32 TESTS: GET /api/orders/:id/receipt ---
+    console.log('--- Testing TASK 32: GET /api/orders/:id/receipt ---');
+    // Test unauthenticated GET
+    const unauthReceiptRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/receipt`);
+    console.log('Unauth Receipt Status:', unauthReceiptRes.status);
+    if (unauthReceiptRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated receipt, got ${unauthReceiptRes.status}`);
+    }
+
+    // Fetch receipt details authenticated
+    const receiptRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/receipt`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Receipt Status:', receiptRes.status);
+    const receiptData = await receiptRes.json();
+    if (receiptRes.status !== 200 || !receiptData.success) {
+      throw new Error(`Receipt fetch failed: ${JSON.stringify(receiptData)}`);
+    }
+    const receipt = receiptData.data;
+    if (receipt.order_ref !== orderData.data.order_ref || receipt.billed_to.full_name !== 'Buyer Delivery Address' || receipt.shipped_to.full_name !== 'Buyer Delivery Address' || receipt.items.length !== 1 || receipt.seller_name !== 'Stoneware Studio') {
+      throw new Error(`Receipt details mismatch: ${JSON.stringify(receipt)}`);
+    }
+
+    // Test GET receipt not owner (using sellerToken)
+    const notOwnerReceiptRes = await fetch(`${baseUrl}/api/orders/${createdOrderId}/receipt`, {
+      headers: { 'Authorization': `Bearer ${sellerToken}` }
+    });
+    console.log('Not Owner Receipt Status:', notOwnerReceiptRes.status);
+    if (notOwnerReceiptRes.status !== 403) {
+      throw new Error(`Expected 403 for non-owner receipt, got ${notOwnerReceiptRes.status}`);
+    }
+
+    // Test GET nonexistent receipt
+    const nonexistentReceiptRes = await fetch(`${baseUrl}/api/orders/999999/receipt`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    console.log('Nonexistent Receipt Status:', nonexistentReceiptRes.status);
+    if (nonexistentReceiptRes.status !== 404) {
+      throw new Error(`Expected 404 for nonexistent receipt, got ${nonexistentReceiptRes.status}`);
+    }
+
+    console.log('✓ Task 32 Passed: GET /api/orders/:id/receipt');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
