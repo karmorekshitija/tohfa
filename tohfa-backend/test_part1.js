@@ -1673,6 +1673,66 @@ async function runTests() {
     }
 
     console.log('✓ Task 47 Passed: GET /api/profile/me');
+
+    // --- TASK 48 TESTS: PATCH /api/profile/me ---
+    console.log('--- Testing TASK 48: PATCH /api/profile/me ---');
+
+    // 1. Unauthenticated PATCH
+    const unauthPatchRes = await fetch(`${baseUrl}/api/profile/me`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ display_name: 'Elias Thorne' })
+    });
+    if (unauthPatchRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth profile patch, got ${unauthPatchRes.status}`);
+    }
+
+    // 2. Empty display name
+    const invalidPatchRes = await fetch(`${baseUrl}/api/profile/me`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${buyerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ display_name: '   ' })
+    });
+    if (invalidPatchRes.status !== 400) {
+      throw new Error(`Expected 400 for empty display name PATCH, got ${invalidPatchRes.status}`);
+    }
+
+    // 3. Successful PATCH
+    const profilePatchRes = await fetch(`${baseUrl}/api/profile/me`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${buyerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        display_name: 'Elias Thorne',
+        bio: 'Hand-poured ceramics & botanical prints',
+        location: 'Austin, TX',
+        shipping_days: 3
+      })
+    });
+    const profilePatchData = await profilePatchRes.json();
+    if (profilePatchRes.status !== 200 || !profilePatchData.success) {
+      throw new Error(`Profile PATCH failed: ${JSON.stringify(profilePatchData)}`);
+    }
+    const updatedProf = profilePatchData.data;
+    if (updatedProf.display_name !== 'Elias Thorne' || updatedProf.bio !== 'Hand-poured ceramics & botanical prints' || updatedProf.location !== 'Austin, TX' || updatedProf.ships_in_days !== 3) {
+      throw new Error(`Unexpected profile details in PATCH response: ${JSON.stringify(updatedProf)}`);
+    }
+
+    // Verify it is indeed updated via GET /api/profile/me
+    const verifyGetRes = await fetch(`${baseUrl}/api/profile/me`, {
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    const verifyGetData = await verifyGetRes.json();
+    if (verifyGetData.data.display_name !== 'Elias Thorne') {
+      throw new Error(`Expected display_name 'Elias Thorne' in GET profile, got ${verifyGetData.data.display_name}`);
+    }
+
+    console.log('✓ Task 48 Passed: PATCH /api/profile/me');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);

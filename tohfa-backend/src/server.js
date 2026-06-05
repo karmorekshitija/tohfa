@@ -2975,6 +2975,83 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
   }
 });
 
+// TASK 48: PATCH /api/profile/me
+app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { display_name, bio, location, shipping_days } = req.body;
+
+  // Validation
+  if (display_name !== undefined) {
+    if (typeof display_name !== 'string' || display_name.trim().length === 0) {
+      return res.status(400).json({
+        error: true,
+        message: "display_name cannot be empty",
+        code: "VALIDATION_ERROR"
+      });
+    }
+  }
+
+  try {
+    const user = db.prepare("SELECT * FROM users WHERE id = ?").get(userId);
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+        code: "USER_NOT_FOUND"
+      });
+    }
+
+    const updates = [];
+    const params = [];
+
+    if (display_name !== undefined) {
+      updates.push("display_name = ?", "full_name = ?");
+      params.push(display_name.trim(), display_name.trim());
+    }
+    if (bio !== undefined) {
+      updates.push("bio = ?");
+      params.push(bio === null ? null : String(bio));
+    }
+    if (location !== undefined) {
+      updates.push("location = ?");
+      params.push(location === null ? null : String(location));
+    }
+    if (shipping_days !== undefined) {
+      updates.push("ships_in_days = ?");
+      params.push(shipping_days === null ? null : parseInt(shipping_days, 10));
+    }
+
+    if (updates.length > 0) {
+      params.push(userId);
+      db.prepare(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`).run(...params);
+    }
+
+    const updatedUser = db.prepare("SELECT * FROM users WHERE id = ?").get(userId);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: updatedUser.id,
+        display_name: updatedUser.display_name || updatedUser.full_name,
+        email: updatedUser.email,
+        avatar_url: updatedUser.avatar_url,
+        role: updatedUser.role,
+        bio: updatedUser.bio,
+        location: updatedUser.location,
+        ships_in_days: updatedUser.ships_in_days,
+        created_at: new Date(updatedUser.created_at + 'Z').toISOString()
+      }
+    });
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
