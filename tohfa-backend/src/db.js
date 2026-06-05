@@ -183,4 +183,26 @@ const migrateCartItems = () => {
 
 migrateCartItems();
 
+// Task 05: Migration for addresses table
+const migrateAddresses = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS addresses (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      full_name     TEXT NOT NULL,
+      line1         TEXT NOT NULL,
+      line2         TEXT,
+      city          TEXT NOT NULL,
+      state         TEXT NOT NULL,
+      pincode       TEXT NOT NULL,
+      phone         TEXT,
+      is_default    INTEGER DEFAULT 0,
+      created_at    DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_addresses_user ON addresses(user_id);
+  `);
+};
+
+migrateAddresses();
+
 module.exports = db;
