@@ -137,6 +137,120 @@ app.post('/api/auth/register/buyer', rateLimit(10), async (req, res) => {
   }
 });
 
+// TASK 04: POST /api/auth/register/seller
+app.post('/api/auth/register/seller', rateLimit(10), async (req, res) => {
+  const { full_name, email, password, shop_name, shop_bio, ships_in_days, instagram_handle } = req.body;
+  
+  // 1. Validation
+  if (!full_name || typeof full_name !== 'string' || full_name.trim().length < 2 ||
+      !email || typeof email !== 'string' || !validateEmail(email) ||
+      !password || typeof password !== 'string' || password.length < 8 ||
+      !shop_name || typeof shop_name !== 'string' || shop_name.trim().length < 2) {
+    return res.status(400).json({
+      error: true,
+      message: "Missing or invalid fields",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  let finalShipsInDays = ships_in_days;
+  if (finalShipsInDays === undefined || finalShipsInDays === null) {
+    finalShipsInDays = 7;
+  } else if (!Number.isInteger(finalShipsInDays) || finalShipsInDays < 1) {
+    return res.status(400).json({
+      error: true,
+      message: "ships_in_days must be an integer >= 1",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  if (shop_bio && (typeof shop_bio !== 'string' || shop_bio.length > 500)) {
+    return res.status(400).json({
+      error: true,
+      message: "shop_bio must be a string up to 500 characters",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  let insta = instagram_handle;
+  if (typeof insta === 'string') {
+    insta = insta.trim();
+    if (insta.startsWith('@')) {
+      insta = insta.substring(1);
+    }
+  } else {
+    insta = null;
+  }
+  
+  try {
+    // 2. Check if email exists
+    const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (existingUser) {
+      return res.status(409).json({
+        error: true,
+        message: "Email already registered",
+        code: "EMAIL_EXISTS"
+      });
+    }
+    
+    // 3. Hash password
+    const passwordHash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+    
+    // 4. DB Transactions for users and seller_profiles
+    const insertTransaction = db.transaction(() => {
+      // Insert user
+      const userInfo = db.prepare(
+        'INSERT INTO users (email, password_hash, full_name, role) VALUES (?, ?, ?, ?)'
+      ).run(email, passwordHash, full_name, 'seller');
+      
+      const userId = userInfo.lastInsertRowid;
+      
+      // Insert seller profile
+      db.prepare(
+        'INSERT INTO seller_profiles (user_id, shop_name, shop_bio, ships_in_days, instagram_handle) VALUES (?, ?, ?, ?, ?)'
+      ).run(userId, shop_name, shop_bio || null, finalShipsInDays, insta);
+      
+      return userId;
+    });
+    
+    const userId = insertTransaction();
+    
+    const user = {
+      id: userId,
+      email,
+      full_name,
+      role: 'seller',
+      avatar_url: null
+    };
+    
+    const seller_profile = {
+      shop_name,
+      is_approved: false
+    };
+    
+    // 5. Generate tokens
+    const { accessToken, refreshToken } = generateTokens(user);
+    
+    // 6. Return response
+    return res.status(201).json({
+      success: true,
+      data: {
+        user,
+        seller_profile,
+        access_token: accessToken,
+        refresh_token: refreshToken
+      }
+    });
+  } catch (err) {
+    console.error('Error in seller registration:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

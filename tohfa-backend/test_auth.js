@@ -7,6 +7,7 @@ async function runTests() {
   
   // Clear tables before test
   db.prepare('DELETE FROM refresh_tokens').run();
+  db.prepare('DELETE FROM seller_profiles').run();
   db.prepare('DELETE FROM users').run();
   
   let exitCode = 0;
@@ -73,6 +74,65 @@ async function runTests() {
       throw new Error(`Expected 409 with EMAIL_EXISTS, got ${res3.status} ${body3.code}`);
     }
     console.log('✓ Test 3 Passed: Duplicate email handled correctly');
+    
+    // Test 4: Successful seller registration
+    const res4 = await fetch(`${baseUrl}/api/auth/register/seller`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name: 'Jane Smith',
+        email: 'jane@example.com',
+        password: 'password123',
+        shop_name: 'Jane Crafts',
+        shop_bio: 'Beautiful handmade items',
+        ships_in_days: 5,
+        instagram_handle: '@jane_crafts'
+      })
+    });
+    
+    console.log('Test 4 Status:', res4.status);
+    const body4 = await res4.json();
+    console.log('Test 4 Body:', JSON.stringify(body4, null, 2));
+    
+    if (res4.status !== 201) {
+      throw new Error(`Expected 201, got ${res4.status}`);
+    }
+    if (!body4.success || !body4.data.user || !body4.data.seller_profile || !body4.data.access_token || !body4.data.refresh_token) {
+      throw new Error('Response shape mismatch on successful seller registration');
+    }
+    if (body4.data.user.role !== 'seller' || body4.data.user.email !== 'jane@example.com') {
+      throw new Error('User fields mismatch on seller registration');
+    }
+    if (body4.data.seller_profile.shop_name !== 'Jane Crafts' || body4.data.seller_profile.is_approved !== false) {
+      throw new Error('Seller profile mismatch');
+    }
+    
+    // Verify that the instagram handle is stored without the @ symbol
+    const savedProfile = db.prepare('SELECT instagram_handle FROM seller_profiles WHERE user_id = ?').get(body4.data.user.id);
+    if (savedProfile.instagram_handle !== 'jane_crafts') {
+      throw new Error(`Expected instagram_handle to be 'jane_crafts', got '${savedProfile.instagram_handle}'`);
+    }
+    console.log('✓ Test 4 Passed: Successful seller registration and @ strip');
+
+    // Test 5: Validation error for seller registration
+    const res5 = await fetch(`${baseUrl}/api/auth/register/seller`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name: 'Jane Smith',
+        email: 'jane2@example.com',
+        password: 'password123',
+        shop_name: '', // Invalid
+        ships_in_days: 5
+      })
+    });
+    
+    console.log('Test 5 Status:', res5.status);
+    const body5 = await res5.json();
+    if (res5.status !== 400 || body5.code !== 'VALIDATION_ERROR') {
+      throw new Error(`Expected 400 with VALIDATION_ERROR, got ${res5.status} ${body5.code}`);
+    }
+    console.log('✓ Test 5 Passed: Seller validation error handled correctly');
     
   } catch (err) {
     console.error('❌ Test failed:', err.message);

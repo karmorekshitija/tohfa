@@ -46,4 +46,24 @@ const migrateRefreshTokens = () => {
 
 migrateRefreshTokens();
 
+// Task 04: Migration for seller_profiles table
+const migrateSellerProfiles = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_profiles (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      shop_name TEXT NOT NULL,
+      shop_bio TEXT DEFAULT NULL,
+      ships_in_days INTEGER DEFAULT 7,
+      instagram_handle TEXT DEFAULT NULL,
+      is_approved INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_sp_user_id ON seller_profiles(user_id);
+  `);
+};
+
+migrateSellerProfiles();
+
 module.exports = db;
