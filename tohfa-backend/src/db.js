@@ -235,4 +235,22 @@ const migrateOrders = () => {
 
 migrateOrders();
 
+// Task 07: Migration for order_items table
+const migrateOrderItems = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS order_items (
+      id               INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id         INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      product_id       INTEGER NOT NULL REFERENCES products(id),
+      product_name     TEXT NOT NULL,
+      unit_price_paise INTEGER NOT NULL,
+      quantity         INTEGER NOT NULL DEFAULT 1,
+      image_url        TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+  `);
+};
+
+migrateOrderItems();
+
 module.exports = db;
