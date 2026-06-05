@@ -3484,6 +3484,86 @@ app.patch('/api/notifications/read-all', rateLimit(60), authenticateToken, (req,
   }
 });
 
+// TASK 56: POST /api/reviews
+app.post('/api/reviews', rateLimit(30), authenticateToken, (req, res) => {
+  const authUserId = req.user.user_id;
+  const { product_id, order_id, rating, body } = req.body;
+
+  if (!product_id || !rating || rating < 1 || rating > 5) {
+    return res.status(400).json({
+      error: true,
+      message: "product_id and rating (1-5) required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+
+  try {
+    // 1. Verify order belongs to user and status='Delivered'
+    const order = db.prepare("SELECT id, status, buyer_id FROM orders WHERE id = ? AND buyer_id = ?").get(order_id, authUserId);
+    if (!order || order.status !== 'Delivered') {
+      return res.status(403).json({
+        error: true,
+        message: "You can only review products you have ordered and received",
+        code: "FORBIDDEN"
+      });
+    }
+
+    // Also verify the product is in the order
+    const orderItem = db.prepare("SELECT 1 FROM order_items WHERE order_id = ? AND product_id = ?").get(order_id, product_id);
+    if (!orderItem) {
+      return res.status(403).json({
+        error: true,
+        message: "You can only review products you have ordered and received",
+        code: "FORBIDDEN"
+      });
+    }
+
+    // 2. Check no existing review for (reviewer_id, product_id) -> 409
+    const existingReview = db.prepare("SELECT id FROM reviews WHERE reviewer_id = ? AND product_id = ?").get(authUserId, product_id);
+    if (existingReview) {
+      return res.status(409).json({
+        error: true,
+        message: "Already reviewed this product",
+        code: "ALREADY_REVIEWED"
+      });
+    }
+
+    // 3. INSERT into reviews
+    const insertReview = db.prepare(`
+      INSERT INTO reviews (product_id, reviewer_id, order_id, rating, body, created_at)
+      VALUES (?, ?, ?, ?, ?, datetime('now'))
+    `);
+    const result = insertReview.run(product_id, authUserId, order_id || null, rating, body || null);
+    const reviewId = result.lastInsertRowid;
+
+    // 4. UPDATE products SET avg_rating, review_count (recalculate from all reviews)
+    const stats = db.prepare("SELECT COUNT(*) AS review_count, AVG(rating) AS avg_rating FROM reviews WHERE product_id = ?").get(product_id);
+    db.prepare("UPDATE products SET avg_rating = ?, review_count = ? WHERE id = ?")
+      .run(Math.round(stats.avg_rating * 10) / 10, stats.review_count, product_id);
+
+    // Fetch the inserted review
+    const newReview = db.prepare("SELECT id, product_id, rating, body, created_at FROM reviews WHERE id = ?").get(reviewId);
+
+    return res.status(201).json({
+      success: true,
+      data: {
+        id: newReview.id,
+        product_id: newReview.product_id,
+        rating: newReview.rating,
+        body: newReview.body,
+        created_at: newReview.created_at
+      }
+    });
+  } catch (err) {
+    console.error('Error posting review:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

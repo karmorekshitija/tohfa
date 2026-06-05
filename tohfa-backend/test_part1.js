@@ -2021,6 +2021,80 @@ async function runTests() {
     }
 
     console.log('✓ Task 55 Passed: PATCH /api/notifications/read-all');
+
+    // --- TASK 56 TESTS: POST /api/reviews ---
+    console.log('--- Testing TASK 56: POST /api/reviews ---');
+
+    // Ensure payOrderId order is 'Delivered' and has our product newProductId in it
+    // payOrderId was created during Task 33-35 tests with newProductId in cart
+    // Clear any pre-existing reviews so duplicate check is clean
+    db.prepare('DELETE FROM reviews').run();
+    db.prepare("UPDATE orders SET status = 'Delivered' WHERE id = ?").run(payOrderId);
+
+    // 1. Unauthenticated review request
+    const unauthReviewRes = await fetch(`${baseUrl}/api/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product_id: newProductId, order_id: payOrderId, rating: 5, body: 'Great!' })
+    });
+    if (unauthReviewRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth review, got ${unauthReviewRes.status}`);
+    }
+
+    // 2. Missing product_id / invalid rating (400)
+    const badReviewRes = await fetch(`${baseUrl}/api/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${buyerToken}` },
+      body: JSON.stringify({ order_id: payOrderId, rating: 0 })
+    });
+    if (badReviewRes.status !== 400) {
+      throw new Error(`Expected 400 for missing product_id, got ${badReviewRes.status}`);
+    }
+
+    // 3. Forbidden: order not delivered (use createdOrderId which is 'Awaiting Payment')
+    const forbiddenReviewRes = await fetch(`${baseUrl}/api/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${buyerToken}` },
+      body: JSON.stringify({ product_id: newProductId, order_id: createdOrderId, rating: 4, body: 'Ok' })
+    });
+    if (forbiddenReviewRes.status !== 403) {
+      throw new Error(`Expected 403 for non-delivered order review, got ${forbiddenReviewRes.status}`);
+    }
+
+    // 4. Successful review
+    const successReviewRes = await fetch(`${baseUrl}/api/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${buyerToken}` },
+      body: JSON.stringify({ product_id: newProductId, order_id: payOrderId, rating: 5, body: 'Beautiful piece, arrived perfectly packaged.' })
+    });
+    const successReviewData = await successReviewRes.json();
+    if (successReviewRes.status !== 201 || !successReviewData.success) {
+      throw new Error(`Expected 201 for review: ${JSON.stringify(successReviewData)}`);
+    }
+    const rev = successReviewData.data;
+    if (rev.product_id !== newProductId || rev.rating !== 5 || !rev.body || !rev.created_at) {
+      throw new Error(`Unexpected review data shape: ${JSON.stringify(rev)}`);
+    }
+
+    // Verify avg_rating updated on product
+    const updatedProductRes = await fetch(`${baseUrl}/api/products/${newProductId}`);
+    const updatedProductData = await updatedProductRes.json();
+    const updatedProduct = updatedProductData.data;
+    if (updatedProduct.avg_rating !== 5 || updatedProduct.review_count !== 1) {
+      throw new Error(`Expected product avg_rating=5 review_count=1, got: avg_rating=${updatedProduct.avg_rating} review_count=${updatedProduct.review_count}`);
+    }
+
+    // 5. Duplicate review (409)
+    const dupReviewRes = await fetch(`${baseUrl}/api/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${buyerToken}` },
+      body: JSON.stringify({ product_id: newProductId, order_id: payOrderId, rating: 3, body: 'Changed mind' })
+    });
+    if (dupReviewRes.status !== 409) {
+      throw new Error(`Expected 409 for duplicate review, got ${dupReviewRes.status}`);
+    }
+
+    console.log('✓ Task 56 Passed: POST /api/reviews');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
