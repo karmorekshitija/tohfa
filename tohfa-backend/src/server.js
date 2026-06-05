@@ -330,6 +330,94 @@ app.post('/api/auth/login', rateLimit(20), async (req, res) => {
   }
 });
 
+// Authentication middleware
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({
+      error: true,
+      message: "Authorization token required",
+      code: "UNAUTHORIZED"
+    });
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(401).json({
+        error: true,
+        message: "Invalid or expired authorization token",
+        code: "UNAUTHORIZED"
+      });
+    }
+    
+    // Check if user is active/banned
+    const dbUser = db.prepare('SELECT is_active, is_banned FROM users WHERE id = ?').get(user.user_id);
+    if (!dbUser) {
+      return res.status(401).json({
+        error: true,
+        message: "User not found",
+        code: "UNAUTHORIZED"
+      });
+    }
+    
+    if (dbUser.is_banned === 1) {
+      return res.status(403).json({
+        error: true,
+        message: "Account banned",
+        code: "ACCOUNT_BANNED"
+      });
+    }
+    
+    if (dbUser.is_active === 0) {
+      return res.status(403).json({
+        error: true,
+        message: "Account inactive",
+        code: "ACCOUNT_INACTIVE"
+      });
+    }
+    
+    req.user = user;
+    next();
+  });
+}
+
+// TASK 06: POST /api/auth/logout
+app.post('/api/auth/logout', authenticateToken, (req, res) => {
+  const { refresh_token } = req.body;
+  
+  if (!refresh_token || typeof refresh_token !== 'string') {
+    return res.status(400).json({
+      error: true,
+      message: "Missing refresh token",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const hashedRefreshToken = crypto.createHash('sha256').update(refresh_token).digest('hex');
+    
+    // Delete the refresh token matching hash and user_id from access token
+    db.prepare('DELETE FROM refresh_tokens WHERE token_hash = ? AND user_id = ?')
+      .run(hashedRefreshToken, req.user.user_id);
+      
+    return res.status(200).json({
+      success: true,
+      data: {
+        message: "Logged out successfully"
+      }
+    });
+  } catch (err) {
+    console.error('Error in logout:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

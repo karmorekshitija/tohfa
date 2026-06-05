@@ -251,6 +251,87 @@ async function runTests() {
     }
     console.log('✓ Test 11 Passed: Banned user login blocked');
     
+    // Test 12: Successful logout
+    // We first login to get a fresh pair of tokens
+    const loginRes = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'john@example.com',
+        password: 'password123'
+      })
+    });
+    const loginData = await loginRes.json();
+    const accessToken = loginData.data.access_token;
+    const refreshToken = loginData.data.refresh_token;
+    
+    // Check token is in DB
+    const hashedRt = require('crypto').createHash('sha256').update(refreshToken).digest('hex');
+    const dbTokenBefore = db.prepare('SELECT * FROM refresh_tokens WHERE token_hash = ?').get(hashedRt);
+    if (!dbTokenBefore) {
+      throw new Error('Refresh token not found in database after login');
+    }
+    
+    const res12 = await fetch(`${baseUrl}/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({
+        refresh_token: refreshToken
+      })
+    });
+    
+    console.log('Test 12 Status:', res12.status);
+    const body12 = await res12.json();
+    if (res12.status !== 200 || !body12.success || body12.data.message !== 'Logged out successfully') {
+      throw new Error(`Expected 200 with successful logout message, got ${res12.status} ${JSON.stringify(body12)}`);
+    }
+    
+    // Verify token is deleted from DB
+    const dbTokenAfter = db.prepare('SELECT * FROM refresh_tokens WHERE token_hash = ?').get(hashedRt);
+    if (dbTokenAfter) {
+      throw new Error('Refresh token still exists in database after logout');
+    }
+    console.log('✓ Test 12 Passed: Successful logout and token cleanup');
+
+    // Test 13: Logout with invalid auth header
+    const res13 = await fetch(`${baseUrl}/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer invalid_access_token`
+      },
+      body: JSON.stringify({
+        refresh_token: refreshToken
+      })
+    });
+    
+    console.log('Test 13 Status:', res13.status);
+    const body13 = await res13.json();
+    if (res13.status !== 401 || body13.code !== 'UNAUTHORIZED') {
+      throw new Error(`Expected 401 with UNAUTHORIZED, got ${res13.status} ${JSON.stringify(body13)}`);
+    }
+    console.log('✓ Test 13 Passed: Logout with invalid authorization rejected');
+
+    // Test 14: Logout with missing refresh_token in body
+    const res14 = await fetch(`${baseUrl}/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({})
+    });
+    
+    console.log('Test 14 Status:', res14.status);
+    const body14 = await res14.json();
+    if (res14.status !== 400 || body14.code !== 'VALIDATION_ERROR') {
+      throw new Error(`Expected 400 with VALIDATION_ERROR, got ${res14.status} ${JSON.stringify(body14)}`);
+    }
+    console.log('✓ Test 14 Passed: Logout with missing refresh token rejected');
+    
   } catch (err) {
     console.error('❌ Test failed:', err.message);
     exitCode = 1;
