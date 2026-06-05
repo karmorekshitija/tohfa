@@ -83,6 +83,14 @@ function formatTimeAgo(dateStr) {
   return `${diffDays}d ago`;
 }
 
+function formatMoney(paise) {
+  const rupees = paise / 100;
+  return '₹' + new Intl.NumberFormat('en-IN', {
+    minimumFractionDigits: rupees % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2
+  }).format(rupees);
+}
+
 function generateTokens(user) {
   const accessToken = jwt.sign(
     { user_id: user.id, email: user.email, role: user.role },
@@ -4887,6 +4895,152 @@ app.post('/api/admin/auth/login', rateLimit(10), async (req, res) => {
     });
   } catch (err) {
     console.error('POST /api/admin/auth/login error:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+function formatJoinedAgo(dateStr) {
+  if (!dateStr) return 'unknown';
+  let cleanDateStr = dateStr;
+  if (dateStr.indexOf(' ') > 0 && dateStr.indexOf('T') === -1) {
+    cleanDateStr = dateStr.replace(' ', 'T') + 'Z';
+  } else if (dateStr.indexOf('Z') === -1) {
+    cleanDateStr = dateStr + 'Z';
+  }
+  const date = new Date(cleanDateStr);
+  const now = new Date();
+  const diffMs = now - date;
+  if (diffMs < 0) return 'Just joined';
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 0) {
+    return 'Joined today';
+  }
+  if (diffDays === 1) {
+    return '1 day ago';
+  }
+  if (diffDays < 30) {
+    return `${diffDays} days ago`;
+  }
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths === 1) {
+    return '1 month ago';
+  }
+  if (diffMonths < 12) {
+    return `${diffMonths} months ago`;
+  }
+  const diffYears = Math.floor(diffMonths / 12);
+  if (diffYears === 1) {
+    return '1 year ago';
+  }
+  return `${diffYears} years ago`;
+}
+
+// TASK 09: GET /api/admin/sellers
+app.get('/api/admin/sellers', authenticateAdminToken, (req, res) => {
+  try {
+    const { status = 'all', search, page = 1, per_page = 20 } = req.query;
+    const limit = parseInt(per_page) || 20;
+    const offset = (parseInt(page) - 1) * limit;
+
+    let query = `
+      SELECT 
+        u.id AS user_id,
+        sp.id AS profile_id,
+        COALESCE(sp.display_name, sp.shop_name, u.full_name) AS display_name,
+        COALESCE(sp.bio, sp.shop_bio, 'Handmade Artisan') AS sub_label,
+        u.email,
+        u.created_at AS joined_at,
+        u.is_banned,
+        (
+          SELECT COUNT(*) 
+          FROM products p 
+          WHERE p.seller_id = u.id AND p.status != 'archived'
+        ) AS product_count,
+        (
+          SELECT COUNT(*) 
+          FROM listings l 
+          WHERE l.seller_id = sp.id AND l.status != 'deleted'
+        ) AS listing_count
+      FROM users u
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE u.role = 'seller'
+    `;
+
+    const params = [];
+
+    if (status === 'banned') {
+      query += ` AND (u.is_banned = 1 OR EXISTS (SELECT 1 FROM seller_bans sb WHERE sb.seller_id = u.id AND sb.unbanned_at IS NULL))`;
+    } else if (status === 'active') {
+      query += ` AND u.is_banned = 0 AND NOT EXISTS (SELECT 1 FROM seller_bans sb WHERE sb.seller_id = u.id AND sb.unbanned_at IS NULL)`;
+    }
+
+    if (search) {
+      query += ` AND (COALESCE(sp.display_name, sp.shop_name, u.full_name) LIKE ? OR u.email LIKE ?)`;
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    const totalCountQuery = `SELECT COUNT(*) AS count FROM (${query})`;
+    const total = db.prepare(totalCountQuery).get(...params).count;
+
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(limit, offset);
+
+    const rows = db.prepare(query).all(...params);
+
+    const sellers = rows.map(r => {
+      const salesRow = db.prepare(`
+        SELECT COALESCE(SUM(total_paise), 0) AS total_sales_paise FROM (
+          SELECT DISTINCT o.id, o.total_paise
+          FROM orders o
+          LEFT JOIN order_items oi ON oi.order_id = o.id
+          LEFT JOIN products p ON p.id = oi.product_id
+          LEFT JOIN seller_order_meta som ON som.order_id = o.id
+          WHERE (p.seller_id = ? OR som.seller_id = ?) AND o.status != 'Cancelled'
+        )
+      `).get(r.user_id, r.profile_id);
+
+      const totalSalesPaise = salesRow ? salesRow.total_sales_paise : 0;
+
+      const displayName = r.display_name || '';
+      const names = displayName.split(/\s+/).filter(Boolean);
+      const initials = names.map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+      const sellerStatus = (r.is_banned === 1 || db.prepare("SELECT 1 FROM seller_bans WHERE seller_id = ? AND unbanned_at IS NULL").get(r.user_id)) ? 'banned' : 'active';
+
+      return {
+        id: r.user_id,
+        display_name: r.display_name,
+        sub_label: r.sub_label,
+        email: r.email,
+        avatar_initials: initials || 'SA',
+        status: sellerStatus,
+        product_count: Math.max(r.product_count, r.listing_count),
+        joined_at: r.joined_at,
+        joined_ago: formatJoinedAgo(r.joined_at),
+        total_sales_paise: totalSalesPaise,
+        total_sales_display: formatMoney(totalSalesPaise)
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        sellers,
+        total,
+        page: parseInt(page),
+        per_page: limit,
+        total_pages: Math.ceil(total / limit) || 1
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/admin/sellers error:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",
