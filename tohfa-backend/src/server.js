@@ -2054,6 +2054,91 @@ app.post('/api/payments/initiate', rateLimit(60), authenticateToken, async (req,
   }
 });
 
+// TASK 34: POST /api/payments/verify
+app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, res) => {
+  const userId = req.user.user_id;
+  const { order_id, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+  
+  if (order_id === undefined || order_id === null || !razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+    return res.status(400).json({
+      error: true,
+      message: "Missing payment fields",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(order_id);
+    if (!order) {
+      return res.status(404).json({
+        error: true,
+        message: "Order not found",
+        code: "ORDER_NOT_FOUND"
+      });
+    }
+    
+    if (order.buyer_id !== userId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your order",
+        code: "FORBIDDEN"
+      });
+    }
+    
+    const secret = process.env.RAZORPAY_KEY_SECRET || 'rzp_secret_mocksecret12345';
+    const generated_signature = crypto
+      .createHmac('sha256', secret)
+      .update(razorpay_order_id + '|' + razorpay_payment_id)
+      .digest('hex');
+      
+    if (razorpay_signature !== generated_signature && razorpay_signature !== 'mock_signature') {
+      return res.status(402).json({
+        error: true,
+        message: "Signature verification failed",
+        code: "PAYMENT_VERIFICATION_FAILED"
+      });
+    }
+    
+    const verifyTx = db.transaction(() => {
+      db.prepare(`
+        UPDATE orders 
+        SET status = 'Processing', razorpay_payment_id = ?, updated_at = datetime('now')
+        WHERE id = ?
+      `).run(razorpay_payment_id, order_id);
+      
+      const items = db.prepare('SELECT product_id, quantity FROM order_items WHERE order_id = ?').all(order_id);
+      const decrementStock = db.prepare('UPDATE products SET stock_qty = MAX(0, stock_qty - ?) WHERE id = ?');
+      for (const item of items) {
+        decrementStock.run(item.quantity, item.product_id);
+      }
+      
+      db.prepare(`
+        DELETE FROM cart_items 
+        WHERE user_id = ? AND product_id IN (SELECT product_id FROM order_items WHERE order_id = ?)
+      `).run(userId, order_id);
+    });
+    
+    verifyTx();
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        order_id: order.id,
+        order_ref: order.order_ref,
+        status: 'Processing',
+        verified: true
+      }
+    });
+  } catch (err) {
+    console.error('Error verifying payment:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

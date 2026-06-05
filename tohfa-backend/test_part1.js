@@ -1038,6 +1038,72 @@ async function runTests() {
 
     console.log('✓ Task 33 Passed: POST /api/payments/initiate');
 
+    // --- TASK 34 TESTS: POST /api/payments/verify ---
+    console.log('--- Testing TASK 34: POST /api/payments/verify ---');
+    // Test unauthenticated verify
+    const unauthVerifyRes = await fetch(`${baseUrl}/api/payments/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        order_id: payOrderId,
+        razorpay_payment_id: 'pay_123456',
+        razorpay_order_id: initData.data.razorpay_order_id,
+        razorpay_signature: 'mock_signature'
+      })
+    });
+    console.log('Unauth Verify Status:', unauthVerifyRes.status);
+    if (unauthVerifyRes.status !== 401) {
+      throw new Error(`Expected 401 for unauthenticated verify, got ${unauthVerifyRes.status}`);
+    }
+
+    // Test invalid signature verify (should fail with 402)
+    const invalidSigVerifyRes = await fetch(`${baseUrl}/api/payments/verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        order_id: payOrderId,
+        razorpay_payment_id: 'pay_123456',
+        razorpay_order_id: initData.data.razorpay_order_id,
+        razorpay_signature: 'wrong_signature'
+      })
+    });
+    console.log('Invalid Signature Verify Status:', invalidSigVerifyRes.status);
+    if (invalidSigVerifyRes.status !== 402) {
+      throw new Error(`Expected 402 for invalid signature, got ${invalidSigVerifyRes.status}`);
+    }
+
+    // Test valid verify with mock_signature
+    const initialVerifyStock = db.prepare("SELECT stock_qty FROM products WHERE id = ?").get(newProductId).stock_qty;
+    const verifyRes = await fetch(`${baseUrl}/api/payments/verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${buyerToken}`
+      },
+      body: JSON.stringify({
+        order_id: payOrderId,
+        razorpay_payment_id: 'pay_123456',
+        razorpay_order_id: initData.data.razorpay_order_id,
+        razorpay_signature: 'mock_signature'
+      })
+    });
+    console.log('Verify Status:', verifyRes.status);
+    const verifyData = await verifyRes.json();
+    if (verifyRes.status !== 200 || !verifyData.success || verifyData.data.status !== 'Processing') {
+      throw new Error(`Valid verify failed: ${JSON.stringify(verifyData)}`);
+    }
+
+    // Verify stock was decremented (-1 quantity from the order)
+    const finalVerifyStock = db.prepare("SELECT stock_qty FROM products WHERE id = ?").get(newProductId).stock_qty;
+    if (finalVerifyStock !== initialVerifyStock - 1) {
+      throw new Error(`Expected stock to be decremented to ${initialVerifyStock - 1}, got ${finalVerifyStock}`);
+    }
+
+    console.log('✓ Task 34 Passed: POST /api/payments/verify');
+
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
