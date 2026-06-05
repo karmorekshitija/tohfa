@@ -123,9 +123,11 @@
 <main class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
 <!-- Profile Header Section -->
 <section class="flex flex-col items-center mb-16 text-center">
-<div class="relative mb-6">
-<img alt="Aria Sharma" class="w-24 h-24 rounded-full object-cover border border-outline-variant p-1 bg-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTP6Rel66sXz7ZBaz-2_ALPJW51wVu7fCARL142d55lGTZcnetPk5UGQQ_fcFkFAy2xrlvtuslrPes-SkAV-GmJiNXKztcAYkyVAA_-nFFnYmFJ-oqhbfw-rZTLugIoO_8-NCveLk3qggig2qkepNeeVxh1_Ss30S-6gApy1jbKR4ROxaPMRzKZJ_y9XqDIori3QcK8qzvaaDebNUiUMEkPxEtVlKKlMxZYCoHLmGT-14HQ-iSZZNxoRuc6leyj1UxIogdEm50Ccs"/>
-<div class="absolute -bottom-1 -right-1 bg-primary text-on-primary p-1 rounded-full shadow-sm">
+<div class="relative mb-6 flex justify-center items-center">
+<div id="user-avatar-container" class="w-24 h-24 rounded-full border-2 border-[#C5D6BC] p-[4px] flex items-center justify-center bg-[#FCFAF5] overflow-hidden">
+<span class="material-symbols-outlined" style="font-size: 64px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;">account_circle</span>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-on-primary p-1 rounded-full shadow-sm z-10">
 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
 </div>
 </div>
@@ -266,19 +268,67 @@
     </script>
 </nav>
 
+<!-- Logout Modal Overlay -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300" id="logoutModal" style="background-color: rgba(197, 214, 188, 0.4); backdrop-filter: blur(4px);">
+    <div class="bg-[#FCFAF5] border border-[#C5D6BC] rounded-xl p-10 max-w-sm w-full mx-4 shadow-[0_10px_30px_rgba(58,51,40,0.15)] transform scale-95 transition-transform duration-300 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-[#EBD7AE]/20 rounded-full blur-2xl"></div>
+        <div class="flex flex-col items-center text-center relative z-10">
+            <div id="modal-avatar-container" class="w-16 h-16 rounded-full border-2 border-[#C5D6BC] p-[4px] flex items-center justify-center bg-[#FCFAF5] overflow-hidden mb-6">
+                <span class="material-symbols-outlined" style="font-size: 48px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;">account_circle</span>
+            </div>
+            <h2 class="font-display-lg text-2xl text-primary mb-2">Leaving so soon?</h2>
+            <p class="font-body-md italic text-text-muted mb-8">You can always come back ✦</p>
+            <div class="flex flex-col gap-3 w-full">
+                <button class="w-full bg-[#3D6B4F] text-[#FCFAF5] font-semibold py-3.5 rounded-lg hover:bg-[#2E5340] transition-colors shadow-sm" onclick="toggleModal(false)">
+                    Stay
+                </button>
+                <button id="modal-confirm-logout" class="w-full bg-[#FCFAF5] border border-[#C5D6BC] text-[#6E6453] font-semibold py-3.5 rounded-lg hover:bg-[#C5D6BC]/20 transition-all">
+                    Log out
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
         const API_BASE_URL = window.location.origin;
+
+        function toggleModal(show) {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                if (show) {
+                    const userStr = sessionStorage.getItem('user');
+                    const modalAvatar = document.getElementById('modal-avatar-container');
+                    if (userStr && modalAvatar) {
+                        try {
+                            const user = JSON.parse(userStr);
+                            if (user.avatar_url) {
+                                modalAvatar.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full" />`;
+                            } else {
+                                modalAvatar.innerHTML = `<span class="material-symbols-outlined" style="font-size: 48px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;">account_circle</span>`;
+                            }
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    modal.querySelector('.bg-\\[\\#FCFAF5\\]').classList.remove('scale-95');
+                } else {
+                    modal.classList.add('opacity-0', 'pointer-events-none');
+                    modal.querySelector('.bg-\\[\\#FCFAF5\\]').classList.add('scale-95');
+                }
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', async function() {
             const accessToken = sessionStorage.getItem('access_token');
             if (!accessToken) {
-                // Not logged in: instantly redirect
                 window.location.href = '/login.html';
                 return;
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+                const response = await fetch(`${API_BASE_URL}/api/profile/me`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -289,16 +339,26 @@
                     throw new Error("Unauthorized");
                 }
 
-                const user = await response.json();
+                const data = await response.json();
+                const user = data.data;
                 
                 // Populate Profile fields dynamically
                 const fullnameElem = document.getElementById('user-fullname');
                 const emailElem = document.getElementById('user-email');
                 const roleElem = document.getElementById('user-role');
+                const avatarContainer = document.getElementById('user-avatar-container');
 
-                if (fullnameElem) fullnameElem.textContent = user.full_name || 'Anonymous User';
+                if (fullnameElem) fullnameElem.textContent = user.display_name || 'Anonymous User';
                 if (emailElem) emailElem.textContent = user.email;
                 if (roleElem) roleElem.textContent = `${user.role.toUpperCase()} ✨`;
+
+                if (avatarContainer) {
+                    if (user.avatar_url) {
+                        avatarContainer.innerHTML = `<img src="${user.avatar_url}" alt="${user.display_name}" class="w-full h-full object-cover rounded-full" />`;
+                    } else {
+                        avatarContainer.innerHTML = `<span class="material-symbols-outlined" style="font-size: 64px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;">account_circle</span>`;
+                    }
+                }
 
                 // Unhide the page contents gracefully
                 const bodyContent = document.getElementById('body-content');
@@ -313,34 +373,37 @@
             }
         });
 
-        // Logout listener
+        // Logout listener trigger modal
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', async function() {
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleModal(true);
+            });
+        }
+
+        const confirmLogoutBtn = document.getElementById('modal-confirm-logout');
+        if (confirmLogoutBtn) {
+            confirmLogoutBtn.addEventListener('click', async function() {
                 const accessToken = sessionStorage.getItem('access_token');
                 const refreshToken = sessionStorage.getItem('refresh_token');
 
-                if (!accessToken || !refreshToken) {
-                    sessionStorage.clear();
-                    window.location.href = '/login.html';
-                    return;
+                if (accessToken && refreshToken) {
+                    try {
+                        await fetch(`${API_BASE_URL}/api/auth/logout`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${accessToken}`
+                            },
+                            body: JSON.stringify({ refresh_token: refreshToken })
+                        });
+                    } catch (err) {
+                        console.error("Logout request failed:", err);
+                    }
                 }
-
-                try {
-                    await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${accessToken}`
-                        },
-                        body: JSON.stringify({ refresh_token: refreshToken })
-                    });
-                } catch (err) {
-                    console.error("Logout request failed:", err);
-                } finally {
-                    sessionStorage.clear();
-                    window.location.href = '/login.html';
-                }
+                sessionStorage.clear();
+                window.location.href = '/login.html';
             });
         }
 

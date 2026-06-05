@@ -2,7 +2,8 @@
 const { app, server } = require('./src/server.js');
 const db = require('./src/db.js');
 
-const baseUrl = 'http://localhost:5000';
+const PORT = process.env.PORT || 5000;
+const baseUrl = 'http://localhost:' + PORT;
 
 async function runTests() {
   let exitCode = 0;
