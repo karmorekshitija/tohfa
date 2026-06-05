@@ -328,4 +328,20 @@ const migrateReelLikes = () => {
 
 migrateReelLikes();
 
+// Task 12: Migration for reel_comments table
+const migrateReelComments = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reel_comments (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      reel_id       INTEGER NOT NULL REFERENCES reels(id) ON DELETE CASCADE,
+      user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      body          TEXT NOT NULL,
+      created_at    DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_reel_comments_reel ON reel_comments(reel_id);
+  `);
+};
+
+migrateReelComments();
+
 module.exports = db;
