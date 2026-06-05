@@ -2,10 +2,21 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
+const { execSync } = require('child_process');
+const multer = require('multer');
 const db = require('./db');
+
+// Ensure upload directories exist
+const reelsDir = path.join(__dirname, '..', 'uploads', 'reels');
+const avatarsDir = path.join(__dirname, '..', 'uploads', 'avatars');
+fs.mkdirSync(reelsDir, { recursive: true });
+fs.mkdirSync(avatarsDir, { recursive: true });
 
 const app = express();
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 const JWT_SECRET = process.env.JWT_SECRET || 'tohfa_super_secret_key_987654321';
 const BCRYPT_SALT_ROUNDS = 12;
@@ -2422,6 +2433,153 @@ app.get('/api/reels/feed', rateLimit(60), optionalAuthenticateToken, (req, res) 
     });
   } catch (err) {
     console.error('Error fetching reels feed:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// Multer configuration for reels upload
+const reelsStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, reelsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'reel-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const uploadReel = multer({
+  storage: reelsStorage,
+  limits: { fileSize: 30 * 1024 * 1024 } // 30MB
+});
+
+const uploadReelMiddleware = (req, res, next) => {
+  uploadReel.single('video')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({
+          error: true,
+          message: "File exceeds 30MB",
+          code: "FILE_TOO_LARGE"
+        });
+      }
+      return res.status(400).json({
+        error: true,
+        message: err.message,
+        code: "UPLOAD_ERROR"
+      });
+    }
+    next();
+  });
+};
+
+// TASK 40: POST /api/reels
+app.post('/api/reels', rateLimit(60), authenticateToken, uploadReelMiddleware, (req, res) => {
+  // 1. Verify user role = 'seller'
+  if (req.user.role !== 'seller') {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    return res.status(403).json({
+      error: true,
+      message: "Only sellers can upload reels",
+      code: "FORBIDDEN"
+    });
+  }
+
+  // 2. Validate file exists
+  if (!req.file) {
+    return res.status(400).json({
+      error: true,
+      message: "video is required",
+      code: "VIDEO_REQUIRED"
+    });
+  }
+
+  // 3. Validate product_id if provided
+  const productId = req.body.product_id;
+  if (productId) {
+    const product = db.prepare("SELECT id, seller_id FROM products WHERE id = ? AND status != 'archived'").get(productId);
+    if (!product || product.seller_id !== req.user.user_id) {
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
+      }
+      return res.status(422).json({
+        error: true,
+        message: "product_id not found or not owned by this seller",
+        code: "INVALID_PRODUCT"
+      });
+    }
+  }
+
+  // 4. Validate duration
+  let durationSecs = 0;
+  try {
+    const ffprobeCmd = `ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${req.file.path}"`;
+    const durationStr = execSync(ffprobeCmd).toString().trim();
+    durationSecs = Math.round(parseFloat(durationStr)) || 0;
+  } catch (probeErr) {
+    console.error('Error probing video duration:', probeErr);
+  }
+
+  if (durationSecs > 60) {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    return res.status(422).json({
+      error: true,
+      message: "Duration exceeds 60 seconds",
+      code: "DURATION_EXCEEDED"
+    });
+  }
+
+  // 5. Generate thumbnail from first frame (use ffmpeg if available)
+  const thumbnailFilename = path.basename(req.file.filename, path.extname(req.file.filename)) + '-thumb.jpg';
+  const thumbnailPath = path.join(reelsDir, thumbnailFilename);
+  let thumbnailUrl = null;
+  try {
+    const ffmpegCmd = `ffmpeg -i "${req.file.path}" -ss 00:00:01 -vframes 1 "${thumbnailPath}" -y`;
+    execSync(ffmpegCmd);
+    const host = req.get('host');
+    const protocol = req.protocol;
+    thumbnailUrl = `${protocol}://${host}/uploads/reels/${thumbnailFilename}`;
+  } catch (thumbErr) {
+    console.error('Error generating thumbnail with ffmpeg:', thumbErr);
+  }
+
+  try {
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const videoUrl = `${protocol}://${host}/uploads/reels/${req.file.filename}`;
+    const caption = req.body.caption || '';
+    const prodId = productId ? parseInt(productId, 10) : null;
+    const sellerId = req.user.user_id;
+
+    const insertResult = db.prepare(`
+      INSERT INTO reels (seller_id, product_id, caption, video_url, thumbnail_url, duration_secs, status)
+      VALUES (?, ?, ?, ?, ?, ?, 'active')
+    `).run(sellerId, prodId, caption, videoUrl, thumbnailUrl, durationSecs);
+
+    const newReel = db.prepare("SELECT * FROM reels WHERE id = ?").get(insertResult.lastInsertRowid);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: newReel.id,
+        video_url: newReel.video_url,
+        thumbnail_url: newReel.thumbnail_url,
+        caption: newReel.caption,
+        seller_id: newReel.seller_id
+      }
+    });
+  } catch (err) {
+    console.error('Error uploading reel:', err);
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     return res.status(500).json({
       error: true,
       message: "Internal server error",

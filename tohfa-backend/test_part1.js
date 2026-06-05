@@ -1312,6 +1312,68 @@ async function runTests() {
     }
 
     console.log('✓ Task 39 Passed: GET /api/reels/feed');
+
+    // --- TASK 40 TESTS: POST /api/reels ---
+    console.log('--- Testing TASK 40: POST /api/reels ---');
+    
+    // 1. Unauthenticated upload
+    const unauthUploadRes = await fetch(`${baseUrl}/api/reels`, {
+      method: 'POST'
+    });
+    if (unauthUploadRes.status !== 401) {
+      throw new Error(`Expected 401 for unauth upload, got ${unauthUploadRes.status}`);
+    }
+
+    // 2. Buyer account upload (should fail with 403)
+    const buyerUploadRes = await fetch(`${baseUrl}/api/reels`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${buyerToken}` }
+    });
+    if (buyerUploadRes.status !== 403) {
+      throw new Error(`Expected 403 for buyer upload, got ${buyerUploadRes.status}`);
+    }
+
+    // 3. Seller upload with missing video field (should fail with 400)
+    const emptyUploadRes = await fetch(`${baseUrl}/api/reels`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${sellerToken}` }
+    });
+    if (emptyUploadRes.status !== 400) {
+      throw new Error(`Expected 400 for empty upload, got ${emptyUploadRes.status}`);
+    }
+
+    // 4. Seller upload with invalid/not owned product_id (should fail with 422)
+    const invalidProdFd = new FormData();
+    const fakeVideo = new Blob([Buffer.alloc(100)], { type: 'video/mp4' });
+    invalidProdFd.append('video', fakeVideo, 'test_reel.mp4');
+    invalidProdFd.append('product_id', '99999');
+    
+    const invalidProdUploadRes = await fetch(`${baseUrl}/api/reels`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${sellerToken}` },
+      body: invalidProdFd
+    });
+    if (invalidProdUploadRes.status !== 422) {
+      throw new Error(`Expected 422 for invalid product upload, got ${invalidProdUploadRes.status}`);
+    }
+
+    // 5. Successful seller upload
+    const validFd = new FormData();
+    validFd.append('video', fakeVideo, 'valid_reel.mp4');
+    validFd.append('caption', 'Throwing stoneware mug ✦');
+    validFd.append('product_id', newProductId.toString());
+
+    const validUploadRes = await fetch(`${baseUrl}/api/reels`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${sellerToken}` },
+      body: validFd
+    });
+    const validUploadData = await validUploadRes.json();
+    if (validUploadRes.status !== 200 || !validUploadData.success || !validUploadData.data.video_url) {
+      throw new Error(`Expected successful reel upload, got status ${validUploadRes.status}: ${JSON.stringify(validUploadData)}`);
+    }
+
+    console.log('✓ Task 40 Passed: POST /api/reels');
   } catch (err) {
     console.error('❌ Integration test failed:', err.message);
     console.error(err.stack);
