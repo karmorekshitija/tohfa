@@ -546,6 +546,62 @@ app.post('/api/auth/forgot-password', rateLimit(5), (req, res) => {
   }
 });
 
+// TASK 09: POST /api/auth/reset-password
+app.post('/api/auth/reset-password', rateLimit(10), async (req, res) => {
+  const { token, new_password } = req.body;
+  
+  if (!token || typeof token !== 'string' || !new_password || typeof new_password !== 'string' || new_password.length < 8) {
+    return res.status(400).json({
+      error: true,
+      message: "Missing token or password must be at least 8 characters long",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    
+    const tokenRecord = db.prepare('SELECT * FROM password_reset_tokens WHERE token_hash = ?').get(hashedToken);
+    
+    if (!tokenRecord || tokenRecord.used === 1 || new Date(tokenRecord.expires_at) < new Date()) {
+      return res.status(400).json({
+        error: true,
+        message: "Token invalid, expired, or already used",
+        code: "INVALID_RESET_TOKEN"
+      });
+    }
+    
+    const newHash = await bcrypt.hash(new_password, BCRYPT_SALT_ROUNDS);
+    
+    const resetTransaction = db.transaction(() => {
+      db.prepare("UPDATE users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?")
+        .run(newHash, tokenRecord.user_id);
+        
+      db.prepare("UPDATE password_reset_tokens SET used = 1 WHERE id = ?")
+        .run(tokenRecord.id);
+        
+      db.prepare("DELETE FROM refresh_tokens WHERE user_id = ?")
+        .run(tokenRecord.user_id);
+    });
+    
+    resetTransaction();
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        message: "Password updated successfully. Please log in."
+      }
+    });
+  } catch (err) {
+    console.error('Error in reset password:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

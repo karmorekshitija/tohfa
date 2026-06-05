@@ -453,6 +453,134 @@ async function runTests() {
     }
     console.log('✓ Test 20 Passed: Invalid email rejected with 400');
     
+    // We need the plain reset token generated in Test 18
+    // Since we logged it, let's find it from the database record or we can generate a new one specifically for Test 21
+    const resetUserEmail = 'jane@example.com'; // Let's use Jane's account
+    const resetUser = db.prepare('SELECT id FROM users WHERE email = ?').get(resetUserEmail);
+    
+    const plainResetToken = 'my_secret_reset_token_123_xyz';
+    const hashedResetToken = require('crypto').createHash('sha256').update(plainResetToken).digest('hex');
+    const expiresAt = new Date(Date.now() + 3600000).toISOString(); // 1 hour
+    
+    db.prepare('INSERT INTO password_reset_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)').run(resetUser.id, hashedResetToken, expiresAt);
+    
+    // Insert some refresh tokens to test force-logout (token cleanup)
+    db.prepare("INSERT INTO refresh_tokens (user_id, token_hash, expires_at) VALUES (?, 'dummy_hash_1', ?)").run(resetUser.id, expiresAt);
+    db.prepare("INSERT INTO refresh_tokens (user_id, token_hash, expires_at) VALUES (?, 'dummy_hash_2', ?)").run(resetUser.id, expiresAt);
+    
+    // Test 21: Successful reset password
+    const res21 = await fetch(`${baseUrl}/api/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: plainResetToken,
+        new_password: 'newpassword789'
+      })
+    });
+    
+    console.log('Test 21 Status:', res21.status);
+    const body21 = await res21.json();
+    if (res21.status !== 200 || !body21.success || body21.data.message !== 'Password updated successfully. Please log in.') {
+      throw new Error(`Expected 200 with success message, got ${res21.status} ${JSON.stringify(body21)}`);
+    }
+    
+    // Verify token marked as used
+    const dbTokenUsed = db.prepare('SELECT used FROM password_reset_tokens WHERE token_hash = ?').get(hashedResetToken);
+    if (dbTokenUsed.used !== 1) {
+      throw new Error('Reset token was not marked as used in DB');
+    }
+    
+    // Verify all refresh tokens for user deleted
+    const dbRefreshTokens = db.prepare('SELECT COUNT(*) as count FROM refresh_tokens WHERE user_id = ?').get(resetUser.id);
+    if (dbRefreshTokens.count !== 0) {
+      throw new Error(`Expected 0 refresh tokens, found ${dbRefreshTokens.count}`);
+    }
+    console.log('✓ Test 21 Passed: Password reset succeeded and forced logouts');
+
+    // Test 22: Reusing the already used reset token
+    const res22 = await fetch(`${baseUrl}/api/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: plainResetToken,
+        new_password: 'anotherpassword111'
+      })
+    });
+    
+    console.log('Test 22 Status:', res22.status);
+    const body22 = await res22.json();
+    if (res22.status !== 400 || body22.code !== 'INVALID_RESET_TOKEN') {
+      throw new Error(`Expected 400 with INVALID_RESET_TOKEN for reused token, got ${res22.status}`);
+    }
+    console.log('✓ Test 22 Passed: Reusing password reset token is blocked');
+
+    // Test 23: Verify login with new password and rejection of old password
+    const res23_old = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: resetUserEmail,
+        password: 'password123' // Old password
+      })
+    });
+    console.log('Test 23 Old Pass Status:', res23_old.status);
+    if (res23_old.status !== 401) {
+      throw new Error('Old password should be rejected after reset');
+    }
+    
+    const res23_new = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: resetUserEmail,
+        password: 'newpassword789' // New password
+      })
+    });
+    console.log('Test 23 New Pass Status:', res23_new.status);
+    if (res23_new.status !== 200) {
+      throw new Error('New password should login successfully');
+    }
+    console.log('✓ Test 23 Passed: Login works with new password and rejects old password');
+
+    // Test 24: Expired reset token
+    const expiredToken = 'expired_reset_token_xyz';
+    const hashedExpiredToken = require('crypto').createHash('sha256').update(expiredToken).digest('hex');
+    const pastExpiresAtReset = new Date(Date.now() - 60000).toISOString();
+    db.prepare('INSERT INTO password_reset_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)').run(resetUser.id, hashedExpiredToken, pastExpiresAtReset);
+    
+    const res24 = await fetch(`${baseUrl}/api/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: expiredToken,
+        new_password: 'password_new_123'
+      })
+    });
+    
+    console.log('Test 24 Status:', res24.status);
+    const body24 = await res24.json();
+    if (res24.status !== 400 || body24.code !== 'INVALID_RESET_TOKEN') {
+      throw new Error(`Expected 400 INVALID_RESET_TOKEN for expired reset token, got ${res24.status}`);
+    }
+    console.log('✓ Test 24 Passed: Expired reset token rejected');
+
+    // Test 25: Weak password on reset
+    const res25 = await fetch(`${baseUrl}/api/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: plainResetToken,
+        new_password: '123'
+      })
+    });
+    
+    console.log('Test 25 Status:', res25.status);
+    const body25 = await res25.json();
+    if (res25.status !== 400 || body25.code !== 'VALIDATION_ERROR') {
+      throw new Error(`Expected 400 VALIDATION_ERROR for short password, got ${res25.status}`);
+    }
+    console.log('✓ Test 25 Passed: Weak password on reset rejected');
+    
   } catch (err) {
     console.error('❌ Test failed:', err.message);
     exitCode = 1;
