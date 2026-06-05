@@ -251,6 +251,85 @@ app.post('/api/auth/register/seller', rateLimit(10), async (req, res) => {
   }
 });
 
+// TASK 05: POST /api/auth/login
+app.post('/api/auth/login', rateLimit(20), async (req, res) => {
+  const { email, password } = req.body;
+  
+  // 1. Validation
+  if (!email || typeof email !== 'string' || !password || typeof password !== 'string') {
+    return res.status(400).json({
+      error: true,
+      message: "Missing email or password",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  
+  try {
+    // 2. Look up user
+    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+    if (!user) {
+      return res.status(401).json({
+        error: true,
+        message: "Hm, that credential set doesn't seem right.",
+        code: "INVALID_CREDENTIALS"
+      });
+    }
+    
+    // 3. Check password
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({
+        error: true,
+        message: "Hm, that credential set doesn't seem right.",
+        code: "INVALID_CREDENTIALS"
+      });
+    }
+    
+    // 4. Check active/banned status
+    if (user.is_banned === 1) {
+      return res.status(403).json({
+        error: true,
+        message: "Account banned",
+        code: "ACCOUNT_BANNED"
+      });
+    }
+    
+    if (user.is_active === 0) {
+      return res.status(403).json({
+        error: true,
+        message: "Account inactive",
+        code: "ACCOUNT_INACTIVE"
+      });
+    }
+    
+    // 5. Generate tokens
+    const { accessToken, refreshToken } = generateTokens(user);
+    
+    // 6. Return response
+    return res.status(200).json({
+      success: true,
+      data: {
+        user: {
+          id: user.id,
+          email: user.email,
+          full_name: user.full_name,
+          role: user.role,
+          avatar_url: user.avatar_url
+        },
+        access_token: accessToken,
+        refresh_token: refreshToken
+      }
+    });
+  } catch (err) {
+    console.error('Error in login:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
