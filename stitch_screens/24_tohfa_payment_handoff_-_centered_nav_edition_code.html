@@ -1,0 +1,155 @@
+<body class="bg-background"><!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">shopping_cart</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-margin-desktop bg-background relative z-20 py-4">
+<div class="flex-1">
+<span class="font-headline-lg text-primary italic">Tohfa<span class="text-gold-custom">.</span></span>
+</div>
+<div class="flex-[2] text-center">
+<h1 class="font-headline-lg text-on-surface">Complete your order</h1>
+</div>
+<div class="flex-1 flex justify-end">
+<button class="flex items-center text-on-surface-variant hover:opacity-80 transition-opacity transition-active">
+<span class="material-symbols-outlined mr-2">arrow_back</span>
+<span class="font-body-md">Back</span>
+</button>
+</div>
+</header>
+<main class="relative flex flex-col items-center justify-start min-h-[calc(100vh-100px)] py-12 px-margin-desktop overflow-hidden">
+<!-- Ink Splatter Background Effect -->
+<div class="absolute inset-0 ink-splatter opacity-[0.04] pointer-events-none"></div>
+<!-- Order Summary Container -->
+<div class="w-full max-w-[600px] relative z-10">
+<!-- Summary Card -->
+<section class="bg-surface-ivory border border-outline-variant rounded-xl p-8 shadow-sm relative overflow-hidden mb-10">
+<!-- Botanical Sprig Watermark -->
+<div class="botanical-watermark">
+<img alt="" class="w-full h-full grayscale opacity-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvKvobo9m5FCHpqrx7zoj8vQw8yQyc2q-Gjk1ELtoNGYGatvNxMq8b-rKIPvOAAwcDChbDo492KkRlUZOxyzJGtlUumgrjQRJLxJW3B1Vu-INgeZrpt8SVaa7c0zMM5akDHBLYWaKmovODXB_tu944-CvFAtperVq0aOO348C4fX_JIc_FdXmVfwaVhJFepjYjKweWKHBncHaGgkP8JjCx9Cvh_22MFKMBm2pF8mDaIq7Lf49b1iUf1a5R4DPQAZlZjgm8uURyzPE">
+</div>
+<div class="mb-6">
+<p class="font-data-price text-on-surface-variant tracking-widest text-xs uppercase">ORDER #TF-2024-8842</p>
+</div>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-start">
+<span class="font-lora text-on-surface text-body-md">Midnight Lily Ceramics (Set of 2)</span>
+<span class="font-lora text-on-surface text-body-md">₹1,850</span>
+</div>
+<div class="flex justify-between items-start">
+<span class="font-lora text-on-surface text-body-md">Organic Cotton Loom Wrap</span>
+<span class="font-lora text-on-surface text-body-md">₹850</span>
+</div>
+<div class="flex justify-between items-start">
+<span class="font-lora text-on-surface text-body-md">Shipping &amp; Hand-crafted Packing</span>
+<span class="font-lora text-on-surface text-body-md">₹220</span>
+</div>
+</div>
+<div class="border-t border-outline-variant/40 pt-6 flex justify-between items-center">
+<span class="font-lora text-on-surface text-lg font-bold">Total Amount</span>
+<span class="font-data-price text-gold-custom text-[22px] font-bold">₹2,920</span>
+</div>
+</section>
+<!-- Payment Method Section -->
+<section class="space-y-4">
+<h2 class="font-label-caps text-on-surface-variant text-[11px] px-2">PAYING WITH</h2>
+<div class="bg-white border border-surface-ivory rounded-lg p-4 flex items-center shadow-sm">
+<div class="bg-surface-ivory rounded-md px-3 py-1 mr-4 border border-outline-variant/20">
+<span class="text-on-surface-variant font-bold text-sm tracking-tighter">Razorpay</span>
+</div>
+<p class="font-body-md text-on-surface-variant text-sm">Secured by Razorpay</p>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant opacity-40">verified_user</span>
+</div>
+</section>
+<!-- Action Button -->
+<div class="mt-10 space-y-4">
+<button class="w-full h-[52px] bg-primary text-on-primary font-body-md font-bold rounded-lg shadow-md hover:opacity-95 transition-all transition-active flex items-center justify-center">
+                    Pay ₹2,920
+                </button>
+<p class="text-center font-body-md text-on-surface-variant text-[13px] opacity-70 px-8">
+                    You'll only be charged once. Your card details never touch our server.
+                </p>
+<div class="pt-4 text-center">
+<a class="font-body-md text-tertiary underline decoration-tertiary/30 underline-offset-4 hover:text-primary transition-colors" href="#">
+                        Pay later
+                    </a>
+</div>
+</div>
+</div>
+</main>
+<!-- Mascot -->
+<div class="artisan-mascot hidden md:block">
+<img class="w-full h-auto drop-shadow-lg animate-bounce" data-alt="A charming Chibi-style artisan mascot, a young girl with a messy bun and a paint-stained apron, smiling and waving warmly. She is rendered in a soft watercolor and ink style, fitting perfectly into a handcrafted sketchbook aesthetic. The background is pure white to match the minimal UI, and her presence adds a touch of human warmth and craftsmanship to the payment screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUdgUi9zNpemquNYOynHRU5OmTazfPivR4pIq-CSEmr5O30OHcbjOpuIJHuRhNDeqI1xTrIlIgCgcyl7dzbHe2m6vDF11N3L_z2-OnqJba-qKyQqZYt05uspfDGDtbLJQuRaI8PqgXViAPXqAZPb2CJUQt6-Ub_WuZBXEnESew_Husm6UouVhChIn8z7XZkeqdhv83NuPY6nVT4vp89HQjms9N03mbSqJL7k2AP12fR-p1ThtIIdj7jcXz3i-55CGAJKY-SgFcPPE" style="animation-duration: 3s;">
+</div>
+<!-- Background Decoration Textures -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+<div class="absolute top-20 left-10 transform -rotate-12">
+<img alt="" class="grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA06FpOjuqcPxHMAhJnj6_SyrbSo717-KZTM9limYKxaBjVX6pEoVxKvZY5vKLyYouA9sAYUr0c0IkC7LbjR9rwxcjipjTwLTaoY2g_AsCy5SOYoIdlSZ_hwog2FZuuRBWVgM90lWqVHPYvpq6z6bbA8fAd4JS4mV80C8y3NowoWyVU8FjLawimqQCCplN0VklAbONpT1yV-nC26LFI-v1VjyAkJZ4czZEupMzAKh979EjEkvGluTM6t9HShvvRCzrX3rUu5yBlfQU">
+</div>
+<div class="absolute bottom-40 right-10 transform rotate-45">
+<img alt="" class="grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj-1OvRv6x179AzFX6AU0o51soCP8QWobQbW1P-YrsF3T1Odgu5VZ8vlsw_wddJxoYU-mrV-LT1SWpJfpKy1HLeopqDb9vOwWpD2O6_-ZVZGKgjNY0SwYt0L2H1XkPM71Rudvc6pRPc9qlBPMNhgw0-LsUg-m82QUldbq9kDh1G74c6aiKYiuZT_FVcq--jnxxop1QLHdIRbjxQmdMHBtBgDn4wX8gh89Gk9rWboQHIdfVNhN8N-51xZp4If_m_cS_tmmv02iatek">
+</div>
+</div>
+<script>
+        // Simple micro-interaction for the pay button
+        const payButton = document.querySelector('button');
+        payButton.addEventListener('click', function() {
+            this.innerHTML = '<span class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Securely Redirecting...</span>';
+            this.classList.add('opacity-80');
+            this.disabled = true;
+            
+            setTimeout(() => {
+                // Simulation of transition
+                console.log('Redirecting to payment gateway...');
+            }, 1500);
+        });
+    </script>
+
+
+</body>

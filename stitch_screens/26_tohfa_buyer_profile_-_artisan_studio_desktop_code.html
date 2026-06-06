@@ -1,0 +1,236 @@
+<body class="bg-[#FFFFFF] font-body-md text-on-surface overflow-x-hidden">
+<!-- TopNavBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      E
+    </a>
+  </div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<!-- Profile Header -->
+<section class="flex flex-col items-center mb-xl">
+<div class="relative mb-md">
+<div class="relative group w-32 h-32 rounded-full border-[3px] border-[#255338] overflow-hidden bg-surface-container shadow-lg flex-shrink-0">
+  <img class="w-full h-full object-cover" data-alt="A professional and warm close-up portrait of a South Asian man in his early 30s with a kind expression. He is wearing a minimalist linen shirt in a neutral cream color. The background is a soft-focus artisan studio with warm sunlight filtering through. The overall aesthetic is clean, high-end, and follows a light-mode color palette of whites and soft natural tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8WxbLAwwMLeod4MTkfHkUHwDDZSoNS5X5EVhx4wbosVP2i4EAKLZ36EnI8bNI-IxOQeA-vxU0fEV7PRZR6xCnUXvEcJW-891q_oLS1prPqj1oVk6resTMZ6rDCRjDCxICFZ_TCSNCOUIhNTEKfV3fPR30hwHm0oORfprNpQXn7KKPpuJl0FEfp-RBbVST04V0y07fNAq0jLHZtiIRqtU_IT307A1opVwJBxAW9G9mIrPtgRT6O35X3sqcXCpPvUli5DWzqxhiH5s">
+  <!-- Camera overlay on hover for edit -->
+  <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+    <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
+  </div>
+</div>
+<div class="absolute bottom-0 right-0 bg-primary w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-white text-[14px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<h1 class="font-title-serif text-[24px] text-on-surface mb-xs">Arjun Varma</h1>
+<div class="bg-gold-soft px-md py-1 rounded-full border border-gold/20">
+<span class="font-label-caps text-gold">AVID COLLECTOR ✨</span>
+</div>
+</section>
+<!-- Stats Strip -->
+<section class="relative max-w-4xl mx-auto mb-xl bg-white border border-outline-variant rounded-lg overflow-hidden artisan-shadow">
+<!-- Background Sketch -->
+<div class="absolute inset-0 opacity-[0.08] pointer-events-none flex items-center justify-center">
+<span class="material-symbols-outlined text-[120px]">featured_seasonal_and_gifts</span>
+</div>
+<div class="grid grid-cols-4 relative z-10">
+<div class="py-lg px-md text-center border-r border-outline-variant">
+<div class="font-data-price text-xl text-primary font-bold">12</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant opacity-70">CREATORS</div>
+</div>
+<div class="py-lg px-md text-center border-r border-outline-variant">
+<div class="font-data-price text-xl text-gold font-bold">48</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant opacity-70">SAVED</div>
+</div>
+<div class="py-lg px-md text-center border-r border-outline-variant">
+<div class="font-data-price text-xl text-primary font-bold">15</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant opacity-70">REVIEWS</div>
+</div>
+<div class="py-lg px-md text-center">
+<div class="font-data-price text-xl text-gold font-bold">1.2k</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant opacity-70">FOLLOWERS</div>
+</div>
+</div>
+</section>
+<!-- Preferences Button -->
+<div class="flex justify-center mb-xl">
+<button class="w-full max-w-[400px] bg-sage-soft text-primary font-label-caps py-md px-xl rounded-arjun flex items-center justify-center space-x-md hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">palette</span>
+<span>EDIT PREFERENCES &amp; STYLE PROFILE</span>
+</button>
+</div>
+<!-- Tab Row -->
+<section class="flex justify-center mb-lg">
+<div class="flex space-x-xl border-b border-outline-variant/30 w-full justify-center">
+<button class="pb-md font-label-caps text-[10px] text-primary border-b-2 border-primary">ORDER HISTORY</button>
+<button class="pb-md font-label-caps text-[10px] text-on-surface-variant hover:text-primary transition-colors">WISHLIST</button>
+<button class="pb-md font-label-caps text-[10px] text-on-surface-variant hover:text-primary transition-colors">CART (3)</button>
+<button class="pb-md font-label-caps text-[10px] text-on-surface-variant hover:text-primary transition-colors">DISCOVER</button>
+</div>
+</section>
+<!-- Order History Sub-section -->
+<section class="grid grid-cols-1 gap-lg max-w-5xl mx-auto">
+<!-- Order Card -->
+<div class="bg-ivory border border-sage-soft rounded-xl p-lg artisan-shadow relative overflow-hidden group">
+<!-- Wax Tape Watermark -->
+<div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none wax-seal-watermark -rotate-12 translate-x-8 -translate-y-8">
+<span class="material-symbols-outlined text-[100px]">verified</span>
+</div>
+<div class="flex flex-col md:flex-row items-center gap-lg">
+<!-- Product Image -->
+<div class="w-[120px] h-[120px] flex-shrink-0">
+<img alt="Midnight Lily Ceramics" class="w-full h-full object-cover rounded-lg border border-sage-soft/30" data-alt="A handcrafted ceramic vase featuring delicate midnight lily patterns, presented on a rustic wooden table with soft side lighting. The piece has a fine tactile texture and an artisan feel. The lighting is soft and golden, emphasizing the hand-painted details. High-end product photography style with a shallow depth of field against a minimalist cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgWW8k6NOd0uE_owBhtOMRTaDdUN84ZmwhVuWNHeeaEsVHJn-UnQvmf7TGs9BQz8wYhwJ9LASzWe8CIdQ_DSSbT1QgZff5wnv-r6MwEPiwMezP3rc1u7Vrr9gDJlUU6ETqF4Wc67Lt2Cp6_amaa4jkCfwMzLgenUoy7lBQjzSn2KJM6ZzwGxHh_15Azeixkqs1riqMqqTobHDZRa7IM0SqKjL41C28puV_G3yOKr8BFcdzyZJNKQXS7bE5e_ulx0HpuPQXNzp4LdM">
+</div>
+<!-- Center Content -->
+<div class="flex-grow space-y-md w-full">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<h3 class="font-title-serif text-[18px] text-on-surface">Midnight Lily Ceramics</h3>
+<div class="bg-sage-soft px-md py-1 rounded-full w-fit">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-1.5 bg-sage-soft/40 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[65%] rounded-full transition-all duration-1000 group-hover:w-[70%]"></div>
+</div>
+</div>
+<!-- Right Pricing/Order Info -->
+<div class="flex flex-col items-end flex-shrink-0 w-full md:w-auto">
+<span class="font-data-price text-[12px] text-on-surface-variant opacity-60">ORDER #MN-4921</span>
+<span class="font-data-price text-[20px] text-gold mt-1">$128.00</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex space-x-md mt-lg border-t border-outline-variant/20 pt-lg">
+<button class="bg-primary text-white font-label-caps px-lg py-sm rounded-lg hover:opacity-90 active:scale-95 transition-all">TRACK ORDER</button>
+<button class="bg-white border border-sage-soft text-primary font-label-caps px-lg py-sm rounded-lg hover:bg-sage-soft/10 active:scale-95 transition-all">ORDER DETAILS</button>
+</div>
+</div>
+<!-- Second Sample Order (Subtle) -->
+<div class="bg-white border border-outline-variant/30 rounded-xl p-lg opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-md">
+<div class="w-12 h-12 bg-surface-container rounded-lg"></div>
+<div>
+<p class="font-title-serif text-md">Hand-woven Linen Runner</p>
+<p class="font-body-md text-xs">Delivered Oct 12, 2024</p>
+</div>
+</div>
+<span class="font-data-price text-primary">$45.00</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container border-t border-outline-variant mt-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl px-margin-mobile md:px-margin-desktop py-xl max-w-7xl mx-auto">
+<!-- Brand Section -->
+<div class="space-y-md">
+<span class="font-display-hero text-[40px] text-primary">Tohfa</span>
+<p class="font-body-md text-on-surface-variant max-w-xs">Handcrafted with intention. We celebrate the human touch in every creation.</p>
+<!-- Chibi Mascot (SVG Placeholder) -->
+<div class="flex items-center space-x-sm pt-md">
+<div class="w-10 h-10 bg-sage-soft rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">face</span>
+</div>
+<span class="font-title-serif italic text-primary">Meet The Artisans</span>
+</div>
+</div>
+<!-- Links Section -->
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-sm">
+<h4 class="font-label-caps text-primary">EXPLORE</h4>
+<ul class="space-y-xs font-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Our Story</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Studio Journal</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Artisan Partners</a></li>
+</ul>
+</div>
+<div class="space-y-sm">
+<h4 class="font-label-caps text-primary">SUPPORT</h4>
+<ul class="space-y-xs font-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Gift Cards</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact Studio</a></li>
+</ul>
+</div>
+</div>
+<!-- Newsletter -->
+<div class="space-y-md">
+<h4 class="font-label-caps text-primary">JOIN THE INNER CIRCLE</h4>
+<div class="flex">
+<input class="bg-white border border-outline-variant px-md py-sm rounded-l-lg focus:outline-none focus:ring-1 focus:ring-primary w-full" placeholder="Your email" type="email">
+<button class="bg-primary text-white px-md py-sm rounded-r-lg font-label-caps">JOIN</button>
+</div>
+<p class="font-body-md text-[12px] text-on-surface-variant">© 2024 TOFA Artisan Studio. Handcrafted with intention.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.96)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Atmospheric effect: Subtle parallax on the watermark
+        window.addEventListener('scroll', () => {
+            const seals = document.querySelectorAll('.wax-seal-watermark');
+            const scrolled = window.pageYOffset;
+            seals.forEach(seal => {
+                const speed = 0.05;
+                seal.style.transform = `translateY(${scrolled * speed}px) rotate(-12deg)`;
+            });
+        });
+    </script>
+</body>

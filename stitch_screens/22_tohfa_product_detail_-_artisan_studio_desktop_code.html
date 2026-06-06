@@ -1,0 +1,198 @@
+<body class="font-body-md text-body-md antialiased">
+<!-- TopNavBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<main class="pt-32 pb-40 max-w-7xl mx-auto px-margin-desktop">
+<!-- Product Hero -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-xl items-start">
+<!-- Left: Gallery -->
+<div class="relative">
+<div class="relative rounded-[20px] overflow-hidden aspect-[4/5] bg-surface-container-low shadow-sm">
+<img alt="Midnight Lily Vase" class="w-full h-full object-cover" data-alt="A high-end, premium hand-thrown ceramic vase in a deep midnight blue, featuring delicate white lily patterns. The vase is placed on a minimalist ivory pedestal within a sun-drenched artisan studio with soft, warm morning light and long shadows. The overall aesthetic is warm, tactile, and literary, reflecting the Tohfa brand's focus on handcrafted narrative and human touch." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPr9EWdSlE3HNPBtFlzyi6_cSJfmtus-yHA4OIcvwBlSCIxfE3S2rpKlK-ECX9KKlsky8fT6sT4IVfcNC7w35GEsY1ikz4O76BIYMZ_HcsaGhCHfZ3HjvESDGt0g7VOjqR5AGpMYrcxil0HgVf9d1K9ROLzz-wTQI4II1Gb8XW8E__55emTV35P42eD0P_k5U4L3Gu1xraQ2EFTcC_iZbkrcaLKVl_B2-CpFLdyrXGg_glWogXTq_9WX-8SM7O1fgpDlSISf8P03o">
+<!-- Floating Icons -->
+<button class="absolute top-md left-md bg-white rounded-full p-sm shadow-md hover:bg-surface-ivory transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<button class="absolute top-md right-md bg-white rounded-full p-sm shadow-md hover:bg-surface-ivory transition-colors">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<!-- Dots -->
+<div class="flex justify-center mt-md gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+</div>
+</div>
+<!-- Right: Info -->
+<div class="flex flex-col gap-lg">
+<div class="space-y-sm">
+<h1 class="font-headline-lg text-[24px] text-[#3A3328] font-bold">Midnight Lily Hand-thrown Vase</h1>
+<div class="flex items-center gap-md">
+<div class="flex text-gold">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-on-surface-variant text-body-md">(48 reviews)</span>
+</div>
+</div>
+<div class="flex items-baseline gap-md">
+<span class="font-data-price text-[24px] text-gold">₹2,450</span>
+<span class="text-terracotta font-bold text-sm">Only 3 left</span>
+</div>
+<!-- Maker Card -->
+<div class="bg-ivory border border-sage-soft rounded-[14px] p-md flex items-center justify-between group cursor-pointer hover:shadow-md transition-shadow">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="Maker Avatar" class="w-full h-full object-cover" data-alt="A portrait of a serene artisan woman in her thirties, with her hair tied back, wearing a natural linen apron stained with clay. She is in a bright, airy ceramic studio filled with drying pottery and green plants. The mood is peaceful and professional, emphasizing the personal human touch behind Tohfa's products." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHz3QkInsPR9H4y1950IREIBKHbIB5WHCefhxdRzoWTfhdgMy4qfddF3IbsWrsXEb92w3K4baFJ7c7V-yTDD4uARaK2wTPZio6Zx51tfNLkgZkTdLempHFP7G47WcnwfHDLNIFlrTlJqmiB4G0BAAH-twZWGYekwHzXHzDNHF_SGl63Urz-7RscP0M53zYAHJLJrCBMF2jFxTJvtZfEDjdcgScRVLrXCs82UJ625u91UlnMrrPTLkEH7UenOGNgufHKR6h7mvUkEo">
+</div>
+<div>
+<p class="font-title-serif text-title-serif text-primary">Midnight Lily Ceramics</p>
+<span class="bg-sage-soft/30 text-primary text-[10px] px-sm py-xs rounded-full font-label-caps">Ships in 3 days</span>
+</div>
+</div>
+<a class="text-primary font-bold hover:translate-x-1 transition-transform" href="#">View shop <span class="text-xs">▸</span></a>
+</div>
+<!-- Description -->
+<div class="pressed-leaf-watermark p-lg rounded-xl border border-outline-variant/30 bg-white">
+<p class="font-body-md text-[#3A3328] leading-relaxed opacity-90">
+                        This piece is an ode to the quiet hours of twilight. Each vase is hand-thrown on the wheel using native stoneware clay, then hand-painted with white engobe using the delicate Sgraffito technique. No two vases are identical, reflecting the unique movement of the artisan's hand and the kiln's warmth.
+                    </p>
+</div>
+<!-- Interaction -->
+<div class="flex items-center gap-lg pt-md">
+<div class="flex items-center bg-ivory border border-sage-soft rounded-full px-sm py-xs">
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-surface-variant rounded-full transition-colors">-</button>
+<span class="w-10 text-center font-data-price">1</span>
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-surface-variant rounded-full transition-colors">+</button>
+</div><div class="flex items-center gap-md w-full sm:w-auto"><button class="bg-primary text-on-primary font-bold px-xl py-md rounded-full hover:bg-primary-container transition-colors flex-1 sm:flex-none text-center">Add to Cart</button><button class="bg-white text-primary border border-primary font-bold px-xl py-md rounded-full hover:bg-surface-variant transition-colors flex-1 sm:flex-none text-center">Buy Now</button></div>
+</div>
+</div>
+</section>
+<!-- Community Reviews -->
+<section class="mt-32 space-y-lg">
+<h2 class="font-label-caps text-label-caps text-primary flex items-center gap-sm">
+<span class="text-gold">✦</span> From the makers' community
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Review Card 1 -->
+<div class="bg-ivory border border-sage-soft rounded-xl p-lg space-y-md wax-tape relative">
+<div class="flex justify-between items-start">
+<div class="flex text-gold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-[12px] font-data-price text-on-surface-variant">Oct 12, 2023</span>
+</div>
+<p class="font-title-serif font-normal italic text-on-surface">"The texture is incredible. You can literally feel the artisan's touch in every curve. It looks stunning with fresh eucalyptus."</p>
+<p class="font-label-caps text-[10px] text-primary">— Anya K.</p>
+</div>
+<!-- Review Card 2 -->
+<div class="bg-ivory border border-sage-soft rounded-xl p-lg space-y-md wax-tape relative">
+<div class="flex justify-between items-start">
+<div class="flex text-gold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+<span class="text-[12px] font-data-price text-on-surface-variant">Sep 28, 2023</span>
+</div>
+<p class="font-title-serif font-normal italic text-on-surface">"A beautiful addition to my workspace. The midnight blue is much deeper in person, which I love. Shipping was seamless."</p>
+<p class="font-label-caps text-[10px] text-primary">— Rohan M.</p>
+</div>
+</div>
+</section>
+<!-- Write a Review -->
+
+<!-- Footer Motif -->
+
+</main>
+<!-- Sticky Bottom Bar -->
+
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant pb-32">
+
+</footer>
+<script>
+        // Micro-interactions for the review stars
+        const starButtons = document.querySelectorAll('section button.material-symbols-outlined');
+        starButtons.forEach((btn, index) => {
+            btn.addEventListener('mouseenter', () => {
+                for(let i=0; i<=index; i++) {
+                    starButtons[i].style.fontVariationSettings = "'FILL' 1";
+                }
+            });
+            btn.addEventListener('mouseleave', () => {
+                starButtons.forEach(b => b.style.fontVariationSettings = "'FILL' 0");
+            });
+        });
+
+        // Simple header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm', 'bg-white/95', 'backdrop-blur-sm');
+            } else {
+                header.classList.remove('shadow-sm', 'bg-white/95', 'backdrop-blur-sm');
+            }
+        });
+    </script>
+
+
+</body>

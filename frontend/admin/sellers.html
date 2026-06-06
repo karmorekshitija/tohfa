@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Admin - Sellers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@400;700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdadc",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "inverse-surface": "#2e312e",
+                        "bg-cream-deep": "#F1EADD",
+                        "violet-soft": "#D8CBE9",
+                        "bg-primary": "#FFFFFF",
+                        "accent-violet": "#7B5EA7",
+                        "surface-bright": "#f9faf5",
+                        "on-secondary-container": "#4d6a43",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-dim": "#d9dad6",
+                        "outline-variant": "#c1c9c0",
+                        "secondary-container": "#c8e9b8",
+                        "surface-container-lowest": "#ffffff",
+                        "sage-soft": "#C5D6BC",
+                        "primary-container": "#3d6b4f",
+                        "surface-container": "#edeeea",
+                        "tertiary-fixed-dim": "#fcb4ba",
+                        "surface": "#f9faf5",
+                        "on-secondary-fixed": "#062103",
+                        "on-error": "#ffffff",
+                        "secondary": "#49663f",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#a0d2b0",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#360d14",
+                        "text-faint": "#9A8F7A",
+                        "surface-container-low": "#f3f4f0",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary-container": "#ffd2d5",
+                        "on-surface-variant": "#414942",
+                        "highlight-gold": "#C8973A",
+                        "primary-deep": "#2E5340",
+                        "on-primary-container": "#b7e9c6",
+                        "outline": "#717972",
+                        "secondary-fixed": "#caecbb",
+                        "surface-container-high": "#e7e9e4",
+                        "on-tertiary-fixed-variant": "#6b373d",
+                        "surface-tint": "#3a684c",
+                        "text-default": "#3A3328",
+                        "on-background": "#1a1c1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#214f36",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-surface": "#1a1c1a",
+                        "tertiary-container": "#8a5157",
+                        "surface-ivory": "#FCFAF5",
+                        "surface-container-highest": "#e2e3df",
+                        "primary": "#255338",
+                        "on-primary-fixed": "#002110",
+                        "gold-soft": "#EBD7AE",
+                        "background": "#f9faf5",
+                        "text-muted": "#6E6453",
+                        "surface-variant": "#e2e3df",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "danger-terracotta": "#B14B3E",
+                        "tertiary": "#6e3a40",
+                        "sage-border": "#8FAF82",
+                        "ink-soft": "#5A4A38",
+                        "ink-deep": "#2C2416",
+                        "parchment": "#F7F3EC"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stack-sm": "8px",
+                        "gutter-md": "16px",
+                        "container-margin": "20px",
+                        "stack-md": "12px",
+                        "section-gap": "40px"
+                    },
+                    fontFamily: {
+                        "display-hero": ["Playfair Display"],
+                        "data-meta": ["Space Mono"],
+                        "serif-ui-md": ["lora"],
+                        "label-btn": ["DM Sans"],
+                        "serif-ui-sm": ["lora"],
+                        "data-price": ["Space Mono"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-sm": ["DM Sans"],
+                        "body-md": ["DM Sans"],
+                        "accent-caps": ["cinzel"],
+                        "italic-display": ["Cormorant Garamond"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .watermark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.08;
+            background-image: url('https://www.transparenttextures.com/patterns/pinstripe.png'); /* Placeholder for paper texture */
+        }
+        .sketch-watermark {
+            position: absolute;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .status-pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body class="bg-primary text-text-default font-body-md min-h-screen overflow-x-hidden">
+<div class="watermark-overlay"></div>
+<!-- Subtle Sketch Watermarks -->
+<div class="sketch-watermark top-10 right-10 w-64 h-64 rotate-12">
+<img class="w-full grayscale brightness-0 opacity-10" data-alt="A delicate, hand-drawn sketch of a sewing needle and a spool of thread on textured paper. The style is botanical and vintage, with fine ink lines in a soft olive green tone, maintaining the artisan studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC0_rV83Q7Ns3pHc4yf2_TSWwV9LZGQWyHveP1Lo4eRnInEYoRyi9OLpEbDj-DObr_BY6aDLutEG9dmcF8hFLbX0eqPKgYax_SUsaWZHAXH3q9X-ORyHDEV8vTPoR8THk673tvmHzBZaHhD_AErA8-UpYdL0sgDvfCqxtfHa0s8LK8m1VL6xawthHD4JKzHuVe1qmaSZfkV6PimkYN1HeccKfqOxBkWv7A3ll_NOuafIIYmYaB7lRzo1-HdYgnXrdtjbetOYyOWw"/>
+</div>
+<div class="sketch-watermark bottom-20 left-[300px] w-48 h-48 -rotate-6">
+<img class="w-full grayscale brightness-0 opacity-10" data-alt="Elegant hand-drawn ink line art of fern leaves and eucalyptus branches, spread across a textured white canvas. The lighting is bright and airy, reflecting a morning light in an artist's studio, with warm-toned shadows and a tactile, handmade feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1by2vLC389E_biHj796mpPqwDr5lv7r4elfaKvncEylUI9XeOp6iJDxCyJ_u92-grXU8HBYRSIp2IrFDa0EglcmyQVHPP8k2YRCIoHjGhQPNPrZXkhNJkFJXpshISeE7kjAT1WSMmTmsJUC9LjR_SdbHhQMCJoJTdpglIriLGyZoEOH269dOY3vQpBDC2WtuMWSYdnquyB03hcyJKmHTLoBnBtNC345rvCFotk2ueiYiwt1LSxElGVf_LS-sZCXmexIn8fyMOrg"/>
+</div>
+<!-- SideNavBar (JSON Component) -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 py-10 px-6 z-50 w-64 border-r border-outline-variant/30 bg-[#FCFAF5]">
+<div class="mb-14">
+<h1 class="font-headline-lg text-headline-lg italic text-[#255338] leading-tight">Tohfa</h1>
+<p class="text-accent-caps font-accent-caps text-text-faint tracking-widest text-[10px] mt-1 opacity-70">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-label-btn text-label-btn">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-label-btn text-label-btn">Sellers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+<span class="font-label-btn text-label-btn">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">category</span>
+<span class="font-label-btn text-label-btn">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-label-btn text-label-btn">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span class="font-label-btn text-label-btn">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-label-btn text-label-btn">Settings</span>
+</a>
+</nav>
+<!-- Profile Footer -->
+<div class="mt-auto pt-6 border-t border-outline-variant/20 flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-sage-soft flex items-center justify-center text-primary font-bold text-xs shrink-0">TA</div>
+<div class="overflow-hidden">
+<p class="text-[13px] font-bold text-text-default truncate leading-tight">Tohfa Admin</p>
+<p class="text-[11px] text-text-faint font-data-meta truncate">Master Access</p>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (JSON Component) -->
+<header class="fixed top-0 right-0 w-[calc(100%-256px)] h-[60px] bg-surface-ivory border-b border-outline-variant flex justify-between items-center px-8 z-40">
+<h2 class="font-headline-md text-headline-md italic text-primary">Sellers</h2>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors text-[14px] font-label-btn">Logout</button>
+<img alt="Admin Profile" class="w-8 h-8 rounded-full border border-sage-border object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_b_T4p5aqNt720WEW3q8y4NFA8YEbiF-Lw6M-AA1tuRZsvgetSefNNbtx1l3vx-gRN6lfiBxGpd1GLlx_eIig1IX6_X2tufKsgoRlIjYOIn1AiXVnjVaypwAIuEVEHbFRYIl0PKcqM-M4AweTMrNCdXRCsBxtk7pMthKQpIxPOHVuF7JNAUGq7L1stVIA90d87w-qQQ-ji4GKbQzXc3lIK7T2GzUz9C4r5E4frc6LcGAin26fp_peKAHGEq_WeFtWmZx4yse0BA"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-[60px] p-8 max-w-[1200px] mx-auto min-h-screen">
+<!-- Header Section -->
+<section class="mb-10">
+<h1 class="font-headline-lg text-headline-lg text-primary leading-tight">Sellers</h1>
+<p class="font-italic-display text-[20px] text-ink-soft italic">Manage all registered artisan sellers</p>
+</section>
+<!-- Filter Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-white border border-sage-border rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-body-md" placeholder="Search by name or email..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-6 py-2 bg-primary text-white font-label-btn rounded-full shadow-sm hover:scale-[0.98] transition-transform">All</button>
+<button class="px-6 py-2 bg-white text-ink-soft border border-sage-border font-label-btn rounded-full hover:bg-surface-container transition-colors">Active</button>
+<button class="px-6 py-2 bg-white text-ink-soft border border-sage-border font-label-btn rounded-full hover:bg-surface-container transition-colors">Banned</button>
+</div>
+</div>
+<!-- Data Table Section -->
+<div class="bg-white rounded-xl overflow-hidden border border-sage-border shadow-sm mb-8">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-parchment border-b border-sage-border">
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase">Avatar + Name</th>
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase">Email</th>
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase">Status</th>
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase">Products</th>
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase">Joined</th>
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase text-right">Sales</th>
+<th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-sage-border/50">
+<!-- Seller Row 1 -->
+<tr class="hover:bg-parchment/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
+                                    KA
+                                </div>
+<div>
+<p class="font-body-md font-bold text-ink-deep leading-none">Kavita Arts</p>
+<p class="text-[12px] text-text-muted mt-1">Pottery Artisan</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-body-sm text-text-muted">kavita.p@artisan.com</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-3 py-1 bg-sage-soft/30 text-primary font-bold text-[11px] rounded-full">
+<span class="status-pill-dot bg-primary"></span> Active
+                            </span>
+</td>
+<td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">42 items</td>
+<td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">3 months ago</td>
+<td class="px-6 py-5 text-right">
+<span class="font-data-price text-[13px] text-primary">₹1,24,500</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-3">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="px-3 py-1 bg-highlight-gold/20 text-highlight-gold font-label-btn text-[11px] rounded hover:bg-highlight-gold hover:text-white transition-all">Ban</button>
+</div>
+</td>
+</tr>
+<!-- Seller Row 2 (Alternating Background) -->
+<tr class="bg-parchment/30 hover:bg-parchment/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
+                                    SL
+                                </div>
+<div>
+<p class="font-body-md font-bold text-ink-deep leading-none">Silk Lore</p>
+<p class="text-[12px] text-text-muted mt-1">Handloom Weavers</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-body-sm text-text-muted">weaver@silklore.in</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-3 py-1 bg-error-container text-error font-bold text-[11px] rounded-full">
+<span class="material-symbols-outlined text-[12px] mr-1">close</span> Banned
+                            </span>
+</td>
+<td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">18 items</td>
+<td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">1 year ago</td>
+<td class="px-6 py-5 text-right">
+<span class="font-data-price text-[13px] text-primary">₹84,000</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-3">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="px-3 py-1 bg-primary/20 text-primary font-label-btn text-[11px] rounded hover:bg-primary hover:text-white transition-all">Unban</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-parchment/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
+                                    MN
+                                </div>
+<div>
+<p class="font-body-md font-bold text-ink-deep leading-none">Mitti Noir</p>
+<p class="text-[12px] text-text-muted mt-1">Terra-cotta studio</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-body-sm text-text-muted">contact@mittinoir.com</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-3 py-1 bg-sage-soft/30 text-primary font-bold text-[11px] rounded-full">
+<span class="status-pill-dot bg-primary"></span> Active
+                            </span>
+</td>
+<td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">124 items</td>
+<td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">2 weeks ago</td>
+<td class="px-6 py-5 text-right">
+<span class="font-data-price text-[13px] text-primary">₹12,400</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-3">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="px-3 py-1 bg-highlight-gold/20 text-highlight-gold font-label-btn text-[11px] rounded hover:bg-highlight-gold hover:text-white transition-all">Ban</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
+<p class="font-data-meta text-[11px] text-text-muted">Showing 1–20 of 143 sellers</p>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-md font-label-btn text-[13px]">1</button>
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-parchment rounded-md font-label-btn text-[13px]">2</button>
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-parchment rounded-md font-label-btn text-[13px]">3</button>
+<span class="px-2 text-text-muted">...</span>
+<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-parchment rounded-md font-label-btn text-[13px]">8</button>
+<button class="w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('click', (e) => {
+                    if (!e.target.closest('button')) {
+                        // Action for row click could go here
+                        console.log('Row clicked');
+                    }
+                });
+            });
+
+            // Active state logic for filter pills
+            const pills = document.querySelectorAll('.flex.items-center.gap-2 button');
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    pills.forEach(p => {
+                        p.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+                        p.classList.add('bg-white', 'text-ink-soft', 'border', 'border-sage-border');
+                    });
+                    pill.classList.remove('bg-white', 'text-ink-soft', 'border', 'border-sage-border');
+                    pill.classList.add('bg-primary', 'text-white', 'shadow-sm');
+                });
+            });
+        });
+    </script>
+</body></html>

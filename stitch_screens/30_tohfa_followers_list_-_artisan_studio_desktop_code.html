@@ -1,0 +1,212 @@
+<body class="bg-[#FFFFFF] text-on-surface font-body-md min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-4xl w-full mx-auto px-margin-mobile md:px-margin-desktop py-xl relative">
+<!-- Artisan Sketch Watermark -->
+<div class="artisan-watermark absolute top-40 -right-12 opacity-[0.08] w-48 h-48 rotate-12">
+<img alt="" class="w-full h-full grayscale" data-alt="A delicate, hand-drawn ink sketch of a vintage wooden thread spool with a single loose thread looping elegantly. The style is reminiscent of a naturalist's field journal, featuring fine lines and subtle hatching. The lighting is flat and neutral, designed to blend into a soft, textured white paper background as a subtle artistic watermark." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_h-gq_-TbyGLoMYpRq8zt3kk8JUbmq9yszzkBINyE0w9yePK_oVFDbWaobYbuWpfG0n2YHhkRx7bemPtdYm0owQ-ZDnVO6gys6RAyHZl0voZA7meZzZMUxuJfqtqngoQArWqzzax83QE-uKDPCWDWrA0pKl0oxHSXfw3LYEMcmHicjmtYY_es1dJ890PP5M_8q4wcTh8oh-Tcc3_bFCBMX8gRuQAMmKXa8wR56ETYf1mWBQjQxClPVmWsMOXu7w1SuRJTZPCEQRI">
+</div>
+<!-- Page Header -->
+<div class="mb-xl text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-xs">Followers</h1>
+<p class="font-data-price text-data-price text-secondary tracking-widest">1,248 COLLECTORS &amp; MAKERS</p>
+</div>
+<!-- Search Bar -->
+<div class="mb-xl">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-ivory border border-sage rounded-xl py-4 pl-12 pr-6 font-body-md text-on-surface placeholder:text-outline/60 focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all shadow-sm" placeholder="Search followers..." type="text">
+</div>
+</div>
+<!-- Followers List -->
+<div class="flex flex-col">
+<!-- Row 1 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+<div class="flex items-center gap-md">
+<img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " data-alt="A close-up portrait of a middle-aged artisan man with a warm smile and kind eyes, wearing a rugged denim apron in a brightly lit pottery studio. The lighting is natural and soft, coming from a large window. The background is slightly blurred, showing shelves of earthy-toned clay vessels, maintaining a minimalist and tactile aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsGAjkzn1-bpXPGMdS8SrrvszpXMlWunG9-9-gsfcuTec0PIjgkOUtx0kfUYYpcSnMwIeYGa67OAM-LgZpY2ADiY-cLSV57RlsPv1xVvgCyEY1qOL3pAGQ869MrasCGnzEhYepINUOWeiXn55y75Dv4gl5FD5HkJjfNlvf7tk4yXOx56MtmXJusIDHi_bHO_CDUxrCazvPaOQl9RLIm6LdjPiHiDqMsXByAtCtR76gkrlOn47fe_HmHQQ52VDYXcqYZlBToR2YdnI">
+<div>
+<h3 class="font-lora text-title-serif text-on-surface">Elias Thorne</h3>
+<span class="font-label-caps text-label-caps text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">MAKER</span>
+</div>
+</div>
+<button class="flex items-center gap-sm bg-primary text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Follow
+                </button>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+<div class="flex items-center gap-md">
+<img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " data-alt="A professional headshot of a young woman with a thoughtful expression, set against a warm ivory-toned wall. She is wearing a minimalist linen shirt in a soft sage color. The lighting is soft and diffused, creating a serene and sophisticated mood consistent with a high-end artisan brand's visual identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKdW25RFhg9rbEX67TE6U38-FeLTNdLnZkCwiU3YYGKUq75VCBj3DEpASm0HVOafysa5BZxosopBX4NrzJtFPwXyDH12UXDECr3s4ep6W70iiuRR91IzLVazfdO-zM7NltxrZX5JMTit7JUrHOS8MY8BdCFMzPbuztqgwK8hKMFh6gBkqCMYvnVjJ9bIixmM0_Uz5t1aIiS26vkjq80kxAhAmwU067zCM0Dsg_vmoQCitCJ4jTKFLtQ_DlMjU-g8Z-Ip13NsIPiWo">
+<div>
+<h3 class="font-lora text-title-serif text-on-surface">Maya Goldbloom</h3>
+<span class="font-label-caps text-label-caps text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">BUYER</span>
+</div>
+</div>
+<button class="bg-surface-ivory border border-sage text-primary font-body-md px-6 py-2 rounded-full hover:bg-sage-soft transition-all active:scale-95">
+                    Follow back
+                </button>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+<div class="flex items-center gap-md">
+<img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " data-alt="A creative portrait of an artist with charcoal-smudged fingers, leaning against a clean white wall in a sunlit loft. The overall color palette is muted and earthy, with deep forest greens and warm browns. The lighting highlights the fine textures of her hand-woven scarf, emphasizing the brand's commitment to craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeJWM7N2Z2Hd9Xc8eFLlrug3G_BbXlN3j9uUO00LCP3DqSui_kj0uMRHVLA8SchASK-ykPyTGMscYBJLZKeLHPaheYva3vtIpql0CeHHHmKbbsD9xAyn6NHlgRB7tjddHPxnTLaBrJAOZlzzZhakzHIcEXlHEE20tWTYD8sWK8TgRp2d6Uos_ulrWb1R0oVQuxqB0h-VKif2VXgK-qAl3GEKUIYRoJ2OjRg0llcIoWi0WremRjXvZMbwzEG_puxGD8c6Eti6uQVJE">
+<div>
+<h3 class="font-lora text-title-serif text-on-surface">Studio Linum</h3>
+<span class="font-label-caps text-label-caps text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">MAKER</span>
+</div>
+</div>
+<button class="flex items-center gap-sm text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95 bg-secondary opacity-80"><span class="material-symbols-outlined text-[18px]">check</span> Following</button>
+</div>
+<!-- Row 4 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+<div class="flex items-center gap-md">
+<img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " data-alt="A portrait of a man in his late 20s with a vintage aesthetic, wearing a corduroy jacket and spectacles. The background is a soft, out-of-focus collection of art books. The lighting is golden and warm, like a late afternoon in a library, reinforcing a sense of intentionality and literary charm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmoePWCYZB9X_EF6Bt-rVwLz6OAACTIg4dOKBFbprChJGrNPs6t62dlahv4gJc1tg-82_kHsJMK_ThYQBY0Ok2CBZNaD2BUyfMpxYxZaHPFhd4RBSAbueUMHpbsOb8LEhYJjhhVpp_LnTinnrTDKaVIkbbO4hej2RBZxqBaHH1BopjvVfA8ipHUq7zmH6oKMYg4VnYqwfqt1Nvsal-nwchCjnRtzrug6MXYWUNwFZmg1sYDeblPdcLBTTUU5d8yI6hh6iPp6fDvMA">
+<div>
+<h3 class="font-lora text-title-serif text-on-surface">Julian Vane</h3>
+<span class="font-label-caps text-label-caps text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">BUYER</span>
+</div>
+</div>
+<button class="bg-surface-ivory border border-sage text-primary font-body-md px-6 py-2 rounded-full hover:bg-sage-soft transition-all active:scale-95">
+                    Follow back
+                </button>
+</div>
+<!-- Row 5 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+<div class="flex items-center gap-md">
+<img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " data-alt="A serene headshot of a woman with braided hair, draped in a hand-spun wool wrap. She is in a minimalist space with clean white lines and soft shadows. The color story is very light and airy, dominated by ivory and bone whites with a single pop of deep forest green." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpomyN0GGWqMIYSUQB0rVS5vtWPmgBWlp5-BGf2m7pYFJrPx8c8oCcEViGWDUxV5Qj5fefg47Q8sECJlO_uF_uTAfmZk9XhsZvFpAUGjQWkZ4_5qhGnZz4RGSWf0J5fRUkoRshZ0uqsW8PRxBRxjcu6lzLVP1OGOPW5Xtk1Bkc74SezK7Z84lfNhnvnJLJYtPjwJ5gkFTGN7ybrqHHAFS6d101jOHfVBKUIFgkKWzq-LyFf59Dgm7zZEYgmPLuvunGsq_4ZowBTaM">
+<div>
+<h3 class="font-lora text-title-serif text-on-surface">The Weaver's Tale</h3>
+<span class="font-label-caps text-label-caps text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">MAKER</span>
+</div>
+</div>
+<button class="flex items-center gap-sm bg-primary text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Follow
+                </button>
+</div>
+<!-- Row 6 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+    <div class="flex items-center gap-md">
+        <img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsGAjkzn1-bpXPGMdS8SrrvszpXMlWunG9-9-gsfcuTec0PIjgkOUtx0kfUYYpcSnMwIeYGa67OAM-LgZpY2ADiY-cLSV57RlsPv1xVvgCyEY1qOL3pAGQ869MrasCGnzEhYepINUOWeiXn55y75Dv4gl5FD5HkJjfNlvf7tk4yXOx56MtmXJusIDHi_bHO_CDUxrCazvPaOQl9RLIm6LdjPiHiDqMsXByAtCtR76gkrlOn47fe_HmHQQ52VDYXcqYZlBToR2YdnI">
+        <div>
+            <h3 class="font-lora text-title-serif text-on-surface">Oliver Finch</h3>
+            <span class="font-label-caps text-label-caps text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">MAKER</span>
+        </div>
+    </div>
+    <button class="flex items-center gap-sm bg-primary text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Follow
+    </button>
+</div>
+<!-- Row 7 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+    <div class="flex items-center gap-md">
+        <img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKdW25RFhg9rbEX67TE6U38-FeLTNdLnZkCwiU3YYGKUq75VCBj3DEpASm0HVOafysa5BZxosopBX4NrzJtFPwXyDH12UXDECr3s4ep6W70iiuRR91IzLVazfdO-zM7NltxrZX5JMTit7JUrHOS8MY8BdCFMzPbuztqgwK8hKMFh6gBkqCMYvnVjJ9bIixmM0_Uz5t1aIiS26vkjq80kxAhAmwU067zCM0Dsg_vmoQCitCJ4jTKFLtQ_DlMjU-g8Z-Ip13NsIPiWo">
+        <div>
+            <h3 class="font-lora text-title-serif text-on-surface">Clara Voss</h3>
+            <span class="font-label-caps text-label-caps text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">BUYER</span>
+        </div>
+    </div>
+    <button class="bg-surface-ivory border border-sage text-primary font-body-md px-6 py-2 rounded-full hover:bg-sage-soft transition-all active:scale-95">
+        Follow back
+    </button>
+</div>
+<!-- Row 8 -->
+<div class="flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg">
+    <div class="flex items-center gap-md">
+        <img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover  " src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeJWM7N2Z2Hd9Xc8eFLlrug3G_BbXlN3j9uUO00LCP3DqSui_kj0uMRHVLA8SchASK-ykPyTGMscYBJLZKeLHPaheYva3vtIpql0CeHHHmKbbsD9xAyn6NHlgRB7tjddHPxnTLaBrJAOZlzzZhakzHIcEXlHEE20tWTYD8sWK8TgRp2d6Uos_ulrWb1R0oVQuxqB0h-VKif2VXgK-qAl3GEKUIYRoJ2OjRg0llcIoWi0WremRjXvZMbwzEG_puxGD8c6Eti6uQVJE">
+        <div>
+            <h3 class="font-lora text-title-serif text-on-surface">Earthen Goods</h3>
+            <span class="font-label-caps text-label-caps text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full">MAKER</span>
+        </div>
+    </div>
+    <button class="flex items-center gap-sm bg-primary text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Follow
+    </button>
+</div></div><div class="py-12 flex flex-col items-center gap-md opacity-40">
+    <div class="animate-spin duration-[3000ms]">
+        <span class="material-symbols-outlined text-primary text-3xl">motion_sensor_active</span>
+    </div>
+    <p class="font-title-serif text-[14px] italic text-outline">Weaving more kindred spirits...</p>
+</div>
+<!-- Pagination / Load More -->
+
+</main>
+<!-- Footer -->
+
+<script>
+        // Micro-interaction for follow buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.innerText.includes('Follow')) {
+                    if(this.classList.contains('bg-primary')) {
+                        this.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span> Following';
+                        this.classList.remove('bg-primary');
+                        this.classList.add('bg-secondary', 'opacity-80');
+                    }
+                }
+            });
+        });
+
+        // Add subtle parallax to watermark
+        window.addEventListener('scroll', () => {
+            const watermark = document.querySelector('.artisan-watermark');
+            const scrolled = window.pageYOffset;
+            watermark.style.transform = `translateY(${scrolled * 0.05}px) rotate(12deg)`;
+        });
+    </script>
+
+
+</body>

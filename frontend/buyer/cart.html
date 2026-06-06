@@ -1,0 +1,247 @@
+<body class="font-body-md text-on-surface antialiased">
+<!-- Top Navigation Bar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">shopping_cart</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<main class="pt-24 pb-32 max-w-2xl mx-auto px-margin-mobile md:px-0">
+<!-- Page Header -->
+<header class="flex items-center justify-between mb-lg">
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface hover:bg-surface-container-low p-1 rounded-full transition-colors">chevron_left</button>
+<h1 class="font-headline-lg text-headline-lg text-primary">Your basket</h1>
+</div>
+<div class="bg-gold-custom/10 px-3 py-1 rounded-full">
+<span class="font-data-price text-data-price text-gold-custom">3 ITEMS</span>
+</div>
+</header>
+<!-- Cart Items List -->
+<section class="flex flex-col gap-md mb-xl">
+<!-- Item 1 -->
+<div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex items-center gap-md relative overflow-hidden group">
+<img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0" data-alt="A macro photograph of a handcrafted artisanal ceramic mug with a speckled oatmeal glaze, sitting on a sunlit wooden table. The lighting is soft and golden, highlighting the tactile texture of the clay and the subtle imperfections of a handmade object. The background is a soft-focus studio setting with minimalist, warm tones consistent with a craft-focused aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVpwycJK2zhmumdgnLmSMnWnGn4YMnsMJxeWLrl5v2o_pT8HWw_ZDq3hwJoG3aa5yahYvHanjdLixFtH50-Wn6Llvxslv_hahGSxEx6Fdi7LsSrlAubdLQS2gx7CQdrrBsNC_vfzRnqGSjzC-SuNG1zmCcdhI885TKcVjX2biI2BWpMWBahXFXOOaMabvcUMX1bBIteveo3OKHcWuGNezD9cJB2gJcQ7Bv2H61k8CoRQCEEbY1WmwS7Nqb3Dk_-BESupKjL8DUr6o">
+<div class="flex-grow">
+<h3 class="font-title-serif text-[14px] leading-tight text-on-surface">Hand-thrown Stoneware Mug</h3>
+<p class="font-data-price text-[13px] text-gold-custom mt-xs">$32.00</p>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
+<button class="w-6 h-6 flex items-center justify-center text-sage hover:text-primary transition-colors">-</button>
+<span class="px-2 font-data-price text-xs">1</span>
+<button class="w-6 h-6 flex items-center justify-center text-sage hover:text-primary transition-colors">+</button>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-data-price text-on-surface">$32.00</span>
+<button class="material-symbols-outlined text-sm text-outline hover:text-error transition-colors">close</button>
+</div>
+</div>
+</div>
+<!-- Item 2 (Out of stock warning) -->
+<div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex flex-col gap-sm relative group">
+<div class="flex items-center gap-md">
+<img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0" data-alt="A set of three hand-poured soy wax candles in minimalist amber glass jars, arranged artistically on a textured linen cloth. The scene is lit by soft, natural light filtering through a window, creating deep, gentle shadows. The mood is tranquil and sophisticated, emphasizing the high-quality, organic nature of the artisanal candles within a modern studio context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLg699NCrj_mrmJTazTY3zHTbT0dIuunRdM33fXDaqAp3tkY5NekMlfHKFxBPZB8QkO64yULvMH4NmejrbEWZgzJ2ICuY_mIj0PWJTIM_O0l0zxQ_lw1Xmj6XmsnqYdRBrmp101_Avan4jySm_Gozye-OAGQiBrVEKWTKmfQnRzV7no4TVRUX0VpFqZgL87_2cPUhAfK44J-LL8Kk_lUoDKLFN2X-0FfugvIzo03SS6mEejVA8tfDEuMrYdZb-hGUIqkb8d1BR1Xc">
+<div class="flex-grow">
+<h3 class="font-title-serif text-[14px] leading-tight text-on-surface">Wildflower Soy Candle Set</h3>
+<p class="font-data-price text-[13px] text-gold-custom mt-xs">$48.00</p>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
+<button class="w-6 h-6 flex items-center justify-center text-sage">-</button>
+<span class="px-2 font-data-price text-xs">2</span>
+<button class="w-6 h-6 flex items-center justify-center text-sage">+</button>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-data-price text-on-surface">$96.00</span>
+<button class="material-symbols-outlined text-sm text-outline hover:text-error">close</button>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-xs px-2 py-1 bg-error-container/20 rounded-lg">
+<span class="material-symbols-outlined text-terracotta text-sm" style="font-variation-settings: 'FILL' 1;">error</span>
+<span class="text-[12px] font-body-md text-terracotta">Only 2 left — adjust quantity</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex items-center gap-md relative group">
+<img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0" data-alt="A close-up view of a hand-woven indigo textile with intricate traditional patterns, draped over the edge of a woven basket. The fabric has a rich, deep blue color with natural white thread accents. The lighting is diffused and soft, emphasizing the organic texture of the weave. The overall aesthetic is one of authentic craftsmanship and cultural heritage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb-Ncg1LvTbCZwZd5t6XMYw_PVx4ItZXFwhRelwyC3pPRr8xitZElkezn7J_rmBKKnABYQ0saUTiTc0Xl4QvyfHup8zkZqmbNNC2U3q057ea9A46EUPZ4_a4VonfRMveSPpqmhNlWKvHUp_347j3Y73rMMeQa0HZAa0sGk-9KyAYN7N_w_9-xPe3VivpnrfnN0bLKKhNAASCfRtP8uishAEpt1gUSfUkF8RV9LDe9G4B7Jx3J7moAb4uxT70TZ6dVjXMAdRk8lIs8">
+<div class="flex-grow">
+<h3 class="font-title-serif text-[14px] leading-tight text-on-surface">Loom-Woven Linen Scarf</h3>
+<p class="font-data-price text-[13px] text-gold-custom mt-xs">$55.00</p>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
+<button class="w-6 h-6 flex items-center justify-center text-sage">-</button>
+<span class="px-2 font-data-price text-xs">1</span>
+<button class="w-6 h-6 flex items-center justify-center text-sage">+</button>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-data-price text-on-surface">$55.00</span>
+<button class="material-symbols-outlined text-sm text-outline hover:text-error">close</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Shipping Block -->
+<section class="mb-lg">
+<div class="bg-ivory-card border border-sage/30 rounded-2xl p-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-6 wax-tape-texture -mr-4 mt-2 opacity-10"></div>
+<div class="flex justify-between items-start mb-sm">
+<h4 class="font-label-caps text-label-caps text-sage tracking-widest uppercase">SHIP TO</h4>
+<button class="text-[13px] font-medium text-tertiary hover:underline">Edit</button>
+</div>
+<div class="flex gap-md items-start">
+<span class="material-symbols-outlined text-sage">location_on</span>
+<div class="font-body-md text-[14px] text-on-surface-variant leading-relaxed">
+<p class="font-bold text-on-surface">Amara Sterling</p>
+<p>128 Artisan Lane, Studio B</p>
+<p>Oak Creek, WI 53154</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Order Summary -->
+<section class="mb-xl">
+<div class="bg-sage-soft rounded-2xl p-lg relative botanical-overlay">
+<h4 class="font-label-caps text-label-caps text-primary tracking-widest mb-lg uppercase">ORDER SUMMARY</h4>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Subtotal</span>
+<span class="font-data-price text-on-surface">$183.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Shipping</span>
+<span class="font-data-price text-on-surface">$12.50</span>
+</div>
+<div class="h-[1px] bg-outline-variant/30 my-md"></div>
+<div class="flex justify-between items-center">
+<span class="font-title-serif text-primary">Total</span>
+<span class="font-data-price text-[18px] font-bold text-gold-custom">$195.50</span>
+</div>
+</div>
+<!-- Pressed Botanical Sprig Watermark -->
+<div class="absolute bottom-4 right-4 opacity-[0.08] pointer-events-none">
+<svg fill="none" height="60" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24" width="60">
+<path d="M12 22C12 22 12 18 15 15C18 12 22 12 22 12C22 12 18 12 15 9C12 6 12 2 12 2C12 2 12 6 9 9C6 12 2 12 2 12C2 12 6 12 9 15C12 18 12 22 12 22Z"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- Mascot Sticker -->
+<div class="flex justify-center mt-xl mb-lg">
+<div class="relative group cursor-pointer active:scale-95 transition-transform duration-300">
+<div class="absolute -inset-2 bg-white blur-md opacity-50 rounded-full"></div>
+<img alt="Tohfa Mascot" class="w-16 h-16 relative rotate-6 group-hover:rotate-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwPPInqSnaA3uaZ5Yq70q9DNjARcp0RoLPwYRx6UNhE0vj4foTDhgdflxOKacn8lzJR2Vy5b3SZcjrJksiOCBYW85MYOmAYdVd02h-M-NOGD4cmHYxalB5dl5ncLyPY3TlvEy27jcDrhpRjytdxY6ZcYaumssfKvNkXQm3vm-PKvVu0EdB2KiEX6pBof_CUHTAqFkHf76Tl5aqODiTQNhcr3jV_e3za0itc0RvwvWc-4CasEPgi9zzAaBd8mqim-S4RfcFSx5cpcc" style="filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));">
+<p class="text-center font-title-serif text-[12px] text-sage italic mt-2">Almost yours!</p>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-white border-t border-sage/20 z-40 px-margin-mobile py-md">
+<div class="max-w-2xl mx-auto">
+<button class="w-full h-[52px] bg-primary text-white font-body-md font-bold rounded-lg hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm shadow-lg shadow-primary/10">
+<span>Place order</span>
+<span class="font-data-price text-sm border-l border-white/20 pl-sm">$195.50</span>
+</button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="relative w-full py-xl bg-surface-container-low dark:bg-surface-dim border-t border-outline-variant mt-20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-margin-desktop max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-lg text-headline-lg italic text-primary mb-md">Tohfa</div>
+<p class="font-body-md text-on-surface-variant text-sm">© 2024 TOFA Artisan Studio. Handcrafted with intention.</p>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-primary mb-md">STORY</h5>
+<ul class="flex flex-col gap-sm">
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity text-[14px]" href="#">Our Story</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity text-[14px]" href="#">Studio Process</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-primary mb-md">DIRECTORY</h5>
+<ul class="flex flex-col gap-sm">
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity text-[14px]" href="#">Artisan Directory</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity text-[14px]" href="#">Shipping &amp; Returns</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-caps text-label-caps text-primary mb-md">COMMUNITY</h5>
+<a class="text-on-surface-variant hover:text-primary transition-opacity text-[14px] flex items-center gap-xs" href="#">
+                    Join our little family <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple Interaction logic
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+
+        // Toggle sticky bar based on scroll position vs footer
+        window.onscroll = function() {
+            const footer = document.querySelector('footer');
+            const sticky = document.querySelector('.fixed.bottom-0');
+            const footerPos = footer.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (footerPos < windowHeight) {
+                sticky.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                sticky.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        };
+    </script>
+</body>

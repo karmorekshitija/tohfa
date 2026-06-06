@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Flora &amp; Craft | Boutique Handmade Goods</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#516447",
+                        "surface-tint": "#516447",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Work Sans"],
+                        "body-sm": ["Work Sans"],
+                        "headline-lg": ["EB Garamond"],
+                        "title-md": ["Work Sans"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .botanical-bg {
+            background-image: radial-gradient(circle at 90% 10%, rgba(81, 100, 71, 0.05) 0%, transparent 40%), radial-gradient(circle at 10% 80%, rgba(114, 84, 118, 0.05) 0%, transparent 40%)
+        }
+        .paper-texture {
+            background-color: #fff8f3;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL8HlWj3d7Jn4Rr8_Omv5ZuBBtt-PIgqkz6U0QXXzOoK5q0e2iSq3bOoqpTXh2YvRiqLxaCe5OhuMhLl4jceRshlhkOmGhbfFCTjJh3-xwIm5HZjubNr6bGDaUtGGUFXPBbtpSV5Dp4_OnQRqkj_K7lty0Zr5u7smkvT4F08O58kmMBsY6p-pt3_E4nOm_pM_Ea5de71J1n0EgSHpKPNJ7oL5rYlXXv8H9ZKYxP6h94AtGHixEvqCj_3MaC6RC_BwGgTNXM2ZNx-8)
+        }
+        .butterfly-flourish::after {
+            content: "  ᄒ";
+            font-size: 1.2rem;
+            opacity: 0.2;
+            margin-left: 8px
+        }
+        .tape-tag {
+            background: #eae1d7;
+            box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            position: absolute;
+            top: 14px;
+            left: -6px;
+            padding: 4px 14px;
+            z-index: 10;
+            clip-path: polygon(100% 0%, 100% 10%, 98% 15%, 100% 20%, 98% 25%, 100% 30%, 98% 35%, 100% 40%, 98% 45%, 100% 50%, 98% 55%, 100% 60%, 98% 65%, 100% 70%, 98% 75%, 100% 80%, 98% 85%, 100% 90%, 98% 95%, 100% 100%, 0% 100%, 2% 95%, 0% 90%, 2% 85%, 0% 80%, 2% 75%, 0% 70%, 2% 65%, 0% 60%, 2% 55%, 0% 50%, 2% 45%, 0% 40%, 2% 35%, 0% 30%, 2% 25%, 0% 20%, 2% 15%, 0% 10%, 2% 5%, 0% 0%);
+            background-image: linear-gradient(90deg, transparent 50%, rgba(0,0,0,0.03) 50%);
+            background-size: 4px 100%;
+        }
+    </style>
+</head>
+<body class="paper-texture text-on-surface font-body-lg text-body-lg selection:bg-primary-container/30">
+
+    <!-- TopNavBar -->
+    <header class="bg-background/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ease-in-out border-b border-outline-variant/10">
+        <nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
+            <div class="flex items-center gap-unit cursor-pointer" onclick="window.location.href='home.html'">
+                <span class="material-symbols-outlined text-primary text-3xl">filter_vintage</span>
+                <h1 class="font-headline-lg text-headline-lg text-primary select-none">Flora &amp; Craft</h1>
+            </div>
+            
+            <!-- Center Navigation Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="home.html">Home</a>
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="category.html">Categories</a>
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="wishlist.html">Wishlist</a>
+                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" id="navbar-dashboard-link" href="profile.html">Profile</a>
+            </div>
+
+            <!-- Right Action Icons / Auth State -->
+            <div class="flex items-center gap-6">
+                <!-- Search Icon with input -->
+                <div class="relative hidden sm:flex items-center">
+                    <input type="text" id="global-search-input" placeholder="Search products..." class="bg-surface-container-low border border-outline-variant/30 rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary w-48 transition-all"/>
+                    <button onclick="triggerSearch()" class="absolute right-2 text-secondary hover:text-primary flex items-center">
+                        <span class="material-symbols-outlined text-[20px]">search</span>
+                    </button>
+                </div>
+                
+                <button onclick="window.location.href='wishlist.html'" class="text-secondary hover:text-primary transition-colors flex items-center relative">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span id="wishlist-count-badge" class="hidden absolute -top-1.5 -right-1.5 bg-error text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
+                
+                <div id="auth-buttons" class="flex items-center gap-2">
+                    <!-- Dynamic Auth buttons inserted here -->
+                </div>
+                
+                <button class="md:hidden text-secondary" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-container-max mx-auto overflow-x-hidden pb-16">
+        <!-- Hero Section -->
+        <section class="relative px-margin-mobile md:px-margin-desktop py-16 md:py-24 flex flex-col md:flex-row items-center gap-12 botanical-bg">
+            <div class="flex-1 space-y-6">
+                <span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Est. 2024 • Handmade with Love</span>
+                <h2 class="font-display-lg text-display-lg text-on-surface leading-tight">Artisan crafts for a <br/><span class="italic text-primary">slower, intentional</span> life.</h2>
+                <p class="text-secondary max-w-lg">Discover our curated collection of hand-carved ceramics, sustainable textiles, and botanical-inspired stationery crafted by local artisans.</p>
+                <div class="flex gap-4">
+                    <button onclick="window.location.href='category.html'" class="bg-primary text-background px-8 py-3 rounded-lg font-title-md text-title-md hover:bg-primary-fixed-dim transition-all shadow-lg shadow-primary/10">Explore Collection</button>
+                </div>
+            </div>
+            <div class="flex-1 relative">
+                <div class="absolute -top-12 -right-8 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+                <img alt="Artisan workspace" class="w-full h-[400px] object-cover rounded-xl shadow-xl rotate-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxcjnGL-Y5k00PtfwrYnkt6BwLWljVbcB6F0ktEs7d6Nct7Tc44e6Vib8SVdu0gcRv8LVDBqPV-UY5X_R8h2fABLg3E6xWXiDEwJpIYftZAgbr4e2AkSe2LvG5DKXHK7-X3V9irx7mp5KST00xUSsPYsquwTkeq7XC9O9IuXjRCb7EgAyEworyD85dGXQ1l5Es85KybakzJjoSfWb3L8yuEx4ZnAQT3QnytJ5pgCsKzV9fVjSUrwndiTiFEbRg1mMZbRKKxcuUQ4M"/>
+                <div class="absolute bottom-8 -left-8 bg-white p-6 rounded-lg shadow-xl max-w-xs border border-outline-variant/20 hidden sm:block">
+                    <p class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary">"Every piece tells a story of the hands that shaped it."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Pills Section -->
+        <section class="px-margin-mobile md:px-margin-desktop py-10">
+            <div class="flex flex-wrap gap-3 justify-center" id="categories-container">
+                <!-- Dynamically loaded category buttons -->
+                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
+                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
+                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
+            </div>
+        </section>
+
+        <!-- Sponsored Products -->
+        <section class="px-margin-mobile md:px-margin-desktop py-12 hidden" id="sponsored-section">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h3 class="font-headline-lg text-headline-lg mb-1">Featured Gems</h3>
+                    <p class="text-secondary text-sm">Special creations sponsored by our trusted makers.</p>
+                </div>
+                <div class="w-16 h-0.5 bg-primary/20"></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter" id="sponsored-products-container">
+                <!-- Sponsored Products loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Curated Collections / Recent Products -->
+        <section class="px-margin-mobile md:px-margin-desktop py-12">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h3 class="font-headline-lg text-headline-lg mb-1">Recent Creations</h3>
+                    <p class="text-secondary text-sm font-body-sm">The latest unique items added to the nest.</p>
+                </div>
+                <div class="w-24 h-0.5 bg-primary/20"></div>
+            </div>
+            
+            <div id="recent-products-empty" class="hidden text-center py-12 bg-surface-container-low/50 rounded-xl">
+                <span class="material-symbols-outlined text-4xl text-outline mb-2">production_quantity_limits</span>
+                <p class="text-secondary">No products found. Start by seeding or adding some!</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="recent-products-container">
+                <!-- Recent Products loaded dynamically -->
+                <!-- Skeletal Loading State -->
+                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-inverse-surface text-inverse-on-surface pt-16 pb-12">
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2 space-y-6">
+                <div class="flex items-center gap-unit">
+                    <span class="material-symbols-outlined text-inverse-primary text-3xl">filter_vintage</span>
+                    <h1 class="font-headline-lg text-headline-lg text-inverse-primary">Flora &amp; Craft</h1>
+                </div>
+                <p class="text-secondary-fixed-dim max-w-sm text-sm">Cultivating a community of makers and dreamers. Our boutique curates the finest handmade goods from across the globe, prioritizing sustainability and craftsmanship.</p>
+            </div>
+            <div class="space-y-6">
+                <h5 class="font-title-md text-title-md text-inverse-primary">Shop</h5>
+                <ul class="space-y-3 text-secondary-fixed-dim text-sm">
+                    <li><a class="hover:text-inverse-primary transition-colors" href="category.html">All Categories</a></li>
+                    <li><a class="hover:text-inverse-primary transition-colors" href="wishlist.html">Your Wishlist</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h5 class="font-title-md text-title-md text-inverse-primary">Account</h5>
+                <ul class="space-y-3 text-secondary-fixed-dim text-sm">
+                    <li><a class="hover:text-inverse-primary transition-colors" href="login.html">Login</a></li>
+                    <li><a class="hover:text-inverse-primary transition-colors" href="signup-buyer.html">Register</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-outline">
+            <p>© 2026 Flora &amp; Craft Studio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- BottomNavBar (Mobile Only) -->
+    <!-- Standard Bottom Navigation Bar (Task 10) -->
+<nav class="standard-tab-bar" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FFFFFF; height: 64px; border-top: 1px solid #C5D6BC; display: flex; align-items: center; justify-content: space-around; z-index: 50; padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box;">
+    <!-- Tab 1: Home -->
+    <a href="home.html" class="tab-item" id="tab-home" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">home</span>
+        <span>Home</span>
+    </a>
+    <!-- Tab 2: Search -->
+    <a href="category.html" class="tab-item" id="tab-search" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">search</span>
+        <span>Search</span>
+    </a>
+    <!-- Tab 3: Reels -->
+    <a href="reels.html" class="tab-item" id="tab-reels" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">smart_display</span>
+        <span>Reels</span>
+    </a>
+    <!-- Tab 4: Wishlist -->
+    <a href="wishlist.html" class="tab-item" id="tab-wishlist" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">favorite</span>
+        <span>Wishlist</span>
+    </a>
+    <!-- Tab 5: Profile -->
+    <a href="profile.html" class="tab-item" id="tab-profile" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
+        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">account_circle</span>
+        <span>Profile</span>
+    </a>
+    <script>
+        (function() {
+            const path = window.location.pathname.split('/').pop() || 'home.html';
+            let activeId = '';
+            if (path.includes('home') || path.includes('index') || path.includes('6_home')) {
+                activeId = 'tab-home';
+            } else if (path.includes('category') || path.includes('1_categories')) {
+                activeId = 'tab-search';
+            } else if (path.includes('reel') || path.includes('2_reels')) {
+                activeId = 'tab-reels';
+            } else if (path.includes('wishlist')) {
+                activeId = 'tab-wishlist';
+            } else if (path.includes('profile') || path.includes('3_buyer_profile')) {
+                activeId = 'tab-profile';
+            }
+            if (activeId) {
+                const activeEl = document.getElementById(activeId);
+                if (activeEl) {
+                    activeEl.style.color = '#3D6B4F';
+                    const icon = activeEl.querySelector('.material-symbols-outlined');
+                    if (icon) {
+                        icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600";
+                    }
+                }
+            }
+        })();
+    </script>
+</nav>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+        let wishlistedProductIds = new Set();
+        let isLoggedIn = false;
+
+        // Check login state
+                async function checkAuthState() {
+            const token = sessionStorage.getItem('access_token');
+            const authContainer = document.getElementById('auth-buttons');
+            const dashboardLink = document.getElementById('navbar-dashboard-link');
+            
+            if (token) {
+                isLoggedIn = true;
+                try {
+                    const base64Url = token.split('.')[1];
+                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                    const payload = JSON.parse(window.atob(base64));
+                    
+                    // Fetch profile to get avatar_url
+                    let avatarUrl = null;
+                    try {
+                        const res = await fetch(`${API_BASE_URL}/api/profile/me`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (res.ok) {
+                            const profileData = await res.json();
+                            avatarUrl = profileData.data.avatar_url;
+                        }
+                    } catch (err) {
+                        console.error("Failed to fetch profile avatar:", err);
+                    }
+                    
+                    if (payload.role === 'seller') {
+                        if (dashboardLink) {
+                            dashboardLink.innerText = 'Seller Dashboard';
+                            dashboardLink.href = 'seller-dashboard.html';
+                        }
+                    } else {
+                        if (dashboardLink) {
+                            dashboardLink.innerText = 'Profile';
+                            dashboardLink.href = 'profile.html';
+                        }
+                    }
+
+                    let profileHtml = '';
+                    if (avatarUrl) {
+                        profileHtml = `<img src="${avatarUrl}" alt="Profile" class="w-[28px] h-[28px] rounded-full border border-[#C5D6BC] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
+                    } else {
+                        profileHtml = `<span class="material-symbols-outlined cursor-pointer" style="font-size: 28px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;" onclick="window.location.href='profile.html'">account_circle</span>`;
+                    }
+
+                    if (authContainer) {
+                        authContainer.innerHTML = `
+                            <div class="flex items-center gap-4">
+                                ${profileHtml}
+                                <button onclick="logout()" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
+                            </div>
+                        `;
+                    }
+                } catch(e) {
+                    console.error("Failed to parse token:", e);
+                    await logout();
+                }
+            } else {
+                isLoggedIn = false;
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <a href="login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
+                        <a href="signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
+                    `;
+                }
+            }
+        }
+
+        async function logout() {
+            const token = sessionStorage.getItem('access_token');
+            const refreshToken = sessionStorage.getItem('refresh_token');
+            if (token && refreshToken) {
+                try {
+                    await fetch(`${API_BASE_URL}/api/auth/logout`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ refresh_token: refreshToken })
+                    });
+                } catch (e) {
+                    console.error("Logout request failed:", e);
+                }
+            }
+            sessionStorage.clear();
+            const path = window.location.pathname.split('/').pop() || 'home.html';
+            if (path.includes('profile')) {
+                window.location.href = 'login.html';
+            } else {
+                window.location.reload();
+            }
+        }
+
+        async function fetchWishlist() {
+            if (!isLoggedIn) return;
+            const token = sessionStorage.getItem('access_token');
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/wishlist`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    wishlistedProductIds = new Set(data.map(p => p.id));
+                    updateWishlistBadge();
+                }
+            } catch (e) {
+                console.error("Failed to fetch wishlist:", e);
+            }
+        }
+
+        function updateWishlistBadge() {
+            const badge = document.getElementById('wishlist-count-badge');
+            if (wishlistedProductIds.size > 0) {
+                badge.innerText = wishlistedProductIds.size;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        async function toggleWishlist(productId, btnElement) {
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const token = sessionStorage.getItem('access_token');
+            const heartIcon = btnElement.querySelector('.material-symbols-outlined');
+            const isAdding = !wishlistedProductIds.has(productId);
+
+            try {
+                if (isAdding) {
+                    const response = await fetch(`${API_BASE_URL}/api/v1/wishlist/${productId}`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (response.ok) {
+                        wishlistedProductIds.add(productId);
+                        heartIcon.style.fontVariationSettings = "'FILL' 1";
+                        heartIcon.style.color = '#ba1a1a';
+                    } else if (response.status === 403) {
+                        alert("Sellers cannot add products to a wishlist. Please log in as a buyer.");
+                    }
+                } else {
+                    const response = await fetch(`${API_BASE_URL}/api/v1/wishlist/${productId}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (response.ok) {
+                        wishlistedProductIds.delete(productId);
+                        heartIcon.style.fontVariationSettings = "'FILL' 0";
+                        heartIcon.style.color = '#74786f';
+                    }
+                }
+                updateWishlistBadge();
+            } catch (e) {
+                console.error("Error toggling wishlist:", e);
+            }
+        }
+
+        // Global search function
+        function triggerSearch() {
+            const input = document.getElementById('global-search-input');
+            const query = input.value.trim();
+            if (query.length >= 2) {
+                window.location.href = `category.html?search=${encodeURIComponent(query)}`;
+            }
+        }
+
+        document.getElementById('global-search-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                triggerSearch();
+            }
+        });
+
+        // Fetch categories and products on load
+        async function loadHomepage() {
+            checkAuthState();
+            await fetchWishlist();
+
+            // Fetch categories
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/browse/categories`);
+                if (response.ok) {
+                    const categories = await response.json();
+                    const container = document.getElementById('categories-container');
+                    container.innerHTML = categories.map(cat => `
+                        <button onclick="window.location.href='category.html?slug=${cat.slug}'" class="bg-surface-container border border-outline-variant/30 hover:border-primary hover:bg-primary-fixed/20 text-on-surface px-5 py-2 text-xs font-semibold rounded-full uppercase tracking-wider transition-all flex items-center gap-1.5">
+                            <span>${cat.icon_emoji || '🏺'}</span>
+                            <span>${cat.display_name}</span>
+                        </button>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error("Failed to load categories:", e);
+            }
+
+            // Fetch home products
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/browse/home`);
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Render Sponsored
+                    const sponsoredContainer = document.getElementById('sponsored-products-container');
+                    const sponsoredSection = document.getElementById('sponsored-section');
+                    if (data.sponsored && data.sponsored.length > 0) {
+                        sponsoredSection.classList.remove('hidden');
+                        sponsoredContainer.innerHTML = data.sponsored.map(p => {
+                            const isWishlisted = wishlistedProductIds.has(p.id);
+                            const imgUrl = p.image_urls && p.image_urls.length > 0 ? `${API_BASE_URL}${p.image_urls[0]}` : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
+                            return `
+                                <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-xl transition-all group relative flex flex-col">
+                                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                                        <div class="tape-tag font-label-caps text-[10px] text-primary uppercase font-bold" style="background-color: #eae1d7;">Sponsored</div>
+                                        <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'" src="${imgUrl}" alt="${p.title}">
+                                        
+                                        <button onclick="toggleWishlist('${p.id}', this)" class="absolute top-4 right-4 bg-white/85 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-md z-10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-[20px] transition-colors duration-200" style="font-variation-settings: 'FILL' ${isWishlisted ? 1 : 0}; color: ${isWishlisted ? '#ba1a1a' : '#74786f'};">favorite</span>
+                                        </button>
+                                    </div>
+                                    <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">${p.title}</h4>
+                                    <p class="text-xs text-secondary mb-3">${p.shop_name || 'Artisan Seller'} • ${p.shipping_days} days shipping</p>
+                                    <div class="flex justify-between items-center mt-auto">
+                                        <span class="text-lg font-bold text-on-surface">₹${(p.price_paise / 100).toLocaleString('en-IN')}</span>
+                                        <button onclick="window.location.href='product.html?id=${p.id}'" class="bg-secondary-container px-3 py-1.5 text-xs font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
+                                            View
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    } else {
+                        sponsoredSection.classList.add('hidden');
+                    }
+
+                    // Render Recent
+                    const recentContainer = document.getElementById('recent-products-container');
+                    const emptyState = document.getElementById('recent-products-empty');
+                    if (data.recent && data.recent.length > 0) {
+                        emptyState.classList.add('hidden');
+                        recentContainer.innerHTML = data.recent.map(p => {
+                            const isWishlisted = wishlistedProductIds.has(p.id);
+                            const imgUrl = p.image_urls && p.image_urls.length > 0 ? `${API_BASE_URL}${p.image_urls[0]}` : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
+                            return `
+                                <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-xl transition-all group relative flex flex-col">
+                                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                                        <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'" src="${imgUrl}" alt="${p.title}">
+                                        
+                                        <button onclick="toggleWishlist('${p.id}', this)" class="absolute top-4 right-4 bg-white/85 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-md z-10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-[20px] transition-colors duration-200" style="font-variation-settings: 'FILL' ${isWishlisted ? 1 : 0}; color: ${isWishlisted ? '#ba1a1a' : '#74786f'};">favorite</span>
+                                        </button>
+                                    </div>
+                                    <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">${p.title}</h4>
+                                    <p class="text-xs text-secondary mb-3">${p.shop_name || 'Artisan Seller'} • ${p.shipping_days} days shipping</p>
+                                    <div class="flex justify-between items-center mt-auto">
+                                        <span class="text-lg font-bold text-on-surface">₹${(p.price_paise / 100).toLocaleString('en-IN')}</span>
+                                        <button onclick="window.location.href='product.html?id=${p.id}'" class="bg-secondary-container px-3 py-1.5 text-xs font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
+                                            View
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    } else {
+                        recentContainer.innerHTML = '';
+                        emptyState.classList.remove('hidden');
+                    }
+
+                }
+            } catch (e) {
+                console.error("Failed to load products:", e);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadHomepage);
+    </script>
+</body>
+</html>

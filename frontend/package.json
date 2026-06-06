@@ -1,0 +1,17 @@
+{
+  "name": "tohfa-frontend",
+  "version": "1.0.0",
+  "description": "Tohfa Handcrafted Goods Marketplace Frontend",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "vite": "^5.2.11"
+  }
+}

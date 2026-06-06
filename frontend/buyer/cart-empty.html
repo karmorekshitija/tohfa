@@ -1,0 +1,142 @@
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar Shell -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">shopping_cart</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<!-- Main Canvas -->
+<main class="min-h-screen pt-20 pb-xl flex flex-col items-center justify-center bg-[#FFFFFF] relative overflow-hidden">
+<!-- Subtle Ink Texture Overlay -->
+<div class="absolute inset-0 ink-texture pointer-events-none"></div>
+<!-- Empty State Content Block -->
+<div class="max-w-xl w-full px-margin-mobile text-center flex flex-col items-center gap-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+<!-- Chibi Illustration -->
+<div class="relative w-64 h-64 md:w-80 md:h-80 group">
+<img alt="Mascot Illustration" class="w-full h-full object-contain mix-blend-multiply" data-alt="A whimsical, soft-ink sketch of a small, round chibi kitten with large expressive eyes sitting cozy inside an empty, hand-woven wicker basket. The art style is tactile and artisan, resembling a watercolor painting with delicate paper textures and warm ivory tones. Soft, diffused natural light suggests a quiet morning in a sun-drenched artisan studio, with subtle charcoal line work defining the basket's intricate weave." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyiFfVQh1OsqwuygUVCK-l4xAIh08bC1Puz0yvs3tqrpfa1Mgr4L9eSg_NU9SrEmTR2aW4VXdjKE2DuEoV9gscANgooRvrmgYcPxBOuxXLVMEWlYE4ZmTNmO-HIIH2HfD5Rk9qIVekh_IAtzT40p9iCYpy6mTkKGPFaIe9Ju4aMssdzDiqFg72ccSUCxXjwVmQfb8veI0MzSBfR-0ZPs705hiyp7tNl8thNz11QCTECQXX2umlA-aZRU7eko01BjWuoTbG303XmdA">
+<!-- Floating Particle Effect (atmospheric) -->
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+<div class="w-full h-full bg-[radial-gradient(circle,rgba(37,83,56,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+</div>
+</div>
+<!-- Typography & Message -->
+<div class="space-y-sm">
+<h1 class="font-lora text-headline-lg md:text-[40px] text-primary tracking-tight">
+                    Your basket is empty <span class="text-tertiary">✦</span>
+</h1>
+<p class="font-title-serif text-on-surface-variant max-w-sm mx-auto leading-relaxed italic opacity-80">
+                    The studio is quiet today. Perhaps there is a handcrafted treasure waiting to find its way to you?
+                </p>
+</div>
+<!-- Primary Action -->
+<button class="group relative px-xl py-md bg-primary text-on-primary rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-soft overflow-hidden">
+<span class="relative z-10 font-body-md font-bold tracking-wide">Browse gifts</span>
+<div class="absolute inset-0 bg-secondary opacity-0 group-hover:opacity-20 transition-opacity"></div>
+</button>
+</div>
+<!-- Mascot Sticker Anchor -->
+<div class="mt-xl md:mt-24 pb-lg">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-16 h-16 md:w-20 md:h-20 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-help">
+<img alt="Mascot Sticker" class="w-full h-full object-contain rounded-full border-2 border-dashed border-outline-variant p-1" data-alt="A vintage-style plush teddy bear sticker with visible stitching and a soft velvet texture. The bear is depicted in a warm, sepia-toned light with a gentle, friendly expression, reminiscent of a handcrafted heirloom toy found in an old artisan workshop. The aesthetic is nostalgic and warm, featuring soft edges and a tactile, paper-like quality that aligns with a crafter's sketchbook theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSEwauIOIGCYLwMbKMQNyocAambkLZzTQBOjpj5pikAGe_VkkyCNdJVAH0IfSM_iovdqn4qRYzhHNXGXhcyeBUramu-adJUsDgiTUJwOGDWDNihKNWhr_Mvm0O2XMLaonMhz6I-ftVfrYpy6b8MDoeLkoft_Urtz249HxBrqdfdj_z_epFPuW3uD0GdOFQwK2pCcxvS6Osl37boBMjDTYFzPiqiu24GXYN8m6iEFTr_rYVL5T_lvxN3WgwyRU0aLk_mSxyJmsI0FI">
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-60">Studio Keeper</span>
+</div>
+</div>
+<!-- Background Botanical Accent -->
+<div class="absolute bottom-0 left-0 p-margin-desktop opacity-5 hidden lg:block">
+<span class="material-symbols-outlined text-[120px]" data-icon="potted_plant">potted_plant</span>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="relative w-full py-xl bg-surface-container-low border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-margin-desktop max-w-7xl mx-auto">
+<!-- Brand Column -->
+<div class="flex flex-col gap-md">
+<div class="font-headline-lg text-headline-lg italic text-primary">Tohfa</div>
+<p class="font-body-md text-on-surface-variant">© 2024 TOFA Artisan Studio. Handcrafted with intention.</p>
+</div>
+<!-- Navigation Columns -->
+<div class="flex flex-col gap-sm">
+<span class="font-label-caps text-label-caps text-primary mb-sm">The Studio</span>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Studio Process</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Artisan Directory</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-caps text-label-caps text-primary mb-sm">Support</span>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col gap-md">
+<span class="font-label-caps text-label-caps text-primary">Community</span>
+<p class="font-body-md text-on-surface-variant text-sm">Join our little family for studio updates and artisan stories.</p>
+<div class="flex gap-sm">
+<input class="bg-surface border-outline-variant rounded-lg text-sm px-md py-sm focus:ring-primary focus:border-primary w-full" placeholder="Email address" type="email">
+</div>
+<a class="font-label-caps text-label-caps text-primary underline underline-offset-4 hover:opacity-80" href="#">Join our little family</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for the mascot
+        const mascot = document.querySelector('.cursor-help');
+        if (mascot) {
+            mascot.addEventListener('mouseenter', () => {
+                mascot.style.transform = 'rotate(-10deg) scale(1.1)';
+            });
+            mascot.addEventListener('mouseleave', () => {
+                mascot.style.transform = 'rotate(0deg) scale(1)';
+            });
+        }
+
+        // Active Link logic for TopNavBar
+        // On this "Empty Cart" page, we assume the user was looking at Category or Home, but since we are in the Cart view, none of the top-level primary nav links are strictly "active". 
+        // We'll keep them inactive per the Shared Components instruction to not "hallucinate" a match.
+    </script>
+</body>

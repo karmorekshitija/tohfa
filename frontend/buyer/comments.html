@@ -1,0 +1,179 @@
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- TopNavBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<!-- Main Canvas: Background Content (Blurred Reel) -->
+<main class="relative h-[calc(100vh-80px)] w-full overflow-hidden">
+<!-- Blurred Background Content (Simulating a Reel) -->
+<div class="absolute inset-0 z-0 blur-md scale-105 opacity-60">
+<img alt="Artisan hands crafting pottery" class="w-full h-full object-cover" data-alt="A close-up, high-detail cinematic shot of artisan hands covered in wet clay, carefully shaping a ceramic bowl on a wooden spinning wheel. The background is a warm, sun-lit studio filled with shelves of rustic pottery. The atmosphere is quiet and intentional, with soft morning light streaming through a window, highlighting the texture of the clay and the fine details of the craftsman's fingers. The overall aesthetic is warm and tactile, reflecting a master crafter's workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2tJpP6eYadBf23uCIhMUhbhuzWKm4ASCtUMZWjYeqX2xmnkZuMc-pMAU-xwL4uyU8kojSpR5zZ31yFljKg3F_zyIWWebDc_tKT6NRE7fj0d0vYqWHbFfa1OtDbAIwIm8qtlCnwaoYewNCTAytTufZKV8FHqYrDfTpZElIYMxcROO2oWs_FXqypdlmvcwXVbFJGbKns0_1XA28Gr4uXbtlwACCB7zp1YXgJgvvqHVEH9zpQ-Ty1C0ZqK11WwMYM8rJb2w4pPlrXaA">
+</div>
+<!-- Scrim Overlay -->
+<div class="absolute inset-0 bg-secondary/20 z-10 backdrop-blur-sm"></div>
+<!-- Comments Modal Overlay -->
+<div class="relative z-20 flex items-center justify-center h-full w-full px-margin-mobile md:px-0">
+<section class="bg-surface-container-lowest w-full max-w-lg h-[819px] rounded-t-[32px] shadow-xl flex flex-col relative overflow-hidden border border-outline-variant/30">
+<!-- Watermark Layer -->
+<div class="watermark-overlay absolute inset-0 opacity-40"></div>
+<div class="botanical-sketch">
+<span class="material-symbols-outlined text-[120px] text-outline-variant/20" style="font-variation-settings: 'wght' 100;">eco</span>
+</div>
+<!-- Modal Header & Drag Handle -->
+<div class="pt-sm pb-4 px-lg flex flex-col items-center border-b border-outline-variant/20 bg-surface-container-lowest/90 backdrop-blur-md z-30">
+<div class="w-12 h-1 bg-outline-variant/40 rounded-full mb-lg"></div>
+<div class="flex items-center justify-between w-full">
+<div class="flex items-baseline gap-sm">
+<h2 class="font-headline-lg text-headline-lg text-primary">Comments</h2>
+<span class="font-data-price text-data-price text-outline">12</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full transition-all" data-icon="close">close</button>
+</div>
+</div>
+<!-- Scrollable Comment List -->
+<div class="flex-grow overflow-y-auto artisan-scroll px-lg py-md space-y-lg z-20">
+<!-- Comment 1 -->
+<div class="flex gap-md group">
+<img alt="Avatar" class="border border-[#C1C9C0] object-cover w-10 h-10 rounded-full object-cover  " data-alt="A professional portrait of a woman with a warm and friendly expression, photographed in a soft-focus studio setting with natural light. Her skin tone is clear, and she has gentle features. The background is a minimalist, warm ivory tone that complements the artisanal theme of the design system. The image conveys a sense of community and personal connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw65oVVSApM1o9PZ_2bq5ALmwAg5hSW1RJL6OGxBP6M-pTQrTAXkK_4k1gpPaIHFf6Gka9DoH3JVZAk1hYZkLZvhAMy8llVrq7432l5wnnnAw3HeTJtzzEBRZqzB_kBjmAaPKBWpxm0XcmU81tL-NABGa1iHkE0aTBKNwqrDbU4zxA36dOy4rumXcptI8Y-C415bOT8u3jQJPn45ApDmvazdrzxalabeUBRFz3EZVL4NMuf-wXzyVcnb0WBflYYPxuWe6K_27yjNk">
+<div class="flex-grow">
+<div class="flex items-baseline gap-sm">
+<span class="font-lora font-bold text-on-surface">Amara Vance</span>
+<span class="font-data-price text-[12px] text-outline">2h ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1 leading-relaxed">The texture on that vase is absolutely stunning. You can really see the intention in every stroke. ✨</p>
+</div>
+</div>
+<!-- Comment 2 (User's own) -->
+<div class="flex gap-md group">
+<img alt="User Avatar" class="border border-[#C1C9C0] object-cover w-10 h-10 rounded-full object-cover  " data-alt="A close-up portrait of a thoughtful artisan in a light-filled workshop, wearing a simple linen shirt. The lighting is soft and golden, highlighting the creative and intentional personality of the brand. The backdrop features blurred wooden tools and crafting materials, maintaining a tactile, human-centric aesthetic consistent with the Tohfa Studio brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFbGgA_bUqX4tyDUJ6a5BkD2i8RdwIPTfYhH5Xo9k15D_37B_-IeyirE8jLZGB0NtphEtBm2PVeEjpZ6cqM_NTSKFsf_--p-I_owJhk7H__-9giWaMZEwq2J-whDvxbQjVTTA7gAB9DChZfbs1dBVso93oJ7Du2lX6MDyFQxi1VQ41fPcZ1CnSPlecCkj9h2DjjF-zx6izR594quQb2GVb_UOV2WRnqrBJC26uh0sfcKdqdsYMFLmeHpb8q9LkSzWA5T1V8Cr-Qik">
+<div class="flex-grow">
+<div class="flex items-baseline justify-between w-full">
+<div class="flex items-baseline gap-sm">
+<span class="font-lora font-bold text-on-surface">Julian Thorne</span>
+<span class="font-data-price text-[12px] text-outline">45m ago</span>
+</div>
+<button class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" data-icon="more_vert">more_vert</button>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1 leading-relaxed">Working on a new collection inspired by this specific glazing technique! Can't wait to share.</p>
+</div>
+</div>
+<!-- Comment 3 -->
+<div class="flex gap-md group">
+<img alt="Avatar" class="border border-[#C1C9C0] object-cover w-10 h-10 rounded-full object-cover  " data-alt="A portrait of a young artist with a serene expression, looking slightly off-camera in a modern, sun-drenched minimalist gallery space. The color palette is composed of soft sages and ivory tones. The lighting is airy and ethereal, capturing the refined and literary essence of the TOFA brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT4eMBDR25BHKpGPxuUmLIX2_68Jn5UpT-AMVvrf7rR6DR9exFd1q3q10hvkRlfGiLpu8tFdsghz7KaDXAKtOQkEgJi5KjBkeWTSMHho2lslHCQew3jMz2sBjJYbTGTVR1E3YeM5FraUfgGE-_j9-lZvxRoTBuQ8yVPby2W4PgnY56llgzkvuBHsssobg6vHuusagj2SteIYGMptG0_VQsD6aJSVdeTydYNF1M0t3PKMmkNcvAh6D1zvYDHb1fv_zfN4MrCOahcoU">
+<div class="flex-grow">
+<div class="flex items-baseline gap-sm">
+<span class="font-lora font-bold text-on-surface">Elena Rossi</span>
+<span class="font-data-price text-[12px] text-outline">5h ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1 leading-relaxed">Where can we purchase the tools used in this reel? The wooden rib looks so ergonomic.</p>
+</div>
+</div>
+<!-- Comment 4 -->
+<div class="flex gap-md group">
+<div class="bg-[#3D6B4F] text-white border border-[#C1C9C0] flex items-center justify-center font-bold w-10 h-10 rounded-full  flex items-center justify-center   text-primary font-title-serif">M</div>
+<div class="flex-grow">
+<div class="flex items-baseline gap-sm">
+<span class="font-lora font-bold text-on-surface">Marcus Chen</span>
+<span class="font-data-price text-[12px] text-outline">8h ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-1 leading-relaxed">The lighting in this studio is a dream. So inspiring to watch the process unfold.</p>
+</div>
+</div>
+</div>
+<!-- Pinned Composer Bar -->
+<div class="p-lg border-t border-outline-variant/20 bg-surface-container-lowest/95 backdrop-blur-md z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+<div class="flex items-start gap-md">
+<img alt="My Avatar" class="border border-[#C1C9C0] object-cover w-10 h-10 rounded-full object-cover  " data-alt="A close-up portrait of a thoughtful artisan in a light-filled workshop, wearing a simple linen shirt. The lighting is soft and golden, highlighting the creative and intentional personality of the brand. The backdrop features blurred wooden tools and crafting materials, maintaining a tactile, human-centric aesthetic consistent with the Tohfa Studio brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmHBnHAKz6S3jbxChAfiXCCiFfQdvs4CbrJWUQUUCE0Y2Vl-AdApzcQQmxwt5IFJBhG4wEAfD-PH-3vt1XGRKiUcs-dUG7LK4edl1nRPG7rhuLpw97vq6vc1MgjWBLeZkbXeDs8l4KgM_BncS_Mgg7ipjlyoKf5s8a9LAGFPRsoTXw55ex1zGF5JLKE0ONNcyrBTAN1X7ccMNK3bkfb65KvqwZrNybtk97QYj28D9CSPSQ3GSzd1ITWd8y2LgU8lKnc40QzmLmyrA">
+<div class="flex-grow relative">
+<textarea class="w-full bg-surface-container-low border border-outline-variant/40 rounded-xl px-md py-3 font-body-md text-on-surface placeholder:text-outline-variant focus:ring-1 focus:ring-primary focus:border-primary outline-none resize-none transition-all artisan-scroll" id="commentInput" oninput="updateCharCount(this)" placeholder="Add a comment..." rows="1"></textarea>
+<div class="flex justify-between items-center mt-2">
+<span class="font-data-price text-xs text-outline" id="charCount">0/300</span>
+<button class="bg-primary text-white px-lg py-2 rounded-full font-body-md font-bold hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-xs active:scale-95">
+                                    Send
+                                    <span class="material-symbols-outlined text-[18px]" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Simple Interactions -->
+<script>
+        function updateCharCount(textarea) {
+            const count = textarea.value.length;
+            document.getElementById('charCount').textContent = `${count}/300`;
+            
+            // Auto-expand textarea
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+            
+            if (count > 300) {
+                document.getElementById('charCount').classList.add('text-error');
+            } else {
+                document.getElementById('charCount').classList.remove('text-error');
+            }
+        }
+
+        // Close button micro-interaction
+        document.querySelector('[data-icon="close"]').addEventListener('click', () => {
+            const modal = document.querySelector('section');
+            modal.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s';
+            modal.style.transform = 'translateY(100%)';
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                alert('In a real app, this would close the modal overlay.');
+                modal.style.transform = 'translateY(0)';
+                modal.style.opacity = '1';
+            }, 1000);
+        });
+    </script>
+</body>

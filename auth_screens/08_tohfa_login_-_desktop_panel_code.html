@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Tohfa Artisan Collective</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Cinzel:wght@400;700&amp;family=Lora:wght@400;500&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .ink-wash-bg {
+            background-image: radial-gradient(circle at top left, rgba(197, 214, 188, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at bottom right, rgba(235, 215, 174, 0.05) 0%, transparent 30%);
+        }
+        .sketch-watermark {
+            position: fixed;
+            bottom: -20px;
+            right: -20px;
+            width: 300px;
+            height: 300px;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/notebook.png'); /* Subtle texture overlay */
+        }
+        .parchment-glow {
+            box-shadow: 0 10px 40px -10px rgba(58, 51, 40, 0.12);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed-dim": "#fcb4ba",
+                      "outline-variant": "#c1c9c0",
+                      "surface-container-high": "#e7e9e4",
+                      "surface": "#f9faf5",
+                      "surface-container-lowest": "#ffffff",
+                      "danger-terracotta": "#B14B3E",
+                      "tertiary-fixed": "#ffdadc",
+                      "primary-deep": "#2E5340",
+                      "background": "#f9faf5",
+                      "on-tertiary-container": "#ffd2d5",
+                      "on-error": "#ffffff",
+                      "on-surface": "#1a1c1a",
+                      "surface-ivory": "#FCFAF5",
+                      "on-primary-fixed-variant": "#214f36",
+                      "surface-dim": "#d9dad6",
+                      "secondary-container": "#c8e9b8",
+                      "bg-primary": "#FFFFFF",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#6e3a40",
+                      "sage-soft": "#C5D6BC",
+                      "surface-variant": "#e2e3df",
+                      "bg-cream-deep": "#F1EADD",
+                      "violet-soft": "#D8CBE9",
+                      "inverse-primary": "#a0d2b0",
+                      "accent-violet": "#7B5EA7",
+                      "surface-tint": "#3a684c",
+                      "on-primary-container": "#b7e9c6",
+                      "gold-soft": "#EBD7AE",
+                      "secondary": "#49663f",
+                      "inverse-surface": "#2e312e",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "on-tertiary-fixed": "#360d14",
+                      "on-primary-fixed": "#002110",
+                      "error-container": "#ffdad6",
+                      "on-secondary-container": "#4d6a43",
+                      "tertiary-container": "#8a5157",
+                      "primary": "#255338",
+                      "text-muted": "#6E6453",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "text-faint": "#9A8F7A",
+                      "error": "#ba1a1a",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#bceecb",
+                      "on-surface-variant": "#414942",
+                      "surface-container-low": "#f3f4f0",
+                      "on-secondary-fixed": "#062103",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "surface-container": "#edeeea",
+                      "primary-container": "#3d6b4f",
+                      "secondary-fixed": "#caecbb",
+                      "on-background": "#1a1c1a",
+                      "text-default": "#3A3328",
+                      "surface-bright": "#f9faf5",
+                      "outline": "#717972",
+                      "surface-container-highest": "#e2e3df",
+                      "highlight-gold": "#C8973A",
+                      "inverse-on-surface": "#f0f1ed",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#6b373d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "20px",
+                      "gutter": "16px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "section-gap": "48px"
+              },
+              "fontFamily": {
+                      "product-title": ["Playfair Display"],
+                      "label-ui": ["DM Sans"],
+                      "eyebrow-caps": ["Cinzel"],
+                      "artisan-name": ["Lora"],
+                      "hero-title": ["Playfair Display"],
+                      "body-main": ["DM Sans"],
+                      "data-price": ["Space Mono"],
+                      "section-heading": ["Playfair Display"],
+                      "card-title": ["Lora"],
+                      "data-meta": ["Space Mono"]
+              },
+              "fontSize": {
+                      "product-title": ["20px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-ui": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "eyebrow-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "artisan-name": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "hero-title": ["40px", {"lineHeight": "48px", "fontWeight": "300"}],
+                      "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "data-price": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "section-heading": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "card-title": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "data-meta": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface ink-wash-bg min-h-screen flex flex-col font-body-main text-text-default">
+<!-- TopNavBar (Shared Component) -->
+<header class="w-full h-16 bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-sage-soft dark:border-outline-variant shadow-sm dark:shadow-none z-50 sticky top-0">
+<div class="flex justify-between items-center px-container-padding max-w-7xl mx-auto h-full">
+<div class="flex items-center gap-stack-md">
+<span class="font-product-title text-product-title italic text-primary dark:text-primary-fixed cursor-pointer active:scale-95 transition-transform">
+                    Tohfa<span class="text-highlight-gold">.</span>
+</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-ui text-label-ui" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-ui text-label-ui" href="#">Artisans</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-ui text-label-ui" href="#">Our Story</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-high p-2 rounded-full transition-colors" data-icon="search">search</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer active:scale-95 transition-transform" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center p-container-padding relative overflow-hidden">
+<div class="sketch-watermark"></div>
+<!-- Login Card -->
+<div class="relative w-full max-w-[440px] z-10">
+<!-- Scissor Motif -->
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+<span class="material-symbols-outlined text-text-faint text-3xl" data-icon="content_cut">content_cut</span>
+<div class="h-6 w-px bg-sage-soft mt-1"></div>
+</div>
+<div class="bg-surface-ivory border border-sage-soft rounded-xl parchment-glow overflow-visible p-10 flex flex-col items-center">
+<!-- Card Header -->
+<div class="text-center mb-8">
+<span class="font-eyebrow-caps text-eyebrow-caps text-text-faint tracking-widest block mb-2">WELCOME BACK</span>
+<h1 class="font-hero-title text-3xl text-primary-deep mb-1">Return to the nest</h1>
+<div class="flex items-center justify-center gap-2">
+<div class="h-[1px] w-8 bg-sage-soft"></div>
+<span class="font-product-title text-xl italic text-primary">Tohfa<span class="text-highlight-gold">.</span></span>
+<div class="h-[1px] w-8 bg-sage-soft"></div>
+</div>
+</div>
+<!-- Form -->
+<form class="w-full flex flex-col gap-5" id="loginForm">
+<!-- Error Handling Slots (Hidden by default) -->
+<div class="hidden bg-danger-terracotta/10 border border-danger-terracotta/20 text-danger-terracotta p-3 rounded-lg flex items-center gap-2 text-sm" id="error401">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+<span class="font-label-ui">Hm, that credential set doesn't seem right.</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1" for="email">Email address</label>
+<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-main" id="email" placeholder="artisan@tohfa.studio" type="email"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-ui text-label-ui text-text-muted ml-1" for="password">Password</label>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-main" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-text-faint hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" data-icon="visibility" id="passIcon">visibility</span>
+</button>
+</div>
+<div class="flex justify-end">
+<a class="text-accent-violet hover:underline text-sm font-label-ui" href="#">Forgot password?</a>
+</div>
+</div>
+<button class="w-full bg-primary text-white font-label-ui py-4 rounded-lg hover:bg-primary-deep active:scale-[0.98] transition-all shadow-md mt-2" type="submit">
+                        Log in
+                    </button>
+</form>
+<!-- Divider -->
+<div class="w-full flex items-center gap-4 my-8">
+<div class="flex-grow h-[1px] bg-sage-soft/50"></div>
+<span class="font-artisan-name italic text-text-faint">or</span>
+<div class="flex-grow h-[1px] bg-sage-soft/50"></div>
+</div>
+<!-- Card Footer -->
+<div class="flex flex-col items-center gap-4 text-center">
+<p class="font-body-main text-sm">New here? <a class="text-accent-violet font-medium hover:underline" href="#">Create an account</a></p>
+<a class="font-eyebrow-caps text-eyebrow-caps text-text-muted tracking-widest hover:text-highlight-gold transition-colors flex items-center gap-1 mt-2" href="#">
+<span class="material-symbols-outlined text-[14px]" data-icon="auto_awesome" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span> 
+                        SELL ON TOHFA
+                    </a>
+</div>
+<!-- Cozy Cat Illustration -->
+<div class="absolute -bottom-16 left-1/2 -translate-x-1/2 w-48 pointer-events-none drop-shadow-sm">
+<img alt="Curled sleeping cat illustration" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida/ADBb0uguL628U-zz3tGpzegERPAMsrnAPYOBSCfxEaw1TqKdEbn5rxGmPytFgXj6JwfQX_MO-7DOXQBXBOJodYciMHF3sQVz58CfMgL53mE7rgEoSSOdGVMEd3N-_MQuYiIvbOX7Yj_1PawgpcXr59jivk-uzSimXee9IxwpDapu1mVdxof-OPqc8se15_5vWFIBZiOjQQpFj8lYfLlS4S33T03fqOP3tT_ZuMWxCuE00uiXapAr7HwnpEVSJowe"/>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-section-gap bg-surface-container-low dark:bg-surface-container-low border-t border-sage-soft dark:border-outline-variant z-10">
+<div class="flex flex-col md:flex-row justify-between items-center px-container-padding max-w-7xl mx-auto gap-stack-md">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-product-title text-product-title text-primary dark:text-primary-fixed">Tohfa Artisan Collective</span>
+<p class="font-label-ui text-label-ui text-text-muted dark:text-on-surface-variant">© 2024 Tohfa Artisan Collective. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Our Story</a>
+<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Sustainability</a>
+<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Artisan Grants</a>
+<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Terms of Service</a>
+<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+<script>
+        function togglePassword() {
+            const passInput = document.getElementById('password');
+            const icon = document.getElementById('passIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.innerText = 'visibility_off';
+            } else {
+                passInput.type = 'password';
+                icon.innerText = 'visibility';
+            }
+        }
+
+        // Simple form interaction simulation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const errorDiv = document.getElementById('error401');
+            errorDiv.classList.remove('hidden');
+            
+            // Shake effect for feedback
+            const card = errorDiv.parentElement.parentElement;
+            card.classList.add('animate-shake');
+            setTimeout(() => card.classList.remove('animate-shake'), 400);
+        });
+    </script>
+<style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake {
+            animation: shake 0.2s ease-in-out 0s 2;
+        }
+    </style>
+</body></html>

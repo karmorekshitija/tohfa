@@ -1,0 +1,168 @@
+<body class="bg-background font-body-md text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">search</span>
+    </button>
+    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">favorite</span>
+    </a>
+    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+    <!-- Profile Avatar (Task 58) -->
+    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
+      A
+    </a>
+  </div>
+</header>
+<!-- Background Content: Order Detail Screen {{DATA:SCREEN:SCREEN_52}} -->
+<main class="flex-grow w-full max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<div class="flex flex-col gap-xl">
+<!-- Header -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-title-serif text-headline-lg ink-text">Order #TF-88291</h1>
+<p class="text-on-surface-variant">Placed on October 12, 2023</p>
+</div>
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Items -->
+<div class="md:col-span-2 flex flex-col gap-md">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex gap-md">
+<div class="w-24 h-24 bg-surface rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a handcrafted ceramic mug with a deep forest green glaze and subtle gold leaf accents around the rim. The mug sits on a rough-hewn wooden surface in a bright, sun-drenched artisan studio with bokeh-blurred pottery tools in the background. The lighting is soft and warm, highlighting the tactile texture of the hand-carved clay." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc2DVoYjH8DLtB6zBQsNcY95YHGDjfqTOOWcRrf8rb1KgOz6rDsqGK2e1z65_Q3ozIXrUNoXFNzH3MCyi7eBQQ0zHDZLw3DDmyiT07mBS1SUvDu2PlDwAjNyA-0Y11cBspE2hx0C1pICmy8jQQJY-YSwJ4urX-aHiD0l4rGJ_qigyIySWug02oXQtkmchqgwxuGn57gOnhkN8yFA-40X8eLwAE0aB6x_F88E8ZDsJ6HLzJGxNp15o25wnZEkdk7wzmarmXGyUw4ag">
+</div>
+<div class="flex-grow">
+<h3 class="font-title-serif text-on-surface">Hand-Thown Moss Mug</h3>
+<p class="text-sm text-on-surface-variant italic">Custom Initial: 'M'</p>
+<div class="mt-sm flex justify-between items-center">
+<span class="font-data-price text-primary">Gold $42.00</span>
+<span class="text-sm px-sm py-xs bg-secondary-fixed text-on-secondary-fixed rounded-sm">Ships in 3 days</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-md h-fit">
+<h2 class="font-title-serif mb-md">Payment Summary</h2>
+<div class="space-y-sm text-sm">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Subtotal</span>
+<span class="font-data-price">$42.00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Shipping</span>
+<span class="font-data-price">$5.00</span>
+</div>
+<div class="pt-sm border-t border-outline-variant flex justify-between font-bold">
+<span class="">Total</span>
+<span class="font-data-price text-lg">$47.00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Scrim & Modal Container -->
+<div class="fixed inset-0 z-50 flex items-end md:items-center justify-center" style="background-color: rgb(255, 255, 255);">
+<!-- Bottom Sheet (Mobile) / Centered Modal (Desktop) -->
+<div class="bg-white w-full max-w-lg md:rounded-xl rounded-t-[32px] overflow-hidden animate-in slide-in-from-bottom duration-300 flex flex-col items-center p-lg shadow-xl relative">
+<!-- Handle Pill (Mobile Only) -->
+<div class="w-12 h-1.5 bg-sage-soft rounded-full mb-lg md:hidden"></div>
+<!-- Illustration -->
+<div class="w-24 h-24 mb-md">
+<img alt="Wilting Flower Illustration" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX7ktj8TazJe8jxNimMq04ZmcbzGYrrH6ZWZp3pB5d4TTQT2UVJykQrMjkrfTXDy_mmGm6QhC05_aMKUQCUrBqOIHvEpFJyRDyIIkZbiSS2ti0RrUbGbTlRiXnb5XYQnP34cSxb2nn17UyayLqBuuJ8FZUcbgBvriiDsr0rzwcFbjfoKudgJgfqqvTBrm6qOmHwInj2rquDeniqKHwIluzVPHJthsOrqGBMdYeES_A3HlzHpjWtU_V5TgDOz1omp5uFPVBPoxg3fk">
+</div>
+<!-- Typography -->
+<div class="text-center mb-lg">
+<h2 class="font-headline-lg text-[20px] ink-text mb-sm">Cancel this order?</h2>
+<p class="font-body-md text-[14px] text-on-surface-variant">
+                    This can't be undone. The maker will be notified.
+                </p>
+</div>
+<!-- Reason Selector -->
+<div class="w-full mb-xl">
+<p class="text-xs font-bold font-label-caps text-on-surface-variant mb-sm uppercase">Reason for cancellation</p>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-sm rounded-full bg-surface-container-low border border-secondary text-sm hover:bg-secondary-container transition-colors">Changed my mind</button>
+<button class="px-md py-sm rounded-full bg-surface-container-low border border-secondary text-sm hover:bg-secondary-container transition-colors">Ordered by mistake</button>
+<button class="px-md py-sm rounded-full bg-surface-container-low border border-secondary text-sm hover:bg-secondary-container transition-colors">Found elsewhere</button>
+<button class="px-md py-sm rounded-full bg-surface-container-low border border-secondary text-sm hover:bg-secondary-container transition-colors">Other</button>
+</div>
+</div>
+<!-- Actions -->
+<div class="w-full flex flex-col gap-md">
+<button class="w-full py-md rounded-lg bg-primary text-white font-bold hover:opacity-90 transition-opacity flex justify-center items-center gap-sm">
+                    Keep my order
+                </button>
+<button class="w-full py-md rounded-lg border-2 border-terracotta text-terracotta font-bold bg-white hover:bg-error-container transition-colors flex justify-center items-center gap-sm">
+                    Yes, cancel order
+                </button>
+</div>
+<!-- Close icon for Desktop -->
+<button class="absolute top-lg right-lg hidden md:block text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container dark:bg-surface-container-lowest py-xl px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex flex-col items-center md:items-start gap-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TOFA ARTISAN STUDIO</span>
+<p class="text-body-md font-body-md text-secondary dark:text-secondary-fixed-dim">© 2024 TOFA Artisan Studio. Hand-placed with care.</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Contact Us</a>
+</div>
+</footer>
+<script>
+        // Micro-interaction for chips
+        const chips = document.querySelectorAll('.flex.flex-wrap button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => c.classList.remove('bg-secondary-container', 'font-bold'));
+                chip.classList.add('bg-secondary-container', 'font-bold');
+            });
+        });
+    </script>
+
+
+</body>
