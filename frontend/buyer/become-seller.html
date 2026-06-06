@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Become a Seller | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: { extend: {
+            "colors": {
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "error-container": "#ffdad6",
+                "inverse-on-surface": "#f7f0e6",
+                "error": "#ba1a1a",
+                "on-secondary-container": "#745a78",
+                "on-background": "#1e1b15",
+                "surface-container-high": "#efe7dd",
+                "surface-variant": "#e9e1d8",
+                "on-primary-container": "#3c4628",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed": "#1d1c16",
+                "outline": "#76786e",
+                "surface-dim": "#e0d9cf",
+                "on-surface-variant": "#45483f",
+                "tertiary-fixed-dim": "#cac6be",
+                "outline-variant": "#c6c7bb",
+                "primary": "#576242",
+                "on-tertiary-fixed-variant": "#494740",
+                "surface-tint": "#576242",
+                "inverse-primary": "#bfcba4",
+                "secondary": "#705673",
+                "secondary-container": "#f7d5f8",
+                "background": "#fff8f1",
+                "surface": "#fff8f1",
+                "on-error": "#ffffff",
+                "secondary-fixed": "#fad8fb",
+                "tertiary-fixed": "#e7e2d9",
+                "tertiary-container": "#b3afa7",
+                "on-secondary-fixed-variant": "#573e5b",
+                "tertiary": "#615e57",
+                "surface-bright": "#fff8f1",
+                "primary-container": "#a8b48e",
+                "on-primary-fixed-variant": "#404a2c",
+                "primary-fixed-dim": "#bfcba4",
+                "surface-container-highest": "#e9e1d8",
+                "secondary-fixed-dim": "#ddbcdf",
+                "on-surface": "#1e1b15",
+                "on-secondary-fixed": "#28132d",
+                "primary-fixed": "#dbe8bf",
+                "inverse-surface": "#33302a",
+                "on-secondary": "#ffffff",
+                "surface-container": "#f4ede3",
+                "on-primary-fixed": "#151e05",
+                "surface-container-low": "#faf2e9",
+                "on-tertiary-container": "#44423c",
+                "on-error-container": "#93000a",
+                "parchment": "#F7F3EC", "forest": "#3D6B4F", "sage": "#8FAF82", "violet": "#7B5EA7", "gold": "#C8973A"
+            },
+            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
+            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
+        }}
+    }
+</script>
+<style>
+    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
+    h1,h2,h3 { font-family:'EB Garamond',serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300 bg-surface" id="body-content">
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/buyer/profile.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+    </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Hero Section -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
+        <div class="lg:col-span-7 space-y-6">
+            <h1 class="font-headline-lg text-4xl md:text-5xl text-primary leading-tight">
+                Sell your craft to <br/>
+                <span class="italic text-secondary">the night-market.</span>
+            </h1>
+            <p class="text-base text-on-surface-variant max-w-xl">
+                Join a scholarly community of botanical artisans. From hand-pressed fern journals to lunar-distilled elixirs, find your audience in our curated botanical atelier.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                <div class="p-4 bg-surface-container border border-outline-variant/20 rounded-xl">
+                    <span class="material-symbols-outlined text-primary mb-2">star</span>
+                    <h3 class="font-bold text-sm text-on-surface">Free to list</h3>
+                    <p class="text-xs text-on-surface-variant mt-1">List your entire collection without any upfront fees.</p>
+                </div>
+                <div class="p-4 bg-surface-container border border-outline-variant/20 rounded-xl">
+                    <span class="material-symbols-outlined text-primary mb-2">forum</span>
+                    <h3 class="font-bold text-sm text-on-surface">Direct Messaging</h3>
+                    <p class="text-xs text-on-surface-variant mt-1">Build professional relationships with collectors.</p>
+                </div>
+                <div class="p-4 bg-surface-container border border-outline-variant/20 rounded-xl">
+                    <span class="material-symbols-outlined text-primary mb-2">play_circle</span>
+                    <h3 class="font-bold text-sm text-on-surface">Reels Discovery</h3>
+                    <p class="text-xs text-on-surface-variant mt-1">Showcase the process behind your unique craft.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onboarding Form Card -->
+        <div class="lg:col-span-5">
+            <div class="bg-surface-container p-8 rounded-2xl border border-outline-variant/30 shadow-md space-y-6">
+                <div>
+                    <h2 class="font-headline-md text-2xl text-primary">Open Your Atelier</h2>
+                    <p class="text-xs text-on-surface-variant">Create a unique seller profile to begin showcasing your creations.</p>
+                </div>
+
+                <form id="become-seller-form" class="space-y-4">
+                    <div>
+                        <label for="display-name" class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Shop Display Name</label>
+                        <input id="display-name" class="w-full px-4 py-3 bg-surface border border-outline-variant rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="e.g. Lavender Secrets" type="text" required>
+                    </div>
+
+                    <div>
+                        <label for="handle" class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Shop Handle</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-outline">@</span>
+                            <input id="handle" class="w-full pl-8 pr-4 py-3 bg-surface border border-outline-variant rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="e.g. lavender_secrets" type="text" required>
+                        </div>
+                        <p class="text-[10px] text-outline mt-1">Lowercase letters, numbers, underscores only.</p>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-primary/95 text-on-primary py-3.5 rounded-full text-sm font-semibold transition-all active:scale-[0.98] shadow-md">
+                        Create Shop &amp; Start Selling
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script type="module">
+import apiClient from '/src/utils/apiClient.js';
+
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = type==='success' ? 'check_circle' : 'error';
+    document.getElementById('toast-msg').textContent  = msg;
+    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
+        type==='success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
+    }`;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    try {
+        // Ensure user is not already a seller
+        const pr = await apiClient.get('/profile/me');
+        if (pr.data && pr.data.success) {
+            const u = pr.data.data;
+            if (u.role === 'seller') {
+                window.location.href = '/seller/dashboard.html';
+                return;
+            }
+        }
+    } catch (err) {
+        console.error("Session check failed", err);
+        sessionStorage.clear();
+        window.location.href = '/auth/login.html';
+        return;
+    }
+
+    // Unhide page
+    document.getElementById('body-content').classList.remove('opacity-0');
+});
+
+document.getElementById('become-seller-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Setting up your shop…';
+
+    const displayName = document.getElementById('display-name').value.trim();
+    const handle = document.getElementById('handle').value.trim().toLowerCase();
+
+    if (!displayName || !handle) {
+        showToast('All fields are required', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Create Shop & Start Selling';
+        return;
+    }
+
+    // Simple handle client side regex validation
+    if (!/^[a-z0-9_]+$/.test(handle)) {
+        showToast('Handle must contain only lowercase letters, numbers, and underscores', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Create Shop & Start Selling';
+        return;
+    }
+
+    try {
+        const res = await apiClient.post('/seller/become', {
+            display_name: displayName,
+            handle: handle,
+            store_currency: 'INR'
+        });
+
+        if (res.data && res.data.success) {
+            showToast('Your atelier is open!', 'success');
+            
+            // Sync user role in sessionStorage if stored
+            const userStr = sessionStorage.getItem('tohfa_user');
+            if (userStr) {
+                try {
+                    const userObj = JSON.parse(userStr);
+                    userObj.role = 'seller';
+                    sessionStorage.setItem('tohfa_user', JSON.stringify(userObj));
+                } catch(e){}
+            }
+
+            setTimeout(() => {
+                window.location.href = '/seller/dashboard.html';
+            }, 1500);
+        } else {
+            throw new Error(res.data?.message || 'Onboarding failed');
+        }
+    } catch (err) {
+        console.error('Onboarding error:', err);
+        const errMsg = err.response?.data?.message || err.message || 'Failed to become a seller';
+        showToast(errMsg, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Create Shop & Start Selling';
+    }
+});
+</script>
+</body>
+</html>
