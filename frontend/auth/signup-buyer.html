@@ -163,9 +163,8 @@
         </div>
     </main>
 
-    <script>
-        // API Base URL config
-        const API_BASE_URL = window.location.origin;
+    <script type="module">
+        import apiClient from '/src/utils/apiClient.js';
 
         // Selectors
         const signupForm = document.getElementById('signup-form');
@@ -260,52 +259,45 @@
                     full_name: nameInput.value.trim()
                 };
 
-                const response = await fetch(`${API_BASE_URL}/api/auth/register/buyer`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
+                const response = await apiClient.post('/auth/register/buyer', payload);
+                const data = response.data;
 
-                const data = await response.json();
-
-                if (response.status === 201 && data.success) {
-                    // Success! Store tokens in sessionStorage (NOT localStorage)
-                    sessionStorage.setItem('access_token', data.data.access_token);
-                    sessionStorage.setItem('refresh_token', data.data.refresh_token);
-                    sessionStorage.setItem('user', JSON.stringify(data.data.user));
+                if (data.success) {
+                    // Success! Store tokens in sessionStorage
+                    sessionStorage.setItem('tohfa_access_token', data.data.access_token);
+                    sessionStorage.setItem('tohfa_refresh_token', data.data.refresh_token);
+                    sessionStorage.setItem('tohfa_user', JSON.stringify(data.data.user));
                     
-                    // Redirect to home.html
-                    window.location.href = '/home.html';
-                } 
-                else if (response.status === 409) {
-                    // Conflict: Email already registered
-                    emailErrorText.textContent = data.message || "Email already registered.";
-                    emailError.classList.remove('hidden');
-                    emailInput.classList.add('input-error');
-                } 
-                else if (response.status === 400) {
-                    // Validation errors
-                    generalErrorText.textContent = data.message || "Validation failed.";
-                    generalError.classList.remove('hidden');
-                } 
-                else if (response.status === 429) {
-                    // Rate limit triggered
-                    generalErrorText.textContent = data.message || "Too many registration attempts. Please wait before trying again.";
-                    generalError.classList.remove('hidden');
-                } 
-                else {
-                    // Other unexpected statuses
+                    // Redirect to buyer home page
+                    window.location.href = '/buyer/home.html';
+                } else {
                     generalErrorText.textContent = data.message || "An unexpected error occurred. Please try again.";
                     generalError.classList.remove('hidden');
                 }
 
             } catch (error) {
-                // Connection or other fetch failures
                 console.error("Signup request failed:", error);
-                generalErrorText.textContent = "Unable to connect to the backend server. Please verify the server is running and try again.";
-                generalError.classList.remove('hidden');
+                const response = error.response;
+                if (response) {
+                    const data = response.data || {};
+                    if (response.status === 409) {
+                        emailErrorText.textContent = data.message || "This email is already registered. Try logging in.";
+                        emailError.classList.remove('hidden');
+                        emailInput.classList.add('input-error');
+                    } else if (response.status === 400) {
+                        generalErrorText.textContent = data.message || "Validation failed.";
+                        generalError.classList.remove('hidden');
+                    } else if (response.status === 429) {
+                        generalErrorText.textContent = data.message || "Too many registration attempts. Please wait before trying again.";
+                        generalError.classList.remove('hidden');
+                    } else {
+                        generalErrorText.textContent = data.message || "An unexpected error occurred. Please try again.";
+                        generalError.classList.remove('hidden');
+                    }
+                } else {
+                    generalErrorText.textContent = "Unable to connect to the backend server. Please verify the server is running and try again.";
+                    generalError.classList.remove('hidden');
+                }
             } finally {
                 // Reset button UI
                 submitBtn.innerText = originalText;
