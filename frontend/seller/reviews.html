@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reviews | Seller Studio | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode:"class",
+        theme: { extend: {
+            "colors": {
+                "surface-container-low":"#faf2e9","surface-container":"#f4ede3","surface-container-high":"#efe7dd",
+                "surface-container-highest":"#e9e1d8","outline-variant":"#c6c7bb","outline":"#76786e",
+                "on-surface":"#1e1b15","on-surface-variant":"#45483f","surface":"#fff8f1","background":"#fff8f1",
+                "primary":"#576242","primary-fixed":"#dbe8bf","primary-fixed-dim":"#bfcba4",
+                "on-primary":"#ffffff","on-primary-container":"#3c4628","custom-primary":"#a8b48e",
+                "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
+                "secondary-container":"#f7d5f8","on-secondary-container":"#745a78",
+                "tertiary-fixed":"#e7e2d9","on-tertiary-container":"#44423c"
+            },
+            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
+            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
+        }}
+    }
+</script>
+<style>
+    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
+    h1,h2,h3 { font-family:'EB Garamond',serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .fade-in { animation:fadeIn 0.25s ease forwards; }
+    .star-filled { color:#D4AF37; }
+    .star-empty  { color:#c6c7bb; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+    </div>
+    <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full">
+        <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+    </button>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="font-headline-md text-3xl mb-1">Reviews</h1>
+        <p class="text-sm text-on-surface-variant" id="reviews-subtitle">Loading your reviews…</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load reviews.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div id="loading-state" class="space-y-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="skeleton h-24 rounded-xl"></div>
+            <div class="skeleton h-24 rounded-xl"></div>
+            <div class="skeleton h-24 rounded-xl"></div>
+            <div class="skeleton h-24 rounded-xl"></div>
+        </div>
+        <div class="space-y-4">
+            <div class="skeleton h-40 rounded-xl"></div>
+            <div class="skeleton h-40 rounded-xl"></div>
+            <div class="skeleton h-40 rounded-xl"></div>
+        </div>
+    </div>
+
+    <!-- Reviews Content -->
+    <div id="reviews-content" class="hidden space-y-8">
+
+        <!-- Summary KPI cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
+                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Avg Rating</div>
+                <div id="kpi-avg-rating" class="text-3xl font-bold text-custom-primary">—</div>
+                <div id="kpi-stars" class="flex justify-center gap-0.5 mt-1"></div>
+            </div>
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
+                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Total Reviews</div>
+                <div id="kpi-total" class="text-3xl font-bold text-custom-primary">—</div>
+            </div>
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
+                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Pending Replies</div>
+                <div id="kpi-pending" class="text-3xl font-bold text-error">—</div>
+            </div>
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
+                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Response Rate</div>
+                <div id="kpi-rate" class="text-3xl font-bold text-custom-primary">—</div>
+            </div>
+        </div>
+
+        <!-- Rating Distribution -->
+        <section id="distribution-section" class="bg-surface-container border border-outline-variant/20 rounded-xl p-6 shadow-sm">
+            <h2 class="font-headline-md text-xl mb-4">Rating Distribution</h2>
+            <div id="distribution-bars" class="space-y-2"></div>
+        </section>
+
+        <!-- Filter tabs + sort -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
+                <button class="filter-btn active-filter bg-custom-primary text-on-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap" data-filter="all">All</button>
+                <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-filter="unreplied">Unreplied</button>
+                <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-filter="critical">Critical (≤2★)</button>
+            </nav>
+            <select id="sort-select" class="bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                <option value="newest">Newest First</option>
+                <option value="highest_rating">Highest Rating</option>
+                <option value="lowest_rating">Lowest Rating</option>
+            </select>
+        </div>
+
+        <!-- Empty state -->
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-16 gap-4">
+            <span class="material-symbols-outlined text-5xl text-outline">rate_review</span>
+            <p class="text-on-surface-variant text-sm text-center">No reviews found for this filter.</p>
+        </div>
+
+        <!-- Reviews list -->
+        <div id="reviews-list" class="space-y-4"></div>
+    </div>
+</main>
+
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+let currentFilter = 'all';
+let currentSort   = 'newest';
+
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = type==='success' ? 'check_circle' : 'error';
+    document.getElementById('toast-msg').textContent  = msg;
+    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
+        type==='success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
+    }`;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function starsHTML(rating) {
+    let s = '';
+    for (let i = 1; i <= 5; i++) {
+        s += `<span class="material-symbols-outlined text-sm ${i<=rating?'star-filled':'star-empty'}" style="font-variation-settings:'FILL' ${i<=rating?1:0}">star</span>`;
+    }
+    return s;
+}
+
+function formatDate(dt) {
+    if (!dt) return '—';
+    return new Date(dt).toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
+}
+
+function reviewCardHTML(r) {
+    const repliedSection = r.reply
+        ? `<div class="mt-3 ml-4 pl-4 border-l-2 border-custom-primary bg-primary-fixed/20 rounded-r-xl p-3">
+               <p class="text-xs font-semibold text-on-primary-container mb-1">Your reply · ${formatDate(r.reply.created_at)}</p>
+               <p class="text-sm text-on-surface-variant italic">${r.reply.reply_text}</p>
+           </div>`
+        : `<div class="mt-4 reply-form-wrap" data-id="${r.review_id}">
+               <div class="flex gap-2">
+                   <textarea class="reply-textarea flex-1 bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary resize-none" rows="2" placeholder="Write a thoughtful reply…"></textarea>
+                   <button class="reply-submit-btn bg-custom-primary text-on-primary px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 self-end" data-id="${r.review_id}">Reply</button>
+               </div>
+           </div>`;
+
+    return `
+    <article class="fade-in bg-surface-container border border-outline-variant/20 rounded-xl p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-3">
+            <div>
+                <div class="flex items-center gap-2 mb-0.5">
+                    <span class="font-semibold text-sm">${r.reviewer_handle || 'Anonymous'}</span>
+                    ${r.verified_purchase ? '<span class="text-[10px] text-custom-primary font-bold uppercase tracking-wide border border-custom-primary/30 px-1.5 py-0.5 rounded">Verified</span>' : ''}
+                </div>
+                <p class="text-xs text-on-surface-variant">${r.listing_title || '—'} · ${formatDate(r.created_at)}</p>
+            </div>
+            <div class="flex items-center gap-0.5">${starsHTML(r.rating)}</div>
+        </div>
+        <p class="text-sm text-on-surface leading-relaxed">${r.body || ''}</p>
+        ${repliedSection}
+    </article>`;
+}
+
+// ── Load reviews ──────────────────────────────────────────────
+async function loadReviews() {
+    const loading  = document.getElementById('loading-state');
+    const error    = document.getElementById('error-state');
+    const content  = document.getElementById('reviews-content');
+    const empty    = document.getElementById('empty-state');
+    const list     = document.getElementById('reviews-list');
+
+    loading.classList.remove('hidden');
+    error.classList.add('hidden');
+    content.classList.add('hidden');
+
+    const token  = sessionStorage.getItem('tohfa_access_token');
+    const params = new URLSearchParams({ filter: currentFilter, sort: currentSort });
+
+    try {
+        const res  = await fetch(`${API_BASE}/api/seller/reviews?${params}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const resp    = await res.json();
+        const data    = resp.data || resp;
+        const summary = data.summary || {};
+        const reviews = data.reviews || [];
+
+        // Update KPIs
+        document.getElementById('kpi-avg-rating').textContent = summary.avg_rating?.toFixed(1) ?? '—';
+        document.getElementById('kpi-total').textContent      = summary.total_reviews ?? '—';
+        document.getElementById('kpi-pending').textContent    = summary.pending_replies ?? '—';
+        document.getElementById('kpi-rate').textContent       = summary.response_rate_pct != null ? `${summary.response_rate_pct}%` : '—';
+        document.getElementById('kpi-stars').innerHTML        = starsHTML(Math.round(summary.avg_rating || 0));
+
+        document.getElementById('reviews-subtitle').textContent =
+            `${summary.total_reviews} review${summary.total_reviews !== 1 ? 's' : ''} · Avg ${summary.avg_rating?.toFixed(1) ?? 0}★`;
+
+        // Rating distribution bars
+        const dist = summary.rating_distribution || {};
+        const total = summary.total_reviews || 1;
+        const barsHTML = [5,4,3,2,1].map(n => {
+            const count = dist[String(n)] || 0;
+            const pct   = total > 0 ? Math.round((count / total) * 100) : 0;
+            return `<div class="flex items-center gap-3">
+                <span class="text-xs font-semibold text-on-surface-variant w-6 text-right">${n}★</span>
+                <div class="flex-1 bg-surface-container-high rounded-full h-2 overflow-hidden">
+                    <div class="bg-custom-primary h-2 rounded-full transition-all duration-700" style="width:${pct}%"></div>
+                </div>
+                <span class="text-xs text-on-surface-variant w-8">${count}</span>
+            </div>`;
+        }).join('');
+        document.getElementById('distribution-bars').innerHTML = barsHTML;
+
+        loading.classList.add('hidden');
+        content.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+
+        if (reviews.length === 0) {
+            list.innerHTML = '';
+            empty.classList.remove('hidden');
+        } else {
+            empty.classList.add('hidden');
+            list.innerHTML = reviews.map(reviewCardHTML).join('');
+            attachReplyListeners();
+        }
+
+    } catch (err) {
+        console.error('Load reviews error:', err);
+        loading.classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load reviews.';
+        error.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+    }
+}
+
+// ── Attach reply button listeners ─────────────────────────────
+function attachReplyListeners() {
+    document.querySelectorAll('.reply-submit-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const reviewId = btn.dataset.id;
+            const wrap     = btn.closest('.reply-form-wrap');
+            const textarea = wrap?.querySelector('.reply-textarea');
+            const replyText= textarea?.value.trim();
+
+            if (!replyText) { showToast('Please enter a reply.', 'error'); return; }
+
+            btn.disabled = true; btn.textContent = 'Sending…';
+            const token = sessionStorage.getItem('tohfa_access_token');
+            try {
+                const res = await fetch(`${API_BASE}/api/seller/reviews/${reviewId}/reply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ reply_text: replyText })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to submit reply');
+
+                showToast('Reply posted!', 'success');
+
+                // Replace form with reply display inline
+                wrap.innerHTML = `<div class="mt-3 ml-4 pl-4 border-l-2 border-custom-primary bg-primary-fixed/20 rounded-r-xl p-3">
+                    <p class="text-xs font-semibold text-on-primary-container mb-1">Your reply · Just now</p>
+                    <p class="text-sm text-on-surface-variant italic">${replyText}</p>
+                </div>`;
+            } catch (err) {
+                showToast(err.message || 'Failed to post reply.', 'error');
+                btn.disabled = false; btn.textContent = 'Reply';
+            }
+        });
+    });
+}
+
+// ── Filter tabs ───────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-custom-primary','text-on-primary','active-filter');
+            b.classList.add('text-on-surface-variant','hover:text-custom-primary');
+        });
+        btn.classList.add('bg-custom-primary','text-on-primary','active-filter');
+        btn.classList.remove('text-on-surface-variant','hover:text-custom-primary');
+        currentFilter = btn.dataset.filter;
+        loadReviews();
+    });
+});
+
+// ── Sort ──────────────────────────────────────────────────────
+document.getElementById('sort-select').addEventListener('change', (e) => {
+    currentSort = e.target.value;
+    loadReviews();
+});
+
+// ── Retry ─────────────────────────────────────────────────────
+document.getElementById('retry-btn').addEventListener('click', loadReviews);
+
+// ── Logout ────────────────────────────────────────────────────
+document.getElementById('logout-btn').addEventListener('click', () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const refresh = sessionStorage.getItem('tohfa_refresh_token');
+    if (token && refresh) {
+        fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+    }
+    sessionStorage.clear(); window.location.href = '/auth/login.html';
+});
+
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    try {
+        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!pr.ok) throw new Error();
+        const pd = await pr.json();
+        const u  = pd.data || pd;
+        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+    } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+
+    loadReviews();
+});
+</script>
+</body>
+</html>
