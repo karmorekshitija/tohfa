@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Orders | Seller Studio | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode:"class",
+        theme: { extend: {
+            "colors": {
+                "surface-container-low":"#faf2e9","surface-container":"#f4ede3","surface-container-high":"#efe7dd",
+                "surface-container-highest":"#e9e1d8","outline-variant":"#c6c7bb","outline":"#76786e",
+                "on-surface":"#1e1b15","on-surface-variant":"#45483f","surface":"#fff8f1","background":"#fff8f1",
+                "primary":"#576242","primary-fixed":"#dbe8bf","primary-fixed-dim":"#bfcba4",
+                "on-primary":"#ffffff","on-primary-container":"#3c4628","custom-primary":"#a8b48e",
+                "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
+                "secondary-container":"#f7d5f8","on-secondary-container":"#745a78",
+                "tertiary-fixed":"#e7e2d9","on-tertiary-container":"#44423c"
+            },
+            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
+            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
+        }}
+    }
+</script>
+<style>
+    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
+    h1,h2,h3 { font-family:'EB Garamond',serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display:none; } .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+    .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center; }
+    tr.order-row:hover { background:#f4ede380; cursor:pointer; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .fade-in { animation:fadeIn 0.25s ease forwards; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="font-headline-lg text-on-background text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+    </div>
+    <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+        <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+    </button>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<!-- ══ Order Detail Modal ════════════════════════════════════ -->
+<div id="order-detail-modal" class="hidden modal-overlay">
+    <div class="bg-surface rounded-xl shadow-2xl w-full max-w-xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 sticky top-0 bg-surface z-10">
+            <div>
+                <h2 class="font-headline-md text-xl">Order Detail</h2>
+                <p id="modal-order-ref" class="text-xs text-on-surface-variant font-mono"></p>
+            </div>
+            <button id="close-order-modal" class="p-2 hover:bg-surface-container rounded-full">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="order-detail-body" class="p-6 space-y-6">
+            <!-- populated dynamically -->
+        </div>
+    </div>
+</div>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="font-headline-md text-3xl mb-1">Seller Orders</h1>
+            <p class="text-sm text-on-surface-variant" id="orders-count-label">Loading orders…</p>
+        </div>
+        <!-- Period selector -->
+        <select id="period-select" class="bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary self-start sm:self-auto">
+            <option value="30d">Last 30 Days</option>
+            <option value="90d">Last 90 Days</option>
+        </select>
+    </div>
+
+    <!-- KPI strip -->
+    <div id="kpi-strip" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Total Orders</div>
+            <div id="kpi-total" class="text-2xl font-bold text-custom-primary">—</div>
+        </div>
+        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Awaiting Action</div>
+            <div id="kpi-pending" class="text-2xl font-bold text-error">—</div>
+        </div>
+        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">On-Time Rate</div>
+            <div id="kpi-ontime" class="text-2xl font-bold text-custom-primary">—</div>
+        </div>
+        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Avg Dispatch</div>
+            <div id="kpi-dispatch" class="text-2xl font-bold text-custom-primary">—</div>
+        </div>
+    </div>
+
+    <!-- Filters + search -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
+            <button class="filter-btn active-filter bg-custom-primary text-on-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap" data-status="all">All</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="pending">Pending</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="crafting">Crafting</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="shipped">Shipped</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="delivered">Delivered</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="cancelled">Cancelled</button>
+        </nav>
+        <div class="flex-1 relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+            <input id="search-input" type="text" placeholder="Search order ID or buyer…" class="w-full bg-surface-container border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary"/>
+        </div>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load orders.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div id="loading-state" class="space-y-3">
+        <div class="skeleton h-16 rounded-xl"></div>
+        <div class="skeleton h-16 rounded-xl"></div>
+        <div class="skeleton h-16 rounded-xl"></div>
+        <div class="skeleton h-16 rounded-xl"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-outline">shopping_bag</span>
+        <p class="text-on-surface-variant text-sm text-center">No orders found for this period.</p>
+    </div>
+
+    <!-- Orders table -->
+    <div id="orders-table-wrap" class="hidden overflow-x-auto bg-surface-container-low rounded-xl border border-outline-variant/20 shadow-sm">
+        <table class="w-full text-sm">
+            <thead class="bg-surface-container border-b border-outline-variant/30">
+                <tr>
+                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Order ID</th>
+                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden sm:table-cell">Item</th>
+                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden md:table-cell">Buyer</th>
+                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden lg:table-cell">Date</th>
+                    <th class="text-right py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Amount</th>
+                    <th class="text-center py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Status</th>
+                    <th class="text-center py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+        </table>
+    </div>
+
+</main>
+
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+let currentStatus = 'all';
+let currentPeriod = '30d';
+let searchQuery   = '';
+let searchTimer   = null;
+
+function formatPaise(p) {
+    if (p == null) return '₹0';
+    return '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function formatDate(dt) {
+    if (!dt) return '—';
+    return new Date(dt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = type === 'success' ? 'check_circle' : 'error';
+    document.getElementById('toast-msg').textContent  = msg;
+    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
+        type === 'success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
+    }`;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function statusBadge(s) {
+    const m = {
+        pending:   'bg-secondary-container text-on-secondary-container',
+        crafting:  'bg-primary-fixed text-on-primary-container',
+        shipped:   'bg-tertiary-fixed text-on-tertiary-container',
+        delivered: 'bg-custom-primary text-on-primary',
+        cancelled: 'bg-error-container text-on-error-container'
+    };
+    const labels = { pending:'Pending', crafting:'Crafting', shipped:'Shipped', delivered:'Delivered', cancelled:'Cancelled' };
+    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter ${m[s] || 'bg-surface-container text-on-surface-variant'}">${labels[s] || s}</span>`;
+}
+
+// ── Load orders ───────────────────────────────────────────────
+async function loadOrders() {
+    const loading = document.getElementById('loading-state');
+    const error   = document.getElementById('error-state');
+    const empty   = document.getElementById('empty-state');
+    const table   = document.getElementById('orders-table-wrap');
+    const kpi     = document.getElementById('kpi-strip');
+
+    loading.classList.remove('hidden');
+    error.classList.add('hidden');
+    empty.classList.add('hidden');
+    table.classList.add('hidden');
+    kpi.classList.add('hidden');
+
+    const token  = sessionStorage.getItem('tohfa_access_token');
+    const params = new URLSearchParams({ status: currentStatus, period: currentPeriod, ...(searchQuery ? { search: searchQuery } : {}) });
+
+    try {
+        const res  = await fetch(`${API_BASE}/api/seller/orders?${params}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const resp   = await res.json();
+        const data   = resp.data || resp;
+        const orders = data.orders || [];
+
+        document.getElementById('orders-count-label').textContent = `${data.total || 0} order${data.total !== 1 ? 's' : ''}`;
+
+        // KPIs
+        document.getElementById('kpi-total').textContent    = data.total ?? '—';
+        document.getElementById('kpi-pending').textContent  = data.pending_action_count ?? '—';
+        document.getElementById('kpi-ontime').textContent   = `${data.on_time_rate_pct ?? 100}%`;
+        document.getElementById('kpi-dispatch').textContent = data.avg_dispatch_days != null ? `${data.avg_dispatch_days}d` : '—';
+        kpi.classList.remove('hidden');
+
+        loading.classList.add('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+
+        if (orders.length === 0) { empty.classList.remove('hidden'); return; }
+
+        // Render rows
+        document.getElementById('orders-tbody').innerHTML = orders.map(o => `
+            <tr class="order-row border-b border-outline-variant/20 fade-in" data-id="${o.internal_id}">
+                <td class="py-3 px-4 font-mono text-xs text-on-surface-variant">${o.order_id || '—'}</td>
+                <td class="py-3 px-4 hidden sm:table-cell"><span class="font-medium text-sm truncate max-w-[140px] block">${o.item_title || '—'}</span></td>
+                <td class="py-3 px-4 hidden md:table-cell text-sm text-on-surface-variant">${o.buyer_name || '—'}</td>
+                <td class="py-3 px-4 hidden lg:table-cell text-xs text-on-surface-variant">${formatDate(o.order_date)}</td>
+                <td class="py-3 px-4 text-right font-semibold text-sm text-custom-primary">${formatPaise(o.total_paise)}</td>
+                <td class="py-3 px-4 text-center">${statusBadge(o.fulfillment_status)}</td>
+                <td class="py-3 px-4 text-center">
+                    <button class="view-btn text-xs font-semibold text-custom-primary hover:underline" data-id="${o.internal_id}">View</button>
+                </td>
+            </tr>
+        `).join('');
+
+        table.classList.remove('hidden');
+        attachTableListeners();
+
+    } catch (err) {
+        console.error('Load orders error:', err);
+        loading.classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load orders.';
+        error.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+    }
+}
+
+// ── View order detail ─────────────────────────────────────────
+async function openOrderDetail(internalId) {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const body  = document.getElementById('order-detail-body');
+    body.innerHTML = '<div class="skeleton h-40 rounded-xl"></div>';
+    document.getElementById('order-detail-modal').classList.remove('hidden');
+
+    try {
+        const res  = await fetch(`${API_BASE}/api/seller/orders/${internalId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const resp = await res.json();
+        const o    = resp.data || resp;
+
+        document.getElementById('modal-order-ref').textContent = o.order_id || '';
+
+        const events = (o.tracking_events || []).map(ev =>
+            `<div class="flex items-start gap-2 text-xs">
+                <span class="text-custom-primary mt-0.5 font-bold uppercase tracking-wider">${ev.status}</span>
+                <span class="text-on-surface-variant">${formatDate(ev.occurred_at)}</span>
+             </div>`
+        ).join('');
+
+        body.innerHTML = `
+            <div class="space-y-1">
+                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Customer</p>
+                <p class="font-semibold">${o.buyer_name || '—'}</p>
+                <p class="text-sm text-on-surface-variant">${o.buyer_address || '—'}</p>
+            </div>
+            <div class="space-y-1">
+                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Item & Amount</p>
+                <p class="font-semibold">${o.item_title || '—'}</p>
+                <p class="text-custom-primary font-bold">${formatPaise(o.total_paise)}</p>
+            </div>
+            <div class="space-y-1">
+                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Current Status</p>
+                ${statusBadge(o.fulfillment_status)}
+                ${o.tracking_number ? `<p class="text-xs text-on-surface-variant mt-1">Tracking: <span class="font-mono">${o.tracking_number}</span></p>` : ''}
+            </div>
+            ${events ? `<div class="space-y-2"><p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Tracking History</p>${events}</div>` : ''}
+
+            <!-- Update Status -->
+            <div class="border-t border-outline-variant/30 pt-4 space-y-3">
+                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Update Fulfillment Status</p>
+                <div class="flex gap-2">
+                    <select id="status-select-${internalId}" class="flex-1 bg-surface-container border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                        <option value="crafting">Crafting</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button id="update-status-btn-${internalId}" class="bg-custom-primary text-on-primary px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-all" data-id="${internalId}">
+                        Update
+                    </button>
+                </div>
+                <!-- Tracking number -->
+                <div class="flex gap-2">
+                    <input id="tracking-input-${internalId}" type="text" placeholder="Add tracking number…" class="flex-1 bg-surface-container border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" value="${o.tracking_number || ''}"/>
+                    <button id="add-tracking-btn-${internalId}" class="border border-outline text-on-surface px-5 py-2 rounded-full text-sm font-semibold hover:bg-surface-container transition-all" data-id="${internalId}">
+                        Set
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Update status action
+        document.getElementById(`update-status-btn-${internalId}`).addEventListener('click', async () => {
+            const newStatus = document.getElementById(`status-select-${internalId}`).value;
+            const btn       = document.getElementById(`update-status-btn-${internalId}`);
+            btn.disabled    = true; btn.textContent = 'Saving…';
+            try {
+                const r = await fetch(`${API_BASE}/api/seller/orders/${internalId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                const d = await r.json();
+                if (!r.ok) throw new Error(d.message || 'Failed');
+                showToast(`Status updated to "${newStatus}"!`, 'success');
+                closeOrderModal();
+                loadOrders();
+            } catch (err) {
+                showToast(err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Update';
+            }
+        });
+
+        // Add tracking action
+        document.getElementById(`add-tracking-btn-${internalId}`).addEventListener('click', async () => {
+            const tn  = document.getElementById(`tracking-input-${internalId}`).value.trim();
+            const btn = document.getElementById(`add-tracking-btn-${internalId}`);
+            if (!tn) { showToast('Enter a tracking number', 'error'); return; }
+            btn.disabled = true; btn.textContent = 'Saving…';
+            try {
+                const r = await fetch(`${API_BASE}/api/seller/orders/${internalId}/tracking`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ tracking_number: tn })
+                });
+                const d = await r.json();
+                if (!r.ok) throw new Error(d.message || 'Failed');
+                showToast('Tracking number saved!', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Set';
+            }
+        });
+
+    } catch (err) {
+        body.innerHTML = `<p class="text-sm text-error">${err.message}</p>`;
+    }
+}
+
+function closeOrderModal() { document.getElementById('order-detail-modal').classList.add('hidden'); }
+
+// ── Attach table listeners ────────────────────────────────────
+function attachTableListeners() {
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => { e.stopPropagation(); openOrderDetail(btn.dataset.id); });
+    });
+    document.querySelectorAll('.order-row').forEach(row => {
+        row.addEventListener('click', () => openOrderDetail(row.dataset.id));
+    });
+}
+
+// ── Filter tabs ───────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-custom-primary','text-on-primary','active-filter');
+            b.classList.add('text-on-surface-variant','hover:text-custom-primary');
+        });
+        btn.classList.add('bg-custom-primary','text-on-primary','active-filter');
+        btn.classList.remove('text-on-surface-variant','hover:text-custom-primary');
+        currentStatus = btn.dataset.status;
+        loadOrders();
+    });
+});
+
+// ── Period selector ───────────────────────────────────────────
+document.getElementById('period-select').addEventListener('change', (e) => {
+    currentPeriod = e.target.value;
+    loadOrders();
+});
+
+// ── Search ────────────────────────────────────────────────────
+document.getElementById('search-input').addEventListener('input', (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { searchQuery = e.target.value.trim(); loadOrders(); }, 400);
+});
+
+// ── Modal close ───────────────────────────────────────────────
+document.getElementById('close-order-modal').addEventListener('click', closeOrderModal);
+document.getElementById('order-detail-modal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeOrderModal(); });
+
+// ── Retry ─────────────────────────────────────────────────────
+document.getElementById('retry-btn').addEventListener('click', loadOrders);
+
+// ── Logout ────────────────────────────────────────────────────
+document.getElementById('logout-btn').addEventListener('click', () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const refresh = sessionStorage.getItem('tohfa_refresh_token');
+    if (token && refresh) {
+        fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+    }
+    sessionStorage.clear(); window.location.href = '/auth/login.html';
+});
+
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    try {
+        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!pr.ok) throw new Error();
+        const pd = await pr.json();
+        const u  = pd.data || pd;
+        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+    } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+
+    loadOrders();
+});
+</script>
+</body>
+</html>
