@@ -236,3 +236,4 @@ async def api_profile_me(db: AsyncSession = Depends(get_db), current_user: User 
 os.makedirs("media/products", exist_ok=True)
 os.makedirs("media/reels", exist_ok=True)
 app.mount("/media", StaticFiles(directory="media"), name="media")
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
