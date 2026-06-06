@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analytics | Seller Studio | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: { extend: {
+            "colors": {
+                "surface-container-low":"#faf2e9","surface-container":"#f4ede3","surface-container-high":"#efe7dd",
+                "surface-container-highest":"#e9e1d8","outline-variant":"#c6c7bb","outline":"#76786e",
+                "on-surface":"#1e1b15","on-surface-variant":"#45483f","surface":"#fff8f1","background":"#fff8f1",
+                "primary":"#576242","primary-fixed":"#dbe8bf","primary-fixed-dim":"#bfcba4",
+                "on-primary":"#ffffff","on-primary-container":"#3c4628","custom-primary":"#a8b48e",
+                "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
+                "secondary-container":"#f7d5f8","on-secondary-container":"#745a78",
+                "tertiary-fixed":"#e7e2d9","on-tertiary-container":"#44423c",
+                "parchment": "#F7F3EC", "forest": "#3D6B4F", "sage": "#8FAF82", "violet": "#7B5EA7", "gold": "#C8973A"
+            },
+            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
+            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
+        }}
+    }
+</script>
+<style>
+    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
+    h1,h2,h3 { font-family:'EB Garamond',serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .fade-in { animation:fadeIn 0.25s ease forwards; }
+    .watercolor-sage {
+        background: linear-gradient(135deg, rgba(143, 175, 130, 0.1) 0%, rgba(143, 175, 130, 0.05) 100%);
+    }
+    .watercolor-violet {
+        background: linear-gradient(135deg, rgba(123, 94, 167, 0.1) 0%, rgba(123, 94, 167, 0.05) 100%);
+    }
+    .decorative-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 3rem 0;
+        opacity: 0.4;
+    }
+    .decorative-divider::before, .decorative-divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: linear-gradient(to var(--dir, right), transparent, #8FAF82);
+    }
+    .decorative-divider::after { --dir: left; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+    </div>
+    <div class="flex items-center gap-3">
+        <button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary-fixed text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
+            <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+            ZAI Mode
+        </button>
+        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full">
+            <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Header Section -->
+    <section class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+        <div>
+            <h1 class="font-headline-md text-3xl mb-3">Studio Analytics</h1>
+            <div class="flex items-center gap-2" id="period-filters">
+                <button data-period="7d" class="px-4 py-1.5 rounded-full text-xs font-semibold border border-sage/40 text-on-surface-variant hover:bg-surface-container-high transition-all">7 Days</button>
+                <button data-period="30d" class="px-4 py-1.5 rounded-full text-xs font-semibold bg-primary text-white shadow-md transition-all">30 Days</button>
+                <button data-period="90d" class="px-4 py-1.5 rounded-full text-xs font-semibold border border-sage/40 text-on-surface-variant hover:bg-surface-container-high transition-all">90 Days</button>
+                <button data-period="1y" class="px-4 py-1.5 rounded-full text-xs font-semibold border border-sage/40 text-on-surface-variant hover:bg-surface-container-high transition-all">1 Year</button>
+            </div>
+        </div>
+        <button id="export-btn" class="flex items-center gap-2 bg-primary border border-forest text-white px-5 py-2 rounded-full text-xs font-semibold shadow-md hover:brightness-110 transition-all active:scale-95">
+            <span class="material-symbols-outlined text-sm">download</span>
+            Export CSV
+        </button>
+    </section>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load analytics.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div id="loading-state" class="space-y-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="skeleton h-28 rounded-xl"></div>
+            <div class="skeleton h-28 rounded-xl"></div>
+            <div class="skeleton h-28 rounded-xl"></div>
+            <div class="skeleton h-28 rounded-xl"></div>
+        </div>
+        <div class="skeleton h-80 rounded-xl"></div>
+    </div>
+
+    <!-- Analytics Content -->
+    <div id="analytics-content" class="hidden space-y-8">
+
+        <!-- ZAI Tip -->
+        <section id="zai-tip-card" class="hidden">
+            <div class="bg-tertiary-fixed border border-outline-variant/30 p-6 rounded-xl flex items-center gap-4 relative overflow-hidden group shadow-sm">
+                <div class="w-12 h-12 rounded-full bg-violet/20 flex items-center justify-center text-violet">
+                    <span class="material-symbols-outlined">auto_awesome</span>
+                </div>
+                <p id="zai-tip-text" class="font-headline-md text-lg text-on-surface leading-relaxed">
+                    Analyzing store insights...
+                </p>
+            </div>
+        </section>
+
+        <!-- KPI Tiles Grid -->
+        <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Revenue -->
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 shadow-sm hover:scale-[1.02] transition-all duration-300">
+                <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Revenue</p>
+                <div class="flex items-baseline gap-2 mb-2">
+                    <h3 id="kpi-revenue" class="text-2xl font-bold text-forest">—</h3>
+                </div>
+                <div id="kpi-revenue-change" class="flex items-center gap-1 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-sm">trending_flat</span> 0%
+                </div>
+            </div>
+            <!-- AOV -->
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 shadow-sm hover:scale-[1.02] transition-all duration-300">
+                <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Avg. Order Value</p>
+                <div class="flex items-baseline gap-2 mb-2">
+                    <h3 id="kpi-aov" class="text-2xl font-bold text-forest">—</h3>
+                </div>
+                <div id="kpi-aov-change" class="flex items-center gap-1 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-sm">trending_flat</span> 0%
+                </div>
+            </div>
+            <!-- Return Rate -->
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 shadow-sm hover:scale-[1.02] transition-all duration-300">
+                <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Return Rate</p>
+                <div class="flex items-baseline gap-2 mb-2">
+                    <h3 id="kpi-return-rate" class="text-2xl font-bold text-forest">—</h3>
+                </div>
+                <div id="kpi-return-rate-change" class="flex items-center gap-1 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-sm">trending_flat</span> 0%
+                </div>
+            </div>
+            <!-- Repeat Buyers -->
+            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 shadow-sm hover:scale-[1.02] transition-all duration-300">
+                <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Repeat Buyers</p>
+                <div class="flex items-baseline gap-2 mb-2">
+                    <h3 id="kpi-repeat-buyers" class="text-2xl font-bold text-forest">—</h3>
+                </div>
+                <div id="kpi-repeat-change" class="flex items-center gap-1 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-sm">trending_flat</span> 0%
+                </div>
+            </div>
+        </section>
+
+        <!-- Decorative Divider 1: Floral -->
+        <div class="decorative-divider">
+            <span class="material-symbols-outlined text-forest text-[24px]">local_florist</span>
+            <span class="material-symbols-outlined text-sage text-[18px]">psychology_alt</span>
+            <span class="material-symbols-outlined text-forest text-[24px]">local_florist</span>
+        </div>
+
+        <!-- Revenue Area Chart -->
+        <section class="watercolor-sage p-6 rounded-2xl shadow-sm border border-sage/20">
+            <div class="bg-surface-container p-6 rounded-xl border border-sage/30 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-headline-md text-xl text-forest">Revenue Over Time</h3>
+                    <div class="flex gap-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-forest"></span> Revenue Trend
+                        </div>
+                    </div>
+                </div>
+                <div class="relative h-64 w-full">
+                    <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                        <div class="h-[1px] w-full bg-sage/10"></div>
+                        <div class="h-[1px] w-full bg-sage/10"></div>
+                        <div class="h-[1px] w-full bg-sage/10"></div>
+                        <div class="h-[1px] w-full bg-sage/10"></div>
+                    </div>
+                    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="forest-gradient" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="#3D6B4F" stop-opacity="0.2"></stop>
+                                <stop offset="100%" stop-color="#3D6B4F" stop-opacity="0"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path id="chart-fill-path" d="" fill="url(#forest-gradient)"></path>
+                        <path id="chart-line-path" d="" fill="none" stroke="#3D6B4F" stroke-width="2"></path>
+                    </svg>
+                    <div id="chart-labels" class="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-on-surface-variant font-medium">
+                        <!-- Placed dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Column Charts -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Traffic Sources -->
+            <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm watercolor-violet relative overflow-hidden">
+                <h3 class="font-headline-md text-xl text-forest mb-6">Traffic Origins</h3>
+                <div class="flex items-center justify-between gap-8">
+                    <div class="relative w-36 h-36 flex-shrink-0">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                            <circle cx="18" cy="18" fill="none" r="16" stroke="#3D6B4F" stroke-dasharray="52 100" stroke-width="4"></circle>
+                            <circle cx="18" cy="18" fill="none" r="16" stroke="#7B5EA7" stroke-dasharray="28 100" stroke-dashoffset="-52" stroke-width="4"></circle>
+                            <circle cx="18" cy="18" fill="none" r="16" stroke="#C8973A" stroke-dasharray="14 100" stroke-dashoffset="-80" stroke-width="4"></circle>
+                            <circle cx="18" cy="18" fill="none" r="16" stroke="#8FAF82" stroke-dasharray="6 100" stroke-dashoffset="-94" stroke-width="4"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                            <span class="text-lg font-bold" id="traffic-total-val">1.2k</span>
+                            <span class="text-[8px] uppercase font-bold tracking-widest text-on-surface-variant">Visits</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-3" id="traffic-sources-list">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-forest"></span>
+                                <span class="text-sm font-medium">Reels</span>
+                            </div>
+                            <span class="text-sm font-semibold">52%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-violet"></span>
+                                <span class="text-sm font-medium">Direct</span>
+                            </div>
+                            <span class="text-sm font-semibold">28%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
+                                <span class="text-sm font-medium">Instagram</span>
+                            </div>
+                            <span class="text-sm font-semibold">14%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-sage"></span>
+                                <span class="text-sm font-medium">Google</span>
+                            </div>
+                            <span class="text-sm font-semibold">6%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversion Funnel -->
+            <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm watercolor-sage relative overflow-hidden">
+                <h3 class="font-headline-md text-xl text-forest mb-6">Purchase Journey</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-24 text-right text-xs font-bold uppercase tracking-wider text-on-surface-variant">Visits</div>
+                            <div class="flex-1 h-6 bg-forest rounded-r-lg shadow-sm" style="width: 100%"></div>
+                            <div class="w-16 text-sm font-semibold">312</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-24 text-right text-xs font-bold uppercase tracking-wider text-on-surface-variant font-medium">Product Views</div>
+                            <div class="flex-1 h-6 bg-forest/80 rounded-r-lg" style="width: 60%"></div>
+                            <div class="w-16 text-sm font-semibold">187</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-24 text-right text-xs font-bold uppercase tracking-wider text-on-surface-variant font-medium">Add to Bag</div>
+                            <div class="flex-1 h-6 bg-violet/60 rounded-r-lg" style="width: 17%"></div>
+                            <div class="w-16 text-sm font-semibold">54</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-24 text-right text-xs font-bold uppercase tracking-wider text-on-surface-variant font-medium">Orders</div>
+                            <div class="flex-1 h-6 bg-violet rounded-r-lg shadow-sm" style="width: 8%"></div>
+                            <div class="w-16 text-sm font-semibold">24</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Products Table -->
+        <section class="relative z-10">
+            <div class="bg-surface-container rounded-xl border border-sage/20 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-sage/10 flex justify-between items-center watercolor-sage/10">
+                    <h3 class="font-headline-md text-xl text-forest">Performance by Product</h3>
+                    <a href="/seller/catalog.html" class="text-gold flex items-center gap-1 font-bold text-sm">
+                        Full Catalog <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                    </a>
+                </div>
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface-container-high text-xs font-bold uppercase tracking-wider text-on-surface-variant border-b border-sage/20">
+                            <tr>
+                                <th class="px-6 py-4">Rank</th>
+                                <th class="px-6 py-4">Product Name</th>
+                                <th class="px-6 py-4">Units Sold</th>
+                                <th class="px-6 py-4">Revenue</th>
+                                <th class="px-6 py-4">CVR %</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-sage/10 text-sm" id="top-products-body">
+                            <tr class="hover:bg-surface-container-high transition-colors">
+                                <td class="px-6 py-4 text-gold font-bold flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">local_florist</span>
+                                    #1
+                                </td>
+                                <td class="px-6 py-4 font-semibold text-forest italic">"The Secret Garden" Embossed Journal</td>
+                                <td class="px-6 py-4">82</td>
+                                <td class="px-6 py-4">₹4,264</td>
+                                <td class="px-6 py-4">12.4%</td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-high transition-colors">
+                                <td class="px-6 py-4 text-on-surface-variant">#2</td>
+                                <td class="px-6 py-4 font-semibold text-forest italic">Botanist's Ink Palette (Sage &amp; Forest)</td>
+                                <td class="px-6 py-4">54</td>
+                                <td class="px-6 py-4">₹2,810</td>
+                                <td class="px-6 py-4">8.2%</td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-high transition-colors">
+                                <td class="px-6 py-4 text-on-surface-variant">#3</td>
+                                <td class="px-6 py-4 font-semibold text-forest italic">Dried Lavender Press Wax Seals (Set of 10)</td>
+                                <td class="px-6 py-4">48</td>
+                                <td class="px-6 py-4">₹1,240</td>
+                                <td class="px-6 py-4">15.1%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+let currentPeriod = '30d';
+
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = type==='success' ? 'check_circle' : 'error';
+    document.getElementById('toast-msg').textContent  = msg;
+    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
+        type==='success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
+    }`;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function formatPaise(paise) {
+    if (paise == null) return '₹0';
+    return '₹' + (paise / 100).toLocaleString('en-IN', { maximumFractionDigits: 2 });
+}
+
+function updateKpiBadge(badgeId, changePct) {
+    const badge = document.getElementById(badgeId);
+    if (!badge) return;
+    const isPositive = changePct > 0;
+    const isNegative = changePct < 0;
+    if (isPositive) {
+        badge.innerHTML = `<span class="material-symbols-outlined text-sm">arrow_upward</span> ${changePct}%`;
+        badge.className = "flex items-center gap-1 text-xs text-forest font-medium";
+    } else if (isNegative) {
+        badge.innerHTML = `<span class="material-symbols-outlined text-sm">arrow_downward</span> ${Math.abs(changePct)}%`;
+        badge.className = "flex items-center gap-1 text-xs text-error font-medium";
+    } else {
+        badge.innerHTML = `<span class="material-symbols-outlined text-sm">trending_flat</span> 0%`;
+        badge.className = "flex items-center gap-1 text-xs text-on-surface-variant font-medium";
+    }
+}
+
+// ── Draw SVG Revenue Chart ───────────────────────────────────────
+function renderRevenueChart(chartData) {
+    if (!chartData || chartData.length === 0) {
+        chartData = [
+            { label: 'Week 1', value: 120000 },
+            { label: 'Week 2', value: 240000 },
+            { label: 'Week 3', value: 180000 },
+            { label: 'Week 4', value: 320000 }
+        ];
+    }
+    const values = chartData.map(d => d.value);
+    const maxVal = Math.max(...values, 10000);
+    const minVal = Math.min(...values, 0);
+    const range = maxVal - minVal;
+    
+    const points = chartData.map((d, index) => {
+        const x = chartData.length > 1 ? (index / (chartData.length - 1)) * 100 : 50;
+        const normY = range > 0 ? (d.value - minVal) / range : 0.5;
+        const y = 90 - (normY * 80);
+        return { x, y, label: d.label };
+    });
+    
+    let pathD = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 1; i < points.length; i++) {
+        pathD += ` L ${points[i].x} ${points[i].y}`;
+    }
+    
+    const fillD = `${pathD} L ${points[points.length-1].x} 100 L ${points[0].x} 100 Z`;
+    
+    document.getElementById('chart-line-path').setAttribute('d', pathD);
+    document.getElementById('chart-fill-path').setAttribute('d', fillD);
+    
+    const labelContainer = document.getElementById('chart-labels');
+    if (labelContainer) {
+        labelContainer.innerHTML = points.map(p => `<span>${p.label}</span>`).join('');
+    }
+}
+
+// ── Load Analytics ────────────────────────────────────────────────
+async function loadAnalytics() {
+    const loading  = document.getElementById('loading-state');
+    const error    = document.getElementById('error-state');
+    const content  = document.getElementById('analytics-content');
+
+    loading.classList.remove('hidden');
+    error.classList.add('hidden');
+    content.classList.add('hidden');
+
+    const token = sessionStorage.getItem('tohfa_access_token');
+
+    try {
+        const res = await fetch(`${API_BASE}/api/seller/analytics?period=${currentPeriod}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const resp = await res.json();
+        const data = resp.data;
+
+        // Populate KPIs
+        document.getElementById('kpi-revenue').textContent = formatPaise(data.kpis?.revenue_paise);
+        updateKpiBadge('kpi-revenue-change', data.kpis?.revenue_change_pct || 0);
+
+        document.getElementById('kpi-aov').textContent = formatPaise(data.kpis?.avg_order_value_paise);
+        updateKpiBadge('kpi-aov-change', data.kpis?.avg_order_change_pct || 0);
+
+        document.getElementById('kpi-return-rate').textContent = (data.kpis?.return_rate_pct != null) ? `${data.kpis.return_rate_pct}%` : '—';
+        updateKpiBadge('kpi-return-rate-change', data.kpis?.return_rate_change_pct || 0);
+
+        document.getElementById('kpi-repeat-buyers').textContent = (data.kpis?.repeat_buyer_pct != null) ? `${data.kpis.repeat_buyer_pct}%` : '—';
+        updateKpiBadge('kpi-repeat-change', data.kpis?.repeat_buyer_change_pct || 0);
+
+        // Update ZAI Insight
+        const zaiTipCard = document.getElementById('zai-tip-card');
+        const zaiTipText = document.getElementById('zai-tip-text');
+        const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+        if (zaiEnabled && data.zai_insight) {
+            zaiTipText.textContent = data.zai_insight;
+            zaiTipCard.classList.remove('hidden');
+        } else {
+            zaiTipCard.classList.add('hidden');
+        }
+
+        // Render charts
+        renderRevenueChart(data.revenue_chart);
+
+        // Update traffic total
+        if (data.traffic) {
+            document.getElementById('traffic-total-val').textContent = data.traffic.total_visits || 0;
+        }
+
+        loading.classList.add('hidden');
+        content.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+
+    } catch (err) {
+        console.error('Load analytics error:', err);
+        loading.classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load analytics.';
+        error.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+    }
+}
+
+// ── Export CSV ────────────────────────────────────────────────────
+document.getElementById('export-btn').addEventListener('click', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const btn = document.getElementById('export-btn');
+    btn.disabled = true;
+    btn.textContent = 'Exporting…';
+
+    try {
+        const res = await fetch(`${API_BASE}/api/seller/analytics/export`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+        if (!res.ok) throw new Error('Export failed');
+
+        const csvText = await res.text();
+        const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `tohfa_analytics_${currentPeriod}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Export successful', 'success');
+    } catch (err) {
+        console.error('Export error:', err);
+        showToast('Failed to export CSV', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-sm">download</span> Export CSV`;
+    }
+});
+
+// ── ZAI Mode Sync ────────────────────────────────────────────────
+function updateZaiUI(enabled) {
+    const btn = document.getElementById('zai-toggle-btn');
+    if (btn) {
+        if (enabled) {
+            btn.classList.add('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+        } else {
+            btn.classList.remove('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+        }
+    }
+    const zaiTipCard = document.getElementById('zai-tip-card');
+    if (zaiTipCard) {
+        const hasText = document.getElementById('zai-tip-text')?.textContent.trim() !== '';
+        if (enabled && hasText) {
+            zaiTipCard.classList.remove('hidden');
+        } else {
+            zaiTipCard.classList.add('hidden');
+        }
+    }
+}
+
+const toggleBtn = document.getElementById('zai-toggle-btn');
+if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+        const isEnabled = toggleBtn.classList.contains('bg-primary-fixed');
+        const nextEnabled = !isEnabled;
+        
+        updateZaiUI(nextEnabled);
+        localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+        
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (token) {
+            fetch(`${API_BASE}/api/seller/zai-mode`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ enabled: nextEnabled })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data || !data.success) {
+                    console.error("Failed to update ZAI Mode in DB");
+                }
+            })
+            .catch(err => console.error("Error updating ZAI Mode:", err));
+        }
+    });
+}
+
+// ── Period filters click ─────────────────────────────────────────
+document.querySelectorAll('#period-filters button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('#period-filters button').forEach(b => {
+            b.className = "px-4 py-1.5 rounded-full text-xs font-semibold border border-sage/40 text-on-surface-variant hover:bg-surface-container-high transition-all";
+        });
+        btn.className = "px-4 py-1.5 rounded-full text-xs font-semibold bg-primary text-white shadow-md transition-all";
+        currentPeriod = btn.dataset.period;
+        loadAnalytics();
+    });
+});
+
+// ── Retry ────────────────────────────────────────────────────────
+document.getElementById('retry-btn').addEventListener('click', loadAnalytics);
+
+// ── Logout ────────────────────────────────────────────────────────
+document.getElementById('logout-btn').addEventListener('click', () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const refresh = sessionStorage.getItem('tohfa_refresh_token');
+    if (token && refresh) {
+        fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+    }
+    sessionStorage.clear(); window.location.href = '/auth/login.html';
+});
+
+// ── Init ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    // Initial local UI sync
+    const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+    updateZaiUI(zaiEnabled);
+
+    try {
+        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!pr.ok) throw new Error();
+        const pd = await pr.json();
+        const u  = pd.data || pd;
+        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+    } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+
+    loadAnalytics();
+});
+</script>
+</body>
+</html>
