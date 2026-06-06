@@ -104,6 +104,18 @@
         .active-tab { border-bottom: 2px solid #a8b48e; color: #a8b48e; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Skeleton loader animation */
+        @keyframes shimmer {
+            0% { background-position: -400px 0; }
+            100% { background-position: 400px 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #efe7dd 25%, #e0d9cf 50%, #efe7dd 75%);
+            background-size: 400px 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
@@ -121,151 +133,189 @@
 </button>
 </div>
 </nav>
+
 <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
-<!-- Artisan Header -->
-<section class="flex flex-col md:flex-row items-center md:items-end gap-8 mb-12">
-<div class="relative">
-<div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm">
-<img alt="Kshitija S. Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyx8cTgh0ysAX5AEJkAijVwfIu9t--iHWfefNfOQXTyBemA96kCFoa7R08AIlbw-KgpEvIBL2x7VgYWtCeBHb2w7cIxdy23PnUAcudhyhs57g-DO56lzzjvC8_QF5TXqKmHtR56y0dQtxDARdJrvIj9ZXWRIVrUaQL1XqItfhuII5EGxisXjJR-QjPue0hnK9sWF7xI0vRN7lboK9hJg3s2_JJD4c_8PuxuaoPfcqeu3xOdZtNzjLEzKq6W3kYuS87dNzJHBP6eI4"/>
-</div>
-<div class="absolute bottom-1 right-1 bg-custom-primary text-on-primary p-1 rounded-full border-2 border-surface">
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">verified</span>
-</div>
-</div>
-<div class="flex-grow text-center md:text-left">
-<h1 id="user-fullname" class="font-headline-md text-3xl mb-1">Kshitija S.</h1>
-<p class="font-body-md text-on-surface-variant mb-2 flex items-center justify-center md:justify-start gap-1">
-                    Artisan Studio <span class="w-1 h-1 rounded-full bg-outline mx-1"></span> Pune, India
+
+    <!-- ── ERROR STATE ─────────────────────────────────────────── -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p class="text-on-surface-variant text-center font-body-md" id="error-message">Failed to load dashboard data.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">
+            Try Again
+        </button>
+    </div>
+
+    <!-- ── LOADING SKELETON ────────────────────────────────────── -->
+    <div id="loading-state">
+        <!-- Header skeleton -->
+        <section class="flex flex-col md:flex-row items-center md:items-end gap-8 mb-12">
+            <div class="skeleton w-32 h-32 md:w-40 md:h-40 rounded-full"></div>
+            <div class="flex-grow space-y-3 w-full">
+                <div class="skeleton h-8 w-48 rounded"></div>
+                <div class="skeleton h-4 w-36 rounded"></div>
+                <div class="skeleton h-4 w-56 rounded"></div>
+                <div class="flex gap-10 pt-4">
+                    <div class="space-y-1"><div class="skeleton h-6 w-12 rounded"></div><div class="skeleton h-3 w-16 rounded mt-1"></div></div>
+                    <div class="space-y-1"><div class="skeleton h-6 w-12 rounded"></div><div class="skeleton h-3 w-16 rounded mt-1"></div></div>
+                    <div class="space-y-1"><div class="skeleton h-6 w-12 rounded"></div><div class="skeleton h-3 w-16 rounded mt-1"></div></div>
+                </div>
+            </div>
+        </section>
+        <!-- KPI skeleton -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="skeleton h-28 rounded-xl"></div>
+            <div class="skeleton h-28 rounded-xl"></div>
+            <div class="skeleton h-28 rounded-xl"></div>
+            <div class="skeleton h-28 rounded-xl"></div>
+        </div>
+        <!-- Table skeleton -->
+        <div class="skeleton h-48 rounded-xl"></div>
+    </div>
+
+    <!-- ── DASHBOARD CONTENT ──────────────────────────────────── -->
+    <div id="dashboard-content" class="hidden">
+
+        <!-- Artisan Header -->
+        <section class="flex flex-col md:flex-row items-center md:items-end gap-8 mb-12">
+            <div class="relative">
+                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm">
+                    <img id="seller-avatar" alt="Seller Profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Seller&background=a8b48e&color=fff"/>
+                </div>
+                <div class="absolute bottom-1 right-1 bg-custom-primary text-on-primary p-1 rounded-full border-2 border-surface">
+                    <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">verified</span>
+                </div>
+            </div>
+            <div class="flex-grow text-center md:text-left">
+                <h1 id="seller-name" class="font-headline-md text-3xl mb-1">—</h1>
+                <p class="font-body-md text-on-surface-variant mb-2 flex items-center justify-center md:justify-start gap-1">
+                    Artisan Studio
                 </p>
-<p id="user-email" class="font-body-md text-sm text-on-surface-variant mb-6"></p>
-<div class="flex gap-10 justify-center md:justify-start border-t border-outline-variant/30 pt-6">
-<div>
-<div class="text-xl font-semibold">2.4k</div>
-<div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Followers</div>
-</div>
-<div>
-<div class="text-xl font-semibold">184</div>
-<div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Following</div>
-</div>
-<div>
-<div class="text-xl font-semibold">1.2k</div>
-<div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Items Sold</div>
-</div>
-</div>
-</div>
-<div class="flex flex-col gap-3 w-full md:w-auto">
-<button class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Edit Profile</button>
-<button class="border border-outline text-on-surface py-2.5 px-8 rounded-full font-semibold text-sm hover:bg-surface-container transition-all">Share Studio</button>
-</div>
-</section>
-<!-- Tabs Section -->
-<nav class="flex border-b border-outline-variant/50 mb-10 overflow-x-auto no-scrollbar">
-<button class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4">Upload Reel</button>
-<button class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4">Upload Product</button>
-<button class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4">Activity</button>
-<button class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider active-tab transition-colors whitespace-nowrap px-4">Dashboard</button>
-</nav>
-<!-- Dashboard Content (Active) -->
-<div class="space-y-12">
-<!-- Analytics Cards -->
-<section>
-<div class="flex items-center justify-between mb-6">
-<h2 class="font-headline-md text-2xl">Studio Analytics</h2>
-<span class="text-xs font-semibold px-3 py-1 bg-surface-container rounded-full text-on-surface-variant">LAST 30 DAYS</span>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-<div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Revenue</div>
-<div class="text-2xl font-bold text-custom-primary mb-1">₹84,200</div>
-<div class="flex items-center gap-1 text-sm text-custom-primary font-medium">
-<span class="material-symbols-outlined text-sm">trending_up</span> +12.4%
+                <p id="seller-date" class="font-body-md text-sm text-on-surface-variant mb-6"></p>
+                <div class="flex gap-10 justify-center md:justify-start border-t border-outline-variant/30 pt-6">
+                    <div>
+                        <div id="stat-orders" class="text-xl font-semibold">—</div>
+                        <div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Orders (period)</div>
+                    </div>
+                    <div>
+                        <div id="stat-revenue" class="text-xl font-semibold">—</div>
+                        <div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Revenue</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-3 w-full md:w-auto">
+                <a href="/seller/profile.html" class="bg-custom-primary text-on-primary text-center py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Edit Profile</a>
+                <button class="border border-outline text-on-surface py-2.5 px-8 rounded-full font-semibold text-sm hover:bg-surface-container transition-all">Share Studio</button>
+            </div>
+        </section>
+
+        <!-- Tabs Section -->
+        <nav class="flex border-b border-outline-variant/50 mb-10 overflow-x-auto no-scrollbar">
+            <a href="/seller/upload-reel.html" class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4 text-center">Upload Reel</a>
+            <a href="/seller/catalog.html" class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4 text-center">Upload Product</a>
+            <a href="/seller/orders.html" class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4 text-center">Activity</a>
+            <span class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider active-tab transition-colors whitespace-nowrap px-4 text-center cursor-default">Dashboard</span>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="space-y-12">
+
+            <!-- ZAI Tip Banner -->
+            <div id="zai-tip-banner" class="hidden bg-primary-fixed border border-primary-fixed-dim rounded-xl px-6 py-4 flex items-start gap-3">
+                <span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                <div>
+                    <p class="text-sm font-semibold text-on-primary-container mb-0.5">ZAI Mode Tip</p>
+                    <p id="zai-tip-text" class="text-sm text-on-primary-fixed-variant"></p>
+                </div>
+            </div>
+
+            <!-- Analytics KPI Cards -->
+            <section>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="font-headline-md text-2xl">Studio Analytics</h2>
+                    <span id="period-badge" class="text-xs font-semibold px-3 py-1 bg-surface-container rounded-full text-on-surface-variant uppercase tracking-widest">Last 7 Days</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Revenue -->
+                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
+                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Revenue</div>
+                        <div id="kpi-revenue" class="text-2xl font-bold text-custom-primary mb-1">—</div>
+                        <div id="kpi-revenue-change" class="flex items-center gap-1 text-sm text-custom-primary font-medium">
+                            <span class="material-symbols-outlined text-sm">trending_flat</span> —
                         </div>
-</div>
-<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-<div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Items Sold</div>
-<div class="text-2xl font-bold text-custom-primary mb-1">152</div>
-<div class="flex items-center gap-1 text-sm text-custom-primary font-medium">
-<span class="material-symbols-outlined text-sm">trending_up</span> +5.2%
+                    </div>
+                    <!-- Orders -->
+                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
+                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Orders</div>
+                        <div id="kpi-orders" class="text-2xl font-bold text-custom-primary mb-1">—</div>
+                        <div id="kpi-orders-change" class="flex items-center gap-1 text-sm text-custom-primary font-medium">
+                            <span class="material-symbols-outlined text-sm">trending_flat</span> —
                         </div>
-</div>
-<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-<div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Views</div>
-<div class="text-2xl font-bold text-custom-primary mb-1">18.4k</div>
-<div class="text-sm text-on-surface-variant">Daily avg: 613</div>
-</div>
-<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-<div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Conversion</div>
-<div class="text-2xl font-bold text-custom-primary mb-1">3.2%</div>
-<div class="text-sm text-on-surface-variant">Market avg: 2.1%</div>
-</div>
-</div>
-</section>
-<!-- Active Products -->
-<section>
-<div class="flex items-center justify-between mb-8">
-<h2 class="font-headline-md text-2xl">Active Products (24)</h2>
-<a class="text-xs font-bold text-custom-primary hover:underline underline-offset-4 tracking-widest uppercase" href="#">View All</a>
-</div>
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-gutter">
-<!-- Product 1 -->
-<div class="group">
-<div class="aspect-[4/5] rounded-xl overflow-hidden bg-surface-container mb-4 relative shadow-sm">
-<img alt="Leather Corset Belt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXFpa8EVPtx07GH6qcZvdG5tpGQvhYFyGE5brZ6ybfVF-F67kk5-P294I7NxYrDJkRS969cBUgoxu_iSJ4cZ1GobEIIgCumwGznMaetOoz3Ncqu2MZU34QGLcIVyR5N6EtLpjgax33ZR-wdAQgTgZbRw4wl9t-oIb3_n1V7ViOMobi9k3p9bXKkosW_RBLQMoVLSX92MRQqCoRVdfTISpw1QgWhi-nzJdcgacb2gfTGcA1uAazCAccunfiQ2r6r4_uu1BMwXJWS-Q"/>
-<button class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-sm text-on-surface">edit</span>
-</button>
-</div>
-<h3 class="font-semibold mb-1 truncate">Leather Corset Belt</h3>
-<div class="flex justify-between items-center">
-<span class="text-custom-primary font-bold">₹4,500</span>
-<span class="text-[10px] font-bold text-on-primary bg-custom-primary px-2 py-0.5 rounded uppercase tracking-tighter">8 In Stock</span>
-</div>
-</div>
-<!-- Product 2 -->
-<div class="group">
-<div class="aspect-[4/5] rounded-xl overflow-hidden bg-surface-container mb-4 relative shadow-sm">
-<img alt="Upcycled Earring Set" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpPg24LPb0_9c16w4eVXW-erQjt867A61ersf9FrSGJcdoe-tOr-3hZ9Rs-1ey2Ha6DH1dv52yX1Z5pr_9V_8RkJZ0gGW86Iaw6SuP44vQzkHuozoef7A_7Cpw7Y6XNeUPREDpS1c5HLHju3Za5wCr9PYNrVaspNjjur1NPFnpTdVXVOr52BWEL0bdGnfdCGqmF03YhBdj5TUwckLoFqnLxiIZx3lwPCgSeH99ZqEhfMyzI1I72Te6AYIoCzOTBn7lKkPG3dSiZvw"/>
-<button class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-sm text-on-surface">edit</span>
-</button>
-</div>
-<h3 class="font-semibold mb-1 truncate">Upcycled Earring Set</h3>
-<div class="flex justify-between items-center">
-<span class="text-custom-primary font-bold">₹1,200</span>
-<span class="text-[10px] font-bold text-on-primary bg-custom-primary px-2 py-0.5 rounded uppercase tracking-tighter">2 In Stock</span>
-</div>
-</div>
-<!-- Product 3 -->
-<div class="group">
-<div class="aspect-[4/5] rounded-xl overflow-hidden bg-surface-container mb-4 relative shadow-sm">
-<img alt="Botanical Vase" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIsp6wd3drN7cRJ8m3X5aF760bcZHIwqQpufBvKQ-EblZ46drFcYbm59Q8eYtIRSJ59mrW4_cQVjnsgP0NGQupkNdPqMA1-pUsvsxDURFNo9pX90FgmpFQxwMQLa7_aH313yGxcIuH0jxZBTnweLN2NOBjwbgtFrkJTvf_QI2iFxs4-XDwtZYuOzIxSjRbRDyz04B2KfFsifBQJhlI45dTiTjk_DFGy1qeDmUoVmrvPwEVG9_k4vzwjgkRFPZzFLShyD9E2Wp8xxg"/>
-<button class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-sm text-on-surface">edit</span>
-</button>
-</div>
-<h3 class="font-semibold mb-1 truncate">Botanical Vase</h3>
-<div class="flex justify-between items-center">
-<span class="text-custom-primary font-bold">₹2,800</span>
-<span class="text-[10px] font-bold text-error bg-error-container px-2 py-0.5 rounded uppercase tracking-tighter">Sold Out</span>
-</div>
-</div>
-<!-- Product 4 -->
-<div class="group">
-<div class="aspect-[4/5] rounded-xl overflow-hidden bg-surface-container mb-4 relative shadow-sm">
-<img alt="Hand-bound Journal" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7wxKkCl_PpYT8uGbsZZRkVydLG9IISxfXNYQ82U26Rf_7n3zupL36IlpjSez0S9pvrtUFEOeuTDw9irnSsS-bneq2iUcow9m95dACuzteHbiQ_89UJ_oTzftuLXjm6Rneh9bd5TCWn6Ixd2kSNK6lEOLvNTHKu0w323rM9jIWzEWlVWvG_PvjuvL7jB_QeoWq0NNHXrLQenYA0mQBlE1moFle9DV8rYDu-QmnRHGRqa3ExEn-rxyfQx7dC9NwE18CU_LP8NXSdDg"/>
-<button class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-sm text-on-surface">edit</span>
-</button>
-</div>
-<h3 class="font-semibold mb-1 truncate">Hand-bound Journal</h3>
-<div class="flex justify-between items-center">
-<span class="text-custom-primary font-bold">₹1,550</span>
-<span class="text-[10px] font-bold text-on-primary bg-custom-primary px-2 py-0.5 rounded uppercase tracking-tighter">15 In Stock</span>
-</div>
-</div>
-</div>
-</section>
-</div>
+                    </div>
+                    <!-- Visits -->
+                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
+                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Visits</div>
+                        <div id="kpi-visits" class="text-2xl font-bold text-custom-primary mb-1">—</div>
+                        <div class="text-sm text-on-surface-variant">Profile page views</div>
+                    </div>
+                    <!-- Conversion -->
+                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
+                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Conversion</div>
+                        <div id="kpi-conversion" class="text-2xl font-bold text-custom-primary mb-1">—</div>
+                        <div class="text-sm text-on-surface-variant">Orders / Visits</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Low Stock Alerts -->
+            <section id="low-stock-section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="font-headline-md text-2xl flex items-center gap-2">
+                        <span class="material-symbols-outlined text-error text-2xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        Low Stock Alerts
+                    </h2>
+                    <a href="/seller/catalog.html" class="text-xs font-bold text-custom-primary hover:underline underline-offset-4 tracking-widest uppercase">Manage All</a>
+                </div>
+                <div id="low-stock-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+                <p id="low-stock-empty" class="hidden text-center text-on-surface-variant py-8 text-sm">All products are well-stocked 🎉</p>
+            </section>
+
+            <!-- Recent Orders -->
+            <section>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="font-headline-md text-2xl">Recent Orders</h2>
+                    <a href="/seller/orders.html" class="text-xs font-bold text-custom-primary hover:underline underline-offset-4 tracking-widest uppercase">View All</a>
+                </div>
+                <div class="bg-surface-container-low rounded-xl border border-outline-variant/20 overflow-hidden shadow-sm">
+                    <table class="w-full text-sm">
+                        <thead class="bg-surface-container border-b border-outline-variant/30">
+                            <tr>
+                                <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Order ID</th>
+                                <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden sm:table-cell">Item</th>
+                                <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden md:table-cell">Buyer</th>
+                                <th class="text-right py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Amount</th>
+                                <th class="text-center py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                    <p id="orders-empty" class="hidden text-center text-on-surface-variant py-8 text-sm">No orders yet. Start selling!</p>
+                </div>
+            </section>
+
+            <!-- Announcements -->
+            <section id="announcements-section" class="hidden">
+                <h2 class="font-headline-md text-2xl mb-6">Studio Announcements</h2>
+                <div id="announcements-list" class="space-y-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+        </div>
+    </div>
 
 </main>
 <!-- Simple Footer -->
@@ -274,92 +324,258 @@
 </footer>
 
 <script>
-        const API_BASE_URL = window.location.origin;
+    const API_BASE_URL = window.location.origin;
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            const accessToken = sessionStorage.getItem('tohfa_access_token');
-            if (!accessToken) {
-                // Not logged in: instantly redirect
+    // ── Utility: format paise to ₹ ───────────────────────────────
+    function formatPaise(paise) {
+        if (paise == null) return '₹0.00';
+        const rupees = paise / 100;
+        return '₹' + rupees.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // ── Utility: order status badge ───────────────────────────────
+    function statusBadge(status) {
+        const map = {
+            pending:    { cls: 'bg-secondary-container text-on-secondary-container', label: 'Pending' },
+            processing: { cls: 'bg-primary-fixed text-on-primary-container', label: 'Processing' },
+            shipped:    { cls: 'bg-tertiary-fixed text-on-tertiary-container', label: 'Shipped' },
+            delivered:  { cls: 'bg-primary-container text-on-primary-container', label: 'Delivered' },
+            cancelled:  { cls: 'bg-error-container text-on-error-container', label: 'Cancelled' },
+            refunded:   { cls: 'bg-surface-container-high text-on-surface-variant', label: 'Refunded' },
+        };
+        const s = map[status] || { cls: 'bg-surface-container text-on-surface-variant', label: status };
+        return `<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter ${s.cls}">${s.label}</span>`;
+    }
+
+    // ── Utility: period label ─────────────────────────────────────
+    function periodLabel(period) {
+        return { '7d': 'Last 7 Days', '30d': 'Last 30 Days', '90d': 'Last 90 Days' }[period] || period;
+    }
+
+    // ── Utility: change indicator ─────────────────────────────────
+    function changeBadge(pct) {
+        if (pct === 0) return '<span class="material-symbols-outlined text-sm">trending_flat</span> 0%';
+        if (pct > 0) return `<span class="material-symbols-outlined text-sm">trending_up</span> +${pct.toFixed(1)}%`;
+        return `<span class="material-symbols-outlined text-sm text-error">trending_down</span> ${pct.toFixed(1)}%`;
+    }
+
+    // ── Render dashboard with API data ────────────────────────────
+    function renderDashboard(data) {
+        const { seller, date_label, period, kpis, low_stock_alerts, recent_orders, announcements, zai_tip } = data;
+
+        // Header
+        document.getElementById('seller-name').textContent = seller.display_name || 'Artisan Studio';
+        document.getElementById('seller-date').textContent = date_label || '';
+        if (seller.avatar_url) {
+            document.getElementById('seller-avatar').src = seller.avatar_url;
+        }
+
+        // Header stats
+        document.getElementById('stat-orders').textContent = kpis.total_orders ?? 0;
+        document.getElementById('stat-revenue').textContent = formatPaise(kpis.order_value_paise);
+
+        // Period badge
+        document.getElementById('period-badge').textContent = periodLabel(period);
+
+        // KPI Cards
+        document.getElementById('kpi-revenue').textContent = formatPaise(kpis.order_value_paise);
+        document.getElementById('kpi-revenue-change').innerHTML = changeBadge(kpis.order_value_change_pct || 0);
+
+        document.getElementById('kpi-orders').textContent = kpis.total_orders ?? 0;
+        document.getElementById('kpi-orders-change').innerHTML = changeBadge(kpis.new_orders_since_last_period || 0);
+
+        document.getElementById('kpi-visits').textContent = kpis.website_visits != null
+            ? kpis.website_visits.toLocaleString('en-IN')
+            : '—';
+
+        const convRate = kpis.conversion_rate;
+        document.getElementById('kpi-conversion').textContent = convRate != null ? `${(convRate * 100).toFixed(1)}%` : '—';
+
+        // ZAI Tip
+        if (zai_tip) {
+            document.getElementById('zai-tip-banner').classList.remove('hidden');
+            document.getElementById('zai-tip-text').textContent = zai_tip;
+        }
+
+        // Low Stock Alerts
+        const lowStockList = document.getElementById('low-stock-list');
+        const lowStockEmpty = document.getElementById('low-stock-empty');
+        if (low_stock_alerts && low_stock_alerts.length > 0) {
+            lowStockList.innerHTML = low_stock_alerts.map(item => {
+                const stockColor = item.stock_count === 0
+                    ? 'text-error bg-error-container'
+                    : 'text-on-primary-container bg-primary-fixed';
+                return `
+                    <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-4 flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="font-semibold text-sm truncate max-w-[180px]">${item.title}</p>
+                            <p class="text-xs text-on-surface-variant mt-0.5">Listing ID: ${item.listing_id}</p>
+                        </div>
+                        <span class="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-tight ${stockColor}">
+                            ${item.stock_count === 0 ? 'Out of Stock' : item.stock_count + ' left'}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            lowStockList.classList.add('hidden');
+            lowStockEmpty.classList.remove('hidden');
+        }
+
+        // Recent Orders
+        const tbody = document.getElementById('recent-orders-body');
+        const ordersEmpty = document.getElementById('orders-empty');
+        if (recent_orders && recent_orders.length > 0) {
+            tbody.innerHTML = recent_orders.map(order => `
+                <tr class="border-b border-outline-variant/20 hover:bg-surface-container/50 transition-colors">
+                    <td class="py-3 px-4 font-mono text-xs text-on-surface-variant">${order.order_id || '—'}</td>
+                    <td class="py-3 px-4 hidden sm:table-cell">
+                        <span class="font-medium text-sm truncate max-w-[150px] block">${order.item_title || '—'}</span>
+                    </td>
+                    <td class="py-3 px-4 hidden md:table-cell text-sm text-on-surface-variant">${order.buyer_name || '—'}</td>
+                    <td class="py-3 px-4 text-right font-semibold text-sm text-custom-primary">${formatPaise(order.amount_paise)}</td>
+                    <td class="py-3 px-4 text-center">${statusBadge(order.status)}</td>
+                </tr>
+            `).join('');
+        } else {
+            tbody.parentElement.classList.add('hidden');
+            ordersEmpty.classList.remove('hidden');
+        }
+
+        // Announcements
+        if (announcements && announcements.length > 0) {
+            const section = document.getElementById('announcements-section');
+            const list = document.getElementById('announcements-list');
+            section.classList.remove('hidden');
+            list.innerHTML = announcements.map(ann => `
+                <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-5 flex gap-4 items-start shadow-sm">
+                    <span class="material-symbols-outlined text-custom-primary text-2xl mt-0.5" style="font-variation-settings: 'FILL' 1;">${ann.icon || 'campaign'}</span>
+                    <div>
+                        <p class="font-semibold mb-1">${ann.title}</p>
+                        <p class="text-sm text-on-surface-variant">${ann.body}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // ── Main load function ────────────────────────────────────────
+    async function loadDashboard() {
+        const loadingEl = document.getElementById('loading-state');
+        const errorEl   = document.getElementById('error-state');
+        const contentEl = document.getElementById('dashboard-content');
+
+        // Show loading, hide others
+        loadingEl.classList.remove('hidden');
+        errorEl.classList.add('hidden');
+        contentEl.classList.add('hidden');
+
+        const accessToken = sessionStorage.getItem('tohfa_access_token');
+        if (!accessToken) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/seller/dashboard`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                sessionStorage.clear();
                 window.location.href = '/auth/login.html';
                 return;
             }
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/profile/me`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                });
-
-                if (response.status !== 200) {
-                    throw new Error("Unauthorized");
-                }
-
-                const resp = await response.json();
-                const user = resp.data || resp;
-                
-                // If user is a buyer, redirect them to the buyer profile!
-                if (user.role !== 'seller') {
-                    window.location.href = '/profile.html';
-                    return;
-                }
-
-                // Populate Seller fields dynamically
-                const fullnameElem = document.getElementById('user-fullname');
-                const emailElem = document.getElementById('user-email');
-
-                if (fullnameElem) fullnameElem.textContent = user.full_name || 'Anonymous Studio';
-                if (emailElem) emailElem.textContent = user.email;
-
-                // Unhide the page contents gracefully
-                const bodyContent = document.getElementById('body-content');
-                if (bodyContent) {
-                    bodyContent.classList.remove('opacity-0');
-                }
-
-            } catch (err) {
-                console.error("Session verification failed:", err);
-                sessionStorage.clear();
-                window.location.href = '/auth/login.html';
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
             }
-        });
 
-        // Logout listener
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function() {
-                const accessToken = sessionStorage.getItem('tohfa_access_token');
-                const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
+            const resp = await response.json();
+            const data = resp.data || resp;
 
-                if (accessToken && refreshToken) {
-                    fetch('/api/auth/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${accessToken}`
-                        },
-                        body: JSON.stringify({ refresh_token: refreshToken })
-                    }).catch(err => console.error("Logout request failed:", err));
-                }
-                sessionStorage.removeItem('tohfa_access_token');
-                sessionStorage.removeItem('tohfa_refresh_token');
-                sessionStorage.removeItem('tohfa_user');
-                window.location.href = '/auth/login.html';
-            });
+            // Verify role via profile if needed
+            if (!data.seller) {
+                throw new Error('Not a seller account');
+            }
+
+            loadingEl.classList.add('hidden');
+            contentEl.classList.remove('hidden');
+            renderDashboard(data);
+
+            // Fade in body
+            document.getElementById('body-content').classList.remove('opacity-0');
+
+        } catch (err) {
+            console.error('Dashboard load error:', err);
+            loadingEl.classList.add('hidden');
+            document.getElementById('error-message').textContent =
+                err.message || 'Failed to load dashboard. Please try again.';
+            errorEl.classList.remove('hidden');
+            document.getElementById('body-content').classList.remove('opacity-0');
+        }
+    }
+
+    // ── DOMContentLoaded ──────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', async function () {
+        // Guard: must have session
+        const accessToken = sessionStorage.getItem('tohfa_access_token');
+        if (!accessToken) {
+            window.location.href = '/auth/login.html';
+            return;
         }
 
-        // Micro-interaction for active scaling
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', () => {
-                btn.style.transform = 'scale(0.97)';
+        // Guard: verify role is seller
+        try {
+            const profileRes = await fetch(`${API_BASE_URL}/api/profile/me`, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
             });
-            btn.addEventListener('mouseup', () => {
-                btn.style.transform = 'scale(1)';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'scale(1)';
-            });
-        });
-    </script>
+            if (!profileRes.ok) throw new Error('Auth check failed');
+            const profileData = await profileRes.json();
+            const user = profileData.data || profileData;
+            if (user.role !== 'seller') {
+                window.location.href = '/buyer/profile.html';
+                return;
+            }
+        } catch (e) {
+            sessionStorage.clear();
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        await loadDashboard();
+    });
+
+    // ── Retry button ──────────────────────────────────────────────
+    document.getElementById('retry-btn').addEventListener('click', loadDashboard);
+
+    // ── Logout listener ───────────────────────────────────────────
+    document.getElementById('logout-btn').addEventListener('click', function () {
+        const accessToken = sessionStorage.getItem('tohfa_access_token');
+        const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
+
+        if (accessToken && refreshToken) {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ refresh_token: refreshToken })
+            }).catch(err => console.error('Logout request failed:', err));
+        }
+        sessionStorage.removeItem('tohfa_access_token');
+        sessionStorage.removeItem('tohfa_refresh_token');
+        sessionStorage.removeItem('tohfa_user');
+        window.location.href = '/auth/login.html';
+    });
+
+    // ── Micro-interactions ────────────────────────────────────────
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', () => { btn.style.transform = 'scale(0.97)'; });
+        btn.addEventListener('mouseup',   () => { btn.style.transform = 'scale(1)'; });
+        btn.addEventListener('mouseleave',() => { btn.style.transform = 'scale(1)'; });
+    });
+</script>
 </body></html>
