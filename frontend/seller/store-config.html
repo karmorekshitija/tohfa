@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Store Configuration | Seller Studio | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: { extend: {
+            "colors": {
+                "surface-container-low":"#faf2e9","surface-container":"#f4ede3","surface-container-high":"#efe7dd",
+                "surface-container-highest":"#e9e1d8","outline-variant":"#c6c7bb","outline":"#76786e",
+                "on-surface":"#1e1b15","on-surface-variant":"#45483f","surface":"#fff8f1","background":"#fff8f1",
+                "primary":"#576242","primary-fixed":"#dbe8bf","primary-fixed-dim":"#bfcba4",
+                "on-primary":"#ffffff","on-primary-container":"#3c4628","custom-primary":"#a8b48e",
+                "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
+                "secondary-container":"#f7d5f8","on-secondary-container":"#745a78",
+                "tertiary-fixed":"#e7e2d9","on-tertiary-container":"#44423c",
+                "parchment": "#F7F3EC", "forest": "#3D6B4F", "sage": "#8FAF82", "violet": "#7B5EA7", "gold": "#C8973A"
+            },
+            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
+            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
+        }}
+    }
+</script>
+<style>
+    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
+    h1,h2,h3 { font-family:'EB Garamond',serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .fade-in { animation:fadeIn 0.25s ease forwards; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+    </div>
+    <div class="flex items-center gap-3">
+        <button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary-fixed text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
+            <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+            ZAI Mode
+        </button>
+        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full">
+            <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Header Section -->
+    <section class="flex justify-between items-end mb-8">
+        <div>
+            <h1 class="font-headline-md text-3xl mb-1">Store Configuration</h1>
+            <p class="text-sm text-on-surface-variant">Manage your setup, shipping, team access, and store policies.</p>
+        </div>
+        <button id="save-config-btn" class="bg-primary text-on-primary px-6 py-2.5 rounded-full text-xs font-semibold shadow-md hover:brightness-110 transition-all active:scale-95">
+            Save Settings
+        </button>
+    </section>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load configuration.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div id="loading-state" class="space-y-8">
+        <div class="skeleton h-40 rounded-xl"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="skeleton h-48 rounded-xl"></div>
+            <div class="skeleton h-48 rounded-xl"></div>
+            <div class="skeleton h-48 rounded-xl"></div>
+        </div>
+    </div>
+
+    <!-- Configuration Content -->
+    <div id="config-content" class="hidden space-y-10">
+
+        <!-- (A) Onboarding Setup Checklist -->
+        <section class="bg-surface-container rounded-xl border border-outline-variant/30 p-6 shadow-sm">
+            <h3 class="font-headline-md text-xl text-primary mb-6">Artisan Setup Progress</h3>
+            <div id="checklist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- (B) Store Details & Shipping Grid -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 1. Delivery & Orders -->
+            <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-5">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-headline-md text-lg text-primary flex items-center gap-2">
+                        <span class="material-symbols-outlined">local_shipping</span>
+                        Delivery Settings
+                    </h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-surface rounded-lg border border-outline-variant/20">
+                        <span class="text-sm font-semibold">Accepting Orders</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input id="accept-orders-chk" class="sr-only peer" type="checkbox">
+                            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-surface rounded-lg border border-outline-variant/20">
+                        <span class="text-sm font-semibold">Flat Fee Shipping</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input id="flat-fee-chk" class="sr-only peer" type="checkbox">
+                            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-surface rounded-lg border border-outline-variant/20">
+                        <span class="text-sm font-semibold">Store Pickup</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input id="store-pickup-chk" class="sr-only peer" type="checkbox">
+                            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Payouts -->
+            <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="font-headline-md text-lg text-primary flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined">payments</span>
+                        Payouts
+                    </h3>
+                    <div class="flex flex-wrap gap-2 mb-6" id="payout-methods">
+                        <!-- Populated -->
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs text-on-surface-variant uppercase tracking-wider font-bold mb-1">Pending Payout</p>
+                    <p id="pending-payout-val" class="text-2xl font-bold text-forest">—</p>
+                    <a class="text-xs text-custom-primary hover:underline mt-2 block font-semibold" href="/seller/payouts.html">View payout history →</a>
+                </div>
+            </div>
+
+            <!-- 3. Store URL -->
+            <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="font-headline-md text-lg text-primary flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined">palette</span>
+                        Appearance
+                    </h3>
+                    <p class="text-xs text-on-surface-variant mb-2">Your public store URL:</p>
+                    <p id="store-url-val" class="text-sm font-semibold text-primary select-all py-2 px-3 bg-surface rounded border border-outline-variant/20 truncate">—</p>
+                </div>
+                <button id="copy-url-btn" class="w-full mt-4 py-2 bg-surface hover:bg-surface-container-high text-on-surface border border-outline-variant/30 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">content_copy</span> Copy URL
+                </button>
+            </div>
+        </section>
+
+        <!-- (C) Team Members -->
+        <section class="bg-surface-container rounded-xl border border-outline-variant/30 p-6 shadow-sm">
+            <h3 class="font-headline-md text-xl text-primary mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined">group</span>
+                Team Access
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Invite -->
+                <div class="lg:col-span-1 p-5 bg-surface border border-outline-variant/20 rounded-xl flex flex-col justify-center">
+                    <p class="text-xs text-on-surface-variant mb-3 font-semibold">Invite a team member:</p>
+                    <div class="flex gap-2">
+                        <input id="invite-email" class="flex-1 px-3 py-2 bg-surface-container border border-outline-variant rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="colleague@studio.com" type="email">
+                        <button id="invite-btn" class="bg-primary text-on-primary px-4 rounded-lg text-xs font-semibold hover:opacity-90">Invite</button>
+                    </div>
+                </div>
+                <!-- Members List -->
+                <div class="lg:col-span-2 space-y-3" id="team-members-list">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- (D) Policies -->
+        <section class="bg-surface-container rounded-xl border border-outline-variant/30 p-6 shadow-sm">
+            <h3 class="font-headline-md text-xl text-primary mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined">description</span>
+                Store Policies
+            </h3>
+            <div class="space-y-4">
+                <!-- Return Policy -->
+                <div class="bg-surface p-5 border border-outline-variant/20 rounded-xl">
+                    <label for="return-policy-txt" class="block text-sm font-bold text-primary mb-2">Returns & Exchanges Policy</label>
+                    <textarea id="return-policy-txt" class="w-full h-32 p-3 bg-surface-container border border-outline-variant rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary font-serif leading-relaxed" placeholder="Define your refund and returns rules here..."></textarea>
+                </div>
+                <!-- Contact Email -->
+                <div class="bg-surface p-5 border border-outline-variant/20 rounded-xl">
+                    <label for="contact-email-txt" class="block text-sm font-bold text-primary mb-2">Customer Contact Email</label>
+                    <input id="contact-email-txt" class="w-full p-2.5 bg-surface-container border border-outline-variant rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="support@yourstore.com" type="email">
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = type==='success' ? 'check_circle' : 'error';
+    document.getElementById('toast-msg').textContent  = msg;
+    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
+        type==='success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
+    }`;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function formatPaise(paise) {
+    if (paise == null) return '₹0.00';
+    return '₹' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ── Load Config ──────────────────────────────────────────────────
+async function loadConfig() {
+    const loading  = document.getElementById('loading-state');
+    const error    = document.getElementById('error-state');
+    const content  = document.getElementById('config-content');
+
+    loading.classList.remove('hidden');
+    error.classList.add('hidden');
+    content.classList.add('hidden');
+
+    const token = sessionStorage.getItem('tohfa_access_token');
+
+    try {
+        const res = await fetch(`${API_BASE}/api/seller/store-config`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const resp = await res.json();
+        const data = resp.data;
+
+        // Onboarding steps
+        const checklistGrid = document.getElementById('checklist-grid');
+        checklistGrid.innerHTML = Object.entries(data.onboarding_steps || {}).map(([key, val]) => {
+            const isDone = val.complete;
+            return `
+            <div class="flex items-start gap-3 fade-in">
+                <div class="w-8 h-8 rounded-full ${isDone ? 'bg-primary text-on-primary' : 'border-2 border-outline/30 text-on-surface-variant'} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-lg">${isDone ? 'check' : 'hourglass_empty'}</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm text-on-surface">${val.label}</h4>
+                    <p class="text-xs text-on-surface-variant">${val.status}</p>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Toggles
+        document.getElementById('accept-orders-chk').checked = !!data.onboarding_steps?.accept_orders?.complete;
+        document.getElementById('flat-fee-chk').checked     = !!data.shipping?.flat_fee_enabled;
+        document.getElementById('store-pickup-chk').checked  = !!data.shipping?.store_pickup_enabled;
+
+        // Payout methods
+        const methodsWrap = document.getElementById('payout-methods');
+        methodsWrap.innerHTML = (data.payment_methods || []).map(m => `
+            <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary-fixed-dim/40 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">verified</span> ${m}
+            </span>
+        `).join('');
+
+        document.getElementById('pending-payout-val').textContent = formatPaise(data.pending_payout_paise);
+
+        // Store URL
+        const storeUrl = data.store_url || 'tofa.art/your-store';
+        document.getElementById('store-url-val').textContent = storeUrl;
+
+        // Copy click
+        document.getElementById('copy-url-btn').onclick = () => {
+            navigator.clipboard.writeText(storeUrl).then(() => {
+                showToast('URL copied to clipboard!', 'success');
+            });
+        };
+
+        // Policies
+        document.getElementById('return-policy-txt').value = data.return_policy || '';
+        document.getElementById('contact-email-txt').value = data.contact_email || '';
+
+        // Team members
+        const teamWrap = document.getElementById('team-members-list');
+        if (data.team_members && data.team_members.length > 0) {
+            teamWrap.innerHTML = data.team_members.map(member => `
+                <div class="flex items-center justify-between p-3 border border-outline-variant/20 rounded-lg bg-surface">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">
+                            ${(member.name || member.email || '?')[0].toUpperCase()}
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-on-surface">${member.name || 'Artisan'}</p>
+                            <p class="text-xs text-on-surface-variant">${member.email}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full uppercase tracking-widest">${member.role}</span>
+                </div>
+            `).join('');
+        } else {
+            teamWrap.innerHTML = `<p class="text-xs text-on-surface-variant italic p-4 text-center">No other team members yet.</p>`;
+        }
+
+        loading.classList.add('hidden');
+        content.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+
+    } catch (err) {
+        console.error('Load config error:', err);
+        loading.classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load configuration.';
+        error.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+    }
+}
+
+// ── Save Settings ────────────────────────────────────────────────
+document.getElementById('save-config-btn').addEventListener('click', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const btn = document.getElementById('save-config-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const accept_orders = document.getElementById('accept-orders-chk').checked;
+    const flat_fee_enabled = document.getElementById('flat-fee-chk').checked;
+    const store_pickup_enabled = document.getElementById('store-pickup-chk').checked;
+    const return_policy = document.getElementById('return-policy-txt').value.trim();
+    const contact_email = document.getElementById('contact-email-txt').value.trim();
+
+    const payload = {
+        accept_orders,
+        return_policy,
+        contact_email,
+        shipping: { flat_fee_enabled, store_pickup_enabled }
+    };
+
+    try {
+        const res = await fetch(`${API_BASE}/api/seller/store-config`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Save failed');
+
+        showToast('Settings saved', 'success');
+        // Refresh to sync onboarding checklist progress
+        await loadConfig();
+    } catch (err) {
+        console.error('Save config error:', err);
+        showToast(err.message || 'Failed to save settings.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Settings';
+    }
+});
+
+// ── Invite Team Member ───────────────────────────────────────────
+document.getElementById('invite-btn').addEventListener('click', () => {
+    const emailInput = document.getElementById('invite-email');
+    const email = emailInput.value.trim();
+    if (!email) return;
+    
+    // Simulating invite for frontend aesthetic
+    showToast(`Invite sent to ${email}`, 'success');
+    emailInput.value = '';
+});
+
+// ── ZAI Mode Sync ────────────────────────────────────────────────
+function updateZaiUI(enabled) {
+    const btn = document.getElementById('zai-toggle-btn');
+    if (btn) {
+        if (enabled) {
+            btn.classList.add('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+        } else {
+            btn.classList.remove('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+        }
+    }
+}
+
+const toggleBtn = document.getElementById('zai-toggle-btn');
+if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+        const isEnabled = toggleBtn.classList.contains('bg-primary-fixed');
+        const nextEnabled = !isEnabled;
+        
+        updateZaiUI(nextEnabled);
+        localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+        
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (token) {
+            fetch(`${API_BASE}/api/seller/zai-mode`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ enabled: nextEnabled })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data || !data.success) {
+                    console.error("Failed to update ZAI Mode in DB");
+                }
+            })
+            .catch(err => console.error("Error updating ZAI Mode:", err));
+        }
+    });
+}
+
+// ── Retry ────────────────────────────────────────────────────────
+document.getElementById('retry-btn').addEventListener('click', loadConfig);
+
+// ── Logout ────────────────────────────────────────────────────────
+document.getElementById('logout-btn').addEventListener('click', () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const refresh = sessionStorage.getItem('tohfa_refresh_token');
+    if (token && refresh) {
+        fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+    }
+    sessionStorage.clear(); window.location.href = '/auth/login.html';
+});
+
+// ── Init ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+    updateZaiUI(zaiEnabled);
+
+    try {
+        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!pr.ok) throw new Error();
+        const pd = await pr.json();
+        const u  = pd.data || pd;
+        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+    } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+
+    loadConfig();
+});
+</script>
+</body>
+</html>
