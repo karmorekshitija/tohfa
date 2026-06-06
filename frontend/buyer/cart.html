@@ -1,10 +1,122 @@
-<body class="font-body-md text-on-surface antialiased">
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Your basket | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#516447",
+                        "surface-tint": "#516447",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f",
+                        "gold-custom": "#D4AF37",
+                        "ivory-card": "#FFFDFB",
+                        "sage": "#8fa382",
+                        "sage-soft": "#F0F5EE",
+                        "terracotta": "#C87A53"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Work Sans"],
+                        "body-sm": ["Work Sans"],
+                        "headline-lg": ["EB Garamond"],
+                        "title-md": ["Work Sans"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["EB Garamond"],
+                        "body-md": ["Work Sans"],
+                        "data-price": ["Work Sans"],
+                        "title-serif": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .paper-texture {
+            background-color: #fff8f3;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL8HlWj3d7Jn4Rr8_Omv5ZuBBtt-PIgqkz6U0QXXzOoK5q0e2iSq3bOoqpTXh2YvRiqLxaCe5OhuMhLl4jceRshlhkOmGhbfFCTjJh3-xwIm5HZjubNr6bGDaUtGGUFXPBbtpSV5Dp4_OnQRqkj_K7lty0Zr5u7smkvT4F08O58kmMBsY6p-pt3_E4nOm_pM_Ea5de71J1n0EgSHpKPNJ7oL5rYlXXv8H9ZKYxP6h94AtGHixEvqCj_3MaC6RC_BwGgTNXM2ZNx-8)
+        }
+    </style>
+</head>
+<body class="paper-texture font-body-md text-on-surface antialiased">
 <!-- Top Navigation Bar -->
-<!-- Standardised Top Navigation Bar (Task 57) -->
 <header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
-  <!-- Brand Logo (Task 59) -->
+  <!-- Brand Logo -->
   <div class="flex items-center flex-1">
-    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="home.html">
       Tohfa<span class="text-[#D4AF37]">.</span>
     </a>
   </div>
@@ -12,22 +124,22 @@
   <!-- Navigation Links -->
   <nav class="hidden md:flex items-center justify-center gap-xl h-full">
     <!-- Home -->
-    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
     <!-- Category (Discover) -->
-    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="category.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">search</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
-    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">movie</span>
       <span>Reels</span>
     </a>
     <!-- Profile -->
-    <a href="/profile" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">person</span>
       <span>Profile</span>
     </a>
@@ -35,100 +147,42 @@
   
   <!-- Right side items -->
   <div class="flex items-center justify-end flex-1 gap-lg">
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="category.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
       <span class="material-symbols-outlined">search</span>
-    </button>
-    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
-      <span class="material-symbols-outlined">shopping_cart</span>
     </a>
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
       <span class="material-symbols-outlined">notifications</span>
-    </button>
-    <!-- Profile Avatar (Task 58) -->
-    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
-      A
+      <span id="nav-notif-badge" class="absolute -top-1 -right-1 bg-error text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <!-- Profile Avatar -->
+    <a href="profile.html" id="nav-avatar" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+      U
     </a>
   </div>
 </header>
+
 <main class="pt-24 pb-32 max-w-2xl mx-auto px-margin-mobile md:px-0">
 <!-- Page Header -->
 <header class="flex items-center justify-between mb-lg">
 <div class="flex items-center gap-sm">
-<button class="material-symbols-outlined text-on-surface hover:bg-surface-container-low p-1 rounded-full transition-colors">chevron_left</button>
+<button onclick="window.history.back()" class="material-symbols-outlined text-on-surface hover:bg-surface-container-low p-1 rounded-full transition-colors">chevron_left</button>
 <h1 class="font-headline-lg text-headline-lg text-primary">Your basket</h1>
 </div>
 <div class="bg-gold-custom/10 px-3 py-1 rounded-full">
-<span class="font-data-price text-data-price text-gold-custom">3 ITEMS</span>
+<span id="cart-badge-count" class="font-data-price text-data-price text-gold-custom">0 ITEMS</span>
 </div>
 </header>
+
 <!-- Cart Items List -->
-<section class="flex flex-col gap-md mb-xl">
-<!-- Item 1 -->
-<div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex items-center gap-md relative overflow-hidden group">
-<img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0" data-alt="A macro photograph of a handcrafted artisanal ceramic mug with a speckled oatmeal glaze, sitting on a sunlit wooden table. The lighting is soft and golden, highlighting the tactile texture of the clay and the subtle imperfections of a handmade object. The background is a soft-focus studio setting with minimalist, warm tones consistent with a craft-focused aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVpwycJK2zhmumdgnLmSMnWnGn4YMnsMJxeWLrl5v2o_pT8HWw_ZDq3hwJoG3aa5yahYvHanjdLixFtH50-Wn6Llvxslv_hahGSxEx6Fdi7LsSrlAubdLQS2gx7CQdrrBsNC_vfzRnqGSjzC-SuNG1zmCcdhI885TKcVjX2biI2BWpMWBahXFXOOaMabvcUMX1bBIteveo3OKHcWuGNezD9cJB2gJcQ7Bv2H61k8CoRQCEEbY1WmwS7Nqb3Dk_-BESupKjL8DUr6o">
-<div class="flex-grow">
-<h3 class="font-title-serif text-[14px] leading-tight text-on-surface">Hand-thrown Stoneware Mug</h3>
-<p class="font-data-price text-[13px] text-gold-custom mt-xs">$32.00</p>
-</div>
-<div class="flex flex-col items-end gap-sm">
-<div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
-<button class="w-6 h-6 flex items-center justify-center text-sage hover:text-primary transition-colors">-</button>
-<span class="px-2 font-data-price text-xs">1</span>
-<button class="w-6 h-6 flex items-center justify-center text-sage hover:text-primary transition-colors">+</button>
-</div>
-<div class="flex items-center gap-sm">
-<span class="font-data-price text-on-surface">$32.00</span>
-<button class="material-symbols-outlined text-sm text-outline hover:text-error transition-colors">close</button>
-</div>
-</div>
-</div>
-<!-- Item 2 (Out of stock warning) -->
-<div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex flex-col gap-sm relative group">
-<div class="flex items-center gap-md">
-<img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0" data-alt="A set of three hand-poured soy wax candles in minimalist amber glass jars, arranged artistically on a textured linen cloth. The scene is lit by soft, natural light filtering through a window, creating deep, gentle shadows. The mood is tranquil and sophisticated, emphasizing the high-quality, organic nature of the artisanal candles within a modern studio context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLg699NCrj_mrmJTazTY3zHTbT0dIuunRdM33fXDaqAp3tkY5NekMlfHKFxBPZB8QkO64yULvMH4NmejrbEWZgzJ2ICuY_mIj0PWJTIM_O0l0zxQ_lw1Xmj6XmsnqYdRBrmp101_Avan4jySm_Gozye-OAGQiBrVEKWTKmfQnRzV7no4TVRUX0VpFqZgL87_2cPUhAfK44J-LL8Kk_lUoDKLFN2X-0FfugvIzo03SS6mEejVA8tfDEuMrYdZb-hGUIqkb8d1BR1Xc">
-<div class="flex-grow">
-<h3 class="font-title-serif text-[14px] leading-tight text-on-surface">Wildflower Soy Candle Set</h3>
-<p class="font-data-price text-[13px] text-gold-custom mt-xs">$48.00</p>
-</div>
-<div class="flex flex-col items-end gap-sm">
-<div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
-<button class="w-6 h-6 flex items-center justify-center text-sage">-</button>
-<span class="px-2 font-data-price text-xs">2</span>
-<button class="w-6 h-6 flex items-center justify-center text-sage">+</button>
-</div>
-<div class="flex items-center gap-sm">
-<span class="font-data-price text-on-surface">$96.00</span>
-<button class="material-symbols-outlined text-sm text-outline hover:text-error">close</button>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-xs px-2 py-1 bg-error-container/20 rounded-lg">
-<span class="material-symbols-outlined text-terracotta text-sm" style="font-variation-settings: 'FILL' 1;">error</span>
-<span class="text-[12px] font-body-md text-terracotta">Only 2 left — adjust quantity</span>
-</div>
-</div>
-<!-- Item 3 -->
-<div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex items-center gap-md relative group">
-<img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0" data-alt="A close-up view of a hand-woven indigo textile with intricate traditional patterns, draped over the edge of a woven basket. The fabric has a rich, deep blue color with natural white thread accents. The lighting is diffused and soft, emphasizing the organic texture of the weave. The overall aesthetic is one of authentic craftsmanship and cultural heritage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb-Ncg1LvTbCZwZd5t6XMYw_PVx4ItZXFwhRelwyC3pPRr8xitZElkezn7J_rmBKKnABYQ0saUTiTc0Xl4QvyfHup8zkZqmbNNC2U3q057ea9A46EUPZ4_a4VonfRMveSPpqmhNlWKvHUp_347j3Y73rMMeQa0HZAa0sGk-9KyAYN7N_w_9-xPe3VivpnrfnN0bLKKhNAASCfRtP8uishAEpt1gUSfUkF8RV9LDe9G4B7Jx3J7moAb4uxT70TZ6dVjXMAdRk8lIs8">
-<div class="flex-grow">
-<h3 class="font-title-serif text-[14px] leading-tight text-on-surface">Loom-Woven Linen Scarf</h3>
-<p class="font-data-price text-[13px] text-gold-custom mt-xs">$55.00</p>
-</div>
-<div class="flex flex-col items-end gap-sm">
-<div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
-<button class="w-6 h-6 flex items-center justify-center text-sage">-</button>
-<span class="px-2 font-data-price text-xs">1</span>
-<button class="w-6 h-6 flex items-center justify-center text-sage">+</button>
-</div>
-<div class="flex items-center gap-sm">
-<span class="font-data-price text-on-surface">$55.00</span>
-<button class="material-symbols-outlined text-sm text-outline hover:text-error">close</button>
-</div>
-</div>
-</div>
+<section id="cart-items-container" class="flex flex-col gap-md mb-xl">
 </section>
-<!-- Shipping Block -->
-<section class="mb-lg">
+
+<!-- Shipping Block (Hidden on Cart) -->
+<section class="mb-lg hidden" id="shipping-block">
 <div class="bg-ivory-card border border-sage/30 rounded-2xl p-lg relative overflow-hidden">
 <div class="absolute top-0 right-0 w-24 h-6 wax-tape-texture -mr-4 mt-2 opacity-10"></div>
 <div class="flex justify-between items-start mb-sm">
@@ -145,6 +199,7 @@
 </div>
 </div>
 </section>
+
 <!-- Order Summary -->
 <section class="mb-xl">
 <div class="bg-sage-soft rounded-2xl p-lg relative botanical-overlay">
@@ -152,16 +207,16 @@
 <div class="space-y-md">
 <div class="flex justify-between items-center">
 <span class="font-body-md text-on-surface-variant">Subtotal</span>
-<span class="font-data-price text-on-surface">$183.00</span>
+<span id="summary-subtotal" class="font-data-price text-on-surface">₹0.00</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="font-body-md text-on-surface-variant">Shipping</span>
-<span class="font-data-price text-on-surface">$12.50</span>
+<span id="summary-shipping" class="font-data-price text-on-surface">₹0.00</span>
 </div>
 <div class="h-[1px] bg-outline-variant/30 my-md"></div>
 <div class="flex justify-between items-center">
 <span class="font-title-serif text-primary">Total</span>
-<span class="font-data-price text-[18px] font-bold text-gold-custom">$195.50</span>
+<span id="summary-total" class="font-data-price text-[18px] font-bold text-gold-custom">₹0.00</span>
 </div>
 </div>
 <!-- Pressed Botanical Sprig Watermark -->
@@ -172,6 +227,7 @@
 </div>
 </div>
 </section>
+
 <!-- Mascot Sticker -->
 <div class="flex justify-center mt-xl mb-lg">
 <div class="relative group cursor-pointer active:scale-95 transition-transform duration-300">
@@ -181,15 +237,17 @@
 </div>
 </div>
 </main>
+
 <!-- Sticky Bottom Bar -->
 <div class="fixed bottom-0 left-0 w-full bg-white border-t border-sage/20 z-40 px-margin-mobile py-md">
 <div class="max-w-2xl mx-auto">
-<button class="w-full h-[52px] bg-primary text-white font-body-md font-bold rounded-lg hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm shadow-lg shadow-primary/10">
-<span>Place order</span>
-<span class="font-data-price text-sm border-l border-white/20 pl-sm">$195.50</span>
+<button id="btn-checkout" onclick="proceedToCheckout()" class="w-full h-[52px] bg-primary text-white font-body-md font-bold rounded-lg hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm shadow-lg shadow-primary/10">
+<span>Proceed to Checkout</span>
+<span id="btn-total" class="font-data-price text-sm border-l border-white/20 pl-sm">₹0.00</span>
 </button>
 </div>
 </div>
+
 <!-- Footer -->
 <footer class="relative w-full py-xl bg-surface-container-low dark:bg-surface-dim border-t border-outline-variant mt-20">
 <div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-margin-desktop max-w-7xl mx-auto">
@@ -219,29 +277,225 @@
 </div>
 </div>
 </footer>
-<script>
-        // Simple Interaction logic
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', () => {
-                btn.style.transform = 'scale(0.98)';
-            });
-            btn.addEventListener('mouseup', () => {
-                btn.style.transform = 'scale(1)';
-            });
-        });
 
-        // Toggle sticky bar based on scroll position vs footer
-        window.onscroll = function() {
-            const footer = document.querySelector('footer');
-            const sticky = document.querySelector('.fixed.bottom-0');
-            const footerPos = footer.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { formatPaise } from '/src/utils/currency.js';
+    import { logout } from '/src/utils/auth.js';
 
-            if (footerPos < windowHeight) {
-                sticky.classList.add('opacity-0', 'pointer-events-none');
-            } else {
-                sticky.classList.remove('opacity-0', 'pointer-events-none');
+    let cartItems = [];
+    
+    // Auth Check
+    async function initCart() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        // Setup navbar user state if possible
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(window.atob(base64));
+            
+            // Set user avatar character/image
+            const avatarEl = document.getElementById('nav-avatar');
+            if (avatarEl) {
+                if (payload.username) {
+                    avatarEl.innerText = payload.username.substring(0, 1).toUpperCase();
+                } else if (payload.email) {
+                    avatarEl.innerText = payload.email.substring(0, 1).toUpperCase();
+                }
             }
-        };
-    </script>
+
+            // Fetch profile to get real avatar if it exists
+            try {
+                const res = await apiClient.get('/profile/me');
+                if (res.data && res.data.success && res.data.data.avatar_url) {
+                    if (avatarEl) {
+                        avatarEl.innerHTML = `<img src="${res.data.data.avatar_url}" alt="Avatar" class="w-full h-full object-cover"/>`;
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch avatar:", err);
+            }
+        } catch(e) {
+            console.error("Token parsing error:", e);
+        }
+
+        await fetchCart();
+    }
+
+    async function fetchCart() {
+        try {
+            // Render Loading state
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = `
+                <div class="flex flex-col gap-sm py-8 text-center text-sage">
+                    <span class="material-symbols-outlined animate-spin text-[32px] text-primary">sync</span>
+                    <p class="font-body-md mt-sm text-on-surface-variant">Loading your basket...</p>
+                </div>
+            `;
+
+            const res = await apiClient.get('/cart');
+            if (res.data && res.data.success) {
+                const { items, subtotal_paise, shipping_paise, total_paise, item_count } = res.data.data;
+                cartItems = items;
+
+                // Update nav badge count
+                const navBadge = document.getElementById('nav-cart-badge');
+                if (navBadge) {
+                    if (item_count > 0) {
+                        navBadge.innerText = item_count;
+                        navBadge.classList.remove('hidden');
+                    } else {
+                        navBadge.classList.add('hidden');
+                    }
+                }
+
+                if (items.length === 0) {
+                    // Redirect to cart-empty.html
+                    window.location.href = 'cart-empty.html';
+                    return;
+                }
+
+                // Render items
+                renderCartItems(items);
+
+                // Update summary
+                document.getElementById('cart-badge-count').innerText = `${item_count} ${item_count === 1 ? 'ITEM' : 'ITEMS'}`;
+                document.getElementById('summary-subtotal').innerText = formatPaise(subtotal_paise);
+                document.getElementById('summary-shipping').innerText = formatPaise(shipping_paise);
+                document.getElementById('summary-total').innerText = formatPaise(total_paise);
+                document.getElementById('btn-total').innerText = formatPaise(total_paise);
+            }
+        } catch (err) {
+            console.error("Error fetching cart:", err);
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = `
+                <div class="bg-error-container/20 border border-error/30 rounded-2xl p-lg text-center my-lg">
+                    <span class="material-symbols-outlined text-error text-[32px] mb-xs">error</span>
+                    <p class="font-body-md text-error font-semibold">Failed to load basket</p>
+                    <p class="font-body-md text-on-surface-variant text-sm mt-xs">There was an error retrieving your cart items.</p>
+                    <button onclick="window.location.reload()" class="mt-md px-md py-sm bg-primary text-white rounded-lg font-bold hover:bg-primary/95 transition-all">Retry</button>
+                </div>
+            `;
+        }
+    }
+
+    function renderCartItems(items) {
+        const container = document.getElementById('cart-items-container');
+        container.innerHTML = items.map(ci => {
+            const imgUrl = ci.image_url ? ci.image_url : 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted';
+            const warningHtml = ci.quantity_warning 
+                ? `<div class="flex items-center gap-xs px-2 py-1 bg-error-container/20 rounded-lg mt-sm">
+                    <span class="material-symbols-outlined text-terracotta text-sm" style="font-variation-settings: 'FILL' 1;">error</span>
+                    <span class="text-[12px] font-body-md text-terracotta">Only ${ci.stock_qty} left — adjust quantity</span>
+                   </div>`
+                : '';
+
+            return `
+                <div class="bg-ivory-card border border-sage/30 rounded-2xl p-md flex flex-col gap-sm relative group" data-cart-item-id="${ci.id}">
+                    <div class="flex items-center gap-md">
+                        <img class="w-[60px] h-[60px] rounded-[10px] object-cover flex-shrink-0 cursor-pointer" 
+                             onclick="window.location.href='product.html?id=${ci.product_id}'" 
+                             src="${imgUrl}" 
+                             alt="${ci.name}">
+                        <div class="flex-grow">
+                            <h3 class="font-title-serif text-[14px] leading-tight text-on-surface hover:text-primary cursor-pointer font-semibold"
+                                onclick="window.location.href='product.html?id=${ci.product_id}'">
+                                ${ci.name}
+                            </h3>
+                            <p class="text-xs text-on-surface-variant mt-xs">${ci.seller_name}</p>
+                            <p class="font-data-price text-[13px] text-gold-custom mt-xs font-semibold">${formatPaise(ci.price_paise)}</p>
+                        </div>
+                        <div class="flex flex-col items-end gap-sm">
+                            <div class="flex items-center bg-ivory-card border border-sage/40 rounded-full px-2 py-0.5">
+                                <button onclick="updateQty('${ci.id}', ${ci.quantity - 1})" class="w-6 h-6 flex items-center justify-center text-sage hover:text-primary font-bold transition-colors">-</button>
+                                <span class="px-2 font-data-price text-xs font-semibold">${ci.quantity}</span>
+                                <button onclick="updateQty('${ci.id}', ${ci.quantity + 1})" class="w-6 h-6 flex items-center justify-center text-sage hover:text-primary font-bold transition-colors">+</button>
+                            </div>
+                            <div class="flex items-center gap-sm">
+                                <span class="font-data-price text-on-surface font-semibold">${formatPaise(ci.price_paise * ci.quantity)}</span>
+                                <button onclick="removeItem('${ci.id}')" class="material-symbols-outlined text-sm text-outline hover:text-error transition-colors">close</button>
+                            </div>
+                        </div>
+                    </div>
+                    ${warningHtml}
+                </div>
+            `;
+        }).join('');
+    }
+
+    async function updateQty(id, newQty) {
+        if (newQty <= 0) {
+            await removeItem(id);
+            return;
+        }
+        try {
+            const res = await apiClient.patch(`/cart/items/${id}`, { quantity: newQty });
+            if (res.data && res.data.success) {
+                await fetchCart();
+            }
+        } catch (err) {
+            console.error("Failed to update quantity:", err);
+            if (err.response?.status === 422) {
+                alert("Cannot add more: requested quantity exceeds available stock.");
+            } else {
+                alert("Failed to update cart item quantity.");
+            }
+        }
+    }
+
+    async function removeItem(id) {
+        try {
+            const res = await apiClient.delete(`/cart/items/${id}`);
+            if (res.data && res.data.success) {
+                await fetchCart();
+            }
+        } catch (err) {
+            console.error("Failed to delete item:", err);
+            alert("Failed to remove item from basket.");
+        }
+    }
+
+    function proceedToCheckout() {
+        window.location.href = 'checkout.html';
+    }
+
+    // Bind to window for HTML event handlers
+    window.updateQty = updateQty;
+    window.removeItem = removeItem;
+    window.proceedToCheckout = proceedToCheckout;
+
+    window.addEventListener('DOMContentLoaded', initCart);
+</script>
+<script>
+    // Micro-interactions and layout management
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+            btn.style.transform = 'scale(0.98)';
+        });
+        btn.addEventListener('mouseup', () => {
+            btn.style.transform = 'scale(1)';
+        });
+    });
+
+    // Toggle sticky bar based on scroll position vs footer
+    window.onscroll = function() {
+        const footer = document.querySelector('footer');
+        const sticky = document.querySelector('.fixed.bottom-0');
+        if (!footer || !sticky) return;
+        const footerPos = footer.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if (footerPos < windowHeight) {
+            sticky.classList.add('opacity-0', 'pointer-events-none');
+        } else {
+            sticky.classList.remove('opacity-0', 'pointer-events-none');
+        }
+    };
+</script>
 </body>
+</html>
