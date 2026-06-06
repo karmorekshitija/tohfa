@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Listings Catalog | Seller Studio | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "secondary-fixed-dim": "#ddbcdf", "primary-container": "#a8b48e", "on-secondary-container": "#745a78",
+                    "on-tertiary-fixed-variant": "#494740", "on-surface-variant": "#45483f", "surface-bright": "#fff8f1",
+                    "secondary-container": "#f7d5f8", "on-error": "#ffffff", "on-tertiary-fixed": "#1d1c16",
+                    "tertiary-container": "#b3afa7", "surface-container-low": "#faf2e9", "surface-container": "#f4ede3",
+                    "on-primary-fixed-variant": "#404a2c", "primary": "#576242", "surface-variant": "#e9e1d8",
+                    "on-secondary": "#ffffff", "outline-variant": "#c6c7bb", "secondary-fixed": "#fad8fb",
+                    "outline": "#76786e", "on-tertiary": "#ffffff", "error": "#ba1a1a", "primary-fixed": "#dbe8bf",
+                    "on-tertiary-container": "#44423c", "surface-container-high": "#efe7dd",
+                    "on-error-container": "#93000a", "inverse-on-surface": "#f7f0e6", "background": "#fff8f1",
+                    "on-secondary-fixed-variant": "#573e5b", "surface-tint": "#576242", "error-container": "#ffdad6",
+                    "tertiary": "#615e57", "surface-container-highest": "#e9e1d8", "primary-fixed-dim": "#bfcba4",
+                    "on-primary-container": "#3c4628", "tertiary-fixed": "#e7e2d9", "inverse-surface": "#33302a",
+                    "inverse-primary": "#bfcba4", "surface-dim": "#e0d9cf", "on-surface": "#1e1b15",
+                    "surface": "#fff8f1", "tertiary-fixed-dim": "#cac6be", "secondary": "#705673",
+                    "on-secondary-fixed": "#28132d", "on-primary-fixed": "#151e05", "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff", "on-background": "#1e1b15", "custom-primary": "#a8b48e"
+                },
+                "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                "spacing": { "margin-mobile": "20px", "gutter": "24px", "unit": "8px", "container-max": "1200px", "margin-desktop": "80px" },
+                "fontFamily": { "headline-md": ["EB Garamond","serif"], "headline-lg": ["EB Garamond","serif"], "body-md": ["Be Vietnam Pro","sans-serif"] },
+                "fontSize": {
+                    "headline-md": ["24px", {"lineHeight":"1.3","fontWeight":"400"}],
+                    "headline-lg": ["32px", {"lineHeight":"1.2","fontWeight":"400"}],
+                    "body-md": ["16px", {"lineHeight":"1.6","fontWeight":"300"}]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f1; color: #1e1b15; }
+    h1,h2,h3 { font-family: 'EB Garamond', serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+    .skeleton { background: linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    .fade-in { animation: fadeIn 0.3s ease forwards; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; display:flex; align-items:center; justify-content:center; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Top Nav -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="font-headline-lg text-on-background text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+    </div>
+    <div class="flex gap-4 items-center">
+        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors" title="Logout">
+            <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<!-- ══ Create/Edit Listing Modal ════════════════════════════ -->
+<div id="listing-modal" class="hidden modal-overlay">
+    <div class="bg-surface rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 sticky top-0 bg-surface z-10">
+            <h2 id="modal-title" class="font-headline-md text-xl">Create Listing</h2>
+            <button id="close-modal-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="listing-form" class="p-6 space-y-5">
+            <input type="hidden" id="edit-listing-id"/>
+
+            <!-- Step 1: Photos -->
+            <div class="space-y-1">
+                <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Cover Photo URL <span class="text-on-surface-variant/50">(optional)</span></label>
+                <input id="f-cover-photo" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="https://..."/>
+            </div>
+
+            <!-- Step 2: Title & Category -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1 md:col-span-2">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Title *</label>
+                    <input id="f-title" type="text" required class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Handcrafted Pottery Mug"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Category</label>
+                    <select id="f-category" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                        <option value="">— Select Category —</option>
+                        <option value="textile-arts">Textile Arts</option>
+                        <option value="jewellery">Jewellery</option>
+                        <option value="ceramics-pottery">Ceramics & Pottery</option>
+                        <option value="journals-stationery">Journals & Stationery</option>
+                        <option value="candles-fragrance">Candles & Fragrance</option>
+                        <option value="paintings">Paintings</option>
+                        <option value="customized-gifts">Customized Gifts</option>
+                        <option value="home-decor">Home Decor</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Status</label>
+                    <select id="f-status" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                        <option value="draft">Draft</option>
+                        <option value="active">Active (Published)</option>
+                        <option value="paused">Paused</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Step 3: Description -->
+            <div class="space-y-1">
+                <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Description</label>
+                <textarea id="f-description" rows="3" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Describe your handcrafted product..."></textarea>
+            </div>
+
+            <!-- Step 4: Pricing & Stock -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Price (₹) *</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-outline font-semibold">₹</span>
+                        <input id="f-price" type="number" min="1" step="0.01" required class="w-full bg-surface-container border border-outline-variant rounded-xl pl-8 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="499.00"/>
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Stock Count *</label>
+                    <input id="f-stock" type="number" min="0" required class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="10"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">SKU <span class="text-on-surface-variant/50">(optional)</span></label>
+                    <input id="f-sku" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="MUG-001"/>
+                </div>
+            </div>
+
+            <!-- Step 5: Shipping & Extras -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Processing Time</label>
+                    <input id="f-processing-time" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="3-5 business days"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Tags <span class="text-on-surface-variant/50">(comma separated)</span></label>
+                    <input id="f-tags" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="handmade, ceramic, gift"/>
+                </div>
+            </div>
+
+            <!-- Error message -->
+            <p id="form-error" class="hidden text-sm text-error bg-error-container px-4 py-2.5 rounded-xl"></p>
+
+            <!-- Submit -->
+            <div class="flex justify-end gap-3 pt-2">
+                <button type="button" id="cancel-modal-btn" class="py-2.5 px-6 rounded-full border border-outline text-sm font-semibold text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
+                <button type="submit" id="submit-listing-btn" class="bg-custom-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    <span id="submit-label">Create Listing</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ══ Main Content ══════════════════════════════════════════ -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="font-headline-md text-3xl mb-1">Listings Catalog</h1>
+            <p class="text-sm text-on-surface-variant" id="listings-count-label">Loading your listings…</p>
+        </div>
+        <button id="create-listing-btn" class="bg-custom-primary text-on-primary py-2.5 px-6 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2 self-start sm:self-auto">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">add_circle</span>
+            New Listing
+        </button>
+    </div>
+
+    <!-- Filters + Search bar -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+        <!-- Status tabs -->
+        <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
+            <button class="filter-btn active-filter px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all" data-status="all">All</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-custom-primary" data-status="active">Active</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-custom-primary" data-status="draft">Draft</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-custom-primary" data-status="paused">Paused</button>
+        </nav>
+        <!-- Search -->
+        <div class="flex-1 relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+            <input id="search-input" type="text" placeholder="Search listings…" class="w-full bg-surface-container border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary"/>
+        </div>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load listings.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div id="loading-state" class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="skeleton h-64 rounded-xl"></div>
+        <div class="skeleton h-64 rounded-xl"></div>
+        <div class="skeleton h-64 rounded-xl"></div>
+        <div class="skeleton h-64 rounded-xl"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-outline">storefront</span>
+        <p class="text-on-surface-variant font-body-md text-center">No listings found.<br/>Create your first listing to get started.</p>
+        <button id="empty-create-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Create Listing</button>
+    </div>
+
+    <!-- Listings grid -->
+    <div id="listings-grid" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Populated dynamically -->
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination" class="hidden flex justify-center gap-3 mt-10">
+        <button id="prev-btn" class="px-6 py-2.5 border border-outline rounded-full text-sm font-semibold hover:bg-surface-container transition-colors disabled:opacity-40" disabled>← Prev</button>
+        <span id="page-label" class="px-6 py-2.5 text-sm text-on-surface-variant"></span>
+        <button id="next-btn" class="px-6 py-2.5 border border-outline rounded-full text-sm font-semibold hover:bg-surface-container transition-colors disabled:opacity-40">Next →</button>
+    </div>
+
+</main>
+
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+let currentPage  = 1;
+let currentStatus= 'all';
+let searchQuery  = '';
+let searchTimer  = null;
+let totalListings = 0;
+const PAGE_LIMIT = 20;
+
+// ── Utilities ─────────────────────────────────────────────────
+function formatPaise(p) {
+    if (p == null) return '₹0';
+    return '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = type === 'success' ? 'check_circle' : 'error';
+    document.getElementById('toast-msg').textContent  = msg;
+    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all ${
+        type === 'success'
+            ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim'
+            : 'bg-error-container text-on-error-container border border-error/30'
+    }`;
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function statusBadge(status, stock) {
+    if (stock === 0 && status === 'active') return '<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter text-error bg-error-container">Out of Stock</span>';
+    const m = {
+        active: 'bg-custom-primary text-on-primary',
+        draft:  'bg-surface-container-high text-on-surface-variant',
+        paused: 'bg-secondary-container text-on-secondary-container'
+    };
+    const l = { active:'Active', draft:'Draft', paused:'Paused' };
+    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter ${m[status] || 'bg-surface-container text-on-surface-variant'}">${l[status] || status}</span>`;
+}
+
+function cardHTML(l) {
+    const img = l.cover_photo_url
+        ? `<img src="${l.cover_photo_url}" alt="${l.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>`
+        : `<div class="w-full h-full flex items-center justify-center bg-surface-container-high"><span class="material-symbols-outlined text-4xl text-outline">image</span></div>`;
+    return `
+    <div class="group fade-in bg-surface border border-outline-variant/20 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-listing-id="${l.listing_id}">
+        <div class="aspect-[4/5] relative overflow-hidden bg-surface-container">
+            ${img}
+            <!-- Hover actions -->
+            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-2 gap-1">
+                <button class="edit-btn bg-white/90 p-1.5 rounded-full shadow-sm" title="Edit" data-id="${l.listing_id}">
+                    <span class="material-symbols-outlined text-sm text-on-surface">edit</span>
+                </button>
+                <button class="delete-btn bg-error/90 p-1.5 rounded-full shadow-sm" title="Delete" data-id="${l.listing_id}" data-title="${l.title}">
+                    <span class="material-symbols-outlined text-sm text-on-error">delete</span>
+                </button>
+            </div>
+        </div>
+        <div class="p-3">
+            <h3 class="font-semibold text-sm truncate mb-1">${l.title}</h3>
+            <div class="flex justify-between items-center">
+                <span class="text-custom-primary font-bold text-sm">${formatPaise(l.price_paise)}</span>
+                ${statusBadge(l.status, l.stock_count)}
+            </div>
+            <div class="flex justify-between items-center mt-1.5">
+                <span class="text-xs text-on-surface-variant">${l.stock_count} in stock</span>
+                <span class="text-xs text-on-surface-variant">${l.view_count || 0} views</span>
+            </div>
+        </div>
+    </div>`;
+}
+
+// ── Load listings ─────────────────────────────────────────────
+async function loadListings(page = 1) {
+    const grid  = document.getElementById('listings-grid');
+    const empty = document.getElementById('empty-state');
+    const error = document.getElementById('error-state');
+    const load  = document.getElementById('loading-state');
+    const pgn   = document.getElementById('pagination');
+
+    load.classList.remove('hidden');
+    grid.classList.add('hidden');
+    empty.classList.add('hidden');
+    error.classList.add('hidden');
+    pgn.classList.add('hidden');
+
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const params = new URLSearchParams({
+        status: currentStatus, page, limit: PAGE_LIMIT,
+        ...(searchQuery ? { search: searchQuery } : {})
+    });
+
+    try {
+        const res  = await fetch(`${API_BASE}/api/seller/listings?${params}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401 || res.status === 403) {
+            sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const resp = await res.json();
+        const data = resp.data || resp;
+        const listings = data.listings || [];
+        totalListings = data.total || 0;
+
+        document.getElementById('listings-count-label').textContent =
+            `${totalListings} listing${totalListings !== 1 ? 's' : ''} total`;
+
+        load.classList.add('hidden');
+
+        if (listings.length === 0) {
+            empty.classList.remove('hidden');
+        } else {
+            grid.innerHTML = listings.map(cardHTML).join('');
+            grid.classList.remove('hidden');
+            attachCardListeners();
+        }
+
+        // Pagination
+        const totalPages = Math.ceil(totalListings / PAGE_LIMIT);
+        if (totalPages > 1) {
+            document.getElementById('page-label').textContent = `Page ${page} of ${totalPages}`;
+            document.getElementById('prev-btn').disabled = page <= 1;
+            document.getElementById('next-btn').disabled = page >= totalPages;
+            pgn.classList.remove('hidden');
+        }
+
+        document.getElementById('body-content').classList.remove('opacity-0');
+
+    } catch (err) {
+        console.error('Load listings error:', err);
+        load.classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load listings.';
+        error.classList.remove('hidden');
+        document.getElementById('body-content').classList.remove('opacity-0');
+    }
+}
+
+// ── Card action listeners ─────────────────────────────────────
+function attachCardListeners() {
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id    = btn.dataset.id;
+            const token = sessionStorage.getItem('tohfa_access_token');
+            try {
+                const res = await fetch(`${API_BASE}/api/seller/listings/${id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Failed to fetch listing');
+                const resp = await res.json();
+                openEditModal(resp.data || resp);
+            } catch (err) {
+                showToast('Could not load listing details.', 'error');
+            }
+        });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id    = btn.dataset.id;
+            const title = btn.dataset.title;
+            if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+            await deleteListing(id, title);
+        });
+    });
+}
+
+// ── Delete listing ────────────────────────────────────────────
+async function deleteListing(id, title) {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    try {
+        const res = await fetch(`${API_BASE}/api/seller/listings/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast(`"${title}" deleted.`, 'success');
+        loadListings(currentPage);
+    } catch (err) {
+        showToast('Delete failed: ' + err.message, 'error');
+    }
+}
+
+// ── Modal helpers ─────────────────────────────────────────────
+function openCreateModal() {
+    document.getElementById('listing-form').reset();
+    document.getElementById('edit-listing-id').value = '';
+    document.getElementById('modal-title').textContent = 'Create Listing';
+    document.getElementById('submit-label').textContent = 'Create Listing';
+    document.getElementById('form-error').classList.add('hidden');
+    document.getElementById('listing-modal').classList.remove('hidden');
+}
+
+function openEditModal(data) {
+    document.getElementById('listing-form').reset();
+    document.getElementById('edit-listing-id').value = data.listing_id || data.id;
+    document.getElementById('modal-title').textContent = 'Edit Listing';
+    document.getElementById('submit-label').textContent = 'Save Changes';
+    document.getElementById('form-error').classList.add('hidden');
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    set('f-cover-photo',     data.cover_photo_url);
+    set('f-title',           data.title);
+    set('f-category',        data.category);
+    set('f-status',          data.status);
+    set('f-description',     data.description);
+    set('f-price',           data.price_paise ? (data.price_paise / 100).toFixed(2) : '');
+    set('f-stock',           data.stock_count);
+    set('f-sku',             data.sku);
+    set('f-processing-time', data.processing_time);
+
+    // Tags
+    try {
+        const tags = typeof data.tags === 'string' ? JSON.parse(data.tags) : (data.tags || []);
+        set('f-tags', Array.isArray(tags) ? tags.join(', ') : '');
+    } catch { set('f-tags', data.tags || ''); }
+
+    document.getElementById('listing-modal').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('listing-modal').classList.add('hidden');
+}
+
+// ── Form submit ───────────────────────────────────────────────
+document.getElementById('listing-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn   = document.getElementById('submit-listing-btn');
+    const errEl = document.getElementById('form-error');
+    const editId= document.getElementById('edit-listing-id').value;
+    const isEdit= !!editId;
+
+    btn.disabled = true;
+    document.getElementById('submit-label').textContent = 'Saving…';
+    errEl.classList.add('hidden');
+
+    const priceStr = document.getElementById('f-price').value;
+    const pricePaise = Math.round(parseFloat(priceStr) * 100);
+
+    const tagsRaw = document.getElementById('f-tags').value;
+    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+    const coverPhotoUrl = document.getElementById('f-cover-photo').value.trim();
+    const body = {
+        title:           document.getElementById('f-title').value.trim(),
+        category:        document.getElementById('f-category').value,
+        status:          document.getElementById('f-status').value,
+        description:     document.getElementById('f-description').value.trim(),
+        price_paise:     pricePaise,
+        stock_count:     parseInt(document.getElementById('f-stock').value) || 0,
+        sku:             document.getElementById('f-sku').value.trim() || null,
+        processing_time: document.getElementById('f-processing-time').value.trim() || null,
+        tags,
+        ...(coverPhotoUrl ? { photo_urls: [coverPhotoUrl], cover_photo_index: 0 } : {})
+    };
+
+    const token = sessionStorage.getItem('tohfa_access_token');
+    const url    = isEdit ? `${API_BASE}/api/seller/listings/${editId}` : `${API_BASE}/api/seller/listings`;
+    const method = isEdit ? 'PUT' : 'POST';
+
+    try {
+        const res  = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Failed to save listing');
+
+        closeModal();
+        showToast(isEdit ? 'Listing updated!' : 'Listing created!', 'success');
+        loadListings(currentPage);
+    } catch (err) {
+        errEl.textContent = err.message;
+        errEl.classList.remove('hidden');
+    } finally {
+        btn.disabled = false;
+        document.getElementById('submit-label').textContent = isEdit ? 'Save Changes' : 'Create Listing';
+    }
+});
+
+// ── Filter tabs ───────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-custom-primary', 'text-on-primary', 'active-filter');
+            b.classList.add('text-on-surface-variant', 'hover:text-custom-primary');
+        });
+        btn.classList.add('bg-custom-primary', 'text-on-primary', 'active-filter');
+        btn.classList.remove('text-on-surface-variant', 'hover:text-custom-primary');
+        currentStatus = btn.dataset.status;
+        currentPage   = 1;
+        loadListings(1);
+    });
+});
+
+// ── Search ────────────────────────────────────────────────────
+document.getElementById('search-input').addEventListener('input', (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        searchQuery  = e.target.value.trim();
+        currentPage  = 1;
+        loadListings(1);
+    }, 400);
+});
+
+// ── Pagination ────────────────────────────────────────────────
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentPage > 1) { currentPage--; loadListings(currentPage); }
+});
+document.getElementById('next-btn').addEventListener('click', () => {
+    if (currentPage < Math.ceil(totalListings / PAGE_LIMIT)) { currentPage++; loadListings(currentPage); }
+});
+
+// ── Modal open/close ──────────────────────────────────────────
+document.getElementById('create-listing-btn').addEventListener('click', openCreateModal);
+document.getElementById('empty-create-btn').addEventListener('click', openCreateModal);
+document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+document.getElementById('listing-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeModal();
+});
+
+// ── Logout ────────────────────────────────────────────────────
+document.getElementById('logout-btn').addEventListener('click', () => {
+    const token   = sessionStorage.getItem('tohfa_access_token');
+    const refresh = sessionStorage.getItem('tohfa_refresh_token');
+    if (token && refresh) {
+        fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ refresh_token: refresh })
+        }).catch(() => {});
+    }
+    sessionStorage.clear();
+    window.location.href = '/auth/login.html';
+});
+
+// ── DOMContentLoaded ──────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    // Role guard
+    try {
+        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!pr.ok) throw new Error();
+        const pd = await pr.json();
+        const u  = pd.data || pd;
+        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+    } catch {
+        sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+    }
+
+    // Highlight first filter tab
+    document.querySelector('.filter-btn[data-status="all"]').classList.add('bg-custom-primary','text-on-primary');
+    document.querySelector('.filter-btn[data-status="all"]').classList.remove('text-on-surface-variant');
+
+    loadListings(1);
+});
+
+document.getElementById('retry-btn').addEventListener('click', () => loadListings(currentPage));
+</script>
+</body>
+</html>
