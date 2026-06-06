@@ -50,9 +50,15 @@
         </a>
         <span class="text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
     </div>
-    <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full">
-        <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
-    </button>
+    <div class="flex items-center gap-3">
+        <button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary-fixed text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
+            <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+            ZAI Mode
+        </button>
+        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full">
+            <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+        </button>
+    </div>
 </nav>
 
 <!-- Toast -->
@@ -352,10 +358,59 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     sessionStorage.clear(); window.location.href = '/auth/login.html';
 });
 
+// ── ZAI Mode Sync ────────────────────────────────────────────────
+function updateZaiUI(enabled) {
+    const btn = document.getElementById('zai-toggle-btn');
+    if (btn) {
+        if (enabled) {
+            btn.classList.add('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+        } else {
+            btn.classList.remove('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+        }
+    }
+}
+
+const toggleBtn = document.getElementById('zai-toggle-btn');
+if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+        const isEnabled = toggleBtn.classList.contains('bg-primary-fixed');
+        const nextEnabled = !isEnabled;
+        
+        updateZaiUI(nextEnabled);
+        localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+        
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (token) {
+            fetch(`${API_BASE}/api/seller/zai-mode`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ enabled: nextEnabled })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data || !data.success) {
+                    console.error("Failed to update ZAI Mode in DB");
+                }
+            })
+            .catch(err => console.error("Error updating ZAI Mode:", err));
+        }
+    });
+}
+
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
     const token = sessionStorage.getItem('tohfa_access_token');
     if (!token) { window.location.href = '/auth/login.html'; return; }
+
+    const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+    updateZaiUI(zaiEnabled);
 
     try {
         const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });

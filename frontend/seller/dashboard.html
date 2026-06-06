@@ -125,6 +125,10 @@
 <span class="font-headline-lg text-on-background text-2xl" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></span>
 </div>
 <div class="flex gap-4 items-center">
+<button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary-fixed text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+ZAI Mode
+</button>
 <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Logout">
 <span class="material-symbols-outlined text-on-surface text-2xl hover:text-error transition-colors">logout</span>
 </button>
@@ -504,6 +508,12 @@
             contentEl.classList.remove('hidden');
             renderDashboard(data);
 
+            if (data.seller) {
+                const dbEnabled = !!data.seller.zai_mode_enabled;
+                localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
+                updateZaiUI(dbEnabled);
+            }
+
             // Fade in body
             document.getElementById('body-content').classList.remove('opacity-0');
 
@@ -570,6 +580,65 @@
         sessionStorage.removeItem('tohfa_user');
         window.location.href = '/auth/login.html';
     });
+
+    // ── ZAI Mode Sync ────────────────────────────────────────────────
+    function updateZaiUI(enabled) {
+        const btn = document.getElementById('zai-toggle-btn');
+        if (btn) {
+            if (enabled) {
+                btn.classList.add('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+            } else {
+                btn.classList.remove('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+            }
+        }
+        const banner = document.getElementById('zai-tip-banner');
+        if (banner) {
+            const hasText = document.getElementById('zai-tip-text').textContent.trim() !== '';
+            if (enabled && hasText) {
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+    }
+
+    const toggleBtn = document.getElementById('zai-toggle-btn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const isEnabled = toggleBtn.classList.contains('bg-primary-fixed');
+            const nextEnabled = !isEnabled;
+            
+            updateZaiUI(nextEnabled);
+            localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+            
+            const token = sessionStorage.getItem('tohfa_access_token');
+            if (token) {
+                fetch('/api/seller/zai-mode', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ enabled: nextEnabled })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data || !data.success) {
+                        console.error("Failed to update ZAI Mode in DB");
+                    }
+                })
+                .catch(err => console.error("Error updating ZAI Mode:", err));
+            }
+        });
+    }
+
+    // Initialize ZAI Mode UI on load
+    const initialZai = localStorage.getItem('zai_mode') === 'true';
+    updateZaiUI(initialZai);
 
     // ── Micro-interactions ────────────────────────────────────────
     document.querySelectorAll('button').forEach(btn => {
