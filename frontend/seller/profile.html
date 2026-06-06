@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile & Settings | Seller Studio | Tohfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "secondary-fixed-dim": "#ddbcdf",
+                    "primary-container": "#a8b48e",
+                    "on-secondary-container": "#745a78",
+                    "on-tertiary-fixed-variant": "#494740",
+                    "on-surface-variant": "#45483f",
+                    "surface-bright": "#fff8f1",
+                    "secondary-container": "#f7d5f8",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#1d1c16",
+                    "tertiary-container": "#b3afa7",
+                    "surface-container-low": "#faf2e9",
+                    "surface-container": "#f4ede3",
+                    "on-primary-fixed-variant": "#404a2c",
+                    "primary": "#576242",
+                    "surface-variant": "#e9e1d8",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c6c7bb",
+                    "secondary-fixed": "#fad8fb",
+                    "outline": "#76786e",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#dbe8bf",
+                    "on-tertiary-container": "#44423c",
+                    "surface-container-high": "#efe7dd",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f7f0e6",
+                    "background": "#fff8f1",
+                    "on-secondary-fixed-variant": "#573e5b",
+                    "surface-tint": "#576242",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#615e57",
+                    "surface-container-highest": "#e9e1d8",
+                    "primary-fixed-dim": "#bfcba4",
+                    "on-primary-container": "#3c4628",
+                    "tertiary-fixed": "#e7e2d9",
+                    "inverse-surface": "#33302a",
+                    "inverse-primary": "#bfcba4",
+                    "surface-dim": "#e0d9cf",
+                    "on-surface": "#1e1b15",
+                    "surface": "#fff8f1",
+                    "tertiary-fixed-dim": "#cac6be",
+                    "secondary": "#705673",
+                    "on-secondary-fixed": "#28132d",
+                    "on-primary-fixed": "#151e05",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#1e1b15",
+                    "custom-primary": "#a8b48e"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+                },
+                "spacing": {
+                    "margin-mobile": "20px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "margin-desktop": "80px"
+                },
+                "fontFamily": {
+                    "headline-md": ["EB Garamond", "serif"],
+                    "headline-lg": ["EB Garamond", "serif"],
+                    "body-md": ["Be Vietnam Pro", "sans-serif"],
+                    "body-lg": ["Be Vietnam Pro", "sans-serif"],
+                    "label-sm": ["Be Vietnam Pro", "sans-serif"],
+                    "display-lg": ["EB Garamond", "serif"]
+                },
+                "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "300"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}]
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f1; color: #1e1b15; }
+    h1, h2, h3, .font-headline { font-family: 'EB Garamond', serif; color: #1e1b15; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Toggle switch */
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #c6c7bb; transition: .3s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: #a8b48e; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Skeleton */
+    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+    .skeleton { background: linear-gradient(90deg, #efe7dd 25%, #e0d9cf 50%, #efe7dd 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
+
+    /* Toast */
+    #toast { transition: all 0.3s ease; }
+</style>
+</head>
+<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Top Navigation -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Back to Dashboard">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <span class="font-headline-lg text-on-background text-2xl" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></span>
+    </div>
+    <div class="flex gap-4 items-center">
+        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Logout">
+            <span class="material-symbols-outlined text-on-surface text-2xl hover:text-error transition-colors">logout</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Toast notification -->
+<div id="toast" class="fixed top-20 right-6 z-[100] hidden items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+
+    <!-- Page Header -->
+    <div class="mb-10">
+        <h1 class="font-headline-md text-3xl mb-1">Profile & Settings</h1>
+        <p class="text-sm text-on-surface-variant">Manage your seller studio profile and preferences.</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+        <p class="text-on-surface-variant text-center text-sm" id="error-message">Failed to load profile.</p>
+        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="loading-state" class="space-y-8">
+        <div class="skeleton h-60 rounded-xl"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="skeleton h-64 rounded-xl"></div>
+            <div class="skeleton h-64 rounded-xl"></div>
+        </div>
+        <div class="skeleton h-40 rounded-xl"></div>
+    </div>
+
+    <!-- Profile Content -->
+    <div id="profile-content" class="hidden space-y-8">
+
+        <!-- ── Profile Card ─────────────────────────────────────── -->
+        <form id="profile-form">
+            <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-8">
+                    <span class="material-symbols-outlined text-custom-primary">account_circle</span>
+                    <h2 class="font-headline-md text-xl">Studio Identity</h2>
+                </div>
+
+                <!-- Avatar + Fields -->
+                <div class="flex flex-col md:flex-row gap-10 items-start">
+                    <!-- Avatar -->
+                    <div class="relative group flex-shrink-0">
+                        <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm">
+                            <img id="profile-avatar" alt="Seller Avatar" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Seller&background=a8b48e&color=fff"/>
+                        </div>
+                        <div class="absolute bottom-1 right-1 bg-custom-primary text-on-primary p-1.5 rounded-full border-2 border-surface cursor-pointer hover:opacity-90 transition-opacity" title="Change avatar">
+                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+                        </div>
+                    </div>
+
+                    <!-- Fields Grid -->
+                    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-display-name">Display Name</label>
+                            <input id="f-display-name" name="display_name" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Your studio name"/>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-handle">Handle</label>
+                            <div class="flex items-center">
+                                <span class="bg-surface-container border border-r-0 border-outline-variant px-3 py-2.5 rounded-l-xl text-sm text-on-surface-variant">@</span>
+                                <input id="f-handle" name="handle" type="text" class="flex-1 bg-surface border border-outline-variant rounded-r-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="your_handle"/>
+                            </div>
+                        </div>
+                        <div class="col-span-full space-y-1">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-bio">Bio</label>
+                            <textarea id="f-bio" name="bio" rows="3" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Tell your story..."></textarea>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-location">Location</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">location_on</span>
+                                <input id="f-location" name="location" type="text" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="City, State"/>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-website">Website</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">link</span>
+                                <input id="f-website" name="website" type="text" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="www.yoursite.com"/>
+                            </div>
+                        </div>
+                        <div class="col-span-full space-y-1">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-story">Artisan Story</label>
+                            <textarea id="f-story" name="artisan_story" rows="4" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary italic text-on-surface-variant" placeholder="Share your craft journey..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="flex justify-end mt-8 pt-6 border-t border-outline-variant/30">
+                    <button type="submit" id="save-profile-btn" class="bg-custom-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">save</span>
+                        Save Profile
+                    </button>
+                </div>
+            </section>
+        </form>
+
+        <!-- ── Two-column row: Notifications + App Settings ─────── -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Notifications Card -->
+            <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-custom-primary">notifications</span>
+                    <h2 class="font-headline-md text-xl">Notifications</h2>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <span class="text-sm">New order alerts</span>
+                        <label class="switch"><input type="checkbox" id="notif-orders" checked/><span class="slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <span class="text-sm">Low stock warnings</span>
+                        <label class="switch"><input type="checkbox" id="notif-stock" checked/><span class="slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <span class="text-sm">Direct messages</span>
+                        <label class="switch"><input type="checkbox" id="notif-messages" checked/><span class="slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <span class="text-sm">Review notifications</span>
+                        <label class="switch"><input type="checkbox" id="notif-reviews"/><span class="slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <span class="text-sm">Payout confirmations</span>
+                        <label class="switch"><input type="checkbox" id="notif-payouts" checked/><span class="slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <span class="text-sm">ZAI Mode suggestions</span>
+                        <label class="switch"><input type="checkbox" id="notif-zai"/><span class="slider"></span></label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- App Settings Card -->
+            <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-custom-primary">tune</span>
+                    <h2 class="font-headline-md text-xl">App Settings</h2>
+                </div>
+                <div class="space-y-6">
+                    <!-- Accept Orders Toggle -->
+                    <div class="flex items-center justify-between p-4 bg-primary-fixed/30 rounded-xl border border-primary-fixed-dim/40">
+                        <div>
+                            <p class="font-semibold text-sm text-on-primary-container">Accept New Orders</p>
+                            <p class="text-xs text-on-surface-variant mt-0.5">Pause to stop receiving new orders</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" id="setting-accepting" checked/><span class="slider"></span></label>
+                    </div>
+
+                    <!-- Default Language -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-language">Default Language</label>
+                        <select id="f-language" name="default_language" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="mr">Marathi</option>
+                            <option value="ta">Tamil</option>
+                            <option value="te">Telugu</option>
+                        </select>
+                    </div>
+
+                    <!-- Store Currency -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-currency">Store Currency</label>
+                        <select id="f-currency" name="store_currency" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                            <option value="INR">INR (₹) — Indian Rupee</option>
+                            <option value="USD">USD ($) — US Dollar</option>
+                            <option value="GBP">GBP (£) — British Pound</option>
+                        </select>
+                    </div>
+
+                    <!-- Save Settings Button -->
+                    <button id="save-settings-btn" type="button" class="w-full bg-custom-primary text-on-primary py-2.5 px-6 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm">
+                        Save Settings
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- ── Account & Security Card ───────────────────────────── -->
+        <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
+            <div class="flex items-center gap-2 mb-8">
+                <span class="material-symbols-outlined text-custom-primary">security</span>
+                <h2 class="font-headline-md text-xl">Account & Security</h2>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-surface rounded-xl border border-outline-variant/20">
+                    <div>
+                        <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-0.5">Registered Email</p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium" id="account-email">—</span>
+                            <span class="material-symbols-outlined text-custom-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-surface rounded-xl border border-outline-variant/20">
+                    <div>
+                        <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-0.5">Account Password</p>
+                        <span class="text-xl leading-none tracking-wider">••••••••••••</span>
+                    </div>
+                    <a href="/auth/forgot-password.html" class="text-xs font-semibold text-custom-primary hover:underline uppercase tracking-wider">Reset</a>
+                </div>
+                <div class="pt-4 border-t border-outline-variant/30">
+                    <div class="flex items-center justify-between p-4 hover:bg-error-container/10 rounded-xl cursor-pointer transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-outline group-hover:text-error transition-colors">cancel</span>
+                            <span class="text-sm text-on-surface-variant group-hover:text-error transition-colors">Close Seller Account</span>
+                        </div>
+                        <span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
+    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+<script>
+    const API_BASE = window.location.origin;
+
+    // ── Toast helper ──────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const icon  = document.getElementById('toast-icon');
+        const msg   = document.getElementById('toast-msg');
+        icon.textContent = type === 'success' ? 'check_circle' : 'error';
+        msg.textContent  = message;
+        toast.className  = `fixed top-20 right-6 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all ${
+            type === 'success'
+                ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim'
+                : 'bg-error-container text-on-error-container border border-error/30'
+        }`;
+        toast.classList.remove('hidden');
+        setTimeout(() => { toast.classList.add('hidden'); }, 3500);
+    }
+
+    // ── Populate form from API data ───────────────────────────────
+    function populateForm(data) {
+        const set = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val || '';
+        };
+        const check = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.checked = !!val;
+        };
+
+        set('f-display-name', data.display_name);
+        set('f-handle', data.handle);
+        set('f-bio', data.bio);
+        set('f-location', data.location);
+        set('f-website', data.website);
+        set('f-story', data.artisan_story);
+        set('f-language', data.default_language || 'en');
+        set('f-currency', data.store_currency || 'INR');
+
+        check('setting-accepting', data.is_accepting_orders);
+
+        if (data.avatar_url) {
+            document.getElementById('profile-avatar').src = data.avatar_url;
+        }
+
+        // Notification toggles (use defaults from response)
+        const notifs = data.notifications || {};
+        check('notif-orders',   notifs.new_order_alerts);
+        check('notif-stock',    notifs.low_stock_warnings);
+        check('notif-messages', notifs.direct_messages);
+        check('notif-reviews',  notifs.review_notifications);
+        check('notif-payouts',  notifs.payout_confirmations);
+        check('notif-zai',      notifs.zai_suggestions);
+
+        // Account email from sessionStorage
+        const user = JSON.parse(sessionStorage.getItem('tohfa_user') || '{}');
+        const emailEl = document.getElementById('account-email');
+        if (emailEl && user.email) emailEl.textContent = user.email;
+    }
+
+    // ── Load profile ──────────────────────────────────────────────
+    async function loadProfile() {
+        const loadingEl = document.getElementById('loading-state');
+        const errorEl   = document.getElementById('error-state');
+        const contentEl = document.getElementById('profile-content');
+
+        loadingEl.classList.remove('hidden');
+        errorEl.classList.add('hidden');
+        contentEl.classList.add('hidden');
+
+        const token = sessionStorage.getItem('tohfa_access_token');
+
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/profile`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.status === 401 || res.status === 403) {
+                sessionStorage.clear();
+                window.location.href = '/auth/login.html';
+                return;
+            }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const resp = await res.json();
+            const data = resp.data || resp;
+
+            loadingEl.classList.add('hidden');
+            contentEl.classList.remove('hidden');
+            populateForm(data);
+            document.getElementById('body-content').classList.remove('opacity-0');
+
+        } catch (err) {
+            console.error('Profile load error:', err);
+            loadingEl.classList.add('hidden');
+            document.getElementById('error-message').textContent = err.message || 'Failed to load profile.';
+            errorEl.classList.remove('hidden');
+            document.getElementById('body-content').classList.remove('opacity-0');
+        }
+    }
+
+    // ── Save profile (PUT /api/seller/profile) ────────────────────
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('save-profile-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Saving…';
+
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const body  = {
+            display_name:  document.getElementById('f-display-name').value.trim(),
+            handle:        document.getElementById('f-handle').value.trim().toLowerCase(),
+            bio:           document.getElementById('f-bio').value.trim(),
+            location:      document.getElementById('f-location').value.trim(),
+            website:       document.getElementById('f-website').value.trim(),
+            artisan_story: document.getElementById('f-story').value.trim(),
+        };
+
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/profile`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.message || 'Update failed');
+            }
+            showToast('Profile updated successfully!', 'success');
+        } catch (err) {
+            showToast(err.message || 'Failed to save profile.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Save Profile';
+        }
+    });
+
+    // ── Save settings (accept orders + language + currency) ───────
+    document.getElementById('save-settings-btn').addEventListener('click', async () => {
+        const btn = document.getElementById('save-settings-btn');
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const body  = {
+            is_accepting_orders: document.getElementById('setting-accepting').checked,
+            default_language:    document.getElementById('f-language').value,
+            store_currency:      document.getElementById('f-currency').value,
+        };
+
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/profile`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Update failed');
+            showToast('Settings saved!', 'success');
+        } catch (err) {
+            showToast(err.message || 'Failed to save settings.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Save Settings';
+        }
+    });
+
+    // ── DOMContentLoaded ──────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        // Guard: verify role is seller
+        try {
+            const pr = await fetch(`${API_BASE}/api/profile/me`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!pr.ok) throw new Error('Auth check failed');
+            const pd = await pr.json();
+            const u  = pd.data || pd;
+            if (u.role !== 'seller') {
+                window.location.href = '/buyer/profile.html';
+                return;
+            }
+        } catch (e) {
+            sessionStorage.clear();
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        await loadProfile();
+    });
+
+    // ── Retry button ──────────────────────────────────────────────
+    document.getElementById('retry-btn').addEventListener('click', loadProfile);
+
+    // ── Logout ────────────────────────────────────────────────────
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        const token   = sessionStorage.getItem('tohfa_access_token');
+        const refresh = sessionStorage.getItem('tohfa_refresh_token');
+        if (token && refresh) {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ refresh_token: refresh })
+            }).catch(() => {});
+        }
+        sessionStorage.removeItem('tohfa_access_token');
+        sessionStorage.removeItem('tohfa_refresh_token');
+        sessionStorage.removeItem('tohfa_user');
+        window.location.href = '/auth/login.html';
+    });
+</script>
+</body>
+</html>
