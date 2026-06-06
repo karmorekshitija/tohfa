@@ -114,47 +114,52 @@
 </head>
 <body class="bg-bg-primary font-body-md text-text-default selection:bg-sage-soft">
 <!-- SIDE NAVIGATION -->
-<aside class="bg-[#FCFAF5] border-r border-sage-soft h-screen w-64 fixed left-0 top-0 z-50 flex flex-col py-8 px-4">
-<div class="mb-12 px-4">
-<h1 class="font-display-hero italic text-primary text-[28px] leading-tight">Tohfa</h1>
-<p class="font-accent-caps text-[11px] tracking-[0.2em] text-text-muted/60 uppercase">Admin Console</p>
+<aside class="flex flex-col h-screen fixed left-0 top-0 py-10 px-6 z-50 w-64 border-r border-outline-variant/30 bg-[#FCFAF5]">
+<div class="mb-14">
+<h1 class="font-headline-lg text-headline-lg italic text-[#255338] leading-tight">Tohfa</h1>
+<p class="text-accent-caps font-accent-caps text-text-faint tracking-widest text-[10px] mt-1 opacity-70">Admin Console</p>
 </div>
-<nav class="flex-grow space-y-2">
-<a class="flex items-center gap-4 px-4 py-3 text-text-default/80 hover:text-primary transition-colors rounded-full" href="#">
-<span class="material-symbols-outlined text-xl">grid_view</span>
-<span class="font-body-md font-medium">Dashboard</span>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-label-btn text-label-btn">Dashboard</span>
 </a>
-<a class="flex items-center gap-4 px-4 py-3 bg-[#3D6B4F] text-white rounded-full shadow-lg shadow-[#3D6B4F]/20" href="#">
-<span class="material-symbols-outlined text-xl">payments</span>
-<span class="font-body-md font-medium">Transactions</span>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/sellers.html">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-label-btn text-label-btn">Sellers</span>
 </a>
-<a class="flex items-center gap-4 px-4 py-3 text-text-default/80 hover:text-primary transition-colors rounded-full" href="#">
-<span class="material-symbols-outlined text-xl">account_balance_wallet</span>
-<span class="font-body-md font-medium">Payouts</span>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/orders.html">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+<span class="font-label-btn text-label-btn">Orders</span>
 </a>
-<a class="flex items-center gap-4 px-4 py-3 text-text-default/80 hover:text-primary transition-colors rounded-full" href="#">
-<span class="material-symbols-outlined text-xl">receipt_long</span>
-<span class="font-body-md font-medium">Settlements</span>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/categories.html">
+<span class="material-symbols-outlined text-[20px]">category</span>
+<span class="font-label-btn text-label-btn">Categories</span>
 </a>
-<a class="flex items-center gap-4 px-4 py-3 text-text-default/80 hover:text-primary transition-colors rounded-full" href="#">
-<span class="material-symbols-outlined text-xl">settings</span>
-<span class="font-body-md font-medium">Settings</span>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/products.html">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-label-btn text-label-btn">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/audit-logs.html">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span class="font-label-btn text-label-btn">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-label-btn text-label-btn">Settings</span>
 </a>
 </nav>
-<div class="mt-auto pt-6 border-t border-sage-soft/30">
-<div class="flex items-center gap-3 px-2">
-<div class="w-10 h-10 rounded-full bg-sage-soft flex items-center justify-center text-primary font-bold text-sm">
-                TA
-            </div>
-<div class="flex flex-col">
-<p class="text-sm font-bold leading-tight">Tohfa Admin</p>
-<p class="text-[10px] text-text-faint">Master Access</p>
-</div>
+<!-- Profile Footer -->
+<div class="mt-auto pt-6 border-t border-outline-variant/20 flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-sage-soft flex items-center justify-center text-primary font-bold text-xs shrink-0">TA</div>
+<div class="overflow-hidden">
+<p class="text-[13px] font-bold text-text-default truncate leading-tight">Tohfa Admin</p>
+<p class="text-[11px] text-text-faint font-data-meta truncate">Master Access</p>
 </div>
 </div>
 </aside>
 <!-- MAIN CONTENT CANVAS -->
-<main class="ml-64 pt-12 pb-12 px-12 min-h-screen relative overflow-hidden watercolor-bg">
+<main class="ml-64 pt-12 pb-12 px-12 min-h-screen relative overflow-hidden watercolor-bg flex flex-col">
 <!-- Decorative Ink Line Art -->
 <span class="line-art-overlay top-20 right-10 rotate-12 scale-150 material-symbols-outlined text-8xl text-primary">brush</span>
 <span class="line-art-overlay bottom-20 left-10 -rotate-12 scale-125 material-symbols-outlined text-8xl text-secondary">palette</span>
@@ -168,25 +173,25 @@
 </div>
 <!-- OVERALL STATUS HERO -->
 <section class="mb-section-gap relative z-10">
-<div class="bg-primary-container p-8 rounded-[2rem] studio-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+<div id="status-hero" class="bg-primary-container p-8 rounded-[2rem] studio-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
 <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_#C8973A,_transparent_50%)]"></div>
 <div class="relative z-10">
 <div class="flex items-center gap-4 mb-2">
 <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-md">
 <span class="material-symbols-outlined text-white text-3xl">verified_user</span>
 </div>
-<h3 class="font-headline-md text-headline-md text-white">✓ All Systems Operational</h3>
+<h3 id="overall-status-title" class="font-headline-md text-headline-md text-white">✓ All Systems Operational</h3>
 </div>
 <div class="flex items-center gap-2 mt-4">
-<span class="font-data-meta text-data-meta text-white/70">Last checked: 2025-01-22 10:45:12</span>
+<span id="last-checked-display" class="font-data-meta text-data-meta text-white/70">Last checked: —</span>
 <span class="w-1 h-1 bg-white/30 rounded-full"></span>
-<span class="font-data-meta text-data-meta text-white/70">Region: India (South)</span>
+<span id="region-display" class="font-data-meta text-data-meta text-white/70">Region: India (South)</span>
 </div>
 </div>
 <div class="relative z-10 text-right">
 <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
 <span class="material-symbols-outlined text-white text-sm animate-pulse">sync</span>
-<span class="font-data-meta text-data-meta text-white" id="countdown">Refreshing in 45s</span>
+<span class="font-data-meta text-data-meta text-white" id="countdown">Refreshing in 60s</span>
 </div>
 </div>
 </div>
@@ -200,8 +205,8 @@
 <span class="material-symbols-outlined text-primary opacity-40">schedule</span>
 </div>
 <div class="flex items-baseline gap-2">
-<span class="font-data-price text-[32px] text-primary">124ms</span>
-<span class="font-body-sm text-secondary-fixed-dim text-xs">▲ 2ms</span>
+<span id="latency-value" class="font-data-price text-[32px] text-primary">0ms</span>
+<span id="latency-trend" class="font-body-sm text-secondary-fixed-dim text-xs"></span>
 </div>
 <p class="text-[10px] font-body-sm text-text-faint mt-2">Optimal range: 100ms - 250ms</p>
 </div>
@@ -212,13 +217,12 @@
 <span class="material-symbols-outlined text-primary opacity-40">sensors</span>
 </div>
 <div class="flex items-baseline gap-2">
-<span class="font-serif-ui-md text-[24px] font-bold text-primary">Receiving</span>
-<span class="flex h-2 w-2 relative">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+<span id="webhook-value" class="font-serif-ui-md text-[24px] font-bold text-primary">Checking</span>
+<span id="webhook-indicator-dot" class="flex h-2 w-2 relative">
+<span class="relative inline-flex rounded-full h-2 w-2 bg-text-faint"></span>
 </span>
 </div>
-<p class="font-data-meta text-data-meta text-text-muted mt-2">Last webhook: 4 mins ago</p>
+<p id="webhook-last-time" class="font-data-meta text-data-meta text-text-muted mt-2">Last webhook: —</p>
 </div>
 <!-- Card 3: Test Payment -->
 <div class="bg-surface-ivory p-6 rounded-2xl border border-sage-soft studio-shadow hover:translate-y-[-4px] transition-transform duration-300">
@@ -227,25 +231,25 @@
 <span class="material-symbols-outlined text-primary opacity-40">published_with_changes</span>
 </div>
 <div class="flex flex-col">
-<span class="font-serif-ui-md text-[24px] font-bold text-primary">Verified ✓</span>
-<span class="font-data-meta text-[10px] text-accent-violet tracking-tight font-bold">txn_89215091</span>
+<span id="last-tx-status" class="font-serif-ui-md text-[24px] font-bold text-primary">Checking</span>
+<span id="last-tx-id" class="font-data-meta text-[10px] text-accent-violet tracking-tight font-bold">—</span>
 </div>
-<p class="text-[10px] font-body-sm text-text-faint mt-2">Performed at 10:30 AM Today</p>
+<p id="last-tx-time" class="text-[10px] font-body-sm text-text-faint mt-2">Performed recently</p>
 </div>
 </section>
 <!-- ACTIONS & LOGS -->
-<section class="max-w-4xl relative z-10">
+<section class="max-w-4xl relative z-10 w-full flex-grow">
 <div class="flex flex-wrap items-center gap-4 mb-8">
 <button class="group flex items-center gap-2 px-6 py-3 border border-primary text-primary font-label-btn text-label-btn rounded-full hover:bg-primary hover:text-white transition-all duration-300 active:scale-95" id="runCheck">
 <span class="material-symbols-outlined text-lg group-hover:rotate-180 transition-transform duration-500">autorenew</span>
                 Run Health Check Now
             </button>
-<button class="flex items-center gap-2 px-6 py-3 text-text-muted font-label-btn text-label-btn hover:text-primary transition-colors">
+<button id="exportLog" class="flex items-center gap-2 px-6 py-3 text-text-muted font-label-btn text-label-btn hover:text-primary transition-colors">
 <span class="material-symbols-outlined text-lg">download</span>
                 Export Log
             </button>
 </div>
-<div class="bg-white/40 backdrop-blur-sm rounded-3xl border border-sage-soft overflow-hidden">
+<div class="bg-white/40 backdrop-blur-sm rounded-3xl border border-sage-soft overflow-hidden mb-10">
 <div class="p-5 border-b border-sage-soft flex justify-between items-center bg-white/60">
 <h4 class="font-accent-caps text-accent-caps text-primary">Webhook Event Log</h4>
 <a class="text-primary font-label-btn text-xs hover:underline flex items-center gap-1" href="javascript:void(0)">
@@ -253,105 +257,217 @@
                     <span class="material-symbols-outlined text-xs">open_in_new</span>
 </a>
 </div>
-<div class="divide-y divide-sage-soft/30">
-<!-- Event 1 -->
-<div class="p-4 hover:bg-surface-ivory transition-colors flex justify-between items-center group">
-<div class="flex items-center gap-4">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-<span class="font-data-meta text-data-meta font-bold text-text-default">payment.captured</span>
-</div>
-<div class="flex items-center gap-6">
-<span class="font-data-meta text-data-meta text-text-faint">txn_9012354</span>
-<span class="font-data-meta text-data-meta text-text-muted">10:42:01</span>
-<span class="material-symbols-outlined text-text-faint opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">info</span>
-</div>
-</div>
-<!-- Event 2 -->
-<div class="p-4 hover:bg-surface-ivory transition-colors flex justify-between items-center group">
-<div class="flex items-center gap-4">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-<span class="font-data-meta text-data-meta font-bold text-text-default">order.paid</span>
-</div>
-<div class="flex items-center gap-6">
-<span class="font-data-meta text-data-meta text-text-faint">ord_552190</span>
-<span class="font-data-meta text-data-meta text-text-muted">10:41:55</span>
-<span class="material-symbols-outlined text-text-faint opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">info</span>
-</div>
-</div>
-<!-- Event 3 -->
-<div class="p-4 hover:bg-surface-ivory transition-colors flex justify-between items-center group">
-<div class="flex items-center gap-4">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-<span class="font-data-meta text-data-meta font-bold text-text-default">refund.processed</span>
-</div>
-<div class="flex items-center gap-6">
-<span class="font-data-meta text-data-meta text-text-faint">ref_221094</span>
-<span class="font-data-meta text-data-meta text-text-muted">10:35:12</span>
-<span class="material-symbols-outlined text-text-faint opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">info</span>
-</div>
-</div>
-<!-- Event 4 -->
-<div class="p-4 hover:bg-surface-ivory transition-colors flex justify-between items-center group">
-<div class="flex items-center gap-4">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-<span class="font-data-meta text-data-meta font-bold text-text-default">payment.failed</span>
-</div>
-<div class="flex items-center gap-6">
-<span class="font-data-meta text-data-meta text-text-faint">txn_9012350</span>
-<span class="font-data-meta text-data-meta text-text-muted">10:32:45</span>
-<span class="material-symbols-outlined text-text-faint opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">info</span>
-</div>
-</div>
-<!-- Event 5 -->
-<div class="p-4 hover:bg-surface-ivory transition-colors flex justify-between items-center group">
-<div class="flex items-center gap-4">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-<span class="font-data-meta text-data-meta font-bold text-text-default">payout.initiated</span>
-</div>
-<div class="flex items-center gap-6">
-<span class="font-data-meta text-data-meta text-text-faint">payout_11029</span>
-<span class="font-data-meta text-data-meta text-text-muted">10:30:00</span>
-<span class="material-symbols-outlined text-text-faint opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">info</span>
-</div>
-</div>
+<div id="webhook-events-list" class="divide-y divide-sage-soft/30">
+<!-- Dynamic event log will be injected here -->
 </div>
 </div>
 </section>
 </main>
-<script>
-    // Simple countdown logic
-    let count = 45;
-    const countdownEl = document.getElementById('countdown');
+<script type="module">
+import adminApiClient from '/src/utils/adminApiClient.js';
+
+if (!sessionStorage.getItem('tohfa_admin_token')) {
+  window.location.href = '/admin/login.html';
+}
+
+let countdown = 60;
+let refreshTimer = null;
+
+const statusTitle = document.getElementById('overall-status-title');
+const statusHero = document.getElementById('status-hero');
+const lastCheckedDisplay = document.getElementById('last-checked-display');
+const regionDisplay = document.getElementById('region-display');
+const countdownEl = document.getElementById('countdown');
+
+const latencyValue = document.getElementById('latency-value');
+const latencyTrend = document.getElementById('latency-trend');
+const webhookValue = document.getElementById('webhook-value');
+const webhookIndicatorDot = document.getElementById('webhook-indicator-dot');
+const webhookLastTime = document.getElementById('webhook-last-time');
+
+const lastTxStatus = document.getElementById('last-tx-status');
+const lastTxId = document.getElementById('last-tx-id');
+const lastTxTime = document.getElementById('last-tx-time');
+
+const webhookEventsList = document.getElementById('webhook-events-list');
+const runCheckBtn = document.getElementById('runCheck');
+const exportLogBtn = document.getElementById('exportLog');
+
+async function fetchHealth() {
+  try {
+    const response = await adminApiClient.get('/admin/payment-health');
+    if (response.data?.success) {
+      updateUI(response.data.data);
+    }
+  } catch (error) {
+    console.error('Failed to fetch payment health status:', error);
+  }
+}
+
+function updateUI(data) {
+  statusTitle.textContent = data.status_label;
+  
+  statusHero.className = "p-8 rounded-[2rem] studio-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden";
+  if (data.overall_status === 'down') {
+    statusHero.classList.add('bg-danger-terracotta');
+  } else if (data.overall_status === 'degraded') {
+    statusHero.classList.add('bg-highlight-gold');
+  } else {
+    statusHero.classList.add('bg-primary-container');
+  }
+
+  lastCheckedDisplay.textContent = `Last checked: ${data.last_checked_display || data.last_checked_at || 'Just now'}`;
+  regionDisplay.textContent = `Region: ${data.region || 'India (South)'}`;
+
+  latencyValue.textContent = data.api_response_ms ? `${data.api_response_ms}ms` : '—';
+  
+  if (data.api_response_trend) {
+    const isUp = data.api_response_trend.startsWith('+');
+    const isZero = data.api_response_trend === '+0ms' || data.api_response_trend === '0ms';
+    latencyTrend.textContent = (isUp ? '▲ ' : '▼ ') + data.api_response_trend.replace('+', '').replace('-', '');
+    latencyTrend.className = isZero 
+      ? 'font-body-sm text-text-faint text-xs' 
+      : (isUp ? 'font-body-sm text-danger-terracotta text-xs' : 'font-body-sm text-primary text-xs');
+  } else {
+    latencyTrend.textContent = '';
+  }
+
+  const webStatus = data.webhook_status || 'receiving';
+  webhookValue.textContent = webStatus.charAt(0).toUpperCase() + webStatus.slice(1);
+  
+  webhookIndicatorDot.innerHTML = '';
+  if (webStatus === 'receiving') {
+    webhookIndicatorDot.innerHTML = `
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+    `;
+    webhookValue.className = "font-serif-ui-md text-[24px] font-bold text-primary";
+  } else if (webStatus === 'delayed') {
+    webhookIndicatorDot.innerHTML = `
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-highlight-gold opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-highlight-gold"></span>
+    `;
+    webhookValue.className = "font-serif-ui-md text-[24px] font-bold text-highlight-gold";
+  } else {
+    webhookIndicatorDot.innerHTML = `
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-danger-terracotta"></span>
+    `;
+    webhookValue.className = "font-serif-ui-md text-[24px] font-bold text-danger-terracotta";
+  }
+
+  webhookLastTime.textContent = data.last_webhook_ago ? `Last webhook: ${data.last_webhook_ago}` : 'No recent webhook';
+
+  if (data.last_test_txn_id) {
+    lastTxStatus.textContent = data.last_test_txn_status === 'captured' ? 'Verified ✓' : 'Failed ✗';
+    lastTxStatus.className = data.last_test_txn_status === 'captured' 
+      ? "font-serif-ui-md text-[24px] font-bold text-primary" 
+      : "font-serif-ui-md text-[24px] font-bold text-danger-terracotta";
+    lastTxId.textContent = data.last_test_txn_id;
+    lastTxTime.textContent = data.last_checked_display ? `Checked at ${data.last_checked_display.slice(11, 19)}` : 'Recently';
+  } else {
+    lastTxStatus.textContent = 'No Txn';
+    lastTxId.textContent = '—';
+    lastTxTime.textContent = 'No test performed yet';
+  }
+
+  renderEventLog(data.webhook_event_log);
+
+  countdown = data.next_auto_check_in_seconds || 60;
+  countdownEl.textContent = `Refreshing in ${countdown}s`;
+}
+
+function renderEventLog(events) {
+  webhookEventsList.innerHTML = '';
+  if (!events || events.length === 0) {
+    webhookEventsList.innerHTML = `
+      <div class="p-4 text-center text-text-muted text-xs font-body-sm">
+        No webhook events logged yet.
+      </div>
+    `;
+    return;
+  }
+
+  events.forEach(event => {
+    const div = document.createElement('div');
+    div.className = "p-4 hover:bg-surface-ivory transition-colors flex justify-between items-center group";
     
-    const timer = setInterval(() => {
-        count--;
-        if (count < 0) count = 60;
-        countdownEl.innerText = `Refreshing in ${count}s`;
-    }, 1000);
+    let severityDotClass = "bg-secondary";
+    if (event.severity === 'warning') severityDotClass = "bg-highlight-gold";
+    else if (event.severity === 'error') severityDotClass = "bg-danger-terracotta";
 
-    // Run Health Check micro-interaction
-    const runCheckBtn = document.getElementById('runCheck');
-    runCheckBtn.addEventListener('click', () => {
-        const originalContent = runCheckBtn.innerHTML;
-        runCheckBtn.innerHTML = `
-            <span class="material-symbols-outlined text-lg animate-spin">sync</span>
-            Checking systems...
-        `;
-        runCheckBtn.disabled = true;
-        runCheckBtn.classList.add('opacity-70');
+    div.innerHTML = `
+      <div class="flex items-center gap-4">
+        <span class="w-2 h-2 rounded-full ${severityDotClass}"></span>
+        <span class="font-data-meta text-data-meta font-bold text-text-default">${event.event_type}</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <span class="font-data-meta text-data-meta text-text-faint">${event.txn_id}</span>
+        <span class="font-data-meta text-data-meta text-text-muted">${event.time_display || event.timestamp}</span>
+        <span class="material-symbols-outlined text-text-faint opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer view-raw-btn" data-info='${JSON.stringify(event)}'>info</span>
+      </div>
+    `;
+    webhookEventsList.appendChild(div);
+  });
 
-        setTimeout(() => {
-            runCheckBtn.innerHTML = `
-                <span class="material-symbols-outlined text-lg text-secondary">check_circle</span>
-                Systems Healthy
-            `;
-            setTimeout(() => {
-                runCheckBtn.innerHTML = originalContent;
-                runCheckBtn.disabled = false;
-                runCheckBtn.classList.remove('opacity-70');
-                count = 60; // Reset countdown
-            }, 2000);
-        }, 1500);
+  webhookEventsList.querySelectorAll('.view-raw-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const info = JSON.parse(e.currentTarget.getAttribute('data-info'));
+      alert(`Webhook Event Details:\n\nType: ${info.event_type}\nTransaction ID: ${info.txn_id}\nTimestamp: ${info.timestamp}\nSeverity: ${info.severity}`);
     });
+  });
+}
+
+function startCountdown() {
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(() => {
+    countdown--;
+    if (countdown <= 0) {
+      countdown = 60;
+      fetchHealth();
+    } else {
+      countdownEl.textContent = `Refreshing in ${countdown}s`;
+    }
+  }, 1000);
+}
+
+runCheckBtn.addEventListener('click', async () => {
+  const originalContent = runCheckBtn.innerHTML;
+  runCheckBtn.innerHTML = `
+    <span class="material-symbols-outlined text-lg animate-spin">sync</span>
+    Checking systems...
+  `;
+  runCheckBtn.disabled = true;
+  runCheckBtn.classList.add('opacity-70');
+
+  try {
+    const response = await adminApiClient.post('/admin/payment-health/run-check');
+    if (response.data?.success) {
+      updateUI(response.data.data);
+      runCheckBtn.innerHTML = `
+        <span class="material-symbols-outlined text-lg text-secondary">check_circle</span>
+        Check Complete
+      `;
+    }
+  } catch (error) {
+    runCheckBtn.innerHTML = `
+      <span class="material-symbols-outlined text-lg text-danger-terracotta">error</span>
+      Check Failed
+    `;
+  }
+
+  setTimeout(() => {
+    runCheckBtn.innerHTML = originalContent;
+    runCheckBtn.disabled = false;
+    runCheckBtn.classList.remove('opacity-70');
+  }, 2000);
+});
+
+exportLogBtn.addEventListener('click', () => {
+  alert('Exporting gateway logs...');
+});
+
+// Initial load
+fetchHealth();
+startCountdown();
 </script>
 </body></html>

@@ -1,0 +1,64 @@
+import uuid
+from datetime import datetime
+from sqlalchemy import String, Boolean, DateTime, text
+from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
+from sqlalchemy.sql import func
+from app.core.database import Base, GUID
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        GUID,
+        primary_key=True,
+        default=uuid.uuid4,
+        server_default=text("gen_random_uuid()"),
+    )
+    email: Mapped[str] = mapped_column(
+        String,
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+    password_hash: Mapped[str] = mapped_column(
+        String,
+        nullable=False,
+    )
+    full_name: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True,
+    )
+    role: Mapped[str] = mapped_column(
+        String,
+        default="buyer",
+        server_default=text("'buyer'"),
+        nullable=False,
+    )
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
+        server_default=text("true"),
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False,
+    )
+
+    buyer_profile = relationship("BuyerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
+    seller_profile = relationship("SellerProfile", uselist=False, back_populates="user", cascade="all, delete-orphan")
+
+    @validates("email")
+    def validate_email(self, key: str, value: str) -> str:
+        """Ensure email is stored as lowercase."""
+        if value:
+            return value.lower().strip()
+        return value
+

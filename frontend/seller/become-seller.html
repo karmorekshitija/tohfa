@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Become a Seller | TOFA Marketplace</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#a0d2b0",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#002110",
+                        "background": "#f9faf5",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e2e3df",
+                        "surface-bright": "#f9faf5",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface-container-low": "#f3f4f0",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "secondary-container": "#c8e9b8",
+                        "secondary": "#49663f",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "primary-fixed": "#bceecb",
+                        "on-surface": "#1a1c1a",
+                        "on-secondary-container": "#4d6a43",
+                        "on-primary-container": "#b7e9c6",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#caecbb",
+                        "outline": "#717972",
+                        "on-secondary-fixed": "#062103",
+                        "inverse-primary": "#a0d2b0",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e2e3df",
+                        "tertiary": "#573b81",
+                        "surface-container-high": "#e7e9e4",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface-tint": "#3a684c",
+                        "surface": "#f9faf5",
+                        "on-error": "#ffffff",
+                        "surface-container": "#edeeea",
+                        "on-background": "#1a1c1a",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "inverse-on-surface": "#f0f1ed",
+                        "tertiary-container": "#70539b",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#3d6b4f",
+                        "on-tertiary-fixed": "#270550",
+                        "on-surface-variant": "#414942",
+                        "inverse-surface": "#2e312e",
+                        "surface-dim": "#d9dad6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#255338",
+                        "outline-variant": "#c1c9c0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "container-max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["DM Sans"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "body-lg": ["DM Sans"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "label-caps": ["Playfair Display"],
+                        "data-mono": ["Space Mono"],
+                        "display-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-watermark {
+            mask-image: url('https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/filter_vintage/default/24px.svg');
+            mask-repeat: no-repeat;
+            mask-size: contain;
+        }
+        .parchment-texture {
+            background-color: #f9faf5;
+            background-image: radial-gradient(#e2e3df 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="parchment-texture text-on-surface selection:bg-primary-fixed-dim/30">
+<!-- TopNavBar -->
+<nav class="bg-background dark:bg-surface-dim border-b border-secondary/40 dark:border-outline-variant flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max-width mx-auto sticky top-0 z-50">
+<div class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed-dim">TOFA Marketplace</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-200" href="#benefits">Benefits</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-200" href="#fees">Fees</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-200" href="#community">Community</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-200" href="#community">Guides</a>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2 rounded-full font-body-md text-body-md hover:opacity-90 transition-all">Start Selling</button>
+</nav>
+<main class="max-w-container-max-width mx-auto">
+<!-- Hero Section -->
+<section class="relative w-full min-h-[819px] flex items-center px-margin-desktop py-16 overflow-hidden">
+<!-- Background Illustration Layer -->
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+<div class="absolute top-20 right-10 w-96 h-96 botanical-watermark bg-secondary/20 rotate-12"></div>
+<div class="absolute bottom-10 left-10 w-64 h-64 botanical-watermark bg-tertiary/20 -rotate-45"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter w-full relative z-10 items-center">
+<div class="md:col-span-6 flex flex-col gap-8">
+<h1 class="font-display-lg text-display-lg text-primary leading-tight">
+                        Sell your craft to <br/>
+<span class="italic text-tertiary">the night-market.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                        Join a scholarly community of botanical artisans. From hand-pressed fern journals to lunar-distilled elixirs, find your audience in our curated botanical atelier.
+                    </p>
+<div class="flex items-center gap-6">
+<button class="bg-primary text-on-primary px-10 py-4 rounded-full font-body-lg text-body-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                            Start selling
+                        </button>
+<a class="font-body-lg text-body-lg text-secondary flex items-center gap-2 hover:underline decoration-secondary/30 transition-all" href="#benefits">
+                            Learn more <span class="material-symbols-outlined">arrow_downward</span>
+</a>
+</div>
+</div>
+<div class="md:col-span-6 relative group">
+<!-- Anime Cel Shaded Hero Image -->
+<div class="relative rounded-2xl overflow-hidden shadow-[20px_20px_0px_0px_rgba(143,175,130,0.2)] aspect-[4/5] bg-surface-container-low border border-secondary/20">
+<img class="w-full h-full object-cover" data-alt="A warm, cel-shaded anime illustration of a female artisan working at a moonlit wooden craft table. She is meticulously pressing glowing botanical flowers into a leather-bound journal. The scene is filled with magical dust motes, floating glowing leaf motifs, and soft indigo moonlight filtering through an open window. The color palette features deep forest greens, soft sage, and warm parchment cream tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYDN0MzDYOSGgnYpMnHFsbaS5Z2qRDQJBzJ2YVuCkKV3H-j_6SubkURamieMoGtkGa9B2hLoumNcFn7Pcq_TUJDP_kWHTzUopopwEfWAuvj5nthRJ5g2SbKpjllxPi6-PQvwxIogqnqrPqXQ0qGHa-APm3qIZXcljXm38_nvdcr0YilfRwkcXj2bKEJQkD6XIafabCwA5BKXnXriBKpkf9erENu9_LOAWckSsmgeULHmwnihz8ZIrg4-J7J9JM21kJL4aiLPVChkU"/>
+<!-- Floating Butterfly Decorative Element -->
+<div class="absolute -top-4 -right-4 p-4 bg-background border border-outline-variant rounded-full shadow-lg animate-bounce duration-[3000ms]">
+<span class="material-symbols-outlined text-tertiary">pest_control_rodent</span> <!-- Placeholder for butterfly/insect motif -->
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Benefits Section -->
+<section class="px-margin-desktop py-24 bg-surface-container-lowest/50" id="benefits">
+<div class="text-center mb-16">
+<span class="font-label-caps text-label-caps text-secondary mb-4 block">THE ARTISAN ADVANTAGE</span>
+<h2 class="font-headline-md text-headline-md text-primary">Designed for mindful creators</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-low border border-secondary/40 p-8 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all">
+<div class="absolute bottom-[-10px] right-[-10px] opacity-[0.08] text-[80px] pointer-events-none group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined text-secondary">filter_vintage</span>
+</div>
+<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4">Free to list</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Focus on your craft, not the costs. List your entire botanical collection without any upfront fees or expiration dates.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low border border-secondary/40 p-8 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all">
+<div class="absolute bottom-[-10px] right-[-10px] opacity-[0.08] text-[80px] pointer-events-none group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined text-secondary">eco</span>
+</div>
+<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4">Direct buyer messages</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Build relationships with collectors. Our botanical leaf-chat interface keeps your professional communications scholarly and organized.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low border border-secondary/40 p-8 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all">
+<div class="absolute bottom-[-10px] right-[-10px] opacity-[0.08] text-[80px] pointer-events-none group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined text-secondary">psychiatry</span>
+</div>
+<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4">Reels-powered discovery</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Showcase the process behind the product. Short-form botanical reels put your artistry in front of the right curious eyes.</p>
+</div>
+</div>
+</section>
+<!-- Fee Transparency Section -->
+<section class="px-margin-desktop py-24 relative overflow-hidden" id="fees">
+<div class="absolute inset-0 bg-tertiary/5 skew-y-1"></div>
+<div class="relative z-10 max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12 bg-surface-container-low p-12 rounded-2xl border border-secondary/20 shadow-xl">
+<div class="flex-1">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Honest, simple growth</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 italic">
+                        "We believe the artisan should keep the harvest. Our fees are transparent, supporting the community infrastructure that keeps TOFA blooming."
+                    </p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container overflow-hidden border border-secondary/20">
+<img class="w-full h-full object-cover" data-alt="A portrait of a serene artisan with a warm smile, wearing a linen apron, in a sun-drenched studio filled with dried flowers and vintage apothecary jars. Soft lighting, high-end botanical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmzbvIOCFtJUf_DpluhMa5PKzwLrVW979TPpt1jgVv6QgK_xw0tpoUnrDLriK4grnBxXhZbbtWA5zvkho8InVSetYaDgoYy6wqkw3ItxRQjlm7w8zRxXrE1owc9OcgegQIIrgeIj8AXNrIAOCWtlNoup572VSDMcgXZmL7FJckG38yN0UJImzAVwnJPJJDKPgtO4o7RbnerCWFQcVemfpFJaFyCjITCZs75Tj2NJi7iJVBdx9xrdhU4ppj1wcL07K4ptOj9-vSUb8"/>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface font-bold">Elara Thorne, Lead Curator</div>
+</div>
+</div>
+<div class="flex-1 w-full bg-background p-8 rounded-xl border border-outline-variant shadow-sm flex flex-col gap-6">
+<div class="flex justify-between items-center border-b border-outline-variant pb-4">
+<span class="font-data-mono text-data-mono text-on-surface-variant">LISTING FEE</span>
+<span class="font-data-mono text-data-mono font-bold text-primary">Zero listing fees</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant pb-4">
+<span class="font-data-mono text-data-mono text-on-surface-variant">PLATFORM FEE</span>
+<span class="font-data-mono text-data-mono font-bold text-primary">8% platform fee on sale</span>
+</div>
+<div class="flex justify-between items-center pb-4">
+<span class="font-data-mono text-data-mono text-on-surface-variant">PAYMENT CYCLE</span>
+<span class="font-data-mono text-data-mono font-bold text-primary">Weekly payouts</span>
+</div>
+<div class="mt-4 pt-6 border-t border-dashed border-secondary/40">
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+                            * Includes payment processing and curated marketplace protection.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="px-margin-desktop py-24 text-center" id="community">
+<div class="max-w-2xl mx-auto flex flex-col gap-8">
+<span class="material-symbols-outlined text-primary text-5xl">nature_people</span>
+<h2 class="font-display-lg text-display-lg text-primary">Ready to open your atelier?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    Join over 2,000 independent botanists and artisans today. Your space in the night-market is waiting.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+<button class="bg-primary text-on-primary px-12 py-5 rounded-full font-body-lg text-body-lg font-bold hover:scale-105 transition-transform">
+                        Start your shop
+                    </button>
+<button class="border border-secondary text-secondary px-12 py-5 rounded-full font-body-lg text-body-lg hover:bg-secondary/5 transition-colors">
+                        View Seller Handbook
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container border-t border-secondary/20 dark:border-outline-variant w-full px-margin-desktop py-12 flex flex-col items-center gap-unit max-w-container-max-width mx-auto">
+<div class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed-dim mb-6">TOFA Botanical Atelier</div>
+<div class="flex flex-wrap justify-center gap-x-12 gap-y-4 mb-10">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim underline decoration-tertiary/30 transition-transform hover:-translate-y-[1px]" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim underline decoration-tertiary/30 transition-transform hover:-translate-y-[1px]" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim underline decoration-tertiary/30 transition-transform hover:-translate-y-[1px]" href="#">Seller Handbook</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim underline decoration-tertiary/30 transition-transform hover:-translate-y-[1px]" href="#">Contact Support</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim underline decoration-tertiary/30 transition-transform hover:-translate-y-[1px]" href="#">Instagram</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-tertiary dark:hover:text-tertiary-fixed-dim underline decoration-tertiary/30 transition-transform hover:-translate-y-[1px]" href="#">Pinterest</a>
+</div>
+<p class="font-body-sm text-body-sm text-secondary dark:text-secondary-fixed text-center opacity-70">
+            © 2024 TOFA Botanical Atelier. All rights reserved.
+        </p>
+<!-- Aesthetic Accent Bunny/Cat Peeking (from Style Guide) -->
+<div class="mt-8 opacity-40 grayscale group-hover:grayscale-0 transition-all cursor-default">
+<span class="material-symbols-outlined text-4xl text-primary">pets</span>
+<p class="font-data-mono text-[10px] mt-1">THE SHOP KEEPER IS WATCHING</p>
+</div>
+</footer>
+<!-- Atmosphere Micro-interactions -->
+<script>
+        document.addEventListener('mousemove', (e) => {
+            const watermarks = document.querySelectorAll('.botanical-watermark');
+            const x = (e.clientX / window.innerWidth) * 20;
+            const y = (e.clientY / window.innerHeight) * 20;
+            
+            watermarks.forEach(mark => {
+                mark.style.transform = `translate(${x}px, ${y}px) rotate(${mark.classList.contains('rotate-12') ? '12deg' : '-45deg'})`;
+            });
+        });
+
+        // Smooth reveal for cards
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('#benefits > div > div').forEach(card => {
+            card.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
+            observer.observe(card);
+        });
+    </script>
+
+<!-- Injected Landing Page CTA & Scroll script (Task 40) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Smooth scroll to anchor sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Learn more link scroll
+    const learnMore = document.querySelector('a[href="#benefits"]');
+    if (learnMore) {
+        learnMore.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('benefits').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    // 2. Wired CTA Buttons
+    // Start Selling (Nav), Start selling (Hero), Start your shop (Bottom CTA)
+    const ctaButtons = [
+        document.querySelector('nav button'),
+        document.querySelector('section button'),
+        document.querySelector('section:last-of-type button')
+    ];
+
+    ctaButtons.forEach(btn => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            const token = sessionStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/auth/login?next=/become-seller';
+            } else {
+                // User is logged in, post to become seller
+                const displayName = prompt("Enter your shop display name:");
+                if (!displayName) return;
+                const handle = prompt("Enter your shop handle (lowercase, numbers, underscores only):");
+                if (!handle) return;
+                
+                fetch('/api/seller/become', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ display_name: displayName, handle: handle, store_currency: 'INR' })
+                })
+                .then(res => {
+                    if (res.status === 409) {
+                        window.location.href = '/seller/studio';
+                        return;
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data) {
+                        if (data.success) {
+                            window.location.href = '/seller/studio';
+                        } else if (data.code === 'HANDLE_TAKEN') {
+                            alert("This handle is taken, please try another");
+                        } else {
+                            alert(data.message || "An error occurred");
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Failed to submit request to server");
+                });
+            }
+        });
+    });
+});
+</script>
+
+</body></html>

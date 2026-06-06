@@ -180,7 +180,7 @@
                 <!-- Avatar + Fields -->
                 <div class="flex flex-col md:flex-row gap-10 items-start">
                     <!-- Avatar -->
-                    <div class="relative group flex-shrink-0">
+                    <div class="relative group flex-shrink-0 cursor-pointer" onclick="document.getElementById('input-avatar').click()">
                         <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm">
                             <img id="profile-avatar" alt="Seller Avatar" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Seller&background=a8b48e&color=fff"/>
                         </div>
@@ -188,6 +188,7 @@
                             <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
                         </div>
                     </div>
+                    <input type="file" id="input-avatar" class="hidden" accept="image/*"/>
 
                     <!-- Fields Grid -->
                     <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
@@ -559,6 +560,49 @@
         }
 
         await loadProfile();
+
+        // Setup avatar file input handling
+        const inputAvatar = document.getElementById('input-avatar');
+        if (inputAvatar) {
+            inputAvatar.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                try {
+                    const resUpload = await fetch(`${API_BASE}/api/profile/me/avatar`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+                    const dataUpload = await resUpload.json();
+                    if (!resUpload.ok) {
+                        throw new Error(dataUpload.message || 'Upload failed');
+                    }
+                    const avatarUrl = dataUpload.data.avatar_url;
+                    document.getElementById('profile-avatar').src = avatarUrl;
+                    showToast('Avatar updated successfully!', 'success');
+
+                    // Update session storage user avatar
+                    const userStr = sessionStorage.getItem('tohfa_user');
+                    if (userStr) {
+                        try {
+                            const userObj = JSON.parse(userStr);
+                            userObj.avatar_url = avatarUrl;
+                            sessionStorage.setItem('tohfa_user', JSON.stringify(userObj));
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    }
+                } catch (err) {
+                    showToast(err.message || 'Failed to upload avatar.', 'error');
+                }
+            });
+        }
     });
 
     // ── Retry button ──────────────────────────────────────────────

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Seller Studio - Preview Listing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#3d6b4f",
+                      "background": "#f9faf5",
+                      "surface": "#f9faf5",
+                      "primary": "#255338",
+                      "outline-variant": "#c1c9c0",
+                      "on-surface": "#1a1c1a",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "inverse-on-surface": "#f0f1ed",
+                      "on-tertiary-fixed": "#270550",
+                      "on-tertiary-container": "#e8d6ff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#4d6a43",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed": "#caecbb",
+                      "secondary-container": "#c8e9b8",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#a0d2b0",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "on-background": "#1a1c1a",
+                      "tertiary": "#573b81",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#2e312e",
+                      "surface-container-high": "#e7e9e4",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#d9dad6",
+                      "secondary": "#49663f",
+                      "tertiary-fixed": "#ecdcff",
+                      "surface-container": "#edeeea",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "surface-container-highest": "#e2e3df",
+                      "on-tertiary-fixed-variant": "#54387e",
+                      "surface-bright": "#f9faf5",
+                      "outline": "#717972",
+                      "on-surface-variant": "#414942",
+                      "tertiary-container": "#70539b",
+                      "surface-variant": "#e2e3df",
+                      "surface-container-low": "#f3f4f0",
+                      "on-primary-container": "#b7e9c6",
+                      "primary-fixed": "#bceecb",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "on-primary-fixed-variant": "#214f36",
+                      "surface-tint": "#3a684c",
+                      "on-secondary-fixed": "#062103",
+                      "tertiary-fixed-dim": "#d6baff",
+                      "on-primary-fixed": "#002110",
+                      "parchment": "#F7F3EC"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "margin-desktop": "64px",
+                      "container-max-width": "1280px",
+                      "margin-mobile": "20px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "data-mono": ["Space Mono"],
+                      "headline-md": ["Playfair Display"],
+                      "display-lg": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "label-caps": ["Playfair Display"],
+                      "body-lg": ["DM Sans"],
+                      "headline-sm": ["Playfair Display"],
+                      "body-sm": ["DM Sans"],
+                      "display-lg-mobile": ["Playfair Display"],
+                      "ui-serif": ["Lora", "serif"]
+              },
+              "fontSize": {
+                      "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .parchment-texture {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(143, 175, 130, 0.05) 0px, transparent 50%);
+        }
+        .watercolor-wash {
+            background: linear-gradient(135deg, rgba(143, 175, 130, 0.08) 0%, rgba(112, 83, 155, 0.05) 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<!-- Standardised Left Sidebar (Task 37) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+  <div class="px-4 mb-8 flex flex-col items-center">
+    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="02_tofa_seller_studio_-_home_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="14_tofa_seller_studio_-_catalog_unified_layout_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="09_tofa_seller_studio_-_orders_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="07_tofa_seller_studio_-_analytics_enhanced_style_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="04_tofa_seller_studio_-_store_config_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="11_tofa_seller_studio_-_profile__settings_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+    </a>
+  </nav>
+  <div class="px-2 mt-auto pt-6">
+    <button class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+      View Store
+    </button>
+  </div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-surface-container-lowest relative z-10 ml-[130px]">
+<!-- (A) Header Actions -->
+<!-- Standardised Wizard Header (Task 41) -->
+<header class="h-[80px] bg-white border-b border-sage/20 px-12 flex justify-between items-center shrink-0 z-10">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary">psychiatry</span>
+    <span class="material-symbols-outlined text-sage">eco</span>
+    <h2 class="font-display-lg text-primary text-3xl font-serif">Craft New Listing</h2>
+  </div>
+  <div class="flex gap-4">
+    <button class="px-6 py-2 border border-error rounded-full text-sm font-bold text-error hover:bg-error/10 transition-colors">Discard Draft</button>
+    <button class="px-8 py-2 bg-forest text-white rounded-full font-bold shadow-lg hover:opacity-90 transition-opacity">Publish Entry</button>
+  </div>
+</header>
+<!-- (B) Stepper Header -->
+<!-- Standardised listing wizard step indicators (Task 41) -->
+<div class="bg-parchment/60 py-8 border-b border-sage/10 z-10 shrink-0">
+  <div class="max-w-3xl mx-auto relative flex justify-between items-center">
+    <!-- Connecting Line -->
+    <div class="absolute top-1/2 left-8 right-8 h-[2px] bg-sage/20 -translate-y-1/2 z-0"></div>
+    <div class="absolute top-1/2 left-8 w-[100%] h-[2px] bg-forest -translate-y-1/2 z-0 transition-all duration-500"></div>
+    <!-- Step 1: Photos (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Photos</span>
+    </div>
+    <!-- Step 2: Details (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Details</span>
+    </div>
+    <!-- Step 3: Pricing (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Pricing</span>
+    </div>
+    <!-- Step 4: Shipping (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Shipping</span>
+    </div>
+    <!-- Step 5: Preview (Current) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center ring-2 ring-primary">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">visibility</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5">Preview</span>
+    </div>
+  </div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto flex custom-scrollbar parchment-texture bg-parchment">
+<!-- (C) Customer Perspective Main Area -->
+<div class="flex-1 p-8 border-r border-secondary/10">
+<div class="mb-6 flex items-center justify-between">
+<h3 class="font-headline-sm text-primary">Customer Perspective</h3>
+<div class="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-full border border-secondary/20 shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">devices</span>
+<span class="text-xs font-bold text-secondary">Desktop Preview</span>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-10">
+<!-- Gallery Side -->
+<div class="lg:w-1/2 space-y-4">
+<div class="aspect-[4/5] rounded-xl overflow-hidden border border-secondary/20 shadow-sm relative group bg-white">
+<img alt="Moonlight Jasmine Resin Study" class="w-full h-full object-cover" data-alt="A stunning, high-detail macro photograph of a Moonlight Jasmine flower preserved in a crystal-clear resin block. Delicate green fern leaves and petals are suspended in frozen motion. The lighting is soft and ethereal, mimicking moonlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB9FqWXf4Yls51MytDiozh-Z0V7lujx5wX1T9mHUwYOGyRnKAsPp-GcY8dXG_2-6vybydf0rn0mNk3zopqFVPBVpTGtRgugFJ2y1izdBznJU9WNw04M1IgIlzOrRt4YKYpwNN1YsTUytR9rI46-HFthia31M0Y0gw4hVfHp0BiQHPCbI9Rdug207W2wxvsk55IUg1H16AVrNxAVDUxDykrDepBK2timVOskL7u0dT0Lh2biHHPq0VcI-Et9gItV2OC44_0vT8RXWY"/>
+<div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-data-mono uppercase tracking-widest text-primary border border-primary/10">Master View</div>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="aspect-square rounded-lg overflow-hidden border border-secondary/40 shadow-sm">
+<img alt="Detail view" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqNmOaDjwlUnyVldLLWWNdD4Ne1KOLt2i-9KH3X5rAUGNwOPkWXxbmgiPZHQ_6TJR-O-hO7-gM8i0LSLMrFlbrwDWVcRCQarTThN4j1yOr1bVRz_zygCcWPIIwRBjmTImODfvUBsRZRncF5JnZCuewZOSIwBg_Ev9ALUONjUtDHtgM5gL3h8tiTakLVCghZnPAkbb43bpo44HYkC6c1NONkPrigXkTOKoDDNWsBWR2ebmBgBw9T5tM5Hkb7cmbw1CHzzokFU_mbGk"/>
+</div>
+<div class="aspect-square rounded-lg overflow-hidden border border-secondary/20 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
+<img alt="Process view" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH29FEYGztUAzFY80F4NpvX101ilpk-4aMj9srNanivvsVGYhhhbSqFvB4KHkaTB_WYDUDwrHXUlO-3GA_Y462Kutn8nQSWMkwAY71VwVuC8ItkVVL8cGYeo_x1W8WspCLK85LGjhgVN6ulWFDWa_scpDU_BcixLQgfw3XC0V1G5EOw4tSiy_ptOXv7PZuVMvv6eHTDGsrVluZiyhrT-MD21AwRsXMN1YUIvWRYShhePrXMAQ7hBqGo14h_rVdz69_dLf20Y_lWwU"/>
+</div>
+<div class="aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center bg-white/40 gap-1 text-outline">
+<span class="material-symbols-outlined text-lg">add_photo_alternate</span>
+<span class="text-[10px] font-data-mono">ADD MORE</span>
+</div>
+</div>
+</div>
+<!-- Product Info Side -->
+<div class="lg:w-1/2 space-y-8">
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-tighter uppercase border border-primary/20">New Artisan Release</span>
+<span class="font-data-mono text-primary text-xs">SKU: TOFA-JAS-001</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-tight">Moonlight Jasmine Resin Study</h2>
+<p class="font-data-mono text-[28px] text-primary">₹ 2,450</p>
+</div>
+<div class="p-6 bg-white/40 border border-secondary/10 rounded-xl relative overflow-hidden backdrop-blur-sm">
+<div class="absolute -top-10 -right-10 opacity-5">
+<span class="material-symbols-outlined text-[120px]">ink_pen</span>
+</div>
+<h4 class="font-label-caps text-label-caps mb-3 text-secondary">The Story</h4>
+<p class="font-ui-serif italic text-body-md text-on-surface-variant leading-relaxed">
+                                "Captured under the first full moon of the spring harvest, these jasmine blossoms were hand-pressed to preserve their ephemeral beauty. Each bubble within the resin is a captured moment of breath from the forest floor, ensuring this piece remains a living testament to nature's silent poetry."
+                            </p>
+</div>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">#BOTANICAL</span>
+<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">#HANDMADE</span>
+<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">#RESINART</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex items-center gap-3 p-3 bg-white/60 border border-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+<div>
+<p class="text-[10px] text-secondary font-bold uppercase">Shipping</p>
+<p class="text-xs font-body-md">3-5 days</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 bg-white/60 border border-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">featured_seasonal_and_gifts</span>
+<div>
+<p class="text-[10px] text-secondary font-bold uppercase">Add-ons</p>
+<p class="text-xs font-body-md">Gift Wrapping</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- (D) Review Sidebar -->
+<aside class="w-80 p-8 bg-secondary/5 flex flex-col gap-6 shrink-0">
+<div class="p-6 bg-white border border-secondary/20 rounded-2xl shadow-sm space-y-6">
+<h3 class="font-headline-sm text-[20px] text-primary">Ready to Publish?</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface-variant font-medium">Images verified (3/3)</span>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface-variant font-medium">Description complete</span>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface-variant font-medium">Price set to ₹ 2,450</span>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface-variant font-medium">Shipping profile linked</span>
+</div>
+</div>
+<div class="pt-6 border-t border-secondary/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Score</span>
+<span class="font-data-mono text-primary font-bold">92%</span>
+</div>
+<div class="w-full bg-secondary-container/30 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 92%"></div>
+</div>
+</div>
+</div>
+<div class="p-5 bg-tertiary-container/10 border border-tertiary-container/30 rounded-2xl relative overflow-hidden">
+<div class="flex items-start gap-3 relative z-10">
+<span class="material-symbols-outlined text-tertiary text-[20px]">smart_toy</span>
+<div>
+<p class="text-xs font-bold text-tertiary mb-1 uppercase tracking-tight">ZAI Tip</p>
+<p class="text-xs leading-relaxed text-on-tertiary-container">
+                                This listing has a high completeness score. Adding a <span class="font-bold underline">process video</span> could boost engagement by <span class="font-data-mono font-bold">15%</span>.
+                            </p>
+</div>
+</div>
+<div class="absolute -bottom-4 -right-4 w-20 h-20 bg-tertiary/5 rounded-full blur-xl"></div>
+</div>
+<div class="mt-auto p-4 border border-outline-variant/40 rounded-xl bg-white/60 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">Your listing will be reviewed by our curation team within 24 hours of publishing.</p>
+</div>
+</aside>
+</div>
+<!-- (E) Actions Footer Bar -->
+<footer class="px-8 py-6 border-t border-secondary/10 flex justify-between items-center bg-surface-container-lowest shrink-0">
+<button class="flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
+<span class="material-symbols-outlined">arrow_back</span>
+<span class="font-body-md">Back to Shipping</span>
+</button>
+<div class="flex gap-4">
+<button class="px-8 py-3 rounded-full border border-secondary text-secondary font-bold hover:bg-secondary/5 transition-colors">
+                    Save as Draft
+                </button>
+<button class="px-10 py-3 rounded-full bg-primary text-on-primary font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="">Publish Listing</span>
+</button>
+</div>
+</footer>
+<!-- Character Accent -->
+<div class="absolute bottom-[80px] right-[40px] pointer-events-none z-50">
+<div class="relative">
+<img alt="Decorative bunny illustration" class="w-16 h-16 object-cover rounded-full border-2 border-white shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4_x2wIjDdteYrWgD93YTSJPuEX7z1rKlywbqeFpuuK5Sow4SS1bAOmkJVsyvqqrZwwR4RmeoXGJW7s6Hk8BH4O9uQAT50ZRoif3mOlnFlfA4FrhlIVzQ8zUiWLQk_9ZZeccuJFTDF8IgdYwHqKP36gisDJZdp6qHL9wdtnTXZ8loRASALTJu_O881MuINZ-ePN5smkEzyeWrg-lOMcdalDoNb4TlxVnMlfDs995Xd1ChbLYDK064H7mS3dbcKJd0Vl3NnhFfDj5Y"/>
+<div class="absolute -top-10 -right-8 bg-white px-3 py-1 rounded-full shadow-sm border border-secondary/20">
+<p class="text-[10px] font-bold text-secondary italic">"Almost there!"</p>
+</div>
+</div>
+</div>
+</main>
+<script>
+    // Micro-interactions
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+        btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+    });
+</script>
+
+<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const token = sessionStorage.getItem('access_token');
+  
+  // 1. Auth check: if no token is found, redirect to login
+  if (!token && (window.location.protocol.startsWith('http'))) {
+    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    return;
+  }
+  
+  // 2. Handle ZAI Mode State & UI Sync
+  let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+  updateZaiUI(zaiEnabled);
+  
+  if (token) {
+    fetch('/api/seller/dashboard', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.success && data.data && data.data.seller) {
+        const dbEnabled = !!data.data.seller.zai_mode_enabled;
+        localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
+        updateZaiUI(dbEnabled);
+      }
+    })
+    .catch(err => console.error("Error syncing ZAI Mode:", err));
+  }
+  
+  // 3. Set up click listener on toggle button
+  const toggleBtn = document.getElementById('zai-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isEnabled = toggleBtn.classList.contains('bg-tertiary');
+      const nextEnabled = !isEnabled;
+      
+      updateZaiUI(nextEnabled);
+      localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+      
+      if (token) {
+        fetch('/api/seller/zai-mode', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ enabled: nextEnabled })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.success) {
+            console.error("Failed to update ZAI Mode in DB");
+          }
+        })
+        .catch(err => console.error("Error updating ZAI Mode:", err));
+      }
+    });
+  }
+  
+  function updateZaiUI(enabled) {
+    const btn = document.getElementById('zai-toggle-btn');
+    if (btn) {
+      if (enabled) {
+        btn.classList.add('bg-tertiary', 'text-white');
+        btn.classList.remove('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        btn.classList.remove('bg-tertiary', 'text-white');
+        btn.classList.add('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+      }
+    }
+    
+    // Find all zai tips / cards on the page and show/hide them
+    const selectors = [
+      '.zai-tip-card',
+      '[class*="zai-tip"]',
+      '[id*="zai-tip"]',
+      'aside .bg-tertiary-container\/10',
+      'section .bg-tertiary-fixed-dim\/40',
+      'div .bg-on-tertiary-fixed\/10'
+    ];
+    selectors.forEach(sel => {
+      try {
+        const els = document.querySelectorAll(sel);
+        els.forEach(el => {
+          if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+          el.style.display = enabled ? '' : 'none';
+        });
+      } catch (e) {}
+    });
+  }
+  
+  // 4. Handle View Store button relative link click or navigation
+  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
+  if (viewStoreBtn) {
+    viewStoreBtn.addEventListener('click', () => {
+      if (token) {
+        fetch('/api/seller/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.success && data.data && data.data.store_slug) {
+            window.location.href = '/' + data.data.store_slug;
+          } else {
+            window.location.href = '/';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = '/';
+        });
+      } else {
+        window.location.href = '/';
+      }
+    });
+  }
+});
+</script>
+
+</body></html>

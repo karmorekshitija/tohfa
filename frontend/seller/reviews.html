@@ -1,427 +1,679 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Reviews | Seller Studio | Tohfa</title>
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TOFA Studio | Reviews</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script id="tailwind-config">
-    tailwind.config = {
-        darkMode:"class",
-        theme: { extend: {
-            "colors": {
-                "surface-container-low":"#faf2e9","surface-container":"#f4ede3","surface-container-high":"#efe7dd",
-                "surface-container-highest":"#e9e1d8","outline-variant":"#c6c7bb","outline":"#76786e",
-                "on-surface":"#1e1b15","on-surface-variant":"#45483f","surface":"#fff8f1","background":"#fff8f1",
-                "primary":"#576242","primary-fixed":"#dbe8bf","primary-fixed-dim":"#bfcba4",
-                "on-primary":"#ffffff","on-primary-container":"#3c4628","custom-primary":"#a8b48e",
-                "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
-                "secondary-container":"#f7d5f8","on-secondary-container":"#745a78",
-                "tertiary-fixed":"#e7e2d9","on-tertiary-container":"#44423c"
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1a1c1a",
+                        "tertiary": "#573b81",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#a0d2b0",
+                        "secondary-container": "#c8e9b8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#4d6a43",
+                        "on-tertiary-fixed": "#270550",
+                        "on-tertiary-container": "#e8d6ff",
+                        "primary-container": "#3d6b4f",
+                        "background": "#f9faf5",
+                        "surface": "#f9faf5",
+                        "primary": "#255338",
+                        "on-surface": "#1a1c1a",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "inverse-on-surface": "#f0f1ed",
+                        "outline-variant": "#c1c9c0",
+                        "surface-tint": "#3a684c",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-primary-fixed": "#002110",
+                        "on-secondary-fixed": "#062103",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface-bright": "#f9faf5",
+                        "outline": "#717972",
+                        "tertiary-container": "#70539b",
+                        "surface-variant": "#e2e3df",
+                        "surface-container-low": "#f3f4f0",
+                        "on-primary-container": "#b7e9c6",
+                        "primary-fixed": "#bceecb",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#414942",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d9dad6",
+                        "secondary": "#49663f",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e312e",
+                        "surface-container-high": "#e7e9e4",
+                        "surface-container-highest": "#e2e3df",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "tertiary-fixed": "#ecdcff",
+                        "surface-container": "#edeeea",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "parchment": "#F7F3EC",
+                        "sage": "#8FAF82",
+                        "forest": "#3D6B4F",
+                        "gold": "#C8973A",
+                        "violet": "#8B5CF6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max-width": "1280px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "data-mono": ["Space Mono"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-sm": ["DM Sans"],
+                        "label-caps": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "cinzel": ["Cinzel"],
+                        "lora": ["Lora"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
             },
-            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
-            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
-        }}
-    }
-</script>
-<style>
-    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
-    h1,h2,h3 { font-family:'EB Garamond',serif; }
-    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
-    .no-scrollbar::-webkit-scrollbar { display:none; }
-    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
-    .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-    .fade-in { animation:fadeIn 0.25s ease forwards; }
-    .star-filled { color:#D4AF37; }
-    .star-empty  { color:#c6c7bb; }
-</style>
-</head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
-
-<!-- Nav -->
-<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
-            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
-        </a>
-        <span class="text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
-    </div>
-    <div class="flex items-center gap-3">
-        <button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary-fixed text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
-            <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
-            ZAI Mode
-        </button>
-        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full">
-            <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
-        </button>
-    </div>
-</nav>
-
-<!-- Toast -->
-<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
-    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
-    <span id="toast-msg"></span>
-</div>
-
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
-
-    <!-- Header -->
-    <div class="mb-8">
-        <h1 class="font-headline-md text-3xl mb-1">Reviews</h1>
-        <p class="text-sm text-on-surface-variant" id="reviews-subtitle">Loading your reviews…</p>
-    </div>
-
-    <!-- Error state -->
-    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
-        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load reviews.</p>
-        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
-    </div>
-
-    <!-- Loading skeleton -->
-    <div id="loading-state" class="space-y-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="skeleton h-24 rounded-xl"></div>
-            <div class="skeleton h-24 rounded-xl"></div>
-            <div class="skeleton h-24 rounded-xl"></div>
-            <div class="skeleton h-24 rounded-xl"></div>
-        </div>
-        <div class="space-y-4">
-            <div class="skeleton h-40 rounded-xl"></div>
-            <div class="skeleton h-40 rounded-xl"></div>
-            <div class="skeleton h-40 rounded-xl"></div>
-        </div>
-    </div>
-
-    <!-- Reviews Content -->
-    <div id="reviews-content" class="hidden space-y-8">
-
-        <!-- Summary KPI cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
-                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Avg Rating</div>
-                <div id="kpi-avg-rating" class="text-3xl font-bold text-custom-primary">—</div>
-                <div id="kpi-stars" class="flex justify-center gap-0.5 mt-1"></div>
-            </div>
-            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
-                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Total Reviews</div>
-                <div id="kpi-total" class="text-3xl font-bold text-custom-primary">—</div>
-            </div>
-            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
-                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Pending Replies</div>
-                <div id="kpi-pending" class="text-3xl font-bold text-error">—</div>
-            </div>
-            <div class="bg-surface-container p-5 rounded-xl border border-outline-variant/20 text-center">
-                <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Response Rate</div>
-                <div id="kpi-rate" class="text-3xl font-bold text-custom-primary">—</div>
-            </div>
-        </div>
-
-        <!-- Rating Distribution -->
-        <section id="distribution-section" class="bg-surface-container border border-outline-variant/20 rounded-xl p-6 shadow-sm">
-            <h2 class="font-headline-md text-xl mb-4">Rating Distribution</h2>
-            <div id="distribution-bars" class="space-y-2"></div>
-        </section>
-
-        <!-- Filter tabs + sort -->
-        <div class="flex flex-col sm:flex-row gap-4">
-            <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
-                <button class="filter-btn active-filter bg-custom-primary text-on-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap" data-filter="all">All</button>
-                <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-filter="unreplied">Unreplied</button>
-                <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-filter="critical">Critical (≤2★)</button>
-            </nav>
-            <select id="sort-select" class="bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
-                <option value="newest">Newest First</option>
-                <option value="highest_rating">Highest Rating</option>
-                <option value="lowest_rating">Lowest Rating</option>
-            </select>
-        </div>
-
-        <!-- Empty state -->
-        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-16 gap-4">
-            <span class="material-symbols-outlined text-5xl text-outline">rate_review</span>
-            <p class="text-on-surface-variant text-sm text-center">No reviews found for this filter.</p>
-        </div>
-
-        <!-- Reviews list -->
-        <div id="reviews-list" class="space-y-4"></div>
-    </div>
-</main>
-
-<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
-    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
-</footer>
-
-<script>
-const API_BASE = window.location.origin;
-let currentFilter = 'all';
-let currentSort   = 'newest';
-
-function showToast(msg, type='success') {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-icon').textContent = type==='success' ? 'check_circle' : 'error';
-    document.getElementById('toast-msg').textContent  = msg;
-    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
-        type==='success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
-    }`;
-    t.classList.remove('hidden');
-    setTimeout(() => t.classList.add('hidden'), 3500);
-}
-
-function starsHTML(rating) {
-    let s = '';
-    for (let i = 1; i <= 5; i++) {
-        s += `<span class="material-symbols-outlined text-sm ${i<=rating?'star-filled':'star-empty'}" style="font-variation-settings:'FILL' ${i<=rating?1:0}">star</span>`;
-    }
-    return s;
-}
-
-function formatDate(dt) {
-    if (!dt) return '—';
-    return new Date(dt).toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
-}
-
-function reviewCardHTML(r) {
-    const repliedSection = r.reply
-        ? `<div class="mt-3 ml-4 pl-4 border-l-2 border-custom-primary bg-primary-fixed/20 rounded-r-xl p-3">
-               <p class="text-xs font-semibold text-on-primary-container mb-1">Your reply · ${formatDate(r.reply.created_at)}</p>
-               <p class="text-sm text-on-surface-variant italic">${r.reply.reply_text}</p>
-           </div>`
-        : `<div class="mt-4 reply-form-wrap" data-id="${r.review_id}">
-               <div class="flex gap-2">
-                   <textarea class="reply-textarea flex-1 bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary resize-none" rows="2" placeholder="Write a thoughtful reply…"></textarea>
-                   <button class="reply-submit-btn bg-custom-primary text-on-primary px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 self-end" data-id="${r.review_id}">Reply</button>
-               </div>
-           </div>`;
-
-    return `
-    <article class="fade-in bg-surface-container border border-outline-variant/20 rounded-xl p-6 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-3">
-            <div>
-                <div class="flex items-center gap-2 mb-0.5">
-                    <span class="font-semibold text-sm">${r.reviewer_handle || 'Anonymous'}</span>
-                    ${r.verified_purchase ? '<span class="text-[10px] text-custom-primary font-bold uppercase tracking-wide border border-custom-primary/30 px-1.5 py-0.5 rounded">Verified</span>' : ''}
-                </div>
-                <p class="text-xs text-on-surface-variant">${r.listing_title || '—'} · ${formatDate(r.created_at)}</p>
-            </div>
-            <div class="flex items-center gap-0.5">${starsHTML(r.rating)}</div>
-        </div>
-        <p class="text-sm text-on-surface leading-relaxed">${r.body || ''}</p>
-        ${repliedSection}
-    </article>`;
-}
-
-// ── Load reviews ──────────────────────────────────────────────
-async function loadReviews() {
-    const loading  = document.getElementById('loading-state');
-    const error    = document.getElementById('error-state');
-    const content  = document.getElementById('reviews-content');
-    const empty    = document.getElementById('empty-state');
-    const list     = document.getElementById('reviews-list');
-
-    loading.classList.remove('hidden');
-    error.classList.add('hidden');
-    content.classList.add('hidden');
-
-    const token  = sessionStorage.getItem('tohfa_access_token');
-    const params = new URLSearchParams({ filter: currentFilter, sort: currentSort });
-
-    try {
-        const res  = await fetch(`${API_BASE}/api/seller/reviews?${params}`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const resp    = await res.json();
-        const data    = resp.data || resp;
-        const summary = data.summary || {};
-        const reviews = data.reviews || [];
-
-        // Update KPIs
-        document.getElementById('kpi-avg-rating').textContent = summary.avg_rating?.toFixed(1) ?? '—';
-        document.getElementById('kpi-total').textContent      = summary.total_reviews ?? '—';
-        document.getElementById('kpi-pending').textContent    = summary.pending_replies ?? '—';
-        document.getElementById('kpi-rate').textContent       = summary.response_rate_pct != null ? `${summary.response_rate_pct}%` : '—';
-        document.getElementById('kpi-stars').innerHTML        = starsHTML(Math.round(summary.avg_rating || 0));
-
-        document.getElementById('reviews-subtitle').textContent =
-            `${summary.total_reviews} review${summary.total_reviews !== 1 ? 's' : ''} · Avg ${summary.avg_rating?.toFixed(1) ?? 0}★`;
-
-        // Rating distribution bars
-        const dist = summary.rating_distribution || {};
-        const total = summary.total_reviews || 1;
-        const barsHTML = [5,4,3,2,1].map(n => {
-            const count = dist[String(n)] || 0;
-            const pct   = total > 0 ? Math.round((count / total) * 100) : 0;
-            return `<div class="flex items-center gap-3">
-                <span class="text-xs font-semibold text-on-surface-variant w-6 text-right">${n}★</span>
-                <div class="flex-1 bg-surface-container-high rounded-full h-2 overflow-hidden">
-                    <div class="bg-custom-primary h-2 rounded-full transition-all duration-700" style="width:${pct}%"></div>
-                </div>
-                <span class="text-xs text-on-surface-variant w-8">${count}</span>
-            </div>`;
-        }).join('');
-        document.getElementById('distribution-bars').innerHTML = barsHTML;
-
-        loading.classList.add('hidden');
-        content.classList.remove('hidden');
-        document.getElementById('body-content').classList.remove('opacity-0');
-
-        if (reviews.length === 0) {
-            list.innerHTML = '';
-            empty.classList.remove('hidden');
-        } else {
-            empty.classList.add('hidden');
-            list.innerHTML = reviews.map(reviewCardHTML).join('');
-            attachReplyListeners();
         }
-
-    } catch (err) {
-        console.error('Load reviews error:', err);
-        loading.classList.add('hidden');
-        document.getElementById('error-msg').textContent = err.message || 'Failed to load reviews.';
-        error.classList.remove('hidden');
-        document.getElementById('body-content').classList.remove('opacity-0');
-    }
-}
-
-// ── Attach reply button listeners ─────────────────────────────
-function attachReplyListeners() {
-    document.querySelectorAll('.reply-submit-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const reviewId = btn.dataset.id;
-            const wrap     = btn.closest('.reply-form-wrap');
-            const textarea = wrap?.querySelector('.reply-textarea');
-            const replyText= textarea?.value.trim();
-
-            if (!replyText) { showToast('Please enter a reply.', 'error'); return; }
-
-            btn.disabled = true; btn.textContent = 'Sending…';
-            const token = sessionStorage.getItem('tohfa_access_token');
-            try {
-                const res = await fetch(`${API_BASE}/api/seller/reviews/${reviewId}/reply`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ reply_text: replyText })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Failed to submit reply');
-
-                showToast('Reply posted!', 'success');
-
-                // Replace form with reply display inline
-                wrap.innerHTML = `<div class="mt-3 ml-4 pl-4 border-l-2 border-custom-primary bg-primary-fixed/20 rounded-r-xl p-3">
-                    <p class="text-xs font-semibold text-on-primary-container mb-1">Your reply · Just now</p>
-                    <p class="text-sm text-on-surface-variant italic">${replyText}</p>
-                </div>`;
-            } catch (err) {
-                showToast(err.message || 'Failed to post reply.', 'error');
-                btn.disabled = false; btn.textContent = 'Reply';
-            }
-        });
+    </script>
+<style>
+        .parchment-texture {
+            background-color: #F7F3EC;
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+        .botanical-watermark {
+            mask-image: linear-gradient(to bottom, transparent, black);
+            pointer-events: none;
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .star-filled { font-variation-settings: 'FILL' 1; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+    </style>
+</head>
+<body class="parchment-texture text-on-surface selection:bg-secondary-container/50 min-h-screen">
+<!-- Sidebar from SCREEN_17 -->
+<!-- Standardised Left Sidebar (Task 37) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+  <div class="px-4 mb-8 flex flex-col items-center">
+    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="02_tofa_seller_studio_-_home_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="14_tofa_seller_studio_-_catalog_unified_layout_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="09_tofa_seller_studio_-_orders_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="07_tofa_seller_studio_-_analytics_enhanced_style_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="04_tofa_seller_studio_-_store_config_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="11_tofa_seller_studio_-_profile__settings_code.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+    </a>
+  </nav>
+  <div class="px-2 mt-auto pt-6">
+    <button class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+      View Store
+    </button>
+  </div>
+</aside>
+<!-- TopAppBar from SCREEN_17 -->
+<!-- Standardised Page Header Bar (Task 38) -->
+<header class="flex justify-between items-center py-4 px-8 bg-parchment border-b border-outline-variant/30 sticky top-0 z-40">
+  <h2 class="font-headline-sm text-primary font-serif">Reviews</h2>
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">search</span>
+    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary/30 text-tertiary text-[12px] font-bold hover:bg-tertiary/10 transition-all" id="zai-toggle-btn">
+      <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+      ZAI Mode
+    </button>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">help_outline</span>
+  </div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-32 px-10 pb-32 max-w-[1400px] ml-[130px]" >
+<!-- Page Header (Review Specific) -->
+<section class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 relative">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Reviews</h2>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-body-md text-primary font-bold">★ 4.9 · 128 reviews</span>
+<span class="bg-primary-container/20 text-primary px-3 py-1 rounded-full text-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">military_tech</span>
+                    Top 5% of sellers
+                </span>
+<span class="bg-[#F9A825]/10 text-[#7F5F01] px-3 py-1 rounded-full text-label-caps border border-[#F9A825]/20">
+                    Pending replies: 2
+                </span>
+</div>
+</div>
+<div class="absolute -right-12 top-0 opacity-10 pointer-events-none">
+<img alt="Botanical watermark illustration" class="w-48 botanical-watermark" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc7pHytVNxRcc0ukZeuHjfrz5TMAihZq9QD9R0wToZ-RDRZ0PopJ_1mYNAD7DLz9RF02JPwSuveNTWhblFUz5ktpdXdvtp0vUSYr7_jS3i9M-Rv8JpUuhJcbQ9WTWWzQNse4EjumljIpdvAqq910YRJ9E8OaLRncjrp7bbIOqIPS0Jyay9lHYDGG4628UI6TalpNxUYa4rNUQZur7yG2NDQZ1m3B3t9e6zLMNRxTIGBz2md_VLFXg8JJr1abTg6Mz8N8eHySQJ9uo">
+</div>
+</section>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-gutter">
+<!-- Rating Breakdown -->
+<div class="bg-surface-container-lowest border border-secondary/20 p-8 rounded-xl shadow-sm flex gap-8">
+<div class="flex flex-col items-center justify-center border-r border-secondary/10 pr-8">
+<span class="font-headline-md text-display-lg-mobile text-primary leading-none">4.9</span>
+<div class="flex text-[#C8973A] mt-2">
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+</div>
+<span class="font-data-mono text-body-sm mt-4 text-on-surface-variant">Global Rating</span>
+</div>
+<div class="flex-grow space-y-3">
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-body-sm w-4">5</span>
+<div class="flex-grow bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full w-[84%] rounded-full"></div>
+</div>
+<span class="font-data-mono text-body-sm w-20 text-right">84% (107)</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-body-sm w-4">4</span>
+<div class="flex-grow bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-[#C8973A] h-full w-[12%] rounded-full"></div>
+</div>
+<span class="font-data-mono text-body-sm w-20 text-right">12% (15)</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-body-sm w-4">3</span>
+<div class="flex-grow bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-secondary h-full w-[3%] rounded-full"></div>
+</div>
+<span class="font-data-mono text-body-sm w-20 text-right">3% (4)</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-body-sm w-4">2</span>
+<div class="flex-grow bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-error h-full w-[1%] rounded-full opacity-60"></div>
+</div>
+<span class="font-data-mono text-body-sm w-20 text-right">1% (2)</span>
+</div>
+</div>
+</div>
+<!-- Review KPIs -->
+<div class="bg-surface-container-lowest border border-secondary/20 p-8 rounded-xl shadow-sm grid grid-cols-2 gap-6">
+<div class="flex flex-col">
+<span class="font-label-caps text-on-surface-variant mb-1">Avg response time</span>
+<span class="font-headline-sm text-primary">6h</span>
+<div class="mt-auto h-1 w-full bg-secondary-container/40 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-on-surface-variant mb-1">Response rate</span>
+<span class="font-headline-sm text-primary">91%</span>
+<div class="mt-auto h-1 w-full bg-secondary-container/40 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[91%]"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-on-surface-variant mb-1">Photo reviews</span>
+<span class="font-headline-sm text-primary">38%</span>
+<div class="mt-auto h-1 w-full bg-secondary-container/40 rounded-full overflow-hidden">
+<div class="h-full bg-[#C8973A] w-[38%]"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-on-surface-variant mb-1">Verified</span>
+<span class="font-headline-sm text-primary">100%</span>
+<div class="mt-auto h-1 w-full bg-secondary-container/40 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Review Trends Chart -->
+<section class="bg-surface-container-lowest border border-secondary/20 p-8 rounded-xl shadow-sm mb-gutter">
+<div class="flex justify-between items-center mb-10">
+<h3 class="font-headline-sm italic">Review trends</h3>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 text-label-caps text-on-surface-variant">
+<span class="w-3 h-3 bg-primary rounded-sm"></span> Volume
+                </div>
+<div class="flex items-center gap-2 text-label-caps text-on-surface-variant ml-4">
+<span class="w-8 h-[2px] bg-[#C8973A]"></span> Rating
+                </div>
+</div>
+</div>
+<div class="relative h-64 flex items-end gap-12 px-6 border-b border-secondary/10">
+<!-- Bar segments with gold line overlays -->
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[40%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W1</span>
+<div class="absolute top-[45%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[60%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W2</span>
+<div class="absolute top-[40%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[45%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W3</span>
+<div class="absolute top-[35%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[80%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W4</span>
+<div class="absolute top-[25%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[55%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W5</span>
+<div class="absolute top-[28%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[70%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W6</span>
+<div class="absolute top-[32%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[65%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W7</span>
+<div class="absolute top-[30%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+<div class="flex-grow h-full flex flex-col justify-end items-center group relative">
+<div class="bg-primary w-full rounded-t-sm h-[90%] group-hover:opacity-80 transition-opacity"></div>
+<span class="absolute -bottom-6 font-data-mono text-[10px] text-on-surface-variant">W8</span>
+<div class="absolute top-[20%] w-full h-[2px] bg-[#C8973A] z-10"></div>
+</div>
+</div>
+</section>
+<!-- Product-level Ratings -->
+<section class="bg-surface-container-low/50 border border-secondary/10 p-8 rounded-xl mb-gutter">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline-sm italic">Top Rated Collections</h3>
+<div class="flex gap-4">
+<button class="bg-white/80 border border-outline-variant px-4 py-1.5 rounded-full font-body-sm text-on-surface-variant hover:bg-white transition-colors">Sort: Highest Rating</button>
+<button class="bg-white/80 border border-outline-variant px-4 py-1.5 rounded-full font-body-sm text-on-surface-variant hover:bg-white transition-colors">Filter: Category</button>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-6">
+<span class="font-headline-sm text-body-lg text-on-surface w-48 truncate italic">The Elderberry Press</span>
+<div class="flex-grow h-4 bg-surface rounded-full overflow-hidden flex">
+<div class="bg-primary h-full w-[98%]"></div>
+</div>
+<span class="font-data-mono text-body-sm w-16 text-right">4.98</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-headline-sm text-body-lg text-on-surface w-48 truncate italic">Moss Garden Journal</span>
+<div class="flex-grow h-4 bg-surface rounded-full overflow-hidden flex">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+<span class="font-data-mono text-body-sm w-16 text-right">4.72</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-headline-sm text-body-lg text-on-surface w-48 truncate italic">Amber Resin Botanical</span>
+<div class="flex-grow h-4 bg-surface rounded-full overflow-hidden flex">
+<div class="bg-[#C8973A] h-full w-[88%]"></div>
+</div>
+<span class="font-data-mono text-body-sm w-16 text-right">4.40</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-headline-sm text-body-lg text-on-surface w-48 truncate italic">Dried Lavender Sachet</span>
+<div class="flex-grow h-4 bg-surface rounded-full overflow-hidden flex">
+<div class="bg-[#C8973A] h-full w-[82%]"></div>
+</div>
+<span class="font-data-mono text-body-sm w-16 text-right">4.10</span>
+</div>
+</div>
+</section>
+<!-- Review Feed -->
+<div class="flex gap-6 mb-8 items-center border-b border-secondary/10 pb-4">
+<button class="font-label-caps text-primary border-b-2 border-primary pb-4 -mb-[18px]">All Reviews (128)</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary transition-colors pb-4 -mb-[18px]">Unreplied (2)</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary transition-colors pb-4 -mb-[18px]">With Photos (49)</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary transition-colors pb-4 -mb-[18px]">Critical (3)</button>
+</div>
+<div class="space-y-6">
+<!-- Review Card 1 (Unreplied) -->
+<div class="bg-white border border-secondary/20 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkjJQfQ46mHjCktyrkFzOcYFV4Nv-LvpiRXUyhexNEt90oWmeWsuU-BgWUSrxU55UoVDMpRklkXXqg0J7XbjsTG8Hm8wrlGyoBwtorBXHbn-omdwhqbte7zSqLXsfXiIaWaXnoWr-oPgn-g5jq6H70TaQr9e8dZp0fuLv5-tAighEdrqDpXjX--OPKWC9wCbiv8V5sn4t7kkux1kBj1A2q2azHxEY2Bawu7Dk6zzeqIa96hHsyDV1sC7XkKXfwuHAAaMAWPjcsC_k">
+</div>
+<div>
+<p class="font-body-md font-bold">@julian_seeds</p>
+<p class="font-body-sm text-on-surface-variant italic">The Elderberry Press • 2 days ago</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex text-[#C8973A]">
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+</div>
+<span class="bg-secondary-fixed/30 text-on-secondary-fixed-variant px-3 py-0.5 rounded-full text-label-caps text-[10px] border border-secondary/20">Verified purchase</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface mb-6 leading-relaxed">
+                The attention to detail in this press is absolutely scholarly. The wood grain is matched perfectly with the vintage hinges. I’ve already pressed some wild lavender and the results are stunning. Truly a professional piece of art for any serious hobbyist.
+            </p>
+<div class="flex gap-4 mb-8">
+<div class="w-24 h-24 rounded-lg overflow-hidden border border-outline-variant p-1 bg-white">
+<img alt="Review Photo" class="w-full h-full object-cover rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChsloLA8XgtSnaPEwznDZievb3Wgx66z6kTABZLn66jkx7sXkc7MLf3-h6sOIYIDV5xCo0ihD06kgwFhhQD_hrgwGppR65Ie4Gg4aZSDWEuqy-HxMKSMVI-bjKeFOF-eCBokhv6Xt_DXVW8Ha7ne2Xqk8mBHdloBOZjiTqSapCMkhtF-3wsDgHUYckY29_05lJRHNckUFg3rsNLbs-9EXvKaMscKPhF6TpPtrDhm7Cxh6ZOPF6D9A_zlSHlInTeCnVrjXInFhkJvI">
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-secondary/10">
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-body-md">thumb_up</span>
+<span class="font-data-mono text-body-sm">Helpful (12)</span>
+</button>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-body-sm flex items-center gap-2 shadow-sm hover:scale-[1.02] transition-transform">
+<span class="material-symbols-outlined text-[18px]">reply</span>
+                    Reply
+                </button>
+</div>
+</div>
+<!-- Review Card 2 (Reply Composer Expanded) -->
+<div class="bg-white border border-primary/40 p-8 rounded-xl shadow-md ring-2 ring-primary/5">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-[#C8973A]">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXzFtpc9_rnDnnRIjHZJZeSgbIqUv7aRTgyS0wWbdnT0-NTa3CKR7HrqNSdd3fvSxua4bgkQrF9N8JgFx2G5z0cQqYh1ordLh3tTqe0AO6DtVjLXmNI9CG47bGMDXHyIVhZNxUQ4FbHTIXLz365IQa3z53XqtwzsdqY0O9fdMT7QJCpmVORZnhgSdJ0PGM9aiKxghC-LoJot4MUvuVQ20luTBmK7FGAE1hbHgQpZIKiMyegxLXVd1L5mwNWQq1iCmjP0a-rr8-KCY">
+</div>
+<div>
+<p class="font-body-md font-bold">@botanical_bentley</p>
+<p class="font-body-sm text-on-surface-variant italic">Moss Garden Journal • 1 day ago</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex text-[#C8973A]">
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined">potted_plant</span>
+</div>
+<span class="bg-secondary-fixed/30 text-on-secondary-fixed-variant px-3 py-0.5 rounded-full text-label-caps text-[10px] border border-secondary/20">Verified purchase</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface mb-8 leading-relaxed">
+                The binding is lovely, though it took a little longer to arrive than expected. Once here, it was clear why—it's beautifully packed. Looking forward to filling these pages.
+            </p>
+<div class="bg-surface-container-low rounded-xl p-6 border border-secondary/20 relative">
+<label class="block font-label-caps text-[10px] text-primary mb-2 uppercase">Your Response</label>
+<textarea class="w-full bg-white border border-outline-variant rounded-lg p-4 font-body-md focus:ring-primary focus:border-primary min-h-[120px]" placeholder="Thank this maker's heart — reply with care 🌸"></textarea>
+<div class="flex justify-between items-center mt-4">
+<span class="font-data-mono text-body-sm text-on-surface-variant">0 / 500 characters</span>
+<div class="flex gap-3">
+<button class="font-body-sm text-on-surface-variant px-4 py-2 hover:underline">Cancel</button>
+<button class="bg-primary text-on-primary px-8 py-2 rounded-full font-body-sm shadow-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">send</span>
+                            Send reply
+                        </button>
+</div>
+</div>
+<div class="mt-6 bg-tertiary-container/5 border border-tertiary/20 p-4 rounded-lg flex gap-4 items-start">
+<span class="material-symbols-outlined text-tertiary">auto_awesome</span>
+<div>
+<p class="font-body-sm text-tertiary font-bold mb-1">Artisan Tip</p>
+<p class="font-body-sm text-on-tertiary-fixed-variant">Acknowledge the shipping wait to show you value their patience. Mentioning a specific detail from their studio collection can create a lasting bond.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Review Card 3 (Replied) -->
+<div class="bg-white border border-secondary/10 p-8 rounded-xl opacity-80 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5uhwhw2ks_-EwTwqc2x4egf-_HRf77xCTdcBNhk0wUsMBAM18KHVdn8Ow7wtdYHIUyr2nILbhMnRgAcdrYK_2X_ji3QhYfeVPGj6WoPZHfd-XHZ3_1cHNFA2i_lDWdo562-R3rH1ny5aMN8K4slwdw_SIp7N9iL5dm3Ka9b5p_OkKhlzcZLCRN1cY7CNGLYVz-sZRBksusFGsgZ_3k18EyT6t2BjWuo37fKdhBzJ8EgMlDRcfoSYTCc2SqRm8micuBHgA_A-eYnE">
+</div>
+<div>
+<p class="font-body-md font-bold">@wildflower_studio</p>
+<p class="font-body-sm text-on-surface-variant italic">Botanical Sketch Kit • 1 week ago</p>
+</div>
+</div>
+<div class="flex text-[#C8973A]">
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+<span class="material-symbols-outlined star-filled">potted_plant</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface mb-6">
+                Perfect addition to my field trips! The pens are high flow and don't bleed through the thick paper.
+            </p>
+<div class="bg-secondary-container/10 border-l-4 border-primary p-6 rounded-r-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]">chat_bubble</span>
+<span class="font-label-caps text-primary">Your Reply</span>
+</div>
+<p class="font-body-md italic text-on-secondary-container">
+                    We are so delighted to hear they are joining you in the field! May your sketches be as wild as the flowers you find. Warmly, TOFA Studio.
+                </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Chibi Bunny Mascot -->
+<div class="fixed bottom-0 right-12 z-[60] animate-float pointer-events-none">
+<div class="relative group">
+<img alt="Chibi Bunny Mascot" class="w-24 h-24 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtDzcDTVArQvzt5XCzRBrUsnKdViWuUfRwnkUCjR3XcDohbgktaAyNRSVzLW8pLM-WeoypsUZoqic0fnvecQ40IRAsy3uqtv9KHM4SirpDAxN59McWuD_QGFo-qkTtdGSuUuhZJKxPDy7AHagN18WRkmCJuxOh5IddQNZpoDWnXSmrNMQuXe1iVOFGsEODuWYtVMIf0htLK1EN6vvHxjMuX6n50uDBvmdKgMDiGzbqDn0ESL9dflkUzn77bwSGa3XYxFjOXgolpec">
+<div class="absolute -top-12 -left-4 bg-white border border-secondary/20 p-2 rounded-lg shadow-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto">
+<p class="font-body-sm text-[10px]">Your fans love you! 🌸</p>
+</div>
+</div>
+</div>
+<script>
+    // Micro-interactions for ZAI toggle
+    const zaiToggle = document.getElementById('zai-toggle');
+    zaiToggle.addEventListener('click', function() {
+        const circle = this.querySelector('.absolute');
+        const bg = this.querySelector('.ml-3');
+        if (circle.classList.contains('right-0.5')) {
+            circle.classList.remove('right-0.5');
+            circle.classList.add('left-0.5');
+            circle.classList.replace('bg-violet', 'bg-sage');
+            bg.classList.replace('bg-surface-container-highest', 'bg-secondary-container/30');
+        } else {
+            circle.classList.remove('left-0.5');
+            circle.classList.add('right-0.5');
+            circle.classList.replace('bg-sage', 'bg-violet');
+            bg.classList.replace('bg-secondary-container/30', 'bg-surface-container-highest');
+        }
     });
-}
+</script>
 
-// ── Filter tabs ───────────────────────────────────────────────
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => {
-            b.classList.remove('bg-custom-primary','text-on-primary','active-filter');
-            b.classList.add('text-on-surface-variant','hover:text-custom-primary');
-        });
-        btn.classList.add('bg-custom-primary','text-on-primary','active-filter');
-        btn.classList.remove('text-on-surface-variant','hover:text-custom-primary');
-        currentFilter = btn.dataset.filter;
-        loadReviews();
+
+
+<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const token = sessionStorage.getItem('access_token');
+  
+  // 1. Auth check: if no token is found, redirect to login
+  if (!token && (window.location.protocol.startsWith('http'))) {
+    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    return;
+  }
+  
+  // 2. Handle ZAI Mode State & UI Sync
+  let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+  updateZaiUI(zaiEnabled);
+  
+  if (token) {
+    fetch('/api/seller/dashboard', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.success && data.data && data.data.seller) {
+        const dbEnabled = !!data.data.seller.zai_mode_enabled;
+        localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
+        updateZaiUI(dbEnabled);
+      }
+    })
+    .catch(err => console.error("Error syncing ZAI Mode:", err));
+  }
+  
+  // 3. Set up click listener on toggle button
+  const toggleBtn = document.getElementById('zai-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isEnabled = toggleBtn.classList.contains('bg-tertiary');
+      const nextEnabled = !isEnabled;
+      
+      updateZaiUI(nextEnabled);
+      localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+      
+      if (token) {
+        fetch('/api/seller/zai-mode', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ enabled: nextEnabled })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.success) {
+            console.error("Failed to update ZAI Mode in DB");
+          }
+        })
+        .catch(err => console.error("Error updating ZAI Mode:", err));
+      }
     });
-});
-
-// ── Sort ──────────────────────────────────────────────────────
-document.getElementById('sort-select').addEventListener('change', (e) => {
-    currentSort = e.target.value;
-    loadReviews();
-});
-
-// ── Retry ─────────────────────────────────────────────────────
-document.getElementById('retry-btn').addEventListener('click', loadReviews);
-
-// ── Logout ────────────────────────────────────────────────────
-document.getElementById('logout-btn').addEventListener('click', () => {
-    const token = sessionStorage.getItem('tohfa_access_token');
-    const refresh = sessionStorage.getItem('tohfa_refresh_token');
-    if (token && refresh) {
-        fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
-    }
-    sessionStorage.clear(); window.location.href = '/auth/login.html';
-});
-
-// ── ZAI Mode Sync ────────────────────────────────────────────────
-function updateZaiUI(enabled) {
+  }
+  
+  function updateZaiUI(enabled) {
     const btn = document.getElementById('zai-toggle-btn');
     if (btn) {
-        if (enabled) {
-            btn.classList.add('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
-            const icon = btn.querySelector('.material-symbols-outlined');
-            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
-        } else {
-            btn.classList.remove('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
-            const icon = btn.querySelector('.material-symbols-outlined');
-            if (icon) icon.style.fontVariationSettings = "'FILL' 0";
-        }
+      if (enabled) {
+        btn.classList.add('bg-tertiary', 'text-white');
+        btn.classList.remove('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        btn.classList.remove('bg-tertiary', 'text-white');
+        btn.classList.add('text-tertiary');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+      }
     }
-}
-
-const toggleBtn = document.getElementById('zai-toggle-btn');
-if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-        const isEnabled = toggleBtn.classList.contains('bg-primary-fixed');
-        const nextEnabled = !isEnabled;
-        
-        updateZaiUI(nextEnabled);
-        localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
-        
-        const token = sessionStorage.getItem('tohfa_access_token');
-        if (token) {
-            fetch(`${API_BASE}/api/seller/zai-mode`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ enabled: nextEnabled })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (!data || !data.success) {
-                    console.error("Failed to update ZAI Mode in DB");
-                }
-            })
-            .catch(err => console.error("Error updating ZAI Mode:", err));
-        }
+    
+    // Find all zai tips / cards on the page and show/hide them
+    const selectors = [
+      '.zai-tip-card',
+      '[class*="zai-tip"]',
+      '[id*="zai-tip"]',
+      'aside .bg-tertiary-container\/10',
+      'section .bg-tertiary-fixed-dim\/40',
+      'div .bg-on-tertiary-fixed\/10'
+    ];
+    selectors.forEach(sel => {
+      try {
+        const els = document.querySelectorAll(sel);
+        els.forEach(el => {
+          if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+          el.style.display = enabled ? '' : 'none';
+        });
+      } catch (e) {}
     });
-}
-
-// ── Init ──────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
-    const token = sessionStorage.getItem('tohfa_access_token');
-    if (!token) { window.location.href = '/auth/login.html'; return; }
-
-    const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
-    updateZaiUI(zaiEnabled);
-
-    try {
-        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (!pr.ok) throw new Error();
-        const pd = await pr.json();
-        const u  = pd.data || pd;
-        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
-    } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
-
-    loadReviews();
+  }
+  
+  // 4. Handle View Store button relative link click or navigation
+  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
+  if (viewStoreBtn) {
+    viewStoreBtn.addEventListener('click', () => {
+      if (token) {
+        fetch('/api/seller/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.success && data.data && data.data.store_slug) {
+            window.location.href = '/' + data.data.store_slug;
+          } else {
+            window.location.href = '/';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = '/';
+        });
+      } else {
+        window.location.href = '/';
+      }
+    });
+  }
 });
 </script>
-</body>
-</html>
+
+</body></html>

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import Toast from '../components/Toast.js';
+
 // SessionStorage Key Shim for Tohfa compatibility
 const originalGetItem = sessionStorage.getItem.bind(sessionStorage);
 const originalSetItem = sessionStorage.setItem.bind(sessionStorage);
@@ -78,6 +80,13 @@ apiClient.interceptors.response.use(
         isRefreshing = false;
       }
     }
+
+    // Global error toast for non-401 requests
+    if (error.response?.status !== 401) {
+      const msg = error.response?.data?.message || error.message || 'Request failed';
+      Toast.show(msg, 'error');
+    }
+
     return Promise.reject(error);
   }
 );

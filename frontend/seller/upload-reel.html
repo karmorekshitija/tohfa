@@ -66,7 +66,7 @@
 <!-- Left Column: Media & Upload -->
 <div class="space-y-lg">
 <!-- Upload Zone (Default State) -->
-<div class="relative group cursor-pointer aspect-[9/16] bg-surface-container-low border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-xl transition-all hover:border-primary hidden" id="upload-zone">
+<div class="relative group cursor-pointer aspect-[9/16] bg-surface-container-low border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-xl transition-all hover:border-primary" id="upload-zone">
 <div class="absolute inset-0 artisan-texture pointer-events-none"></div>
 <div class="bg-surface-container-highest/50 rounded-full p-lg mb-md">
 <span class="material-symbols-outlined text-primary text-[48px]" data-icon="movie_edit">movie_edit</span>
@@ -74,28 +74,26 @@
 <p class="font-title-serif text-title-serif text-primary mb-sm">Tap to record or upload</p>
 <p class="text-on-surface-variant text-sm text-center max-w-[200px]">Up to 60 seconds · max 30 MB · MP4 / MOV / WebM</p>
 </div>
+<input type="file" id="input-video" class="hidden" accept="video/*">
 <!-- Uploading State (Hidden) -->
 <div class="aspect-[9/16] bg-surface-container-low border border-outline-variant rounded-xl flex flex-col items-center justify-center p-xl hidden" id="uploading-state">
 <div class="relative flex items-center justify-center mb-md">
 <svg class="w-32 h-32">
 <circle class="text-outline-variant" cx="64" cy="64" fill="transparent" r="50" stroke="currentColor" stroke-width="4"></circle>
-<circle class="text-primary progress-ring__circle" cx="64" cy="64" fill="transparent" r="50" stroke="currentColor" stroke-dasharray="314.159" stroke-dashoffset="110" stroke-linecap="round" stroke-width="4"></circle>
+<circle class="text-primary progress-ring__circle" cx="64" cy="64" fill="transparent" r="50" stroke="currentColor" stroke-dasharray="314.159" stroke-dashoffset="314.159" stroke-linecap="round" stroke-width="4"></circle>
 </svg>
-<span class="absolute font-data-price text-data-price text-primary">65%</span>
+<span class="absolute font-data-price text-data-price text-primary">0%</span>
 </div>
 <p class="font-title-serif text-primary">Spinning the thread...</p>
 </div>
 <!-- Post-Upload Preview (Hidden) -->
-<div class="relative aspect-[9/16] rounded-xl overflow-hidden group" id="preview-state">
-<img class="w-full h-full object-cover" data-alt="A vertical video still of a ceramicist's hands shaping a moist clay bowl on a spinning potter's wheel. Soft warm golden light catches the spray of water droplets and the texture of the earthy clay. The background is a blurred artisan studio with wooden shelves and pottery tools, creating a soulful and focused atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS0WW7WTVWJ9hsyM9_sLl2G9KdoaeHZQd-bp76Q-6pYvNnqGUo4Glq1YRN0vgCWYwTlbFnLw6fk7bBeq6ThWIcoEkk-UI6VRAjjz1szAy_ZojhA1y3B7TYoEEuCrSFQSapuZEe9stvqS7j2zaxf-AJgYjMsmEvxo-N-wGBS5AbHg-kYSORMTjPLnqSGpucV6_mGH8UraXsdZuqk9E7DJaRLIB5OAh2n9T6vITlIzuRfXc6m4Qka5feut9saY59aZybkD7UkqI1vCc">
-<div class="absolute inset-0 bg-black/20"></div>
-<div class="absolute bottom-0 left-0 right-0 p-md bg-gradient-to-t from-black/60 to-transparent">
-<div class="h-1 w-full bg-outline-variant/30 rounded-full mb-sm overflow-hidden">
-<div class="h-full bg-secondary-fixed w-3/4 rounded-full"></div>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-data-price text-data-price text-white">0:45</span>
-<button class="text-tertiary-fixed font-bold hover:underline transition-all">Replace</button>
+<div class="relative aspect-[9/16] rounded-xl overflow-hidden group hidden" id="preview-state">
+<video id="video-preview" class="w-full h-full object-cover" src="" controls></video>
+<div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 right-0 p-md bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
+<div class="flex justify-between items-center pointer-events-auto">
+<span class="font-data-price text-data-price text-white" id="video-duration">0:00</span>
+<button class="text-tertiary-fixed font-bold hover:underline transition-all" id="replace-video-btn">Replace</button>
 </div>
 </div>
 </div>
@@ -119,40 +117,14 @@
 <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
 <input class="w-full pl-lg pr-md py-sm bg-background border border-outline-variant rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search your studio..." type="text">
 </div>
-<div class="space-y-sm max-h-[280px] overflow-y-auto custom-scrollbar pr-xs">
-<!-- Product Item 1 -->
-<div class="flex items-center p-sm border border-outline-variant rounded-lg bg-surface hover:bg-surface-container-low cursor-pointer transition-all active:scale-95">
-<img class="w-12 h-12 rounded object-cover" data-alt="A close-up photograph of a handcrafted porcelain mug with a subtle celadon glaze and organic rippled texture. The mug sits on a rough-hewn oak table, illuminated by gentle side-lighting that highlights the artisan's finger marks in the clay. The aesthetic is minimal, warm, and highly tactile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5k2wibFO2P2Wfp7joMoS6KLcr6g8JdpRuc3O3u5_2IizcI6Gxcr8TpMaHenERnzO_nihwXL26Fg0OXFEM2elH1oS2X-xkJCH2kyaBb8NFqQapvVY_KgcanDLN6pQbgtjTNe31SeDyINSYmWjCOgbEQb8HMj5dr_BYMbDvmsAlTKjL2fXltk2aDypNYM6UiuP3wDQmfBLIqy5HMbQHtbiOjPEzaZrbC6jqaQZwAJ06tWNrEQpKnCqQgKTZ2-yvKVblHWfSVCJzcG0">
-<div class="ml-sm flex-grow">
-<p class="font-title-serif text-[14px] text-primary">Hand-thrown Celadon Mug</p>
-<p class="font-data-price text-[13px] text-gold">$34.00</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
-</div>
-<!-- Product Item 2 -->
-<div class="flex items-center p-sm border-2 border-primary rounded-lg bg-primary-container/10 cursor-pointer transition-all">
-<img class="w-12 h-12 rounded object-cover" data-alt="A handcrafted leather journal with a dark forest green cover and a rustic twine tie closure. It is displayed on a linen cloth, surrounded by antique brass pens and dried lavender sprigs. The lighting is moody and literary, emphasizing the rich grain and hand-stitched details of the leather." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACrfIPzUkIYyWF2j0LWIUXGeJrYog0v3mHRG-IpdhOPyJYj1fLEg5wKLe11qFHBWpFBxO_R6rxj2mow4IOzFPGst46Qr-R3qaVjXwxKjfzuE9q3p5ekmLVmFAxouzpFHli5OYNLeUwMb0rBdHUZH1NgOvgd4Tws_Uwc_vWZqBpfrLhUwVzgPLFidXLuhwzvJK0d7YzxwGSHVaoK2WkB8OGVQ8yzCWPfTaRZrPrSvCbjIQ6HKKCvjrvYEl6e-MkJGcntKD7ZJLuZBc">
-<div class="ml-sm flex-grow">
-<p class="font-title-serif text-[14px] text-primary">Artisan Leather Journal</p>
-<p class="font-data-price text-[13px] text-gold">$48.00</p>
-</div>
-<span class="material-symbols-outlined text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<!-- Product Item 3 -->
-<div class="flex items-center p-sm border border-outline-variant rounded-lg bg-surface hover:bg-surface-container-low cursor-pointer transition-all">
-<img class="w-12 h-12 rounded object-cover" data-alt="A set of four hand-carved wooden spoons made from light maple wood, arranged neatly on a stone countertop. Each spoon has unique whittled patterns on the handle, reflecting a rustic and organic handmade quality. The scene is bright and airy, with soft natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2aDvjhDuPVgDPPOi8j3cVThhXX8oRVNNzljZkLhBMwJF_QgDGRiwgwy0uPunxZ5uOW7ntHh3UEqroX671sxu9kpHKZ4zX-R8AxaFJxm6Y7L49NJ4OJlvbZIjQnvYlJzXxYr_kMOcs7Uy68Go6D6M3mJTF1kyyWbTB9iZNSaj8SToUgHMfHNKtSkZcHulSlLxfdXYBGvTHDPbzXZuBynKCZr658YDnYmKc64J3OxMvfM2dUOOfrtK7_6tFXFgMjv6Mf6gXIMeW3bM">
-<div class="ml-sm flex-grow">
-<p class="font-title-serif text-[14px] text-primary">Carved Maple Spoons (Set)</p>
-<p class="font-data-price text-[13px] text-gold">$22.00</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
-</div>
+<div id="product-list-container" class="space-y-sm max-h-[280px] overflow-y-auto custom-scrollbar pr-xs">
+<!-- Dynamic products loaded here -->
 </div>
 </div>
 <!-- CTA Button -->
-<button class="w-full bg-primary text-on-primary py-md rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all flex items-center justify-center space-x-sm">
+<button id="post-reel-btn" class="w-full bg-primary text-on-primary py-md rounded-lg font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all flex items-center justify-center space-x-sm">
 <span class="material-symbols-outlined" data-icon="send">send</span>
-<span class="">Post reel</span>
+<span id="post-reel-label">Post reel</span>
 </button>
 </div>
 </div>
@@ -163,33 +135,224 @@
 
 </footer>
 <script>
-        // Micro-interaction: Mock Upload Sequence
-        const uploadZone = document.getElementById('upload-zone');
-        const uploadingState = document.getElementById('uploading-state');
-        const previewState = document.getElementById('preview-state');
+        const API_BASE = window.location.origin;
 
-        uploadZone.addEventListener('click', () => {
-            uploadZone.classList.add('hidden');
-            uploadingState.classList.remove('hidden');
-            
-            // Simulating a fast upload for the demo
-            setTimeout(() => {
-                uploadingState.classList.add('hidden');
-                previewState.classList.remove('hidden');
-            }, 2000);
-        });
-
-        // Add character count logic
-        const textarea = document.querySelector('textarea');
-        const counter = document.querySelector('.absolute.bottom-sm.right-sm');
-        textarea.addEventListener('input', (e) => {
-            const length = e.target.value.length;
-            counter.textContent = `${length}/200`;
-            if (length > 200) {
-                counter.classList.add('text-error');
-            } else {
-                counter.classList.remove('text-error');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = sessionStorage.getItem('tohfa_access_token');
+            if (!token) {
+                window.location.href = '/auth/login.html';
+                return;
             }
+
+            // Load seller listings for product linking
+            const productContainer = document.getElementById('product-list-container');
+            const searchInput = document.querySelector('input[placeholder="Search your studio..."]');
+            let listings = [];
+            let selectedListings = new Set();
+
+            try {
+                const res = await fetch(`${API_BASE}/api/seller/listings?limit=100`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.status === 401 || res.status === 403) {
+                    sessionStorage.clear();
+                    window.location.href = '/auth/login.html';
+                    return;
+                }
+                if (res.ok) {
+                    const resp = await res.json();
+                    listings = (resp.data?.listings || resp.listings || []).filter(l => l.status === 'active');
+                    renderProducts(listings);
+                }
+            } catch (err) {
+                console.error('Failed to load listings:', err);
+            }
+
+            function renderProducts(items) {
+                productContainer.innerHTML = '';
+                if (items.length === 0) {
+                    productContainer.innerHTML = '<p class="text-xs text-on-surface-variant/70 text-center py-4">No active listings found.</p>';
+                    return;
+                }
+
+                items.forEach(l => {
+                    const price = (l.price_paise / 100).toFixed(2);
+                    const isSelected = selectedListings.has(l.listing_id || l.id);
+                    const div = document.createElement('div');
+                    div.className = `product-item flex items-center p-sm border ${isSelected ? 'border-2 border-primary bg-primary-container/10' : 'border-outline-variant'} rounded-lg bg-surface hover:bg-surface-container-low cursor-pointer transition-all active:scale-95 mb-2`;
+                    div.dataset.id = l.listing_id || l.id;
+                    div.dataset.title = l.title;
+
+                    div.innerHTML = `
+                        <img class="w-12 h-12 rounded object-cover" src="${l.cover_photo_url || 'https://ui-avatars.com/api/?name=Product'}" alt="${l.title}">
+                        <div class="ml-sm flex-grow">
+                            <p class="font-title-serif text-[14px] text-primary">${l.title}</p>
+                            <p class="font-data-price text-[13px] text-gold">₹${price}</p>
+                        </div>
+                        <span class="material-symbols-outlined select-icon ${isSelected ? 'text-primary' : 'text-outline-variant'}">
+                            ${isSelected ? 'check_circle' : 'radio_button_unchecked'}
+                        </span>
+                    `;
+
+                    div.addEventListener('click', () => {
+                        const lid = l.listing_id || l.id;
+                        const icon = div.querySelector('.select-icon');
+                        if (selectedListings.has(lid)) {
+                            selectedListings.delete(lid);
+                            div.className = "product-item flex items-center p-sm border border-outline-variant rounded-lg bg-surface hover:bg-surface-container-low cursor-pointer transition-all active:scale-95 mb-2";
+                            icon.textContent = "radio_button_unchecked";
+                            icon.className = "material-symbols-outlined text-outline-variant select-icon";
+                        } else {
+                            selectedListings.add(lid);
+                            div.className = "product-item flex items-center p-sm border-2 border-primary rounded-lg bg-primary-container/10 cursor-pointer transition-all mb-2";
+                            icon.textContent = "check_circle";
+                            icon.className = "material-symbols-outlined text-primary select-icon";
+                        }
+                    });
+
+                    productContainer.appendChild(div);
+                });
+            }
+
+            // Local Search filtering
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase().trim();
+                    const filtered = listings.filter(l => l.title.toLowerCase().includes(query));
+                    renderProducts(filtered);
+                });
+            }
+
+            // Video Upload inputs and previews
+            const inputVideo = document.getElementById('input-video');
+            const uploadZone = document.getElementById('upload-zone');
+            const uploadingState = document.getElementById('uploading-state');
+            const previewState = document.getElementById('preview-state');
+            const videoPreview = document.getElementById('video-preview');
+            const replaceVideoBtn = document.getElementById('replace-video-btn');
+            const videoDuration = document.getElementById('video-duration');
+
+            let videoFile = null;
+
+            uploadZone.addEventListener('click', () => {
+                inputVideo.click();
+            });
+
+            replaceVideoBtn.addEventListener('click', () => {
+                inputVideo.click();
+            });
+
+            inputVideo.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Size check: max 30MB
+                if (file.size > 30 * 1024 * 1024) {
+                    alert('Video file size exceeds 30 MB limit.');
+                    return;
+                }
+
+                videoFile = file;
+
+                // Show uploading simulation (micro-animation requested by design system)
+                uploadZone.classList.add('hidden');
+                previewState.classList.add('hidden');
+                uploadingState.classList.remove('hidden');
+
+                // Progress bar simulation
+                const progressVal = uploadingState.querySelector('.font-data-price');
+                const progressCircle = uploadingState.querySelector('.progress-ring__circle');
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    if (progressVal) progressVal.textContent = `${progress}%`;
+                    if (progressCircle) {
+                        const offset = 314.159 - (314.159 * progress) / 100;
+                        progressCircle.style.strokeDashoffset = offset;
+                    }
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        uploadingState.classList.add('hidden');
+                        previewState.classList.remove('hidden');
+
+                        const videoUrl = URL.createObjectURL(file);
+                        videoPreview.src = videoUrl;
+                        
+                        videoPreview.onloadedmetadata = () => {
+                            const mins = Math.floor(videoPreview.duration / 60);
+                            const secs = Math.floor(videoPreview.duration % 60);
+                            videoDuration.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                        };
+                    }
+                }, 150);
+            });
+
+            // Caption character counter
+            const textarea = document.querySelector('textarea');
+            const counter = document.querySelector('.absolute.bottom-sm.right-sm');
+            textarea.addEventListener('input', (e) => {
+                const length = e.target.value.length;
+                counter.textContent = `${length}/200`;
+                if (length > 200) {
+                    counter.classList.add('text-error');
+                } else {
+                    counter.classList.remove('text-error');
+                }
+            });
+
+            // Post reel form submission
+            const postReelBtn = document.getElementById('post-reel-btn');
+            const postReelLabel = document.getElementById('post-reel-label');
+
+            postReelBtn.addEventListener('click', async () => {
+                if (!videoFile) {
+                    alert('Please select or upload a video reel first.');
+                    return;
+                }
+                if (selectedListings.size === 0) {
+                    alert('Please link at least one product.');
+                    return;
+                }
+
+                const captionText = textarea.value.trim();
+                if (captionText.length > 200) {
+                    alert('Caption cannot exceed 200 characters.');
+                    return;
+                }
+
+                postReelBtn.disabled = true;
+                postReelLabel.textContent = 'Posting reel...';
+
+                const formData = new FormData();
+                formData.append('video', videoFile);
+                formData.append('caption', captionText);
+                formData.append('tagged_listing_ids', JSON.stringify(Array.from(selectedListings)));
+                formData.append('share_to_feed', 'true');
+                formData.append('share_to_profile', 'true');
+
+                try {
+                    const res = await fetch(`${API_BASE}/api/seller/reels`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+
+                    const data = await res.json();
+                    if (!res.ok) {
+                        throw new Error(data.message || 'Failed to post reel');
+                    }
+
+                    // Redirect to success page
+                    window.location.href = '/seller/reel-upload-success.html';
+                } catch (err) {
+                    console.error('Failed to post reel:', err);
+                    alert(err.message || 'Failed to post reel. Please try again.');
+                    postReelBtn.disabled = false;
+                    postReelLabel.textContent = 'Post reel';
+                }
+            });
         });
     </script>
 

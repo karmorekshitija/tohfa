@@ -102,12 +102,13 @@
 <div class="flex-1 overflow-y-auto px-xl py-lg space-y-xl custom-scrollbar">
 <!-- Avatar Upload -->
 <div class="flex flex-col items-center">
-<div class="relative group cursor-pointer">
-<img alt="Edit Avatar" class="w-24 h-24 rounded-full border border-outline object-cover transition-opacity group-hover:opacity-80" data-alt="A focused close-up of a potter's hands covered in white clay, working on a spinning wheel in a sun-lit studio. The atmosphere is warm and tactile, with soft shadows and golden hour light pouring through a window. The style is moody and artisanal, capturing the intimate human touch of handmade ceramics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnY8Ripua62fnTwowchKvDIk5Fws7QdlBy6wY5O8Cvc92UAhp9Cn-N0fmExcp6IufgZAA-tnEJSt_K3Xop0zt96Sy1GOTBYr3V_63wnYabiph8cDgWe0FEFe87YJA1jIG4dOxdTeECcLqV8dYtI1axTlt4BPi9PVLEYMIkBdh96NQwYUoj7_A1NZwY7J20wLQMs-K6YM4xseK25IwWrFsF6tq_DZuwMwpaphnazFIqhmdhsR2BrYt94UpURQm_3fT6aBwYzfQ3z00">
+<div class="relative group cursor-pointer" onclick="document.getElementById('input-avatar').click()">
+<img id="avatar-preview" alt="Edit Avatar" class="w-24 h-24 rounded-full border border-outline object-cover transition-opacity group-hover:opacity-80" data-alt="A focused close-up of a potter's hands covered in white clay, working on a spinning wheel in a sun-lit studio. The atmosphere is warm and tactile, with soft shadows and golden hour light pouring through a window. The style is moody and artisanal, capturing the intimate human touch of handmade ceramics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnY8Ripua62fnTwowchKvDIk5Fws7QdlBy6wY5O8Cvc92UAhp9Cn-N0fmExcp6IufgZAA-tnEJSt_K3Xop0zt96Sy1GOTBYr3V_63wnYabiph8cDgWe0FEFe87YJA1jIG4dOxdTeECcLqV8dYtI1axTlt4BPi9PVLEYMIkBdh96NQwYUoj7_A1NZwY7J20wLQMs-K6YM4xseK25IwWrFsF6tq_DZuwMwpaphnazFIqhmdhsR2BrYt94UpURQm_3fT6aBwYzfQ3z00">
 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-white">photo_camera</span>
 </div>
 </div>
+<input type="file" id="input-avatar" class="hidden" accept="image/*">
 <p class="font-label-caps text-on-surface-variant mt-sm">Update Avatar</p>
 </div>
 <!-- Fields -->
@@ -277,12 +278,14 @@
 
                     // Populate background layout
                     const bgAvatar = document.getElementById('bg-user-avatar');
+                    const avatarPreview = document.getElementById('avatar-preview');
                     const bgName = document.getElementById('bg-user-name');
                     const bgBio = document.getElementById('bg-user-bio');
                     const bgLocation = document.getElementById('bg-user-location');
                     const bgRole = document.getElementById('bg-user-role');
 
                     if (bgAvatar && user.avatar_url) bgAvatar.src = user.avatar_url;
+                    if (avatarPreview && user.avatar_url) avatarPreview.src = user.avatar_url;
                     if (bgName) bgName.textContent = user.display_name || 'Anonymous User';
                     if (bgBio) bgBio.textContent = user.bio || '';
                     if (bgLocation) bgLocation.textContent = user.location || '';
@@ -296,6 +299,50 @@
                 }
             } catch (err) {
                 console.error('Failed to fetch profile info:', err);
+            }
+
+            // Setup avatar file input handling
+            const inputAvatar = document.getElementById('input-avatar');
+            if (inputAvatar) {
+                inputAvatar.addEventListener('change', async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const formData = new FormData();
+                    formData.append('avatar', file);
+
+                    try {
+                        const response = await apiClient.post('/profile/me/avatar', formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        if (response.data && response.data.success) {
+                            const avatarUrl = response.data.data.avatar_url;
+                            if (document.getElementById('avatar-preview')) {
+                                document.getElementById('avatar-preview').src = avatarUrl;
+                            }
+                            if (document.getElementById('bg-user-avatar')) {
+                                document.getElementById('bg-user-avatar').src = avatarUrl;
+                            }
+
+                            const userStr = sessionStorage.getItem('tohfa_user');
+                            if (userStr) {
+                                try {
+                                    const userObj = JSON.parse(userStr);
+                                    userObj.avatar_url = avatarUrl;
+                                    sessionStorage.setItem('tohfa_user', JSON.stringify(userObj));
+                                } catch (err) {
+                                    console.error(err);
+                                }
+                            }
+                            alert('Avatar updated successfully!');
+                        }
+                    } catch (err) {
+                        console.error('Failed to upload avatar:', err);
+                        alert(err.response?.data?.message || 'Failed to upload avatar');
+                    }
+                });
             }
         });
 

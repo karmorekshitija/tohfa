@@ -227,7 +227,7 @@
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         const params = new URLSearchParams(window.location.search);
         const orderRef = params.get('order_ref') || 'N/A';
         document.getElementById('order-ref-text').innerText = `Order Ref: #${orderRef}`;
