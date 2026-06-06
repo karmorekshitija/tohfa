@@ -255,11 +255,14 @@
     </script>
 </nav>
 
-    <script>
-        const API_BASE_URL = window.location.origin;
+    <script type="module">
+        import apiClient from '/src/utils/apiClient.js';
+        import { formatPaise } from '/src/utils/currency.js';
+        import { logout } from '/src/utils/auth.js';
+
         let isLoggedIn = false;
 
-                async function checkAuthState() {
+        async function checkAuthState() {
             const token = sessionStorage.getItem('tohfa_access_token');
             const authContainer = document.getElementById('auth-buttons');
             const dashboardLink = document.getElementById('navbar-dashboard-link');
@@ -274,12 +277,9 @@
                     // Fetch profile to get avatar_url
                     let avatarUrl = null;
                     try {
-                        const res = await fetch(`${API_BASE_URL}/api/profile/me`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        if (res.ok) {
-                            const profileData = await res.json();
-                            avatarUrl = profileData.data.avatar_url;
+                        const res = await apiClient.get('/profile/me');
+                        if (res.data && res.data.success) {
+                            avatarUrl = res.data.data.avatar_url;
                         }
                     } catch (err) {
                         console.error("Failed to fetch profile avatar:", err);
@@ -288,7 +288,7 @@
                     if (payload.role === 'seller') {
                         if (dashboardLink) {
                             dashboardLink.innerText = 'Seller Dashboard';
-                            dashboardLink.href = 'seller-dashboard.html';
+                            dashboardLink.href = '/seller/dashboard.html';
                         }
                     } else {
                         if (dashboardLink) {
@@ -308,44 +308,23 @@
                         authContainer.innerHTML = `
                             <div class="flex items-center gap-4">
                                 ${profileHtml}
-                                <button onclick="logout()" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
+                                <button id="btn-logout" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
                             </div>
                         `;
+                        document.getElementById('btn-logout').addEventListener('click', logout);
                     }
                 } catch(e) {
                     console.error("Failed to parse token:", e);
-                    await logout();
+                    logout();
                 }
             } else {
                 isLoggedIn = false;
                 if (authContainer) {
                     authContainer.innerHTML = `
                         <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
-                        <a href="signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
+                        <a href="/auth/signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
                     `;
                 }
-            }
-        }
-
-        function logout() {
-            const token = sessionStorage.getItem('tohfa_access_token');
-            const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
-            if (token && refreshToken) {
-                fetch('/api/auth/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ refresh_token: refreshToken })
-                }).catch(e => console.error("Logout request failed:", e));
-            }
-            sessionStorage.removeItem('tohfa_access_token');
-            sessionStorage.removeItem('tohfa_refresh_token');
-            sessionStorage.removeItem('tohfa_user');
-            window.location.href = '/auth/login.html';
-        } else {
-                window.location.reload();
             }
         }
 
@@ -355,17 +334,19 @@
             const badge = document.getElementById('wishlist-count-badge');
 
             const token = sessionStorage.getItem('tohfa_access_token');
-            if (!token) return;
+            if (!token) {
+                // If not logged in, redirect to login
+                window.location.href = '/auth/login.html';
+                return;
+            }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/wishlist`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
+                const response = await apiClient.get('/wishlist');
                 
-                if (response.ok) {
-                    const products = await response.json();
+                if (response.data && response.data.success) {
+                    const items = response.data.data.items || [];
                     
-                    if (products.length === 0) {
+                    if (items.length === 0) {
                         grid.innerHTML = '';
                         emptyState.classList.remove('hidden');
                         badge.classList.add('hidden');
@@ -373,34 +354,41 @@
                     }
 
                     emptyState.classList.add('hidden');
-                    badge.innerText = products.length;
+                    badge.innerText = items.length;
                     badge.classList.remove('hidden');
 
-                    grid.innerHTML = products.map(p => {
-                        const imgUrl = p.image_urls && p.image_urls.length > 0 ? `${API_BASE_URL}${p.image_urls[0]}` : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
+                    grid.innerHTML = items.map(p => {
+                        const imgUrl = p.image_url ? p.image_url : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
                         return `
-                            <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-xl transition-all group relative flex flex-col" id="wishlist-item-${p.id}">
+                            <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-xl transition-all group relative flex flex-col" id="wishlist-item-${p.product_id}">
                                 <div class="relative mb-4 overflow-hidden rounded-lg">
-                                    <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'" src="${imgUrl}" alt="${p.title}">
+                                    <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.product_id}'" src="${imgUrl}" alt="${p.name}">
                                     
-                                    <button onclick="removeFromWishlist('${p.id}')" class="absolute top-4 right-4 bg-white/85 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-md z-10 flex items-center justify-center">
+                                    <button id="btn-remove-${p.product_id}" class="absolute top-4 right-4 bg-white/85 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-md z-10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px] text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
                                     </button>
                                 </div>
-                                <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">${p.title}</h4>
-                                <p class="text-xs text-secondary mb-3">${p.shop_name || 'Artisan Seller'} • ${p.shipping_days} days shipping</p>
+                                <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.product_id}'">${p.name}</h4>
+                                <p class="text-xs text-secondary mb-3">${p.seller_name || 'Artisan Seller'}</p>
                                 <div class="flex justify-between items-center mt-auto">
-                                    <span class="text-lg font-bold text-on-surface">₹${(p.price_paise / 100).toLocaleString('en-IN')}</span>
-                                    <button onclick="window.location.href='product.html?id=${p.id}'" class="bg-secondary-container px-3 py-1.5 text-xs font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
+                                    <span class="text-lg font-bold text-on-surface">${formatPaise(p.price_paise)}</span>
+                                    <button onclick="window.location.href='product.html?id=${p.product_id}'" class="bg-secondary-container px-3 py-1.5 text-xs font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
                                         View
                                     </button>
                                 </div>
                             </div>
                         `;
                     }).join('');
+
+                    // Attach event listeners to remove buttons
+                    items.forEach(p => {
+                        document.getElementById(`btn-remove-${p.product_id}`).addEventListener('click', () => {
+                            removeFromWishlist(p.product_id);
+                        });
+                    });
                 }
             } catch (e) {
-                console.error(e);
+                console.error("Error loading wishlist:", e);
                 grid.innerHTML = '';
                 emptyState.classList.remove('hidden');
             }
@@ -410,23 +398,27 @@
             const token = sessionStorage.getItem('tohfa_access_token');
             if (!token) return;
 
+            // Optimistic UI update
+            const item = document.getElementById(`wishlist-item-${productId}`);
+            if (item) {
+                item.classList.add('scale-0', 'transition-all', 'duration-300');
+            }
+
             try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/wishlist/${productId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (response.ok) {
-                    const item = document.getElementById(`wishlist-item-${productId}`);
-                    if (item) {
-                        item.classList.add('scale-0', 'transition-all', 'duration-300');
-                        setTimeout(() => {
-                            item.remove();
-                            loadWishlist(); // Refresh to check if empty now
-                        }, 300);
-                    }
+                const response = await apiClient.delete(`/wishlist/${productId}`);
+                if (response.data && response.data.success) {
+                    setTimeout(() => {
+                        if (item) item.remove();
+                        loadWishlist(); // Refresh to check if empty now
+                    }, 300);
+                } else {
+                    // Revert on failure
+                    if (item) item.classList.remove('scale-0');
                 }
             } catch (e) {
-                console.error(e);
+                console.error("Failed to remove from wishlist:", e);
+                // Revert on failure
+                if (item) item.classList.remove('scale-0');
             }
         }
 
@@ -444,9 +436,9 @@
             }
         });
 
-        window.addEventListener('DOMContentLoaded', () => {
-            checkAuthState();
-            loadWishlist();
+        window.addEventListener('DOMContentLoaded', async () => {
+            await checkAuthState();
+            await loadWishlist();
         });
     </script>
 </body>

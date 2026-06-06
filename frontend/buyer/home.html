@@ -445,8 +445,8 @@
             try {
                 const response = await apiClient.get('/wishlist');
                 if (response.data && response.data.success) {
-                    const data = response.data.data;
-                    wishlistedProductIds = new Set(data.map(p => p.id));
+                    const items = response.data.data.items || [];
+                    wishlistedProductIds = new Set(items.map(p => p.product_id));
                     updateWishlistBadge();
                 }
             } catch (e) {
