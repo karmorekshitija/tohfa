@@ -1,10 +1,122 @@
-<body class="bg-background min-h-screen font-body-md text-on-surface botanical-watermark selection:bg-secondary-container">
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Payment History | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#516447",
+                        "surface-tint": "#516447",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f",
+                        "gold-custom": "#D4AF37",
+                        "ivory-card": "#FFFDFB",
+                        "sage": "#8fa382",
+                        "sage-soft": "#F0F5EE",
+                        "terracotta": "#C87A53"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Work Sans"],
+                        "body-sm": ["Work Sans"],
+                        "headline-lg": ["EB Garamond"],
+                        "title-md": ["Work Sans"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["EB Garamond"],
+                        "body-md": ["Work Sans"],
+                        "data-price": ["Work Sans"],
+                        "title-serif": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .paper-texture {
+            background-color: #fff8f3;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL8HlWj3d7Jn4Rr8_Omv5ZuBBtt-PIgqkz6U0QXXzOoK5q0e2iSq3bOoqpTXh2YvRiqLxaCe5OhuMhLl4jceRshlhkOmGhbfFCTjJh3-xwIm5HZjubNr6bGDaUtGGUFXPBbtpSV5Dp4_OnQRqkj_K7lty0Zr5u7smkvT4F08O58kmMBsY6p-pt3_E4nOm_pM_Ea5de71J1n0EgSHpKPNJ7oL5rYlXXv8H9ZKYxP6h94AtGHixEvqCj_3MaC6RC_BwGgTNXM2ZNx-8)
+        }
+    </style>
+</head>
+<body class="paper-texture min-h-screen font-body-md text-on-surface selection:bg-[#C1C9C0]/35">
 <!-- TopNavBar -->
-<!-- Standardised Top Navigation Bar (Task 57) -->
 <header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
-  <!-- Brand Logo (Task 59) -->
+  <!-- Brand Logo -->
   <div class="flex items-center flex-1">
-    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="home.html">
       Tohfa<span class="text-[#D4AF37]">.</span>
     </a>
   </div>
@@ -12,22 +124,22 @@
   <!-- Navigation Links -->
   <nav class="hidden md:flex items-center justify-center gap-xl h-full">
     <!-- Home -->
-    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
     <!-- Category (Discover) -->
-    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="category.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">search</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
-    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">movie</span>
       <span>Reels</span>
     </a>
     <!-- Profile -->
-    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="profile.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">person</span>
       <span>Profile</span>
     </a>
@@ -35,21 +147,24 @@
   
   <!-- Right side items -->
   <div class="flex items-center justify-end flex-1 gap-lg">
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="category.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
       <span class="material-symbols-outlined">search</span>
-    </button>
-    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
-      <span class="material-symbols-outlined">shopping_cart</span>
     </a>
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
       <span class="material-symbols-outlined">notifications</span>
-    </button>
-    <!-- Profile Avatar (Task 58) -->
-    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
-      A
+      <span id="nav-notif-badge" class="absolute -top-1 -right-1 bg-error text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <!-- Profile Avatar -->
+    <a href="profile.html" id="nav-avatar" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+      U
     </a>
   </div>
 </header>
+
 <!-- Main Content -->
 <main class="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
 <!-- Header -->
@@ -57,159 +172,270 @@
 <h1 class="font-display-hero text-headline-lg md:text-display-hero text-primary">Payments</h1>
 <p class="font-title-serif text-on-surface-variant italic mt-xs opacity-70">A record of your curated treasures.</p>
 </header>
+
 <!-- Summary Strip -->
 <section class="mb-xl">
-<div class="bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-lg ink-splatter custom-shadow relative overflow-hidden group transition-all duration-500 opacity-100 translate-y-0">
+<div class="bg-[#FCFAF5] border border-outline-variant rounded-[14px] p-lg custom-shadow relative overflow-hidden">
 <div class="flex flex-col md:flex-row justify-between items-center gap-md">
 <div class="text-center md:text-left">
 <span class="font-label-caps text-label-caps text-on-surface-variant">TOTAL SPENT</span>
-<div class="font-data-price text-[32px] text-tertiary-container mt-xs leading-none">
-                            $1,452.80
+<div id="stats-total-spent" class="font-data-price text-[32px] text-primary font-bold mt-xs leading-none">
+                            ₹0.00
                         </div>
 </div>
 <div class="h-px md:h-12 w-full md:w-px bg-outline-variant opacity-30"></div>
 <div class="text-center md:text-left">
 <span class="font-label-caps text-label-caps text-on-surface-variant">COMPLETED ORDERS</span>
-<div class="font-data-price text-headline-lg text-secondary mt-xs leading-none">
-                            24
+<div id="stats-completed-orders" class="font-data-price text-headline-lg text-secondary font-bold mt-xs leading-none">
+                            0
                         </div>
 </div>
 <div class="h-px md:h-12 w-full md:w-px bg-outline-variant opacity-30"></div>
 <div class="text-center md:text-left">
 <span class="font-label-caps text-label-caps text-on-surface-variant">PENDING SHIPMENTS</span>
-<div class="font-data-price text-headline-lg text-primary mt-xs leading-none">
-                            02
+<div id="stats-pending-shipments" class="font-data-price text-headline-lg text-primary font-bold mt-xs leading-none">
+                            0
                         </div>
 </div>
 </div>
 </div>
 </section>
+
 <!-- Payment Ledger -->
-<div class="space-y-xl">
-<!-- Group: MAY 2026 -->
-<section>
-<h3 class="font-label-caps text-label-caps text-tertiary-container mb-md border-b border-outline-variant/20 pb-xs inline-block">MAY 2026</h3>
-<div class="space-y-md">
-<!-- Row 1 -->
-<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-md flex flex-col md:flex-row items-start md:items-center justify-between gap-md hover:border-secondary transition-all duration-300 duration-500 opacity-100 translate-y-0">
-<div class="flex items-center gap-md">
-<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
-<span class="material-symbols-outlined text-on-secondary-container">local_mall</span>
+<div id="payment-ledger-container" class="space-y-xl">
+    <!-- Transactions will load dynamically -->
 </div>
-<div>
-<div class="font-data-price text-on-surface font-bold">TFH-9921-X</div>
-<div class="font-data-price text-on-surface-variant text-[12px]">MAY 12, 2026</div>
-</div>
-</div>
-<div class="flex flex-1 justify-center md:justify-start md:px-xl">
-<span class="font-body-md text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[18px]">credit_score</span> Mastercraft Card ****4210
-                            </span>
-</div>
-<div class="flex items-center justify-between w-full md:w-auto gap-xl">
-<div class="font-data-price text-tertiary-container text-[18px] font-bold">$245.00</div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
-</div>
-</div>
-<!-- Row 2 -->
-<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-md flex flex-col md:flex-row items-start md:items-center justify-between gap-md hover:border-secondary transition-all duration-300 duration-500 opacity-100 translate-y-0">
-<div class="flex items-center gap-md">
-<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-on-surface-variant">brush</span>
-</div>
-<div>
-<div class="font-data-price text-on-surface font-bold">TFH-8843-K</div>
-<div class="font-data-price text-on-surface-variant text-[12px]">MAY 04, 2026</div>
-</div>
-</div>
-<div class="flex flex-1 justify-center md:justify-start md:px-xl">
-<span class="font-body-md text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span> Store Credits
-                            </span>
-</div>
-<div class="flex items-center justify-between w-full md:w-auto gap-xl">
-<div class="font-data-price text-on-surface-variant text-[18px] font-bold">$12.50</div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
-</div>
-</div>
-</div>
-</section>
-<!-- Group: APRIL 2026 -->
-<section>
-<h3 class="font-label-caps text-label-caps text-tertiary-container mb-md border-b border-outline-variant/20 pb-xs inline-block">APRIL 2026</h3>
-<div class="space-y-md">
-<!-- Row 3 -->
-<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-md flex flex-col md:flex-row items-start md:items-center justify-between gap-md hover:border-secondary transition-all duration-300 duration-500 opacity-100 translate-y-0">
-<div class="flex items-center gap-md">
-<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center">
-<span class="material-symbols-outlined text-error">heart_broken</span>
-</div>
-<div>
-<div class="font-data-price text-on-surface font-bold">TFH-7621-R</div>
-<div class="font-data-price text-on-surface-variant text-[12px]">APRIL 28, 2026</div>
-</div>
-</div>
-<div class="flex flex-1 justify-center md:justify-start md:px-xl">
-<span class="font-body-md text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[18px]">credit_card</span> Visa ****1122
-                            </span>
-</div>
-<div class="flex items-center justify-between w-full md:w-auto gap-xl">
-<div class="font-data-price text-error text-[18px] font-bold">$180.00</div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#B14B3E] text-white">Cancelled</span>
-</div>
-</div>
-<!-- Row 4 -->
-<div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-md flex flex-col md:flex-row items-start md:items-center justify-between gap-md hover:border-secondary transition-all duration-300 duration-500 opacity-100 translate-y-0">
-<div class="flex items-center gap-md">
-<div class="w-10 h-10 rounded-full bg-on-tertiary-container flex items-center justify-center">
-<span class="material-symbols-outlined text-tertiary">diamond</span>
-</div>
-<div>
-<div class="font-data-price text-on-surface font-bold">TFH-7501-L</div>
-<div class="font-data-price text-on-surface-variant text-[12px]">APRIL 15, 2026</div>
-</div>
-</div>
-<div class="flex flex-1 justify-center md:justify-start md:px-xl">
-<span class="font-body-md text-on-surface-variant flex items-center gap-xs">
-<span class="material-symbols-outlined text-[18px]">payments</span> Apple Pay
-                            </span>
-</div>
-<div class="flex items-center justify-between w-full md:w-auto gap-xl">
-<div class="font-data-price text-tertiary-container text-[18px] font-bold">$512.20</div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
-</div>
-</div>
-</div>
-</section>
-</div>
-<!-- Mascot Placement -->
 
+<!-- Load More Button -->
+<div class="flex justify-center mt-xl">
+    <button id="btn-load-more" onclick="loadMore()" class="hidden px-xl py-md bg-white border border-sage text-primary rounded-lg font-bold hover:bg-sage-soft transition-all transform active:scale-95">
+        Load more payments
+    </button>
+</div>
 </main>
-<!-- Footer -->
-<footer class="w-full mt-auto bg-surface-container dark:bg-surface-container-lowest transition-colors">
 
-</footer>
-<!-- Micro-interactions Script -->
-<script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Subtle scroll reveal for rows
-            const rows = document.querySelectorAll('.bg-\\[\\#FCFAF5\\]');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('opacity-100', 'translate-y-0');
-                        entry.target.classList.remove('opacity-0', 'translate-y-4');
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { formatPaise } from '/src/utils/currency.js';
+
+    let paymentsList = [];
+    let nextCursor = null;
+
+    async function initPayments() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        // Setup user avatar
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(window.atob(base64));
+            const avatarEl = document.getElementById('nav-avatar');
+            if (avatarEl) {
+                if (payload.username) {
+                    avatarEl.innerText = payload.username.substring(0, 1).toUpperCase();
+                } else if (payload.email) {
+                    avatarEl.innerText = payload.email.substring(0, 1).toUpperCase();
+                }
+            }
+            
+            // Fetch profile to get real avatar
+            try {
+                const res = await apiClient.get('/profile/me');
+                if (res.data && res.data.success && res.data.data.avatar_url) {
+                    if (avatarEl) {
+                        avatarEl.innerHTML = `<img src="${res.data.data.avatar_url}" alt="Avatar" class="w-full h-full object-cover"/>`;
                     }
-                });
-            }, { threshold: 0.1 });
+                }
+            } catch (err) {
+                console.error("Failed to fetch avatar:", err);
+            }
+        } catch(e) {
+            console.error(e);
+        }
 
-            rows.forEach(row => {
-                row.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
-                observer.observe(row);
-            });
+        // Fetch cart count for nav badge
+        try {
+            const res = await apiClient.get('/cart');
+            if (res.data && res.data.success) {
+                const count = res.data.data.item_count;
+                const navBadge = document.getElementById('nav-cart-badge');
+                if (navBadge) {
+                    if (count > 0) {
+                        navBadge.innerText = count;
+                        navBadge.classList.remove('hidden');
+                    } else {
+                        navBadge.classList.add('hidden');
+                    }
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+
+        await fetchPayments(true);
+    }
+
+    async function fetchPayments(reset = false) {
+        if (reset) {
+            nextCursor = null;
+            paymentsList = [];
+        }
+
+        const container = document.getElementById('payment-ledger-container');
+        if (reset) {
+            container.innerHTML = `
+                <div class="flex flex-col gap-sm py-8 text-center text-sage">
+                    <span class="material-symbols-outlined animate-spin text-[32px] text-primary">sync</span>
+                    <p class="font-body-md mt-sm text-on-surface-variant">Loading payment history...</p>
+                </div>
+            `;
+        }
+
+        try {
+            let url = `/payments/history?limit=10`;
+            if (nextCursor) {
+                url += `&cursor=${nextCursor}`;
+            }
+
+            const res = await apiClient.get(url);
+            if (res.data && res.data.success) {
+                const { total_spent_paise, completed_order_count, pending_shipment_count, payments, next_cursor, has_more } = res.data.data;
+                nextCursor = next_cursor;
+
+                // Update summary stats
+                document.getElementById('stats-total-spent').innerText = formatPaise(total_spent_paise);
+                document.getElementById('stats-completed-orders').innerText = completed_order_count;
+                document.getElementById('stats-pending-shipments').innerText = pending_shipment_count;
+
+                if (reset) {
+                    paymentsList = payments;
+                } else {
+                    paymentsList = [...paymentsList, ...payments];
+                }
+
+                renderPayments();
+
+                const loadMoreBtn = document.getElementById('btn-load-more');
+                if (has_more) {
+                    loadMoreBtn.classList.remove('hidden');
+                } else {
+                    loadMoreBtn.classList.add('hidden');
+                }
+            }
+        } catch (err) {
+            console.error("Error loading payments:", err);
+            container.innerHTML = `
+                <div class="bg-error-container/20 border border-error/30 rounded-2xl p-lg text-center my-lg">
+                    <span class="material-symbols-outlined text-error text-[32px] mb-xs">error</span>
+                    <p class="font-body-md text-error font-semibold">Failed to load payment history</p>
+                    <button onclick="window.location.reload()" class="mt-md px-md py-sm bg-primary text-white rounded-lg font-bold hover:bg-primary/95 transition-all">Retry</button>
+                </div>
+            `;
+        }
+    }
+
+    function getStatusBadgeClass(status) {
+        switch(status) {
+            case 'Awaiting Payment':
+                return 'bg-amber-50 text-amber-800 border border-amber-200';
+            case 'Processing':
+                return 'bg-violet-50 text-violet-800 border border-violet-200';
+            case 'Shipped':
+                return 'bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]';
+            case 'Delivered':
+                return 'bg-[#255338] text-white';
+            case 'Cancelled':
+                return 'bg-[#B14B3E] text-white';
+            default:
+                return 'bg-sage-soft text-primary border border-sage';
+        }
+    }
+
+    function renderPayments() {
+        const container = document.getElementById('payment-ledger-container');
+        if (paymentsList.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-12 bg-[#FCFAF5] border border-dashed border-sage rounded-2xl p-lg">
+                    <span class="material-symbols-outlined text-sage text-[48px] mb-sm">payments</span>
+                    <h3 class="font-headline-lg text-lg text-primary">No payments found</h3>
+                    <p class="text-on-surface-variant text-sm mt-xs">No transaction records found on your account.</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Group by Month Year
+        const groups = {};
+        paymentsList.forEach(p => {
+            const dateObj = new Date(p.paid_at);
+            const monthYear = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase();
+            if (!groups[monthYear]) {
+                groups[monthYear] = [];
+            }
+            groups[monthYear].push(p);
         });
-    </script>
 
+        let html = '';
+        for (const monthYear in groups) {
+            html += `
+                <section>
+                    <h3 class="font-label-caps text-label-caps text-secondary mb-md border-b border-outline-variant/30 pb-xs inline-block tracking-widest">${monthYear}</h3>
+                    <div class="space-y-md">
+                        ${groups[monthYear].map(p => {
+                            const dateStr = new Date(p.paid_at).toLocaleDateString('en-IN', {
+                                day: 'numeric', month: 'short', year: 'numeric'
+                            }).toUpperCase();
+                            
+                            let icon = 'local_mall';
+                            let iconColor = 'text-[#255338] bg-[#F0F5EE]';
+                            if (p.status === 'Cancelled') {
+                                icon = 'heart_broken';
+                                iconColor = 'text-[#B14B3E] bg-[#FDF2F0]';
+                            }
 
+                            return `
+                                <div onclick="window.location.href='order-detail.html?id=${p.order_id}'" class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-md flex flex-col md:flex-row items-start md:items-center justify-between gap-md hover:border-primary transition-all duration-300 cursor-pointer shadow-sm">
+                                    <div class="flex items-center gap-md">
+                                        <div class="w-10 h-10 rounded-full flex items-center justify-center ${iconColor}">
+                                            <span class="material-symbols-outlined">${icon}</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-data-price text-on-surface font-bold">#${p.order_ref}</div>
+                                            <div class="font-data-price text-on-surface-variant text-[12px]">${dateStr}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-grow justify-start md:px-xl">
+                                        <span class="font-body-md text-on-surface-variant flex items-center gap-xs text-xs">
+                                            <span class="material-symbols-outlined text-[18px]">credit_score</span>
+                                            <span>${p.payment_method_label} ${p.razorpay_payment_id ? `(${p.razorpay_payment_id})` : ''}</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-between w-full md:w-auto gap-xl">
+                                        <div class="font-data-price text-primary text-[18px] font-bold">${formatPaise(p.amount_paise)}</div>
+                                        <span class="font-body-md text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-0.5 border ${getStatusBadgeClass(p.status)}">${p.status}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </section>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    function loadMore() {
+        fetchPayments(false);
+    }
+
+    window.loadMore = loadMore;
+
+    window.addEventListener('DOMContentLoaded', initPayments);
+</script>
 </body>
+</html>
