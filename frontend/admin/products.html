@@ -133,23 +133,23 @@
 <span class="material-symbols-outlined text-[20px]">grid_view</span>
 <span class="font-label-btn text-label-btn">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/sellers.html">
 <span class="material-symbols-outlined text-[20px]">group</span>
 <span class="font-label-btn text-label-btn">Sellers</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/orders.html">
 <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
 <span class="font-label-btn text-label-btn">Orders</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/categories.html">
 <span class="material-symbols-outlined text-[20px]">category</span>
 <span class="font-label-btn text-label-btn">Categories</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="/admin/products.html">
 <span class="material-symbols-outlined text-[20px]">inventory_2</span>
 <span class="font-label-btn text-label-btn">Products</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/audit-logs.html">
 <span class="material-symbols-outlined text-[20px]">history_edu</span>
 <span class="font-label-btn text-label-btn">Audit Logs</span>
 </a>
@@ -200,14 +200,14 @@
 <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 flex-wrap">
 <div class="relative w-full md:w-96">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-faint" data-icon="search">search</span>
-<input class="w-full pl-10 pr-4 py-2 bg-bg-primary border border-sage-soft rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Search by product name or seller…" type="text">
+<input id="search-input" class="w-full pl-10 pr-4 py-2 bg-bg-primary border border-sage-soft rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Search by product name or seller…" type="text">
 </div>
 <div class="flex items-center bg-surface-container-low p-1 rounded-full border border-outline-variant">
-<button class="px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps bg-primary text-on-primary shadow-sm transition-all">All Products</button>
-<button class="px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps text-text-muted hover:bg-surface-container transition-all">Sponsored Only</button>
-<button class="px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps text-text-muted hover:bg-surface-container transition-all">Non-Sponsored</button>
+<button id="tab-all" class="px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps bg-primary text-on-primary shadow-sm transition-all">All Products</button>
+<button id="tab-sponsored" class="px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps text-text-muted hover:bg-surface-container transition-all">Sponsored Only</button>
+<button id="tab-non-sponsored" class="px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps text-text-muted hover:bg-surface-container transition-all">Non-Sponsored</button>
 </div>
-<button class="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary-deep text-on-primary rounded-lg font-bold text-sm shadow-md transition-all whitespace-nowrap">
+<button id="add-sponsors-btn" class="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary-deep text-on-primary rounded-lg font-bold text-sm shadow-md transition-all whitespace-nowrap">
     <span class="material-symbols-outlined text-lg" data-icon="add">add</span>
     Add Sponsors
 </button></div>
@@ -225,79 +225,17 @@
 <th class="px-6 py-4 text-[10px] font-bold font-accent-caps text-text-faint uppercase tracking-widest text-center">Action</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-sage-soft">
-<!-- Row 1: Sponsored -->
-<tr class="bg-surface-ivory border-l-[3px] border-l-highlight-gold hover:bg-white transition-colors">
-<td class="px-6 py-4 whitespace-nowrap">
-<div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden border border-outline-variant">
-<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNHTfheZ1mtowZCwdUj7pmVSYUmQCId8gebQghR0hpVj4xIscuDqvYszxfFMdRWkSq7fYeiiHOcd8U9ymVeQ3HOppQM7p_nhEQVRokKB0rqu_30cnp8UVzxr_ym0RHxm9xPPFA-atgJRU5eFB85mmW38sG2F0US4h6xKndA8Dr2F86LWJIeQUhTknMd5CYlgHci4g_gCrN8O6qHRuKA5djciY92ZLr5DmTbB4vkEIcIiP-T2Ih1wzgv9yDgKSBMyCgcZZDFwRt-w">
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="text-sm font-bold text-text-default font-body-md">Indigo Crackle Ceramic Bowl</p>
-<p class="text-xs text-text-faint font-data-meta">#CERA-901</p>
-</td>
-<td class="px-6 py-4">
-<a class="text-sm text-accent-violet hover:underline underline-offset-2" href="#">Earth &amp; Fire Studios</a>
-</td>
-<td class="px-6 py-4 text-center">
-<span class="px-2 py-1 bg-surface-ivory border border-sage-soft text-[10px] font-bold font-accent-caps text-primary uppercase rounded">Pottery</span>
-</td>
-<td class="px-6 py-4 text-right">
-<span class="font-data-price text-primary">₹2,450</span>
-</td>
-<td class="px-6 py-4 text-center">
-<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-gold-soft text-highlight-gold rounded-full">
-<span class="material-symbols-outlined text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold uppercase tracking-wider">Sponsored</span>
-</div>
-</td>
-<td class="px-6 py-4 text-center">
-<div class="flex justify-center">
-<input checked="" class="hidden switch-input" id="toggle1" type="checkbox">
-<label class="switch-label relative w-10 h-5 bg-text-faint/30 rounded-full cursor-pointer transition-colors duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-transform after:duration-300 shadow-inner" for="toggle1"></label>
-</div>
-</td>
-</tr>
-<!-- Row 2: Non-Sponsored -->
-<tr class="bg-white hover:bg-surface-ivory transition-colors">
-<td class="px-6 py-4 whitespace-nowrap">
-<div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden border border-outline-variant">
-<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2mFz5-iGEcKyrKbf7Gb4CMR6GokjmSnYGuVLoEO9XlIZ0QhRk_pSFnsMZ2iKYETKGjmM8DiyEeoj0Dw322EJEUr7yMJYMkACipP5ZEqUstomV-qrrUqmxN-rlOipcSZmRU8Oc8wLEXOF3te1S4ZZcDqLm77BhGghn8zgcvokCvD4MeRnp2POIR8j7ZSXOfqVd47JpWUIMsk4d4Z39LDV709YeBUuYwH8RY4v7iKZADjKLOoFDvbmJ3gGuxPovbffZ-Sjk2ccjKQ">
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="text-sm font-bold text-text-default font-body-md">Hand-woven Pashmina Stole</p>
-<p class="text-xs text-text-faint font-data-meta">#TEXT-442</p>
-</td>
-<td class="px-6 py-4">
-<a class="text-sm text-accent-violet hover:underline underline-offset-2" href="#">Loom &amp; Thread</a>
-</td>
-<td class="px-6 py-4 text-center">
-<span class="px-2 py-1 bg-surface-ivory border border-sage-soft text-[10px] font-bold font-accent-caps text-primary uppercase rounded">Textiles</span>
-</td>
-<td class="px-6 py-4 text-right">
-<span class="font-data-price text-primary">₹8,900</span>
-</td>
-<td class="px-6 py-4 text-center">
-<span class="text-text-faint font-data-meta">—</span>
-</td>
-<td class="px-6 py-4 text-center">
-<div class="flex justify-center">
-<input class="hidden switch-input" id="toggle2" type="checkbox">
-<label class="switch-label relative w-10 h-5 bg-text-faint/30 rounded-full cursor-pointer transition-colors duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-transform after:duration-300 shadow-inner" for="toggle2"></label>
-</div>
-</td>
-</tr>
+<tbody id="products-list" class="divide-y divide-sage-soft">
+<!-- Dynamic products list will be loaded here -->
 </tbody>
 </table>
 <div class="px-6 py-4 bg-surface-ivory border-t border-sage-soft flex justify-between items-center">
-<p class="text-xs text-text-faint">Showing 2 of 124 artisan products</p>
+<p id="pagination-info" class="text-xs text-text-faint">Showing 0 of 0 artisan products</p>
 <div class="flex gap-2">
-<button class="p-1 hover:bg-surface-container rounded text-text-muted transition-colors">
+<button id="prev-page" class="p-1 hover:bg-surface-container rounded text-text-muted transition-colors">
 <span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
 </button>
-<button class="p-1 hover:bg-surface-container rounded text-text-muted transition-colors">
+<button id="next-page" class="p-1 hover:bg-surface-container rounded text-text-muted transition-colors">
 <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
 </button>
 </div>
@@ -311,7 +249,7 @@
 </div>
 <div class="relative z-10">
 <p class="text-text-default text-lg mb-2">
-                                ✦ <span class="font-data-price text-highlight-gold text-2xl" id="sponsored-count">42</span> <span class="font-serif-ui-md italic">products are currently sponsored and receiving priority placement.</span>
+                                ✦ <span class="font-data-price text-highlight-gold text-2xl" id="sponsored-count">0</span> <span class="font-serif-ui-md italic">products are currently sponsored and receiving priority placement.</span>
 </p>
 <p class="text-text-muted text-sm font-body-sm pl-6">
                                 These appear at the top of <strong>/browse/home</strong> for all users.
@@ -322,42 +260,244 @@
 </div>
 <!-- Sticky Footer -->
 <footer class="mt-auto p-4 border-t border-outline-variant bg-bg-primary/80 backdrop-blur flex justify-end gap-4 z-10">
-<button class="px-6 py-2 rounded-lg border border-sage-soft text-text-muted font-bold text-sm hover:bg-surface-container transition-all">Cancel Changes</button>
-<button class="px-8 py-2 rounded-lg bg-primary text-on-primary font-bold text-sm hover:bg-primary-deep shadow-md transition-all">Save Changes</button>
+<button id="cancel-changes-btn" class="px-6 py-2 rounded-lg border border-sage-soft text-text-muted font-bold text-sm hover:bg-surface-container transition-all">Cancel Changes</button>
+<button id="save-changes-btn" class="px-8 py-2 rounded-lg bg-primary text-on-primary font-bold text-sm hover:bg-primary-deep shadow-md transition-all">Save Changes</button>
 </footer>
 </main>
 </div>
-<script>
-        document.querySelectorAll('.switch-input').forEach(input => {
-            input.addEventListener('change', function() {
-                const row = this.closest('tr');
-                const countEl = document.getElementById('sponsored-count');
-                let currentCount = parseInt(countEl.innerText);
+<script type="module">
+import adminApiClient from '/src/utils/adminApiClient.js';
+import { formatPaise } from '/src/utils/currency.js';
 
-                if (this.checked) {
-                    row.classList.add('bg-surface-ivory', 'border-l-[3px]', 'border-l-highlight-gold');
-                    row.classList.remove('bg-white');
-                    countEl.innerText = currentCount + 1;
-                    
-                    // Logic to add badge visually if needed
-                    const statusCell = row.cells[5];
-                    statusCell.innerHTML = `
-                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-gold-soft text-highlight-gold rounded-full">
-                            <span class="material-symbols-outlined text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-                            <span class="text-[10px] font-bold uppercase tracking-wider">Sponsored</span>
-                        </div>
-                    `;
-                } else {
-                    row.classList.remove('bg-surface-ivory', 'border-l-[3px]', 'border-l-highlight-gold');
-                    row.classList.add('bg-white');
-                    countEl.innerText = Math.max(0, currentCount - 1);
-                    
-                    const statusCell = row.cells[5];
-                    statusCell.innerHTML = `<span class="text-text-faint font-data-meta">—</span>`;
-                }
-            });
+if (!sessionStorage.getItem('tohfa_admin_token')) {
+  window.location.href = '/admin/login.html';
+}
+
+let products = [];
+let currentFilter = 'all';
+let searchQuery = '';
+let currentPage = 1;
+let totalPages = 1;
+
+const listEl = document.getElementById('products-list');
+const searchInput = document.getElementById('search-input');
+const sponsoredCountEl = document.getElementById('sponsored-count');
+const paginationInfo = document.getElementById('pagination-info');
+const prevPageBtn = document.getElementById('prev-page');
+const nextPageBtn = document.getElementById('next-page');
+
+const tabAll = document.getElementById('tab-all');
+const tabSponsored = document.getElementById('tab-sponsored');
+const tabNonSponsored = document.getElementById('tab-non-sponsored');
+
+async function fetchProducts() {
+  try {
+    const response = await adminApiClient.get('/admin/products', {
+      params: {
+        filter: currentFilter,
+        search: searchQuery,
+        page: currentPage,
+        per_page: 10
+      }
+    });
+
+    if (response.data?.success) {
+      const data = response.data.data;
+      products = data.products;
+      totalPages = data.total_pages;
+      sponsoredCountEl.textContent = data.sponsored_count;
+      renderProducts();
+      renderPagination(data.total, data.page, data.per_page);
+    }
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+  }
+}
+
+function renderProducts() {
+  listEl.innerHTML = '';
+  if (products.length === 0) {
+    listEl.innerHTML = `
+      <tr>
+        <td colspan="7" class="px-6 py-10 text-center text-text-muted text-sm font-serif-ui-sm">
+          No products found.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  products.forEach((product, idx) => {
+    const tr = document.createElement('tr');
+    tr.className = `${product.is_sponsored ? 'bg-surface-ivory border-l-[3px] border-l-highlight-gold ' : 'bg-white '}hover:bg-surface-ivory/50 transition-colors`;
+
+    const imageHtml = `
+      <div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden border border-outline-variant">
+        <span class="material-symbols-outlined text-[32px] text-text-faint flex items-center justify-center h-full">image</span>
+      </div>
+    `;
+
+    const statusBadge = product.is_sponsored
+      ? `<div class="inline-flex items-center gap-1.5 px-3 py-1 bg-gold-soft text-highlight-gold rounded-full">
+           <span class="material-symbols-outlined text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+           <span class="text-[10px] font-bold uppercase tracking-wider">Sponsored</span>
+         </div>`
+      : `<span class="text-text-faint font-data-meta">—</span>`;
+
+    tr.innerHTML = `
+      <td class="px-6 py-4 whitespace-nowrap">
+        ${imageHtml}
+      </td>
+      <td class="px-6 py-4">
+        <p class="text-sm font-bold text-text-default font-body-md">${product.name}</p>
+        <p class="text-xs text-text-faint font-data-meta">${product.sku}</p>
+      </td>
+      <td class="px-6 py-4">
+        <a class="text-sm text-accent-violet hover:underline underline-offset-2" href="/admin/seller-detail.html?id=${product.seller_id}">${product.seller_name}</a>
+      </td>
+      <td class="px-6 py-4 text-center">
+        <span class="px-2 py-1 bg-surface-ivory border border-sage-soft text-[10px] font-bold font-accent-caps text-primary uppercase rounded">${product.category_name}</span>
+      </td>
+      <td class="px-6 py-4 text-right">
+        <span class="font-data-price text-primary">${formatPaise(product.price_paise)}</span>
+      </td>
+      <td class="px-6 py-4 text-center status-cell">
+        ${statusBadge}
+      </td>
+      <td class="px-6 py-4 text-center">
+        <div class="flex justify-center">
+          <input class="hidden switch-input" id="toggle-${product.id}" type="checkbox" ${product.is_sponsored ? 'checked' : ''}>
+          <label class="switch-label relative w-10 h-5 bg-text-faint/30 rounded-full cursor-pointer transition-colors duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-transform after:duration-300 shadow-inner" for="toggle-${product.id}"></label>
+        </div>
+      </td>
+    `;
+    listEl.appendChild(tr);
+
+    // Toggle event listener
+    const toggleInput = tr.querySelector(`.switch-input`);
+    toggleInput.addEventListener('change', async function() {
+      const isChecked = this.checked;
+      try {
+        const response = await adminApiClient.patch(`/admin/products/${product.id}/sponsored`, {
+          is_sponsored: isChecked
         });
-    </script>
+        if (response.data?.success) {
+          product.is_sponsored = isChecked;
+          if (isChecked) {
+            tr.className = 'bg-surface-ivory border-l-[3px] border-l-highlight-gold hover:bg-surface-ivory/50 transition-colors';
+            tr.querySelector('.status-cell').innerHTML = `
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-gold-soft text-highlight-gold rounded-full">
+                <span class="material-symbols-outlined text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Sponsored</span>
+              </div>
+            `;
+          } else {
+            tr.className = 'bg-white hover:bg-surface-ivory/50 transition-colors';
+            tr.querySelector('.status-cell').innerHTML = `<span class="text-text-faint font-data-meta">—</span>`;
+          }
+          sponsoredCountEl.textContent = response.data.data.sponsored_count;
+        }
+      } catch (err) {
+        this.checked = !isChecked;
+        alert(err.response?.data?.message || 'Failed to update sponsored status');
+      }
+    });
+  });
+}
 
+function renderPagination(total, page, per_page) {
+  const start = (page - 1) * per_page + 1;
+  const end = Math.min(page * per_page, total);
+  paginationInfo.textContent = total > 0 ? `Showing ${start}-${end} of ${total} artisan products` : 'Showing 0 of 0 products';
 
+  prevPageBtn.disabled = page <= 1;
+  prevPageBtn.style.opacity = page <= 1 ? '0.4' : '1';
+  prevPageBtn.style.cursor = page <= 1 ? 'not-allowed' : 'pointer';
+
+  nextPageBtn.disabled = page >= totalPages;
+  nextPageBtn.style.opacity = page >= totalPages ? '0.4' : '1';
+  nextPageBtn.style.cursor = page >= totalPages ? 'not-allowed' : 'pointer';
+}
+
+function updateTabs(activeTab) {
+  [tabAll, tabSponsored, tabNonSponsored].forEach(btn => {
+    btn.className = "px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps text-text-muted hover:bg-surface-container transition-all";
+  });
+  activeTab.className = "px-5 py-1.5 rounded-full text-xs font-bold font-accent-caps bg-primary text-on-primary shadow-sm transition-all";
+}
+
+tabAll.addEventListener('click', () => {
+  currentFilter = 'all';
+  currentPage = 1;
+  updateTabs(tabAll);
+  fetchProducts();
+});
+
+tabSponsored.addEventListener('click', () => {
+  currentFilter = 'sponsored';
+  currentPage = 1;
+  updateTabs(tabSponsored);
+  fetchProducts();
+});
+
+tabNonSponsored.addEventListener('click', () => {
+  currentFilter = 'non_sponsored';
+  currentPage = 1;
+  updateTabs(tabNonSponsored);
+  fetchProducts();
+});
+
+searchInput.addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  currentPage = 1;
+  fetchProducts();
+});
+
+prevPageBtn.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    fetchProducts();
+  }
+});
+
+nextPageBtn.addEventListener('click', () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    fetchProducts();
+  }
+});
+
+// Add Sponsors button - allows quick entry of product ID
+document.getElementById('add-sponsors-btn').addEventListener('click', async () => {
+  const input = prompt("Enter product ID to sponsor:");
+  if (input) {
+    const id = parseInt(input.trim());
+    if (isNaN(id)) {
+      alert("Invalid product ID");
+      return;
+    }
+    try {
+      await adminApiClient.patch(`/admin/products/${id}/sponsored`, { is_sponsored: true });
+      fetchProducts();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to sponsor product');
+    }
+  }
+});
+
+// Footer buttons
+document.getElementById('cancel-changes-btn').addEventListener('click', () => {
+  currentPage = 1;
+  searchQuery = '';
+  searchInput.value = '';
+  fetchProducts();
+});
+
+document.getElementById('save-changes-btn').addEventListener('click', () => {
+  alert('All visibility settings are automatically saved in real-time.');
+});
+
+// Initial Load
+fetchProducts();
+</script>
 </body></html>
