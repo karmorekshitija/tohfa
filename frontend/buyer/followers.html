@@ -59,7 +59,7 @@
 <!-- Page Header -->
 <div class="mb-xl text-center md:text-left">
 <h1 class="font-headline-lg text-headline-lg text-primary mb-xs">Followers</h1>
-<p class="font-data-price text-data-price text-secondary tracking-widest">1,248 COLLECTORS &amp; MAKERS</p>
+<p id="followers-count-heading" class="font-data-price text-data-price text-secondary tracking-widest uppercase">0 COLLECTORS &amp; MAKERS</p>
 </div>
 <!-- Search Bar -->
 <div class="mb-xl">
@@ -186,25 +186,187 @@
 </main>
 <!-- Footer -->
 
-<script>
-        // Micro-interaction for follow buttons
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if(this.innerText.includes('Follow')) {
-                    if(this.classList.contains('bg-primary')) {
-                        this.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span> Following';
-                        this.classList.remove('bg-primary');
-                        this.classList.add('bg-secondary', 'opacity-80');
+<script type="module">
+        import apiClient from '/src/utils/apiClient.js';
+
+        let allFollowers = [];
+        let currentUserId = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userStr = sessionStorage.getItem('tohfa_user');
+        if (userStr) {
+            try {
+                currentUserId = JSON.parse(userStr).id;
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        const targetUserId = urlParams.get('userId') || urlParams.get('id') || currentUserId;
+
+        function renderFollowersList(items) {
+            const container = document.querySelector('.flex.flex-col');
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="py-12 text-center text-outline">
+                        <p class="font-title-serif italic">No followers found ✦</p>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between py-lg border-b border-sage/20 group hover:bg-surface-container-lowest/50 transition-colors px-4 -mx-4 rounded-lg";
+                
+                const isMaker = item.role_label === 'MAKER';
+                const roleClass = isMaker ? 'text-tertiary bg-tertiary-fixed' : 'text-secondary bg-secondary-fixed';
+                const avatar = item.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb';
+
+                let actionButton = '';
+                if (Number(item.id) !== Number(currentUserId)) {
+                    if (item.is_following) {
+                        actionButton = `
+                            <button class="follow-btn flex items-center gap-sm text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95 bg-secondary opacity-80" data-id="${item.id}" data-following="true">
+                                <span class="material-symbols-outlined text-[18px]">check</span> Following
+                            </button>
+                        `;
+                    } else if (Number(targetUserId) === Number(currentUserId)) {
+                        actionButton = `
+                            <button class="follow-btn bg-surface-ivory border border-sage text-primary font-body-md px-6 py-2 rounded-full hover:bg-sage-soft transition-all active:scale-95" data-id="${item.id}" data-following="false">
+                                Follow back
+                            </button>
+                        `;
+                    } else {
+                        actionButton = `
+                            <button class="follow-btn flex items-center gap-sm bg-primary text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95" data-id="${item.id}" data-following="false">
+                                <span class="material-symbols-outlined text-[18px]">add</span> Follow
+                            </button>
+                        `;
                     }
                 }
+
+                row.innerHTML = `
+                    <div class="flex items-center gap-md">
+                        <img class="border border-[#C1C9C0] w-14 h-14 rounded-full object-cover" src="${avatar}">
+                        <div>
+                            <h3 class="font-lora text-title-serif text-on-surface">${item.display_name}</h3>
+                            <span class="font-label-caps text-label-caps ${roleClass} px-2 py-0.5 rounded-full">${item.role_label}</span>
+                        </div>
+                    </div>
+                    ${actionButton}
+                `;
+
+                container.appendChild(row);
             });
+
+            // Bind events to follow buttons
+            document.querySelectorAll('.follow-btn').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const userId = this.getAttribute('data-id');
+                    const isFollowing = this.getAttribute('data-following') === 'true';
+
+                    this.disabled = true;
+
+                    try {
+                        if (isFollowing) {
+                            const res = await apiClient.delete(`/follows/${userId}`);
+                            if (res.data && res.data.success) {
+                                this.setAttribute('data-following', 'false');
+                                if (Number(targetUserId) === Number(currentUserId)) {
+                                    this.className = "follow-btn bg-surface-ivory border border-sage text-primary font-body-md px-6 py-2 rounded-full hover:bg-sage-soft transition-all active:scale-95";
+                                    this.innerHTML = "Follow back";
+                                } else {
+                                    this.className = "follow-btn flex items-center gap-sm bg-primary text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95";
+                                    this.innerHTML = '<span class="material-symbols-outlined text-[18px]">add</span> Follow';
+                                }
+                                const idx = allFollowers.findIndex(f => Number(f.id) === Number(userId));
+                                if (idx !== -1) allFollowers[idx].is_following = false;
+                            }
+                        } else {
+                            const res = await apiClient.post(`/follows/${userId}`);
+                            if (res.data && res.data.success) {
+                                this.setAttribute('data-following', 'true');
+                                this.className = "follow-btn flex items-center gap-sm text-white font-body-md px-6 py-2 rounded-full hover:bg-primary-container transition-all active:scale-95 bg-secondary opacity-80";
+                                this.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span> Following';
+                                const idx = allFollowers.findIndex(f => Number(f.id) === Number(userId));
+                                if (idx !== -1) allFollowers[idx].is_following = true;
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Follow toggle failed:', err);
+                        alert('Operation failed. Please try again.');
+                    } finally {
+                        this.disabled = false;
+                    }
+                });
+            });
+        }
+
+        async function fetchFollowers() {
+            if (!targetUserId) return;
+
+            try {
+                const res = await apiClient.get(`/users/${targetUserId}/followers`);
+                if (res.data && res.data.success) {
+                    allFollowers = res.data.data.followers || [];
+                    const count = res.data.data.total_count || 0;
+
+                    const countHeading = document.getElementById('followers-count-heading');
+                    if (countHeading) {
+                        countHeading.textContent = `${count} COLLECTORS & MAKERS`;
+                    }
+
+                    renderFollowersList(allFollowers);
+
+                    const spinner = document.querySelector('.py-12.flex.flex-col.items-center');
+                    if (spinner) {
+                        spinner.classList.add('hidden');
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to fetch followers:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchFollowers();
+
+            const filterInput = document.querySelector('input[placeholder="Search followers..."]');
+            if (filterInput) {
+                filterInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = allFollowers.filter(item => 
+                        item.display_name.toLowerCase().includes(query)
+                    );
+                    renderFollowersList(filtered);
+                });
+            }
+
+            const accessToken = sessionStorage.getItem('tohfa_access_token');
+            if (accessToken) {
+                const userStr = sessionStorage.getItem('tohfa_user');
+                if (userStr) {
+                    try {
+                        const user = JSON.parse(userStr);
+                        const headerAvatar = document.querySelector('header a[href="/profile"]');
+                        if (headerAvatar && user.avatar_url) {
+                            headerAvatar.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full" />`;
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            }
         });
 
-        // Add subtle parallax to watermark
         window.addEventListener('scroll', () => {
             const watermark = document.querySelector('.artisan-watermark');
-            const scrolled = window.pageYOffset;
-            watermark.style.transform = `translateY(${scrolled * 0.05}px) rotate(12deg)`;
+            if (watermark) {
+                const scrolled = window.pageYOffset;
+                watermark.style.transform = `translateY(${scrolled * 0.05}px) rotate(12deg)`;
+            }
         });
     </script>
 
