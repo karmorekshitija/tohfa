@@ -264,13 +264,9 @@
             </section>
 
             <!-- Pagination Controls -->
-            <footer class="flex justify-center items-center gap-6 mt-16" id="pagination-controls">
-                <button id="btn-prev" onclick="changePage(-1)" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-5 py-2.5 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1">
-                    <span class="material-symbols-outlined text-[16px]">arrow_back</span> Prev
-                </button>
-                <span id="page-indicator" class="font-label-caps text-sm text-secondary uppercase font-bold">Page 1</span>
-                <button id="btn-next" onclick="changePage(1)" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-5 py-2.5 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1">
-                    Next <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <footer class="flex justify-center items-center gap-6 mt-16 hidden" id="pagination-controls">
+                <button id="btn-load-more" onclick="loadMoreProducts()" class="bg-surface-container border border-outline-variant/30 hover:border-primary text-on-surface px-6 py-3 text-xs font-semibold rounded-full uppercase tracking-wider transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5">
+                    Load More <span class="material-symbols-outlined text-[16px]">expand_more</span>
                 </button>
             </footer>
         </div>
@@ -355,15 +351,17 @@
         })();
     </script>
 </nav>
+    <script type="module">
+        import apiClient from '/src/utils/apiClient.js';
+        import { formatPaise } from '/src/utils/currency.js';
+        import { logout } from '/src/utils/auth.js';
 
-    <script>
-        const API_BASE_URL = window.location.origin;
         let wishlistedProductIds = new Set();
         let isLoggedIn = false;
         let categories = [];
         
         let currentLimit = 12;
-        let currentOffset = 0;
+        let nextCursor = null;
         let hasMore = true;
 
         // Extract params
@@ -371,7 +369,7 @@
         let activeSlug = urlParams.get('slug') || '';
         let searchQuery = urlParams.get('search') || '';
 
-                async function checkAuthState() {
+        async function checkAuthState() {
             const token = sessionStorage.getItem('tohfa_access_token');
             const authContainer = document.getElementById('auth-buttons');
             const dashboardLink = document.getElementById('navbar-dashboard-link');
@@ -386,12 +384,9 @@
                     // Fetch profile to get avatar_url
                     let avatarUrl = null;
                     try {
-                        const res = await fetch(`${API_BASE_URL}/api/profile/me`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        if (res.ok) {
-                            const profileData = await res.json();
-                            avatarUrl = profileData.data.avatar_url;
+                        const res = await apiClient.get('/profile/me');
+                        if (res.data && res.data.success) {
+                            avatarUrl = res.data.data.avatar_url;
                         }
                     } catch (err) {
                         console.error("Failed to fetch profile avatar:", err);
@@ -400,7 +395,7 @@
                     if (payload.role === 'seller') {
                         if (dashboardLink) {
                             dashboardLink.innerText = 'Seller Dashboard';
-                            dashboardLink.href = 'seller-dashboard.html';
+                            dashboardLink.href = '/seller/dashboard.html';
                         }
                     } else {
                         if (dashboardLink) {
@@ -426,51 +421,25 @@
                     }
                 } catch(e) {
                     console.error("Failed to parse token:", e);
-                    await logout();
+                    logout();
                 }
             } else {
                 isLoggedIn = false;
                 if (authContainer) {
                     authContainer.innerHTML = `
                         <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
-                        <a href="signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
+                        <a href="/auth/signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
                     `;
                 }
             }
         }
 
-        function logout() {
-            const token = sessionStorage.getItem('tohfa_access_token');
-            const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
-            if (token && refreshToken) {
-                fetch('/api/auth/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ refresh_token: refreshToken })
-                }).catch(e => console.error("Logout request failed:", e));
-            }
-            sessionStorage.removeItem('tohfa_access_token');
-            sessionStorage.removeItem('tohfa_refresh_token');
-            sessionStorage.removeItem('tohfa_user');
-            window.location.href = '/auth/login.html';
-        } else {
-                window.location.reload();
-            }
-        }
-
         async function fetchWishlist() {
             if (!isLoggedIn) return;
-            const token = sessionStorage.getItem('tohfa_access_token');
             try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/wishlist`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    wishlistedProductIds = new Set(data.map(p => p.id));
+                const response = await apiClient.get('/wishlist');
+                if (response.data && response.data.success) {
+                    wishlistedProductIds = new Set(response.data.data.map(p => p.id));
                     updateWishlistBadge();
                 }
             } catch (e) {
@@ -480,11 +449,13 @@
 
         function updateWishlistBadge() {
             const badge = document.getElementById('wishlist-count-badge');
-            if (wishlistedProductIds.size > 0) {
-                badge.innerText = wishlistedProductIds.size;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
+            if (badge) {
+                if (wishlistedProductIds.size > 0) {
+                    badge.innerText = wishlistedProductIds.size;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
             }
         }
 
@@ -494,29 +465,20 @@
                 return;
             }
 
-            const token = sessionStorage.getItem('tohfa_access_token');
             const heartIcon = btnElement.querySelector('.material-symbols-outlined');
             const isAdding = !wishlistedProductIds.has(productId);
 
             try {
                 if (isAdding) {
-                    const response = await fetch(`${API_BASE_URL}/api/v1/wishlist/${productId}`, {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    if (response.ok) {
+                    const response = await apiClient.post(`/wishlist/${productId}`);
+                    if (response.data && response.data.success) {
                         wishlistedProductIds.add(productId);
                         heartIcon.style.fontVariationSettings = "'FILL' 1";
                         heartIcon.style.color = '#ba1a1a';
-                    } else if (response.status === 403) {
-                        alert("Sellers cannot wishlist products. Please use a buyer account.");
                     }
                 } else {
-                    const response = await fetch(`${API_BASE_URL}/api/v1/wishlist/${productId}`, {
-                        method: 'DELETE',
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    if (response.ok) {
+                    const response = await apiClient.delete(`/wishlist/${productId}`);
+                    if (response.data && response.data.success) {
                         wishlistedProductIds.delete(productId);
                         heartIcon.style.fontVariationSettings = "'FILL' 0";
                         heartIcon.style.color = '#74786f';
@@ -545,11 +507,12 @@
         // Load Categories list
         async function loadCategories() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/browse/categories`);
-                if (response.ok) {
-                    categories = await response.json();
+                const response = await apiClient.get('/categories');
+                if (response.data && response.data.success) {
+                    categories = response.data.data.categories;
                     
                     const filterContainer = document.getElementById('categories-filter-container');
+                    if (!filterContainer) return;
                     
                     // Render "All" pill
                     let pillsHtml = `
@@ -561,7 +524,7 @@
                     pillsHtml += categories.map(cat => `
                         <button onclick="selectCategory('${cat.slug}')" class="${activeSlug === cat.slug ? 'bg-primary text-background' : 'bg-surface-container text-on-surface'} hover:border-primary border border-outline-variant/30 px-5 py-2 text-xs font-semibold rounded-full uppercase tracking-wider transition-all flex items-center gap-1.5">
                             <span>${cat.icon_emoji || '🏺'}</span>
-                            <span>${cat.display_name}</span>
+                            <span>${cat.name}</span>
                         </button>
                     `).join('');
                     
@@ -571,8 +534,8 @@
                     if (activeSlug) {
                         const activeCat = categories.find(c => c.slug === activeSlug);
                         if (activeCat) {
-                            document.getElementById('browse-title').innerText = activeCat.display_name;
-                            document.getElementById('browse-desc').innerText = activeCat.description;
+                            document.getElementById('browse-title').innerText = activeCat.name;
+                            document.getElementById('browse-desc').innerText = activeCat.description || 'Curated collection of handcrafted pieces.';
                         }
                     } else if (searchQuery) {
                         document.getElementById('browse-title').innerText = `Search Results: "${searchQuery}"`;
@@ -596,89 +559,80 @@
         }
 
         // Fetch products
-        async function fetchProducts() {
+        async function fetchProducts(isLoadMore = false) {
             const grid = document.getElementById('products-grid');
             const emptyState = document.getElementById('products-empty');
+            const loadMoreBtn = document.getElementById('pagination-controls');
             
-            // Show skeletal loaders
-            grid.innerHTML = `
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-            `;
-            emptyState.classList.add('hidden');
-
-            let url = '';
-            if (searchQuery) {
-                url = `${API_BASE_URL}/api/v1/browse/search?q=${encodeURIComponent(searchQuery)}&limit=${currentLimit}&offset=${currentOffset}`;
-            } else if (activeSlug) {
-                url = `${API_BASE_URL}/api/v1/browse/category/${activeSlug}?limit=${currentLimit}&offset=${currentOffset}`;
-            } else {
-                // If "All", fetch latest active products by search with empty query or category slug. But wait: browse/home gives recent,
-                // browse doesn't have an "all active products" endpoint in the schema unless we search or use a default.
-                // Wait! Let's check browse.py router or browse_service.py to see how we can fetch all.
-                // Oh! The user request says:
-                // - GET /api/v1/browse/category/{slug}
-                // - GET /api/v1/browse/search?q=...
-                // So if no slug and no search query, we can query search with "q" empty or just fallback to search with a generic query, or query home.
-                // Actually, let's see how browse_service.py search_products works. Does it require a query? Yes, q has min_length=2.
-                // Let's inspect browse_service.py to see if we can search or list items.
+            if (!isLoadMore) {
+                // Show skeletal loaders
+                grid.innerHTML = `
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                    <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
+                `;
+                emptyState.classList.add('hidden');
+                nextCursor = null;
             }
             
-            // Let's check what endpoints browse router supports.
-            // Wait, if no category is selected, let's show all category pills, and show products of the first category, or search for "a" or similar.
-            // Wait, what if we default to the first category slug if activeSlug is empty? That is extremely smart and prevents a blank screen!
-            // Yes, if activeSlug is empty and searchQuery is empty:
-            if (!activeSlug && !searchQuery) {
+            let url = '';
+            let params = { limit: currentLimit };
+            if (nextCursor) {
+                params.cursor = nextCursor;
+            }
+
+            if (searchQuery) {
+                url = '/products/search';
+                params.q = searchQuery;
+            } else if (activeSlug) {
+                url = `/categories/${activeSlug}/products`;
+            } else {
+                // If "All", default to first category slug
                 if (categories.length > 0) {
                     activeSlug = categories[0].slug;
-                    // reload page or fetch with this slug:
-                    url = `${API_BASE_URL}/api/v1/browse/category/${activeSlug}?limit=${currentLimit}&offset=${currentOffset}`;
-                    // Update header title/desc
-                    document.getElementById('browse-title').innerText = categories[0].display_name;
-                    document.getElementById('browse-desc').innerText = categories[0].description;
+                    url = `/categories/${activeSlug}/products`;
+                    document.getElementById('browse-title').innerText = categories[0].name;
+                    document.getElementById('browse-desc').innerText = categories[0].description || 'Curated collection of handcrafted pieces.';
                 } else {
                     grid.innerHTML = '';
                     emptyState.classList.remove('hidden');
-                    document.getElementById('pagination-controls').classList.add('hidden');
+                    if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
                     return;
                 }
             }
 
             try {
-                const response = await fetch(url);
-                if (response.ok) {
-                    const products = await response.json();
-                    
-                    if (products.length === 0) {
+                const response = await apiClient.get(url, { params });
+                if (response.data && response.data.success) {
+                    const products = response.data.data.products;
+                    hasMore = response.data.data.has_more;
+                    nextCursor = response.data.data.next_cursor;
+
+                    if (!isLoadMore && products.length === 0) {
                         grid.innerHTML = '';
                         emptyState.classList.remove('hidden');
                         document.getElementById('empty-state-text').innerText = searchQuery ? `No matches found for "${searchQuery}"` : "No products found in this category.";
-                        hasMore = false;
-                        updatePaginationButtons();
+                        if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
                         return;
                     }
 
-                    hasMore = products.length === currentLimit;
-                    updatePaginationButtons();
-
-                    grid.innerHTML = products.map(p => {
+                    const cardsHtml = products.map(p => {
                         const isWishlisted = wishlistedProductIds.has(p.id);
-                        const imgUrl = p.image_urls && p.image_urls.length > 0 ? `${API_BASE_URL}${p.image_urls[0]}` : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
+                        const imgUrl = p.image_url ? p.image_url : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
                         return `
                             <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-xl transition-all group relative flex flex-col">
                                 <div class="relative mb-4 overflow-hidden rounded-lg">
-                                    <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'" src="${imgUrl}" alt="${p.title}">
+                                    <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'" src="${imgUrl}" alt="${p.name}">
                                     
                                     <button onclick="toggleWishlist('${p.id}', this)" class="absolute top-4 right-4 bg-white/85 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-md z-10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px] transition-colors duration-200" style="font-variation-settings: 'FILL' ${isWishlisted ? 1 : 0}; color: ${isWishlisted ? '#ba1a1a' : '#74786f'};">favorite</span>
                                     </button>
                                 </div>
-                                <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">${p.title}</h4>
-                                <p class="text-xs text-secondary mb-3">${p.shop_name || 'Artisan Seller'} • ${p.shipping_days} days shipping</p>
+                                <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h4>
+                                <p class="text-xs text-secondary mb-3">${p.seller_name || 'Artisan Seller'} • ${p.ships_in_days} days shipping</p>
                                 <div class="flex justify-between items-center mt-auto">
-                                    <span class="text-lg font-bold text-on-surface">₹${(p.price_paise / 100).toLocaleString('en-IN')}</span>
+                                    <span class="text-lg font-bold text-on-surface">${formatPaise(p.price_paise)}</span>
                                     <button onclick="window.location.href='product.html?id=${p.id}'" class="bg-secondary-container px-3 py-1.5 text-xs font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
                                         View
                                     </button>
@@ -686,32 +640,41 @@
                             </div>
                         `;
                     }).join('');
+
+                    if (isLoadMore) {
+                        grid.innerHTML += cardsHtml;
+                    } else {
+                        grid.innerHTML = cardsHtml;
+                    }
+
+                    if (loadMoreBtn) {
+                        if (hasMore) {
+                            loadMoreBtn.classList.remove('hidden');
+                        } else {
+                            loadMoreBtn.classList.add('hidden');
+                        }
+                    }
                 }
             } catch (e) {
                 console.error(e);
-                grid.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                document.getElementById('empty-state-text').innerText = "Unable to connect to the server.";
+                if (!isLoadMore) {
+                    grid.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                    document.getElementById('empty-state-text').innerText = "Unable to connect to the server.";
+                    if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
+                }
             }
         }
 
-        function updatePaginationButtons() {
-            const page = Math.floor(currentOffset / currentLimit) + 1;
-            document.getElementById('page-indicator').innerText = `Page ${page}`;
-            
-            document.getElementById('btn-prev').disabled = (currentOffset === 0);
-            document.getElementById('btn-next').disabled = !hasMore;
-        }
-
-        async function changePage(direction) {
-            currentOffset += direction * currentLimit;
-            if (currentOffset < 0) currentOffset = 0;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            await fetchProducts();
-        }
+        window.logout = logout;
+        window.toggleWishlist = toggleWishlist;
+        window.selectCategory = selectCategory;
+        window.clearCategory = clearCategory;
+        window.loadMoreProducts = () => fetchProducts(true);
+        window.triggerSearch = triggerSearch;
 
         window.addEventListener('DOMContentLoaded', async () => {
-            checkAuthState();
+            await checkAuthState();
             await fetchWishlist();
             await loadCategories();
             
