@@ -152,6 +152,12 @@
                 </button>
 </div>
 
+<!-- General Success Alert Banner -->
+<div id="general-success" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-md mb-6 flex items-start gap-2.5">
+    <span class="material-symbols-outlined text-[20px] text-emerald-600 shrink-0 mt-0.5">check_circle</span>
+    <p id="general-success-text" class="font-body-md text-[13px] leading-relaxed"></p>
+</div>
+
 <!-- General Error Alert Banner -->
 <div id="general-error" class="hidden bg-error-container border border-error text-on-error-container p-4 rounded-md mb-6 flex items-start gap-2.5">
     <span class="material-symbols-outlined text-[20px] text-error shrink-0 mt-0.5">warning</span>
@@ -174,7 +180,7 @@
 <div>
 <div class="flex justify-between items-center mb-2">
 <label class="block font-label-sm text-label-sm text-on-surface-variant uppercase" for="password">Password</label>
-<a class="font-label-sm text-[10px] text-on-surface-variant hover:text-primary transition-colors uppercase underline" href="#">Forgot?</a>
+<a class="font-label-sm text-[10px] text-on-surface-variant hover:text-primary transition-colors uppercase underline" href="/auth/forgot-password.html">Forgot?</a>
 </div>
 <input class="w-full bg-transparent border border-outline-variant px-4 py-3 text-body-md font-body-md focus:border-primary transition-colors" id="password" name="password" placeholder="••••••••" required="" type="password"/>
 </div>
@@ -244,9 +250,20 @@
         const passwordInput = document.getElementById('password');
         const generalError = document.getElementById('general-error');
         const generalErrorText = document.getElementById('general-error-text');
+        const generalSuccess = document.getElementById('general-success');
+        const generalSuccessText = document.getElementById('general-success-text');
+
+        // Show success message if present in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const msg = urlParams.get('message');
+        if (msg) {
+            generalSuccessText.textContent = msg;
+            generalSuccess.classList.remove('hidden');
+        }
 
         function clearErrors() {
             generalError.classList.add('hidden');
+            generalSuccess.classList.add('hidden');
             emailInput.classList.remove('border-error');
             passwordInput.classList.remove('border-error');
         }
