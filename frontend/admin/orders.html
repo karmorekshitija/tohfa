@@ -149,27 +149,27 @@
 <span class="material-symbols-outlined text-[20px]">grid_view</span>
 <span class="font-label-btn text-label-btn">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/sellers.html">
 <span class="material-symbols-outlined text-[20px]">group</span>
 <span class="font-label-btn text-label-btn">Sellers</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="/admin/orders.html">
 <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
 <span class="font-label-btn text-label-btn">Orders</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/categories.html">
 <span class="material-symbols-outlined text-[20px]">category</span>
 <span class="font-label-btn text-label-btn">Categories</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/products.html">
 <span class="material-symbols-outlined text-[20px]">inventory_2</span>
 <span class="font-label-btn text-label-btn">Products</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/audit-logs.html">
 <span class="material-symbols-outlined text-[20px]">history_edu</span>
 <span class="font-label-btn text-label-btn">Audit Logs</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/payment-health.html">
 <span class="material-symbols-outlined text-[20px]">settings</span>
 <span class="font-label-btn text-label-btn">Settings</span>
 </a>
@@ -194,9 +194,9 @@
 <p class="text-body-sm font-bold leading-none">Studio Manager</p>
 <p class="text-data-meta text-text-faint">Admin Privileges</p>
 </div>
-<img alt="Admin Profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a mature person with a kind expression, wearing a neutral-toned linen shirt. The background is a soft-focus artist studio with canvases and warm, natural light. The photograph is high-key and clean, embodying a premium and human-centered design aesthetic with soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlJzfapr3Lp5XyiuYBTL-7i8vuBUkpq6VfJAjO9vZWTM0qR25Tp9z4N6qbkK9CvSk-LBaqOGDd2pkhQAtCMu9etwaDYOVK9BNkJ3fRiLlIgWZvrk0HSDShn4RBqmvMmv9wOilBla7daiIThEoW5JBGcUpZl8HIyUHyLdRNB7yqIA_Y1ChTswInY6UEO5JaoW_zlmtZTluPpVY-yFB4SYh-QVZayYTsQIqpYZivhmAHK726pSELyi0bydOWbWL6T5CrJSx0nRW__g"/>
+<img alt="Admin Profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlJzfapr3Lp5XyiuYBTL-7i8vuBUkpq6VfJAjO9vZWTM0qR25Tp9z4N6qbkK9CvSk-LBaqOGDd2pkhQAtCMu9etwaDYOVK9BNkJ3fRiLlIgWZvrk0HSDShn4RBqmvMmv9wOilBla7daiIThEoW5JBGcUpZl8HIyUHyLdRNB7yqIA_Y1ChTswInY6UEO5JaoW_zlmtZTluPpVY-yFB4SYh-QVZayYTsQIqpYZivhmAHK726pSELyi0bydOWbWL6T5CrJSx0nRW__g"/>
 </div>
-<button class="cursor-pointer active:opacity-70 text-text-muted hover:text-highlight-gold transition-colors">
+<button id="logout-btn" class="cursor-pointer active:opacity-70 text-text-muted hover:text-highlight-gold transition-colors">
 <span class="material-symbols-outlined">logout</span>
 </button>
 </div>
@@ -216,27 +216,27 @@
                 </button>
 </div>
 <!-- Bulk Note / Flagged Banner -->
-<div class="bg-primary-container/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between mb-8 shadow-[rgba(61,107,79,0.08)_0px_2px_8px]">
+<div id="flagged-banner" class="hidden bg-primary-container/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between mb-8 shadow-[rgba(61,107,79,0.08)_0px_2px_8px]">
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-highlight-gold">warning</span>
 <p class="text-body-md text-text-default">
-<span class="font-bold">4</span> orders are flagged for refund review.
+<span id="flagged-count" class="font-bold">0</span> orders are flagged for refund review.
                     </p>
 </div>
-<a class="text-primary font-bold hover:underline flex items-center gap-1" href="#">
+<button id="flagged-link" class="text-primary font-bold hover:underline flex items-center gap-1">
                     Review flagged <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
+</button>
 </div>
 <!-- Filter Bar -->
 <div class="bg-bg-primary p-6 rounded-2xl border border-outline-variant/30 shadow-[rgba(61,107,79,0.08)_0px_2px_8px] space-y-6">
-<div class="flex flex-wrap items-center gap-3">
-<button class="px-5 py-2 rounded-full font-label-btn text-white bg-primary transition-colors">All</button>
-<button class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Pending</button>
-<button class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Processing</button>
-<button class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Shipped</button>
-<button class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Delivered</button>
-<button class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Cancelled</button>
-<button class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors flex items-center gap-2">
+<div id="filter-buttons-container" class="flex flex-wrap items-center gap-3">
+<button id="filter-all" class="px-5 py-2 rounded-full font-label-btn text-white bg-primary transition-colors">All</button>
+<button id="filter-pending" class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Pending</button>
+<button id="filter-processing" class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Processing</button>
+<button id="filter-shipped" class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Shipped</button>
+<button id="filter-delivered" class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Delivered</button>
+<button id="filter-cancelled" class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors">Cancelled</button>
+<button id="filter-refund-flagged" class="px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors flex items-center gap-2">
                         Refund Flagged
                         <span class="w-2 h-2 rounded-full bg-highlight-gold pulsing-dot"></span>
 </button>
@@ -244,15 +244,15 @@
 <div class="flex flex-wrap items-center gap-6 pt-4 border-t border-outline-variant/20">
 <div class="flex items-center gap-3">
 <label class="text-accent-caps text-text-faint">From</label>
-<input class="bg-white border border-[#8FAF82] rounded-lg px-4 py-2 text-body-sm focus:ring-primary focus:border-primary outline-none" type="date"/>
+<input id="from-date-input" class="bg-white border border-[#8FAF82] rounded-lg px-4 py-2 text-body-sm focus:ring-primary focus:border-primary outline-none" type="date"/>
 </div>
 <div class="flex items-center gap-3">
 <label class="text-accent-caps text-text-faint">To</label>
-<input class="bg-white border border-[#8FAF82] rounded-lg px-4 py-2 text-body-sm focus:ring-primary focus:border-primary outline-none" type="date"/>
+<input id="to-date-input" class="bg-white border border-[#8FAF82] rounded-lg px-4 py-2 text-body-sm focus:ring-primary focus:border-primary outline-none" type="date"/>
 </div>
 <div class="ml-auto relative w-full max-w-xs">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-text-faint">search</span>
-<input class="w-full bg-white border border-[#8FAF82] rounded-lg pl-10 pr-4 py-2 text-body-sm focus:ring-primary focus:border-primary outline-none" placeholder="Search order ID or buyer..." type="text"/>
+<input id="search-input" class="w-full bg-white border border-[#8FAF82] rounded-lg pl-10 pr-4 py-2 text-body-sm focus:ring-primary focus:border-primary outline-none" placeholder="Search order ID or buyer..." type="text"/>
 </div>
 </div>
 </div>
@@ -272,117 +272,16 @@
 <th class="px-6 py-4 text-accent-caps text-text-faint text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-outline-variant/10">
-<!-- Row 1: Delivered -->
-<tr class="bg-white hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-data-meta text-accent-violet">ORD-89210</td>
-<td class="px-6 py-4 font-body-sm font-bold text-text-default">Kavita A.</td>
-<td class="px-6 py-4 font-body-sm text-[#5A4A38]">Earth &amp; Fire Pottery</td>
-<td class="px-6 py-4 font-data-price text-primary">₹4,200</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary text-white text-[11px] font-bold uppercase tracking-wider">delivered</span>
-</td>
-<td class="px-6 py-4 text-center">—</td>
-<td class="px-6 py-4 font-data-meta text-text-faint">2 days ago</td>
-<td class="px-6 py-4 text-right">
-<button class="p-2 text-text-muted hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
-</td>
-</tr>
-<!-- Row 2: Refund Flagged -->
-<tr class="bg-[#F7F3EC] border-l-[3px] border-l-highlight-gold hover:bg-surface-container-low transition-colors">
-<td class="px-6 py-4 font-data-meta text-accent-violet">ORD-89215</td>
-<td class="px-6 py-4 font-body-sm font-bold text-text-default">Rohan Mehra</td>
-<td class="px-6 py-4 font-body-sm text-[#5A4A38]">The Indigo Loom</td>
-<td class="px-6 py-4 font-data-price text-primary">₹12,450</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-highlight-gold text-highlight-gold text-[11px] font-bold uppercase tracking-wider">
-<span class="material-symbols-outlined text-[14px]">warning</span>
-                                        refund_flagged
-                                        <span class="w-1.5 h-1.5 rounded-full bg-highlight-gold pulsing-dot"></span>
-</span>
-</td>
-<td class="px-6 py-4 text-center">
-<span class="material-symbols-outlined text-highlight-gold">warning</span>
-</td>
-<td class="px-6 py-4 font-data-meta text-text-faint">5 hours ago</td>
-<td class="px-6 py-4 text-right">
-<button class="p-2 text-text-muted hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
-</td>
-</tr>
-<!-- Row 3: Processing -->
-<tr class="bg-white hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-data-meta text-accent-violet">ORD-89212</td>
-<td class="px-6 py-4 font-body-sm font-bold text-text-default">Anita Desai</td>
-<td class="px-6 py-4 font-body-sm text-[#5A4A38]">Brass &amp; Bone Studio</td>
-<td class="px-6 py-4 font-data-price text-primary">₹850</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full bg-violet-soft text-accent-violet text-[11px] font-bold uppercase tracking-wider">processing</span>
-</td>
-<td class="px-6 py-4 text-center">—</td>
-<td class="px-6 py-4 font-data-meta text-text-faint">1 day ago</td>
-<td class="px-6 py-4 text-right">
-<button class="p-2 text-text-muted hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
-</td>
-</tr>
-<!-- Row 4: Shipped -->
-<tr class="bg-[#F7F3EC] hover:bg-surface-container-low transition-colors">
-<td class="px-6 py-4 font-data-meta text-accent-violet">ORD-89209</td>
-<td class="px-6 py-4 font-body-sm font-bold text-text-default">Vikram S.</td>
-<td class="px-6 py-4 font-body-sm text-[#5A4A38]">Rustic Charm Toys</td>
-<td class="px-6 py-4 font-data-price text-primary">₹3,100</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full bg-sage-soft text-primary text-[11px] font-bold uppercase tracking-wider">shipped</span>
-</td>
-<td class="px-6 py-4 text-center">—</td>
-<td class="px-6 py-4 font-data-meta text-text-faint">3 days ago</td>
-<td class="px-6 py-4 text-right">
-<button class="p-2 text-text-muted hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
-</td>
-</tr>
-<!-- Row 5: Pending -->
-<tr class="bg-white hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-data-meta text-accent-violet">ORD-89218</td>
-<td class="px-6 py-4 font-body-sm font-bold text-text-default">Meera K.</td>
-<td class="px-6 py-4 font-body-sm text-[#5A4A38]">Threaded Tales</td>
-<td class="px-6 py-4 font-data-price text-primary">₹1,200</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full bg-gold-soft text-highlight-gold text-[11px] font-bold uppercase tracking-wider">pending</span>
-</td>
-<td class="px-6 py-4 text-center">—</td>
-<td class="px-6 py-4 font-data-meta text-text-faint">Just now</td>
-<td class="px-6 py-4 text-right">
-<button class="p-2 text-text-muted hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
-</td>
-</tr>
-<!-- Row 6: Cancelled -->
-<tr class="bg-[#F7F3EC] hover:bg-surface-container-low transition-colors">
-<td class="px-6 py-4 font-data-meta text-accent-violet opacity-60">ORD-89205</td>
-<td class="px-6 py-4 font-body-sm font-bold text-text-default opacity-60">Priya Sharma</td>
-<td class="px-6 py-4 font-body-sm text-[#5A4A38] opacity-60">Clay Crafters</td>
-<td class="px-6 py-4 font-data-price text-text-muted line-through">₹5,600</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#E2E3DF] text-[#6E6453] text-[11px] font-bold uppercase tracking-wider">cancelled</span>
-</td>
-<td class="px-6 py-4 text-center">—</td>
-<td class="px-6 py-4 font-data-meta text-text-faint">4 days ago</td>
-<td class="px-6 py-4 text-right">
-<button class="p-2 text-text-muted hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
-</td>
-</tr>
+<tbody id="orders-list" class="divide-y divide-outline-variant/10">
+<!-- Dynamic content -->
 </tbody>
 </table>
 </div>
 <!-- Pagination -->
 <div class="px-6 py-4 bg-bg-primary border-t border-outline-variant/20 flex items-center justify-between">
-<p class="text-body-sm text-text-faint">Showing 1 to 10 of 248 orders</p>
-<div class="flex items-center space-x-1">
-<button class="w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
-<button class="w-8 h-8 rounded-full flex items-center justify-center bg-primary text-white font-label-btn shadow-sm">1</button>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary font-label-btn hover:bg-sage-soft/20">2</button>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary font-label-btn hover:bg-sage-soft/20">3</button>
-<span class="text-text-faint px-2">...</span>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary font-label-btn hover:bg-sage-soft/20">25</button>
-<button class="w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+<p id="pagination-info" class="text-body-sm text-text-faint">Showing 0 to 0 of 0 orders</p>
+<div id="pagination-pages" class="flex items-center space-x-1">
+<!-- Dynamic pagination links -->
 </div>
 </div>
 </div>
@@ -390,18 +289,232 @@
 <div class="h-20"></div>
 </div>
 </main>
-<script>
-        // Subtle micro-interactions for the order rows
-        document.querySelectorAll('tbody tr').forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                row.style.transform = 'translateY(-1px)';
-                row.style.boxShadow = '0 4px 12px rgba(61,107,79,0.04)';
-                row.style.transition = 'all 0.2s ease-out';
-            });
-            row.addEventListener('mouseleave', () => {
-                row.style.transform = 'translateY(0)';
-                row.style.boxShadow = 'none';
-            });
-        });
-    </script>
+
+<script type="module">
+import adminApiClient from '/src/utils/adminApiClient.js';
+import { formatPaise } from '/src/utils/currency.js';
+
+if (!sessionStorage.getItem('tohfa_admin_token')) {
+  window.location.href = '/admin/login.html';
+}
+
+let currentStatus = 'all';
+let fromDate = '';
+let toDate = '';
+let searchQuery = '';
+let currentPage = 1;
+
+async function fetchOrders() {
+  try {
+    const res = await adminApiClient.get('/admin/orders', {
+      params: {
+        status: currentStatus,
+        from_date: fromDate,
+        to_date: toDate,
+        search: searchQuery,
+        page: currentPage,
+        per_page: 10
+      }
+    });
+
+    if (res.data?.success) {
+      const { orders, total, page, per_page, total_pages, refund_flagged_count } = res.data.data;
+      
+      // Update flagged banner
+      const banner = document.getElementById('flagged-banner');
+      const countEl = document.getElementById('flagged-count');
+      if (refund_flagged_count > 0) {
+        banner.classList.remove('hidden');
+        countEl.textContent = refund_flagged_count;
+      } else {
+        banner.classList.add('hidden');
+      }
+
+      renderOrders(orders);
+      renderPagination(total, page, per_page, total_pages);
+    }
+  } catch (err) {
+    console.error('Failed to fetch orders:', err);
+  }
+}
+
+function renderOrders(orders) {
+  const container = document.getElementById('orders-list');
+  container.innerHTML = '';
+
+  if (orders.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="8" class="px-6 py-10 text-center text-text-muted text-sm font-serif-ui-sm">
+          No orders found matching filters.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  orders.forEach(order => {
+    const tr = document.createElement('tr');
+    
+    // Check if refund flagged style is needed
+    if (order.is_refund_flagged) {
+      tr.className = 'bg-[#F7F3EC] border-l-[3px] border-l-highlight-gold hover:bg-surface-container-low transition-colors';
+    } else {
+      tr.className = 'bg-white hover:bg-surface-container-low/50 transition-colors';
+    }
+
+    // Status Styling
+    let statusClass = '';
+    const st = (order.status || '').toLowerCase();
+    if (st === 'awaiting_payment' || st === 'pending') {
+      statusClass = 'bg-gold-soft text-highlight-gold';
+    } else if (st === 'payment_confirmed' || st === 'paid') {
+      statusClass = 'bg-sage-soft text-primary';
+    } else if (st === 'processing') {
+      statusClass = 'bg-violet-soft text-accent-violet';
+    } else if (st === 'shipped' || st === 'in_transit') {
+      statusClass = 'bg-sage-soft text-primary';
+    } else if (st === 'delivered') {
+      statusClass = 'bg-primary text-white';
+    } else if (st === 'cancelled') {
+      statusClass = 'bg-[#E2E3DF] text-[#6E6453]';
+    } else {
+      statusClass = 'bg-surface-variant text-on-surface-variant';
+    }
+
+    const flagIcon = order.is_refund_flagged
+      ? '<span class="material-symbols-outlined text-highlight-gold">warning</span>'
+      : '—';
+
+    tr.innerHTML = `
+      <td class="px-6 py-4 font-data-meta text-accent-violet">${order.order_id}</td>
+      <td class="px-6 py-4 font-body-sm font-bold text-text-default">${order.buyer_name}</td>
+      <td class="px-6 py-4 font-body-sm text-[#5A4A38]">${order.seller_name}</td>
+      <td class="px-6 py-4 font-data-price text-primary">${order.amount_display || formatPaise(order.amount_paise)}</td>
+      <td class="px-6 py-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${statusClass}">${order.status.replace(/_/g, ' ')}</span>
+      </td>
+      <td class="px-6 py-4 text-center">${flagIcon}</td>
+      <td class="px-6 py-4 font-data-meta text-text-faint">${order.created_ago}</td>
+      <td class="px-6 py-4 text-right">
+        <a href="/admin/order-detail.html?id=${order.order_id}" class="p-2 text-text-muted hover:text-primary transition-colors inline-block">
+          <span class="material-symbols-outlined">visibility</span>
+        </a>
+      </td>
+    `;
+    container.appendChild(tr);
+  });
+}
+
+function renderPagination(total, page, per_page, total_pages) {
+  const start = total === 0 ? 0 : (page - 1) * per_page + 1;
+  const end = Math.min(page * per_page, total);
+  document.getElementById('pagination-info').textContent = `Showing ${start} to ${end} of ${total} orders`;
+
+  const container = document.getElementById('pagination-pages');
+  container.innerHTML = '';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = `w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary ${page === 1 ? 'opacity-50 pointer-events-none' : ''}`;
+  prevBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">chevron_left</span>';
+  prevBtn.addEventListener('click', () => {
+    if (page > 1) {
+      currentPage = page - 1;
+      fetchOrders();
+    }
+  });
+  container.appendChild(prevBtn);
+
+  for (let i = 1; i <= total_pages; i++) {
+    const pageBtn = document.createElement('button');
+    const isActive = i === page;
+    pageBtn.className = `w-8 h-8 rounded-full flex items-center justify-center font-label-btn ${isActive ? 'bg-primary text-white shadow-sm' : 'text-primary hover:bg-sage-soft/20'}`;
+    pageBtn.textContent = i;
+    pageBtn.addEventListener('click', () => {
+      currentPage = i;
+      fetchOrders();
+    });
+    container.appendChild(pageBtn);
+  }
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = `w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary ${page === total_pages ? 'opacity-50 pointer-events-none' : ''}`;
+  nextBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">chevron_right</span>';
+  nextBtn.addEventListener('click', () => {
+    if (page < total_pages) {
+      currentPage = page + 1;
+      fetchOrders();
+    }
+  });
+  container.appendChild(nextBtn);
+}
+
+// Search with debounce
+let debounceTimeout;
+document.getElementById('search-input').addEventListener('input', (e) => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    searchQuery = e.target.value.trim();
+    currentPage = 1;
+    fetchOrders();
+  }, 300);
+});
+
+// Date Filters
+document.getElementById('from-date-input').addEventListener('change', (e) => {
+  fromDate = e.target.value;
+  currentPage = 1;
+  fetchOrders();
+});
+document.getElementById('to-date-input').addEventListener('change', (e) => {
+  toDate = e.target.value;
+  currentPage = 1;
+  fetchOrders();
+});
+
+// Setup status filters
+const statusFilters = [
+  { id: 'filter-all', status: 'all' },
+  { id: 'filter-pending', status: 'pending' },
+  { id: 'filter-processing', status: 'processing' },
+  { id: 'filter-shipped', status: 'shipped' },
+  { id: 'filter-delivered', status: 'delivered' },
+  { id: 'filter-cancelled', status: 'cancelled' },
+  { id: 'filter-refund-flagged', status: 'refund_flagged' }
+];
+
+statusFilters.forEach(({ id, status }) => {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener('click', () => {
+      statusFilters.forEach(f => {
+        const otherBtn = document.getElementById(f.id);
+        if (otherBtn) {
+          otherBtn.className = 'px-5 py-2 rounded-full font-label-btn text-text-muted bg-[#F7F3EC] hover:bg-sage-soft/30 transition-colors';
+        }
+      });
+      btn.className = 'px-5 py-2 rounded-full font-label-btn text-white bg-primary transition-colors';
+      
+      currentStatus = status;
+      currentPage = 1;
+      fetchOrders();
+    });
+  }
+});
+
+// Review flagged button in banner
+document.getElementById('flagged-link').addEventListener('click', () => {
+  const flaggedBtn = document.getElementById('filter-refund-flagged');
+  if (flaggedBtn) flaggedBtn.click();
+});
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem('tohfa_admin_token');
+  window.location.href = '/admin/login.html';
+});
+
+// Initial load
+document.addEventListener('DOMContentLoaded', fetchOrders);
+</script>
 </body></html>

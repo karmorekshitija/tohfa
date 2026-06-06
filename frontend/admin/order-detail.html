@@ -96,15 +96,6 @@
     </style>
 </head>
 <body class="bg-bg-primary text-text-default font-body-md min-h-screen flex overflow-hidden">
-<!-- Admin Check Script -->
-<script>
-        (function() {
-            const isAdmin = sessionStorage.getItem('admin_session') || true;
-            if (!isAdmin) {
-                window.location.href = '/login';
-            }
-        })();
-    </script>
 <!-- Side Navigation Bar -->
 <aside class="flex flex-col h-screen fixed left-0 top-0 py-10 px-6 z-50 w-64 border-r border-outline-variant/30 bg-[#FCFAF5]">
 <div class="mb-14">
@@ -116,27 +107,27 @@
 <span class="material-symbols-outlined text-[20px]">grid_view</span>
 <span class="font-label-btn text-label-btn">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/sellers.html">
 <span class="material-symbols-outlined text-[20px]">group</span>
 <span class="font-label-btn text-label-btn">Sellers</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="/admin/orders.html">
 <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
 <span class="font-label-btn text-label-btn">Orders</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/categories.html">
 <span class="material-symbols-outlined text-[20px]">category</span>
 <span class="font-label-btn text-label-btn">Categories</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/products.html">
 <span class="material-symbols-outlined text-[20px]">inventory_2</span>
 <span class="font-label-btn text-label-btn">Products</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/audit-logs.html">
 <span class="material-symbols-outlined text-[20px]">history_edu</span>
 <span class="font-label-btn text-label-btn">Audit Logs</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/payment-health.html">
 <span class="material-symbols-outlined text-[20px]">settings</span>
 <span class="font-label-btn text-label-btn">Settings</span>
 </a>
@@ -155,9 +146,9 @@
 <!-- Minimal Top Bar for Breadcrumbs & Search -->
 <header class="h-16 px-8 flex items-center justify-between border-b border-outline-sage/10 bg-white/50 backdrop-blur-sm sticky top-0 z-40">
 <nav class="flex items-center gap-1">
-<span class="text-[11px] text-text-muted font-body-sm uppercase tracking-widest">Orders</span>
+<a href="/admin/orders.html" class="text-[11px] text-text-muted font-body-sm uppercase tracking-widest hover:underline">Orders</a>
 <span class="material-symbols-outlined text-highlight-gold text-sm">chevron_right</span>
-<span class="text-[11px] text-text-default font-data-meta">ORD-89215</span>
+<span id="breadcrumb-order-id" class="text-[11px] text-text-default font-data-meta">Loading...</span>
 </nav>
 <div class="flex items-center gap-4">
 <span class="material-symbols-outlined text-text-muted text-xl cursor-pointer hover:text-primary-forest">search</span>
@@ -165,6 +156,9 @@
 <span class="material-symbols-outlined text-text-muted text-xl cursor-pointer">notifications</span>
 <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-highlight-gold rounded-full"></span>
 </div>
+<button id="logout-btn" class="cursor-pointer active:opacity-70 text-text-muted hover:text-highlight-gold transition-colors">
+<span class="material-symbols-outlined">logout</span>
+</button>
 </div>
 </header>
 <main class="flex-grow overflow-y-auto p-8 lg:p-12">
@@ -172,9 +166,9 @@
 <!-- Title & Status Section -->
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
 <div class="flex items-center gap-4">
-<h2 class="font-display-hero text-3xl text-text-default italic">Order <span class="font-data-meta not-italic font-bold text-2xl ml-1">#ORD-89215</span></h2>
-<span class="bg-violet-soft/40 text-accent-violet px-3 py-1 rounded-full text-[10px] font-bold font-accent-caps border border-accent-violet/20 tracking-wider">
-                            IN PROGRESS
+<h2 class="font-display-hero text-3xl text-text-default italic">Order <span id="header-order-id" class="font-data-meta not-italic font-bold text-2xl ml-1">Loading...</span></h2>
+<span id="header-status-badge" class="px-3 py-1 rounded-full text-[10px] font-bold font-accent-caps border tracking-wider">
+                            LOADING
                         </span>
 </div>
 <div class="flex gap-3">
@@ -197,45 +191,39 @@
 </div>
 <div class="p-6 space-y-6">
 <div>
-<p class="font-data-meta text-[13px] text-accent-violet font-bold mb-1">ORD-89215</p>
-<p class="font-data-meta text-[11px] text-text-muted">Saturday, May 30, 2026 - 14:22:10</p>
+<p id="summary-order-id" class="font-data-meta text-[13px] text-accent-violet font-bold mb-1">Loading...</p>
+<p id="summary-created-at" class="font-data-meta text-[11px] text-text-muted">Loading...</p>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div>
 <h4 class="font-accent-caps text-[10px] text-highlight-gold mb-2">Buyer Info</h4>
-<p class="font-body-md font-bold text-sm text-text-default">Rohan Mehra</p>
-<a class="text-[12px] text-accent-violet hover:underline" href="mailto:rohan.m@example.com">rohan.m@example.com</a>
+<p id="buyer-name" class="font-body-md font-bold text-sm text-text-default">Loading...</p>
+<a id="buyer-email" class="text-[12px] text-accent-violet hover:underline">Loading...</a>
 </div>
 <div>
 <h4 class="font-accent-caps text-[10px] text-highlight-gold mb-2">Seller Info</h4>
-<p class="font-body-md font-bold text-sm text-text-default">Silk Lore</p>
-<p class="font-cormorant italic text-[13px] text-text-muted">The Indigo Loom</p>
+<p id="seller-name" class="font-body-md font-bold text-sm text-text-default">Loading...</p>
+<p id="seller-tagline" class="font-cormorant italic text-[13px] text-text-muted">Loading...</p>
 </div>
 </div>
 <div class="border-t border-outline-sage/30 pt-6">
 <h4 class="font-accent-caps text-[10px] text-highlight-gold mb-4 uppercase tracking-widest">Line Items</h4>
-<div class="flex items-start gap-4 mb-4">
-<div class="w-12 h-12 rounded bg-bg-primary border border-outline-sage/20 flex-shrink-0 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="Indigo hand-loomed silk scarf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2pbkxyg4ZSTXWu8ca2WoGu1qxa_bh2JA3fCKLPgNw5DEjNiwGTNeUjeYOiSEogdTHAxvqFN96UHwdcMjSYoO8Vdu6fKlV7-8AwzTSVKn09gGsKygDk52bGYij6jTtJ0HwYYnYlq8F-J-wUKEvFf3UDkOh0mnA0LKRlmHrgUJfW4xCyxbOId5Pvqe5Cqng2Dqf9xS-LC-zYYb7NC1y1zy3Cl1gr7C-JyjZv2qplNq3X6Eo00WWbOEeXxtl9VjMgX9tEaKFDyopyA"/>
-</div>
-<div class="flex-grow">
-<p class="font-body-sm text-[13px] font-medium text-text-default">Indigo Hand-loomed Silk Scarf</p>
-<p class="font-data-meta text-[12px] text-text-muted mt-1">1 × <span class="text-text-default font-bold">₹12,450</span></p>
-</div>
+<div id="line-items-list" class="space-y-4">
+<!-- Dynamic line items -->
 </div>
 </div>
 <div class="border-t border-outline-sage/30 pt-6 space-y-2">
 <div class="flex justify-between font-data-meta text-[13px]">
 <span class="text-text-muted">Subtotal</span>
-<span>₹12,450</span>
+<span id="summary-subtotal">-</span>
 </div>
 <div class="flex justify-between font-data-meta text-[13px]">
 <span class="text-text-muted">Shipping</span>
-<span class="text-primary-forest">₹0 (Free)</span>
+<span id="summary-shipping">-</span>
 </div>
 <div class="flex justify-between font-data-meta text-lg font-bold pt-2 text-primary-forest border-t border-outline-sage/20 mt-2">
 <span>Total</span>
-<span>₹12,450</span>
+<span id="summary-total">-</span>
 </div>
 </div>
 </div>
@@ -245,58 +233,8 @@
 <div class="lg:col-span-5 space-y-6">
 <div class="bg-white p-6 rounded-xl border border-outline-sage/20">
 <h3 class="font-accent-caps text-[11px] text-highlight-gold tracking-[0.2em] mb-8 uppercase">Order Journey</h3>
-<div class="relative space-y-12 pl-2">
-<!-- Step 1 -->
-<div class="relative flex gap-6 step-active">
-<div class="z-10 flex items-center justify-center w-6 h-6 rounded-full bg-primary-forest text-white">
-<span class="material-symbols-outlined text-xs">check</span>
-</div>
-<div>
-<p class="text-sm font-bold text-primary-forest">Order Placed</p>
-<p class="font-data-meta text-[11px] text-text-muted">May 30, 14:22</p>
-</div>
-</div>
-<!-- Step 2 -->
-<div class="relative flex gap-6 step-active">
-<div class="z-10 flex items-center justify-center w-6 h-6 rounded-full bg-primary-forest text-white">
-<span class="material-symbols-outlined text-xs">payments</span>
-</div>
-<div>
-<p class="text-sm font-bold text-primary-forest">Payment Confirmed</p>
-<p class="font-data-meta text-[11px] text-text-muted">May 30, 14:30</p>
-</div>
-</div>
-<!-- Step 3 -->
-<div class="relative flex gap-6 step-inactive">
-<div class="z-10 flex items-center justify-center w-6 h-6 rounded-full bg-primary-forest text-white pulse-dot">
-<span class="material-symbols-outlined text-xs">settings_suggest</span>
-</div>
-<div>
-<p class="text-sm font-bold text-primary-forest">Processing</p>
-<p class="font-data-meta text-[11px] text-text-muted">May 30, 16:45</p>
-<p class="text-[11px] text-text-faint mt-1 italic">Artisan is preparing the silk threads...</p>
-</div>
-</div>
-<!-- Step 4 -->
-<div class="relative flex gap-6 step-inactive">
-<div class="z-10 flex items-center justify-center w-6 h-6 rounded-full bg-sage-soft text-white">
-<span class="material-symbols-outlined text-xs">local_shipping</span>
-</div>
-<div>
-<p class="text-sm font-bold text-text-muted">Shipped</p>
-<p class="font-data-meta text-[11px] text-text-faint">Pending</p>
-</div>
-</div>
-<!-- Step 5 -->
-<div class="relative flex gap-6 step-last">
-<div class="z-10 flex items-center justify-center w-6 h-6 rounded-full bg-sage-soft text-white">
-<span class="material-symbols-outlined text-xs">inventory_2</span>
-</div>
-<div>
-<p class="text-sm font-bold text-text-muted">Delivered</p>
-<p class="font-data-meta text-[11px] text-text-faint">Estimated June 4</p>
-</div>
-</div>
+<div id="journey-container" class="relative space-y-12 pl-2">
+<!-- Dynamic Timeline -->
 </div>
 </div>
 </div>
@@ -311,18 +249,15 @@
 <div class="space-y-4">
 <div>
 <label class="block font-body-sm text-[13px] text-text-muted mb-2">Force Status Change</label>
-<select class="w-full bg-white border border-outline-sage rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary-forest focus:border-primary-forest">
-<option>Processing</option>
-<option>In Transit</option>
-<option>Delivered</option>
-<option>Cancelled</option>
-<option>On Hold</option>
+<select id="status-select" class="w-full bg-white border border-outline-sage rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary-forest focus:border-primary-forest">
+<option value="processing">Processing</option>
+<option value="in_transit">In Transit</option>
+<option value="delivered">Delivered</option>
+<option value="cancelled">Cancelled</option>
+<option value="on_hold">On Hold</option>
 </select>
 </div>
-<div>
-<textarea class="w-full bg-white border border-outline-sage rounded-lg px-3 py-2 text-sm h-24 focus:ring-1 focus:ring-primary-forest focus:border-primary-forest placeholder:text-text-faint" placeholder="Admin note (required)"></textarea>
-</div>
-<button class="w-full bg-primary-forest text-white rounded-lg py-2.5 text-[14px] font-bold hover:bg-primary-deep transition-all shadow-sm">
+<button id="override-status-btn" class="w-full bg-primary-forest text-white rounded-lg py-2.5 text-[14px] font-bold hover:bg-primary-deep transition-all shadow-sm">
                                         Override Status
                                     </button>
 <p class="text-[11px] text-danger-terracotta italic leading-relaxed flex gap-2">
@@ -335,12 +270,9 @@
 <div class="space-y-4">
 <div>
 <label class="block font-body-sm text-[13px] text-text-default font-medium mb-3">Flag for Refund Review</label>
-<button class="w-full border-2 border-highlight-gold text-highlight-gold rounded-lg py-2 text-[13px] font-bold hover:bg-highlight-gold hover:text-white transition-all flex items-center justify-center gap-2">
+<button id="flag-refund-btn" class="w-full border-2 border-highlight-gold text-highlight-gold rounded-lg py-2 text-[13px] font-bold hover:bg-highlight-gold hover:text-white transition-all flex items-center justify-center gap-2">
                                             Flag this order <span class="text-lg">⚠</span>
 </button>
-</div>
-<div>
-<textarea class="w-full bg-white border border-outline-sage rounded-lg px-3 py-2 text-sm h-20 focus:ring-1 focus:ring-highlight-gold focus:border-highlight-gold placeholder:text-text-faint" placeholder="Reason for flag (required)"></textarea>
 </div>
 </div>
 </div>
@@ -351,11 +283,11 @@
 <ul class="space-y-3">
 <li class="flex items-center gap-3">
 <span class="material-symbols-outlined text-accent-violet text-sm">visibility</span>
-<span class="text-[11px] text-text-muted">Last viewed by <strong class="text-text-default">Admin Sarah</strong></span>
+<span class="text-[11px] text-text-muted">Last viewed by <strong id="last-viewed-by" class="text-text-default">-</strong></span>
 </li>
 <li class="flex items-center gap-3">
 <span class="material-symbols-outlined text-accent-violet text-sm">history</span>
-<span class="text-[11px] text-text-muted">3 previous logs found</span>
+<span class="text-[11px] text-text-muted"><span id="previous-log-count">0</span> views/changes logged</span>
 </li>
 </ul>
 </div>
@@ -368,15 +300,210 @@
 <div class="fixed bottom-10 right-10 pointer-events-none opacity-[0.03] select-none hidden xl:block">
 <span class="material-symbols-outlined text-[300px] text-primary-forest">brush</span>
 </div>
-<script>
-        // Micro-interactions
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.98)');
-            btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
-            btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
-        });
 
-        // Simple log for tracking view (Internal requirement simulation)
-        console.log('Admin accessing order detail: ORD-89215 at ' + new Date().toISOString());
-    </script>
+<script type="module">
+import adminApiClient from '/src/utils/adminApiClient.js';
+import { formatPaise } from '/src/utils/currency.js';
+
+if (!sessionStorage.getItem('tohfa_admin_token')) {
+  window.location.href = '/admin/login.html';
+}
+
+const orderId = new URLSearchParams(window.location.search).get('id');
+if (!orderId) {
+  window.location.href = '/admin/orders.html';
+}
+
+async function loadOrderDetail() {
+  try {
+    const res = await adminApiClient.get(`/admin/orders/${orderId}`);
+    if (res.data?.success) {
+      renderOrderDetail(res.data.data);
+    }
+  } catch (err) {
+    console.error('Failed to load order details:', err);
+    alert('Failed to load order details. Redirecting back to orders list.');
+    window.location.href = '/admin/orders.html';
+  }
+}
+
+function renderOrderDetail(order) {
+  document.getElementById('breadcrumb-order-id').textContent = order.order_id;
+  document.getElementById('header-order-id').textContent = '#' + order.order_id;
+  
+  // Status Badge
+  const statusBadge = document.getElementById('header-status-badge');
+  const st = (order.status || '').toLowerCase();
+  
+  let statusBadgeClass = '';
+  if (st === 'awaiting_payment' || st === 'pending') {
+    statusBadgeClass = 'bg-gold-soft/40 text-highlight-gold border-highlight-gold/20';
+  } else if (st === 'payment_confirmed' || st === 'paid') {
+    statusBadgeClass = 'bg-sage-soft text-primary border-outline-sage/20';
+  } else if (st === 'processing') {
+    statusBadgeClass = 'bg-violet-soft/40 text-accent-violet border-accent-violet/20';
+  } else if (st === 'shipped' || st === 'in_transit') {
+    statusBadgeClass = 'bg-sage-soft text-primary border-outline-sage/20';
+  } else if (st === 'delivered') {
+    statusBadgeClass = 'bg-primary-forest text-white border-primary-forest/20';
+  } else if (st === 'cancelled') {
+    statusBadgeClass = 'bg-[#E2E3DF] text-[#6E6453] border-outline-variant/20';
+  } else {
+    statusBadgeClass = 'bg-surface-variant text-on-surface-variant border-outline-variant/20';
+  }
+
+  statusBadge.className = `px-3 py-1 rounded-full text-[10px] font-bold font-accent-caps border tracking-wider \${statusBadgeClass}`;
+  statusBadge.textContent = order.is_refund_flagged ? 'REFUND FLAGGED' : order.status.replace(/_/g, ' ').toUpperCase();
+
+  // Summary Card
+  document.getElementById('summary-order-id').textContent = order.order_id;
+  document.getElementById('summary-created-at').textContent = order.created_display || order.created_at;
+  
+  // Buyer
+  document.getElementById('buyer-name').textContent = order.buyer?.name || 'N/A';
+  const buyerEmail = document.getElementById('buyer-email');
+  buyerEmail.textContent = order.buyer?.email || 'N/A';
+  buyerEmail.href = order.buyer?.email ? `mailto:\${order.buyer.email}` : '#';
+
+  // Seller
+  document.getElementById('seller-name').textContent = order.seller?.shop_name || 'N/A';
+  document.getElementById('seller-tagline').textContent = order.seller?.tagline || '';
+
+  // Line items
+  renderLineItems(order.line_items);
+
+  // Financials
+  document.getElementById('summary-subtotal').textContent = order.subtotal_display || formatPaise(order.subtotal_paise);
+  document.getElementById('summary-shipping').textContent = order.shipping_display;
+  document.getElementById('summary-total').textContent = order.total_display || formatPaise(order.total_paise);
+
+  // Timeline Journey
+  renderTimeline(order.journey);
+
+  // Actions override selection
+  const select = document.getElementById('status-select');
+  if (select) {
+    // Map current status to drop down option
+    const options = Array.from(select.options);
+    const mapSt = st === 'awaiting payment' ? 'processing' : st === 'paid' ? 'processing' : st === 'in_transit' ? 'in_transit' : st;
+    const match = options.find(o => o.value === mapSt);
+    if (match) select.value = mapSt;
+  }
+
+  // Refund flag state
+  const flagBtn = document.getElementById('flag-refund-btn');
+  if (order.is_refund_flagged) {
+    flagBtn.disabled = true;
+    flagBtn.textContent = 'Flagged for Refund';
+    flagBtn.className = 'w-full bg-[#EBD7AE]/30 text-highlight-gold border border-highlight-gold/30 rounded-lg py-2 text-[13px] font-bold cursor-not-allowed flex items-center justify-center gap-2';
+  } else {
+    flagBtn.disabled = false;
+    flagBtn.textContent = 'Flag this order';
+    flagBtn.className = 'w-full border-2 border-highlight-gold text-highlight-gold rounded-lg py-2 text-[13px] font-bold hover:bg-highlight-gold hover:text-white transition-all flex items-center justify-center gap-2';
+  }
+
+  // Log summary
+  document.getElementById('last-viewed-by').textContent = order.admin_internal?.last_viewed_by || 'Admin';
+  document.getElementById('previous-log-count').textContent = order.admin_internal?.previous_log_count || '0';
+}
+
+function renderLineItems(items) {
+  const container = document.getElementById('line-items-list');
+  container.innerHTML = '';
+  
+  if (!items || items.length === 0) {
+    container.innerHTML = '<p class="text-[13px] text-text-muted italic">No items in this order.</p>';
+    return;
+  }
+
+  items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'flex items-start gap-4 mb-4';
+    el.innerHTML = `
+      <div class="w-12 h-12 rounded bg-bg-primary border border-outline-sage/20 flex-shrink-0 flex items-center justify-center overflow-hidden">
+        <span class="material-symbols-outlined text-text-faint">image</span>
+      </div>
+      <div class="flex-grow">
+        <p class="font-body-sm text-[13px] font-medium text-text-default">\${item.product_name}</p>
+        <p class="font-data-meta text-[12px] text-text-muted mt-1">\${item.quantity} × <span class="text-text-default font-bold">\${item.unit_price_display || formatPaise(item.unit_price_paise)}</span></p>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function renderTimeline(journey) {
+  const container = document.getElementById('journey-container');
+  container.innerHTML = '';
+
+  if (!journey || journey.length === 0) return;
+
+  journey.forEach((step, idx) => {
+    const isLast = idx === journey.length - 1;
+    const el = document.createElement('div');
+    
+    let stepClass = '';
+    if (isLast) {
+      stepClass = 'step-last';
+    } else if (step.completed) {
+      stepClass = 'step-active';
+    } else {
+      stepClass = 'step-inactive';
+    }
+
+    const circleClass = step.completed ? 'bg-primary-forest text-white' : 'bg-sage-soft text-white';
+    const titleClass = step.completed ? 'text-primary-forest font-bold' : 'text-text-muted';
+    const dateClass = step.completed ? 'text-text-muted' : 'text-text-faint';
+    const dateText = step.display || 'Pending';
+
+    el.className = `relative flex gap-6 \${stepClass}`;
+    el.innerHTML = `
+      <div class="z-10 flex items-center justify-center w-6 h-6 rounded-full \${circleClass}">
+        <span class="material-symbols-outlined text-xs">\${step.icon || 'circle'}</span>
+      </div>
+      <div>
+        <p class="text-sm \${titleClass}">\${step.label}</p>
+        <p class="font-data-meta text-[11px] \${dateClass}">\${dateText}</p>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+// Override status click
+document.getElementById('override-status-btn').addEventListener('click', async () => {
+  const newStatus = document.getElementById('status-select').value;
+  try {
+    const res = await adminApiClient.patch(`/admin/orders/\${orderId}/status`, { new_status: newStatus });
+    if (res.data?.success) {
+      loadOrderDetail();
+    }
+  } catch (err) {
+    alert(err.response?.data?.message || 'Failed to update order status');
+  }
+});
+
+// Flag refund click
+document.getElementById('flag-refund-btn').addEventListener('click', async () => {
+  if (confirm('Are you sure you want to flag this order for refund review?')) {
+    try {
+      const res = await adminApiClient.post(`/admin/orders/\${orderId}/flag-refund`);
+      if (res.data?.success) {
+        loadOrderDetail();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to flag order');
+    }
+  }
+});
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem('tohfa_admin_token');
+  window.location.href = '/admin/login.html';
+});
+
+// Initial load
+document.addEventListener('DOMContentLoaded', loadOrderDetail);
+</script>
 </body></html>
