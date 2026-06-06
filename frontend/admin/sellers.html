@@ -159,27 +159,27 @@
 <span class="material-symbols-outlined text-[20px]">grid_view</span>
 <span class="font-label-btn text-label-btn">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="/admin/sellers.html">
 <span class="material-symbols-outlined text-[20px]">group</span>
 <span class="font-label-btn text-label-btn">Sellers</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/orders.html">
 <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
 <span class="font-label-btn text-label-btn">Orders</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/categories.html">
 <span class="material-symbols-outlined text-[20px]">category</span>
 <span class="font-label-btn text-label-btn">Categories</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/products.html">
 <span class="material-symbols-outlined text-[20px]">inventory_2</span>
 <span class="font-label-btn text-label-btn">Products</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/audit-logs.html">
 <span class="material-symbols-outlined text-[20px]">history_edu</span>
 <span class="font-label-btn text-label-btn">Audit Logs</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/payment-health.html">
 <span class="material-symbols-outlined text-[20px]">settings</span>
 <span class="font-label-btn text-label-btn">Settings</span>
 </a>
@@ -200,7 +200,7 @@
 <button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
 <span class="material-symbols-outlined text-[20px]">notifications</span>
 </button>
-<button class="text-on-surface-variant hover:text-primary transition-colors text-[14px] font-label-btn">Logout</button>
+<button id="logout-btn" class="text-on-surface-variant hover:text-primary transition-colors text-[14px] font-label-btn">Logout</button>
 <img alt="Admin Profile" class="w-8 h-8 rounded-full border border-sage-border object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_b_T4p5aqNt720WEW3q8y4NFA8YEbiF-Lw6M-AA1tuRZsvgetSefNNbtx1l3vx-gRN6lfiBxGpd1GLlx_eIig1IX6_X2tufKsgoRlIjYOIn1AiXVnjVaypwAIuEVEHbFRYIl0PKcqM-M4AweTMrNCdXRCsBxtk7pMthKQpIxPOHVuF7JNAUGq7L1stVIA90d87w-qQQ-ji4GKbQzXc3lIK7T2GzUz9C4r5E4frc6LcGAin26fp_peKAHGEq_WeFtWmZx4yse0BA"/>
 </div>
 </header>
@@ -215,12 +215,12 @@
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
 <div class="relative w-full max-w-md">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">search</span>
-<input class="w-full pl-12 pr-4 py-3 bg-white border border-sage-border rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-body-md" placeholder="Search by name or email..." type="text"/>
+<input id="search-input" class="w-full pl-12 pr-4 py-3 bg-white border border-sage-border rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-body-md" placeholder="Search by name or email..." type="text"/>
 </div>
 <div class="flex items-center gap-2">
-<button class="px-6 py-2 bg-primary text-white font-label-btn rounded-full shadow-sm hover:scale-[0.98] transition-transform">All</button>
-<button class="px-6 py-2 bg-white text-ink-soft border border-sage-border font-label-btn rounded-full hover:bg-surface-container transition-colors">Active</button>
-<button class="px-6 py-2 bg-white text-ink-soft border border-sage-border font-label-btn rounded-full hover:bg-surface-container transition-colors">Banned</button>
+<button id="filter-all" class="px-6 py-2 bg-primary text-white font-label-btn rounded-full shadow-sm hover:scale-[0.98] transition-transform">All</button>
+<button id="filter-active" class="px-6 py-2 bg-white text-ink-soft border border-sage-border font-label-btn rounded-full hover:bg-surface-container transition-colors">Active</button>
+<button id="filter-banned" class="px-6 py-2 bg-white text-ink-soft border border-sage-border font-label-btn rounded-full hover:bg-surface-container transition-colors">Banned</button>
 </div>
 </div>
 <!-- Data Table Section -->
@@ -237,152 +237,238 @@
 <th class="px-6 py-4 font-accent-caps text-[10px] tracking-[0.15em] text-text-muted uppercase text-center">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-sage-border/50">
-<!-- Seller Row 1 -->
-<tr class="hover:bg-parchment/50 transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
-                                    KA
-                                </div>
-<div>
-<p class="font-body-md font-bold text-ink-deep leading-none">Kavita Arts</p>
-<p class="text-[12px] text-text-muted mt-1">Pottery Artisan</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5 text-body-sm text-text-muted">kavita.p@artisan.com</td>
-<td class="px-6 py-5">
-<span class="inline-flex items-center px-3 py-1 bg-sage-soft/30 text-primary font-bold text-[11px] rounded-full">
-<span class="status-pill-dot bg-primary"></span> Active
-                            </span>
-</td>
-<td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">42 items</td>
-<td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">3 months ago</td>
-<td class="px-6 py-5 text-right">
-<span class="font-data-price text-[13px] text-primary">₹1,24,500</span>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center justify-center gap-3">
-<button class="p-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[20px]">visibility</span>
-</button>
-<button class="px-3 py-1 bg-highlight-gold/20 text-highlight-gold font-label-btn text-[11px] rounded hover:bg-highlight-gold hover:text-white transition-all">Ban</button>
-</div>
-</td>
-</tr>
-<!-- Seller Row 2 (Alternating Background) -->
-<tr class="bg-parchment/30 hover:bg-parchment/50 transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
-                                    SL
-                                </div>
-<div>
-<p class="font-body-md font-bold text-ink-deep leading-none">Silk Lore</p>
-<p class="text-[12px] text-text-muted mt-1">Handloom Weavers</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5 text-body-sm text-text-muted">weaver@silklore.in</td>
-<td class="px-6 py-5">
-<span class="inline-flex items-center px-3 py-1 bg-error-container text-error font-bold text-[11px] rounded-full">
-<span class="material-symbols-outlined text-[12px] mr-1">close</span> Banned
-                            </span>
-</td>
-<td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">18 items</td>
-<td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">1 year ago</td>
-<td class="px-6 py-5 text-right">
-<span class="font-data-price text-[13px] text-primary">₹84,000</span>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center justify-center gap-3">
-<button class="p-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[20px]">visibility</span>
-</button>
-<button class="px-3 py-1 bg-primary/20 text-primary font-label-btn text-[11px] rounded hover:bg-primary hover:text-white transition-all">Unban</button>
-</div>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-parchment/50 transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
-                                    MN
-                                </div>
-<div>
-<p class="font-body-md font-bold text-ink-deep leading-none">Mitti Noir</p>
-<p class="text-[12px] text-text-muted mt-1">Terra-cotta studio</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5 text-body-sm text-text-muted">contact@mittinoir.com</td>
-<td class="px-6 py-5">
-<span class="inline-flex items-center px-3 py-1 bg-sage-soft/30 text-primary font-bold text-[11px] rounded-full">
-<span class="status-pill-dot bg-primary"></span> Active
-                            </span>
-</td>
-<td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">124 items</td>
-<td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">2 weeks ago</td>
-<td class="px-6 py-5 text-right">
-<span class="font-data-price text-[13px] text-primary">₹12,400</span>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center justify-center gap-3">
-<button class="p-1 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[20px]">visibility</span>
-</button>
-<button class="px-3 py-1 bg-highlight-gold/20 text-highlight-gold font-label-btn text-[11px] rounded hover:bg-highlight-gold hover:text-white transition-all">Ban</button>
-</div>
-</td>
-</tr>
+<tbody id="sellers-list" class="divide-y divide-sage-border/50">
+<!-- Dynamic content goes here -->
 </tbody>
 </table>
 </div>
 <!-- Pagination -->
 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
-<p class="font-data-meta text-[11px] text-text-muted">Showing 1–20 of 143 sellers</p>
-<div class="flex items-center gap-1">
-<button class="w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[18px]">chevron_left</span>
-</button>
-<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-md font-label-btn text-[13px]">1</button>
-<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-parchment rounded-md font-label-btn text-[13px]">2</button>
-<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-parchment rounded-md font-label-btn text-[13px]">3</button>
-<span class="px-2 text-text-muted">...</span>
-<button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-parchment rounded-md font-label-btn text-[13px]">8</button>
-<button class="w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[18px]">chevron_right</span>
-</button>
+<p id="pagination-info" class="font-data-meta text-[11px] text-text-muted">Showing 0–0 of 0 sellers</p>
+<div id="pagination-pages" class="flex items-center gap-1">
+<!-- Dynamic page numbers -->
 </div>
 </div>
 </main>
-<!-- Micro-interactions Script -->
-<script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const rows = document.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                row.addEventListener('click', (e) => {
-                    if (!e.target.closest('button')) {
-                        // Action for row click could go here
-                        console.log('Row clicked');
-                    }
-                });
-            });
 
-            // Active state logic for filter pills
-            const pills = document.querySelectorAll('.flex.items-center.gap-2 button');
-            pills.forEach(pill => {
-                pill.addEventListener('click', () => {
-                    pills.forEach(p => {
-                        p.classList.remove('bg-primary', 'text-white', 'shadow-sm');
-                        p.classList.add('bg-white', 'text-ink-soft', 'border', 'border-sage-border');
-                    });
-                    pill.classList.remove('bg-white', 'text-ink-soft', 'border', 'border-sage-border');
-                    pill.classList.add('bg-primary', 'text-white', 'shadow-sm');
-                });
-            });
-        });
-    </script>
+<!-- API Wiring Module Script -->
+<script type="module">
+import adminApiClient from '/src/utils/adminApiClient.js';
+import { formatPaise } from '/src/utils/currency.js';
+
+if (!sessionStorage.getItem('tohfa_admin_token')) {
+  window.location.href = '/admin/login.html';
+}
+
+let currentStatus = 'all';
+let searchQuery = '';
+let currentPage = 1;
+
+async function fetchSellers() {
+  try {
+    const response = await adminApiClient.get('/admin/sellers', {
+      params: {
+        status: currentStatus,
+        search: searchQuery,
+        page: currentPage,
+        per_page: 10
+      }
+    });
+    
+    if (response.data?.success) {
+      const { sellers, total, page, per_page, total_pages } = response.data.data;
+      renderSellers(sellers);
+      renderPagination(total, page, per_page, total_pages);
+    }
+  } catch (error) {
+    console.error('Failed to fetch sellers:', error);
+  }
+}
+
+function renderSellers(sellers) {
+  const listEl = document.getElementById('sellers-list');
+  listEl.innerHTML = '';
+
+  if (sellers.length === 0) {
+    listEl.innerHTML = `
+      <tr>
+        <td colspan="7" class="px-6 py-10 text-center text-text-muted text-sm font-serif-ui-sm">
+          No artisan sellers found matching filters.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  sellers.forEach((seller, idx) => {
+    const isAlt = idx % 2 === 1;
+    const tr = document.createElement('tr');
+    tr.className = `${isAlt ? 'bg-parchment/30 ' : ''}hover:bg-parchment/50 transition-colors`;
+    
+    const statusBadge = seller.status === 'banned' 
+      ? `<span class="inline-flex items-center px-3 py-1 bg-error-container text-error font-bold text-[11px] rounded-full">
+          <span class="material-symbols-outlined text-[12px] mr-1">close</span> Banned
+         </span>`
+      : `<span class="inline-flex items-center px-3 py-1 bg-sage-soft/30 text-primary font-bold text-[11px] rounded-full">
+          <span class="status-pill-dot bg-primary"></span> Active
+         </span>`;
+
+    const actionBtn = seller.status === 'banned'
+      ? `<button class="unban-btn px-3 py-1 bg-primary/20 text-primary font-label-btn text-[11px] rounded hover:bg-primary hover:text-white transition-all" data-id="${seller.id}">Unban</button>`
+      : `<button class="ban-btn px-3 py-1 bg-highlight-gold/20 text-highlight-gold font-label-btn text-[11px] rounded hover:bg-highlight-gold hover:text-white transition-all" data-id="${seller.id}">Ban</button>`;
+
+    tr.innerHTML = `
+      <td class="px-6 py-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold font-body-sm text-[13px]">
+            ${seller.avatar_initials || 'SA'}
+          </div>
+          <div>
+            <p class="font-body-md font-bold text-ink-deep leading-none">${seller.display_name || 'No Name'}</p>
+            <p class="text-[12px] text-text-muted mt-1">${seller.sub_label || 'Artisan'}</p>
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-5 text-body-sm text-text-muted">${seller.email || ''}</td>
+      <td class="px-6 py-5">${statusBadge}</td>
+      <td class="px-6 py-5 font-data-meta text-[13px] text-accent-violet">${seller.product_count || 0} items</td>
+      <td class="px-6 py-5 font-data-meta text-[11px] text-text-muted">${seller.joined_ago || ''}</td>
+      <td class="px-6 py-5 text-right">
+        <span class="font-data-price text-[13px] text-primary">${seller.total_sales_display || formatPaise(seller.total_sales_paise)}</span>
+      </td>
+      <td class="px-6 py-5">
+        <div class="flex items-center justify-center gap-3">
+          <a href="/admin/seller-detail.html?id=${seller.id}" class="p-1 hover:text-primary transition-colors flex items-center">
+            <span class="material-symbols-outlined text-[20px]">visibility</span>
+          </a>
+          ${actionBtn}
+        </div>
+      </td>
+    `;
+    listEl.appendChild(tr);
+  });
+
+  // Attach click events
+  listEl.querySelectorAll('.ban-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const id = e.target.getAttribute('data-id');
+      const reason = prompt('Enter reason for banning this seller:');
+      if (reason && reason.trim()) {
+        try {
+          await adminApiClient.post(`/admin/sellers/${id}/ban`, { ban_reason: reason.trim() });
+          fetchSellers();
+        } catch (err) {
+          alert(err.response?.data?.message || 'Failed to ban seller');
+        }
+      }
+    });
+  });
+
+  listEl.querySelectorAll('.unban-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const id = e.target.getAttribute('data-id');
+      if (confirm('Are you sure you want to unban this seller?')) {
+        try {
+          await adminApiClient.post(`/admin/sellers/${id}/unban`);
+          fetchSellers();
+        } catch (err) {
+          alert(err.response?.data?.message || 'Failed to unban seller');
+        }
+      }
+    });
+  });
+}
+
+function renderPagination(total, page, per_page, total_pages) {
+  const start = total === 0 ? 0 : (page - 1) * per_page + 1;
+  const end = Math.min(page * per_page, total);
+  document.getElementById('pagination-info').textContent = `Showing ${start}–${end} of ${total} sellers`;
+
+  const pagesEl = document.getElementById('pagination-pages');
+  pagesEl.innerHTML = '';
+
+  // Left chevron
+  const prevBtn = document.createElement('button');
+  prevBtn.className = `w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary transition-colors \${page === 1 ? 'opacity-50 pointer-events-none' : ''}`;
+  prevBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">chevron_left</span>`;
+  prevBtn.addEventListener('click', () => {
+    if (page > 1) {
+      currentPage = page - 1;
+      fetchSellers();
+    }
+  });
+  pagesEl.appendChild(prevBtn);
+
+  // Page numbers
+  for (let i = 1; i <= total_pages; i++) {
+    const pageBtn = document.createElement('button');
+    const isActive = i === page;
+    pageBtn.className = `w-8 h-8 flex items-center justify-center rounded-md font-label-btn text-[13px] \${isActive ? 'bg-primary text-white' : 'text-primary hover:bg-parchment'}`;
+    pageBtn.textContent = i;
+    pageBtn.addEventListener('click', () => {
+      currentPage = i;
+      fetchSellers();
+    });
+    pagesEl.appendChild(pageBtn);
+  }
+
+  // Right chevron
+  const nextBtn = document.createElement('button');
+  nextBtn.className = `w-8 h-8 flex items-center justify-center text-text-muted hover:text-primary transition-colors \${page === total_pages ? 'opacity-50 pointer-events-none' : ''}`;
+  nextBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">chevron_right</span>`;
+  nextBtn.addEventListener('click', () => {
+    if (page < total_pages) {
+      currentPage = page + 1;
+      fetchSellers();
+    }
+  });
+  pagesEl.appendChild(nextBtn);
+}
+
+// Search with simple debounce
+let debounceTimeout;
+document.getElementById('search-input').addEventListener('input', (e) => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    searchQuery = e.target.value.trim();
+    currentPage = 1;
+    fetchSellers();
+  }, 300);
+});
+
+// Setup filters
+const filterAll = document.getElementById('filter-all');
+const filterActive = document.getElementById('filter-active');
+const filterBanned = document.getElementById('filter-banned');
+
+const filters = [
+  { el: filterAll, status: 'all' },
+  { el: filterActive, status: 'active' },
+  { el: filterBanned, status: 'banned' }
+];
+
+filters.forEach(({ el, status }) => {
+  el.addEventListener('click', () => {
+    filters.forEach(f => {
+      f.el.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+      f.el.classList.add('bg-white', 'text-ink-soft', 'border', 'border-sage-border');
+    });
+    el.classList.remove('bg-white', 'text-ink-soft', 'border', 'border-sage-border');
+    el.classList.add('bg-primary', 'text-white', 'shadow-sm');
+
+    currentStatus = status;
+    currentPage = 1;
+    fetchSellers();
+  });
+});
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem('tohfa_admin_token');
+  window.location.href = '/admin/login.html';
+});
+
+// Initial load
+document.addEventListener('DOMContentLoaded', fetchSellers);
+</script>
 </body></html>

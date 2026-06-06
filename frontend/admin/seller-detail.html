@@ -145,27 +145,27 @@
 <span class="material-symbols-outlined text-[20px]">grid_view</span>
 <span class="font-label-btn text-label-btn">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="#">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#3D6B4F] text-white rounded-full transition-all" href="/admin/sellers.html">
 <span class="material-symbols-outlined text-[20px]">group</span>
 <span class="font-label-btn text-label-btn">Sellers</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/orders.html">
 <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
 <span class="font-label-btn text-label-btn">Orders</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/categories.html">
 <span class="material-symbols-outlined text-[20px]">category</span>
 <span class="font-label-btn text-label-btn">Categories</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/products.html">
 <span class="material-symbols-outlined text-[20px]">inventory_2</span>
 <span class="font-label-btn text-label-btn">Products</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/audit-logs.html">
 <span class="material-symbols-outlined text-[20px]">history_edu</span>
 <span class="font-label-btn text-label-btn">Audit Logs</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-all duration-300 rounded-full" href="/admin/payment-health.html">
 <span class="material-symbols-outlined text-[20px]">settings</span>
 <span class="font-label-btn text-label-btn">Settings</span>
 </a>
@@ -184,16 +184,15 @@
 <!-- Breadcrumb & Header -->
 <header class="mb-10">
 <nav class="flex items-center gap-2 mb-4">
-<span class="font-body-sm text-[13px] text-text-muted">Sellers</span>
+<a href="/admin/sellers.html" class="font-body-sm text-[13px] text-text-muted hover:underline">Sellers</a>
 <span class="material-symbols-outlined text-highlight-gold text-[16px]">chevron_right</span>
-<span class="font-body-sm text-[13px] text-text-muted font-medium">Kavita Arts</span>
+<span id="breadcrumb-seller-name" class="font-body-sm text-[13px] text-text-muted font-medium">Loading...</span>
 </nav>
 <div class="flex items-center gap-4">
-<h2 class="font-headline-lg text-primary">Kavita Arts</h2>
-<span class="bg-sage-soft text-on-secondary-container px-3 py-0.5 rounded-full text-[12px] font-bold font-body-sm flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-on-secondary-container"></span>
-                    Active
-                </span>
+<h2 id="header-seller-name" class="font-headline-lg text-primary">Loading...</h2>
+<span id="header-status-badge" class="px-3 py-0.5 rounded-full text-[12px] font-bold font-body-sm flex items-center gap-1">
+  <!-- Dynamic badge -->
+</span>
 </div>
 </header>
 <!-- Two Column Layout -->
@@ -204,52 +203,51 @@
 <div class="relative bg-surface-ivory border border-outline-variant rounded-xl p-8 warm-shadow overflow-hidden">
 <div class="sketch-bg"></div>
 <div class="relative z-10 flex flex-col md:flex-row items-start gap-6">
-<div class="w-[72px] h-[72px] bg-primary rounded-full flex items-center justify-center text-on-primary font-headline-md text-[24px]">
-                            KA
-                        </div>
+<div id="profile-initials" class="w-[72px] h-[72px] bg-primary rounded-full flex items-center justify-center text-on-primary font-headline-md text-[24px]">
+    --
+</div>
 <div class="flex-1 space-y-2">
-<h3 class="font-headline-md text-primary text-[20px]">Kavita Arts</h3>
+<h3 id="profile-name" class="font-headline-md text-primary text-[20px]">Loading...</h3>
 <div class="flex flex-col gap-1">
-<p class="font-data-meta text-[13px] text-accent-violet flex items-center gap-2">
+<a id="profile-email" class="font-data-meta text-[13px] text-accent-violet flex items-center gap-2 hover:underline">
 <span class="material-symbols-outlined text-[16px]">mail</span>
-                                    kavita.p@artisan.com
-                                </p>
-<p class="font-body-sm text-on-surface-variant flex items-center gap-2">
+Loading...
+</a>
+<p id="profile-phone" class="font-body-sm text-on-surface-variant flex items-center gap-2">
 <span class="material-symbols-outlined text-[16px]">call</span>
-                                    +91 98765 43210
-                                </p>
-<p class="font-data-meta text-[11px] text-highlight-gold mt-2 uppercase tracking-widest font-bold">
-                                    Joined Feb 2024
-                                </p>
+Loading...
+</p>
+<p id="profile-joined" class="font-data-meta text-[11px] text-highlight-gold mt-2 uppercase tracking-widest font-bold">
+Loading...
+</p>
 </div>
 </div>
 </div>
 <div class="relative z-10 mt-8 pt-6 border-t border-outline-variant/30">
-<p class="font-serif-ui-md italic text-on-surface-variant leading-relaxed opacity-90">
-                            "A master potter specializing in terracotta and glazed stoneware, inspired by rural landscapes."
-                        </p>
+<p id="profile-bio" class="font-serif-ui-md italic text-on-surface-variant leading-relaxed opacity-90">
+Loading...
+</p>
 </div>
 </div>
 <!-- Stats Grid -->
 <div class="grid grid-cols-2 gap-4">
 <div class="bg-surface-ivory border border-outline-variant p-5 rounded-lg warm-shadow">
 <p class="font-accent-caps text-[10px] text-text-faint mb-1">Total Products</p>
-<p class="font-headline-md text-primary text-[28px]">42</p>
+<p id="stat-products" class="font-headline-md text-primary text-[28px]">-</p>
 </div>
 <div class="bg-surface-ivory border border-outline-variant p-5 rounded-lg warm-shadow">
 <p class="font-accent-caps text-[10px] text-text-faint mb-1">Total Sales</p>
-<p class="font-data-price text-highlight-gold">₹1,24,500</p>
+<p id="stat-sales" class="font-data-price text-highlight-gold">-</p>
 </div>
 <div class="bg-surface-ivory border border-outline-variant p-5 rounded-lg warm-shadow">
 <p class="font-accent-caps text-[10px] text-text-faint mb-1">Account Status</p>
-<div class="flex items-center gap-2 mt-2">
-<span class="material-symbols-outlined text-on-secondary-container" style='font-variation-settings: "FILL" 1;'>check_circle</span>
-<span class="font-body-md font-bold text-on-secondary-container">Active</span>
+<div id="stat-status" class="flex items-center gap-2 mt-2">
+<!-- Dynamic -->
 </div>
 </div>
 <div class="bg-surface-ivory border border-outline-variant p-5 rounded-lg warm-shadow">
 <p class="font-accent-caps text-[10px] text-text-faint mb-1">All Time Revenue</p>
-<p class="font-data-price text-primary">₹98,200</p>
+<p id="stat-revenue" class="font-data-price text-primary">-</p>
 </div>
 </div>
 </div>
@@ -258,52 +256,13 @@
 <div class="bg-surface-ivory border border-outline-variant rounded-xl p-6 warm-shadow">
 <div class="flex justify-between items-center mb-6">
 <h4 class="font-accent-caps text-[10px] text-highlight-gold tracking-[0.2em] uppercase">Their Products</h4>
-<a class="text-primary font-label-btn text-[12px] flex items-center hover:underline" href="#">
+<a class="text-primary font-label-btn text-[12px] flex items-center hover:underline" href="/admin/products.html">
                             View all
                             <span class="material-symbols-outlined text-[16px] ml-1">arrow_forward</span>
 </a>
 </div>
-<div class="space-y-4">
-<!-- Product Item -->
-<div class="flex items-center gap-4 group cursor-pointer">
-<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant group-hover:border-primary transition-colors" data-alt="A macro photograph of a handcrafted terracotta vase with intricate geometric patterns etched into the clay. Soft side lighting reveals the earthy texture and subtle glaze. The background is a clean, minimalist studio setting with neutral ivory tones. High-end artisan photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-2vFQJc45Wra9MHVXja9qYq5sNnTT9DS5PEDIVigUVI701vyE4dgmAE6j4uo_VI0WWt0ajVHg7wEQ1G8qAEt4_5gBcOBWuJZ7f8NacbSBJRRSmMCBey3oPJKHkyqVMKf0_qgbDWEchOGBeOq0OkP5xroO-6vSQx-hbcNF5KvCe-Mp9Iqq61ZQ5yxC-SMNrNSM2hM-AspNvoVf6a7-NTaOxbqO3b_1aOs286ULLYHZUGtJ2HVbYvksyyv7Axhfz12FwPm5Omxf1w"/>
-<div class="flex-1">
-<h5 class="font-body-md text-[14px] text-on-surface line-clamp-1">Terracotta Earth Pot</h5>
-<p class="font-data-meta text-[13px] text-text-muted">₹2,450</p>
-</div>
-<span class="bg-sage-soft/30 text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold">In Stock</span>
-</div>
-<div class="flex items-center gap-4 group cursor-pointer">
-<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant group-hover:border-primary transition-colors" data-alt="A collection of glazed stoneware mugs in deep forest green and ochre yellow, arranged artistically on a rustic wooden shelf. The lighting is warm and golden, reminiscent of a late afternoon in a potter's workshop. Subtle textures of clay and wood are prominent. Artistic studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLY67wm1Gc-8D9yyUMkjdjZWHwr7envxDF3IhOeZVBoP-AFnhlN6o9-Nzr7Jf_dtPC-LSKv3A90uN-d5rB3EUT1MZAtSszA_0oREwNdYEtjnJFwILyg3rT2k0S2FZFYGzJg8b_AdGV9llsEH884XT7NrJrhcmS86Oh3awR5Bip9ndgWIRfyVgDi3P5rBSEo3KIxFsQ7KIddsx_fVLnxMqC3CjovnIiEjwMzU8_yTzU5fc0I2453PEkHBOPRcVRv3Bjun5pVweh5Q"/>
-<div class="flex-1">
-<h5 class="font-body-md text-[14px] text-on-surface line-clamp-1">Glazed Stoneware Set</h5>
-<p class="font-data-meta text-[13px] text-text-muted">₹4,200</p>
-</div>
-<span class="bg-sage-soft/30 text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold">In Stock</span>
-</div>
-<div class="flex items-center gap-4 group cursor-pointer">
-<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant group-hover:border-primary transition-colors" data-alt="Minimalist ceramic plate with a hand-painted floral motif in indigo ink. The white clay body has a subtle speckled texture. Soft, diffused lighting creates a clean and airy mood. Perfect representation of handcrafted artisanal pottery. Elegant and modern layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvAwJJgMdlKUrH3T8Wg3ofoQXNdmRTBejA6LS8gdk3UAApPIa5l9l87xZSYZl3s0Li9o7ubts6bwr2iP0o0x5pV0i5NBpkXZkqV2P5soFJ8IZTnx45ndpR23z1w3nCPq9TR3yNQ_Gv0FsHqV5GchNgfdUnR12S65dzw1DIW0acrU5rRCB0Uja5lNNwW5OIDGewTZn8XKV1cajUqI9QR9y6kfocDUZRRBWllfBkaIxz8uZEFlTroZQRChYYokdmDkK84RnKEh938g"/>
-<div class="flex-1">
-<h5 class="font-body-md text-[14px] text-on-surface line-clamp-1">Indigo Floral Plate</h5>
-<p class="font-data-meta text-[13px] text-text-muted">₹1,850</p>
-</div>
-<span class="bg-gold-soft/30 text-highlight-gold px-2 py-0.5 rounded text-[10px] font-bold">Low Stock</span>
-</div>
-<div class="flex items-center gap-4 group cursor-pointer">
-<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant group-hover:border-primary transition-colors" data-alt="A rustic clay pitcher with a unique twisted handle, sitting on a linen tablecloth. Warm morning sunlight streams through a nearby window, casting soft shadows. The overall aesthetic is cozy, domestic, and handcrafted. High-quality textures and organic feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALaagPT0sBnKXDWNIHpOYnaef7ZwWK15XjnEIZudG-0KhtRvljPPoKyz5pEM9VCX7_7PPdgIN7Vmd8C1Z-NPZW2a5pYNHg3JzfORsOzfYK3PCOc99pYM2ZLJ3ipg002IcwWZwvX8imbzoG_329MwZgI_1Z9mNsVyNV7qLLLw2lE5Lh1shGXptcEnlUN_b0U3a8cGSB6BrE0p7WPXRk8RBo-AokyxeIMWxA4Vc0y9wjdIESmLLnM6L-qSmhJ3YJItvxKhHZ8BzbHQ"/>
-<div class="flex-1">
-<h5 class="font-body-md text-[14px] text-on-surface line-clamp-1">Rustic Clay Pitcher</h5>
-<p class="font-data-meta text-[13px] text-text-muted">₹3,100</p>
-</div>
-<span class="bg-sage-soft/30 text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold">In Stock</span>
-</div>
-<div class="flex items-center gap-4 group cursor-pointer">
-<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant group-hover:border-primary transition-colors" data-alt="Handcrafted ceramic beads in various earthy tones strung on a simple hemp cord. The macro focus highlights the unique imperfections of each bead. The lighting is soft and neutral, emphasizing the material's authenticity. Artisanal studio atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIhE6t6q0Prd8tXRyAw_oxDa1IQQGoh6BfM6ZxYd7jYlE0Oes-4y_bajXv7-nJarDqTcVqBnLdfrmEpZdfIkArSZ7PEQsdmPqFO6THYa78QfnFaUEYESqndoDIXREHWvJd8ksMab63o9t3l9efPdDRgG7it0Ar14N1Ox_lKS2dugQBRx3r6dm28b2v0rjjWZbQBDajjAWx8FAX3eiLb6lnaRoFxBaoUwXdNvblKTbOdH0kjwFo-gid4Xcs3wgqPlWV5Y725t9ubA"/>
-<div class="flex-1">
-<h5 class="font-body-md text-[14px] text-on-surface line-clamp-1">Ceramic Bead Cord</h5>
-<p class="font-data-meta text-[13px] text-text-muted">₹950</p>
-</div>
-<span class="bg-danger-terracotta/10 text-danger-terracotta px-2 py-0.5 rounded text-[10px] font-bold">Sold Out</span>
+<div id="products-list" class="space-y-4">
+<!-- Dynamic products list -->
 </div>
 </div>
 </div>
@@ -311,75 +270,225 @@
 <!-- Account Actions (Bottom Section) -->
 <section class="mt-12 bg-surface-ivory border border-outline-variant rounded-xl p-8 warm-shadow">
 <h4 class="font-accent-caps text-[11px] text-highlight-gold mb-6 uppercase tracking-widest">Account Actions</h4>
-<div id="ban-trigger-state">
-<div class="flex flex-col md:flex-row items-center justify-between gap-6">
-<div class="flex-1">
-<p class="font-body-md text-on-surface font-medium">Seller is currently <span class="text-on-secondary-container">ACTIVE</span></p>
-<p class="font-body-sm text-text-muted mt-1">Status changes will impact all listed products immediately.</p>
-</div>
-<button class="px-8 py-3 rounded-full border border-danger-terracotta text-danger-terracotta font-label-btn hover:bg-danger-terracotta/5 transition-colors" onclick="toggleBanForm()">
-                        Ban This Seller
-                    </button>
-</div>
-</div>
-<div class="hidden space-y-6" id="ban-form-state">
-<div class="p-6 bg-error-container/30 border border-error/20 rounded-lg">
-<div class="flex gap-3 text-danger-terracotta mb-4">
-<span class="material-symbols-outlined">warning</span>
-<p class="font-body-sm font-bold">Warning: This will deactivate all their products and reels immediately.</p>
-</div>
-<div class="space-y-4">
-<label class="block font-accent-caps text-[10px] text-text-muted uppercase">Reason for ban</label>
-<textarea class="w-full bg-white border border-sage-soft rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-on-surface font-body-sm" placeholder="Please specify the reason for banning this artisan..." rows="3"></textarea>
-</div>
-<div class="mt-6 flex items-center gap-6">
-<button class="bg-primary text-on-primary font-label-btn px-8 py-3 rounded-full hover:bg-primary-deep transition-colors">
-                            Confirm Ban
-                        </button>
-<button class="text-primary font-label-btn hover:underline" onclick="toggleBanForm()">
-                            Cancel
-                        </button>
-</div>
-</div>
+<div id="account-actions-container">
+<!-- Dynamic actions rendering based on status -->
 </div>
 </section>
 <!-- Footer Padding -->
 <div class="h-20"></div>
-</div></main>
-<!-- Mobile Bottom Nav -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-outline-variant/30 flex justify-around items-center h-16 px-4 z-50">
-<a class="flex flex-col items-center gap-1 text-text-muted" href="#">
-<span class="material-symbols-outlined text-[24px]">palette</span>
-<span class="text-[10px] font-accent-caps">Home</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-primary-container" href="#">
-<span class="material-symbols-outlined text-[24px]" style='font-variation-settings: "FILL" 1;'>storefront</span>
-<span class="text-[10px] font-accent-caps">Sellers</span>
-</a>
-<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center -mt-8 shadow-lg border-4 border-white">
-<span class="material-symbols-outlined text-white">add</span>
-</div>
-<a class="flex flex-col items-center gap-1 text-text-muted" href="#">
-<span class="material-symbols-outlined text-[24px]">shopping_bag</span>
-<span class="text-[10px] font-accent-caps">Orders</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-text-muted" href="#">
-<span class="material-symbols-outlined text-[24px]">settings</span>
-<span class="text-[10px] font-accent-caps">Menu</span>
-</a>
-</nav>
-<script>
-        function toggleBanForm() {
-            const trigger = document.getElementById('ban-trigger-state');
-            const form = document.getElementById('ban-form-state');
-            
-            if(form.classList.contains('hidden')) {
-                form.classList.remove('hidden');
-                trigger.classList.add('hidden');
-            } else {
-                form.classList.add('hidden');
-                trigger.classList.remove('hidden');
-            }
+</main>
+
+<script type="module">
+import adminApiClient from '/src/utils/adminApiClient.js';
+import { formatPaise } from '/src/utils/currency.js';
+
+if (!sessionStorage.getItem('tohfa_admin_token')) {
+  window.location.href = '/admin/login.html';
+}
+
+const sellerId = new URLSearchParams(window.location.search).get('id');
+if (!sellerId) {
+  window.location.href = '/admin/sellers.html';
+}
+
+async function loadSellerDetails() {
+  try {
+    const res = await adminApiClient.get(`/admin/sellers/${sellerId}`);
+    if (res.data?.success) {
+      renderSeller(res.data.data);
+    }
+  } catch (err) {
+    console.error('Failed to load seller details:', err);
+    alert('Failed to load seller detail. Redirecting back to sellers list.');
+    window.location.href = '/admin/sellers.html';
+  }
+}
+
+function renderSeller(seller) {
+  document.getElementById('breadcrumb-seller-name').textContent = seller.display_name || 'Artisan';
+  document.getElementById('header-seller-name').textContent = seller.display_name || 'Artisan';
+  
+  // Status Badge
+  const statusBadge = document.getElementById('header-status-badge');
+  if (seller.status === 'banned') {
+    statusBadge.className = 'bg-error-container text-error px-3 py-0.5 rounded-full text-[12px] font-bold font-body-sm flex items-center gap-1';
+    statusBadge.innerHTML = '<span class="material-symbols-outlined text-[14px]">close</span> Banned';
+  } else {
+    statusBadge.className = 'bg-sage-soft text-on-secondary-container px-3 py-0.5 rounded-full text-[12px] font-bold font-body-sm flex items-center gap-1';
+    statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-on-secondary-container"></span> Active';
+  }
+
+  // Profile
+  document.getElementById('profile-initials').textContent = seller.avatar_initials || 'SA';
+  document.getElementById('profile-name').textContent = seller.display_name || '';
+  
+  const emailEl = document.getElementById('profile-email');
+  emailEl.innerHTML = `<span class="material-symbols-outlined text-[16px]">mail</span> \${seller.email}`;
+  emailEl.href = `mailto:\${seller.email}`;
+  
+  document.getElementById('profile-phone').innerHTML = `<span class="material-symbols-outlined text-[16px]">call</span> \${seller.phone || 'N/A'}`;
+  document.getElementById('profile-joined').textContent = `Joined \${seller.joined_display || seller.joined_at || ''}`;
+  document.getElementById('profile-bio').textContent = seller.bio ? `"\${seller.bio}"` : '"No bio provided by seller."';
+
+  // Stats
+  document.getElementById('stat-products').textContent = seller.total_products || '0';
+  document.getElementById('stat-sales').textContent = seller.total_sales_display || formatPaise(seller.total_sales_paise);
+  
+  const statusStat = document.getElementById('stat-status');
+  if (seller.status === 'banned') {
+    statusStat.innerHTML = `
+      <span class="material-symbols-outlined text-error" style='font-variation-settings: "FILL" 1;'>cancel</span>
+      <span class="font-body-md font-bold text-error">Banned</span>
+    `;
+  } else {
+    statusStat.innerHTML = `
+      <span class="material-symbols-outlined text-on-secondary-container" style='font-variation-settings: "FILL" 1;'>check_circle</span>
+      <span class="font-body-md font-bold text-on-secondary-container">Active</span>
+    `;
+  }
+  
+  document.getElementById('stat-revenue').textContent = seller.all_time_revenue_display || formatPaise(seller.all_time_revenue_paise);
+
+  // Render recent products
+  renderProducts(seller.recent_products);
+
+  // Actions
+  renderActions(seller);
+}
+
+function renderProducts(products) {
+  const container = document.getElementById('products-list');
+  container.innerHTML = '';
+  
+  if (!products || products.length === 0) {
+    container.innerHTML = '<p class="text-[13px] text-text-muted italic">No products listed.</p>';
+    return;
+  }
+
+  products.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'flex items-center gap-4 group cursor-pointer';
+    
+    let badgeClass = '';
+    let badgeText = '';
+    if (p.stock_status === 'sold_out') {
+      badgeClass = 'bg-danger-terracotta/10 text-danger-terracotta';
+      badgeText = 'Sold Out';
+    } else if (p.stock_status === 'low_stock') {
+      badgeClass = 'bg-gold-soft/30 text-highlight-gold';
+      badgeText = 'Low Stock';
+    } else {
+      badgeClass = 'bg-sage-soft/30 text-on-secondary-container';
+      badgeText = 'In Stock';
+    }
+
+    item.innerHTML = `
+      <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant">
+        <span class="material-symbols-outlined text-text-muted">image</span>
+      </div>
+      <div class="flex-1">
+        <h5 class="font-body-md text-[14px] text-on-surface line-clamp-1">\${p.name}</h5>
+        <p class="font-data-meta text-[13px] text-text-muted">\${p.price_display || formatPaise(p.price_paise)}</p>
+      </div>
+      <span class="\text-[10px] font-bold px-2 py-0.5 rounded \${badgeClass}">\${badgeText}</span>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function renderActions(seller) {
+  const container = document.getElementById('account-actions-container');
+  if (seller.status === 'banned') {
+    container.innerHTML = `
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex-1">
+          <p class="font-body-md text-on-surface font-medium">Seller is currently <span class="text-danger-terracotta font-bold">BANNED</span></p>
+          <p class="font-body-sm text-text-muted mt-1">Status changes will impact all listed products immediately.</p>
+        </div>
+        <button id="unban-btn" class="px-8 py-3 rounded-full border border-primary text-primary font-label-btn hover:bg-primary/5 transition-colors">
+          Unban This Seller
+        </button>
+      </div>
+    `;
+    document.getElementById('unban-btn').addEventListener('click', async () => {
+      if (confirm('Are you sure you want to unban this seller?')) {
+        try {
+          await adminApiClient.post(`/admin/sellers/\${seller.id}/unban`);
+          loadSellerDetails();
+        } catch (err) {
+          alert(err.response?.data?.message || 'Failed to unban seller');
         }
-    </script>
+      }
+    });
+  } else {
+    container.innerHTML = `
+      <div id="ban-trigger-state">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="flex-1">
+            <p class="font-body-md text-on-surface font-medium">Seller is currently <span class="text-on-secondary-container font-bold">ACTIVE</span></p>
+            <p class="font-body-sm text-text-muted mt-1">Status changes will impact all listed products immediately.</p>
+          </div>
+          <button id="show-ban-form-btn" class="px-8 py-3 rounded-full border border-danger-terracotta text-danger-terracotta font-label-btn hover:bg-danger-terracotta/5 transition-colors">
+            Ban This Seller
+          </button>
+        </div>
+      </div>
+      <div class="hidden space-y-6" id="ban-form-state">
+        <div class="p-6 bg-error-container/30 border border-error/20 rounded-lg">
+          <div class="flex gap-3 text-danger-terracotta mb-4">
+            <span class="material-symbols-outlined">warning</span>
+            <p class="font-body-sm font-bold">Warning: This will deactivate all their products and reels immediately.</p>
+          </div>
+          <div class="space-y-4">
+            <label class="block font-accent-caps text-[10px] text-text-muted uppercase">Reason for ban</label>
+            <textarea id="ban-reason-input" class="w-full bg-white border border-sage-soft rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-on-surface font-body-sm" placeholder="Please specify the reason for banning this artisan..." rows="3"></textarea>
+          </div>
+          <div class="mt-6 flex items-center gap-6">
+            <button id="confirm-ban-btn" class="bg-primary text-on-primary font-label-btn px-8 py-3 rounded-full hover:bg-primary-deep transition-colors">
+              Confirm Ban
+            </button>
+            <button id="cancel-ban-btn" class="text-primary font-label-btn hover:underline">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const trigger = document.getElementById('ban-trigger-state');
+    const form = document.getElementById('ban-form-state');
+    const showBtn = document.getElementById('show-ban-form-btn');
+    const cancelBtn = document.getElementById('cancel-ban-btn');
+    const confirmBtn = document.getElementById('confirm-ban-btn');
+    const reasonInput = document.getElementById('ban-reason-input');
+
+    showBtn.addEventListener('click', () => {
+      form.classList.remove('hidden');
+      trigger.classList.add('hidden');
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      form.classList.add('hidden');
+      trigger.classList.remove('hidden');
+      reasonInput.value = '';
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      const reason = reasonInput.value.trim();
+      if (!reason) {
+        alert('Please enter a reason for the ban.');
+        return;
+      }
+      try {
+        await adminApiClient.post(`/admin/sellers/\${seller.id}/ban`, { ban_reason: reason });
+        loadSellerDetails();
+      } catch (err) {
+        alert(err.response?.data?.message || 'Failed to ban seller');
+      }
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadSellerDetails);
+</script>
 </body></html>
