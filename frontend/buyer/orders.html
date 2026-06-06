@@ -1,10 +1,125 @@
-<body class="font-body-md text-on-surface">
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Your Orders | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#516447",
+                        "surface-tint": "#516447",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f",
+                        "gold-custom": "#D4AF37",
+                        "ivory-card": "#FFFDFB",
+                        "sage": "#8fa382",
+                        "sage-soft": "#F0F5EE",
+                        "terracotta": "#C87A53"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Work Sans"],
+                        "body-sm": ["Work Sans"],
+                        "headline-lg": ["EB Garamond"],
+                        "title-md": ["Work Sans"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["EB Garamond"],
+                        "body-md": ["Work Sans"],
+                        "data-price": ["Work Sans"],
+                        "title-serif": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .paper-texture {
+            background-color: #fff8f3;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL8HlWj3d7Jn4Rr8_Omv5ZuBBtt-PIgqkz6U0QXXzOoK5q0e2iSq3bOoqpTXh2YvRiqLxaCe5OhuMhLl4jceRshlhkOmGhbfFCTjJh3-xwIm5HZjubNr6bGDaUtGGUFXPBbtpSV5Dp4_OnQRqkj_K7lty0Zr5u7smkvT4F08O58kmMBsY6p-pt3_E4nOm_pM_Ea5de71J1n0EgSHpKPNJ7oL5rYlXXv8H9ZKYxP6h94AtGHixEvqCj_3MaC6RC_BwGgTNXM2ZNx-8)
+        }
+        .botanical-bg {
+            background-image: radial-gradient(circle at 90% 10%, rgba(81, 100, 71, 0.05) 0%, transparent 40%), radial-gradient(circle at 10% 80%, rgba(114, 84, 118, 0.05) 0%, transparent 40%)
+        }
+    </style>
+</head>
+<body class="paper-texture font-body-md text-on-surface antialiased">
 <!-- TopNavBar -->
-<!-- Standardised Top Navigation Bar (Task 57) -->
 <header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
-  <!-- Brand Logo (Task 59) -->
+  <!-- Brand Logo -->
   <div class="flex items-center flex-1">
-    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="home.html">
       Tohfa<span class="text-[#D4AF37]">.</span>
     </a>
   </div>
@@ -12,22 +127,22 @@
   <!-- Navigation Links -->
   <nav class="hidden md:flex items-center justify-center gap-xl h-full">
     <!-- Home -->
-    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
     <!-- Category (Discover) -->
-    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="category.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">search</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
-    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">movie</span>
       <span>Reels</span>
     </a>
     <!-- Profile -->
-    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="profile.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">person</span>
       <span>Profile</span>
     </a>
@@ -35,199 +150,266 @@
   
   <!-- Right side items -->
   <div class="flex items-center justify-end flex-1 gap-lg">
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="category.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
       <span class="material-symbols-outlined">search</span>
-    </button>
-    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
-      <span class="material-symbols-outlined">favorite</span>
     </a>
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
       <span class="material-symbols-outlined">notifications</span>
-    </button>
-    <!-- Profile Avatar (Task 58) -->
-    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
-      A
+      <span id="nav-notif-badge" class="absolute -top-1 -right-1 bg-error text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <!-- Profile Avatar -->
+    <a href="profile.html" id="nav-avatar" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+      U
     </a>
   </div>
 </header>
+
 <!-- Main Content Area -->
 <main class="relative min-h-screen pt-xl pb-xl max-w-[1440px] mx-auto px-margin-desktop bg-white">
 <!-- Botanical Watermark Overlay -->
 <div class="absolute inset-0 botanical-bg z-0 pointer-events-none"></div>
 <section class="relative z-10 max-w-4xl mx-auto">
-<h1 class="font-headline-lg text-display-hero text-primary mb-lg">Your orders</h1>
+<h1 class="font-headline-lg text-[36px] text-primary mb-lg">Your orders</h1>
 <!-- Filter Pills -->
 <div class="flex items-center gap-md mb-xl">
-<button class="bg-primary text-white px-lg py-sm rounded-full font-body-md transition-transform active:scale-95">All</button>
-<button class="bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors">Active</button>
-<button class="bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors">Delivered</button>
-<button class="bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors">Cancelled</button>
+<button id="pill-all" onclick="filterStatus('all')" class="bg-primary text-white px-lg py-sm rounded-full font-body-md transition-all">All</button>
+<button id="pill-active" onclick="filterStatus('active')" class="bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all">Active</button>
+<button id="pill-delivered" onclick="filterStatus('Delivered')" class="bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all">Delivered</button>
+<button id="pill-cancelled" onclick="filterStatus('Cancelled')" class="bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all">Cancelled</button>
 </div>
+
 <!-- Order List Stack -->
-<div class="flex flex-col gap-lg">
-<!-- Order Card 1: Awaiting Payment -->
-<div class="relative group bg-ivory border border-sage rounded-card p-lg artisan-shadow flex items-center justify-between hover:border-primary transition-all duration-300">
-<div class="flex items-center gap-xl">
-<!-- Thumbnails -->
-<div class="flex -space-x-6">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A close-up shot of a handcrafted brass diya with intricate traditional engravings, sitting on a weathered wooden table. The lighting is warm and golden, reflecting off the metallic surface. The background is a soft-focus artisanal studio setting with hints of greenery and rustic textures, maintaining a premium light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU5MKh32XiupvdvJAge7v9Dd8A-5IczTYjRKRjG_XmvlMsZkdqixkrIKJbYnO2hoUc4igYoj1oyZ-xGYbyiq8tPkQ8I1ObKuyeYTTn_6CR5Yhm-3TSWGVsoeWvATRWJ8g6qqKHV-8_lbwKc8SClRFaPG-HoTK0tyc9GmDXv-2Ewdab_Unod1jBi4yQML44DvbOQ1w3DwvPun88ufsHaqViBpxgqJd8P2MQCfJIF2H_RxaVf3OmFOZuV3y5oxxqLxSeSaYZVPcZJGY">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A beautifully textured handmade ceramic bowl with a soft sage green glaze, showing delicate brushstrokes of the artisan. The scene is bright and airy, with soft natural sunlight creating gentle shadows on a white linen surface. The atmosphere is serene and intentional, evoking a sense of handcrafted luxury and minimal design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAekO-e4Z9Kym-whZp3YzQjbeE59qwgo2jNvGw3G9dGQwoh2E_IcfvQztke526ZVoXyb33LsS-l6muEHwgQ-VhFICrD0UvBDQbYn-QsLbsQJyjwVivEwa9ewqvOlp9kf6SePxG7SmPGlU-ZEzxf1YItlN0AiEOnKDA5OG-1vHX2WDFCpDodVzxiD9sR-nEWWMRQ31u5b6xAB4_qOlDQDfWTXiyukP8Q9NKv6A3amWKhBPppUf2OGSxtI1WDCfEZkvU-eN_UmPOdrMo">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A hand-woven textile piece with intricate botanical patterns in deep forest green and ivory threads. The lighting is high-key and soft, highlighting the physical texture of the natural fibers. The overall composition is clean and minimalist, set against a pristine white studio background to emphasize the tactile quality of the craft." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDxJ5YDdesnrhfeluH3CqQNZ0Juy5CkgPLRx_Izr7rs0-A0p8Y45R6ekYKyIezhwPBATWtvuv1V7C6pDMLW9IS8axurKFlKOZa_LcZ88uT6ua55ipNAd6UAVZs7H3J17latC_ErfZTWBJZxX7GHcm6VF64gaOywMkbUiEquZK6Yp-prtITyz24gvZr7cpnPMGGEmjS0JabjCjGb5LWjlUnL37UOG6KGAvY4RNawvgNHL2X5ztgaXDJyAkjnjcSO489QzJ9dZYkLr0">
+<div id="orders-list-container" class="flex flex-col gap-lg">
+    <!-- Orders will load dynamically -->
 </div>
-<!-- Order Details -->
-<div>
-<div class="flex items-center gap-sm mb-xs">
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#TH-94210</span>
-<span class="text-outline opacity-40">•</span>
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">Oct 12, 2023</span>
-</div>
-<h3 class="font-lora text-title-serif text-on-surface mb-sm">Brass diya + 2 more</h3>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Awaiting Payment</span>
-</div>
-</div>
-<div class="text-right">
-<span class="font-data-price text-lg font-bold text-gold">$124.50</span>
-<div class="mt-md">
-<span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-</div>
-</div>
-<!-- Order Card 2: Processing (With Watermark) -->
-<div class="relative group bg-ivory border border-sage rounded-card p-lg artisan-shadow flex items-center justify-between hover:border-primary transition-all duration-300">
-<div class="absolute left-1/2 top-0 h-full w-12 wax-seal -translate-x-1/2 pointer-events-none opacity-10"></div>
-<div class="flex items-center gap-xl">
-<div class="flex -space-x-6">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A set of hand-poured soy candles in minimalist amber glass jars, arranged artistically on a light oak surface. The scene is illuminated by soft morning light, creating a peaceful and warm environment. The backdrop includes subtle watercolor textures in sage and ivory tones, consistent with a high-end crafter's sketchbook style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjDcLug000FlfJ3E5G3_AOIfAhQJ5cVI2PtwtmWa66LetQhs4LC6kwIVPd0PXzRUq--jqVerh3aa81JK1ChSre9ZTCvV3MaV0ZJmL5IoOADQqhgX1oWecSDR1D-12taTalWsaFXR-KGhJIqX6efYrSCoCJCmvY1tFw30KEoI6woKKBkjYj7sBIFlKAJkRgvcqvxv_hdcMCYFY-o6kBa-MwPZjK20tCW6R01csBFgXJt5Avqi81HJYXpf8EVa74lqkQlWN64na5y5o">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="Elegant hand-blown glass ornaments with delicate swirls of gold and forest green, catching the light in a bright studio space. The photography is sharp and professional, with a shallow depth of field that makes the artisanal details pop against a clean, ivory-toned background. The mood is sophisticated and celebratory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkNApOvwUZyNOP6tzGFWd7AgYYosGJ1xzLnjvDc0YAQhRfgxRNzvPNfTLADyHiu0_ldNx74UMc29QrxIbP319f3AxpCh14jItkvCgcV1ULR8MYWcYM4CEWLRe6px-CGhKZSdMMS2ffBYE0Di1EvKysgGIlr522IfxJvhW3t70pFIHqbCca6NTK-RCfSHGnWGpFN3-cQF1huori20XyXxQSUFEf7Nu-7CA6byxamj7mgoYIM5vjeiNemqrWuaD6LdX_DauHQwN6bZs">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A stack of handmade linen napkins tied with a simple jute twine and a sprig of dried lavender. The lighting is soft and diffused, highlighting the organic texture of the fabric. The aesthetic is clean and rustic, fitting a premium artisan gift shop's visual identity. The background is a flat, off-white surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtWsVIDCdbjxoSP-VleTZyOilS0CihiBsWgUa7vpo9AlyG4Y9IrH8GDsEmLXiS_zablHcMDzgaa7iGTS6StQt7pdTeOI_ScUBfId7MatXxrWeX3wUR4o73yJL1T1OBb2kwVGIvP3VyXVbkeFZLgwNX9jYfesM97YrweQEHI3NzskHBorn00avU4tRufLD5BrnNSR0nAHUSn71ystxXVWj4-By9nCSb1UPwWGsMAxq1DZZGZlJifeAJJWubwTyQv6mO3FLdka0joQc">
-</div>
-<div>
-<div class="flex items-center gap-sm mb-xs">
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#TH-94198</span>
-<span class="text-outline opacity-40">•</span>
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">Oct 08, 2023</span>
-</div>
-<h3 class="font-lora text-title-serif text-on-surface mb-sm">Botanical Candle Set</h3>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
-</div>
-</div>
-<div class="text-right">
-<span class="font-data-price text-lg font-bold text-gold">$88.00</span>
-<div class="mt-md">
-<span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-</div>
-</div>
-<!-- Order Card 3: Shipped -->
-<div class="relative group bg-ivory border border-sage rounded-card p-lg artisan-shadow flex items-center justify-between hover:border-primary transition-all duration-300">
-<div class="flex items-center gap-xl">
-<div class="flex -space-x-6">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A carved wooden jewelry box made of dark walnut with a fine hand-polished finish, displaying unique wood grain patterns. The setting is a bright, minimalist atelier with high-key lighting that emphasizes the quality of the wood. The style is timeless and artisanal, with a focus on human craftsmanship and natural materials." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi2y2nXa5YhnNOyIHBYpEGdicNq6i3lHFq0Fq5DTivckxk-ou2F8w0kcYJnVnqK3equqvP_4kerLdC1NYmA89FP5Cmd1mq_wtd2vHBlRDjaYj8XHmETUlkAjWtROyPhFK1Yhl_QShVb6l6zFb2KlepXp5xURwZk3a4aPtsyLROid3JEIZfn4HhQ14lkrg9hX4CA5kAJW_l6bhEfRf49eRpdFluxkmcHj0jTJh3mbi0KwKnYc_aWg84h79UtJXCqitgLgxy9g_tjHo">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A pair of handmade clay earrings with a subtle marble effect in sage and white, hanging from a minimalist gold display. The background is a clean white wall with soft, natural light coming from a side window. The overall aesthetic is modern, delicate, and deeply rooted in the artisan's personal creative process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4CZtiLu3_3qNTJUQVLqdWJ9r387G26DxI9PpUOtaxMVDdlpDxqMN6uu9Nd5XbT8PH7KXVLRcpqcYVN-cSFG9SdAvgMxGaerFt5zikxrxJT38mOheq6RyordtWavNT8eidA3IQduRCctmbbTyt0IWka0PRBhAuLbVxDCjaZDEFWIEarc36OcDNlp5HHxCDNdOFF8NObelhi8_UuAciXk7MLr791hWoyItDnHBXh-D_ffmvYPbl0MfbDIaxrF-kvmkeQZ8c_1kF9tY">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="Detailed close-up of ink sketches on heavy watercolor paper, depicting floral motifs and botanical sprigs. The paper has a visible physical texture and a warm ivory tone. The scene feels like a quiet moment in a sun-drenched studio, capturing the essence of the Tohfa brand's literary and intentional personality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5mud6ChapTkR_g--8l84rvhGoTLi_IAhbrdaBdZaMNE5legfqMkLdVFNpbHqG58kVRG5bU9-_6qVEP9Rrfu6_qH9Pd2S81bih8vljeIRy5qAxZ2YLbfJRX-X7UVYDlAnrfbIqIvoCnUU_tAA_DYig4h7Uu4fm5-BftT3_sKLGBzjUjrpzuHIVjEiBEYqdNcS7BQHy3ZzMvnQT05BYIZJy4BbEAQgx9gsM42Ww2-B4jaKSGI78ouFC4siQpgM48ahISyRupMbUYXA">
-</div>
-<div>
-<div class="flex items-center gap-sm mb-xs">
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#TH-93855</span>
-<span class="text-outline opacity-40">•</span>
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">Sep 29, 2023</span>
-</div>
-<h3 class="font-lora text-title-serif text-on-surface mb-sm">Walnut Keep-safe Box</h3>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
-</div>
-</div>
-<div class="text-right">
-<span class="font-data-price text-lg font-bold text-gold">$210.00</span>
-<div class="mt-md">
-<span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-</div>
-</div>
-<!-- Order Card 4: Delivered (With Watermark) -->
-<div class="relative group bg-ivory border border-sage rounded-card p-lg artisan-shadow flex items-center justify-between hover:border-primary transition-all duration-300">
-<div class="absolute right-12 top-0 h-full w-12 wax-seal pointer-events-none opacity-10"></div>
-<div class="flex items-center gap-xl">
-<div class="flex -space-x-6">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A variety of handmade soaps with embedded dried botanicals, wrapped in eco-friendly paper and tied with linen string. The color palette is a mix of soft earth tones and muted greens. The lighting is bright and clean, emphasizing the organic and sustainable nature of the products in a high-end artisanal setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGlSjJjC1gL5ZHf5OVS4Y37QN-BSEhhvQMVnUwnmCSFCNvcV5Ky2jpX7oTX0Cw7UN0kyulpeTir3d8WlAiUguIKRa15kCN8P71htJf_0TkyBEo_slxyi3Teb1P7VDK6_o-RpODbyYmIP14KgIBRy8aAYS516FV4DxBEyl-eb-l-xE2qDSWL02jgxlnZPOCUuBYcPFZZcLXfblf0kjb1PF5YR7-Pb5b8P2WnzeqWll1zDsqplyms7-Z5SpNVfAO5Re4JsM0ipEFU10">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A selection of artisanal stationery featuring hand-pressed paper and delicate ink illustrations of wild flowers. The scene is shot from a top-down perspective on a white desk, with soft shadows and a sense of quiet morning productivity. The overall style is minimal, tactile, and highly personal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAArHeKPCZ0hJ-QWTcb-KjJexihnwRxhcFgSqxV4OmGnp1gUbCbDEcKCvsr-uB_eSfkY-FgXTSW0O1LT-Am4MJhPhQUQAdmdvqaEZ8_jfgSSolA-ZhMg3NX8NIyBvuv9h9zONc2P-GNpVKl1FgdTdjxxIiXRLlM_PxkWnYw6t4TfU0OAZoLiSz4T8ZsLa5UIPI26bTpsBF3xAEV13jcYpE-hnvrQXHlU-KS9810JfFyLEKB0_dcNrnjDeqBfa_ZbA-7ban_6qxxvQo">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A single vintage-style brass inkwell sitting on a sheet of textured cream-colored paper. The background is a dark, moody wood surface, but the lighting on the inkwell itself is sharp and golden. This image conveys the brand's 'master crafter sketchbook' aesthetic, blending traditional tools with modern luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADaVdkyt8aeO2sni45hQDw4SRNrOaaud8-WWYBegcZ3CrDeLmgRo-lEptI_NsS2sGVOb6zq6cCanFLItqlH0xT3GAQM6S8aMgq9g5Nx_gEjNPYOE26JI78APYJD4rIxwHK3DQQAG7dW-vJZlV76982aT66Ivi57tRSEe0916_eGkYasf2V82XVlR6S_GldHMJwpatkqCfo0XlBb1Ypn62JBUKvYcyI57b8H_MXin5WEf3nDFtQaGkJD0w-h4MbkvDQvSFupuSrc5I">
-</div>
-<div>
-<div class="flex items-center gap-sm mb-xs">
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#TH-93710</span>
-<span class="text-outline opacity-40">•</span>
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">Sep 15, 2023</span>
-</div>
-<h3 class="font-lora text-title-serif text-on-surface mb-sm">Artisan Soap Bundle</h3>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
-</div>
-</div>
-<div class="text-right">
-<span class="font-data-price text-lg font-bold text-gold">$45.25</span>
-<div class="mt-md">
-<span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-</div>
-</div>
-<!-- Order Card 5: Cancelled -->
-<div class="relative group bg-ivory border border-sage rounded-card p-lg artisan-shadow flex items-center justify-between hover:border-primary transition-all duration-300">
-<div class="flex items-center gap-xl">
-<div class="flex -space-x-6 opacity-40">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A set of hand-woven wicker baskets in various sizes, arranged in a sunlit corner of a studio. The natural fibers show intricate detailing and a warm golden hue. The image is bright and airy, but with a slightly desaturated tone to indicate an inactive or cancelled order state, while maintaining the brand's premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGGUnYm7bIiUlpRVbKDJ8SP3Nzm5PEWtKk0e1WR21sr7XLKVuTfytXsw4Ehoyv8ZGSli2j0NadxpfsVg-ocEZnYT_XTq2LGrkROuwCOPp5Ndb09TAs_GMUPQ0jA20DpU-cLUuPSssDalCkhN9Tp6_U07BytsJ-SsSlnBBU7it1G3-lNu7VfPK4GlJZhIIR84cKUU_pf6aB_SBlkEuKz5q9encRMUscgDRekK0fLeYOZ7ScGQuMwHDt_83rtGMRrEgoA_88hQhy_Ww">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="Handcrafted pottery mugs with a rustic, uneven rim and a speckled beige glaze. The lighting is soft and flat, capturing the quiet and tactile beauty of the ceramics. The overall composition is clean and focused, set against a pristine white background with subtle sage-colored accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl0riB3UvTJVBQTVxbDCCINTOWjrcJk4e7rsGb7PULUqrZ_fBWzf5bMKDduEAlmr6Oc7sd_uBX9VLmAGvZcTwsvYaGst175MANE2gPSuBwoenm4apNKB45sZuVt9WfdbwDZWbghnBkdVRGcjcaJcL3R1diFzFAPIq57cWvSr-rFRPppcBhBxmiPtystM-VhclRQvW9op399-bWt2HQxF_3lIJQROVpkDLjQRquTK7q-cTmdJBBEF18ZhoA_wIvl5k0VGWYZTBXpr8">
-<img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm" data-alt="A cluster of dried lavender bundles tied with brown paper strips, sitting on a wooden workbench. The scene is softly lit by natural light, emphasizing the textures of the dried plants and the grain of the wood. The mood is nostalgic and calm, perfectly aligned with the Tohfa brand's artisanal storytelling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkjgfJEWy0nu2DwsTw7AbhnOpkAJwItKRT1KgVOTYX8gLGcmxvLKTE8OXtHeZviFHZejGTT1ww2OB04RuHV3Ps4KFOysMLGMdzbCqsVaKlBiuLeGiNsM3-luDPWySMWW4O1Oi6HgC5hVRksA5bx7vAvl1bPKXJu3fQRjwGbePBn6DU0eWSyraqXVXjn-cqK4TKiBNsN8e7bbquIriFwuR4Ca_XBF4TiuC3D-x8W_Lj3t5fiHNfP-BXwhl5Gx70tLFWOUfrDbkkz1k">
-</div>
-<div>
-<div class="flex items-center gap-sm mb-xs">
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#TH-92400</span>
-<span class="text-outline opacity-40">•</span>
-<span class="font-data-price text-label-caps text-on-surface-variant opacity-60">Aug 20, 2023</span>
-</div>
-<h3 class="font-lora text-title-serif text-on-surface mb-sm">Wicker Basket Set</h3>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#B14B3E] text-white">Cancelled</span>
-</div>
-</div>
-<div class="text-right">
-<span class="font-data-price text-lg font-bold text-gold opacity-50">$150.00</span>
-<div class="mt-md">
-<span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">close</span>
-</div>
-</div>
-</div>
+
+<!-- Load More Button -->
+<div class="flex justify-center mt-xl">
+    <button id="btn-load-more" onclick="loadMore()" class="hidden px-xl py-md bg-white border border-sage text-primary rounded-lg font-bold hover:bg-sage-soft transition-all transform active:scale-95">
+        Load more orders
+    </button>
 </div>
 </section>
 </main>
-<!-- Footer -->
-<footer class="w-full mt-xl bg-surface-container-low border-t border-outline-variant bg-opacity-50">
 
-</footer>
-<script>
-        // Simple micro-interaction for cards
-        document.querySelectorAll('.artisan-shadow').forEach(card => {
-            card.addEventListener('mousedown', () => {
-                card.style.transform = 'scale(0.98)';
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { formatPaise } from '/src/utils/currency.js';
+
+    let ordersList = [];
+    let nextCursor = null;
+    let currentStatus = 'all';
+
+    async function initOrders() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+        
+        // Set user avatar
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(window.atob(base64));
+            const avatarEl = document.getElementById('nav-avatar');
+            if (avatarEl) {
+                if (payload.username) {
+                    avatarEl.innerText = payload.username.substring(0, 1).toUpperCase();
+                } else if (payload.email) {
+                    avatarEl.innerText = payload.email.substring(0, 1).toUpperCase();
+                }
+            }
+            
+            // Fetch profile to get real avatar
+            try {
+                const res = await apiClient.get('/profile/me');
+                if (res.data && res.data.success && res.data.data.avatar_url) {
+                    if (avatarEl) {
+                        avatarEl.innerHTML = `<img src="${res.data.data.avatar_url}" alt="Avatar" class="w-full h-full object-cover"/>`;
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch avatar:", err);
+            }
+        } catch(e) {
+            console.error(e);
+        }
+        
+        // Fetch cart count for nav badge
+        try {
+            const res = await apiClient.get('/cart');
+            if (res.data && res.data.success) {
+                const count = res.data.data.item_count;
+                const navBadge = document.getElementById('nav-cart-badge');
+                if (navBadge) {
+                    if (count > 0) {
+                        navBadge.innerText = count;
+                        navBadge.classList.remove('hidden');
+                    } else {
+                        navBadge.classList.add('hidden');
+                    }
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+
+        await fetchOrders(true);
+    }
+
+    async function fetchOrders(reset = false) {
+        if (reset) {
+            nextCursor = null;
+            ordersList = [];
+        }
+        
+        const container = document.getElementById('orders-list-container');
+        if (reset) {
+            container.innerHTML = `
+                <div class="flex flex-col gap-sm py-8 text-center text-sage">
+                    <span class="material-symbols-outlined animate-spin text-[32px] text-primary">sync</span>
+                    <p class="font-body-md mt-sm text-on-surface-variant">Loading orders...</p>
+                </div>
+            `;
+        }
+
+        try {
+            let url = `/orders?limit=10`;
+            if (currentStatus !== 'all') {
+                url += `&status=${currentStatus}`;
+            }
+            if (nextCursor) {
+                url += `&cursor=${nextCursor}`;
+            }
+
+            const res = await apiClient.get(url);
+            if (res.data && res.data.success) {
+                const { orders, next_cursor, has_more } = res.data.data;
+                nextCursor = next_cursor;
+
+                if (reset) {
+                    ordersList = orders;
+                } else {
+                    ordersList = [...ordersList, ...orders];
+                }
+
+                renderOrders();
+
+                const loadMoreBtn = document.getElementById('btn-load-more');
+                if (has_more) {
+                    loadMoreBtn.classList.remove('hidden');
+                } else {
+                    loadMoreBtn.classList.add('hidden');
+                }
+            }
+        } catch (err) {
+            console.error("Error fetching orders:", err);
+            container.innerHTML = `
+                <div class="bg-error-container/20 border border-error/30 rounded-2xl p-lg text-center my-lg">
+                    <span class="material-symbols-outlined text-error text-[32px] mb-xs">error</span>
+                    <p class="font-body-md text-error font-semibold">Failed to load orders</p>
+                    <button onclick="window.location.reload()" class="mt-md px-md py-sm bg-primary text-white rounded-lg font-bold hover:bg-primary/95 transition-all">Retry</button>
+                </div>
+            `;
+        }
+    }
+
+    function getStatusBadgeClass(status) {
+        switch(status) {
+            case 'Awaiting Payment':
+                return 'bg-amber-50 text-amber-800 border border-amber-200';
+            case 'Processing':
+                return 'bg-violet-50 text-violet-800 border border-violet-200';
+            case 'Shipped':
+                return 'bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]';
+            case 'Delivered':
+                return 'bg-[#255338] text-white';
+            case 'Cancelled':
+                return 'bg-[#B14B3E] text-white';
+            default:
+                return 'bg-sage-soft text-primary border border-sage';
+        }
+    }
+
+    function renderOrders() {
+        const container = document.getElementById('orders-list-container');
+        if (ordersList.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-12 bg-white border border-dashed border-sage rounded-2xl p-lg">
+                    <span class="material-symbols-outlined text-sage text-[48px] mb-sm">receipt_long</span>
+                    <h3 class="font-headline-lg text-lg text-primary">No orders found</h3>
+                    <p class="text-on-surface-variant text-sm mt-xs max-w-xs mx-auto">You haven't placed any orders matching this filter yet.</p>
+                    <button onclick="window.location.href='category.html'" class="mt-md px-xl py-md bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all">Shop Handcrafted Goods</button>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = ordersList.map(o => {
+            const imgUrl = o.primary_image_url ? o.primary_image_url : 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted';
+            const formattedDate = new Date(o.created_at).toLocaleDateString('en-IN', {
+                year: 'numeric', month: 'short', day: 'numeric'
             });
-            card.addEventListener('mouseup', () => {
-                card.style.transform = 'scale(1)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'scale(1)';
-            });
+
+            return `
+                <div onclick="window.location.href='order-detail.html?id=${o.id}'" class="relative group bg-white border border-sage/50 rounded-2xl p-lg flex items-center justify-between hover:border-primary transition-all duration-300 cursor-pointer shadow-sm">
+                    <div class="flex items-center gap-xl">
+                        <!-- Thumbnail -->
+                        <div class="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-sage/30">
+                            <img class="w-full h-full object-cover" src="${imgUrl}" alt="${o.item_preview}">
+                        </div>
+                        <!-- Order Details -->
+                        <div>
+                            <div class="flex items-center gap-sm mb-xs flex-wrap">
+                                <span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#${o.order_ref}</span>
+                                <span class="text-outline opacity-40">•</span>
+                                <span class="font-data-price text-label-caps text-on-surface-variant opacity-60">${formattedDate}</span>
+                            </div>
+                            <h3 class="font-title-serif text-lg text-on-surface mb-sm font-semibold">${o.item_preview}</h3>
+                            <span class="font-body-md text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-0.5 border ${getStatusBadgeClass(o.status)}">${o.status}</span>
+                        </div>
+                    </div>
+                    <div class="text-right flex flex-col items-end gap-sm">
+                        <span class="font-data-price text-lg font-bold text-gold-custom">${formatPaise(o.total_paise)}</span>
+                        <span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">chevron_right</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function filterStatus(status) {
+        currentStatus = status;
+        
+        // Reset pills styling
+        const pills = ['all', 'active', 'Delivered', 'Cancelled'];
+        pills.forEach(p => {
+            const btn = document.getElementById(`pill-${p.toLowerCase()}`);
+            if (btn) {
+                if (p === status) {
+                    btn.className = "bg-primary text-white px-lg py-sm rounded-full font-body-md transition-all";
+                } else {
+                    btn.className = "bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all";
+                }
+            }
         });
 
-        // Filter pill toggle
-        const pills = document.querySelectorAll('.flex.items-center.gap-md button');
-        pills.forEach(pill => {
-            pill.addEventListener('click', () => {
-                pills.forEach(p => {
-                    p.classList.remove('bg-primary', 'text-white');
-                    p.classList.add('bg-ivory', 'border', 'border-sage', 'text-on-surface-variant');
-                });
-                pill.classList.remove('bg-ivory', 'border', 'border-sage', 'text-on-surface-variant');
-                pill.classList.add('bg-primary', 'text-white');
-            });
-        });
-    </script>
+        fetchOrders(true);
+    }
 
+    function loadMore() {
+        fetchOrders(false);
+    }
 
+    window.filterStatus = filterStatus;
+    window.loadMore = loadMore;
+
+    window.addEventListener('DOMContentLoaded', initOrders);
+</script>
 </body>
+</html>

@@ -1,10 +1,122 @@
-<body class="bg-background text-on-background font-body-md text-body-md overflow-x-hidden min-h-screen flex flex-col">
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Order Detail | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#516447",
+                        "surface-tint": "#516447",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f",
+                        "gold-custom": "#D4AF37",
+                        "ivory-card": "#FFFDFB",
+                        "sage": "#8fa382",
+                        "sage-soft": "#F0F5EE",
+                        "terracotta": "#C87A53"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Work Sans"],
+                        "body-sm": ["Work Sans"],
+                        "headline-lg": ["EB Garamond"],
+                        "title-md": ["Work Sans"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["EB Garamond"],
+                        "body-md": ["Work Sans"],
+                        "data-price": ["Work Sans"],
+                        "title-serif": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .paper-texture {
+            background-color: #fff8f3;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL8HlWj3d7Jn4Rr8_Omv5ZuBBtt-PIgqkz6U0QXXzOoK5q0e2iSq3bOoqpTXh2YvRiqLxaCe5OhuMhLl4jceRshlhkOmGhbfFCTjJh3-xwIm5HZjubNr6bGDaUtGGUFXPBbtpSV5Dp4_OnQRqkj_K7lty0Zr5u7smkvT4F08O58kmMBsY6p-pt3_E4nOm_pM_Ea5de71J1n0EgSHpKPNJ7oL5rYlXXv8H9ZKYxP6h94AtGHixEvqCj_3MaC6RC_BwGgTNXM2ZNx-8)
+        }
+    </style>
+</head>
+<body class="paper-texture bg-background text-on-background font-body-md text-body-md overflow-x-hidden min-h-screen flex flex-col">
 <!-- Top Bar Component -->
-<!-- Standardised Top Navigation Bar (Task 57) -->
 <header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
-  <!-- Brand Logo (Task 59) -->
+  <!-- Brand Logo -->
   <div class="flex items-center flex-1">
-    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="home.html">
       Tohfa<span class="text-[#D4AF37]">.</span>
     </a>
   </div>
@@ -12,22 +124,22 @@
   <!-- Navigation Links -->
   <nav class="hidden md:flex items-center justify-center gap-xl h-full">
     <!-- Home -->
-    <a href="/" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
     <!-- Category (Discover) -->
-    <a href="/category" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="category.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">search</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
-    <a href="/reels" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">movie</span>
       <span>Reels</span>
     </a>
     <!-- Profile -->
-    <a href="/profile" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="profile.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">person</span>
       <span>Profile</span>
     </a>
@@ -35,173 +147,355 @@
   
   <!-- Right side items -->
   <div class="flex items-center justify-end flex-1 gap-lg">
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="category.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
       <span class="material-symbols-outlined">search</span>
-    </button>
-    <a href="/cart" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
-      <span class="material-symbols-outlined">favorite</span>
     </a>
-    <button class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all">
+    <a href="cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
       <span class="material-symbols-outlined">notifications</span>
-    </button>
-    <!-- Profile Avatar (Task 58) -->
-    <a href="/profile" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer flex items-center justify-center" >
-      A
+      <span id="nav-notif-badge" class="absolute -top-1 -right-1 bg-error text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <!-- Profile Avatar -->
+    <a href="profile.html" id="nav-avatar" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+      U
     </a>
   </div>
 </header>
-<main class="flex-grow w-full max-w-5xl mx-auto px-margin-desktop py-xl relative">
-<!-- Header Section -->
-<section class="text-center mb-xl">
-<div class="flex items-center justify-center mb-2">
-<button class="material-symbols-outlined text-primary mr-4 hover:bg-surface-variant rounded-full p-1 transition-all">chevron_left</button>
-<h1 class="font-headline-lg text-headline-lg text-primary">Order ✦</h1>
-</div>
-<p class="font-data-price text-[12px] text-on-surface-variant opacity-60">#TF-2024-8842</p>
-</section>
-<!-- Status Timeline -->
-<section class="mb-xl px-10">
-<div class="relative flex justify-between items-center">
-<!-- Track Line -->
-<div class="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-sage-soft -z-10 overflow-hidden">
-<div class="h-full bg-primary" style="width: 37.5%;"></div>
-<div class="h-full bg-gold absolute top-0" style="width: 12.5%; left: 37.5%;"></div>
-</div>
-<!-- Placed -->
-<div class="flex flex-col items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-[14px]">
-<span class="material-symbols-outlined text-[16px]">check</span>
-</div>
-<span class="font-label-caps text-[10px] text-primary">PLACED</span>
-</div>
-<!-- Paid -->
-<div class="flex flex-col items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-[14px]">
-<span class="material-symbols-outlined text-[16px]">check</span>
-</div>
-<span class="font-label-caps text-[10px] text-primary">PAID</span>
-</div>
-<!-- Processing (Current) -->
-<div class="flex flex-col items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-white border-2 border-gold flex items-center justify-center">
-<div class="w-2 h-2 rounded-full bg-gold"></div>
-</div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
-</div>
-<!-- Shipped -->
-<div class="flex flex-col items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center"></div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
-</div>
-<!-- Delivered -->
-<div class="flex flex-col items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center"></div>
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
-</div>
-</div>
-</section>
-<!-- Main Content Grid -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-lg items-start">
-<!-- Left Side: Items & Shipping -->
-<div class="md:col-span-7 flex flex-col gap-lg">
-<!-- Item Card -->
-<div class="bg-ivory border border-sage-border rounded-xl p-md flex gap-md shadow-sm transition-transform active:scale-[0.98]">
-<div class="w-24 h-24 bg-surface-dim rounded-lg overflow-hidden flex-shrink-0">
-<img class="w-full h-full object-cover" data-alt="A high-resolution studio photograph of a handcrafted 'Midnight Lily' ceramic vase, featuring deep indigo glazes with delicate white floral patterns. The lighting is soft and warm, casting gentle shadows that emphasize the tactile, artisan-made texture of the clay. The vase sits on a clean ivory-colored surface, reflecting the refined and minimalist Tohfa brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM6XLnmYc4UMvbmEFb9YHAemupSzPh74TEyTxTpoHswdS4JAGwdOOs45wlJ-8av11WfDu3WV7U-bVaB3NGm3vlCU1T-Maoe0P-EChWBbQdbAGxaZuGTagtcwPTvp-u5rEndRzuSksLJKuGAYYGNgrUMJzXds8NLfx3YueXRXUe30RXO28Zi59d03SXHq7YatSt8BCN5QWUb8GWwKSBRCz9_2ue0Fmidapo8JZssntqsVBk3VxLSDMDCmho9s5nP4Cqq03vX4TFcR0">
-</div>
-<div class="flex flex-col justify-between flex-grow">
-<div>
-<h3 class="font-title-serif text-[14px] text-primary italic">Midnight Lily Ceramics</h3>
-<p class="font-data-price text-on-surface-variant text-[12px] mt-1">Qty 1 × ₹1,850</p>
-</div>
-<div class="self-end">
-<span class="font-data-price text-gold text-[16px] font-bold">₹1,850</span>
-</div>
-</div>
-</div>
-<!-- Shipping Card -->
-<div class="bg-ivory border border-sage-border rounded-xl p-md relative overflow-hidden">
-<!-- Wax Tape Motif -->
-<div class="absolute top-0 right-4 w-12 h-20 bg-primary opacity-[0.08] pointer-events-none transform -rotate-2" style="mask-image: linear-gradient(to bottom, black, transparent);"></div>
-<h4 class="font-label-caps text-label-caps text-primary mb-4">SHIPPED TO</h4>
-<p class="font-body-md text-[14px] text-on-surface max-w-xs leading-relaxed">
-                        Arjun Varma,<br>
-                        Flat 402, Lotus Residency,<br>
-                        12th Main Road, Indiranagar,<br>
-                        Bangalore, KA 560038
-                    </p>
-</div>
-</div>
-<!-- Right Side: Summary & Actions -->
-<div class="md:col-span-5 flex flex-col gap-lg">
-<!-- Summary Card -->
-<div class="bg-sage-wash rounded-xl p-lg relative overflow-hidden">
-<!-- Botanical Sprig Watermark -->
-<img class="absolute bottom-[-10%] right-[-10%] w-48 h-48 opacity-[0.09] botanical-watermark pointer-events-none" src="https://lh3.googleusercontent.com/aida/ADBb0uhaNAQVwxh_bAjHwfSc7GLzp6eOE6fF6BInLs0XbKyUenvcxfkhkffprYitK5BN9Tuzp-5aIeBU5rwy3lrfhvn3Q7FjzX8655eH2WK2lGYkhAVtkvqorQybh401-Ef77VzshaUXhCK7pKUJMsWUEILAB40tPFPv-fdve0r9Oyh6XRFVo7wSBCtBVAtzQPwzy3bxWHamRu7dc21ebQRbyVCPNuKDR4Gf_MylLlb3rB8fgCM1M6JyOkchbGw">
-<h4 class="font-label-caps text-label-caps text-primary mb-6">SUMMARY</h4>
-<div class="space-y-4 relative z-10">
-<div class="flex justify-between items-center">
-<span class="text-on-surface-variant font-body-md">Subtotal</span>
-<span class="font-data-price text-on-surface">₹1,850</span>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-on-surface-variant font-body-md">Shipping</span>
-<span class="font-data-price text-on-surface">₹120</span>
-</div>
-<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
-<span class="font-title-serif text-primary">Total</span>
-<span class="font-data-price text-gold text-[18px] font-bold">₹1,970</span>
-</div>
-</div>
-</div>
-<!-- Actions -->
-<div class="flex flex-col gap-4">
-<button class="w-full py-3 px-6 rounded-lg border border-primary text-primary font-body-md font-medium hover:bg-primary hover:text-white transition-all active:scale-[0.97]">
-                        View receipt
-                    </button>
-<button class="w-full py-2 text-terracotta font-body-md text-sm hover:underline transition-all">
-                        Cancel order
-                    </button>
-</div>
-</div>
-</div>
+
+<main id="order-detail-main" class="flex-grow w-full max-w-5xl mx-auto px-margin-desktop py-xl relative">
+    <!-- Loaded dynamically -->
 </main>
-<!-- Footer Component -->
-<footer class="mt-auto bg-surface-container-low dark:bg-surface-container-highest w-full rounded-none border-t border-outline-variant">
-<div class="flex flex-col items-center px-margin-desktop py-lg w-full gap-8">
-<div class="flex flex-col md:flex-row justify-between items-center w-full max-w-7xl">
-<!-- Brand Footer Logo -->
-<span class="font-label-caps text-label-caps text-primary dark:text-inverse-primary mb-4 md:mb-0">TOFA ARTISAN STUDIO</span>
-<!-- Footer Links -->
-<div class="flex gap-8 mb-4 md:mb-0">
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">About Us</a>
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Shipping Policy</a>
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Artisan Terms</a>
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-tertiary transition-colors font-body-md text-body-md" href="#">Contact</a>
-</div>
-</div>
-<p class="text-on-surface-variant dark:text-outline-variant font-body-md text-body-md opacity-60 text-center max-w-md">
-                © 2024 TOFA Artisan Studio. Handcrafted with intention.
-            </p>
-<!-- Mascot Sticker -->
-<div class="pt-4 pb-2">
-<img alt="Teddy &amp; Co Mascot" class="w-16 h-16 drop-shadow-sm hover:rotate-3 transition-transform cursor-help" src="https://lh3.googleusercontent.com/aida/ADBb0uh47JLQDW_y7bhY0Oc8cfvkBSlJTorja5YDkmRjXARu4VxifKxT2DI0dldEBdZpZm2yjW-9yUaNiHoXCoUxuli3l6lJxpJeRgSKPiTMdjJuDzqTSqZ_jZ8bhn2OffHL7YzcPhkgogv4TOQVzBU847jol6Unsy3cusz_lkJjsQ-ROZG-wJsCrKf4P4wjoBuQWfioZryl5vRQL1-X_tDSp4JJIZYUQoLKtJ-Zo_PYfWjYWAihVjyHM0Ilxj4" title="Teddy &amp; Co.">
-</div>
-</div>
-</footer>
-<!-- Background Watermark -->
-<div class="fixed inset-0 pointer-events-none -z-20 overflow-hidden">
-<img class="absolute top-[60%] left-[-5%] w-[400px] h-[400px] opacity-[0.05] grayscale rotate-12" src="https://lh3.googleusercontent.com/aida/ADBb0uhaNAQVwxh_bAjHwfSc7GLzp6eOE6fF6BInLs0XbKyUenvcxfkhkffprYitK5BN9Tuzp-5aIeBU5rwy3lrfhvn3Q7FjzX8655eH2WK2lGYkhAVtkvqorQybh401-Ef77VzshaUXhCK7pKUJMsWUEILAB40tPFPv-fdve0r9Oyh6XRFVo7wSBCtBVAtzQPwzy3bxWHamRu7dc21ebQRbyVCPNuKDR4Gf_MylLlb3rB8fgCM1M6JyOkchbGw">
-</div>
-<script>
-        // Micro-interactions for order cards
-        document.querySelectorAll('.bg-ivory').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.borderColor = '#255338';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.borderColor = '#BFCDB8';
-            });
-        });
-    </script>
+
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { formatPaise } from '/src/utils/currency.js';
+
+    let orderId = null;
+
+    async function initOrderDetail() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        // Setup user avatar
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(window.atob(base64));
+            const avatarEl = document.getElementById('nav-avatar');
+            if (avatarEl) {
+                if (payload.username) {
+                    avatarEl.innerText = payload.username.substring(0, 1).toUpperCase();
+                } else if (payload.email) {
+                    avatarEl.innerText = payload.email.substring(0, 1).toUpperCase();
+                }
+            }
+            
+            // Fetch profile to get real avatar
+            try {
+                const res = await apiClient.get('/profile/me');
+                if (res.data && res.data.success && res.data.data.avatar_url) {
+                    if (avatarEl) {
+                        avatarEl.innerHTML = `<img src="${res.data.data.avatar_url}" alt="Avatar" class="w-full h-full object-cover"/>`;
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch avatar:", err);
+            }
+        } catch(e) {
+            console.error(e);
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        orderId = params.get('id');
+        if (!orderId) {
+            window.location.href = 'orders.html';
+            return;
+        }
+
+        await fetchOrderDetail();
+    }
+
+    async function fetchOrderDetail() {
+        const main = document.getElementById('order-detail-main');
+        main.innerHTML = `
+            <div class="flex flex-col gap-sm py-16 text-center text-sage">
+                <span class="material-symbols-outlined animate-spin text-[48px] text-primary">sync</span>
+                <p class="font-body-md mt-sm text-on-surface-variant">Loading order details...</p>
+            </div>
+        `;
+
+        try {
+            const res = await apiClient.get(`/orders/${orderId}`);
+            if (res.data && res.data.success) {
+                const o = res.data.data;
+                renderOrderDetail(o);
+                updateTimeline(o.status);
+            }
+        } catch (err) {
+            console.error("Error fetching order detail:", err);
+            main.innerHTML = `
+                <div class="bg-error-container/20 border border-error/30 rounded-2xl p-lg text-center my-lg">
+                    <span class="material-symbols-outlined text-error text-[32px] mb-xs">error</span>
+                    <p class="font-body-md text-error font-semibold">Failed to load order detail</p>
+                    <button onclick="window.history.back()" class="mt-md px-md py-sm bg-primary text-white rounded-lg font-bold hover:bg-primary/95 transition-all">Go Back</button>
+                </div>
+            `;
+        }
+    }
+
+    function getStatusBadgeClass(status) {
+        switch(status) {
+            case 'Awaiting Payment':
+                return 'bg-amber-50 text-amber-800 border border-amber-200';
+            case 'Processing':
+                return 'bg-violet-50 text-violet-800 border border-violet-200';
+            case 'Shipped':
+                return 'bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]';
+            case 'Delivered':
+                return 'bg-[#255338] text-white';
+            case 'Cancelled':
+                return 'bg-[#B14B3E] text-white';
+            default:
+                return 'bg-sage-soft text-primary border border-sage';
+        }
+    }
+
+    function renderOrderDetail(o) {
+        const main = document.getElementById('order-detail-main');
+        const showCancelBtn = (o.status === 'Awaiting Payment' || o.status === 'Processing');
+        
+        main.innerHTML = `
+            <!-- Header Section -->
+            <section class="text-center mb-xl">
+                <div class="flex items-center justify-center mb-2">
+                    <button onclick="window.location.href='orders.html'" class="material-symbols-outlined text-primary mr-4 hover:bg-surface-variant rounded-full p-1 transition-all">chevron_left</button>
+                    <h1 class="font-headline-lg text-headline-lg text-primary">Order Details</h1>
+                </div>
+                <p class="font-data-price text-[14px] text-on-surface-variant font-bold">#${o.order_ref}</p>
+                <div class="mt-xs">
+                    <span class="font-body-md text-xs font-bold uppercase tracking-wider rounded-full px-3 py-1 border ${getStatusBadgeClass(o.status)}">${o.status}</span>
+                </div>
+            </section>
+
+            <!-- Status Timeline -->
+            <section class="mb-xl px-10">
+                <div class="relative flex justify-between items-center">
+                    <!-- Track Line -->
+                    <div class="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-sage-soft -z-10 overflow-hidden">
+                        <div id="timeline-progress-line" class="h-full bg-primary transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <!-- Placed -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="dot-placed" class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white text-[14px]"></div>
+                        <span class="font-label-caps text-[10px] text-primary">PLACED</span>
+                    </div>
+                    <!-- Paid -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="dot-paid" class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white text-[14px]"></div>
+                        <span class="font-label-caps text-[10px] text-primary">PAID</span>
+                    </div>
+                    <!-- Processing -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="dot-processing" class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white text-[14px]"></div>
+                        <span class="font-label-caps text-[10px] text-primary">PROCESSING</span>
+                    </div>
+                    <!-- Shipped -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="dot-shipped" class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white text-[14px]"></div>
+                        <span class="font-label-caps text-[10px] text-primary">SHIPPED</span>
+                    </div>
+                    <!-- Delivered -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="dot-delivered" class="w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white text-[14px]"></div>
+                        <span class="font-label-caps text-[10px] text-primary">DELIVERED</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-lg items-start">
+                <!-- Left Side: Items & Shipping -->
+                <div class="md:col-span-7 flex flex-col gap-lg">
+                    <!-- Items Card -->
+                    <div class="space-y-sm">
+                        <h4 class="font-label-caps text-label-caps text-primary tracking-widest uppercase mb-xs">ITEMS IN ORDER</h4>
+                        ${o.items.map(item => {
+                            const imgUrl = item.image_url ? item.image_url : 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted';
+                            return `
+                                <div class="bg-white border border-sage/30 rounded-xl p-md flex gap-md shadow-sm">
+                                    <div class="w-20 h-20 bg-surface-dim rounded-lg overflow-hidden flex-shrink-0 border border-sage/20">
+                                        <img class="w-full h-full object-cover" src="${imgUrl}" alt="${item.product_name}">
+                                    </div>
+                                    <div class="flex flex-col justify-between flex-grow">
+                                        <div>
+                                            <h3 onclick="window.location.href='product.html?id=${item.product_id}'" class="font-title-serif text-[15px] text-primary hover:underline cursor-pointer font-semibold">${item.product_name}</h3>
+                                            <p class="font-data-price text-on-surface-variant text-[12px] mt-1">Qty ${item.quantity} × ${formatPaise(item.unit_price_paise)}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="font-data-price text-gold-custom text-[15px] font-bold">${formatPaise(item.unit_price_paise * item.quantity)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <!-- Shipping Address Card -->
+                    <div class="bg-white border border-sage/30 rounded-xl p-lg relative overflow-hidden shadow-sm">
+                        <div class="absolute top-0 right-4 w-12 h-20 bg-primary opacity-[0.05] pointer-events-none transform -rotate-2"></div>
+                        <h4 class="font-label-caps text-label-caps text-primary mb-4 uppercase tracking-widest">SHIPPED TO</h4>
+                        <p class="font-body-md text-[14px] text-on-surface leading-relaxed">
+                            <span class="font-bold">${o.ship_to ? o.ship_to.full_name : 'N/A'}</span><br>
+                            ${o.ship_to ? `${o.ship_to.line1},<br>${o.ship_to.line2 ? `${o.ship_to.line2},<br>` : ''}${o.ship_to.city}, ${o.ship_to.state} - ${o.ship_to.pincode}` : 'No shipping details available'}
+                        </p>
+                        ${o.tracking_number ? `
+                            <div class="mt-md pt-md border-t border-outline-variant/30 flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-sage text-sm">local_shipping</span>
+                                <span class="font-body-md text-xs text-on-surface-variant font-semibold">Tracking No: ${o.tracking_number}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <!-- Right Side: Summary & Actions -->
+                <div class="md:col-span-5 flex flex-col gap-lg">
+                    <!-- Summary Card -->
+                    <div class="bg-sage-soft rounded-xl p-lg relative overflow-hidden border border-sage/20">
+                        <h4 class="font-label-caps text-label-caps text-primary mb-6 uppercase tracking-widest">SUMMARY</h4>
+                        <div class="space-y-4 relative z-10">
+                            <div class="flex justify-between items-center">
+                                <span class="text-on-surface-variant font-body-md">Subtotal</span>
+                                <span class="font-data-price text-on-surface">${formatPaise(o.subtotal_paise)}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-on-surface-variant font-body-md">Shipping</span>
+                                <span class="font-data-price text-on-surface">${formatPaise(o.shipping_paise)}</span>
+                            </div>
+                            <div class="pt-4 border-t border-outline-variant/40 flex justify-between items-center">
+                                <span class="font-title-serif text-primary text-base font-bold">Total</span>
+                                <span class="font-data-price text-gold-custom text-[18px] font-bold">${formatPaise(o.total_paise)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="flex flex-col gap-4">
+                        <button onclick="window.open('receipt.html?id=${o.id}', '_blank')" class="w-full py-3 px-6 rounded-lg border border-primary text-primary font-body-md font-bold hover:bg-primary hover:text-white transition-all transform active:scale-95 flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">print</span>
+                            <span>Print Receipt</span>
+                        </button>
+                        ${showCancelBtn ? `
+                            <button onclick="cancelOrder()" class="w-full py-2 text-terracotta font-body-md text-sm font-semibold hover:underline transition-all">
+                                Cancel order
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function updateTimeline(status) {
+        const line = document.getElementById('timeline-progress-line');
+        const placedDot = document.getElementById('dot-placed');
+        const paidDot = document.getElementById('dot-paid');
+        const processingDot = document.getElementById('dot-processing');
+        const shippedDot = document.getElementById('dot-shipped');
+        const deliveredDot = document.getElementById('dot-delivered');
+        
+        if (!line || !placedDot || !paidDot || !processingDot || !shippedDot || !deliveredDot) return;
+
+        // Reset dots
+        placedDot.className = 'w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white';
+        paidDot.className = 'w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white';
+        processingDot.className = 'w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white';
+        shippedDot.className = 'w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white';
+        deliveredDot.className = 'w-6 h-6 rounded-full bg-sage-soft flex items-center justify-center text-white';
+
+        placedDot.innerHTML = '';
+        paidDot.innerHTML = '';
+        processingDot.innerHTML = '';
+        shippedDot.innerHTML = '';
+        deliveredDot.innerHTML = '';
+
+        let progressWidth = '0%';
+
+        if (status === 'Cancelled') {
+            line.style.width = '0%';
+            placedDot.className = 'w-6 h-6 rounded-full bg-[#B14B3E] flex items-center justify-center text-white';
+            placedDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">close</span>';
+            return;
+        }
+
+        // Placed is complete
+        placedDot.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white';
+        placedDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+
+        if (status === 'Awaiting Payment') {
+            progressWidth = '12.5%';
+            paidDot.className = 'w-6 h-6 rounded-full bg-white border-2 border-gold-custom flex items-center justify-center';
+            paidDot.innerHTML = '<div class="w-2 h-2 rounded-full bg-gold-custom"></div>';
+        } else {
+            // Paid is complete
+            paidDot.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white';
+            paidDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+
+            if (status === 'Processing') {
+                progressWidth = '37.5%';
+                processingDot.className = 'w-6 h-6 rounded-full bg-white border-2 border-gold-custom flex items-center justify-center';
+                processingDot.innerHTML = '<div class="w-2 h-2 rounded-full bg-gold-custom"></div>';
+            } else {
+                // Processing is complete
+                processingDot.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white';
+                processingDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+
+                if (status === 'Shipped') {
+                    progressWidth = '62.5%';
+                    shippedDot.className = 'w-6 h-6 rounded-full bg-white border-2 border-gold-custom flex items-center justify-center';
+                    shippedDot.innerHTML = '<div class="w-2 h-2 rounded-full bg-gold-custom"></div>';
+                } else if (status === 'Delivered') {
+                    progressWidth = '100%';
+                    shippedDot.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white';
+                    shippedDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+                    
+                    deliveredDot.className = 'w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white';
+                    deliveredDot.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+                }
+            }
+        }
+
+        line.style.width = progressWidth;
+    }
+
+    async function cancelOrder() {
+        const reason = prompt("Please provide a reason for cancelling this order:");
+        if (reason === null) return; // cancelled prompt
+        if (reason.trim() === "") {
+            alert("A cancellation reason is required.");
+            return;
+        }
+
+        try {
+            const res = await apiClient.post(`/orders/${orderId}/cancel`, { reason: reason.trim() });
+            if (res.data && res.data.success) {
+                alert("Order cancelled successfully.");
+                await fetchOrderDetail();
+            }
+        } catch (err) {
+            console.error("Error cancelling order:", err);
+            alert(err.response?.data?.message || "Failed to cancel order.");
+        }
+    }
+
+    window.cancelOrder = cancelOrder;
+
+    window.addEventListener('DOMContentLoaded', initOrderDetail);
+</script>
 </body>
+</html>

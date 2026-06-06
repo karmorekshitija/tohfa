@@ -1,9 +1,10 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Tohfa - Printable Receipt #TF-2024-8842</title>
+<title>Printable Receipt | Tohfa</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Merriweather:ital,wght@0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;1,700&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
@@ -58,7 +59,7 @@
             }
         }
         body {
-            background-color: #f3f4f6; /* Grey background for screen preview only */
+            background-color: #f3f4f6;
             -webkit-print-color-adjust: exact;
         }
         .a4-page {
@@ -98,127 +99,12 @@
 <div class="no-print bg-primary text-white p-4 text-center sticky top-0 z-50">
 <p class="font-label-caps text-[12px]">Tohfa Merchant Studio • Print Layout Preview</p>
 </div>
+
 <!-- Main Receipt Canvas -->
-<main class="a4-page overflow-hidden">
-<!-- Header Section -->
-<header class="relative mb-12 text-center">
-<!-- Watermark -->
-<div class="absolute inset-x-0 -top-10 h-32 flex justify-center items-center pointer-events-none opacity-[0.08]">
-<span class="material-symbols-outlined text-[120px] text-sage">eco</span>
-</div>
-<div class="pt-8 mb-4">
-<h1 class="font-headline-lg text-[42px] italic text-primary leading-none">
-                    Tohfa<span class="text-gold">.</span>
-</h1>
-</div>
-<div class="w-full h-px bg-outline-variant/50 max-w-[200px] mx-auto mb-8"></div>
-<div class="flex flex-col items-center gap-2">
-<h2 class="font-label-caps text-receipt-label text-primary">RECEIPT</h2>
-<div class="font-data-price text-order-meta text-on-surface-variant">
-                    Order #TF-2024-8842 <span class="mx-2 text-outline-variant">·</span> November 16, 2024
-                </div>
-</div>
-</header>
-<!-- Shipping & Billing Info -->
-<section class="grid grid-cols-2 gap-12 mb-16 border-b border-outline-variant/30 pb-12">
-<div>
-<h3 class="font-label-caps text-[11px] text-sage mb-4 uppercase">Billed to</h3>
-<div class="space-y-1 text-[14px] leading-relaxed">
-<p class="font-bold">Aarav Sharma</p>
-<p>42 Magnolia Gardens</p>
-<p>Bandra West, Mumbai</p>
-<p>Maharashtra, 400050</p>
-<p class="pt-2 italic text-on-surface-variant">aarav.sharma@email.com</p>
-</div>
-</div>
-<div>
-<h3 class="font-label-caps text-[11px] text-sage mb-4 uppercase">Shipped to</h3>
-<div class="space-y-1 text-[14px] leading-relaxed">
-<p class="font-bold">Aarav Sharma</p>
-<p>42 Magnolia Gardens</p>
-<p>Bandra West, Mumbai</p>
-<p>Maharashtra, 400050</p>
-<p class="pt-2 text-on-surface-variant">Contact: +91 98XXX XXX01</p>
-</div>
-</div>
-</section>
-<!-- Items Table -->
-<section class="mb-12">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="border-b border-primary">
-<th class="font-label-caps text-table-header py-4 text-primary">ITEM</th>
-<th class="font-label-caps text-table-header py-4 text-primary text-center">QTY</th>
-<th class="font-label-caps text-table-header py-4 text-primary text-right">UNIT</th>
-<th class="font-label-caps text-table-header py-4 text-primary text-right">AMOUNT</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant/30">
-<tr>
-<td class="py-6">
-<p class="font-artisan-serif text-[16px] text-primary">Midnight Lily Ceramics (Set of 2)</p>
-<p class="text-[12px] text-on-surface-variant mt-1 italic">Hand-thrown stoneware with indigo floral wash</p>
-</td>
-<td class="py-6 font-data-price text-[14px] text-center">1</td>
-<td class="py-6 font-data-price text-[14px] text-right">₹1,850</td>
-<td class="py-6 font-data-price text-[14px] text-right">₹1,850</td>
-</tr>
-<tr>
-<td class="py-6">
-<p class="font-artisan-serif text-[16px] text-primary">Organic Cotton Loom Wrap</p>
-<p class="text-[12px] text-on-surface-variant mt-1 italic">300TC herbal dyed charcoal wrap</p>
-</td>
-<td class="py-6 font-data-price text-[14px] text-center">1</td>
-<td class="py-6 font-data-price text-[14px] text-right">₹850</td>
-<td class="py-6 font-data-price text-[14px] text-right">₹850</td>
-</tr>
-</tbody>
-</table>
-</section>
-<!-- Totals Section -->
-<section class="flex justify-end mb-24">
-<div class="w-full max-w-[280px]">
-<div class="flex justify-between py-2">
-<span class="font-artisan-serif text-[14px] text-on-surface-variant">Subtotal</span>
-<span class="font-data-price text-[14px]">₹2,700</span>
-</div>
-<div class="flex justify-between py-2">
-<span class="font-artisan-serif text-[14px] text-on-surface-variant">Shipping</span>
-<span class="font-data-price text-[14px]">₹0</span>
-</div>
-<div class="flex justify-between py-4 mt-2 border-t border-outline-variant/50">
-<span class="font-label-caps text-[14px] text-primary">Total Amount</span>
-<span class="font-data-price text-[20px] font-bold text-gold">₹2,700</span>
-</div>
-</div>
-</section>
-<!-- Footer Area -->
-<footer class="mt-auto pt-12 border-t border-outline-variant/20 relative">
-<div class="flex flex-col items-center gap-6">
-<p class="font-artisan-serif text-[14px] text-primary">Midnight Lily Studio</p>
-<div class="flex items-center gap-3">
-<div class="h-px w-8 bg-outline-variant"></div>
-<p class="font-artisan-serif italic text-[14px] text-on-surface-variant">
-                        Made with care, thank you ✦
-                    </p>
-<div class="h-px w-8 bg-outline-variant"></div>
-</div>
-</div>
-<!-- Corner Detail (Wax Seal Motif) -->
-<div class="absolute bottom-4 right-0 flex items-center gap-4 opacity-40">
-<div class="text-right">
-<p class="font-label-caps text-[9px] text-sage leading-tight">AUTHENTIC<br>ARTISAN GOODS</p>
-</div>
-<div class="wax-seal">
-<span class="material-symbols-outlined text-[24px] text-primary" style="font-variation-settings: 'FILL' 1;">
-                        verified
-                    </span>
-</div>
-</div>
-</footer>
-<!-- Bottom Border Accent -->
-<div class="absolute bottom-0 left-0 w-full h-1 bg-primary"></div>
+<main id="receipt-canvas" class="a4-page overflow-hidden flex flex-col">
+    <!-- Loaded dynamically -->
 </main>
+
 <!-- Invisible trigger for auto-print on load if needed or manual button for preview -->
 <div class="no-print fixed bottom-8 right-8 flex gap-4">
 <button class="bg-primary text-white font-label-caps px-8 py-4 shadow-xl hover:opacity-90 transition-all flex items-center gap-2" onclick="window.print()">
@@ -226,4 +112,165 @@
             PRINT RECEIPT
         </button>
 </div>
-</body></html>
+
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { formatPaise } from '/src/utils/currency.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        if (!id) {
+            document.getElementById('receipt-canvas').innerHTML = `<p class="p-8 text-center text-error">No order ID specified.</p>`;
+            return;
+        }
+
+        try {
+            const res = await apiClient.get(`/orders/${id}/receipt`);
+            if (res.data && res.data.success) {
+                const r = res.data.data;
+                document.title = `Tohfa - Printable Receipt #${r.order_ref}`;
+                renderReceipt(r);
+            }
+        } catch (err) {
+            console.error("Error fetching receipt:", err);
+            document.getElementById('receipt-canvas').innerHTML = `
+                <p class="p-8 text-center text-error font-semibold">Failed to load receipt.</p>
+            `;
+        }
+    });
+
+    function renderReceipt(r) {
+        const canvas = document.getElementById('receipt-canvas');
+        const formattedDate = new Date(r.created_at).toLocaleDateString('en-IN', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        canvas.innerHTML = `
+            <!-- Header Section -->
+            <header class="relative mb-12 text-center">
+            <!-- Watermark -->
+            <div class="absolute inset-x-0 -top-10 h-32 flex justify-center items-center pointer-events-none opacity-[0.08]">
+            <span class="material-symbols-outlined text-[120px] text-sage">eco</span>
+            </div>
+            <div class="pt-8 mb-4">
+            <h1 class="font-headline-lg text-[42px] italic text-primary leading-none">
+                                Tohfa<span class="text-gold">.</span>
+            </h1>
+            </div>
+            <div class="w-full h-px bg-outline-variant/50 max-w-[200px] mx-auto mb-8"></div>
+            <div class="flex flex-col items-center gap-2">
+            <h2 class="font-label-caps text-receipt-label text-primary">RECEIPT</h2>
+            <div class="font-data-price text-order-meta text-on-surface-variant">
+                                Order #${r.order_ref} <span class="mx-2 text-outline-variant">·</span> ${formattedDate}
+                            </div>
+            </div>
+            </header>
+            
+            <!-- Shipping & Billing Info -->
+            <section class="grid grid-cols-2 gap-12 mb-16 border-b border-outline-variant/30 pb-12">
+            <div>
+            <h3 class="font-label-caps text-[11px] text-sage mb-4 uppercase">Billed to</h3>
+            <div class="space-y-1 text-[14px] leading-relaxed">
+            <p class="font-bold">${r.billed_to.full_name}</p>
+            <p>${r.billed_to.line1}</p>
+            ${r.billed_to.line2 ? `<p>${r.billed_to.line2}</p>` : ''}
+            <p>${r.billed_to.city}, ${r.billed_to.state}</p>
+            <p>${r.billed_to.pincode}</p>
+            ${r.billed_to.phone ? `<p class="pt-2 italic text-on-surface-variant">Phone: ${r.billed_to.phone}</p>` : ''}
+            </div>
+            </div>
+            <div>
+            <h3 class="font-label-caps text-[11px] text-sage mb-4 uppercase">Shipped to</h3>
+            <div class="space-y-1 text-[14px] leading-relaxed">
+            <p class="font-bold">${r.shipped_to.full_name}</p>
+            <p>${r.shipped_to.line1}</p>
+            ${r.shipped_to.line2 ? `<p>${r.shipped_to.line2}</p>` : ''}
+            <p>${r.shipped_to.city}, ${r.shipped_to.state}</p>
+            <p>${r.shipped_to.pincode}</p>
+            </div>
+            </div>
+            </section>
+            
+            <!-- Items Table -->
+            <section class="mb-12">
+            <table class="w-full text-left border-collapse">
+            <thead>
+            <tr class="border-b border-primary">
+            <th class="font-label-caps text-table-header py-4 text-primary">ITEM</th>
+            <th class="font-label-caps text-table-header py-4 text-primary text-center">QTY</th>
+            <th class="font-label-caps text-table-header py-4 text-primary text-right">UNIT</th>
+            <th class="font-label-caps text-table-header py-4 text-primary text-right">AMOUNT</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant/30">
+            ${r.items.map(item => `
+                <tr>
+                <td class="py-6">
+                <p class="font-artisan-serif text-[16px] text-primary font-semibold">${item.product_name}</p>
+                <p class="text-[12px] text-on-surface-variant mt-1 italic">${item.description || ''}</p>
+                </td>
+                <td class="py-6 font-data-price text-[14px] text-center">${item.quantity}</td>
+                <td class="py-6 font-data-price text-[14px] text-right">${formatPaise(item.unit_price_paise)}</td>
+                <td class="py-6 font-data-price text-[14px] text-right font-semibold">${formatPaise(item.amount_paise)}</td>
+                </tr>
+            `).join('')}
+            </tbody>
+            </table>
+            </section>
+            
+            <!-- Totals Section -->
+            <section class="flex justify-end mb-24">
+            <div class="w-full max-w-[280px]">
+            <div class="flex justify-between py-2">
+            <span class="font-artisan-serif text-[14px] text-on-surface-variant">Subtotal</span>
+            <span class="font-data-price text-[14px]">${formatPaise(r.subtotal_paise)}</span>
+            </div>
+            <div class="flex justify-between py-2">
+            <span class="font-artisan-serif text-[14px] text-on-surface-variant">Shipping</span>
+            <span class="font-data-price text-[14px]">${formatPaise(r.shipping_paise)}</span>
+            </div>
+            <div class="flex justify-between py-4 mt-2 border-t border-outline-variant/50">
+            <span class="font-label-caps text-[14px] text-primary">Total Amount</span>
+            <span class="font-data-price text-[20px] font-bold text-gold">${formatPaise(r.total_paise)}</span>
+            </div>
+            </div>
+            </section>
+            
+            <!-- Footer Area -->
+            <footer class="mt-auto pt-12 border-t border-outline-variant/20 relative">
+            <div class="flex flex-col items-center gap-6">
+            <p class="font-artisan-serif text-[14px] text-primary">${r.seller_name || 'Tohfa Artisan'}</p>
+            <div class="flex items-center gap-3">
+            <div class="h-px w-8 bg-outline-variant"></div>
+            <p class="font-artisan-serif italic text-[14px] text-on-surface-variant">
+                                Made with care, thank you ✦
+                            </p>
+            <div class="h-px w-8 bg-outline-variant"></div>
+            </div>
+            </div>
+            <!-- Corner Detail (Wax Seal Motif) -->
+            <div class="absolute bottom-4 right-0 flex items-center gap-4 opacity-40">
+            <div class="text-right">
+            <p class="font-label-caps text-[9px] text-sage leading-tight">AUTHENTIC<br>ARTISAN GOODS</p>
+            </div>
+            <div class="wax-seal">
+            <span class="material-symbols-outlined text-[24px] text-primary" style="font-variation-settings: 'FILL' 1;">
+                                    verified
+                                </span>
+            </div>
+            </div>
+            </footer>
+            <!-- Bottom Border Accent -->
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-primary"></div>
+        `;
+    }
+</script>
+</body>
+</html>
