@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Login | Tohfa</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;500&amp;family=EB+Garamond:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#28132d",
+                    "surface-container": "#f4ede3",
+                    "outline": "#76786e",
+                    "on-tertiary-fixed": "#1d1c16",
+                    "on-secondary-fixed-variant": "#573e5b",
+                    "on-primary-fixed-variant": "#404a2c",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#e7e2d9",
+                    "surface-tint": "#576242",
+                    "secondary": "#705673",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#151e05",
+                    "on-tertiary-fixed-variant": "#494740",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#b3afa7",
+                    "tertiary-fixed-dim": "#cac6be",
+                    "on-surface-variant": "#45483f",
+                    "on-primary-container": "#3c4628",
+                    "surface-variant": "#e9e1d8",
+                    "secondary-fixed-dim": "#ddbcdf",
+                    "secondary-fixed": "#fad8fb",
+                    "primary-container": "#a8b48e",
+                    "secondary-container": "#f7d5f8",
+                    "surface-container-highest": "#e9e1d8",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1e1b15",
+                    "primary-fixed": "#dbe8bf",
+                    "on-secondary": "#ffffff",
+                    "background": "#fff8f1",
+                    "surface-bright": "#fff8f1",
+                    "inverse-primary": "#bfcba4",
+                    "tertiary": "#615e57",
+                    "surface": "#fff8f1",
+                    "outline-variant": "#c6c7bb",
+                    "surface-dim": "#e0d9cf",
+                    "surface-container-low": "#faf2e9",
+                    "primary": "#576242",
+                    "on-background": "#1e1b15",
+                    "on-tertiary-container": "#44423c",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f7f0e6",
+                    "primary-fixed-dim": "#bfcba4",
+                    "inverse-surface": "#33302a",
+                    "surface-container-high": "#efe7dd",
+                    "on-secondary-container": "#745a78"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "80px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-md": ["EB Garamond"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "headline-lg": ["EB Garamond"],
+                    "display-lg": ["EB Garamond"],
+                    "headline-lg-mobile": ["EB Garamond"],
+                    "body-lg": ["Be Vietnam Pro"],
+                    "label-sm": ["Be Vietnam Pro"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "300"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    .botanical-bg {
+        background-color: #fff8f1;
+        background-image: radial-gradient(#e9e1d8 0.5px, transparent 0.5px);
+        background-size: 24px 24px;
+    }
+    input:focus {
+        outline: none;
+        border-color: #576242 !important;
+        ring: 0 !important;
+    }
+</style>
+</head>
+<body class="botanical-bg font-body-md text-on-surface min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop relative overflow-hidden">
+
+<main class="w-full max-w-[440px] z-10">
+    <div class="bg-surface-container-lowest border border-outline-variant p-8 md:p-10 rounded-lg shadow-sm">
+        <!-- Logo Section -->
+        <header class="text-center mb-8">
+            <h1 class="font-headline-lg text-3xl text-primary tracking-tight mb-2">Tohfa</h1>
+            <p class="font-label-sm text-xs text-on-surface-variant uppercase tracking-widest font-semibold">Admin Portal</p>
+        </header>
+
+        <!-- Form -->
+        <form id="admin-login-form" class="space-y-4">
+            <div>
+                <label for="username-input" class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Username or Email</label>
+                <input id="username-input" class="w-full px-4 py-3 bg-surface border border-outline-variant rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="admin" type="text" required>
+            </div>
+
+            <div>
+                <label for="password-input" class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Password</label>
+                <input id="password-input" class="w-full px-4 py-3 bg-surface border border-outline-variant rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" type="password" required>
+            </div>
+
+            <!-- Error message -->
+            <div id="error-message" class="hidden text-xs text-error font-medium p-3 bg-error-container rounded-lg">
+                Invalid admin credentials.
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-primary/95 text-on-primary py-3.5 rounded-full text-sm font-semibold transition-all active:scale-[0.98] shadow-md">
+                Login as Admin
+            </button>
+        </form>
+    </div>
+</main>
+
+<script>
+const API_BASE = window.location.origin;
+
+document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const errorMsg = document.getElementById('error-message');
+    
+    btn.disabled = true;
+    btn.textContent = 'Logging in…';
+    errorMsg.classList.add('hidden');
+
+    const username = document.getElementById('username-input').value.trim();
+    const password = document.getElementById('password-input').value;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok && data.success) {
+            sessionStorage.setItem('tohfa_admin_token', data.data.access_token);
+            window.location.href = '/admin/sellers.html';
+        } else {
+            if (res.status === 401) {
+                errorMsg.textContent = 'Invalid admin credentials.';
+            } else {
+                errorMsg.textContent = data.message || 'An error occurred during login.';
+            }
+            errorMsg.classList.remove('hidden');
+            btn.disabled = false;
+            btn.textContent = 'Login as Admin';
+        }
+    } catch (err) {
+        console.error('Login error:', err);
+        errorMsg.textContent = 'Failed to connect to the server.';
+        errorMsg.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Login as Admin';
+    }
+});
+</script>
+</body>
+</html>
