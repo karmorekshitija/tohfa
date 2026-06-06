@@ -147,72 +147,103 @@
     </header>
 <!-- Main Reels Content Canvas -->
 <main class="relative flex-1 w-full bg-inverse-surface overflow-hidden">
-<!-- Background Video Placeholder -->
-<div class="absolute inset-0 z-0">
-<img alt="Crafting video" class="w-full h-full object-cover" data-alt="A highly detailed cinematic shot of artisan hands meticulously crocheting a small, vibrant yellow and black bumblebee. The setting is a sun-drenched, rustic workshop with soft morning light streaming through a window, highlighting the fine textures of the wool. The background is a soft-focus blur of botanical sketches and spools of natural thread, creating a warm, artisanal atmosphere. The overall mood is peaceful and focuses on the high-end craft process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcZS_YsG76n0DdA2V4RJ5bhdkaivWJ4nCbWSqLhe5PhnguddomNJZUkZt33uy4dkeahrMK9blYX2BfflEn23ZE5jD6enFK7gwLldlwKnr80z1v-kUxx10OwsQrTP0hEDtxLPiqGf37gRE2r7z_1nHgaOveuP9llIxyIWu4yKgnEA0K3d3mX7JttNy6HlRfeyZXt73inBJ7d3tJ_3Lyf821dv4M-_PGpIU4lKFnxlI5nC65IUfs8CpmYKtYQFTymKDhIys16MaGl3I"/>
-<div class="absolute inset-0 video-overlay-gradient"></div>
+<!-- Video / Thumbnail Container -->
+<div class="absolute inset-0 z-0 flex items-center justify-center">
+    <video id="reel-video" class="w-full h-full object-contain bg-black hidden" loop playsinline autoplay muted></video>
+    <img id="reel-thumbnail" alt="Crafting video" class="w-full h-full object-cover" src=""/>
+    <div class="absolute inset-0 video-overlay-gradient"></div>
 </div>
+
 <!-- Butterfly & Botanical Decorative Flourishes -->
 <div class="absolute top-10 right-10 z-10 opacity-20 pointer-events-none">
-<span class="material-symbols-outlined text-[120px] text-primary-fixed">flutter_dash</span>
+    <span class="material-symbols-outlined text-[120px] text-primary-fixed">flutter_dash</span>
 </div>
+
+<!-- Prev/Next Navigation Buttons -->
+<div class="absolute left-6 bottom-40 flex flex-col gap-4 z-30">
+    <button id="btn-prev-reel" class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all active:scale-95 disabled:opacity-25" disabled>
+        <span class="material-symbols-outlined">arrow_upward</span>
+    </button>
+    <button id="btn-next-reel" class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all active:scale-95 disabled:opacity-25" disabled>
+        <span class="material-symbols-outlined">arrow_downward</span>
+    </button>
+</div>
+
 <!-- Reel Content Overlay -->
 <div class="absolute inset-0 z-20 flex flex-col justify-end px-margin-mobile pb-[100px] md:px-margin-desktop md:pb-24">
-<!-- Side Interaction Menu -->
-<div class="absolute right-6 bottom-40 flex flex-col items-center gap-6 z-30">
-<div class="flex flex-col items-center gap-1 group cursor-pointer">
-<div class="w-12 h-12 rounded-full bg-surface-container-low/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/40 transition-all">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+    <!-- Side Interaction Menu -->
+    <div class="absolute right-6 bottom-40 flex flex-col items-center gap-6 z-30">
+        <!-- Like -->
+        <button id="btn-like" class="flex flex-col items-center gap-1 group cursor-pointer focus:outline-none">
+            <div class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all">
+                <span id="like-icon" class="material-symbols-outlined text-white transition-colors">favorite</span>
+            </div>
+            <span id="like-count" class="text-white text-xs font-label-caps drop-shadow-md">0</span>
+        </button>
+        <!-- Comments -->
+        <button id="btn-comment" class="flex flex-col items-center gap-1 group cursor-pointer focus:outline-none">
+            <div class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all">
+                <span class="material-symbols-outlined text-white">chat_bubble</span>
+            </div>
+            <span id="comment-count" class="text-white text-xs font-label-caps drop-shadow-md">0</span>
+        </button>
+        <!-- Save -->
+        <button id="btn-save" class="flex flex-col items-center gap-1 group cursor-pointer focus:outline-none">
+            <div class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all">
+                <span id="save-icon" class="material-symbols-outlined text-white">bookmark</span>
+            </div>
+            <span class="text-white text-xs font-label-caps drop-shadow-md">Save</span>
+        </button>
+    </div>
+
+    <!-- Header Text for Reel -->
+    <div class="mb-6 max-w-lg">
+        <h1 id="reel-caption" class="font-headline-lg-mobile text-headline-lg-mobile text-white drop-shadow-md leading-snug">
+            Loading...
+        </h1>
+        <div id="reel-seller-info" class="text-white text-sm font-semibold mt-2 drop-shadow-md flex items-center gap-2 cursor-pointer">
+            <span id="reel-seller-avatar" class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs overflow-hidden">U</span>
+            <span id="reel-seller-name">Seller</span>
+        </div>
+    </div>
+
+    <!-- Product Detail Box (Floating Card) -->
+    <div id="linked-product-card" class="bg-surface-container-low/95 dark:bg-inverse-surface backdrop-blur-md p-4 rounded-xl border border-outline-variant/20 shadow-[0_4px_16px_rgba(74,69,62,0.12)] max-w-sm flex items-center gap-4 group hover:bg-surface-bright transition-colors cursor-pointer hidden">
+        <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-high flex items-center justify-center">
+            <img id="product-img" alt="Product Image" class="w-full h-full object-cover" src=""/>
+        </div>
+        <div class="flex-grow">
+            <div class="flex justify-between items-start">
+                <h3 id="product-name" class="font-title-md text-title-md text-on-surface leading-tight font-semibold">Product Title</h3>
+                <span class="material-symbols-outlined text-primary">add_shopping_cart</span>
+            </div>
+            <div class="flex items-baseline gap-2 mt-1">
+                <span id="product-price" class="font-bold text-primary">₹0.00</span>
+            </div>
+        </div>
+    </div>
 </div>
-<span class="text-white text-xs font-label-caps">2.4k</span>
-</div>
-<div class="flex flex-col items-center gap-1 group cursor-pointer">
-<div class="w-12 h-12 rounded-full bg-surface-container-low/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/40 transition-all">
-<span class="material-symbols-outlined">chat_bubble</span>
-</div>
-<span class="text-white text-xs font-label-caps">128</span>
-</div>
-<div class="flex flex-col items-center gap-1 group cursor-pointer">
-<div class="w-12 h-12 rounded-full bg-surface-container-low/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/40 transition-all">
-<span class="material-symbols-outlined">share</span>
-</div>
-<span class="text-white text-xs font-label-caps">Share</span>
-</div>
-<div class="flex flex-col items-center gap-1 group cursor-pointer">
-<div class="w-12 h-12 rounded-full bg-surface-container-low/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/40 transition-all">
-<span class="material-symbols-outlined">bookmark</span>
-</div>
-</div>
-</div>
-<!-- Header Text for Reel -->
-<div class="mb-6 max-w-lg">
-<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-white drop-shadow-md">
-                    Making tiny bees for tiny people 🐝... more
-                </h1>
-</div>
-<!-- Product Detail Box (Floating Card) -->
-<div class="bg-surface-container-low/95 dark:bg-inverse-surface backdrop-blur-md p-4 rounded-xl border border-outline-variant/20 shadow-[0_4px_16px_rgba(74,69,62,0.12)] max-w-sm flex items-center gap-4 group hover:bg-surface-bright transition-colors cursor-pointer">
-<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-<img alt="Handmade Crochet Bee" class="w-full h-full object-cover" data-alt="A macro studio photograph of a finished handmade crochet bee resting on a light wooden surface. The bee features a soft, textured body with bright yellow and deep black stripes, tiny white wings, and a cute embroidered face. The lighting is soft and directional, casting a gentle shadow. The background is a creamy, warm tone that matches the artisan design system's aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgiId_AmMNrnNwewYD-d8RKvIr3O3hnoZDdgkDggXBa-I27ljtyqgqAJPbez8ACbZ1zgI6sYwiLc2H8ywSXycjrhCtbw7L26hW62STKHDS7U5m05koyM9lkBVLiQdCrmoQ1SdVI3MLRu9_fPuUI4ycKKA1tVMlHcTsxB2TTHVrOPMGZPpAK58YAQGOnYedGhDFzWpPG4ku4gGHdOF2MVlUzW0YvPBkCPiSnSCF8k6axROdMsnCyI3iV_FA_8DUhevEW-hZiNr1TjI"/>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start">
-<h3 class="font-title-md text-title-md text-on-surface leading-tight">Handmade Crochet Bee</h3>
-<span class="material-symbols-outlined text-primary">add_shopping_cart</span>
-</div>
-<div class="flex items-baseline gap-2 mt-1">
-<span class="font-bold text-primary">₹379</span>
-<span class="text-sm text-secondary line-through opacity-60">₹417</span>
-</div>
-<div class="flex items-center gap-3 mt-2">
-<div class="flex items-center gap-1 bg-primary-container/20 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-caps text-label-caps text-primary">4.1</span>
-</div>
-<span class="font-label-caps text-label-caps text-secondary">47 bought this</span>
-</div>
-</div>
-</div>
+
+<!-- Comments Drawer -->
+<div id="comments-drawer" class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-surface-container-lowest border-l border-outline-variant/30 z-40 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-4 flex items-center justify-between border-b border-outline-variant/20">
+        <div class="flex items-center gap-2">
+            <h3 class="font-title-md text-title-md text-primary font-bold">Comments</h3>
+            <span id="drawer-comment-count" class="text-xs text-outline bg-surface-container-low px-2 py-0.5 rounded-full">0</span>
+        </div>
+        <button id="btn-close-comments" class="material-symbols-outlined text-secondary hover:text-primary">close</button>
+    </div>
+    <div id="drawer-comments-list" class="flex-grow overflow-y-auto p-4 space-y-4">
+        <!-- Comments will be populated dynamically -->
+    </div>
+    <div class="p-4 border-t border-outline-variant/20 bg-surface-container-lowest">
+        <div class="flex gap-3 items-end">
+            <textarea id="comment-input" class="flex-grow bg-surface-container-low border border-outline-variant/30 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" placeholder="Add a comment..." rows="1"></textarea>
+            <button id="btn-submit-comment" class="bg-primary text-white p-2 rounded-full hover:opacity-90 active:scale-95 transition-all flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">send</span>
+            </button>
+        </div>
+    </div>
 </div>
 </main>
 <!-- Bottom Navigation Bar (Mobile Only as per protocol) -->
@@ -272,103 +303,421 @@
     </script>
 </nav>
 
-<script>
-    const API_BASE_URL = window.location.origin;
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { formatPaise } from '/src/utils/currency.js';
+    import { logout } from '/src/utils/auth.js';
+
+    let reels = [];
+    let currentIndex = 0;
+    let nextCursor = null;
+    let hasMore = true;
+    let isLoading = false;
     let isLoggedIn = false;
+    
+    // Comments state
+    let commentsCursor = null;
+    let commentsHasMore = false;
+    let isLoadingComments = false;
 
-            async function checkAuthState() {
-            const token = sessionStorage.getItem('tohfa_access_token');
-            const authContainer = document.getElementById('auth-buttons');
-            const dashboardLink = document.getElementById('navbar-dashboard-link');
-            
-            if (token) {
-                isLoggedIn = true;
+    async function checkAuthState() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const authContainer = document.getElementById('auth-buttons');
+        const dashboardLink = document.getElementById('navbar-dashboard-link');
+        
+        if (token) {
+            isLoggedIn = true;
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const payload = JSON.parse(window.atob(base64));
+                
+                let avatarUrl = null;
                 try {
-                    const base64Url = token.split('.')[1];
-                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const payload = JSON.parse(window.atob(base64));
-                    
-                    // Fetch profile to get avatar_url
-                    let avatarUrl = null;
-                    try {
-                        const res = await fetch(`${API_BASE_URL}/api/profile/me`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        if (res.ok) {
-                            const profileData = await res.json();
-                            avatarUrl = profileData.data.avatar_url;
-                        }
-                    } catch (err) {
-                        console.error("Failed to fetch profile avatar:", err);
+                    const res = await apiClient.get('/profile/me');
+                    if (res.data && res.data.success) {
+                        avatarUrl = res.data.data.avatar_url;
                     }
-                    
-                    if (payload.role === 'seller') {
-                        if (dashboardLink) {
-                            dashboardLink.innerText = 'Seller Dashboard';
-                            dashboardLink.href = 'seller-dashboard.html';
-                        }
-                    } else {
-                        if (dashboardLink) {
-                            dashboardLink.innerText = 'Profile';
-                            dashboardLink.href = 'profile.html';
-                        }
-                    }
-
-                    let profileHtml = '';
-                    if (avatarUrl) {
-                        profileHtml = `<img src="${avatarUrl}" alt="Profile" class="w-[28px] h-[28px] rounded-full border border-[#C5D6BC] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
-                    } else {
-                        profileHtml = `<span class="material-symbols-outlined cursor-pointer" style="font-size: 28px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;" onclick="window.location.href='profile.html'">account_circle</span>`;
-                    }
-
-                    if (authContainer) {
-                        authContainer.innerHTML = `
-                            <div class="flex items-center gap-4">
-                                ${profileHtml}
-                                <button onclick="logout()" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
-                            </div>
-                        `;
-                    }
-                } catch(e) {
-                    console.error("Failed to parse token:", e);
-                    await logout();
+                } catch (err) {
+                    console.error("Failed to fetch profile avatar:", err);
                 }
-            } else {
-                isLoggedIn = false;
+                
+                if (payload.role === 'seller') {
+                    if (dashboardLink) {
+                        dashboardLink.innerText = 'Seller Dashboard';
+                        dashboardLink.href = '/seller/dashboard.html';
+                    }
+                } else {
+                    if (dashboardLink) {
+                        dashboardLink.innerText = 'Profile';
+                        dashboardLink.href = 'profile.html';
+                    }
+                }
+
+                let profileHtml = '';
+                if (avatarUrl) {
+                    profileHtml = `<img src="${avatarUrl}" alt="Profile" class="w-[28px] h-[28px] rounded-full border border-[#C5D6BC] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
+                } else {
+                    profileHtml = `<span class="material-symbols-outlined cursor-pointer" style="font-size: 28px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;" onclick="window.location.href='profile.html'">account_circle</span>`;
+                }
+
                 if (authContainer) {
                     authContainer.innerHTML = `
-                        <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
-                        <a href="signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
+                        <div class="flex items-center gap-4">
+                            ${profileHtml}
+                            <button id="btn-logout" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
+                        </div>
                     `;
+                    document.getElementById('btn-logout').addEventListener('click', logout);
+                }
+            } catch(e) {
+                console.error("Failed to parse token:", e);
+                logout();
+            }
+        } else {
+            isLoggedIn = false;
+            if (authContainer) {
+                authContainer.innerHTML = `
+                    <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
+                    <a href="/auth/signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
+                `;
+            }
+        }
+    }
+
+    async function fetchReels(reset = false) {
+        if (isLoading) return;
+        isLoading = true;
+        try {
+            let url = '/reels/feed?limit=10';
+            if (nextCursor && !reset) {
+                url += `&cursor=${nextCursor}`;
+            }
+            const res = await apiClient.get(url);
+            if (res.data && res.data.success) {
+                const data = res.data.data;
+                nextCursor = data.next_cursor;
+                hasMore = data.has_more;
+                if (reset) {
+                    reels = data.reels || [];
+                } else {
+                    reels = [...reels, ...(data.reels || [])];
+                }
+
+                // Rearrange if specific reel id was provided in url
+                const urlParams = new URLSearchParams(window.location.search);
+                const targetId = parseInt(urlParams.get('id'), 10);
+                if (reset && targetId) {
+                    const idx = reels.findIndex(r => r.id === targetId);
+                    if (idx > -1) {
+                        const targetReel = reels.splice(idx, 1)[0];
+                        reels.unshift(targetReel);
+                    }
+                }
+                
+                if (reels.length > 0) {
+                    displayReel(currentIndex);
+                } else {
+                    showEmptyState();
                 }
             }
+        } catch (e) {
+            console.error("Error fetching reels:", e);
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    function showEmptyState() {
+        document.getElementById('reel-caption').innerText = "No reels available.";
+        document.getElementById('reel-thumbnail').src = "https://placehold.co/400x700/f4ede3/516447?text=No+Reels";
+        document.getElementById('reel-video').classList.add('hidden');
+        document.getElementById('reel-thumbnail').classList.remove('hidden');
+    }
+
+    function displayReel(index) {
+        if (index < 0 || index >= reels.length) return;
+        currentIndex = index;
+        const reel = reels[index];
+
+        // Update Prev/Next buttons
+        document.getElementById('btn-prev-reel').disabled = (index === 0);
+        document.getElementById('btn-next-reel').disabled = (index === reels.length - 1 && !hasMore);
+
+        // If close to end, fetch more
+        if (index === reels.length - 2 && hasMore) {
+            fetchReels(false);
         }
 
-        function logout() {
-            const token = sessionStorage.getItem('tohfa_access_token');
-            const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
-            if (token && refreshToken) {
-                fetch('/api/auth/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ refresh_token: refreshToken })
-                }).catch(e => console.error("Logout request failed:", e));
-            }
-            sessionStorage.removeItem('tohfa_access_token');
-            sessionStorage.removeItem('tohfa_refresh_token');
-            sessionStorage.removeItem('tohfa_user');
-            window.location.href = '/auth/login.html';
+        // Setup Media
+        const videoEl = document.getElementById('reel-video');
+        const thumbEl = document.getElementById('reel-thumbnail');
+        
+        if (reel.video_url) {
+            videoEl.src = reel.video_url;
+            videoEl.classList.remove('hidden');
+            videoEl.load();
+            videoEl.play().catch(err => {
+                console.log("Autoplay blocked or failed:", err);
+            });
+            thumbEl.classList.add('hidden');
         } else {
-                window.location.reload();
-            }
+            videoEl.classList.add('hidden');
+            videoEl.src = '';
+            thumbEl.classList.remove('hidden');
+        }
+        
+        thumbEl.src = reel.thumbnail_url || 'https://placehold.co/400x700/f4ede3/516447?text=Artisan+Reel';
+
+        // Update Details
+        document.getElementById('reel-caption').innerText = reel.caption || '';
+        document.getElementById('reel-seller-name').innerText = reel.seller?.seller_name || 'Artisan';
+        
+        const avatarEl = document.getElementById('reel-seller-avatar');
+        if (reel.seller?.avatar_url) {
+            avatarEl.innerHTML = `<img src="${reel.seller.avatar_url}" alt="Avatar" class="w-full h-full object-cover"/>`;
+        } else {
+            avatarEl.innerHTML = (reel.seller?.seller_name || 'A').substring(0,1).toUpperCase();
         }
 
+        document.getElementById('reel-seller-info').onclick = () => {
+            if (reel.seller?.id) {
+                window.location.href = `profile.html?id=${reel.seller.id}`;
+            }
+        };
 
-    window.addEventListener('DOMContentLoaded', () => {
-        checkAuthState();
+        // Likes & Saves
+        updateLikeUI(reel.is_liked, reel.like_count);
+        updateSaveUI(reel.is_saved);
+        document.getElementById('comment-count').innerText = reel.comment_count || 0;
+
+        // Linked Product
+        const prodCard = document.getElementById('linked-product-card');
+        if (reel.linked_product) {
+            document.getElementById('product-name').innerText = reel.linked_product.name;
+            document.getElementById('product-price').innerText = formatPaise(reel.linked_product.price_paise);
+            document.getElementById('product-img').src = reel.thumbnail_url || 'https://placehold.co/100x100/f4ede3/516447?text=Product';
+            prodCard.classList.remove('hidden');
+            prodCard.onclick = () => {
+                window.location.href = `product.html?id=${reel.linked_product.id}`;
+            };
+        } else {
+            prodCard.classList.add('hidden');
+            prodCard.onclick = null;
+        }
+
+        // Close comments drawer if open
+        closeComments();
+    }
+
+    function updateLikeUI(isLiked, count) {
+        const icon = document.getElementById('like-icon');
+        const countText = document.getElementById('like-count');
+        countText.innerText = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
+        if (isLiked) {
+            icon.style.fontVariationSettings = "'FILL' 1";
+            icon.style.color = '#ba1a1a';
+        } else {
+            icon.style.fontVariationSettings = "'FILL' 0";
+            icon.style.color = '#ffffff';
+        }
+    }
+
+    function updateSaveUI(isSaved) {
+        const icon = document.getElementById('save-icon');
+        if (isSaved) {
+            icon.style.fontVariationSettings = "'FILL' 1";
+            icon.style.color = '#D4AF37';
+        } else {
+            icon.style.fontVariationSettings = "'FILL' 0";
+            icon.style.color = '#ffffff';
+        }
+    }
+
+    async function toggleLike() {
+        if (!isLoggedIn) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+        const reel = reels[currentIndex];
+        const newLiked = !reel.is_liked;
+        const newCount = reel.like_count + (newLiked ? 1 : -1);
+
+        // Optimistic Update
+        reel.is_liked = newLiked;
+        reel.like_count = newCount;
+        updateLikeUI(newLiked, newCount);
+
+        try {
+            await apiClient.post(`/reels/${reel.id}/like`);
+        } catch (e) {
+            console.error("Failed to toggle like:", e);
+            // Revert
+            reel.is_liked = !newLiked;
+            reel.like_count = reel.like_count + (!newLiked ? 1 : -1);
+            updateLikeUI(!newLiked, reel.like_count);
+        }
+    }
+
+    async function toggleSave() {
+        if (!isLoggedIn) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+        const reel = reels[currentIndex];
+        const newSaved = !reel.is_saved;
+
+        // Optimistic Update
+        reel.is_saved = newSaved;
+        updateSaveUI(newSaved);
+
+        try {
+            if (newSaved) {
+                await apiClient.post(`/reels/${reel.id}/save`);
+            } else {
+                await apiClient.delete(`/reels/${reel.id}/save`);
+            }
+        } catch (e) {
+            console.error("Failed to toggle save:", e);
+            // Revert
+            reel.is_saved = !newSaved;
+            updateSaveUI(!newSaved);
+        }
+    }
+
+    // Comments Panel Handlers
+    function openComments() {
+        document.getElementById('comments-drawer').classList.remove('translate-x-full');
+        loadComments(true);
+    }
+
+    function closeComments() {
+        document.getElementById('comments-drawer').classList.add('translate-x-full');
+        document.getElementById('drawer-comments-list').innerHTML = '';
+        commentsCursor = null;
+        commentsHasMore = false;
+    }
+
+    async function loadComments(reset = false) {
+        if (isLoadingComments) return;
+        isLoadingComments = true;
+        
+        const list = document.getElementById('drawer-comments-list');
+        const reel = reels[currentIndex];
+
+        if (reset) {
+            list.innerHTML = `<div class="text-center py-4 text-sage text-sm">Loading comments...</div>`;
+        }
+
+        try {
+            let url = `/reels/${reel.id}/comments?limit=15`;
+            if (commentsCursor && !reset) {
+                url += `&cursor=${commentsCursor}`;
+            }
+
+            const res = await apiClient.get(url);
+            if (res.data && res.data.success) {
+                const data = res.data.data;
+                commentsCursor = data.next_cursor;
+                commentsHasMore = data.has_more;
+                const comments = data.comments || [];
+
+                document.getElementById('drawer-comment-count').innerText = data.comment_count || 0;
+                document.getElementById('comment-count').innerText = data.comment_count || 0;
+                reel.comment_count = data.comment_count || 0;
+
+                if (reset) {
+                    list.innerHTML = '';
+                }
+
+                if (comments.length === 0) {
+                    if (reset) {
+                        list.innerHTML = `<div class="text-center py-8 text-secondary text-sm">No comments yet. Start the conversation!</div>`;
+                    }
+                    return;
+                }
+
+                const commentsHtml = comments.map(c => {
+                    const avatarStr = c.avatar_url 
+                        ? `<img src="${c.avatar_url}" alt="Avatar" class="w-8 h-8 rounded-full object-cover"/>`
+                        : `<div class="w-8 h-8 rounded-full bg-primary-container text-primary flex items-center justify-center font-bold text-xs">${c.user_name.substring(0,1).toUpperCase()}</div>`;
+                    return `
+                        <div class="flex gap-3 items-start">
+                            ${avatarStr}
+                            <div class="flex-grow bg-surface-container-low p-3 rounded-2xl border border-outline-variant/10">
+                                <div class="flex items-baseline justify-between">
+                                    <span class="font-lora font-bold text-sm text-on-surface">${c.user_name}</span>
+                                    <span class="text-[10px] text-outline">${c.time_ago || 'just now'}</span>
+                                </div>
+                                <p class="text-sm text-on-surface-variant mt-1 leading-normal whitespace-pre-wrap">${c.body}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                if (reset) {
+                    list.innerHTML = commentsHtml;
+                } else {
+                    list.insertAdjacentHTML('beforeend', commentsHtml);
+                }
+            }
+        } catch (e) {
+            console.error("Failed to load comments:", e);
+            if (reset) {
+                list.innerHTML = `<div class="text-center py-4 text-error text-sm">Failed to load comments.</div>`;
+            }
+        } finally {
+            isLoadingComments = false;
+        }
+    }
+
+    async function submitComment() {
+        if (!isLoggedIn) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+        const input = document.getElementById('comment-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const reel = reels[currentIndex];
+        
+        try {
+            const res = await apiClient.post(`/reels/${reel.id}/comments`, { body: text });
+            if (res.data && res.data.success) {
+                input.value = '';
+                await loadComments(true);
+            }
+        } catch (e) {
+            console.error("Failed to post comment:", e);
+        }
+    }
+
+    // Bind event listeners
+    document.getElementById('btn-prev-reel').addEventListener('click', () => {
+        if (currentIndex > 0) displayReel(currentIndex - 1);
+    });
+    document.getElementById('btn-next-reel').addEventListener('click', () => {
+        if (currentIndex < reels.length - 1) displayReel(currentIndex + 1);
+    });
+
+    document.getElementById('btn-like').addEventListener('click', toggleLike);
+    document.getElementById('btn-save').addEventListener('click', toggleSave);
+
+    document.getElementById('btn-comment').addEventListener('click', openComments);
+    document.getElementById('btn-close-comments').addEventListener('click', closeComments);
+    document.getElementById('btn-submit-comment').addEventListener('click', submitComment);
+
+    document.getElementById('comment-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            submitComment();
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        await checkAuthState();
+        await fetchReels(true);
     });
 </script>
 </body>
