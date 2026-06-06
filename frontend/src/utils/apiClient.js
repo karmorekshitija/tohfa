@@ -1,5 +1,31 @@
 import axios from 'axios';
 
+// SessionStorage Key Shim for Tohfa compatibility
+const originalGetItem = sessionStorage.getItem.bind(sessionStorage);
+const originalSetItem = sessionStorage.setItem.bind(sessionStorage);
+const originalRemoveItem = sessionStorage.removeItem.bind(sessionStorage);
+
+const KEY_MAP = {
+  'access_token': 'tohfa_access_token',
+  'refresh_token': 'tohfa_refresh_token',
+  'user': 'tohfa_user'
+};
+
+sessionStorage.getItem = function(key) {
+  const mappedKey = KEY_MAP[key] || key;
+  return originalGetItem(mappedKey);
+};
+
+sessionStorage.setItem = function(key, value) {
+  const mappedKey = KEY_MAP[key] || key;
+  originalSetItem(mappedKey, value);
+};
+
+sessionStorage.removeItem = function(key) {
+  const mappedKey = KEY_MAP[key] || key;
+  originalRemoveItem(mappedKey);
+};
+
 const apiClient = axios.create({
   baseURL: '/api',
   headers: { 'Content-Type': 'application/json' }

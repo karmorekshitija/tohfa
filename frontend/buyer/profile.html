@@ -297,7 +297,7 @@
             const modal = document.getElementById('logoutModal');
             if (modal) {
                 if (show) {
-                    const userStr = sessionStorage.getItem('user');
+                    const userStr = sessionStorage.getItem('tohfa_user');
                     const modalAvatar = document.getElementById('modal-avatar-container');
                     if (userStr && modalAvatar) {
                         try {
@@ -321,9 +321,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = sessionStorage.getItem('tohfa_access_token');
             if (!accessToken) {
-                window.location.href = '/login.html';
+                window.location.href = '/auth/login.html';
                 return;
             }
 
@@ -369,7 +369,7 @@
             } catch (err) {
                 console.error("Session verification failed:", err);
                 sessionStorage.clear();
-                window.location.href = '/login.html';
+                window.location.href = '/auth/login.html';
             }
         });
 
@@ -384,26 +384,24 @@
 
         const confirmLogoutBtn = document.getElementById('modal-confirm-logout');
         if (confirmLogoutBtn) {
-            confirmLogoutBtn.addEventListener('click', async function() {
-                const accessToken = sessionStorage.getItem('access_token');
-                const refreshToken = sessionStorage.getItem('refresh_token');
+            confirmLogoutBtn.addEventListener('click', function() {
+                const accessToken = sessionStorage.getItem('tohfa_access_token');
+                const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
 
                 if (accessToken && refreshToken) {
-                    try {
-                        await fetch(`${API_BASE_URL}/api/auth/logout`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${accessToken}`
-                            },
-                            body: JSON.stringify({ refresh_token: refreshToken })
-                        });
-                    } catch (err) {
-                        console.error("Logout request failed:", err);
-                    }
+                    fetch('/api/auth/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessToken}`
+                        },
+                        body: JSON.stringify({ refresh_token: refreshToken })
+                    }).catch(err => console.error("Logout request failed:", err));
                 }
-                sessionStorage.clear();
-                window.location.href = '/login.html';
+                sessionStorage.removeItem('tohfa_access_token');
+                sessionStorage.removeItem('tohfa_refresh_token');
+                sessionStorage.removeItem('tohfa_user');
+                window.location.href = '/auth/login.html';
             });
         }
 

@@ -260,7 +260,7 @@
         let isLoggedIn = false;
 
                 async function checkAuthState() {
-            const token = sessionStorage.getItem('access_token');
+            const token = sessionStorage.getItem('tohfa_access_token');
             const authContainer = document.getElementById('auth-buttons');
             const dashboardLink = document.getElementById('navbar-dashboard-link');
             
@@ -320,35 +320,31 @@
                 isLoggedIn = false;
                 if (authContainer) {
                     authContainer.innerHTML = `
-                        <a href="login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
+                        <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
                         <a href="signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
                     `;
                 }
             }
         }
 
-        async function logout() {
-            const token = sessionStorage.getItem('access_token');
-            const refreshToken = sessionStorage.getItem('refresh_token');
+        function logout() {
+            const token = sessionStorage.getItem('tohfa_access_token');
+            const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
             if (token && refreshToken) {
-                try {
-                    await fetch(`${API_BASE_URL}/api/auth/logout`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ refresh_token: refreshToken })
-                    });
-                } catch (e) {
-                    console.error("Logout request failed:", e);
-                }
+                fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ refresh_token: refreshToken })
+                }).catch(e => console.error("Logout request failed:", e));
             }
-            sessionStorage.clear();
-            const path = window.location.pathname.split('/').pop() || 'home.html';
-            if (path.includes('profile')) {
-                window.location.href = 'login.html';
-            } else {
+            sessionStorage.removeItem('tohfa_access_token');
+            sessionStorage.removeItem('tohfa_refresh_token');
+            sessionStorage.removeItem('tohfa_user');
+            window.location.href = '/auth/login.html';
+        } else {
                 window.location.reload();
             }
         }
@@ -358,7 +354,7 @@
             const emptyState = document.getElementById('wishlist-empty');
             const badge = document.getElementById('wishlist-count-badge');
 
-            const token = sessionStorage.getItem('access_token');
+            const token = sessionStorage.getItem('tohfa_access_token');
             if (!token) return;
 
             try {
@@ -411,7 +407,7 @@
         }
 
         async function removeFromWishlist(productId) {
-            const token = sessionStorage.getItem('access_token');
+            const token = sessionStorage.getItem('tohfa_access_token');
             if (!token) return;
 
             try {
