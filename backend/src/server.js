@@ -2964,7 +2964,7 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
 
   try {
     const user = db.prepare(`
-      SELECT id, email, role, avatar_url, created_at,
+      SELECT id, email, role, avatar_url, created_at, bio, location, ships_in_days,
              COALESCE(display_name, full_name) AS display_name
       FROM users WHERE id = ?
     `).get(userId);
@@ -2992,6 +2992,9 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
         email: user.email,
         avatar_url: user.avatar_url,
         role: user.role,
+        bio: user.bio,
+        location: user.location,
+        ships_in_days: user.ships_in_days,
         following_count: followingCount,
         followers_count: followersCount,
         wishlist_count: wishlistCount,

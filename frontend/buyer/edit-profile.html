@@ -54,17 +54,17 @@
 <main class="max-w-4xl mx-auto px-margin-desktop py-xl">
 <div class="flex flex-col items-center space-y-lg">
 <div class="relative group">
-<img alt="Profile" class="w-32 h-32 rounded-full border-2 border-outline-variant object-cover" data-alt="A professional studio portrait of a woman with a warm, creative expression, shot in soft natural lighting with a minimalist ivory background. Her style is elegant and understated, reflecting the artisan craft brand aesthetic. High-key lighting emphasizes the textures of her linen clothing and the gentle glow on her face." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBI9qP-cMOCsKzZDrYGGv_XszJGcHx7YdLpxlQtnTO-JGtHqCpOpVDslUwoXGD3FggkxSMN01PDA1pjHu99n6lOvnxCEaI7DLPJxCMjVVRF7l0sTpz1-T87vQ4h6H38hfhUq1nTGFWh3tjjIM70VqyQ_bzp5H6pWZ98W5YxMLMH17La4uPwGsi1PaP26XgZJ7CUe1PNMrkZ16jYEo5_5PNtrWGqJ7Ih_OPGkQaeEygDhYd2LS3khY9k9lYKMYb_f_s1J4zq--nnDM">
+<img id="bg-user-avatar" alt="Profile" class="w-32 h-32 rounded-full border-2 border-outline-variant object-cover" data-alt="A professional studio portrait of a woman with a warm, creative expression, shot in soft natural lighting with a minimalist ivory background. Her style is elegant and understated, reflecting the artisan craft brand aesthetic. High-key lighting emphasizes the textures of her linen clothing and the gentle glow on her face." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBI9qP-cMOCsKzZDrYGGv_XszJGcHx7YdLpxlQtnTO-JGtHqCpOpVDslUwoXGD3FggkxSMN01PDA1pjHu99n6lOvnxCEaI7DLPJxCMjVVRF7l0sTpz1-T87vQ4h6H38hfhUq1nTGFWh3tjjIM70VqyQ_bzp5H6pWZ98W5YxMLMH17La4uPwGsi1PaP26XgZJ7CUe1PNMrkZ16jYEo5_5PNtrWGqJ7Ih_OPGkQaeEygDhYd2LS3khY9k9lYKMYb_f_s1J4zq--nnDM">
 <div class="absolute bottom-0 right-0 bg-primary text-white p-sm rounded-full cursor-pointer hover:scale-105 transition-transform">
 <span class="material-symbols-outlined text-[20px]">edit</span>
 </div>
 </div>
 <div class="text-center">
-<h1 class="font-headline-lg text-on-surface">Amara’s Clay Studio</h1>
-<p class="font-body-md text-on-surface-variant mt-sm">Hand-poured ceramics &amp; botanical prints</p>
+<h1 id="bg-user-name" class="font-headline-lg text-on-surface">Amara’s Clay Studio</h1>
+<p id="bg-user-bio" class="font-body-md text-on-surface-variant mt-sm">Hand-poured ceramics &amp; botanical prints</p>
 <div class="flex items-center justify-center space-x-sm mt-md">
-<span class="bg-secondary-container text-on-secondary-container px-md py-xs rounded-full font-label-caps text-[10px]">Seller</span>
-<span class="bg-surface-container-highest text-on-surface-variant px-md py-xs rounded-full font-label-caps text-[10px]">Austin, TX</span>
+<span id="bg-user-role" class="bg-secondary-container text-on-secondary-container px-md py-xs rounded-full font-label-caps text-[10px]">Seller</span>
+<span id="bg-user-location" class="bg-surface-container-highest text-on-surface-variant px-md py-xs rounded-full font-label-caps text-[10px]">Austin, TX</span>
 </div>
 </div>
 <div class="grid grid-cols-3 gap-xl w-full mt-xl pt-xl border-t border-outline-variant">
@@ -114,27 +114,27 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
 <div class="space-y-sm">
 <label class="font-label-caps text-on-surface-variant">Name / Shop Name</label>
-<input class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="Amara’s Clay Studio">
+<input id="input-display-name" class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="">
 </div>
 <div class="space-y-sm">
 <label class="font-label-caps text-on-surface-variant">Shipping Days</label>
-<input class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="3-5 Business Days">
+<input id="input-ships-in-days" class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="number" min="1" value="">
 </div>
 </div>
 <div class="space-y-sm">
 <label class="font-label-caps text-on-surface-variant">Bio</label>
-<textarea class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" rows="3">Crafting small-batch ceramics inspired by the wild Texan landscapes. Every piece is hand-thrown and botanical-pressed in my Austin studio.</textarea>
+<textarea id="input-bio" class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" rows="3"></textarea>
 </div>
 <div class="space-y-sm">
 <label class="font-label-caps text-on-surface-variant">Instagram Handle</label>
 <div class="relative">
 <span class="absolute left-md top-1/2 -translate-y-1/2 text-outline-variant font-body-md">@</span>
-<input class="w-full bg-white border border-outline-variant rounded-lg pl-8 pr-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="amara_ceramics">
+<input id="input-instagram" class="w-full bg-white border border-outline-variant rounded-lg pl-8 pr-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="">
 </div>
 </div>
 <div class="space-y-sm">
-<label class="font-label-caps text-on-surface-variant">Studio Address</label>
-<input class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="1209 East 6th St, Studio 4, Austin, TX">
+<label class="font-label-caps text-on-surface-variant">Studio Address / Location</label>
+<input id="input-location" class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm font-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none" type="text" value="">
 </div>
 <!-- Seller Badge / Info -->
 <div class="bg-surface-container-low p-md rounded-xl border border-secondary-fixed-dim flex items-start space-x-md">
@@ -187,7 +187,9 @@
 <span class="font-label-caps text-[10px]">Profile</span>
 </div>
 </nav>
-<script>
+<script type="module">
+        import apiClient from '/src/utils/apiClient.js';
+
         function closeSheet() {
             const sheet = document.getElementById('edit-profile-sheet');
             const scrim = document.getElementById('edit-profile-scrim');
@@ -199,28 +201,103 @@
                 scrim.style.opacity = '0';
                 scrim.style.transition = 'opacity 0.3s ease';
                 setTimeout(() => {
-                    scrim.classList.add('hidden');
+                    window.location.href = 'profile.html';
                 }, 300);
             }, 100);
         }
+        window.closeSheet = closeSheet;
 
-        function handleSave() {
-            const toast = document.getElementById('toast');
-            toast.classList.remove('hidden');
-            
-            setTimeout(() => {
-                closeSheet();
-            }, 1000);
+        async function handleSave() {
+            const displayName = document.getElementById('input-display-name').value;
+            const shipsInDays = document.getElementById('input-ships-in-days').value;
+            const bio = document.getElementById('input-bio').value;
+            const location = document.getElementById('input-location').value;
 
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-                toast.style.transition = 'opacity 0.5s ease';
-                setTimeout(() => {
-                    toast.classList.add('hidden');
-                    toast.classList.remove('opacity-0');
-                }, 500);
-            }, 3000);
+            if (!displayName || !displayName.trim()) {
+                alert('Name / Shop Name cannot be empty');
+                return;
+            }
+
+            try {
+                const payload = {
+                    display_name: displayName.trim(),
+                    bio: bio.trim() || null,
+                    location: location.trim() || null,
+                    shipping_days: shipsInDays ? parseInt(shipsInDays, 10) : null
+                };
+
+                const response = await apiClient.patch('/profile/me', payload);
+
+                if (response.data && response.data.success) {
+                    const toast = document.getElementById('toast');
+                    toast.classList.remove('hidden');
+
+                    const userStr = sessionStorage.getItem('tohfa_user');
+                    if (userStr) {
+                        try {
+                            const userObj = JSON.parse(userStr);
+                            userObj.display_name = response.data.data.display_name;
+                            userObj.bio = response.data.data.bio;
+                            userObj.location = response.data.data.location;
+                            userObj.ships_in_days = response.data.data.ships_in_days;
+                            sessionStorage.setItem('tohfa_user', JSON.stringify(userObj));
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+
+                    setTimeout(() => {
+                        closeSheet();
+                    }, 1000);
+                }
+            } catch (err) {
+                console.error('Failed to save profile changes:', err);
+                alert(err.response?.data?.message || 'Failed to save profile changes');
+            }
         }
+        window.handleSave = handleSave;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const accessToken = sessionStorage.getItem('tohfa_access_token');
+            if (!accessToken) {
+                window.location.href = '/auth/login.html';
+                return;
+            }
+
+            try {
+                const response = await apiClient.get('/profile/me');
+                if (response.data && response.data.success) {
+                    const user = response.data.data;
+
+                    // Populate inputs
+                    document.getElementById('input-display-name').value = user.display_name || '';
+                    document.getElementById('input-ships-in-days').value = user.ships_in_days || '';
+                    document.getElementById('input-bio').value = user.bio || '';
+                    document.getElementById('input-location').value = user.location || '';
+
+                    // Populate background layout
+                    const bgAvatar = document.getElementById('bg-user-avatar');
+                    const bgName = document.getElementById('bg-user-name');
+                    const bgBio = document.getElementById('bg-user-bio');
+                    const bgLocation = document.getElementById('bg-user-location');
+                    const bgRole = document.getElementById('bg-user-role');
+
+                    if (bgAvatar && user.avatar_url) bgAvatar.src = user.avatar_url;
+                    if (bgName) bgName.textContent = user.display_name || 'Anonymous User';
+                    if (bgBio) bgBio.textContent = user.bio || '';
+                    if (bgLocation) bgLocation.textContent = user.location || '';
+                    if (bgRole) bgRole.textContent = `${user.role.toUpperCase()} ✨`;
+
+                    // Update navbar avatar
+                    const headerAvatar = document.querySelector('header a[href="/profile"]');
+                    if (headerAvatar && user.avatar_url) {
+                        headerAvatar.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full" />`;
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to fetch profile info:', err);
+            }
+        });
 
         // Close on scrim click
         document.getElementById('edit-profile-scrim').addEventListener('click', (e) => {

@@ -138,42 +138,42 @@
 <p id="user-email" class="font-body-md text-sm text-on-surface-variant mb-8"></p>
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-2xl mb-10">
-<div class="py-4 border-b border-outline-variant/20 md:border-b-0 md:border-r">
-<div class="font-headline-md text-primary">12</div>
-<div class="font-label-sm text-on-surface-variant uppercase">Creators</div>
+    <div class="py-4 border-b border-outline-variant/20 md:border-b-0 md:border-r cursor-pointer hover:bg-primary/5 rounded-xl transition-colors" onclick="window.location.href='followers.html'">
+        <div id="stats-following" class="font-headline-md text-primary">0</div>
+        <div class="font-label-sm text-on-surface-variant uppercase">Following</div>
+    </div>
+    <div class="py-4 border-b border-outline-variant/20 md:border-b-0 md:border-r cursor-pointer hover:bg-primary/5 rounded-xl transition-colors" onclick="window.location.href='saved-reels.html'">
+        <div id="stats-saved" class="font-headline-md text-primary">0</div>
+        <div class="font-label-sm text-on-surface-variant uppercase">Saved Makes</div>
+    </div>
+    <div class="py-4 border-b border-outline-variant/20 md:border-b-0 md:border-r cursor-pointer hover:bg-primary/5 rounded-xl transition-colors" onclick="window.location.href='wishlist.html'">
+        <div id="stats-wishlist" class="font-headline-md text-primary">0</div>
+        <div class="font-label-sm text-on-surface-variant uppercase">Wishlist</div>
+    </div>
+    <div class="py-4 cursor-pointer hover:bg-primary/5 rounded-xl transition-colors" onclick="window.location.href='followers.html'">
+        <div id="stats-followers" class="font-headline-md text-primary">0</div>
+        <div class="font-label-sm text-on-surface-variant uppercase">Followers</div>
+    </div>
 </div>
-<div class="py-4 border-b border-outline-variant/20 md:border-b-0 md:border-r">
-<div class="font-headline-md text-primary">45</div>
-<div class="font-label-sm text-on-surface-variant uppercase">Saved</div>
-</div>
-<div class="py-4 border-b border-outline-variant/20 md:border-b-0 md:border-r">
-<div class="font-headline-md text-primary">8</div>
-<div class="font-label-sm text-on-surface-variant uppercase">Reviews</div>
-</div>
-<div class="py-4">
-<div class="font-headline-md text-primary">2.4k</div>
-<div class="font-label-sm text-on-surface-variant uppercase">Followers</div>
-</div>
-</div>
-<button class="w-full max-w-md bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary font-label-sm uppercase py-4 rounded-full transition-all active:scale-[0.98]">
-                Edit Preferences &amp; Style Profile
-            </button>
+<button onclick="window.location.href='edit-profile.html'" class="w-full max-w-md bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary font-label-sm uppercase py-4 rounded-full transition-all active:scale-[0.98]">
+    Edit Preferences &amp; Style Profile
+</button>
 </section>
 <!-- Main Content Tabs -->
 <nav class="flex justify-between md:justify-center md:gap-12 border-b border-outline-variant/20 mb-12 px-2 overflow-x-auto no-scrollbar">
-<button class="flex items-center gap-2 pb-4 px-2 border-b-2 border-primary-container text-on-background active:scale-95 transition-all">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">package_2</span>
+<button onclick="window.location.href='orders.html'" class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background active:scale-95 transition-all">
+<span class="material-symbols-outlined">package_2</span>
 <span class="font-label-sm uppercase whitespace-nowrap">Order History</span>
 </button>
-<button class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-all">
+<button onclick="window.location.href='wishlist.html'" class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-all">
 <span class="material-symbols-outlined">favorite</span>
 <span class="font-label-sm uppercase whitespace-nowrap">Wishlist</span>
 </button>
-<button class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-all">
+<button onclick="window.location.href='cart.html'" class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-all">
 <span class="material-symbols-outlined">shopping_cart</span>
-<span class="font-label-sm uppercase whitespace-nowrap">Cart (3)</span>
+<span class="font-label-sm uppercase whitespace-nowrap">Cart</span>
 </button>
-<button class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-all">
+<button onclick="window.location.href='category.html'" class="flex items-center gap-2 pb-4 px-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-all">
 <span class="material-symbols-outlined">explore</span>
 <span class="font-label-sm uppercase whitespace-nowrap">Discover</span>
 </button>
@@ -290,57 +290,50 @@
     </div>
 </div>
 
-<script>
-        const API_BASE_URL = window.location.origin;
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+    import { logout } from '/src/utils/auth.js';
 
-        function toggleModal(show) {
-            const modal = document.getElementById('logoutModal');
-            if (modal) {
-                if (show) {
-                    const userStr = sessionStorage.getItem('tohfa_user');
-                    const modalAvatar = document.getElementById('modal-avatar-container');
-                    if (userStr && modalAvatar) {
-                        try {
-                            const user = JSON.parse(userStr);
-                            if (user.avatar_url) {
-                                modalAvatar.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full" />`;
-                            } else {
-                                modalAvatar.innerHTML = `<span class="material-symbols-outlined" style="font-size: 48px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;">account_circle</span>`;
-                            }
-                        } catch (e) {
-                            console.error(e);
+    function toggleModal(show) {
+        const modal = document.getElementById('logoutModal');
+        if (modal) {
+            if (show) {
+                const userStr = sessionStorage.getItem('tohfa_user');
+                const modalAvatar = document.getElementById('modal-avatar-container');
+                if (userStr && modalAvatar) {
+                    try {
+                        const user = JSON.parse(userStr);
+                        if (user.avatar_url) {
+                            modalAvatar.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full" />`;
+                        } else {
+                            modalAvatar.innerHTML = `<span class="material-symbols-outlined" style="font-size: 48px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;">account_circle</span>`;
                         }
+                    } catch (e) {
+                        console.error(e);
                     }
-                    modal.classList.remove('opacity-0', 'pointer-events-none');
-                    modal.querySelector('.bg-\\[\\#FCFAF5\\]').classList.remove('scale-95');
-                } else {
-                    modal.classList.add('opacity-0', 'pointer-events-none');
-                    modal.querySelector('.bg-\\[\\#FCFAF5\\]').classList.add('scale-95');
                 }
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('.bg-\\[\\#FCFAF5\\]').classList.remove('scale-95');
+            } else {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('.bg-\\[\\#FCFAF5\\]').classList.add('scale-95');
             }
         }
+    }
+    window.toggleModal = toggleModal;
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            const accessToken = sessionStorage.getItem('tohfa_access_token');
-            if (!accessToken) {
-                window.location.href = '/auth/login.html';
-                return;
-            }
+    document.addEventListener('DOMContentLoaded', async function() {
+        const accessToken = sessionStorage.getItem('tohfa_access_token');
+        if (!accessToken) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/profile/me`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                });
+        try {
+            const response = await apiClient.get('/profile/me');
 
-                if (response.status !== 200) {
-                    throw new Error("Unauthorized");
-                }
-
-                const data = await response.json();
-                const user = data.data;
+            if (response.data && response.data.success) {
+                const user = response.data.data;
                 
                 // Populate Profile fields dynamically
                 const fullnameElem = document.getElementById('user-fullname');
@@ -360,62 +353,52 @@
                     }
                 }
 
+                // Populate Stats
+                document.getElementById('stats-following').innerText = user.following_count || 0;
+                document.getElementById('stats-saved').innerText = user.saved_reels_count || 0;
+                document.getElementById('stats-wishlist').innerText = user.wishlist_count || 0;
+                document.getElementById('stats-followers').innerText = user.followers_count || 0;
+
                 // Unhide the page contents gracefully
                 const bodyContent = document.getElementById('body-content');
                 if (bodyContent) {
                     bodyContent.classList.remove('opacity-0');
                 }
-
-            } catch (err) {
-                console.error("Session verification failed:", err);
-                sessionStorage.clear();
-                window.location.href = '/auth/login.html';
             }
-        });
-
-        // Logout listener trigger modal
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                toggleModal(true);
-            });
+        } catch (err) {
+            console.error("Session verification failed:", err);
+            sessionStorage.clear();
+            window.location.href = '/auth/login.html';
         }
+    });
 
-        const confirmLogoutBtn = document.getElementById('modal-confirm-logout');
-        if (confirmLogoutBtn) {
-            confirmLogoutBtn.addEventListener('click', function() {
-                const accessToken = sessionStorage.getItem('tohfa_access_token');
-                const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
-
-                if (accessToken && refreshToken) {
-                    fetch('/api/auth/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${accessToken}`
-                        },
-                        body: JSON.stringify({ refresh_token: refreshToken })
-                    }).catch(err => console.error("Logout request failed:", err));
-                }
-                sessionStorage.removeItem('tohfa_access_token');
-                sessionStorage.removeItem('tohfa_refresh_token');
-                sessionStorage.removeItem('tohfa_user');
-                window.location.href = '/auth/login.html';
-            });
-        }
-
-        // Micro-interaction for active scaling
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', () => {
-                btn.style.transform = 'scale(0.97)';
-            });
-            btn.addEventListener('mouseup', () => {
-                btn.style.transform = 'scale(1)';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'scale(1)';
-            });
+    // Logout listener trigger modal
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleModal(true);
         });
-    </script>
+    }
+
+    const confirmLogoutBtn = document.getElementById('modal-confirm-logout');
+    if (confirmLogoutBtn) {
+        confirmLogoutBtn.addEventListener('click', function() {
+            logout();
+        });
+    }
+
+    // Micro-interaction for active scaling
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+            btn.style.transform = 'scale(0.97)';
+        });
+        btn.addEventListener('mouseup', () => {
+            btn.style.transform = 'scale(1)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'scale(1)';
+        });
+    });
+</script>
 </body></html>
