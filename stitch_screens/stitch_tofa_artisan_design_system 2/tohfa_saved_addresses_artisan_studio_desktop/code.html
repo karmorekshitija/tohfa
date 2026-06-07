@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tofha | Saved Addresses</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Cinzel:wght@400..900&amp;family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#49663f",
+                      "on-surface": "#211b11",
+                      "surface-dim": "#e5d8c8",
+                      "secondary-fixed": "#caecbb",
+                      "primary-fixed": "#bceecb",
+                      "outline": "#717972",
+                      "surface-container": "#f9ecdc",
+                      "on-background": "#211b11",
+                      "tertiary-container": "#70539b",
+                      "secondary-container": "#c8e9b8",
+                      "on-tertiary-fixed-variant": "#54387e",
+                      "on-tertiary-container": "#e8d6ff",
+                      "surface": "#fff8f3",
+                      "inverse-primary": "#a0d2b0",
+                      "background": "#ffffff",
+                      "inverse-on-surface": "#fcefde",
+                      "surface-bright": "#fff8f3",
+                      "surface-container-high": "#f3e6d6",
+                      "on-tertiary-fixed": "#270550",
+                      "on-primary-fixed": "#002110",
+                      "tertiary": "#573b81",
+                      "tertiary-fixed": "#ecdcff",
+                      "outline-variant": "#c1c9c0",
+                      "tertiary-fixed-dim": "#d6baff",
+                      "surface-tint": "#3a684c",
+                      "surface-container-highest": "#ede1d1",
+                      "surface-variant": "#ede1d1",
+                      "on-primary-fixed-variant": "#214f36",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#3d6b4f",
+                      "on-primary-container": "#b7e9c6",
+                      "inverse-surface": "#362f25",
+                      "primary": "#255338",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#414942",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#4d6a43",
+                      "on-secondary-fixed": "#062103",
+                      "surface-container-low": "#fff2e1",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "error": "#ba1a1a",
+                      "ivory": "#FCFAF5",
+                      "sage": "#8FAF82",
+                      "gold-brand": "#C8973A",
+                      "violet-brand": "#7B5EA7",
+                      "terracotta": "#B14B3E"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "16px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin-desktop": "64px",
+                      "xl": "40px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Cinzel"],
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "headline-lg": ["Playfair Display"],
+                      "display-hero": ["Playfair Display"],
+                      "title-serif": ["Merriweather"],
+                      "data-price": ["Space Mono"],
+                      "card-title": ["Lora"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                      "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                      "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .watermark {
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
+            opacity: 0.08;
+            filter: grayscale(1);
+        }
+        .card-shadow {
+            box-shadow: 0 8px 24px -4px rgba(58, 51, 40, 0.12);
+        }
+        .ink-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container ink-texture">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop bg-surface h-[60px]">
+<div class="flex items-center">
+<span class="font-headline-lg text-headline-lg-mobile italic text-primary dark:text-inverse-primary">Tofha<span class="text-gold-brand">.</span></span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Home</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Category</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Reels</a>
+<a class="text-primary border-b-2 border-primary font-bold pb-1 transition-colors duration-200" href="#">Profile</a>
+</div>
+<div class="flex items-center gap-md">
+<button class="active:scale-95 transition-transform duration-150"><span class="material-symbols-outlined text-primary">search</span></button>
+<button class="active:scale-95 transition-transform duration-150 relative">
+<span class="material-symbols-outlined text-primary">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-terracotta rounded-full"></span>
+</button>
+<button class="active:scale-95 transition-transform duration-150"><span class="material-symbols-outlined text-primary">favorite</span></button>
+<button class="active:scale-95 transition-transform duration-150"><span class="material-symbols-outlined text-primary">shopping_cart</span></button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="relative min-h-screen pt-[100px] pb-20 px-margin-mobile md:px-[30%] overflow-hidden">
+<!-- Decorative Background Elements -->
+<div class="watermark top-40 -left-10 transform -rotate-12">
+<span class="material-symbols-outlined text-[120px]">nest_multi_room</span>
+</div>
+<div class="watermark top-[60%] -right-16 transform rotate-45">
+<span class="material-symbols-outlined text-[160px]">local_florist</span>
+</div>
+<div class="watermark bottom-10 left-20 transform -rotate-6">
+<span class="material-symbols-outlined text-[90px]">gesture</span>
+</div>
+<!-- Header Section -->
+<header class="mb-lg relative z-10">
+<p class="font-label-caps text-label-caps text-gold-brand mb-xs tracking-widest uppercase">My Account</p>
+<h1 class="font-headline-lg text-headline-lg-mobile italic text-primary">Saved Addresses <span class="text-gold-brand font-normal opacity-70">✦</span></h1>
+</header>
+<!-- Add Address Button -->
+<button class="w-full mb-xl py-md px-lg border border-sage rounded-xl bg-white text-secondary font-body-md flex items-center justify-center gap-sm hover:bg-surface-container-low transition-all duration-300 group active:scale-[0.98]">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform">add</span>
+            Add a new address
+        </button>
+<!-- Address List -->
+<div class="flex flex-col gap-lg relative z-10">
+<!-- Card 1: Home (Default) -->
+<div class="bg-ivory border border-sage rounded-xl p-lg card-shadow transition-all duration-300 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-md">
+<div class="flex gap-sm">
+<span class="px-3 py-1 bg-gold-brand/10 border border-gold-brand/30 text-gold-brand font-label-caps text-[10px] rounded-full">HOME</span>
+<span class="px-3 py-1 bg-secondary/10 border border-secondary/30 text-secondary font-label-caps text-[10px] rounded-full">DEFAULT</span>
+</div>
+</div>
+<h3 class="font-card-title text-title-serif text-on-surface mb-xs">Residence</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed mb-md">
+                    42, Lotus Apartments,<br/>
+                    Jayanagar, Bengaluru,<br/>
+                    KA 560041
+                </p>
+<div class="flex items-center gap-xs font-data-price text-on-surface mb-lg">
+<span class="material-symbols-outlined text-sm text-outline">call</span>
+                    +91 98450 12345
+                </div>
+<div class="flex gap-lg border-t border-outline-variant pt-md">
+<button class="text-violet-brand font-bold text-sm hover:underline flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                    </button>
+<button class="text-terracotta font-bold text-sm hover:underline flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">delete</span> Delete
+                    </button>
+</div>
+</div>
+<!-- Card 2: Work -->
+<div class="bg-ivory border border-sage rounded-xl p-lg card-shadow transition-all duration-300 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-md">
+<span class="px-3 py-1 bg-gold-brand/10 border border-gold-brand/30 text-gold-brand font-label-caps text-[10px] rounded-full">WORK</span>
+</div>
+<h3 class="font-card-title text-title-serif text-on-surface mb-xs">The Creative Studio</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed mb-md">
+                    1209 East 6th St,<br/>
+                    Studio 4, Austin, TX
+                </p>
+<div class="flex items-center gap-xs font-data-price text-on-surface mb-lg">
+<span class="material-symbols-outlined text-sm text-outline">call</span>
+                    +1 512-555-0198
+                </div>
+<div class="flex flex-wrap gap-lg border-t border-outline-variant pt-md">
+<button class="text-secondary font-bold text-sm hover:underline">Set as default</button>
+<button class="text-violet-brand font-bold text-sm hover:underline">Edit</button>
+<button class="text-terracotta font-bold text-sm hover:underline">Delete</button>
+</div>
+</div>
+<!-- Card 3: Other -->
+<div class="bg-ivory border border-sage rounded-xl p-lg card-shadow transition-all duration-300 hover:-translate-y-1">
+<div class="flex justify-between items-start mb-md">
+<span class="px-3 py-1 bg-gold-brand/10 border border-gold-brand/30 text-gold-brand font-label-caps text-[10px] rounded-full">OTHER</span>
+</div>
+<h3 class="font-card-title text-title-serif text-on-surface mb-xs">Mountain Retreat</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed mb-md">
+                    Oak Ridge Cabin #12,<br/>
+                    Shimla, Himachal Pradesh
+                </p>
+<div class="flex items-center gap-xs font-data-price text-on-surface mb-lg">
+<span class="material-symbols-outlined text-sm text-outline">call</span>
+                    +91 88765 43210
+                </div>
+<div class="flex flex-wrap gap-lg border-t border-outline-variant pt-md">
+<button class="text-secondary font-bold text-sm hover:underline">Set as default</button>
+<button class="text-violet-brand font-bold text-sm hover:underline">Edit</button>
+<button class="text-terracotta font-bold text-sm hover:underline">Delete</button>
+</div>
+</div>
+</div>
+<!-- Footer Text / Encouragement -->
+<footer class="mt-xl text-center">
+<div class="inline-block p-md border border-dashed border-outline-variant rounded-full mb-md">
+<span class="material-symbols-outlined text-sage">handyman</span>
+</div>
+<p class="font-title-serif text-primary italic opacity-70">"Crafting a space for your gifts to travel."</p>
+</footer>
+</main>
+<!-- Success Modal Interaction (Invisible initially) -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-md bg-on-surface/20 backdrop-blur-sm" id="deleteModal">
+<div class="bg-white border border-sage rounded-xl p-lg max-w-xs text-center shadow-xl transform scale-95 transition-transform duration-300">
+<span class="material-symbols-outlined text-terracotta text-4xl mb-md">warning</span>
+<h4 class="font-title-serif text-lg mb-sm">Remove address?</h4>
+<p class="text-on-surface-variant text-sm mb-lg">This action will permanently delete this address from your studio journal.</p>
+<div class="flex gap-md">
+<button class="flex-1 py-2 border border-outline-variant rounded-full text-sm font-bold" onclick="closeModal()">Cancel</button>
+<button class="flex-1 py-2 bg-terracotta text-white rounded-full text-sm font-bold shadow-md active:scale-95" onclick="confirmDelete()">Delete</button>
+</div>
+</div>
+</div>
+<script>
+        // Simple Micro-interactions
+        function openDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        function confirmDelete() {
+            // Animation for visual feedback
+            closeModal();
+        }
+
+        // Attach listeners to all delete buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes('Delete')) {
+                btn.addEventListener('click', openDeleteModal);
+            }
+        });
+
+        // Hover effect for cards
+        document.querySelectorAll('.card-shadow').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = '#C8973A';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '#8FAF82';
+            });
+        });
+    </script>
+</body></html>

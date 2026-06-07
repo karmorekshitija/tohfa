@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Saved Addresses - Tofha</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Merriweather:wght@300;400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        /* Ink Splatter & Botanical Watermark Logic */
+        .watermark-botanical {
+            position: absolute;
+            background-image: radial-gradient(circle at 2px 2px, rgba(73, 102, 63, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+            mask-image: linear-gradient(to bottom, transparent, black, transparent);
+        }
+
+        .ink-splatter {
+            background-color: #573b81;
+            filter: blur(40px);
+            opacity: 0.06;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .button-hover-effect:active {
+            transform: scale(0.98);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#49663f",
+                      "on-surface": "#211b11",
+                      "surface-dim": "#e5d8c8",
+                      "secondary-fixed": "#caecbb",
+                      "primary-fixed": "#bceecb",
+                      "outline": "#717972",
+                      "surface-container": "#f9ecdc",
+                      "on-background": "#211b11",
+                      "tertiary-container": "#70539b",
+                      "secondary-container": "#c8e9b8",
+                      "on-tertiary-fixed-variant": "#54387e",
+                      "on-tertiary-container": "#e8d6ff",
+                      "surface": "#fff8f3",
+                      "inverse-primary": "#a0d2b0",
+                      "background": "#fff8f3",
+                      "inverse-on-surface": "#fcefde",
+                      "surface-bright": "#fff8f3",
+                      "surface-container-high": "#f3e6d6",
+                      "on-tertiary-fixed": "#270550",
+                      "on-primary-fixed": "#002110",
+                      "tertiary": "#573b81",
+                      "tertiary-fixed": "#ecdcff",
+                      "outline-variant": "#c1c9c0",
+                      "tertiary-fixed-dim": "#d6baff",
+                      "surface-tint": "#3a684c",
+                      "surface-container-highest": "#ede1d1",
+                      "surface-variant": "#ede1d1",
+                      "on-primary-fixed-variant": "#214f36",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#3d6b4f",
+                      "on-primary-container": "#b7e9c6",
+                      "inverse-surface": "#362f25",
+                      "primary": "#255338",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#414942",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#4d6a43",
+                      "on-secondary-fixed": "#062103",
+                      "surface-container-low": "#fff2e1",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin-desktop": "64px",
+                      "xl": "40px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Cinzel"],
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "headline-lg": ["Playfair Display"],
+                      "display-hero": ["Playfair Display"],
+                      "title-serif": ["Merriweather"],
+                      "data-price": ["Space Mono"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                      "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                      "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container selection:text-on-secondary-container font-body-md overflow-x-hidden">
+<!-- TopNavBar (Shared Component Identity) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop bg-surface h-[60px]">
+<!-- Brand Wordmark -->
+<div class="flex items-center">
+<span class="font-headline-lg text-headline-lg-mobile italic text-primary">Tofha<span class="text-tertiary">.</span></span>
+</div>
+<!-- Navigation Links (Centered) -->
+<div class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Home</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Category</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors duration-200" href="#">Reels</a>
+<!-- Active State: Profile -->
+<a class="text-primary border-b-2 border-primary font-bold pb-1 transition-colors duration-200" href="#">Profile</a>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-md">
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container-high rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container-high rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container-high rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container-high rounded-full transition-colors duration-200 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="relative min-h-screen flex flex-col items-center justify-center px-margin-mobile pt-[60px]">
+<!-- Watermark/Atmosphere Layer -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<!-- Ink Splatter Watermarks -->
+<div class="ink-splatter w-[400px] h-[400px] -top-20 -left-20"></div>
+<div class="ink-splatter w-[300px] h-[300px] bottom-10 right-0 opacity-[0.04]"></div>
+<!-- Botanical Motif (Simulated with text/opacity layout) -->
+<div class="absolute top-[20%] right-[10%] opacity-[0.08] rotate-12">
+<span class="material-symbols-outlined text-[120px] text-secondary">eco</span>
+</div>
+<div class="absolute bottom-[15%] left-[5%] opacity-[0.08] -rotate-12">
+<span class="material-symbols-outlined text-[80px] text-secondary">local_florist</span>
+</div>
+</div>
+<!-- Content Container -->
+<div class="relative z-10 flex flex-col items-center text-center max-w-md">
+<!-- Chibi Mascot Container -->
+<div class="mb-lg relative group">
+<!-- Mascot Image -->
+<div class="w-64 h-64 md:w-72 md:h-72 flex items-center justify-center bg-surface-container-low rounded-full border border-outline-variant/30 overflow-hidden relative shadow-sm">
+<img alt="Tofha Artisan Mascot" class="w-full h-full object-cover grayscale-[0.2] sepia-[0.1]" data-alt="A charming chibi-style 3D illustration of a young female artisan with a ponytail wearing a canvas apron. She is standing in a brightly lit, soft-focus studio setting, holding a tiny, hand-drawn vintage map. The aesthetic is warm and tactile, like a page from a high-quality sketchbook, featuring a palette of forest green, ivory, and soft violet with ink-like textures. The lighting is ethereal and sun-drenched, creating a cozy and inviting handmade atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVpNhCwON7qMVbExbFdCRqGzBEhhT8-MNiyWk1uOIKwTzBbwWGlxb8h6WK48pjvvBCWQtNcnlupy7u83jk2m_9Xd4d9GQWO-P6HET3v5NXuVRqFDh-XvDFpRxDpkrmkbEWvaDXcjUVvtl7A0_xqpQ_MLxzG-3c_ldwHYQXKyjEaaYw-793XwdTIPSrac3kHWsWuAzqDChZyys2aPoxX963-SUo8JsLEaDjA-5EAZKbU_X6r_nbAs1N48E0RFQHaorJeoCKZoYC5i8"/>
+</div>
+<!-- Floating Element Decoration -->
+<div class="absolute -top-4 -right-4 bg-surface shadow-md p-3 rounded-xl border border-outline-variant rotate-6">
+<span class="material-symbols-outlined text-tertiary" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<!-- Typography Hierarchy -->
+<div class="space-y-md">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg italic text-primary">
+                    No addresses saved yet <span class="text-tertiary">✦</span>
+</h1>
+<p class="font-body-md text-on-surface-variant max-w-xs mx-auto">
+                    Add an address to checkout faster.
+                </p>
+</div>
+<!-- Call to Action -->
+<div class="mt-xl">
+<button class="bg-primary text-on-primary px-lg py-md rounded-full font-body-md font-bold flex items-center gap-sm shadow-md hover:bg-primary/90 transition-all duration-300 button-hover-effect">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+                    Add your first address
+                </button>
+</div>
+</div>
+<!-- Footer Decorative Motif (Dried flower bouquet style) -->
+<div class="absolute bottom-12 w-full flex justify-center opacity-[0.08] pointer-events-none">
+<div class="flex gap-lg scale-150">
+<span class="material-symbols-outlined text-secondary">psychology_alt</span>
+<span class="material-symbols-outlined text-secondary">spa</span>
+<span class="material-symbols-outlined text-secondary">filter_vintage</span>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for the mascot movement
+        document.addEventListener('mousemove', (e) => {
+            const mascot = document.querySelector('.group img');
+            if (!mascot) return;
+            
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 45;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 45;
+            
+            mascot.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) scale(1.05)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            const mascot = document.querySelector('.group img');
+            if (mascot) mascot.style.transform = `rotateY(0deg) rotateX(0deg) scale(1)`;
+        });
+    </script>
+</body></html>
