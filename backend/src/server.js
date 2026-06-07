@@ -1736,6 +1736,7 @@ app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
       const items = db.prepare('SELECT product_name, quantity, image_url FROM order_items WHERE order_id = ?').all(o.id);
       o.item_count = items.reduce((sum, item) => sum + item.quantity, 0);
       o.primary_image_url = items.length > 0 ? items[0].image_url : null;
+      o.image_urls = items.map(item => item.image_url).filter(url => url !== null);
       if (items.length > 0) {
         o.item_preview = items[0].product_name;
         if (items.length > 1) {
@@ -2499,6 +2500,147 @@ app.get('/api/reels/feed', rateLimit(60), optionalAuthenticateToken, (req, res) 
   }
 });
 
+// TASK 46: GET /api/reels/saved
+app.get('/api/reels/saved', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  console.log(`[BACKEND] GET /api/reels/saved - user_id: ${userId}`);
+
+  try {
+    const sql = `
+      SELECT 
+        r.id, r.thumbnail_url, r.caption, r.seller_id,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name,
+        sr.saved_at
+      FROM saved_reels sr
+      JOIN reels r ON sr.reel_id = r.id
+      JOIN users u ON r.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE sr.user_id = ?
+      ORDER BY sr.saved_at DESC
+    `;
+
+    const rows = db.prepare(sql).all(userId);
+
+    const savedReels = rows.map(row => ({
+      id: row.id,
+      thumbnail_url: row.thumbnail_url,
+      caption: row.caption,
+      seller_name: row.seller_name,
+      seller_id: row.seller_id,
+      saved_at: new Date(row.saved_at + 'Z').toISOString()
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        saved_reels: savedReels,
+        count: savedReels.length
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching saved reels:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// GET /api/reels/:id
+app.get('/api/reels/:id', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  const userId = req.user ? req.user.user_id : null;
+  const reelId = req.params.id;
+
+  try {
+    let sql = `
+      SELECT 
+        r.id, r.video_url, r.thumbnail_url, r.caption, r.duration_secs,
+        r.like_count, r.comment_count, r.save_count, r.seller_id, r.product_id,
+        r.created_at,
+        u.avatar_url AS seller_avatar,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name,
+        p.name AS product_name, p.price_paise AS product_price_paise
+    `;
+
+    const sqlParams = [];
+
+    if (userId) {
+      sql += `,
+        ((SELECT 1 FROM reel_likes WHERE reel_id = r.id AND user_id = ?) IS NOT NULL) AS is_liked,
+        ((SELECT 1 FROM saved_reels WHERE reel_id = r.id AND user_id = ?) IS NOT NULL) AS is_saved,
+        ((SELECT 1 FROM follows WHERE follower_id = ? AND following_id = r.seller_id) IS NOT NULL) AS is_followed
+      `;
+      sqlParams.push(userId, userId, userId);
+    } else {
+      sql += `,
+        0 AS is_liked,
+        0 AS is_saved,
+        0 AS is_followed
+      `;
+    }
+
+    sql += `
+      FROM reels r
+      JOIN users u ON r.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      LEFT JOIN products p ON r.product_id = p.id
+      WHERE r.id = ? AND r.status = 'active'
+    `;
+    sqlParams.push(reelId);
+
+    const row = db.prepare(sql).get(...sqlParams);
+    if (!row) {
+      return res.status(404).json({
+        error: true,
+        message: "Reel not found",
+        code: "REEL_NOT_FOUND"
+      });
+    }
+
+    const reel = {
+      id: row.id,
+      video_url: row.video_url,
+      thumbnail_url: row.thumbnail_url,
+      caption: row.caption,
+      duration_secs: row.duration_secs,
+      like_count: row.like_count || 0,
+      comment_count: row.comment_count || 0,
+      save_count: row.save_count || 0,
+      is_liked: !!row.is_liked,
+      is_saved: !!row.is_saved,
+      seller: {
+        id: row.seller_id,
+        seller_name: row.seller_name,
+        avatar_url: row.seller_avatar,
+        is_followed: !!row.is_followed
+      }
+    };
+
+    if (row.product_id) {
+      reel.linked_product = {
+        id: row.product_id,
+        name: row.product_name,
+        price_paise: row.product_price_paise
+      };
+    } else {
+      reel.linked_product = null;
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: reel
+    });
+  } catch (err) {
+    console.error('Error fetching single reel:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
 // Multer configuration for reels upload
 const reelsStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -2842,10 +2984,12 @@ app.post('/api/reels/:id/comments', rateLimit(60), authenticateToken, (req, res)
 app.post('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) => {
   const userId = req.user.user_id;
   const reelId = req.params.id;
+  console.log(`[BACKEND] POST /api/reels/${reelId}/save - user_id: ${userId}`);
 
   try {
     const reel = db.prepare("SELECT id FROM reels WHERE id = ?").get(reelId);
     if (!reel) {
+      console.log(`[BACKEND] POST /api/reels/${reelId}/save - Reel not found`);
       return res.status(404).json({
         error: true,
         message: "Reel not found",
@@ -2857,6 +3001,9 @@ app.post('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) => 
     if (!existing) {
       db.prepare("INSERT INTO saved_reels (reel_id, user_id) VALUES (?, ?)").run(reelId, userId);
       db.prepare("UPDATE reels SET save_count = save_count + 1 WHERE id = ?").run(reelId);
+      console.log(`[BACKEND] POST /api/reels/${reelId}/save - Reel saved successfully`);
+    } else {
+      console.log(`[BACKEND] POST /api/reels/${reelId}/save - Reel already saved`);
     }
 
     return res.status(200).json({
@@ -2879,10 +3026,12 @@ app.post('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) => 
 app.delete('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) => {
   const userId = req.user.user_id;
   const reelId = req.params.id;
+  console.log(`[BACKEND] DELETE /api/reels/${reelId}/save - user_id: ${userId}`);
 
   try {
     const reel = db.prepare("SELECT id FROM reels WHERE id = ?").get(reelId);
     if (!reel) {
+      console.log(`[BACKEND] DELETE /api/reels/${reelId}/save - Reel not found`);
       return res.status(404).json({
         error: true,
         message: "Reel not found",
@@ -2894,6 +3043,9 @@ app.delete('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) =
     if (existing) {
       db.prepare("DELETE FROM saved_reels WHERE reel_id = ? AND user_id = ?").run(reelId, userId);
       db.prepare("UPDATE reels SET save_count = MAX(0, save_count - 1) WHERE id = ?").run(reelId);
+      console.log(`[BACKEND] DELETE /api/reels/${reelId}/save - Reel unsaved successfully`);
+    } else {
+      console.log(`[BACKEND] DELETE /api/reels/${reelId}/save - Reel was not saved`);
     }
 
     return res.status(200).json({
@@ -2904,52 +3056,6 @@ app.delete('/api/reels/:id/save', rateLimit(60), authenticateToken, (req, res) =
     });
   } catch (err) {
     console.error('Error unsaving reel:', err);
-    return res.status(500).json({
-      error: true,
-      message: "Internal server error",
-      code: "INTERNAL_SERVER_ERROR"
-    });
-  }
-});
-
-// TASK 46: GET /api/reels/saved
-app.get('/api/reels/saved', rateLimit(60), authenticateToken, (req, res) => {
-  const userId = req.user.user_id;
-
-  try {
-    const sql = `
-      SELECT 
-        r.id, r.thumbnail_url, r.caption, r.seller_id,
-        COALESCE(sp.shop_name, u.full_name) AS seller_name,
-        sr.saved_at
-      FROM saved_reels sr
-      JOIN reels r ON sr.reel_id = r.id
-      JOIN users u ON r.seller_id = u.id
-      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
-      WHERE sr.user_id = ?
-      ORDER BY sr.saved_at DESC
-    `;
-
-    const rows = db.prepare(sql).all(userId);
-
-    const savedReels = rows.map(row => ({
-      id: row.id,
-      thumbnail_url: row.thumbnail_url,
-      caption: row.caption,
-      seller_name: row.seller_name,
-      seller_id: row.seller_id,
-      saved_at: new Date(row.saved_at + 'Z').toISOString()
-    }));
-
-    return res.status(200).json({
-      success: true,
-      data: {
-        saved_reels: savedReels,
-        count: savedReels.length
-      }
-    });
-  } catch (err) {
-    console.error('Error fetching saved reels:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",

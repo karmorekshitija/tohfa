@@ -1,724 +1,914 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Tohfa - Reels Discovery</title>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "error": "#ba1a1a",
-                    "primary-container": "#8fa382",
-                    "inverse-surface": "#343029",
-                    "secondary-fixed-dim": "#cac6bd",
-                    "inverse-primary": "#b8cdaa",
-                    "on-surface": "#1f1b15",
-                    "on-tertiary-fixed-variant": "#593d5d",
-                    "on-secondary-fixed-variant": "#484740",
-                    "on-tertiary": "#ffffff",
-                    "primary": "#516447",
-                    "surface-tint": "#516447",
-                    "tertiary-fixed": "#fcd6ff",
-                    "tertiary-container": "#b492b7",
-                    "on-primary-fixed-variant": "#3a4c31",
-                    "on-tertiary-container": "#452b4a",
-                    "inverse-on-surface": "#f8efe5",
-                    "on-secondary": "#ffffff",
-                    "surface-variant": "#eae1d7",
-                    "tertiary": "#725476",
-                    "surface-container-lowest": "#ffffff",
-                    "surface-container-low": "#fbf2e8",
-                    "on-error": "#ffffff",
-                    "on-surface-variant": "#444840",
-                    "outline": "#74786f",
-                    "tertiary-fixed-dim": "#dfbbe2",
-                    "on-error-container": "#93000a",
-                    "secondary-container": "#e6e2d8",
-                    "secondary-fixed": "#e6e2d8",
-                    "primary-fixed-dim": "#b8cdaa",
-                    "secondary": "#605e57",
-                    "on-secondary-fixed": "#1c1c16",
-                    "background": "#fff8f3",
-                    "surface-dim": "#e1d9cf",
-                    "primary-fixed": "#d4e9c4",
-                    "outline-variant": "#c4c8bd",
-                    "on-primary": "#ffffff",
-                    "surface-container-high": "#f0e7dd",
-                    "surface-bright": "#fff8f3",
-                    "on-primary-fixed": "#101f09",
-                    "on-background": "#1f1b15",
-                    "on-secondary-container": "#66645d",
-                    "surface-container": "#f6ece3",
-                    "on-primary-container": "#283920",
-                    "surface": "#fff8f3",
-                    "surface-container-highest": "#eae1d7",
-                    "error-container": "#ffdad6",
-                    "on-tertiary-fixed": "#2a122f"
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Tohfa | Artisan Reels</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#255338",
+                        "surface-tint": "#255338",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],
+                        "title-serif": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-price": ["DM Sans"],
+                        "label-caps": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-serif": ["20px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-price": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                },
             },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "margin-desktop": "64px",
-                    "unit": "8px",
-                    "margin-mobile": "20px",
-                    "container-max": "1280px",
-                    "gutter": "24px"
-            },
-            "fontFamily": {
-                    "headline-lg-mobile": ["EB Garamond"],
-                    "body-lg": ["Work Sans"],
-                    "body-sm": ["Work Sans"],
-                    "headline-lg": ["EB Garamond"],
-                    "title-md": ["Work Sans"],
-                    "label-caps": ["Work Sans"],
-                    "display-lg": ["EB Garamond"]
-            },
-            "fontSize": {
-                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
-                    "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
-                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
-                    "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
-                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
-                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
-            }
-          },
-        },
-      }
+        }
     </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    <style>
+        .scrim-warm {
+            background: linear-gradient(to top, rgba(30, 20, 10, 0.85) 0%, rgba(30, 20, 10, 0.3) 40%, transparent 70%);
         }
-        .video-overlay-gradient {
-            background: linear-gradient(to top, rgba(31, 27, 21, 0.8) 0%, rgba(31, 27, 21, 0) 30%, rgba(31, 27, 21, 0) 70%, rgba(31, 27, 21, 0.4) 100%);
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
         }
-        .botanical-watermark {
-            mask-image: radial-gradient(circle, black, transparent 80%);
-            opacity: 0.1;
-            pointer-events: none;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #eae1d7;
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #c4c8bd;
         }
     </style>
 </head>
-<body class="bg-background text-on-surface font-body-lg overflow-hidden h-screen flex flex-col">
-    <!-- TopNavBar -->
-    <header class="bg-background/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ease-in-out border-b border-outline-variant/10">
-        <nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
-            <div class="flex items-center gap-unit cursor-pointer" onclick="window.location.href='home.html'">
-                <span class="material-symbols-outlined text-primary text-3xl">filter_vintage</span>
-                <h1 class="font-headline-lg text-headline-lg text-primary select-none" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></h1>
-            </div>
+<body class="bg-[#FFFFFF] font-body-md text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Shell -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<!-- TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-[#FAF7F0] border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/buyer/home.html">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <a href="/buyer/categories.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
+      <span class="material-symbols-outlined">search</span>
+    </a>
+    <a href="/buyer/saved-makes.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+      <span id="nav-wishlist-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="/buyer/cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="/buyer/notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">notifications</span>
+      <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
+      <span id="nav-notif-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
+    </a>
+  </div>
+</header>
+<!-- Main Reels Content Container -->
+<main class="min-h-screen flex flex-col items-center pt-8 pb-xl bg-[#FFFFFF]">
+<div class="relative w-full max-w-[500px] aspect-[9/16] bg-surface-container-low rounded-[20px] overflow-hidden shadow-[0_12px_40px_-12px_rgba(58,51,40,0.15)] group transition-transform duration-500 hover:scale-[1.01]">
 
-            <!-- Center Navigation Links -->
-            <div class="hidden md:flex items-center gap-8">
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="home.html">Home</a>
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="category.html">Category</a>
-                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="reels.html">Reels</a>
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" id="navbar-dashboard-link" href="profile.html">Profile</a>
-            </div>
-
-            <!-- Right Action Icons / Auth State -->
-            <div class="flex items-center gap-6">
-                <button onclick="window.location.href='wishlist.html'" class="text-secondary hover:text-primary transition-colors flex items-center relative">
-                    <span class="material-symbols-outlined">favorite</span>
-                </button>
-
-                <div id="auth-buttons" class="flex items-center gap-2"></div>
-
-                <button class="md:hidden text-secondary" id="mobile-menu-btn">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-            </div>
-        </nav>
-    </header>
-<!-- Main Reels Content Canvas -->
-<main class="relative flex-1 w-full bg-inverse-surface overflow-hidden">
-<!-- Video / Thumbnail Container -->
-<div class="absolute inset-0 z-0 flex items-center justify-center">
-    <video id="reel-video" class="w-full h-full object-contain bg-black hidden" loop playsinline autoplay muted></video>
-    <img id="reel-thumbnail" alt="Crafting video" class="w-full h-full object-cover" src=""/>
-    <div class="absolute inset-0 video-overlay-gradient"></div>
+<!-- Main Video Player -->
+<div class="relative w-full h-full cursor-pointer" id="video-container">
+  <div id="no-reels-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-[#eae1d7]/40 text-primary p-lg hidden">
+    <span class="material-symbols-outlined text-5xl mb-md">movie_filter</span>
+    <p class="font-title-serif text-lg font-bold text-center">No artisan reels active</p>
+    <p class="font-body-md text-sm text-outline text-center mt-xs">Check back later for beautiful handmade curations.</p>
+  </div>
+  <video id="reel-video" class="w-full h-full object-cover" loop playsinline autoplay muted></video>
+  
+  <!-- Custom Play/Pause Overlay indicator -->
+  <div id="play-overlay" class="absolute inset-0 flex items-center justify-center bg-black/35 opacity-0 pointer-events-none transition-opacity duration-200">
+    <span class="material-symbols-outlined text-white text-6xl font-light" id="play-overlay-icon">play_arrow</span>
+  </div>
+  <!-- Speaker/Volume Mute Icon Overlay in top-right -->
+  <button id="volume-toggle-btn" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/60 transition-colors">
+    <span class="material-symbols-outlined text-[20px]" id="volume-icon">volume_off</span>
+  </button>
 </div>
 
-<!-- Butterfly & Botanical Decorative Flourishes -->
-<div class="absolute top-10 right-10 z-10 opacity-20 pointer-events-none">
-    <span class="material-symbols-outlined text-[120px] text-primary-fixed">flutter_dash</span>
+<!-- Bottom Scrim Overlay -->
+<div class="absolute inset-0 scrim-warm flex flex-col justify-end p-lg pointer-events-none">
+<div class="pointer-events-auto flex flex-col w-full">
+<!-- Product CTA -->
+<div class="mb-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300" id="product-cta-container">
+<a id="product-cta-link" href="#" class="bg-primary hover:bg-[#1a3a27] text-white px-md py-sm rounded-full flex items-center gap-sm shadow-lg transition-transform active:scale-95 inline-flex">
+<div class="w-8 h-8 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+<img id="product-img" alt="Product thumbnail" class="w-full h-full object-cover" src="">
+</div>
+<span class="font-body-md text-sm font-bold flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+<span id="product-name">View Product</span>
+</span>
+<span class="mx-xs opacity-40">|</span>
+<span id="product-price" class="font-data-price text-sm">₹0</span>
+</a>
+</div>
+<!-- Info Section -->
+<div class="flex flex-col gap-sm select-none">
+<div class="flex items-center gap-md">
+<div id="seller-avatar-wrapper" class="w-8 h-8 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold text-xs overflow-hidden flex-shrink-0 border border-white/20">
+  <span id="seller-avatar-letter">S</span>
+</div>
+<h3 id="seller-name" class="font-title-serif text-white text-lg font-bold">Midnight Lily Ceramics</h3>
+<button id="follow-btn" class="bg-white/20 backdrop-blur-md text-white px-md py-1 rounded-full text-xs font-bold border border-white/30 hover:bg-white/30 transition-all active:scale-95">
+                            + Follow
+                        </button>
+</div>
+<p id="reel-caption" class="font-body-md text-white/90 text-sm max-w-[80%] leading-relaxed line-clamp-2 hover:line-clamp-none transition-all cursor-pointer">
+                        Creating tiny bees for tiny people 🐝... Every wing is stitched with intention in our studio.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right Action Rail -->
+<div class="absolute right-md bottom-1/4 flex flex-col gap-lg items-center z-10">
+<div class="flex flex-col items-center gap-xs">
+<button id="like-btn" class="w-12 h-12 rounded-full bg-surface-container-low/80 backdrop-blur-md flex items-center justify-center text-primary shadow-md hover:scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" id="like-icon">favorite</span>
+</button>
+<span id="like-count" class="font-data-price text-xs text-white drop-shadow-md">0</span>
+</div>
+<div class="flex flex-col items-center gap-xs">
+<button id="comment-btn" class="w-12 h-12 rounded-full bg-surface-container-low/80 backdrop-blur-md flex items-center justify-center text-primary shadow-md hover:scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+<span id="comment-count" class="font-data-price text-xs text-white drop-shadow-md">0</span>
+</div>
+<div class="flex flex-col items-center gap-xs">
+<button id="save-btn" class="w-12 h-12 rounded-full bg-surface-container-low/80 backdrop-blur-md flex items-center justify-center text-primary shadow-md hover:scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" id="save-icon">bookmark</span>
+</button>
+<span id="save-count" class="font-data-price text-xs text-white drop-shadow-md">0</span>
+</div>
+<button id="share-btn" class="w-12 h-12 rounded-full bg-surface-container-low/80 backdrop-blur-md flex items-center justify-center text-primary shadow-md hover:scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+<!-- Progress Bar -->
+<div class="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
+<div class="h-full bg-primary transition-all duration-100 ease-linear" id="progress-bar" style="width: 0%;"></div>
 </div>
 
-<!-- Prev/Next Navigation Buttons -->
-<div class="absolute left-6 bottom-40 flex flex-col gap-4 z-30">
-    <button id="btn-prev-reel" class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all active:scale-95 disabled:opacity-25" disabled>
-        <span class="material-symbols-outlined">arrow_upward</span>
+<!-- Comments Drawer Overlay -->
+<div id="comments-drawer" class="absolute bottom-0 left-0 w-full h-[75%] bg-white rounded-t-[24px] shadow-2xl flex flex-col z-30 transform translate-y-full transition-transform duration-300 ease-in-out font-['DM_Sans']">
+  <!-- Notch / Drag handle visual -->
+  <div class="w-12 h-1 bg-outline-variant/60 rounded-full mx-auto my-3 cursor-pointer" id="comments-notch"></div>
+  
+  <!-- Header -->
+  <div class="px-md pb-md border-b border-outline-variant flex justify-between items-center select-none">
+    <h3 class="font-title-serif text-primary text-xl font-bold font-['Playfair_Display']">
+      Comments <span id="comments-title-count" class="text-sm font-normal font-sans text-secondary pl-1">0</span>
+    </h3>
+    <button id="close-comments-btn" class="text-secondary hover:text-error transition-all p-1 hover:bg-[#C1C9C0]/20 rounded-full flex items-center justify-center">
+      <span class="material-symbols-outlined text-[20px]">close</span>
     </button>
-    <button id="btn-next-reel" class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all active:scale-95 disabled:opacity-25" disabled>
-        <span class="material-symbols-outlined">arrow_downward</span>
-    </button>
+  </div>
+  
+  <!-- Comments List Container -->
+  <div id="comments-list" class="flex-grow overflow-y-auto px-md py-sm space-y-md custom-scrollbar">
+    <!-- Injected comments -->
+  </div>
+  
+  <!-- Footer / Input Form -->
+  <div class="p-md border-t border-outline-variant bg-[#FCFAF5] rounded-b-[20px]">
+    <div class="flex items-start gap-sm">
+      <div id="user-avatar-circle" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs flex-shrink-0 overflow-hidden border border-outline-variant">
+        <span id="user-avatar-letter">U</span>
+      </div>
+      <div class="flex-grow flex flex-col gap-xs">
+        <textarea id="comment-input" rows="2" placeholder="Add a comment..." class="w-full bg-[#fbf2e8] rounded-xl border border-outline-variant/30 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary resize-none placeholder:text-outline/70" maxlength="300"></textarea>
+        <div class="flex items-center justify-between mt-1">
+          <span id="char-counter" class="text-xs text-outline font-sans">0/300</span>
+          <button id="send-comment-btn" class="bg-primary hover:bg-[#1a3a27] text-white px-lg py-1.5 rounded-full text-xs font-bold flex items-center gap-xs shadow-md transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            <span>Send</span>
+            <span class="material-symbols-outlined text-[14px]">send</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Reel Content Overlay -->
-<div class="absolute inset-0 z-20 flex flex-col justify-end px-margin-mobile pb-[100px] md:px-margin-desktop md:pb-24">
-    <!-- Side Interaction Menu -->
-    <div class="absolute right-6 bottom-40 flex flex-col items-center gap-6 z-30">
-        <!-- Like -->
-        <button id="btn-like" class="flex flex-col items-center gap-1 group cursor-pointer focus:outline-none">
-            <div class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all">
-                <span id="like-icon" class="material-symbols-outlined text-white transition-colors">favorite</span>
-            </div>
-            <span id="like-count" class="text-white text-xs font-label-caps drop-shadow-md">0</span>
-        </button>
-        <!-- Comments -->
-        <button id="btn-comment" class="flex flex-col items-center gap-1 group cursor-pointer focus:outline-none">
-            <div class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all">
-                <span class="material-symbols-outlined text-white">chat_bubble</span>
-            </div>
-            <span id="comment-count" class="text-white text-xs font-label-caps drop-shadow-md">0</span>
-        </button>
-        <!-- Save -->
-        <button id="btn-save" class="flex flex-col items-center gap-1 group cursor-pointer focus:outline-none">
-            <div class="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white hover:bg-primary/60 transition-all">
-                <span id="save-icon" class="material-symbols-outlined text-white">bookmark</span>
-            </div>
-            <span class="text-white text-xs font-label-caps drop-shadow-md">Save</span>
-        </button>
-    </div>
-
-    <!-- Header Text for Reel -->
-    <div class="mb-6 max-w-lg">
-        <h1 id="reel-caption" class="font-headline-lg-mobile text-headline-lg-mobile text-white drop-shadow-md leading-snug">
-            Loading...
-        </h1>
-        <div id="reel-seller-info" class="text-white text-sm font-semibold mt-2 drop-shadow-md flex items-center gap-2 cursor-pointer">
-            <span id="reel-seller-avatar" class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs overflow-hidden">U</span>
-            <span id="reel-seller-name">Seller</span>
-        </div>
-    </div>
-
-    <!-- Product Detail Box (Floating Card) -->
-    <div id="linked-product-card" class="bg-surface-container-low/95 dark:bg-inverse-surface backdrop-blur-md p-4 rounded-xl border border-outline-variant/20 shadow-[0_4px_16px_rgba(74,69,62,0.12)] max-w-sm flex items-center gap-4 group hover:bg-surface-bright transition-colors cursor-pointer hidden">
-        <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-high flex items-center justify-center">
-            <img id="product-img" alt="Product Image" class="w-full h-full object-cover" src=""/>
-        </div>
-        <div class="flex-grow">
-            <div class="flex justify-between items-start">
-                <h3 id="product-name" class="font-title-md text-title-md text-on-surface leading-tight font-semibold">Product Title</h3>
-                <span class="material-symbols-outlined text-primary">add_shopping_cart</span>
-            </div>
-            <div class="flex items-baseline gap-2 mt-1">
-                <span id="product-price" class="font-bold text-primary">₹0.00</span>
-            </div>
-        </div>
-    </div>
 </div>
-
-<!-- Comments Drawer -->
-<div id="comments-drawer" class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-surface-container-lowest border-l border-outline-variant/30 z-40 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
-    <div class="p-4 flex items-center justify-between border-b border-outline-variant/20">
-        <div class="flex items-center gap-2">
-            <h3 class="font-title-md text-title-md text-primary font-bold">Comments</h3>
-            <span id="drawer-comment-count" class="text-xs text-outline bg-surface-container-low px-2 py-0.5 rounded-full">0</span>
-        </div>
-        <button id="btn-close-comments" class="material-symbols-outlined text-secondary hover:text-primary">close</button>
-    </div>
-    <div id="drawer-comments-list" class="flex-grow overflow-y-auto p-4 space-y-4">
-        <!-- Comments will be populated dynamically -->
-    </div>
-    <div class="p-4 border-t border-outline-variant/20 bg-surface-container-lowest">
-        <div class="flex gap-3 items-end">
-            <textarea id="comment-input" class="flex-grow bg-surface-container-low border border-outline-variant/30 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" placeholder="Add a comment..." rows="1"></textarea>
-            <button id="btn-submit-comment" class="bg-primary text-white p-2 rounded-full hover:opacity-90 active:scale-95 transition-all flex items-center justify-center">
-                <span class="material-symbols-outlined text-[18px]">send</span>
-            </button>
-        </div>
-    </div>
+<!-- Navigation Arrows for Feed -->
+<div class="fixed right-margin-desktop top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-lg">
+<button id="btn-prev" class="p-md rounded-full bg-surface-container-low border border-sage hover:bg-primary hover:text-white transition-all shadow-sm active:scale-95 duration-100">
+<span class="material-symbols-outlined">arrow_upward</span>
+</button>
+<button id="btn-next" class="p-md rounded-full bg-surface-container-low border border-sage hover:bg-primary hover:text-white transition-all shadow-sm active:scale-95 duration-100">
+<span class="material-symbols-outlined">arrow_downward</span>
+</button>
 </div>
 </main>
-<!-- Bottom Navigation Bar (Mobile Only as per protocol) -->
-<!-- Standard Bottom Navigation Bar (Task 10) -->
-<nav class="standard-tab-bar" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FFFFFF; height: 64px; border-top: 1px solid #C5D6BC; display: flex; align-items: center; justify-content: space-around; z-index: 50; padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box;">
-    <!-- Tab 1: Home -->
-    <a href="home.html" class="tab-item" id="tab-home" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">home</span>
-        <span>Home</span>
-    </a>
-    <!-- Tab 2: Search -->
-    <a href="category.html" class="tab-item" id="tab-search" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">search</span>
-        <span>Search</span>
-    </a>
-    <!-- Tab 3: Reels -->
-    <a href="reels.html" class="tab-item" id="tab-reels" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">smart_display</span>
-        <span>Reels</span>
-    </a>
-    <!-- Tab 4: Wishlist -->
-    <a href="wishlist.html" class="tab-item" id="tab-wishlist" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">favorite</span>
-        <span>Wishlist</span>
-    </a>
-    <!-- Tab 5: Profile -->
-    <a href="profile.html" class="tab-item" id="tab-profile" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">account_circle</span>
-        <span>Profile</span>
-    </a>
-    <script>
-        (function() {
-            const path = window.location.pathname.split('/').pop() || 'home.html';
-            let activeId = '';
-            if (path.includes('home') || path.includes('index') || path.includes('6_home')) {
-                activeId = 'tab-home';
-            } else if (path.includes('category') || path.includes('1_categories')) {
-                activeId = 'tab-search';
-            } else if (path.includes('reel') || path.includes('2_reels')) {
-                activeId = 'tab-reels';
-            } else if (path.includes('wishlist')) {
-                activeId = 'tab-wishlist';
-            } else if (path.includes('profile') || path.includes('3_buyer_profile')) {
-                activeId = 'tab-profile';
-            }
-            if (activeId) {
-                const activeEl = document.getElementById(activeId);
-                if (activeEl) {
-                    activeEl.style.color = '#3D6B4F';
-                    const icon = activeEl.querySelector('.material-symbols-outlined');
-                    if (icon) {
-                        icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600";
-                    }
-                }
-            }
-        })();
-    </script>
-</nav>
+<!-- Footer Shell -->
 
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
-    import { formatPaise } from '/src/utils/currency.js';
-    import { logout } from '/src/utils/auth.js';
+    import { initCategoryDrawer } from '/src/components/CategoryDrawer.js';
+    import Toast from '/src/components/Toast.js';
 
-    let reels = [];
+    let reelsList = [];
     let currentIndex = 0;
+    let commentsList = [];
+    let currentReelId = null;
+    let isMuted = true;
+    let isLoadingFeed = false;
     let nextCursor = null;
-    let hasMore = true;
-    let isLoading = false;
-    let isLoggedIn = false;
-    
-    // Comments state
-    let commentsCursor = null;
-    let commentsHasMore = false;
-    let isLoadingComments = false;
+    let hasMore = false;
 
-    async function checkAuthState() {
-        const token = sessionStorage.getItem('tohfa_access_token');
-        const authContainer = document.getElementById('auth-buttons');
-        const dashboardLink = document.getElementById('navbar-dashboard-link');
-        
-        if (token) {
-            isLoggedIn = true;
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const payload = JSON.parse(window.atob(base64));
-                
-                let avatarUrl = null;
+    // Elements
+    const videoEl = document.getElementById('reel-video');
+    const videoContainer = document.getElementById('video-container');
+    const playOverlay = document.getElementById('play-overlay');
+    const playOverlayIcon = document.getElementById('play-overlay-icon');
+    const volumeToggleBtn = document.getElementById('volume-toggle-btn');
+    const volumeIcon = document.getElementById('volume-icon');
+    const progressBar = document.getElementById('progress-bar');
+    const noReelsPlaceholder = document.getElementById('no-reels-placeholder');
+
+    const sellerAvatarLetter = document.getElementById('seller-avatar-letter');
+    const sellerAvatarWrapper = document.getElementById('seller-avatar-wrapper');
+    const sellerNameEl = document.getElementById('seller-name');
+    const followBtn = document.getElementById('follow-btn');
+    const reelCaptionEl = document.getElementById('reel-caption');
+
+    const productCtaContainer = document.getElementById('product-cta-container');
+    const productCtaLink = document.getElementById('product-cta-link');
+    const productImg = document.getElementById('product-img');
+    const productNameEl = document.getElementById('product-name');
+    const productPriceEl = document.getElementById('product-price');
+
+    const likeBtn = document.getElementById('like-btn');
+    const likeIcon = document.getElementById('like-icon');
+    const likeCountEl = document.getElementById('like-count');
+
+    const commentBtn = document.getElementById('comment-btn');
+    const commentCountEl = document.getElementById('comment-count');
+
+    const saveBtn = document.getElementById('save-btn');
+    const saveIcon = document.getElementById('save-icon');
+    const saveCountEl = document.getElementById('save-count');
+
+    const shareBtn = document.getElementById('share-btn');
+
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+
+    // Comments Overlay Elements
+    const commentsDrawer = document.getElementById('comments-drawer');
+    const commentsTitleCount = document.getElementById('comments-title-count');
+    const closeCommentsBtn = document.getElementById('close-comments-btn');
+    const commentsListEl = document.getElementById('comments-list');
+    const userAvatarLetter = document.getElementById('user-avatar-letter');
+    const userAvatarCircle = document.getElementById('user-avatar-circle');
+    const commentInput = document.getElementById('comment-input');
+    const charCounter = document.getElementById('char-counter');
+    const sendCommentBtn = document.getElementById('send-comment-btn');
+    const commentsNotch = document.getElementById('comments-notch');
+
+    const COLORS = [
+      '#3D6B4F', '#255338', '#725476', '#593d5d', '#b492b7',
+      '#8fa382', '#605e57', '#452b4a', '#3a4c31', '#74786f'
+    ];
+
+    // Helper functions
+    function getInitials(name) {
+      if (!name) return 'U';
+      const parts = name.trim().split(/\s+/);
+      if (parts.length > 1) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+      return parts[0][0].toUpperCase();
+    }
+
+    function getAvatarColor(name) {
+      if (!name) return COLORS[0];
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const index = Math.abs(hash) % COLORS.length;
+      return COLORS[index];
+    }
+
+    function formatCount(num) {
+      if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      }
+      return num;
+    }
+
+    // Initialize Page
+    async function initPage() {
+      // Initialize Top Category Drawer
+      initCategoryDrawer();
+
+      // Update current user initials/avatar in comment section
+      updateCurrentUserAvatar();
+
+      // Parse target reel ID from URL query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetReelId = urlParams.get('id');
+
+      // Fetch Reels Feed
+      await fetchFeed(targetReelId);
+      
+      // Setup event listeners
+      setupEvents();
+    }
+
+    async function fetchFeed(targetReelId = null) {
+      if (isLoadingFeed) return;
+      isLoadingFeed = true;
+      try {
+        const res = await apiClient.get('/reels/feed');
+        if (res.data && res.data.success) {
+          reelsList = res.data.data.reels || [];
+          nextCursor = res.data.data.next_cursor;
+          hasMore = res.data.data.has_more;
+          
+          if (reelsList.length > 0) {
+            currentIndex = 0;
+            
+            if (targetReelId) {
+              const targetIndex = reelsList.findIndex(r => r.id == targetReelId);
+              if (targetIndex !== -1) {
+                currentIndex = targetIndex;
+              } else {
+                // If the target reel is not in the first page of the feed, fetch it individually
                 try {
-                    const res = await apiClient.get('/profile/me');
-                    if (res.data && res.data.success) {
-                        avatarUrl = res.data.data.avatar_url;
-                    }
-                } catch (err) {
-                    console.error("Failed to fetch profile avatar:", err);
+                  const singleRes = await apiClient.get(`/reels/${targetReelId}`);
+                  if (singleRes.data && singleRes.data.success) {
+                    const singleReel = singleRes.data.data;
+                    reelsList.unshift(singleReel); // Prepend to reels list
+                    currentIndex = 0;
+                  }
+                } catch (singleErr) {
+                  console.error("Failed to fetch target reel by ID:", singleErr);
                 }
-                
-                if (payload.role === 'seller') {
-                    if (dashboardLink) {
-                        dashboardLink.innerText = 'Seller Dashboard';
-                        dashboardLink.href = '/seller/dashboard.html';
-                    }
-                } else {
-                    if (dashboardLink) {
-                        dashboardLink.innerText = 'Profile';
-                        dashboardLink.href = 'profile.html';
-                    }
-                }
-
-                let profileHtml = '';
-                if (avatarUrl) {
-                    profileHtml = `<img src="${avatarUrl}" alt="Profile" class="w-[28px] h-[28px] rounded-full border border-[#C5D6BC] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
-                } else {
-                    profileHtml = `<span class="material-symbols-outlined cursor-pointer" style="font-size: 28px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;" onclick="window.location.href='profile.html'">account_circle</span>`;
-                }
-
-                if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            ${profileHtml}
-                            <button id="btn-logout" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('btn-logout').addEventListener('click', logout);
-                }
-            } catch(e) {
-                console.error("Failed to parse token:", e);
-                logout();
+              }
             }
-        } else {
-            isLoggedIn = false;
-            if (authContainer) {
-                authContainer.innerHTML = `
-                    <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
-                    <a href="/auth/signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
-                `;
-            }
-        }
-    }
 
-    async function fetchReels(reset = false) {
-        if (isLoading) return;
-        isLoading = true;
-        try {
-            let url = '/reels/feed?limit=10';
-            if (nextCursor && !reset) {
-                url += `&cursor=${nextCursor}`;
-            }
-            const res = await apiClient.get(url);
-            if (res.data && res.data.success) {
-                const data = res.data.data;
-                nextCursor = data.next_cursor;
-                hasMore = data.has_more;
-                if (reset) {
-                    reels = data.reels || [];
-                } else {
-                    reels = [...reels, ...(data.reels || [])];
-                }
-
-                // Rearrange if specific reel id was provided in url
-                const urlParams = new URLSearchParams(window.location.search);
-                const targetId = parseInt(urlParams.get('id'), 10);
-                if (reset && targetId) {
-                    const idx = reels.findIndex(r => r.id === targetId);
-                    if (idx > -1) {
-                        const targetReel = reels.splice(idx, 1)[0];
-                        reels.unshift(targetReel);
-                    }
-                }
-                
-                if (reels.length > 0) {
-                    displayReel(currentIndex);
-                } else {
-                    showEmptyState();
-                }
-            }
-        } catch (e) {
-            console.error("Error fetching reels:", e);
-        } finally {
-            isLoading = false;
-        }
-    }
-
-    function showEmptyState() {
-        document.getElementById('reel-caption').innerText = "No reels available.";
-        document.getElementById('reel-thumbnail').src = "https://placehold.co/400x700/f4ede3/516447?text=No+Reels";
-        document.getElementById('reel-video').classList.add('hidden');
-        document.getElementById('reel-thumbnail').classList.remove('hidden');
-    }
-
-    function displayReel(index) {
-        if (index < 0 || index >= reels.length) return;
-        currentIndex = index;
-        const reel = reels[index];
-
-        // Update Prev/Next buttons
-        document.getElementById('btn-prev-reel').disabled = (index === 0);
-        document.getElementById('btn-next-reel').disabled = (index === reels.length - 1 && !hasMore);
-
-        // If close to end, fetch more
-        if (index === reels.length - 2 && hasMore) {
-            fetchReels(false);
-        }
-
-        // Setup Media
-        const videoEl = document.getElementById('reel-video');
-        const thumbEl = document.getElementById('reel-thumbnail');
-        
-        if (reel.video_url) {
-            videoEl.src = reel.video_url;
+            noReelsPlaceholder.classList.add('hidden');
             videoEl.classList.remove('hidden');
-            videoEl.load();
-            videoEl.play().catch(err => {
-                console.log("Autoplay blocked or failed:", err);
-            });
-            thumbEl.classList.add('hidden');
-        } else {
-            videoEl.classList.add('hidden');
-            videoEl.src = '';
-            thumbEl.classList.remove('hidden');
-        }
-        
-        thumbEl.src = reel.thumbnail_url || 'https://placehold.co/400x700/f4ede3/516447?text=Artisan+Reel';
-
-        // Update Details
-        document.getElementById('reel-caption').innerText = reel.caption || '';
-        document.getElementById('reel-seller-name').innerText = reel.seller?.seller_name || 'Artisan';
-        
-        const avatarEl = document.getElementById('reel-seller-avatar');
-        if (reel.seller?.avatar_url) {
-            avatarEl.innerHTML = `<img src="${reel.seller.avatar_url}" alt="Avatar" class="w-full h-full object-cover"/>`;
-        } else {
-            avatarEl.innerHTML = (reel.seller?.seller_name || 'A').substring(0,1).toUpperCase();
-        }
-
-        document.getElementById('reel-seller-info').onclick = () => {
-            if (reel.seller?.id) {
-                window.location.href = `profile.html?id=${reel.seller.id}`;
+            renderActiveReel();
+          } else if (targetReelId) {
+            // If feed is empty, try to fetch the single target reel
+            try {
+              const singleRes = await apiClient.get(`/reels/${targetReelId}`);
+              if (singleRes.data && singleRes.data.success) {
+                reelsList = [singleRes.data.data];
+                currentIndex = 0;
+                noReelsPlaceholder.classList.add('hidden');
+                videoEl.classList.remove('hidden');
+                renderActiveReel();
+                isLoadingFeed = false;
+                return;
+              }
+            } catch (singleErr) {
+              console.error("Failed to fetch target reel on empty feed:", singleErr);
             }
-        };
-
-        // Likes & Saves
-        updateLikeUI(reel.is_liked, reel.like_count);
-        updateSaveUI(reel.is_saved);
-        document.getElementById('comment-count').innerText = reel.comment_count || 0;
-
-        // Linked Product
-        const prodCard = document.getElementById('linked-product-card');
-        if (reel.linked_product) {
-            document.getElementById('product-name').innerText = reel.linked_product.name;
-            document.getElementById('product-price').innerText = formatPaise(reel.linked_product.price_paise);
-            document.getElementById('product-img').src = reel.thumbnail_url || 'https://placehold.co/100x100/f4ede3/516447?text=Product';
-            prodCard.classList.remove('hidden');
-            prodCard.onclick = () => {
-                window.location.href = `product.html?id=${reel.linked_product.id}`;
-            };
-        } else {
-            prodCard.classList.add('hidden');
-            prodCard.onclick = null;
+            showEmptyPlaceholder();
+          } else {
+            showEmptyPlaceholder();
+          }
         }
+      } catch (err) {
+        console.error("Failed to load reels feed:", err);
+        showEmptyPlaceholder();
+      } finally {
+        isLoadingFeed = false;
+      }
+    }
 
-        // Close comments drawer if open
-        closeComments();
+    function showEmptyPlaceholder() {
+      noReelsPlaceholder.classList.remove('hidden');
+      videoEl.classList.add('hidden');
+      productCtaContainer.classList.add('opacity-0');
+      // Reset counters/details
+      sellerNameEl.textContent = 'Tohfa Studio';
+      reelCaptionEl.textContent = 'No reels active at the moment.';
+      followBtn.style.display = 'none';
+    }
+
+    function updateCurrentUserAvatar() {
+      const userStr = sessionStorage.getItem('tohfa_user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          const name = user.display_name || user.full_name || 'Artisan User';
+          const initials = getInitials(name);
+          const bgCol = getAvatarColor(name);
+          
+          userAvatarLetter.textContent = initials;
+          userAvatarCircle.style.backgroundColor = bgCol;
+          
+          if (user.avatar_url) {
+            userAvatarCircle.innerHTML = `<img src="${user.avatar_url}" alt="${name}" class="w-full h-full object-cover" />`;
+          }
+
+          // Also update header profile avatar if present
+          const headerAvatar = document.querySelector('.header-profile-avatar');
+          if (headerAvatar && user.avatar_url) {
+            headerAvatar.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full" />`;
+          } else if (headerAvatar && name) {
+            headerAvatar.innerHTML = `<div class="w-full h-full rounded-full flex items-center justify-center text-white text-xs font-bold" style="background-color: ${bgCol}">${initials}</div>`;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function renderActiveReel() {
+      if (reelsList.length === 0) return;
+      const reel = reelsList[currentIndex];
+      currentReelId = reel.id;
+
+      // Update Video Player
+      videoEl.src = reel.video_url;
+      videoEl.muted = isMuted;
+      videoEl.load();
+      videoEl.play().catch(err => {
+        console.log("Autoplay was prevented, waiting for user click.", err);
+      });
+
+      // Update Volume Icon State
+      volumeIcon.textContent = isMuted ? 'volume_off' : 'volume_up';
+
+      // Info Section
+      sellerNameEl.textContent = reel.seller.seller_name || 'Artisan Make';
+      reelCaptionEl.textContent = reel.caption || '';
+      
+      const sellerName = reel.seller.seller_name || 'Artisan Make';
+      const initials = getInitials(sellerName);
+      const bgCol = getAvatarColor(sellerName);
+      sellerAvatarLetter.textContent = initials;
+      sellerAvatarWrapper.style.backgroundColor = bgCol;
+      
+      if (reel.seller.avatar_url) {
+        sellerAvatarWrapper.innerHTML = `<img src="${reel.seller.avatar_url}" alt="${sellerName}" class="w-full h-full object-cover" />`;
+      } else {
+        sellerAvatarWrapper.innerHTML = `<span id="seller-avatar-letter">${initials}</span>`;
+      }
+
+      // Follow Button
+      followBtn.style.display = 'inline-block';
+      updateFollowUI(reel.seller.is_followed);
+
+      // Product CTA
+      if (reel.linked_product) {
+        productCtaContainer.classList.remove('hidden');
+        productCtaLink.href = `/buyer/product.html?id=${reel.linked_product.id}`;
+        productNameEl.textContent = reel.linked_product.name || 'View Product';
+        const price = (reel.linked_product.price_paise || 0) / 100;
+        productPriceEl.textContent = `₹${price}`;
+        
+        // Use default placeholder or thumbnail
+        if (reel.thumbnail_url) {
+          productImg.src = reel.thumbnail_url;
+        } else {
+          productImg.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAAZiDnM3KZeHPoNlisnrstR7ME6BmQFPXvK76PYKy1ujj2agVH3udiLlw98xG6eWUk198aT8h7Vw1voxQNgsbfvq_XIlClNc9JuK-1FeQ1a1RpIcJBUfmf2y0JlIfo7ZdBCZBtLKrnDq993tYtD9I8bnKBAIaLwYx9vH53IF9Ck4Mn7nj4pUrjZVHDdPQNZZTRUPzrcl7S9pKbFX2rSqgbrz4FmwxTrZHN-m8D66nSgQbUzz92WUQSKzCvd_K368R8nFscdjVvPoE';
+        }
+      } else {
+        productCtaContainer.classList.add('hidden');
+      }
+
+      // Actions Rail Updates
+      updateLikeUI(reel.is_liked, reel.like_count);
+      updateSaveUI(reel.is_saved, reel.save_count);
+      commentCountEl.textContent = formatCount(reel.comment_count || 0);
+
+      // Reset progress
+      progressBar.style.width = '0%';
+    }
+
+    // Interactivity state updates
+    function updateFollowUI(isFollowed) {
+      if (isFollowed) {
+        followBtn.textContent = 'Following';
+        followBtn.classList.remove('bg-white/20', 'hover:bg-white/30', 'border-white/30');
+        followBtn.classList.add('bg-primary/55', 'border-white/60');
+      } else {
+        followBtn.textContent = '+ Follow';
+        followBtn.classList.remove('bg-primary/55', 'border-white/60');
+        followBtn.classList.add('bg-white/20', 'hover:bg-white/30', 'border-white/30');
+      }
     }
 
     function updateLikeUI(isLiked, count) {
-        const icon = document.getElementById('like-icon');
-        const countText = document.getElementById('like-count');
-        countText.innerText = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
-        if (isLiked) {
-            icon.style.fontVariationSettings = "'FILL' 1";
-            icon.style.color = '#ba1a1a';
-        } else {
-            icon.style.fontVariationSettings = "'FILL' 0";
-            icon.style.color = '#ffffff';
-        }
+      likeCountEl.textContent = formatCount(count || 0);
+      if (isLiked) {
+        likeBtn.classList.remove('text-primary');
+        likeBtn.classList.add('text-[#D4AF37]');
+        likeIcon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        likeBtn.classList.remove('text-[#D4AF37]');
+        likeBtn.classList.add('text-primary');
+        likeIcon.style.fontVariationSettings = "'FILL' 0";
+      }
     }
 
-    function updateSaveUI(isSaved) {
-        const icon = document.getElementById('save-icon');
-        if (isSaved) {
-            icon.style.fontVariationSettings = "'FILL' 1";
-            icon.style.color = '#D4AF37';
-        } else {
-            icon.style.fontVariationSettings = "'FILL' 0";
-            icon.style.color = '#ffffff';
-        }
+    function updateSaveUI(isSaved, count) {
+      saveCountEl.textContent = formatCount(count || 0);
+      if (isSaved) {
+        saveBtn.classList.remove('text-primary');
+        saveBtn.classList.add('text-[#D4AF37]');
+        saveIcon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        saveBtn.classList.remove('text-[#D4AF37]');
+        saveBtn.classList.add('text-primary');
+        saveIcon.style.fontVariationSettings = "'FILL' 0";
+      }
     }
 
-    async function toggleLike() {
-        if (!isLoggedIn) {
-            window.location.href = '/auth/login.html';
-            return;
+    // Event setup
+    function setupEvents() {
+      // Play/Pause
+      videoEl.addEventListener('click', togglePlay);
+      
+      // Mute/Unmute
+      volumeToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isMuted = !isMuted;
+        videoEl.muted = isMuted;
+        volumeIcon.textContent = isMuted ? 'volume_off' : 'volume_up';
+      });
+
+      // Video progress update
+      videoEl.addEventListener('timeupdate', () => {
+        if (videoEl.duration) {
+          const pct = (videoEl.currentTime / videoEl.duration) * 100;
+          progressBar.style.width = `${pct}%`;
         }
-        const reel = reels[currentIndex];
-        const newLiked = !reel.is_liked;
-        const newCount = reel.like_count + (newLiked ? 1 : -1);
+      });
 
-        // Optimistic Update
-        reel.is_liked = newLiked;
-        reel.like_count = newCount;
-        updateLikeUI(newLiked, newCount);
-
+      // Actions Rail Click Listeners
+      likeBtn.addEventListener('click', async () => {
+        if (reelsList.length === 0) return;
+        const activeReel = reelsList[currentIndex];
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+          window.location.href = '/auth/login.html';
+          return;
+        }
         try {
-            await apiClient.post(`/reels/${reel.id}/like`);
-        } catch (e) {
-            console.error("Failed to toggle like:", e);
-            // Revert
-            reel.is_liked = !newLiked;
-            reel.like_count = reel.like_count + (!newLiked ? 1 : -1);
-            updateLikeUI(!newLiked, reel.like_count);
+          const res = await apiClient.post(`/reels/${activeReel.id}/like`);
+          if (res.data && res.data.success) {
+            activeReel.is_liked = res.data.data.is_liked;
+            activeReel.like_count = res.data.data.like_count;
+            updateLikeUI(activeReel.is_liked, activeReel.like_count);
+          }
+        } catch (err) {
+          console.error("Like toggle failed:", err);
         }
-    }
+      });
 
-    async function toggleSave() {
-        if (!isLoggedIn) {
-            window.location.href = '/auth/login.html';
-            return;
+      saveBtn.addEventListener('click', async () => {
+        if (reelsList.length === 0) return;
+        const activeReel = reelsList[currentIndex];
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+          window.location.href = '/auth/login.html';
+          return;
         }
-        const reel = reels[currentIndex];
-        const newSaved = !reel.is_saved;
-
-        // Optimistic Update
-        reel.is_saved = newSaved;
-        updateSaveUI(newSaved);
-
         try {
-            if (newSaved) {
-                await apiClient.post(`/reels/${reel.id}/save`);
-            } else {
-                await apiClient.delete(`/reels/${reel.id}/save`);
-            }
-        } catch (e) {
-            console.error("Failed to toggle save:", e);
-            // Revert
-            reel.is_saved = !newSaved;
-            updateSaveUI(!newSaved);
+          if (activeReel.is_saved) {
+            await apiClient.delete(`/reels/${activeReel.id}/save`);
+            activeReel.is_saved = false;
+            activeReel.save_count = Math.max(0, (activeReel.save_count || 1) - 1);
+          } else {
+            await apiClient.post(`/reels/${activeReel.id}/save`);
+            activeReel.is_saved = true;
+            activeReel.save_count = (activeReel.save_count || 0) + 1;
+          }
+          updateSaveUI(activeReel.is_saved, activeReel.save_count);
+        } catch (err) {
+          console.error("Save toggle failed:", err);
         }
-    }
+      });
 
-    // Comments Panel Handlers
-    function openComments() {
-        document.getElementById('comments-drawer').classList.remove('translate-x-full');
-        loadComments(true);
-    }
-
-    function closeComments() {
-        document.getElementById('comments-drawer').classList.add('translate-x-full');
-        document.getElementById('drawer-comments-list').innerHTML = '';
-        commentsCursor = null;
-        commentsHasMore = false;
-    }
-
-    async function loadComments(reset = false) {
-        if (isLoadingComments) return;
-        isLoadingComments = true;
-        
-        const list = document.getElementById('drawer-comments-list');
-        const reel = reels[currentIndex];
-
-        if (reset) {
-            list.innerHTML = `<div class="text-center py-4 text-sage text-sm">Loading comments...</div>`;
+      followBtn.addEventListener('click', async () => {
+        if (reelsList.length === 0) return;
+        const activeReel = reelsList[currentIndex];
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+          window.location.href = '/auth/login.html';
+          return;
         }
-
+        const sellerId = activeReel.seller.id;
+        const isFollowed = activeReel.seller.is_followed;
         try {
-            let url = `/reels/${reel.id}/comments?limit=15`;
-            if (commentsCursor && !reset) {
-                url += `&cursor=${commentsCursor}`;
-            }
-
-            const res = await apiClient.get(url);
-            if (res.data && res.data.success) {
-                const data = res.data.data;
-                commentsCursor = data.next_cursor;
-                commentsHasMore = data.has_more;
-                const comments = data.comments || [];
-
-                document.getElementById('drawer-comment-count').innerText = data.comment_count || 0;
-                document.getElementById('comment-count').innerText = data.comment_count || 0;
-                reel.comment_count = data.comment_count || 0;
-
-                if (reset) {
-                    list.innerHTML = '';
-                }
-
-                if (comments.length === 0) {
-                    if (reset) {
-                        list.innerHTML = `<div class="text-center py-8 text-secondary text-sm">No comments yet. Start the conversation!</div>`;
-                    }
-                    return;
-                }
-
-                const commentsHtml = comments.map(c => {
-                    const avatarStr = c.avatar_url 
-                        ? `<img src="${c.avatar_url}" alt="Avatar" class="w-8 h-8 rounded-full object-cover"/>`
-                        : `<div class="w-8 h-8 rounded-full bg-primary-container text-primary flex items-center justify-center font-bold text-xs">${c.user_name.substring(0,1).toUpperCase()}</div>`;
-                    return `
-                        <div class="flex gap-3 items-start">
-                            ${avatarStr}
-                            <div class="flex-grow bg-surface-container-low p-3 rounded-2xl border border-outline-variant/10">
-                                <div class="flex items-baseline justify-between">
-                                    <span class="font-lora font-bold text-sm text-on-surface">${c.user_name}</span>
-                                    <span class="text-[10px] text-outline">${c.time_ago || 'just now'}</span>
-                                </div>
-                                <p class="text-sm text-on-surface-variant mt-1 leading-normal whitespace-pre-wrap">${c.body}</p>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                if (reset) {
-                    list.innerHTML = commentsHtml;
-                } else {
-                    list.insertAdjacentHTML('beforeend', commentsHtml);
-                }
-            }
-        } catch (e) {
-            console.error("Failed to load comments:", e);
-            if (reset) {
-                list.innerHTML = `<div class="text-center py-4 text-error text-sm">Failed to load comments.</div>`;
-            }
-        } finally {
-            isLoadingComments = false;
+          if (isFollowed) {
+            await apiClient.delete(`/follows/${sellerId}`);
+            activeReel.seller.is_followed = false;
+          } else {
+            await apiClient.post(`/follows/${sellerId}`);
+            activeReel.seller.is_followed = true;
+          }
+          updateFollowUI(activeReel.seller.is_followed);
+        } catch (err) {
+          console.error("Follow toggle failed:", err);
         }
-    }
+      });
 
-    async function submitComment() {
-        if (!isLoggedIn) {
-            window.location.href = '/auth/login.html';
-            return;
+      shareBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href)
+          .then(() => {
+            Toast.show("Reel link copied to clipboard!", "success");
+          })
+          .catch(err => {
+            console.error("Clipboard copy failed:", err);
+          });
+      });
+
+      // Up/Down Arrows navigation
+      btnPrev.addEventListener('click', () => navigateFeed(-1));
+      btnNext.addEventListener('click', () => navigateFeed(1));
+
+      window.addEventListener('keydown', (e) => {
+        if (document.activeElement === commentInput) return; // ignore when typing comments
+        if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+          e.preventDefault();
+          navigateFeed(-1);
+        } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+          e.preventDefault();
+          navigateFeed(1);
+        } else if (e.key === ' ') {
+          e.preventDefault();
+          togglePlay();
         }
-        const input = document.getElementById('comment-input');
-        const text = input.value.trim();
+      });
+
+      // Comments Drawer Controls
+      commentBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openCommentsDrawer();
+      });
+      closeCommentsBtn.addEventListener('click', closeCommentsDrawer);
+      commentsNotch.addEventListener('click', closeCommentsDrawer);
+
+      // Comment input validation & counter
+      commentInput.addEventListener('input', () => {
+        const text = commentInput.value;
+        const len = text.length;
+        charCounter.textContent = `${len}/300`;
+        sendCommentBtn.disabled = (len === 0 || len > 300);
+      });
+
+      // Send comment
+      sendCommentBtn.addEventListener('click', async () => {
+        const text = commentInput.value.trim();
         if (!text) return;
-
-        const reel = reels[currentIndex];
-        
-        try {
-            const res = await apiClient.post(`/reels/${reel.id}/comments`, { body: text });
-            if (res.data && res.data.success) {
-                input.value = '';
-                await loadComments(true);
-            }
-        } catch (e) {
-            console.error("Failed to post comment:", e);
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+          window.location.href = '/auth/login.html';
+          return;
         }
+
+        try {
+          sendCommentBtn.disabled = true;
+          const res = await apiClient.post(`/reels/${currentReelId}/comments`, { body: text });
+          if (res.data && res.data.success) {
+            const addedComment = res.data.data;
+            commentsList.unshift(addedComment); // Prepend to comments list
+            renderCommentsSection();
+
+            // Update local reel state & UI counts
+            const currentReel = reelsList[currentIndex];
+            currentReel.comment_count = (currentReel.comment_count || 0) + 1;
+            commentCountEl.textContent = formatCount(currentReel.comment_count);
+            commentsTitleCount.textContent = currentReel.comment_count;
+
+            // Clear textbox
+            commentInput.value = '';
+            charCounter.textContent = '0/300';
+            sendCommentBtn.disabled = true;
+
+            // Scroll comments list back to top
+            commentsListEl.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } catch (err) {
+          console.error("Failed to add comment:", err);
+        } finally {
+          sendCommentBtn.disabled = false;
+        }
+      });
     }
 
-    // Bind event listeners
-    document.getElementById('btn-prev-reel').addEventListener('click', () => {
-        if (currentIndex > 0) displayReel(currentIndex - 1);
-    });
-    document.getElementById('btn-next-reel').addEventListener('click', () => {
-        if (currentIndex < reels.length - 1) displayReel(currentIndex + 1);
-    });
+    function togglePlay() {
+      if (videoEl.paused) {
+        videoEl.play();
+        playOverlayIcon.textContent = 'play_arrow';
+        playOverlay.style.opacity = '0';
+      } else {
+        videoEl.pause();
+        playOverlayIcon.textContent = 'play_arrow';
+        playOverlay.style.opacity = '1';
+      }
+    }
 
-    document.getElementById('btn-like').addEventListener('click', toggleLike);
-    document.getElementById('btn-save').addEventListener('click', toggleSave);
+    function navigateFeed(dir) {
+      if (reelsList.length === 0) return;
+      
+      // Close comments drawer first
+      closeCommentsDrawer();
 
-    document.getElementById('btn-comment').addEventListener('click', openComments);
-    document.getElementById('btn-close-comments').addEventListener('click', closeComments);
-    document.getElementById('btn-submit-comment').addEventListener('click', submitComment);
+      currentIndex += dir;
+      if (currentIndex < 0) {
+        currentIndex = 0;
+        Toast.show("You've reached the start of the feed", "info");
+      } else if (currentIndex >= reelsList.length) {
+        currentIndex = reelsList.length - 1;
+        Toast.show("You've reached the end of the feed", "info");
+      } else {
+        renderActiveReel();
+      }
+    }
 
-    document.getElementById('comment-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            submitComment();
+    // Comments overlay sliding drawer
+    function openCommentsDrawer() {
+      commentsDrawer.classList.remove('translate-y-full');
+      loadComments();
+    }
+
+    function closeCommentsDrawer() {
+      commentsDrawer.classList.add('translate-y-full');
+    }
+
+    async function loadComments() {
+      commentsListEl.innerHTML = `
+        <div class="flex items-center justify-center py-20 select-none">
+          <div class="relative w-8 h-8">
+            <div class="absolute inset-0 border-2 border-primary/10 rounded-full"></div>
+            <div class="absolute inset-0 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      `;
+      try {
+        const res = await apiClient.get(`/reels/${currentReelId}/comments`);
+        if (res.data && res.data.success) {
+          commentsList = res.data.data.comments || [];
+          commentsTitleCount.textContent = res.data.data.comment_count || 0;
+          renderCommentsSection();
         }
-    });
+      } catch (err) {
+        console.error("Failed to load comments:", err);
+        commentsListEl.innerHTML = `
+          <p class="text-error text-sm text-center py-10 font-semibold select-none">Failed to load comments</p>
+        `;
+      }
+    }
 
-    window.addEventListener('DOMContentLoaded', async () => {
-        await checkAuthState();
-        await fetchReels(true);
-    });
+    function renderCommentsSection() {
+      if (commentsList.length === 0) {
+        commentsListEl.innerHTML = `
+          <div class="flex flex-col items-center justify-center py-10 text-outline select-none">
+            <span class="material-symbols-outlined text-4xl mb-sm text-outline/60">chat_bubble_outline</span>
+            <p class="text-sm">No comments yet.</p>
+            <p class="text-xs text-outline/80 mt-1">Be the first to share your thoughts!</p>
+          </div>
+        `;
+        return;
+      }
+
+      commentsListEl.innerHTML = commentsList.map(comment => {
+        const name = comment.user_name || 'Artisan Admirer';
+        const initials = getInitials(name);
+        const bgCol = getAvatarColor(name);
+        const avatarHtml = comment.avatar_url
+          ? `<img src="${comment.avatar_url}" alt="${name}" class="w-full h-full object-cover" />`
+          : `<span class="text-white font-bold text-xs select-none">${initials}</span>`;
+
+        return `
+          <div class="flex items-start gap-sm">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border border-outline-variant select-none" style="background-color: ${comment.avatar_url ? 'transparent' : bgCol}">
+              ${avatarHtml}
+            </div>
+            <div class="flex-grow min-w-0">
+              <div class="flex items-baseline select-none">
+                <span class="font-bold text-sm text-on-background truncate max-w-[70%]">${name}</span>
+                <span class="text-xs text-outline/80 ml-2 font-normal font-sans">${comment.time_ago || 'Just now'}</span>
+              </div>
+              <p class="text-sm text-on-surface-variant mt-[2px] leading-relaxed break-words pr-2">${comment.body}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Run on DOMContentLoaded
+    window.addEventListener('DOMContentLoaded', initPage);
 </script>
+
 </body>
 </html>

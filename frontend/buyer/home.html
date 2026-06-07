@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Flora &amp; Craft | Boutique Handmade Goods</title>
+    <title>Tohfa | Handcrafted Treasures</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -22,8 +22,8 @@
                         "on-tertiary-fixed-variant": "#593d5d",
                         "on-secondary-fixed-variant": "#484740",
                         "on-tertiary": "#ffffff",
-                        "primary": "#516447",
-                        "surface-tint": "#516447",
+                        "primary": "#255338",
+                        "surface-tint": "#255338",
                         "tertiary-fixed": "#fcd6ff",
                         "tertiary-container": "#b492b7",
                         "on-primary-fixed-variant": "#3a4c31",
@@ -68,6 +68,11 @@
                         "full": "9999px"
                     },
                     "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
                         "margin-desktop": "64px",
                         "unit": "8px",
                         "margin-mobile": "20px",
@@ -75,13 +80,16 @@
                         "gutter": "24px"
                     },
                     "fontFamily": {
-                        "headline-lg-mobile": ["EB Garamond"],
-                        "body-lg": ["Work Sans"],
-                        "body-sm": ["Work Sans"],
-                        "headline-lg": ["EB Garamond"],
-                        "title-md": ["Work Sans"],
-                        "label-caps": ["Work Sans"],
-                        "display-lg": ["EB Garamond"]
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "headline-lg": ["Playfair Display"],
+                        "title-md": ["DM Sans"],
+                        "label-caps": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "title-serif": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-price": ["DM Sans"]
                     },
                     "fontSize": {
                         "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
@@ -90,500 +98,496 @@
                         "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
                         "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
                         "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "display-hero": ["56px", {"lineHeight": "64px", "fontWeight": "700"}],
+                        "title-serif": ["20px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-price": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
                     }
                 },
             },
         }
     </script>
     <style>
-        .botanical-bg {
-            background-image: radial-gradient(circle at 90% 10%, rgba(81, 100, 71, 0.05) 0%, transparent 40%), radial-gradient(circle at 10% 80%, rgba(114, 84, 118, 0.05) 0%, transparent 40%)
-        }
-        .paper-texture {
-            background-color: #fff8f3;
-            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCL8HlWj3d7Jn4Rr8_Omv5ZuBBtt-PIgqkz6U0QXXzOoK5q0e2iSq3bOoqpTXh2YvRiqLxaCe5OhuMhLl4jceRshlhkOmGhbfFCTjJh3-xwIm5HZjubNr6bGDaUtGGUFXPBbtpSV5Dp4_OnQRqkj_K7lty0Zr5u7smkvT4F08O58kmMBsY6p-pt3_E4nOm_pM_Ea5de71J1n0EgSHpKPNJ7oL5rYlXXv8H9ZKYxP6h94AtGHixEvqCj_3MaC6RC_BwGgTNXM2ZNx-8)
-        }
-        .butterfly-flourish::after {
-            content: "  ᄒ";
-            font-size: 1.2rem;
-            opacity: 0.2;
-            margin-left: 8px
-        }
-        .tape-tag {
-            background: #eae1d7;
-            box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
-            transform: rotate(-3deg);
+        .watermark-lavender {
             position: absolute;
-            top: 14px;
-            left: -6px;
-            padding: 4px 14px;
-            z-index: 10;
-            clip-path: polygon(100% 0%, 100% 10%, 98% 15%, 100% 20%, 98% 25%, 100% 30%, 98% 35%, 100% 40%, 98% 45%, 100% 50%, 98% 55%, 100% 60%, 98% 65%, 100% 70%, 98% 75%, 100% 80%, 98% 85%, 100% 90%, 98% 95%, 100% 100%, 0% 100%, 2% 95%, 0% 90%, 2% 85%, 0% 80%, 2% 75%, 0% 70%, 2% 65%, 0% 60%, 2% 55%, 0% 50%, 2% 45%, 0% 40%, 2% 35%, 0% 30%, 2% 25%, 0% 20%, 2% 15%, 0% 10%, 2% 5%, 0% 0%);
-            background-image: linear-gradient(90deg, transparent 50%, rgba(0,0,0,0.03) 50%);
-            background-size: 4px 100%;
+            pointer-events: none;
+            color: #C8D7BF;
+            z-index: 0;
+        }
+        .sketch-float {
+            animation: sketchFloat 4s ease-in-out infinite;
+        }
+        @keyframes sketchFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
         }
     </style>
 </head>
-<body class="paper-texture text-on-surface font-body-lg text-body-lg selection:bg-primary-container/30">
+<body class="text-on-surface selection:bg-secondary-container bg-white">
+<!-- TopNavBar -->
+<!-- Standardised Top Navigation Bar (Task 57) -->
+<!-- TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-[#FAF7F0] border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+  <!-- Brand Logo (Task 59) -->
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/buyer/home.html">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category (Discover) -->
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+  
+  <!-- Right side items -->
+  <div class="flex items-center justify-end flex-1 gap-lg">
+    <a href="/buyer/categories.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
+      <span class="material-symbols-outlined">search</span>
+    </a>
+    <a href="/buyer/saved-makes.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+      <span id="nav-wishlist-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="/buyer/cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="/buyer/notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined">notifications</span>
+      <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
+      <span id="nav-notif-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
+    </a>
+  </div>
+</header>
+<main class="relative overflow-hidden">
+<!-- Watermark Sprigs (Absolute Background Elements) -->
+<div class="watermark-lavender top-24 left-12 w-32 h-32 rotate-12">
+<span class="material-symbols-outlined text-9xl opacity-20">filter_vintage</span>
+</div>
+<div class="watermark-lavender top-[800px] right-24 w-40 h-40 -rotate-12">
+<span class="material-symbols-outlined text-9xl opacity-20">eco</span>
+</div>
+<!-- Greeting Banner -->
+<section class="bg-[#F1EADD] w-full py-xl px-margin-desktop relative overflow-hidden">
+<div class="max-w-[1440px] mx-auto flex flex-col items-center justify-center text-center py-xl relative z-10">
+<h1 class="font-headline-lg text-display-hero italic text-primary mb-sm">
+                    Good morning <span class="font-normal not-italic opacity-60">✦</span>
+</h1>
+<p class="font-title-serif text-title-serif font-light italic text-on-surface-variant">
+                    What will you discover today?
+                </p>
+<!-- Search Field -->
+<div class="mt-xl w-full max-w-2xl relative">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full h-16 pl-16 pr-6 rounded-full bg-surface-container-lowest border-2 border-outline-variant focus:border-primary focus:ring-0 text-body-md font-body-md transition-all shadow-sm" placeholder="Search handcrafted treasures..." type="text">
+</div>
+</div>
+<!-- Texture Overlay (Simulated Wax Tape) -->
+<div class="absolute top-10 right-[10%] w-24 h-8 bg-surface-variant/30 rotate-12 border-l border-r border-outline-variant/20 shadow-sm opacity-60"></div>
+<div class="absolute bottom-10 left-[15%] w-32 h-10 bg-primary-fixed-dim/20 -rotate-6 border-l border-r border-outline-variant/10 shadow-sm opacity-40"></div>
+</section>
+<!-- Explore Collection Hero -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-xl">
+<div class="grid grid-cols-12 gap-xl items-center">
+<div class="col-span-12 lg:col-span-7 relative">
+<div class="rounded-xl overflow-hidden aspect-[16/10] shadow-xl group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A detailed, close-up shot of a ceramicist's workspace with a soft-clay vase turning on a wooden potter's wheel. Sunlight streams in from a nearby window, casting long, gentle shadows and highlighting the earthy textures of the studio. The aesthetic is clean and minimalist with warm tones, high-key lighting, and a serene, hand-crafted atmosphere that emphasizes slow living and intentionality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBjSHDpc5HHHXnpAGCGGOIGRoumhZ9KlYdQmei0_40xNo1ftiEDRwwgy7CLHit8khhBsBrN82VUtp1Ancwg4HV13_20NgID3qzZN8ri6GsGRKSFFWZLqujEfX1aNxbOS4BRbn9pDCB0DkULgpZFq447D_KJ6WLA6pQgZ6ioSS8jr5DLWBb3QEoUjHf6WS34Xm2rWGRxkklcrCnRPe3XJZPvDcohsaRH-EuliTOZA5fnBgOd3fUr6qla_5R4vWfsQ_AHKo8At4ajSI">
+</div>
+<!-- Floating Quote Card -->
+<div class="absolute -bottom-10 -right-10 md:right-12 bg-surface-bright p-lg rounded-xl border border-outline-variant shadow-lg max-w-xs z-20">
 
-    <!-- TopNavBar -->
-    <header class="bg-background/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 ease-in-out border-b border-outline-variant/10">
-        <nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
-            <div class="flex items-center gap-unit cursor-pointer" onclick="window.location.href='home.html'">
-                <span class="material-symbols-outlined text-primary text-3xl">filter_vintage</span>
-                <h1 class="font-headline-lg text-headline-lg text-primary select-none">Flora &amp; Craft</h1>
-            </div>
-            
-            <!-- Center Navigation Links -->
-            <div class="hidden md:flex items-center gap-8">
-                <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="home.html">Home</a>
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="category.html">Category</a>
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" href="reels.html">reels</a>
-                <a class="text-secondary hover:text-primary transition-colors font-body-lg text-body-lg" id="navbar-dashboard-link" href="profile.html">Profile</a>
-            </div>
+<p class="font-title-serif italic text-body-md text-on-surface-variant leading-relaxed">
+                            "Every piece tells a story of the hands that shaped it."
+                        </p>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-5 lg:pl-xl pt-16 lg:pt-0">
+<span class="font-label-caps text-label-caps text-tertiary block mb-md">Est. 2024 • Handmade with Love</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-lg leading-tight">
+                        Artisan crafts for a <span class="italic">slower, intentional</span> life.
+                    </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl leading-relaxed">
+                        Discover our curated collection of hand-carved ceramics, sustainable textiles, and botanical-inspired stationery crafted by local artisans.
+                    </p>
+<div class="flex gap-md">
+<button class="bg-primary text-on-primary px-xl py-md rounded-lg font-body-md hover:opacity-90 transition-all active:scale-98">
+                            Explore Collection
+                        </button>
+<button class="border border-outline px-xl py-md rounded-lg font-body-md text-primary hover:bg-surface-variant transition-all active:scale-98">
+                            Our Story
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Art Story Collection (Editorial/Masonry) -->
+<!-- Freshly Made (Endless Scroll Grid) -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Freshly Made</h3>
+<p class="font-body-md text-on-surface-variant">Handpicked treasures from this week's studio sessions.</p>
+</div>
+<button class="flex items-center gap-2 font-label-caps text-tertiary hover:gap-3 transition-all">
+                    View Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg relative">
+<!-- Product Card 1 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=129'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A beautiful, irregular hand-glazed ceramic bowl in a soft sage green color, resting on a rustic wooden surface. The bowl features a crackled glaze effect and organic edges, shot in high-key natural light that emphasizes its tactile quality and delicate form. The aesthetic is clean and artisanal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIlZOjtxc_awe6tB5cz4EzanNjyBomxKGOpkGYUUr5ckbOrtFYrKYpeccBhCBSS3rRDYVmzsVp0BLVS_xN6ptVyFFR_UD6CW74SwQba2McXT16SThooJEXQyLl9tBzARbYexiR5z9F4CmFxu8xLreOCuTlxZ_c_INC6FLdX3SOOQq1tpLdc88ZxTSM0JrdqQQ8LFQmSIld-XRV4K7hdh--fm4rxGAiz6D9mpa2aotyHUP1PqSp5jTNHSTmzV4KZ5kdCftK8stcJ4M">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹1,250</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Hand-Glazed Sage Bowl</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Elena Vancamp</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 3 days</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=130'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A solid oak wooden serving board with an artisan bread loaf placed upon it, shot in warm, golden afternoon light that brings out the deep wood grain. The scene is rustic yet refined, capturing a cozy home-kitchen moment. High contrast lighting with soft shadows creates a physical, tactile feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_RsH84rsLEhM9BhLqf1idDkj9dAbsbvMWZm1SqRABQA5zGpp3AvnJYMN4jzOXyu2Z6UxLqk9xhPIBs0mqlmiYSuth4kFJtMBQ8BZ6n08IWirhsJ74pgdM8Anrf2Qh9w4em9nIyPxApBoGj-MtilGIYtF3E9TMFE8UkzwGqRGO-5mTBTEqvzW7VHc85X-GD-4zAgnl78uP-9_ShxzVoxB7JQp1pNLdLzjmno8hE3TIsYu3SF_3JpBC0a4uaozm9mhcdB0i0DRolb8">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹2,800</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Oak &amp; Ash Board</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Woodworker Mark</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 7 days</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=131'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A delicate handmade lavender resin pendant with real dried petals suspended inside, hanging from a thin gold chain. The pendant is displayed on a soft velvet cushion in a pale violet hue. The lighting is soft and flattering, highlighting the crystalline clarity of the resin and the intricate botanical details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP4kU2c8zbx4Xaol1rHDXI_iQiG8J2VXxxvB-jzbLh_XTIhVyBTF0TsI0T85eqe7OWH7Vh2i2vnE9UYGBtNJVI_4euqnjUlXXTzpWi4NIKzegZuDo2Edf2dgu20_nJidPl9QurGAUZlQdGVpom5Y4YQLX496AgUJp3ydVNQpz8uDDSoA2iY7LdUF3_loB89opdKsqtrvhcyBUOQZhiY-ELrhBYU5ewxsTH2ux2_01NvbyYUvGoWnWy2MinnnRcuoz3sC3V766VCRA">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-dash text-[10px] text-[#211b11] bg-[#F1EADD] px-2 py-0.5 rounded-full">Awaiting Payment</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹950</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Lavender Pendant</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Petal Studio</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 2 days</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=132'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A stack of hand-dyed organic cotton beeswax wraps featuring delicate leaf patterns in sage and ochre. The fabric stack is tied with a simple jute twine, resting on a clean white linen surface. The visual style is light and airy, emphasizing sustainability and hand-made charm with a high-key light mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMJAxNgTh5SJQTRbeAoTilAZbugJo12R1x1plpxilDvUf5fwGA44tDsI1Xqln-3-lTYYk6Qfp8vlZk9EZnZ6XAwPx6JpMpic1kEYQeJPc6D4as7Xfvs3Qn2wDySy4HvervTSdrLLIyjlzH4D4viyX6aCUeg5JhYRYg37m_8X_dwEUM4jgVsyP4aBq8mw6s-2A2naomsiwsFD-sZxPK6NG8Hd3OKI-JexWyt2_7hFj3fhjsdeQHkhRyI9nTXGWFoAdtsRMHiGTqiDc">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹650</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Botanical Wraps</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Eco-Threads</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 4 days</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Mascot Interaction -->
 
-            <!-- Right Action Icons / Auth State -->
-            <div class="flex items-center gap-6">
-                <!-- Search Icon with input -->
-                <div class="relative hidden sm:flex items-center">
-                    <input type="text" id="global-search-input" placeholder="Search products..." class="bg-surface-container-low border border-outline-variant/30 rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary w-48 transition-all"/>
-                    <button onclick="triggerSearch()" class="absolute right-2 text-secondary hover:text-primary flex items-center">
-                        <span class="material-symbols-outlined text-[20px]">search</span>
+</section>
+
+<!-- Sponsored Products Section -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Sponsored Creations</h3>
+<p class="font-body-md text-on-surface-variant">Featured highlights curated by our artisan community.</p>
+</div>
+<button class="flex items-center gap-2 font-label-caps text-tertiary hover:gap-3 transition-all">
+                    View Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg relative">
+<!-- Sponsored Product Card 1 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=133'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A luxurious, thick woven organic wool throw blanket in earthy cream and grey tones, draped over a modern wooden armchair. Sunbeam from a window highlights the soft, fluffy texture of the wool. Minimalist Scandinavian style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU5MKh32XiupvdvJAge7v9Dd8A-5IczTYjRKRjG_XmvlMsZkdqixkrIKJbYnO2hoUc4igYoj1oyZ-xGYbyiq8tPkQ8I1ObKuyeYTTn_6CR5Yhm-3TSWGVsoeWvATRWJ8g6qqKHV-8_lbwKc8SClRFaPG-HoTK0tyc9GmDXv-2Ewdab_Unod1jBi4yQML44DvbOQ1w3DwvPun88ufsHaqViBpxgqJd8P2MQCfJIF2H_RxaVf3OmFOZuV3y5oxxqLxSeSaYZVPcZJGY">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹4,500</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Wool Throw Blanket</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Cozy Weaves</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 5 days</span>
+</div>
+</div>
+</div>
+<!-- Sponsored Product Card 2 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=134'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A vintage-style hand-bound dark brown leather journal resting on a wooden writing desk, alongside a classic calligraphy fountain pen. The leather has a weathered, rich texture with visible stitching details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAekO-e4Z9Kym-whZp3YzQjbeE59qwgo2jNvGw3G9dGQwoh2E_IcfvQztke526ZVoXyb33LsS-l6muEHwgQ-VhFICrD0UvBDQbYn-QsLbsQJyjwVivEwa9ewqvOlp9kf6SePxG7SmPGlU-ZEzxf1YItlN0AiEOnKDA5OG-1vHX2WDFCpDodVzxiD9sR-nEWWMRQ31u5b6xAB4_qOlDQDfWTXiyukP8Q9NKv6A3amWKhBPppUf2OGSxtI1WDCfEZkvU-eN_UmPOdrMo">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹1,850</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Leather Journal</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Artisan Bindings</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 2 days</span>
+</div>
+</div>
+</div>
+<!-- Sponsored Product Card 3 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=135'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A hand-poured soy wax candle in an amber glass jar, with lavender sprigs resting nearby. The warm flame of the candle creates a cozy and relaxing ambient light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDxJ5YDdesnrhfeluH3CqQNZ0Juy5CkgPLRx_Izr7rs0-A0p8Y45R6ekYKyIezhwPBATWtvuv1V7C6pDMLW9IS8axurKFlKOZa_LcZ88uT6ua55ipNAd6UAVZs7H3J17latC_ErfZTWBJZxX7GHcm6VF64gaOywMkbUiEquZK6Yp-prtITyz24gvZr7cpnPMGGEmjS0JabjCjGb5LWjlUnL37UOG6KGAvY4RNawvgNHL2X5ztgaXDJyAkjnjcSO489QzJ9dZYkLr0">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹750</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Soy Lavender Candle</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Candle Cove</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 3 days</span>
+</div>
+</div>
+</div>
+<!-- Sponsored Product Card 4 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=136'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="An abstract watercolor floral painting in soft pastel pinks and greens, framed in a clean light-colored wooden frame, hanging on a white wall in natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjDcLug000FlfJ3E5G3_AOIfAhQJ5cVI2PtwtmWa66LetQhs4LC6kwIVPd0PXzRUq--jqVerh3aa81JK1ChSre9ZTCvV3MaV0ZJmL5IoOADQqhgX1oWecSDR1D-12taTalWsaFXR-KGhJIqX6efYrSCoCJCmvY1tFw30KEoI6woKKBkjYj7sBIFlKAJkRgvcqvxv_hdcMCYFY-o6kBa-MwPZjK20tCW6R01csBFgXJt5Avqi81HJYXpf8EVa74lqkQlWN64na5y5o">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹1,500</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Abstract Art Print</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Studio Bloom</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 4 days</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Bestselling Products Section -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Bestselling Products</h3>
+<p class="font-body-md text-on-surface-variant">Our most loved creations, chosen by collectors.</p>
+</div>
+<button class="flex items-center gap-2 font-label-caps text-tertiary hover:gap-3 transition-all">
+                    View Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg relative">
+<!-- Bestselling Product Card 1 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=137'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A pair of beautifully matched ceramic tea mugs with an earthy dual-tone brown and cream glaze, steam gently rising from hot tea inside." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkNApOvwUZyNOP6tzGFWd7AgYYosGJ1xzLnjvDc0YAQhRfgxRNzvPNfTLADyHiu0_ldNx74UMc29QrxIbP319f3AxpCh14jItkvCgcV1ULR8MYWcYM4CEWLRe6px-CGhKZSdMMS2ffBYE0Di1EvKysgGIlr522IfxJvhW3t70pFIHqbCca6NTK-RCfSHGnWGpFN3-cQF1huori20XyXxQSUFEf7Nu-7CA6byxamj7mgoYIM5vjeiNemqrWuaD6LdX_DauHQwN6bZs">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹2,200</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Ceramic Tea Mug Set</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Earthy Clay</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 3 days</span>
+</div>
+</div>
+</div>
+<!-- Bestselling Product Card 2 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=138'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A delicate sterling silver ring featuring a detailed wildflower engraving, shown close up on a hand in natural sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU5MKh32XiupvdvJAge7v9Dd8A-5IczTYjRKRjG_XmvlMsZkdqixkrIKJbYnO2hoUc4igYoj1oyZ-xGYbyiq8tPkQ8I1ObKuyeYTTn_6CR5Yhm-3TSWGVsoeWvATRWJ8g6qqKHV-8_lbwKc8SClRFaPG-HoTK0tyc9GmDXv-2Ewdab_Unod1jBi4yQML44DvbOQ1w3DwvPun88ufsHaqViBpxgqJd8P2MQCfJIF2H_RxaVf3OmFOZuV3y5oxxqLxSeSaYZVPcZJGY">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹3,100</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Wildflower Silver Ring</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Silver Grace</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 5 days</span>
+</div>
+</div>
+</div>
+<!-- Bestselling Product Card 3 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=139'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A modern macrame wall hanging with intricate knot patterns, suspended from a natural driftwood branch on a neutral wall." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAekO-e4Z9Kym-whZp3YzQjbeE59qwgo2jNvGw3G9dGQwoh2E_IcfvQztke526ZVoXyb33LsS-l6muEHwgQ-VhFICrD0UvBDQbYn-QsLbsQJyjwVivEwa9ewqvOlp9kf6SePxG7SmPGlU-ZEzxf1YItlN0AiEOnKDA5OG-1vHX2WDFCpDodVzxiD9sR-nEWWMRQ31u5b6xAB4_qOlDQDfWTXiyukP8Q9NKv6A3amWKhBPppUf2OGSxtI1WDCfEZkvU-eN_UmPOdrMo">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹1,950</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Macrame Wall Hanging</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Knot &amp; Thread</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 6 days</span>
+</div>
+</div>
+</div>
+<!-- Bestselling Product Card 4 -->
+<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=140'">
+<div class="aspect-square rounded-t-xl overflow-hidden p-3">
+<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="An organic herb garden starter kit with small clay pots, seeds, and soil pellets on a kitchen counter." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDxJ5YDdesnrhfeluH3CqQNZ0Juy5CkgPLRx_Izr7rs0-A0p8Y45R6ekYKyIezhwPBATWtvuv1V7C6pDMLW9IS8axurKFlKOZa_LcZ88uT6ua55ipNAd6UAVZs7H3J17latC_ErfZTWBJZxX7GHcm6VF64gaOywMkbUiEquZK6Yp-prtITyz24gvZr7cpnPMGGEmjS0JabjCjGb5LWjlUnL37UOG6KGAvY4RNawvgNHL2X5ztgaXDJyAkjnjcSO489QzJ9dZYkLr0">
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
+<span class="font-data-price text-data-price text-[#B8860B]">₹1,100</span>
+</div>
+<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Organic Herb Garden Kit</h4>
+<div class="flex items-center justify-between mt-sm">
+<span class="font-body-md text-xs text-on-surface-variant">By Green Sprout</span>
+<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 2 days</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xl border-t border-outline-variant/30 bg-white" style="background-color: #FFFFFF;">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-xl px-margin-desktop py-xl max-w-[1440px] mx-auto relative"><div class="hidden md:block absolute -top-14 right-margin-desktop z-10">
+  <div class="relative group cursor-pointer w-fit">
+    <div class="w-16 h-16 sketch-float transition-transform group-hover:scale-110 flex items-center justify-center overflow-hidden">
+      <img class="w-full h-full object-contain filter brightness-110 grayscale-50 opacity-80 group-hover:opacity-100" data-alt="A charming, hand-sketched illustration of a small, plush teddy bear character with an artisan's apron, peaking out from the bottom corner of a journal page." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTfEEXU4Fv7ZJva6Tz__AQ40rri_dBxB2etHZx0Uq61m8lWu1bm5rp1DYPyHGblCvDa26zkTlVVNUtLkKU60gpSMIvm1YE5TLFZe3QcIIS9EmMQJMwicOTHsYo20DuOW-d79RDyANWjmrqxoL04e-A7E0oyyY86ETLVE4mVnVk7Hx_gagPnTZZuzaxo-eQkOPwLzV-dklO5naEdgCf86Urz__dRvL9u1A7d9PQP7TrFbEPL608tErpMxLRYv13OdsJLFvZo50u8tE">
+    </div>
+    <div class="absolute -top-8 right-0 bg-white border border-outline-variant px-2 py-1 rounded-lg text-[10px] font-title-serif italic opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm pointer-events-none">
+      "Need a little help?"
+    </div>
+  </div>
+</div>
+<!-- Brand Info -->
+<div class="md:col-span-5">
+<h2 class="font-headline-lg text-headline-lg italic text-primary mb-md">Tohfa<span style="color: rgb(227, 176, 75);" class=""></span></h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm mb-lg">
+                    Cultivating a community of makers and dreamers. Our studio curates the finest handmade goods from across the globe, prioritizing sustainability and craftsmanship.
+                </p>
+<div class="flex gap-md">
+<a class="w-10 h-10 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-sm">share</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+</div>
+</div>
+<!-- Links Column 1 -->
+<div class="md:col-span-2">
+<h4 class="font-label-caps text-label-caps text-primary mb-lg">Shop</h4>
+<ul class="flex flex-col gap-sm">
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">New Arrivals</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Ceramics</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Stationery</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Home Decor</a></li>
+</ul>
+</div>
+<!-- Links Column 2 -->
+<div class="md:col-span-2">
+<h4 class="font-label-caps text-label-caps text-primary mb-lg">Support</h4>
+<ul class="flex flex-col gap-sm">
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Artisan Care</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a></li>
+<li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<!-- Newsletter -->
+<div class="md:col-span-3">
+<h4 class="font-title-serif italic text-primary text-lg mb-md">Join our little family</h4>
+<p class="font-body-md text-sm text-on-surface-variant mb-md leading-snug">
+                    Subscribe for early access to new collections and artisan stories.
+                </p>
+<form class="flex flex-col gap-sm" onsubmit="event.preventDefault(); alert('Welcome to the family!');">
+<input class="w-full px-4 py-3 rounded-lg bg-surface-container-low border border-outline-variant focus:border-primary focus:ring-0 font-body-md text-sm" placeholder="Your email address" type="email">
+<button class="bg-primary text-on-primary py-3 rounded-lg font-label-caps text-xs tracking-widest hover:opacity-90 active:scale-95 transition-all" type="submit">
+                        SUBSCRIBE
                     </button>
-                </div>
-                
-                <button onclick="window.location.href='wishlist.html'" class="text-secondary hover:text-primary transition-colors flex items-center relative">
-                    <span class="material-symbols-outlined">favorite</span>
-                    <span id="wishlist-count-badge" class="hidden absolute -top-1.5 -right-1.5 bg-error text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-                </button>
-                
-                <div id="auth-buttons" class="flex items-center gap-2">
-                    <!-- Dynamic Auth buttons inserted here -->
-                </div>
-                
-                <button class="md:hidden text-secondary" id="mobile-menu-btn">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-            </div>
-        </nav>
-    </header>
+</form>
+</div>
+</div>
+<!-- Bottom Footer -->
+<div class="border-t border-outline-variant/10 py-md px-margin-desktop max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-md text-outline">
+<p class="font-body-md text-xs">© 2024 Tohfa Artisan Studio. Handcrafted with intention.</p>
+<div class="flex gap-lg">
+<a class="font-body-md text-xs hover:text-primary" href="#">Privacy Policy</a>
+<a class="font-body-md text-xs hover:text-primary" href="#">Terms of Service</a>
+<a class="font-body-md text-xs hover:text-primary" href="#">Sustainability</a>
+</div>
+</div>
+</footer>
+<script type="module">
 
-    <main class="max-w-container-max mx-auto overflow-x-hidden pb-16">
-        <!-- Hero Section -->
-        <section class="relative px-margin-mobile md:px-margin-desktop py-16 md:py-24 flex flex-col md:flex-row items-center gap-12 botanical-bg">
-            <div class="flex-1 space-y-6">
-                <span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Est. 2024 • Handmade with Love</span>
-                <h2 class="font-display-lg text-display-lg text-on-surface leading-tight">Artisan crafts for a <br/><span class="italic text-primary">slower, intentional</span> life.</h2>
-                <p class="text-secondary max-w-lg">Discover our curated collection of hand-carved ceramics, sustainable textiles, and botanical-inspired stationery crafted by local artisans.</p>
-                <div class="flex gap-4">
-                    <button onclick="window.location.href='category.html'" class="bg-primary text-background px-8 py-3 rounded-lg font-title-md text-title-md hover:bg-primary-fixed-dim transition-all shadow-lg shadow-primary/10">Explore Collection</button>
-                    <button onclick="document.getElementById('my-story-section').scrollIntoView({ behavior: 'smooth' })" class="border-2 border-primary text-primary px-8 py-3 rounded-lg font-title-md text-title-md hover:bg-primary/5 transition-all">My Story</button>
-                </div>
-            </div>
-            <div class="flex-1 relative">
-                <div class="absolute -top-12 -right-8 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-                <img alt="Artisan workspace" class="w-full h-[400px] object-cover rounded-xl shadow-xl rotate-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxcjnGL-Y5k00PtfwrYnkt6BwLWljVbcB6F0ktEs7d6Nct7Tc44e6Vib8SVdu0gcRv8LVDBqPV-UY5X_R8h2fABLg3E6xWXiDEwJpIYftZAgbr4e2AkSe2LvG5DKXHK7-X3V9irx7mp5KST00xUSsPYsquwTkeq7XC9O9IuXjRCb7EgAyEworyD85dGXQ1l5Es85KybakzJjoSfWb3L8yuEx4ZnAQT3QnytJ5pgCsKzV9fVjSUrwndiTiFEbRg1mMZbRKKxcuUQ4M"/>
-                <div class="absolute bottom-8 -left-8 bg-white p-6 rounded-lg shadow-xl max-w-xs border border-outline-variant/20 hidden sm:block">
-                    <p class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary">"Every piece tells a story of the hands that shaped it."</p>
-                </div>
-            </div>
-        </section>
+        // Subtle scroll reveal effect for product cards
+        const observerOptions = {
+            threshold: 0.1
+        };
 
-        <!-- My Story Section (USPs of the App) -->
-        <section id="my-story-section" class="px-margin-mobile md:px-margin-desktop py-16 bg-surface-container-low/40 rounded-3xl mx-margin-mobile md:mx-0 my-8 border border-outline-variant/10">
-            <div class="flex flex-col lg:flex-row items-center gap-12">
-                <!-- Story Text -->
-                <div class="flex-1 space-y-6">
-                    <span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">The Heart of Flora &amp; Craft</span>
-                    <h3 class="font-headline-lg text-headline-lg text-on-surface leading-tight">My Own Story</h3>
-                    <p class="text-secondary leading-relaxed">
-                        Born from a love for slow mornings and tactile beauty, Flora &amp; Craft is a sanctuary for authentic, handmade design. We believe that everyday objects should carry a soul, a history, and the gentle touch of the human hand. By bridging the gap between independent artisans and conscious collectors, we nurture the art of slow living.
-                    </p>
-                    <p class="text-secondary leading-relaxed">
-                        Every purchase directly supports a maker's craft, ensuring that these beautiful traditions continue to thrive in our modern world.
-                    </p>
-                </div>
-                <!-- USP Cards -->
-                <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
-                        <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">handshake</span>
-                        <h4 class="font-title-md text-title-md text-on-surface mb-2">Direct Connection</h4>
-                        <p class="text-secondary text-sm">Connect directly with local, independent artisans. No middlemen, no factory-made replicas—just pure craftsmanship.</p>
-                    </div>
-                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
-                        <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">brush</span>
-                        <h4 class="font-title-md text-title-md text-on-surface mb-2">Slow &amp; Small-Batch</h4>
-                        <p class="text-secondary text-sm">We celebrate slow creation. Every product is small-batch, hand-carved, hand-woven, or hand-glazed with meticulous care.</p>
-                    </div>
-                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
-                        <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">eco</span>
-                        <h4 class="font-title-md text-title-md text-on-surface mb-2">Sustainable Roots</h4>
-                        <p class="text-secondary text-sm">Prioritizing natural materials, organic clay, FSC-certified wood, and zero-plastic packaging to honor the earth.</p>
-                    </div>
-                    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 hover:shadow-md transition-shadow">
-                        <span class="material-symbols-outlined text-primary text-3xl mb-3" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
-                        <h4 class="font-title-md text-title-md text-on-surface mb-2">Cherished Quality</h4>
-                        <p class="text-secondary text-sm">Handmade means heart-made. Our pieces are crafted with materials built to be cherished and passed down for generations.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories Pills Section -->
-        <section class="px-margin-mobile md:px-margin-desktop py-10">
-            <div class="flex flex-wrap gap-3 justify-center" id="categories-container">
-                <!-- Dynamically loaded category buttons -->
-                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
-                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
-                <div class="animate-pulse bg-surface-container-low h-10 w-28 rounded-full"></div>
-            </div>
-        </section>
-
-        <!-- Sponsored Products -->
-        <section class="px-margin-mobile md:px-margin-desktop py-12 hidden" id="sponsored-section">
-            <div class="mb-8 flex items-center justify-between">
-                <div>
-                    <h3 class="font-headline-lg text-headline-lg mb-1">Featured Gems</h3>
-                    <p class="text-secondary text-sm">Special creations sponsored by our trusted makers.</p>
-                </div>
-                <div class="w-16 h-0.5 bg-primary/20"></div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter" id="sponsored-products-container">
-                <!-- Sponsored Products loaded dynamically -->
-            </div>
-        </section>
-
-        <!-- Curated Collections / Recent Products -->
-        <section class="px-margin-mobile md:px-margin-desktop py-12">
-            <div class="mb-8 flex items-center justify-between">
-                <div>
-                    <h3 class="font-headline-lg text-headline-lg mb-1">Recent Creations</h3>
-                    <p class="text-secondary text-sm font-body-sm">The latest unique items added to the nest.</p>
-                </div>
-                <div class="w-24 h-0.5 bg-primary/20"></div>
-            </div>
-            
-            <div id="recent-products-empty" class="hidden text-center py-12 bg-surface-container-low/50 rounded-xl">
-                <span class="material-symbols-outlined text-4xl text-outline mb-2">production_quantity_limits</span>
-                <p class="text-secondary">No products found. Start by seeding or adding some!</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="recent-products-container">
-                <!-- Recent Products loaded dynamically -->
-                <!-- Skeletal Loading State -->
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-                <div class="animate-pulse bg-surface-container-low h-80 rounded-xl"></div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-inverse-surface text-inverse-on-surface pt-16 pb-12">
-        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="col-span-1 md:col-span-2 space-y-6">
-                <div class="flex items-center gap-unit">
-                    <span class="material-symbols-outlined text-inverse-primary text-3xl">filter_vintage</span>
-                    <h1 class="font-headline-lg text-headline-lg text-inverse-primary">Flora &amp; Craft</h1>
-                </div>
-                <p class="text-secondary-fixed-dim max-w-sm text-sm">Cultivating a community of makers and dreamers. Our boutique curates the finest handmade goods from across the globe, prioritizing sustainability and craftsmanship.</p>
-            </div>
-            <div class="space-y-6">
-                <h5 class="font-title-md text-title-md text-inverse-primary">Shop</h5>
-                <ul class="space-y-3 text-secondary-fixed-dim text-sm">
-                    <li><a class="hover:text-inverse-primary transition-colors" href="category.html">All Categories</a></li>
-                    <li><a class="hover:text-inverse-primary transition-colors" href="wishlist.html">Your Wishlist</a></li>
-                </ul>
-            </div>
-            <div class="space-y-6">
-                <h5 class="font-title-md text-title-md text-inverse-primary">Account</h5>
-                <ul class="space-y-3 text-secondary-fixed-dim text-sm">
-                    <li><a class="hover:text-inverse-primary transition-colors" href="/auth/login.html">Login</a></li>
-                    <li><a class="hover:text-inverse-primary transition-colors" href="signup-buyer.html">Register</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-outline">
-            <p>© 2026 Flora &amp; Craft Studio. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- BottomNavBar (Mobile Only) -->
-    <!-- Standard Bottom Navigation Bar (Task 10) -->
-<nav class="standard-tab-bar" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FFFFFF; height: 64px; border-top: 1px solid #C5D6BC; display: flex; align-items: center; justify-content: space-around; z-index: 50; padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box;">
-    <!-- Tab 1: Home -->
-    <a href="home.html" class="tab-item" id="tab-home" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">home</span>
-        <span>Home</span>
-    </a>
-    <!-- Tab 2: Search -->
-    <a href="category.html" class="tab-item" id="tab-search" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">search</span>
-        <span>Search</span>
-    </a>
-    <!-- Tab 3: Reels -->
-    <a href="reels.html" class="tab-item" id="tab-reels" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">smart_display</span>
-        <span>Reels</span>
-    </a>
-    <!-- Tab 4: Wishlist -->
-    <a href="wishlist.html" class="tab-item" id="tab-wishlist" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">favorite</span>
-        <span>Wishlist</span>
-    </a>
-    <!-- Tab 5: Profile -->
-    <a href="profile.html" class="tab-item" id="tab-profile" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #6E6453; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-        <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">account_circle</span>
-        <span>Profile</span>
-    </a>
-    <script>
-        (function() {
-            const path = window.location.pathname.split('/').pop() || 'home.html';
-            let activeId = '';
-            if (path.includes('home') || path.includes('index') || path.includes('6_home')) {
-                activeId = 'tab-home';
-            } else if (path.includes('category') || path.includes('1_categories')) {
-                activeId = 'tab-search';
-            } else if (path.includes('reel') || path.includes('2_reels')) {
-                activeId = 'tab-reels';
-            } else if (path.includes('wishlist')) {
-                activeId = 'tab-wishlist';
-            } else if (path.includes('profile') || path.includes('3_buyer_profile')) {
-                activeId = 'tab-profile';
-            }
-            if (activeId) {
-                const activeEl = document.getElementById(activeId);
-                if (activeEl) {
-                    activeEl.style.color = '#3D6B4F';
-                    const icon = activeEl.querySelector('.material-symbols-outlined');
-                    if (icon) {
-                        icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600";
-                    }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
                 }
-            }
-        })();
-    </script>    <script type="module">
-        import apiClient from '/src/utils/apiClient.js';
-        import { formatPaise } from '/src/utils/currency.js';
-        import { logout } from '/src/utils/auth.js';
+            });
+        }, observerOptions);
 
-        let wishlistedProductIds = new Set();
-        let isLoggedIn = false;
-
-        async function checkAuthState() {
-            const token = sessionStorage.getItem('tohfa_access_token');
-            const authContainer = document.getElementById('auth-buttons');
-            const dashboardLink = document.getElementById('navbar-dashboard-link');
-            
-            if (token) {
-                isLoggedIn = true;
-                try {
-                    const base64Url = token.split('.')[1];
-                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const payload = JSON.parse(window.atob(base64));
-                    
-                    // Fetch profile to get avatar_url
-                    let avatarUrl = null;
-                    try {
-                        const res = await apiClient.get('/profile/me');
-                        if (res.data && res.data.success) {
-                            avatarUrl = res.data.data.avatar_url;
-                        }
-                    } catch (err) {
-                        console.error("Failed to fetch profile avatar:", err);
-                    }
-                    
-                    if (payload.role === 'seller') {
-                        if (dashboardLink) {
-                            dashboardLink.innerText = 'Seller Dashboard';
-                            dashboardLink.href = '/seller/dashboard.html';
-                        }
-                    } else {
-                        if (dashboardLink) {
-                            dashboardLink.innerText = 'Profile';
-                            dashboardLink.href = 'profile.html';
-                        }
-                    }
-
-                    let profileHtml = '';
-                    if (avatarUrl) {
-                        profileHtml = `<img src="${avatarUrl}" alt="Profile" class="w-[28px] h-[28px] rounded-full border border-[#C5D6BC] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
-                    } else {
-                        profileHtml = `<span class="material-symbols-outlined cursor-pointer" style="font-size: 28px; color: #3D6B4F; font-variation-settings: 'FILL' 0, 'wght' 300;" onclick="window.location.href='profile.html'">account_circle</span>`;
-                    }
-
-                    if (authContainer) {
-                        authContainer.innerHTML = `
-                            <div class="flex items-center gap-4">
-                                ${profileHtml}
-                                <button onclick="logout()" class="text-secondary hover:text-primary text-xs font-semibold uppercase">Logout</button>
-                            </div>
-                        `;
-                    }
-                } catch(e) {
-                    console.error("Failed to parse token:", e);
-                    logout();
-                }
-            } else {
-                isLoggedIn = false;
-                if (authContainer) {
-                    authContainer.innerHTML = `
-                        <a href="/auth/login.html" class="text-secondary hover:text-primary text-xs font-semibold uppercase mr-2">Login</a>
-                        <a href="/auth/signup-buyer.html" class="bg-primary text-background px-4 py-1.5 text-xs font-semibold rounded-full hover:bg-primary-fixed-dim transition-all uppercase">Register</a>
-                    `;
-                }
-            }
-        }
-        window.checkAuthState = checkAuthState;
-        window.logout = logout;
-
-        async function fetchWishlist() {
-            if (!isLoggedIn) return;
-            try {
-                const response = await apiClient.get('/wishlist');
-                if (response.data && response.data.success) {
-                    const items = response.data.data.items || [];
-                    wishlistedProductIds = new Set(items.map(p => p.product_id));
-                    updateWishlistBadge();
-                }
-            } catch (e) {
-                console.error("Failed to fetch wishlist:", e);
-            }
-        }
-
-        function updateWishlistBadge() {
-            const badge = document.getElementById('wishlist-count-badge');
-            if (wishlistedProductIds.size > 0) {
-                badge.innerText = wishlistedProductIds.size;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        async function toggleWishlist(productId, btnElement) {
-            if (!isLoggedIn) {
-                window.location.href = '/auth/login.html';
-                return;
-            }
-
-            const heartIcon = btnElement.querySelector('.material-symbols-outlined');
-            const isAdding = !wishlistedProductIds.has(productId);
-
-            try {
-                if (isAdding) {
-                    const response = await apiClient.post(`/wishlist/${productId}`);
-                    if (response.data && response.data.success) {
-                        wishlistedProductIds.add(productId);
-                        heartIcon.style.fontVariationSettings = "'FILL' 1";
-                        heartIcon.style.color = '#ba1a1a';
-                    }
-                } else {
-                    const response = await apiClient.delete(`/wishlist/${productId}`);
-                    if (response.data && response.data.success) {
-                        wishlistedProductIds.delete(productId);
-                        heartIcon.style.fontVariationSettings = "'FILL' 0";
-                        heartIcon.style.color = '#74786f';
-                    }
-                }
-                updateWishlistBadge();
-            } catch (e) {
-                console.error("Error toggling wishlist:", e);
-            }
-        }
-        window.toggleWishlist = toggleWishlist;
-
-        // Global search function
-        function triggerSearch() {
-            const input = document.getElementById('global-search-input');
-            const query = input.value.trim();
-            if (query.length >= 2) {
-                window.location.href = `category.html?search=${encodeURIComponent(query)}`;
-            }
-        }
-        window.triggerSearch = triggerSearch;
-
-        document.getElementById('global-search-input')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                triggerSearch();
-            }
+        document.querySelectorAll('.group.bg-surface-bright').forEach(card => {
+            card.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+            observer.observe(card);
         });
-
-        // Fetch categories and products on load
-        async function loadHomepage() {
-            await checkAuthState();
-            await fetchWishlist();
-
-            // Fetch categories and products from home/feed
-            try {
-                const response = await apiClient.get('/home/feed');
-                if (response.data && response.data.success) {
-                    const { greeting, featured_products, categories } = response.data.data;
-
-                    // Render Categories
-                    const container = document.getElementById('categories-container');
-                    if (container) {
-                        container.innerHTML = categories.map(cat => `
-                            <button onclick="window.location.href='category.html?slug=${cat.slug}'" class="bg-surface-container border border-outline-variant/30 hover:border-primary hover:bg-primary-fixed/20 text-on-surface px-5 py-2 text-xs font-semibold rounded-full uppercase tracking-wider transition-all flex items-center gap-1.5">
-                                <span>${cat.icon_emoji || '🏺'}</span>
-                                <span>${cat.name}</span>
-                            </button>
-                        `).join('');
-                    }
-                    
-                    // Render Featured Products
-                    const recentContainer = document.getElementById('recent-products-container');
-                    const emptyState = document.getElementById('recent-products-empty');
-                    
-                    if (featured_products && featured_products.length > 0) {
-                        if (emptyState) emptyState.classList.add('hidden');
-                        if (recentContainer) {
-                            recentContainer.innerHTML = featured_products.map(p => {
-                                const isWishlisted = wishlistedProductIds.has(p.id);
-                                const imgUrl = p.image_url ? p.image_url : 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
-                                return `
-                                    <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-xl transition-all group relative flex flex-col">
-                                        <div class="relative mb-4 overflow-hidden rounded-lg">
-                                            <img class="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'" src="${imgUrl}" alt="${p.name}">
-                                            
-                                            <button onclick="toggleWishlist('${p.id}', this)" class="absolute top-4 right-4 bg-white/85 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-md z-10 flex items-center justify-center">
-                                                <span class="material-symbols-outlined text-[20px] transition-colors duration-200" style="font-variation-settings: 'FILL' ${isWishlisted ? 1 : 0}; color: ${isWishlisted ? '#ba1a1a' : '#74786f'};">favorite</span>
-                                            </button>
-                                        </div>
-                                        <h4 class="font-title-md text-title-md text-on-surface mb-1 truncate cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h4>
-                                        <p class="text-xs text-secondary mb-3">${p.seller_name || 'Artisan Seller'} • ${p.ships_in_days} days shipping</p>
-                                        <div class="flex justify-between items-center mt-auto">
-                                            <span class="text-lg font-bold text-on-surface">${formatPaise(p.price_paise)}</span>
-                                            <button onclick="window.location.href='product.html?id=${p.id}'" class="bg-secondary-container px-3 py-1.5 text-xs font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('');
-                        }
-                    } else {
-                        if (recentContainer) recentContainer.innerHTML = '';
-                        if (emptyState) emptyState.classList.remove('hidden');
-                    }
-                }
-            } catch (e) {
-                console.error("Failed to load home feed:", e);
-                const recentContainer = document.getElementById('recent-products-container');
-                if (recentContainer) {
-                    recentContainer.innerHTML = `
-                        <div class="col-span-full text-center py-12 text-error">
-                            <p>Failed to load home feed. Please try again.</p>
-                            <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-primary text-white rounded">Retry</button>
-                        </div>
-                    `;
-            }
-        }
-    }
-        window.addEventListener('DOMContentLoaded', loadHomepage);
     </script>
 </body>
 </html>

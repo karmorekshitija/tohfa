@@ -146,92 +146,93 @@
       }
     </style>
 </head>
-<body class="font-body-main text-text-default sketch-overlay">
+<body class="bg-[#F5F3EF] font-body-main text-text-default sketch-overlay">
 <!-- TopNavBar -->
+<div id="tohfa-navbar"></div>
 
 <!-- Main Content -->
-<main class="pt-32 pb-section-gap px-container-padding max-w-7xl mx-auto min-h-screen">
-<div class="flex flex-col items-center">
+<main class="pt-24 pb-section-gap px-container-padding max-w-7xl mx-auto min-h-[calc(100vh-128px)] flex flex-col items-center justify-center">
+<div class="flex flex-col items-center w-full">
 <!-- Profile Parchment Card -->
-<div class="w-full max-w-2xl bg-surface-ivory border border-sage-soft rounded-xl custom-shadow overflow-hidden transition-all duration-500 hover:border-highlight-gold/30">
+<div class="w-full max-w-[400px] bg-[#FDFAF5] border border-[#D4C9B8] rounded-[16px] shadow-[0_4px_24px_rgba(0,0,0,0.07)] overflow-hidden transition-all duration-500 hover:border-sage-soft/50">
 <!-- Profile Header -->
-<div class="p-12 flex flex-col items-center text-center border-b border-sage-soft/30">
+<div class="p-10 flex flex-col items-center text-center border-b border-[#F0EDE6]">
 <div class="relative group">
-<div class="w-24 h-24 rounded-full border-2 border-sage-soft p-1 transition-transform duration-500 group-hover:scale-105">
-<img alt="Amara Keita Profile" class="w-full h-full object-cover rounded-full" data-alt="A portrait of a serene African ceramicist named Amara Keita with a warm, thoughtful expression. She has short natural hair and is wearing a cream-colored linen artisan smock. The background is a soft-focus artist studio with earthy ceramic vessels on shelves, bathed in natural morning sunlight that creates a soft, golden hour glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVef4BIN7WHe29SLV-tyiP8kX74R9Fcrn4z3apz2LsE4yatChaCzk5HzkS2jphXFI8Djfb0sGuWJmQWk17Z1Jv9m5sBM-ekVQamJ9rNqF1ZmjbjcpPPWMWIXC7epxkaqvc8uu2i5ZG24l1pRXmKPeJ9Gt3UD0gF2rQgpSVlOvltad37tk1D1lNsIdcQL6RJQ-po1Lw07tmrY5Yztb0hC0FXjCDhk5seoxWf62LIMApA1AuWHK207HJigrTSNQ6IMTXL6rZX5TqMTLv">
+<div class="w-[72px] h-[72px] rounded-full border-2 border-sage-soft p-1 transition-transform duration-500 group-hover:scale-105 overflow-hidden">
+<img alt="Amara Keita Profile" class="w-full h-full object-cover rounded-full" data-alt="A portrait of Amara Keita" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVef4BIN7WHe29SLV-tyiP8kX74R9Fcrn4z3apz2LsE4yatChaCzk5HzkS2jphXFI8Djfb0sGuWJmQWk17Z1Jv9m5sBM-ekVQamJ9rNqF1ZmjbjcpPPWMWIXC7epxkaqvc8uu2i5ZG24l1pRXmKPeJ9Gt3UD0gF2rQgpSVlOvltad37tk1D1lNsIdcQL6RJQ-po1Lw07tmrY5Yztb0hC0FXjCDhk5seoxWf62LIMApA1AuWHK207HJigrTSNQ6IMTXL6rZX5TqMTLv">
 </div>
-<div class="absolute bottom-0 right-0 bg-highlight-gold text-white p-1 rounded-full border-2 border-surface-ivory cursor-pointer hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-[16px]">edit</span>
+<div class="absolute bottom-0 right-0 bg-[#C8973A] text-white p-1 rounded-full border-2 border-[#FDFAF5] cursor-pointer hover:bg-[#2D5016] transition-colors">
+<span class="material-symbols-outlined text-[14px]">edit</span>
 </div>
 </div>
-<h1 class="mt-6 font-hero-title text-section-heading text-primary">Amara Keita</h1>
-<p class="font-artisan-name text-artisan-name italic text-text-muted mt-1">Ceramicist &amp; Collector</p>
-<div class="flex gap-3 mt-6">
-<span class="px-4 py-1 rounded-full bg-sage-soft/30 text-primary font-label-ui text-[12px] flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Top Artisan
-                        </span>
-<span class="px-4 py-1 rounded-full bg-violet-soft/30 text-accent-violet font-label-ui text-[12px] flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-accent-violet"></span> Pro Seller
-                        </span>
+<h1 class="mt-4 font-serif font-bold text-2xl text-[#1A1A1A]">Amara Keita</h1>
+<p class="font-serif italic text-sm text-[#6B6B6B] mt-1">Connected to Collective</p>
+<div class="flex gap-2 mt-4">
+<span class="px-3 py-1 rounded-[20px] bg-[#E8E4F4] text-[#7B5EA7] font-sans text-xs font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#7B5EA7]"></span> Top Artisan
+</span>
+<span class="px-3 py-1 rounded-[20px] bg-[#E0EDD8] text-[#2D5016] font-sans text-xs font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2D5016]"></span> Pro Seller
+</span>
 </div>
 </div>
 <!-- Settings List -->
-<div class="py-4">
-<button class="w-full flex items-center justify-between px-10 py-6 hover:bg-background transition-colors group">
+<div class="divide-y divide-[#F0EDE6] px-6 py-2">
+<button class="w-full flex items-center justify-between py-4 hover:bg-[#F0EDE6]/30 transition-colors group px-4 rounded-lg">
 <div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-text-faint group-hover:text-primary transition-colors" data-icon="person_outline">person_outline</span>
-<span class="font-label-ui text-body-main text-text-default">Personal Information</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:text-[#2D5016] transition-colors" data-icon="person_outline">person_outline</span>
+<span class="font-sans text-sm font-medium text-[#1A1A1A]">Personal Information</span>
 </div>
-<span class="material-symbols-outlined text-text-faint group-hover:translate-x-1 transition-transform">chevron_right</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:translate-x-1 transition-transform text-lg">chevron_right</span>
 </button>
-<button class="w-full flex items-center justify-between px-10 py-6 hover:bg-background transition-colors group">
+<button class="w-full flex items-center justify-between py-4 hover:bg-[#F0EDE6]/30 transition-colors group px-4 rounded-lg">
 <div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-text-faint group-hover:text-primary transition-colors" data-icon="inventory_2">inventory_2</span>
-<span class="font-label-ui text-body-main text-text-default">Order History</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:text-[#2D5016] transition-colors" data-icon="inventory_2">inventory_2</span>
+<span class="font-sans text-sm font-medium text-[#1A1A1A]">Order History</span>
 </div>
-<span class="material-symbols-outlined text-text-faint group-hover:translate-x-1 transition-transform">chevron_right</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:translate-x-1 transition-transform text-lg">chevron_right</span>
 </button>
-<button class="w-full flex items-center justify-between px-10 py-6 hover:bg-background transition-colors group">
+<button class="w-full flex items-center justify-between py-4 hover:bg-[#F0EDE6]/30 transition-colors group px-4 rounded-lg">
 <div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-text-faint group-hover:text-primary transition-colors" data-icon="help_center">help_center</span>
-<span class="font-label-ui text-body-main text-text-default">Help Center</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:text-[#2D5016] transition-colors" data-icon="help_center">help_center</span>
+<span class="font-sans text-sm font-medium text-[#1A1A1A]">Help Center</span>
 </div>
-<span class="material-symbols-outlined text-text-faint group-hover:translate-x-1 transition-transform">chevron_right</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:translate-x-1 transition-transform text-lg">chevron_right</span>
 </button>
-<button class="w-full flex items-center justify-between px-10 py-6 hover:bg-background transition-colors group">
+<button class="w-full flex items-center justify-between py-4 hover:bg-[#F0EDE6]/30 transition-colors group px-4 rounded-lg">
 <div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-text-faint group-hover:text-primary transition-colors" data-icon="payments">payments</span>
-<span class="font-label-ui text-body-main text-text-default">Payment Methods</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:text-[#2D5016] transition-colors" data-icon="payments">payments</span>
+<span class="font-sans text-sm font-medium text-[#1A1A1A]">Payment Methods</span>
 </div>
-<span class="material-symbols-outlined text-text-faint group-hover:translate-x-1 transition-transform">chevron_right</span>
+<span class="material-symbols-outlined text-[#6B6B6B] group-hover:translate-x-1 transition-transform text-lg">chevron_right</span>
 </button>
 <!-- Logout Row -->
-<button class="w-full flex items-center justify-between px-10 py-8 mt-4 border-t border-sage-soft/30 hover:bg-danger-terracotta/5 transition-colors group" onclick="toggleModal(true)">
+<button class="w-full flex items-center justify-between py-4 mt-2 hover:bg-[#C0392B]/5 transition-colors group px-4 rounded-lg" onclick="toggleModal(true)">
 <div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-danger-terracotta" data-icon="sensor_door">sensor_door</span>
-<span class="font-label-ui text-body-main text-danger-terracotta font-medium">Log out</span>
+<span class="material-symbols-outlined text-[#C0392B]" data-icon="sensor_door">sensor_door</span>
+<span class="font-sans text-sm font-semibold text-[#C0392B]">Log out</span>
 </div>
-<span class="material-symbols-outlined text-danger-terracotta opacity-0 group-hover:opacity-100 transition-opacity">logout</span>
+<span class="material-symbols-outlined text-[#C0392B] opacity-0 group-hover:opacity-100 transition-opacity text-lg">logout</span>
 </button>
 </div>
 </div>
-<p class="mt-8 font-label-ui text-text-faint text-[12px]">Version 1.4.2 — Tohfa Studio Collective</p>
+<p class="mt-6 font-sans text-[#6B6B6B] text-[11px] text-center">Version 1.4.2 — Tohfa Studio Collective</p>
 </div>
 </main>
 <!-- Logout Modal Overlay -->
 <div class="fixed inset-0 z-[60] flex items-center justify-center modal-scrim opacity-0 pointer-events-none transition-all duration-300" id="logoutModal">
-<div class="bg-surface-ivory border border-sage-soft rounded-xl p-10 max-w-sm w-full mx-4 custom-shadow transform scale-95 transition-transform duration-300 relative overflow-hidden">
+<div class="bg-[#FDFAF5] border border-[#D4C9B8] rounded-[16px] p-10 max-w-sm w-full mx-4 shadow-[0_4px_24px_rgba(0,0,0,0.07)] transform scale-95 transition-transform duration-300 relative overflow-hidden">
 <!-- Decorative accent -->
 <div class="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-gold-soft/20 rounded-full blur-2xl"></div>
 <div class="flex flex-col items-center text-center relative z-10">
 <img alt="Goodbye character" class="w-24 h-24 mb-6" src="https://lh3.googleusercontent.com/aida/ADBb0uiS5vM2Du_Wncr4ulOtLHPICCtP_6wctIe60bpGv6-YjU4gvLrVmz0y_52Lqzht7NrTsBa2y0nTcwsWfFc2rHan3bbeH1NlLbUV3vczNcIa4tPa2pqcowXCCaSitJ0_T6jjQiFX__nL5L5454US38zak9thP7rvO1pr0eGVtoriM4DBCybreUWVqvDAviRLRdtiHicsWbjbhT1a_ci7o5PAtspPK0enb2oE-Cai-htG8lc9Lh-w08vPALya">
-<h2 class="font-hero-title text-section-heading text-primary mb-2">Leaving so soon?</h2>
-<p class="font-artisan-name text-body-main italic text-text-muted mb-8">You can always come back ✦</p>
+<h2 class="font-serif italic text-2xl text-[#2D5016] mb-2">Leaving so soon?</h2>
+<p class="font-serif italic text-sm text-[#6B6B6B] mb-8">You can always come back ✦</p>
 <div class="flex flex-col gap-3 w-full">
-<button class="w-full bg-primary text-on-primary font-label-ui py-3.5 rounded-lg hover:bg-primary-deep transition-colors shadow-sm focus:ring-2 focus:ring-primary/20" onclick="toggleModal(false)">
+<button class="w-full bg-[#2D5016] text-white font-semibold text-sm py-3.5 rounded-[8px] hover:bg-[#1e360f] transition-colors shadow-md focus:ring-2 focus:ring-primary/20" onclick="toggleModal(false)">
                         Stay
                     </button>
-<button class="w-full bg-surface-ivory border border-sage-soft text-text-muted font-label-ui py-3.5 rounded-lg hover:bg-sage-soft/20 transition-all" onclick="window.location.reload()">
+<button class="w-full bg-[#FDFAF5] border border-[#D4C9B8] text-[#6B6B6B] font-semibold text-sm py-3.5 rounded-[8px] hover:bg-[#F0EDE6] transition-all" onclick="window.location.reload()">
                         Log out
                     </button>
 </div>
@@ -239,41 +240,7 @@
 </div>
 </div>
 <!-- Footer -->
-<footer class="w-full mt-section-gap bg-bg-cream-deep dark:bg-surface-container-highest border-t border-sage-soft dark:border-outline-variant">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-container-padding py-12 max-w-7xl mx-auto">
-<div class="flex flex-col gap-4">
-<span class="font-section-heading text-section-heading italic text-primary dark:text-primary-fixed">Tohfa</span>
-<p class="font-body-main text-body-main text-text-muted max-w-xs">Connecting conscious souls with the hands that shape beauty. Every piece tells a story.</p>
-</div>
-<div class="flex flex-col gap-4">
-<span class="font-label-ui font-bold text-primary uppercase tracking-widest text-[12px]">Discover</span>
-<a class="font-body-main text-body-main text-text-muted hover:text-primary transition-all" href="#">Our Story</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-primary transition-all" href="#">Artisan Portal</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-primary transition-all" href="#">Sustainability</a>
-</div>
-<div class="flex flex-col gap-4">
-<span class="font-label-ui font-bold text-primary uppercase tracking-widest text-[12px]">Support</span>
-<a class="font-body-main text-body-main text-text-muted hover:text-primary transition-all" href="#">Help Center</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-primary transition-all" href="#">Shipping</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-primary transition-all" href="#">Returns</a>
-</div>
-<div class="flex flex-col gap-4">
-<span class="font-label-ui font-bold text-primary uppercase tracking-widest text-[12px]">Newsletter</span>
-<p class="font-body-main text-body-main text-text-muted">Join the artisan circle.</p>
-<div class="flex gap-2">
-<input class="bg-surface-ivory border border-sage-soft rounded-lg px-3 py-2 text-label-ui w-full focus:ring-primary focus:border-primary" placeholder="Email" type="email">
-<button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-deep transition-colors">
-<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto px-container-padding pb-8 pt-4 border-t border-sage-soft/20 text-center">
-<p class="font-body-main text-body-main text-text-faint text-[14px]">
-                © 2024 Tohfa Artisan Marketplace. Handcrafted with intention.
-            </p>
-</div>
-</footer>
+<div id="tohfa-footer"></div>
 <script>
         function toggleModal(show) {
             const modal = document.getElementById('logoutModal');
@@ -306,6 +273,4 @@
             });
         });
     </script>
-
-
-</body></html>
+<script src="../components/tohfa-include.js"></script></body></html>

@@ -116,24 +116,77 @@
 
     /* Toast */
     #toast { transition: all 0.3s ease; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #576242; border-radius: 10px; }
 </style>
 </head>
 <body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
 
-<!-- Top Navigation -->
-<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Back to Dashboard">
-            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
-        </a>
-        <span class="font-headline-lg text-on-background text-2xl" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></span>
-    </div>
-    <div class="flex gap-4 items-center">
-        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Logout">
-            <span class="material-symbols-outlined text-on-surface text-2xl hover:text-error transition-colors">logout</span>
-        </button>
-    </div>
-</nav>
+<!-- Sidebar from SCREEN_17 -->
+<!-- Standardised Left Sidebar (Task 37) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+  <div class="px-4 mb-8 flex flex-col items-center">
+    <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+    </a>
+    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/profile.html">
+      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+    </a>
+  </nav>
+  <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
+    <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+      View Store
+    </button>
+    <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
+      Logout
+    </button>
+  </div>
+</aside>
+
+<!-- Standardised Page Header Bar (Task 38) -->
+<header class="flex justify-between items-center py-4 px-8 bg-parchment border-b border-outline-variant/30 sticky top-0 z-40 ml-[130px]">
+  <h2 class="font-headline-sm text-primary font-serif">Profile & Settings</h2>
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">search</span>
+    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary/30 text-tertiary text-[12px] font-bold hover:bg-tertiary/10 transition-all shadow-sm" id="zai-toggle-btn">
+      <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
+      ZAI Mode
+    </button>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+    <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">help_outline</span>
+  </div>
+</header>
 
 <!-- Toast notification -->
 <div id="toast" class="fixed top-20 right-6 z-[100] hidden items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
@@ -141,7 +194,7 @@
     <span id="toast-msg"></span>
 </div>
 
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20 ml-[130px]">
 
     <!-- Page Header -->
     <div class="mb-10">
@@ -407,6 +460,8 @@
 
         if (data.avatar_url) {
             document.getElementById('profile-avatar').src = data.avatar_url;
+            const sidebarAvatar = document.getElementById('sidebar-avatar');
+            if (sidebarAvatar) sidebarAvatar.src = data.avatar_url;
         }
 
         // Notification toggles (use defaults from response)
@@ -561,6 +616,73 @@
 
         await loadProfile();
 
+        // Setup ZAI Mode State & UI Sync
+        let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+        updateZaiUI(zaiEnabled);
+        
+        fetch(`${API_BASE}/api/seller/dashboard`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.success && data.data && data.data.seller) {
+                const dbEnabled = !!data.data.seller.zai_mode_enabled;
+                localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
+                updateZaiUI(dbEnabled);
+            }
+        })
+        .catch(err => console.error("Error syncing ZAI Mode:", err));
+
+        // Click listener on toggle button
+        const toggleBtn = document.getElementById('zai-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const isEnabled = toggleBtn.classList.contains('bg-tertiary');
+                const nextEnabled = !isEnabled;
+                
+                updateZaiUI(nextEnabled);
+                localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+                
+                fetch(`${API_BASE}/api/seller/zai-mode`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ enabled: nextEnabled })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data || !data.success) {
+                        console.error("Failed to update ZAI Mode in DB");
+                    }
+                })
+                .catch(err => console.error("Error updating ZAI Mode:", err));
+            });
+        }
+
+        // View Store button Click listener
+        const viewStoreBtn = document.getElementById('view-store-btn');
+        if (viewStoreBtn) {
+            viewStoreBtn.addEventListener('click', () => {
+                fetch(`${API_BASE}/api/seller/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.success && data.data && data.data.store_slug) {
+                        window.location.href = '/' + data.data.store_slug;
+                    } else {
+                        window.location.href = '/';
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    window.location.href = '/';
+                });
+            });
+        }
+
         // Setup avatar file input handling
         const inputAvatar = document.getElementById('input-avatar');
         if (inputAvatar) {
@@ -585,6 +707,8 @@
                     }
                     const avatarUrl = dataUpload.data.avatar_url;
                     document.getElementById('profile-avatar').src = avatarUrl;
+                    const sidebarAvatar = document.getElementById('sidebar-avatar');
+                    if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
                     showToast('Avatar updated successfully!', 'success');
 
                     // Update session storage user avatar
@@ -604,6 +728,42 @@
             });
         }
     });
+
+    function updateZaiUI(enabled) {
+        const btn = document.getElementById('zai-toggle-btn');
+        if (btn) {
+            if (enabled) {
+                btn.classList.add('bg-tertiary', 'text-white');
+                btn.classList.remove('text-tertiary');
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+            } else {
+                btn.classList.remove('bg-tertiary', 'text-white');
+                btn.classList.add('text-tertiary');
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+            }
+        }
+        
+        // Find all zai tips / cards on the page and show/hide them
+        const selectors = [
+            '.zai-tip-card',
+            '[class*="zai-tip"]',
+            '[id*="zai-tip"]',
+            'aside .bg-tertiary-container\/10',
+            'section .bg-tertiary-fixed-dim\/40',
+            'div .bg-on-tertiary-fixed\/10'
+        ];
+        selectors.forEach(sel => {
+            try {
+                const els = document.querySelectorAll(sel);
+                els.forEach(el => {
+                    if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+                    el.style.display = enabled ? '' : 'none';
+                });
+            } catch (e) {}
+        });
+    }
 
     // ── Retry button ──────────────────────────────────────────────
     document.getElementById('retry-btn').addEventListener('click', loadProfile);

@@ -9,7 +9,7 @@ function getHtmlEntries(dir, list = {}) {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
     if (stat.isDirectory()) {
-      if (file !== 'node_modules' && !file.startsWith('.')) {
+      if (file !== 'node_modules' && file !== 'dist' && !file.startsWith('.')) {
         getHtmlEntries(filePath, list);
       }
     } else if (file.endsWith('.html')) {
@@ -32,17 +32,17 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5002',
+        target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false
       },
       '/media': {
-        target: 'http://localhost:5002',
+        target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false
       },
       '/uploads': {
-        target: 'http://localhost:5002',
+        target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false
       }

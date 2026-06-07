@@ -1,76 +1,175 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Listings Catalog | Seller Studio | Tohfa</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                "colors": {
-                    "secondary-fixed-dim": "#ddbcdf", "primary-container": "#a8b48e", "on-secondary-container": "#745a78",
-                    "on-tertiary-fixed-variant": "#494740", "on-surface-variant": "#45483f", "surface-bright": "#fff8f1",
-                    "secondary-container": "#f7d5f8", "on-error": "#ffffff", "on-tertiary-fixed": "#1d1c16",
-                    "tertiary-container": "#b3afa7", "surface-container-low": "#faf2e9", "surface-container": "#f4ede3",
-                    "on-primary-fixed-variant": "#404a2c", "primary": "#576242", "surface-variant": "#e9e1d8",
-                    "on-secondary": "#ffffff", "outline-variant": "#c6c7bb", "secondary-fixed": "#fad8fb",
-                    "outline": "#76786e", "on-tertiary": "#ffffff", "error": "#ba1a1a", "primary-fixed": "#dbe8bf",
-                    "on-tertiary-container": "#44423c", "surface-container-high": "#efe7dd",
-                    "on-error-container": "#93000a", "inverse-on-surface": "#f7f0e6", "background": "#fff8f1",
-                    "on-secondary-fixed-variant": "#573e5b", "surface-tint": "#576242", "error-container": "#ffdad6",
-                    "tertiary": "#615e57", "surface-container-highest": "#e9e1d8", "primary-fixed-dim": "#bfcba4",
-                    "on-primary-container": "#3c4628", "tertiary-fixed": "#e7e2d9", "inverse-surface": "#33302a",
-                    "inverse-primary": "#bfcba4", "surface-dim": "#e0d9cf", "on-surface": "#1e1b15",
-                    "surface": "#fff8f1", "tertiary-fixed-dim": "#cac6be", "secondary": "#705673",
-                    "on-secondary-fixed": "#28132d", "on-primary-fixed": "#151e05", "on-primary": "#ffffff",
-                    "surface-container-lowest": "#ffffff", "on-background": "#1e1b15", "custom-primary": "#a8b48e"
-                },
-                "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
-                "spacing": { "margin-mobile": "20px", "gutter": "24px", "unit": "8px", "container-max": "1200px", "margin-desktop": "80px" },
-                "fontFamily": { "headline-md": ["EB Garamond","serif"], "headline-lg": ["EB Garamond","serif"], "body-md": ["Be Vietnam Pro","sans-serif"] },
-                "fontSize": {
-                    "headline-md": ["24px", {"lineHeight":"1.3","fontWeight":"400"}],
-                    "headline-lg": ["32px", {"lineHeight":"1.2","fontWeight":"400"}],
-                    "body-md": ["16px", {"lineHeight":"1.6","fontWeight":"300"}]
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Listings Catalog | Seller Studio | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#e2e3df",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface": "#f9faf5",
+                        "on-primary-container": "#b7e9c6",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "surface-container": "#edeeea",
+                        "primary-container": "#3d6b4f",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1a1c1a",
+                        "on-secondary-container": "#4d6a43",
+                        "tertiary": "#573b81",
+                        "secondary": "#49663f",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-high": "#e7e9e4",
+                        "surface-container-highest": "#e2e3df",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ecdcff",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "outline-variant": "#c1c9c0",
+                        "inverse-primary": "#a0d2b0",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#c8e9b8",
+                        "outline": "#717972",
+                        "inverse-surface": "#2e312e",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-tertiary-fixed": "#270550",
+                        "surface-container-low": "#f3f4f0",
+                        "on-surface-variant": "#414942",
+                        "secondary-fixed": "#caecbb",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-surface": "#1a1c1a",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f9faf5",
+                        "surface-tint": "#3a684c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d9dad6",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#002110",
+                        "on-secondary-fixed": "#062103",
+                        "background": "#f9faf5",
+                        "primary": "#255338",
+                        "tertiary-container": "#70539b",
+                        "on-primary-fixed-variant": "#214f36",
+                        "parchment": "#F7F3EC",
+                        "sage": "#8FAF82",
+                        "forest": "#3D6B4F",
+                        "gold": "#C8973A",
+                        "violet": "#8B5CF6",
+                        "custom-primary": "#255338"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "margin-desktop": "64px"
+                    },
+                    fontFamily: {
+                        "body-md": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "data-mono": ["Space Mono"],
+                        "headline-md": ["Playfair Display"],
+                        "label-caps": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
+                        "headline-sm": ["Playfair Display"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
                 }
             }
         }
-    }
-</script>
-<style>
-    body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f1; color: #1e1b15; }
-    h1,h2,h3 { font-family: 'EB Garamond', serif; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
-    .skeleton { background: linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-    .fade-in { animation: fadeIn 0.3s ease forwards; }
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; display:flex; align-items:center; justify-content:center; }
-</style>
+    </script>
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background-color: #F7F3EC; color: #1a1c1a; }
+        h1,h2,h3 { font-family: 'Playfair Display', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+        .skeleton { background: linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+        .fade-in { animation: fadeIn 0.3s ease forwards; }
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; display:flex; align-items:center; justify-content:center; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+    </style>
 </head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+<body class="min-h-screen opacity-0 transition-opacity duration-300 bg-parchment" id="body-content">
 
-<!-- Top Nav -->
-<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
-            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
-        </a>
-        <span class="font-headline-lg text-on-background text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+<!-- Left Sidebar (130px) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+    <div class="px-4 mb-8 flex flex-col items-center">
+        <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+        <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
     </div>
-    <div class="flex gap-4 items-center">
-        <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors" title="Logout">
-            <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
+    <nav class="flex-1 space-y-1">
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/catalog.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+            <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+        </a>
+    </nav>
+    <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
+        <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+            View Store
+        </button>
+        <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
+            Logout
         </button>
     </div>
-</nav>
+</aside>
 
 <!-- Toast -->
 <div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all">
@@ -82,7 +181,7 @@
 <div id="listing-modal" class="hidden modal-overlay">
     <div class="bg-surface rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 sticky top-0 bg-surface z-10">
-            <h2 id="modal-title" class="font-headline-md text-xl">Create Listing</h2>
+            <h2 id="modal-title" class="font-headline-md text-xl text-primary">Create Listing</h2>
             <button id="close-modal-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -93,20 +192,20 @@
             <!-- Step 1: Photos -->
             <div class="space-y-2">
                 <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Cover Photo File <span class="text-on-surface-variant/50">(optional)</span></label>
-                <input id="f-photo-file" type="file" accept="image/*" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-custom-primary file:text-on-primary hover:file:opacity-90 cursor-pointer"/>
+                <input id="f-photo-file" type="file" accept="image/*" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-forest file:text-white hover:file:opacity-90 cursor-pointer"/>
                 <p class="text-xs text-on-surface-variant/60">Or use a URL below:</p>
-                <input id="f-cover-photo" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="https://..."/>
+                <input id="f-cover-photo" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="https://..."/>
             </div>
 
             <!-- Step 2: Title & Category -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1 md:col-span-2">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Title *</label>
-                    <input id="f-title" type="text" required class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Handcrafted Pottery Mug"/>
+                    <input id="f-title" type="text" required class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="Handcrafted Pottery Mug"/>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Category</label>
-                    <select id="f-category" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                    <select id="f-category" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest">
                         <option value="">— Select Category —</option>
                         <option value="textile-arts">Textile Arts</option>
                         <option value="jewellery">Jewellery</option>
@@ -120,7 +219,7 @@
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Status</label>
-                    <select id="f-status" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                    <select id="f-status" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest">
                         <option value="draft">Draft</option>
                         <option value="active">Active (Published)</option>
                         <option value="paused">Paused</option>
@@ -131,7 +230,7 @@
             <!-- Step 3: Description -->
             <div class="space-y-1">
                 <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Description</label>
-                <textarea id="f-description" rows="3" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Describe your handcrafted product..."></textarea>
+                <textarea id="f-description" rows="3" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="Describe your handcrafted product..."></textarea>
             </div>
 
             <!-- Step 4: Pricing & Stock -->
@@ -140,16 +239,16 @@
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Price (₹) *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-outline font-semibold">₹</span>
-                        <input id="f-price" type="number" min="1" step="0.01" required class="w-full bg-surface-container border border-outline-variant rounded-xl pl-8 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="499.00"/>
+                        <input id="f-price" type="number" min="1" step="0.01" required class="w-full bg-surface border border-outline-variant rounded-xl pl-8 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="499.00"/>
                     </div>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Stock Count *</label>
-                    <input id="f-stock" type="number" min="0" required class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="10"/>
+                    <input id="f-stock" type="number" min="0" required class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="10"/>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">SKU <span class="text-on-surface-variant/50">(optional)</span></label>
-                    <input id="f-sku" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="MUG-001"/>
+                    <input id="f-sku" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="MUG-001"/>
                 </div>
             </div>
 
@@ -157,11 +256,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Processing Time</label>
-                    <input id="f-processing-time" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="3-5 business days"/>
+                    <input id="f-processing-time" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="3-5 business days"/>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Tags <span class="text-on-surface-variant/50">(comma separated)</span></label>
-                    <input id="f-tags" type="text" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="handmade, ceramic, gift"/>
+                    <input id="f-tags" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="handmade, ceramic, gift"/>
                 </div>
             </div>
 
@@ -171,7 +270,7 @@
             <!-- Submit -->
             <div class="flex justify-end gap-3 pt-2">
                 <button type="button" id="cancel-modal-btn" class="py-2.5 px-6 rounded-full border border-outline text-sm font-semibold text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
-                <button type="submit" id="submit-listing-btn" class="bg-custom-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
+                <button type="submit" id="submit-listing-btn" class="bg-forest text-white py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
                     <span class="material-symbols-outlined text-sm">save</span>
                     <span id="submit-label">Create Listing</span>
                 </button>
@@ -181,15 +280,15 @@
 </div>
 
 <!-- ══ Main Content ══════════════════════════════════════════ -->
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20 ml-[130px]">
 
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h1 class="font-headline-md text-3xl mb-1">Listings Catalog</h1>
+            <h1 class="font-headline-md text-3xl mb-1 text-primary">Listings Catalog</h1>
             <p class="text-sm text-on-surface-variant" id="listings-count-label">Loading your listings…</p>
         </div>
-        <button id="create-listing-btn" class="bg-custom-primary text-on-primary py-2.5 px-6 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2 self-start sm:self-auto">
+        <button id="create-listing-btn" class="bg-forest text-white py-2.5 px-6 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2 self-start sm:self-auto">
             <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">add_circle</span>
             New Listing
         </button>
@@ -200,14 +299,14 @@
         <!-- Status tabs -->
         <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
             <button class="filter-btn active-filter px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all" data-status="all">All</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-custom-primary" data-status="active">Active</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-custom-primary" data-status="draft">Draft</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-custom-primary" data-status="paused">Paused</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-primary" data-status="active">Active</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-primary" data-status="draft">Draft</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-primary" data-status="paused">Paused</button>
         </nav>
         <!-- Search -->
         <div class="flex-1 relative">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
-            <input id="search-input" type="text" placeholder="Search listings…" class="w-full bg-surface-container border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary"/>
+            <input id="search-input" type="text" placeholder="Search listings…" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest"/>
         </div>
     </div>
 
@@ -215,7 +314,7 @@
     <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
         <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
         <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load listings.</p>
-        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+        <button id="retry-btn" class="bg-forest text-white py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
     </div>
 
     <!-- Loading skeleton -->
@@ -230,7 +329,7 @@
     <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
         <span class="material-symbols-outlined text-5xl text-outline">storefront</span>
         <p class="text-on-surface-variant font-body-md text-center">No listings found.<br/>Create your first listing to get started.</p>
-        <button id="empty-create-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Create Listing</button>
+        <button id="empty-create-btn" class="bg-forest text-white py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Create Listing</button>
     </div>
 
     <!-- Listings grid -->
@@ -246,10 +345,6 @@
     </div>
 
 </main>
-
-<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
-    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
-</footer>
 
 <script>
 const API_BASE = window.location.origin;
@@ -282,7 +377,7 @@ function showToast(msg, type = 'success') {
 function statusBadge(status, stock) {
     if (stock === 0 && status === 'active') return '<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter text-error bg-error-container">Out of Stock</span>';
     const m = {
-        active: 'bg-custom-primary text-on-primary',
+        active: 'bg-forest text-white',
         draft:  'bg-surface-container-high text-on-surface-variant',
         paused: 'bg-secondary-container text-on-secondary-container'
     };
@@ -309,9 +404,9 @@ function cardHTML(l) {
             </div>
         </div>
         <div class="p-3">
-            <h3 class="font-semibold text-sm truncate mb-1">${l.title}</h3>
+            <h3 class="font-semibold text-sm truncate mb-1 text-primary">${l.title}</h3>
             <div class="flex justify-between items-center">
-                <span class="text-custom-primary font-bold text-sm">${formatPaise(l.price_paise)}</span>
+                <span class="text-forest font-bold text-sm">${formatPaise(l.price_paise)}</span>
                 ${statusBadge(l.status, l.stock_count)}
             </div>
             <div class="flex justify-between items-center mt-1.5">
@@ -558,11 +653,11 @@ document.getElementById('listing-form').addEventListener('submit', async (e) => 
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => {
-            b.classList.remove('bg-custom-primary', 'text-on-primary', 'active-filter');
-            b.classList.add('text-on-surface-variant', 'hover:text-custom-primary');
+            b.classList.remove('bg-forest', 'text-white', 'active-filter');
+            b.classList.add('text-on-surface-variant', 'hover:text-primary');
         });
-        btn.classList.add('bg-custom-primary', 'text-on-primary', 'active-filter');
-        btn.classList.remove('text-on-surface-variant', 'hover:text-custom-primary');
+        btn.classList.add('bg-forest', 'text-white', 'active-filter');
+        btn.classList.remove('text-on-surface-variant', 'hover:text-primary');
         currentStatus = btn.dataset.status;
         currentPage   = 1;
         loadListings(1);
@@ -596,21 +691,6 @@ document.getElementById('listing-modal').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeModal();
 });
 
-// ── Logout ────────────────────────────────────────────────────
-document.getElementById('logout-btn').addEventListener('click', () => {
-    const token   = sessionStorage.getItem('tohfa_access_token');
-    const refresh = sessionStorage.getItem('tohfa_refresh_token');
-    if (token && refresh) {
-        fetch('/api/auth/logout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            body: JSON.stringify({ refresh_token: refresh })
-        }).catch(() => {});
-    }
-    sessionStorage.clear();
-    window.location.href = '/auth/login.html';
-});
-
 // ── DOMContentLoaded ──────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
     const token = sessionStorage.getItem('tohfa_access_token');
@@ -623,15 +703,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         const pd = await pr.json();
         const u  = pd.data || pd;
         if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+        
+        if (u.avatar_url) {
+            document.getElementById('sidebar-avatar').src = u.avatar_url;
+        }
     } catch {
         sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
     }
 
     // Highlight first filter tab
-    document.querySelector('.filter-btn[data-status="all"]').classList.add('bg-custom-primary','text-on-primary');
+    document.querySelector('.filter-btn[data-status="all"]').classList.add('bg-forest','text-white');
     document.querySelector('.filter-btn[data-status="all"]').classList.remove('text-on-surface-variant');
 
     loadListings(1);
+
+    // ── View Store Action ──────────────────────────
+    const viewStoreBtn = document.getElementById('view-store-btn');
+    if (viewStoreBtn) {
+        viewStoreBtn.addEventListener('click', () => {
+            fetch(`${API_BASE}/api/seller/profile`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const profileData = data.data || data;
+                if (profileData && profileData.handle) {
+                    window.location.href = `/store/${profileData.handle}`;
+                } else {
+                    window.location.href = '/';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching seller profile:', err);
+                window.location.href = '/';
+            });
+        });
+    }
+
+    // ── Logout ────────────────────────────────────────────────────
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        const refresh = sessionStorage.getItem('tohfa_refresh_token');
+        if (token && refresh) {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ refresh_token: refresh })
+            }).catch(() => {});
+        }
+        sessionStorage.clear();
+        window.location.href = '/auth/login.html';
+    });
 });
 
 document.getElementById('retry-btn').addEventListener('click', () => loadListings(currentPage));

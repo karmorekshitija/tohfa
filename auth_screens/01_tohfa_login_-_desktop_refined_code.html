@@ -121,46 +121,47 @@
         }
     </style>
 </head>
-<body class="bg-primary selection:bg-gold-soft selection:text-primary-deep overflow-x-hidden watercolor-ink bg-white">
+<body class="bg-[#F0EDE6] selection:bg-gold-soft selection:text-primary-deep overflow-x-hidden watercolor-ink">
 <!-- TopNavBar -->
+<div id="tohfa-navbar"></div>
 
 <!-- Main Content: Login Canvas -->
-<main class="min-h-[calc(100vh-160px)] flex items-center justify-center py-section-gap px-container-padding relative bg-white watercolor-ink" style="background-image: radial-gradient(circle at 10% 20%, rgba(197, 214, 188, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(123, 94, 167, 0.04) 0%, transparent 40%);">
+<main class="min-h-[calc(100vh-160px)] flex items-center justify-center py-section-gap px-container-padding relative bg-[#F0EDE6] watercolor-ink" style="background-image: radial-gradient(circle at 10% 20%, rgba(197, 214, 188, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(123, 94, 167, 0.04) 0%, transparent 40%);">
 <!-- Parchment Card -->
-<div class="parchment-card relative bg-surface-ivory border border-sage-soft rounded-xl p-8 md:p-12 w-full max-w-md z-10 overflow-hidden" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+<div class="parchment-card relative bg-[#FDFAF5] border border-[#D4C9B8] rounded-[16px] p-[40px] w-full max-w-[420px] z-10 overflow-hidden" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
 <div class="absolute inset-0 sketch-overlay"></div>
 <!-- Scissor Motif -->
-<div class="flex justify-center mb-stack-md">
-<span class="material-symbols-outlined text-primary-deep text-3xl opacity-60">content_cut</span>
+<div class="flex justify-center mb-4 text-[24px]">
+<span class="material-symbols-outlined text-[#2D5016] text-[24px] opacity-60">content_cut</span>
 </div>
 <!-- Header Section -->
-<div class="text-center mb-stack-md">
-<p class="font-hero-title text-product-title italic text-primary">Tohfa<span class="text-highlight-gold">.</span></p>
-<p class="font-eyebrow-caps text-eyebrow-caps text-text-muted mt-2 tracking-widest">WELCOME BACK</p>
-<h1 class="font-hero-title text-hero-title text-primary-deep mt-stack-sm">Return to the nest</h1>
+<div class="text-center mb-6">
+<p class="font-sans text-xs font-semibold text-[#6B6B6B] tracking-[0.2em] uppercase mb-1">DAN</p>
+<h1 class="font-serif text-3xl font-bold text-[#1A1A1A] tracking-wide mb-1">WELCOME BACK</h1>
+<p class="font-serif italic text-sm text-[#6B6B6B]">Return to the nest</p>
 </div>
 <!-- Login Form -->
 <form class="space-y-stack-md relative z-20">
 <!-- Email Field -->
 <div>
-<label class="block font-label-ui text-label-ui text-text-default mb-2" for="email">Email address</label>
-<input class="w-full bg-surface-ivory border border-sage-soft rounded-lg px-4 py-3 font-body-main text-body-main focus:ring-2 focus:ring-accent-violet focus:border-transparent transition-all outline-none" id="email" name="email" placeholder="your@email.com" type="email">
+<label class="block font-sans text-sm font-medium text-[#1A1A1A] mb-2" for="email">Email address</label>
+<input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="email" name="email" placeholder="your@email.com" type="email">
 </div>
 <!-- Password Field -->
 <div class="relative">
 <div class="flex justify-between items-center mb-2">
-<label class="font-label-ui text-label-ui text-text-default" for="password">Password</label>
-<a class="font-label-ui text-label-ui text-accent-violet hover:underline underline-offset-4" href="#">Forgot password?</a>
+<label class="font-sans text-sm font-medium text-[#1A1A1A]" for="password">Password</label>
+<a class="text-xs text-[#2D5016] hover:underline font-medium" href="#">Forgot password?</a>
 </div>
 <div class="relative">
-<input class="w-full bg-surface-ivory border border-sage-soft rounded-lg px-4 py-3 font-body-main text-body-main focus:ring-2 focus:ring-accent-violet focus:border-transparent transition-all outline-none" id="password" name="password" placeholder="••••••••" type="password">
-<button class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="password" name="password" placeholder="••••••••" type="password">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B6B6B] hover:text-[#2D5016] transition-colors" onclick="togglePassword()" type="button">
 <span class="material-symbols-outlined" id="password-toggle-icon">visibility</span>
 </button>
 </div>
 </div>
 <!-- Login Button -->
-<button class="w-full bg-primary text-white font-label-ui text-label-ui py-4 rounded-lg hover:bg-primary-deep transition-all duration-300 shadow-lg active:scale-95 flex justify-center items-center gap-2 mt-4" type="submit">
+<button class="w-full bg-[#2D5016] text-white font-semibold text-sm py-[14px] rounded-[8px] hover:bg-[#1e360f] transition-all duration-300 shadow-md active:scale-[0.98] flex justify-center items-center gap-2 mt-4" type="submit">
                     Log in
                     <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
 </button>
@@ -173,17 +174,17 @@
 </div>
 <!-- Card Footer -->
 <div class="text-center space-y-4 relative z-20">
-<p class="font-body-main text-body-main text-text-muted">
-                    New here? <a class="text-accent-violet font-bold hover:underline underline-offset-4" href="#">Create an account</a>
+<p class="text-sm text-[#6B6B6B]">
+                    New here? <a class="text-[#2D5016] font-semibold hover:underline" href="#">Create an account</a>
 </p>
 <div class="pt-2">
-<a class="font-eyebrow-caps text-eyebrow-caps text-primary hover:text-highlight-gold transition-colors tracking-widest flex items-center justify-center gap-2" href="#">
+<a class="font-sans text-xs text-[#2D5016] hover:text-[#C8973A] transition-colors tracking-widest font-semibold uppercase flex items-center justify-center gap-2" href="#">
                         ✦ SELL ON TOHFA
                     </a>
 </div>
 </div>
 <!-- Sleeping Cat Illustration -->
-<div class="absolute -bottom-2 -right-4 w-32 md:w-40 pointer-events-none transform rotate-[-5deg]">
+<div class="absolute -bottom-2 -right-4 w-32 md:w-36 pointer-events-none transform rotate-[-5deg] z-10">
 <img alt="Sleeping chibi cat" class="w-full h-auto drop-shadow-sm" src="https://lh3.googleusercontent.com/aida/ADBb0uguL628U-zz3tGpzegERPAMsrnAPYOBSCfxEaw1TqKdEbn5rxGmPytFgXj6JwfQX_MO-7DOXQBXBOJodYciMHF3sQVz58CfMgL53mE7rgEoSSOdGVMEd3N-_MQuYiIvbOX7Yj_1PawgpcXr59jivk-uzSimXee9IxwpDapu1mVdxof-OPqc8se15_5vWFIBZiOjQQpFj8lYfLlS4S33T03fqOP3tT_ZuMWxCuE00uiXapAr7HwnpEVSJowe">
 </div>
 </div>
@@ -196,35 +197,7 @@
 </div>
 </main>
 <!-- Footer -->
-<footer class="w-full mt-section-gap bg-surface-container dark:bg-surface-dim">
-<div class="bg-bg-cream-deep dark:bg-surface-container-high w-full py-12">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md px-container-padding py-12 max-w-7xl mx-auto text-center md:text-left">
-<div class="flex flex-col gap-4">
-<a class="font-hero-title text-section-heading italic text-primary" href="#">Tohfa</a>
-<p class="font-body-main text-body-main text-on-surface">Supporting the soulful work of local artisans and bringing warmth into every home.</p>
-</div>
-<div class="flex flex-col gap-2">
-<h4 class="font-eyebrow-caps text-eyebrow-caps mb-2">QUICK LINKS</h4>
-<div class="flex flex-col gap-2">
-<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Our Story</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Sustainability</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Support</a>
-</div>
-</div>
-<div class="flex flex-col gap-2">
-<h4 class="font-eyebrow-caps text-eyebrow-caps mb-2">POLICIES</h4>
-<div class="flex flex-col gap-2">
-<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Shipping</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Terms</a>
-<a class="font-body-main text-body-main text-text-muted hover:text-highlight-gold underline underline-offset-4 transition-all duration-300" href="#">Privacy</a>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto px-container-padding border-t border-sage-soft pt-8 pb-4 text-center">
-<p class="font-body-main text-body-main text-text-muted">© 2024 Tohfa Artisan Marketplace. Crafted with heart.</p>
-</div>
-</div>
-</footer>
+<div id="tohfa-footer"></div>
 <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
@@ -259,4 +232,4 @@
     </script>
 
 
-</body></html>
+<script src="../components/tohfa-include.js"></script></body></html>

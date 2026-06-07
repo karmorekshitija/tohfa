@@ -5,8 +5,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Your Orders | Tohfa</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -64,15 +64,23 @@
                         "ivory-card": "#FFFDFB",
                         "sage": "#8fa382",
                         "sage-soft": "#F0F5EE",
-                        "terracotta": "#C87A53"
+                        "terracotta": "#C87A53",
+                        "ivory": "#FFFDFB",
+                        "gold": "#D4AF37"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
                         "lg": "0.5rem",
                         "xl": "0.75rem",
-                        "full": "9999px"
+                        "full": "9999px",
+                        "card": "16px"
                     },
                     "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
                         "margin-desktop": "64px",
                         "unit": "8px",
                         "margin-mobile": "20px",
@@ -89,7 +97,9 @@
                         "display-lg": ["EB Garamond"],
                         "body-md": ["Work Sans"],
                         "data-price": ["Work Sans"],
-                        "title-serif": ["EB Garamond"]
+                        "title-serif": ["EB Garamond"],
+                        "lora": ["Lora", "serif"],
+                        "display-hero": ["Playfair Display", "serif"]
                     },
                     "fontSize": {
                         "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
@@ -98,7 +108,8 @@
                         "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
                         "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
                         "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
                     }
                 },
             },
@@ -112,14 +123,22 @@
         .botanical-bg {
             background-image: radial-gradient(circle at 90% 10%, rgba(81, 100, 71, 0.05) 0%, transparent 40%), radial-gradient(circle at 10% 80%, rgba(114, 84, 118, 0.05) 0%, transparent 40%)
         }
+        .artisan-shadow {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 4px 20px -2px rgba(81, 100, 71, 0.08), 0 2px 8px -1px rgba(81, 100, 71, 0.04);
+        }
+        .artisan-shadow:hover {
+            box-shadow: 0 8px 24px rgba(81, 100, 71, 0.12);
+        }
     </style>
 </head>
 <body class="paper-texture font-body-md text-on-surface antialiased">
 <!-- TopNavBar -->
+<!-- TopNavBar -->
 <header class="w-full sticky top-0 z-50 bg-white border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
-  <!-- Brand Logo -->
+  <!-- Brand Logo (Task 59) -->
   <div class="flex items-center flex-1">
-    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="home.html">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/buyer/home.html">
       Tohfa<span class="text-[#D4AF37]">.</span>
     </a>
   </div>
@@ -127,22 +146,22 @@
   <!-- Navigation Links -->
   <nav class="hidden md:flex items-center justify-center gap-xl h-full">
     <!-- Home -->
-    <a href="home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
     <!-- Category (Discover) -->
-    <a href="category.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">search</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
-    <a href="reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">movie</span>
       <span>Reels</span>
     </a>
     <!-- Profile -->
-    <a href="profile.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">person</span>
       <span>Profile</span>
     </a>
@@ -150,20 +169,21 @@
   
   <!-- Right side items -->
   <div class="flex items-center justify-end flex-1 gap-lg">
-    <a href="category.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
+    <a href="/buyer/categories.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
       <span class="material-symbols-outlined">search</span>
     </a>
-    <a href="cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+    <a href="/buyer/saved-makes.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+      <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+      <span id="nav-wishlist-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    </a>
+    <a href="/buyer/cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
       <span class="material-symbols-outlined">shopping_cart</span>
       <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold-custom text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
     </a>
-    <a href="notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+    <a href="/buyer/notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
       <span class="material-symbols-outlined">notifications</span>
-      <span id="nav-notif-badge" class="absolute -top-1 -right-1 bg-error text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
-    </a>
-    <!-- Profile Avatar -->
-    <a href="profile.html" id="nav-avatar" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
-      U
+      <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
+      <span id="nav-notif-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
     </a>
   </div>
 </header>
@@ -173,13 +193,13 @@
 <!-- Botanical Watermark Overlay -->
 <div class="absolute inset-0 botanical-bg z-0 pointer-events-none"></div>
 <section class="relative z-10 max-w-4xl mx-auto">
-<h1 class="font-headline-lg text-[36px] text-primary mb-lg">Your orders</h1>
+<h1 class="font-headline-lg text-display-hero text-primary mb-lg">Your orders</h1>
 <!-- Filter Pills -->
 <div class="flex items-center gap-md mb-xl">
-<button id="pill-all" onclick="filterStatus('all')" class="bg-primary text-white px-lg py-sm rounded-full font-body-md transition-all">All</button>
-<button id="pill-active" onclick="filterStatus('active')" class="bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all">Active</button>
-<button id="pill-delivered" onclick="filterStatus('Delivered')" class="bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all">Delivered</button>
-<button id="pill-cancelled" onclick="filterStatus('Cancelled')" class="bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all">Cancelled</button>
+<button id="pill-all" onclick="filterStatus('all')" class="bg-primary text-white px-lg py-sm rounded-full font-body-md transition-transform active:scale-95">All</button>
+<button id="pill-active" onclick="filterStatus('active')" class="bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors">Active</button>
+<button id="pill-delivered" onclick="filterStatus('Delivered')" class="bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors">Delivered</button>
+<button id="pill-cancelled" onclick="filterStatus('Cancelled')" class="bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors">Cancelled</button>
 </div>
 
 <!-- Order List Stack -->
@@ -351,32 +371,53 @@
         }
 
         container.innerHTML = ordersList.map(o => {
-            const imgUrl = o.primary_image_url ? o.primary_image_url : 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted';
             const formattedDate = new Date(o.created_at).toLocaleDateString('en-IN', {
                 year: 'numeric', month: 'short', day: 'numeric'
             });
 
+            // Strip trailing user ID from seed order refs (e.g. TH-94210-156 -> TH-94210)
+            let displayRef = o.order_ref;
+            const seedMatch = o.order_ref.match(/^(TH-\d+)-(\d+)$/);
+            if (seedMatch) {
+                displayRef = seedMatch[1];
+            }
+
+            // Hand-built stack of up to 3 thumbnails, falling back to primary image or placeholder
+            let imagesHtml = '';
+            const urls = o.image_urls && o.image_urls.length > 0 
+                ? o.image_urls.slice(0, 3) 
+                : [o.primary_image_url || 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted'];
+
+            const isCancelled = o.status === 'Cancelled';
+            const imagesOpacityClass = isCancelled ? 'opacity-40' : '';
+            const priceOpacityClass = isCancelled ? 'opacity-50' : '';
+            const actionIcon = isCancelled ? 'close' : 'chevron_right';
+
+            imagesHtml = `<div class="flex -space-x-6 ${imagesOpacityClass}">` + urls.map(url => `
+                <img class="w-12 h-12 rounded-lg object-cover border-2 border-ivory shadow-sm flex-shrink-0" src="${url || 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted'}" alt="${o.item_preview}">
+            `).join('') + `</div>`;
+
             return `
-                <div onclick="window.location.href='order-detail.html?id=${o.id}'" class="relative group bg-white border border-sage/50 rounded-2xl p-lg flex items-center justify-between hover:border-primary transition-all duration-300 cursor-pointer shadow-sm">
+                <div onclick="window.location.href='order-detail.html?id=${o.id}'" class="relative group bg-ivory border border-sage rounded-card p-lg artisan-shadow flex items-center justify-between hover:border-primary transition-all duration-300 cursor-pointer">
                     <div class="flex items-center gap-xl">
-                        <!-- Thumbnail -->
-                        <div class="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-sage/30">
-                            <img class="w-full h-full object-cover" src="${imgUrl}" alt="${o.item_preview}">
-                        </div>
+                        <!-- Thumbnail Stack -->
+                        ${imagesHtml}
                         <!-- Order Details -->
                         <div>
                             <div class="flex items-center gap-sm mb-xs flex-wrap">
-                                <span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#${o.order_ref}</span>
+                                <span class="font-data-price text-label-caps text-on-surface-variant opacity-60">#${displayRef}</span>
                                 <span class="text-outline opacity-40">•</span>
                                 <span class="font-data-price text-label-caps text-on-surface-variant opacity-60">${formattedDate}</span>
                             </div>
-                            <h3 class="font-title-serif text-lg text-on-surface mb-sm font-semibold">${o.item_preview}</h3>
-                            <span class="font-body-md text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-0.5 border ${getStatusBadgeClass(o.status)}">${o.status}</span>
+                            <h3 class="font-lora text-title-serif text-on-surface mb-sm font-semibold">${o.item_preview}</h3>
+                            <span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 border ${getStatusBadgeClass(o.status)}">${o.status}</span>
                         </div>
                     </div>
-                    <div class="text-right flex flex-col items-end gap-sm">
-                        <span class="font-data-price text-lg font-bold text-gold-custom">${formatPaise(o.total_paise)}</span>
-                        <span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">chevron_right</span>
+                    <div class="text-right">
+                        <span class="font-data-price text-lg font-bold text-gold ${priceOpacityClass}">${formatPaise(o.total_paise)}</span>
+                        <div class="mt-md">
+                            <span class="material-symbols-outlined text-outline opacity-40 group-hover:text-primary transition-colors">${actionIcon}</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -392,9 +433,9 @@
             const btn = document.getElementById(`pill-${p.toLowerCase()}`);
             if (btn) {
                 if (p === status) {
-                    btn.className = "bg-primary text-white px-lg py-sm rounded-full font-body-md transition-all";
+                    btn.className = "bg-primary text-white px-lg py-sm rounded-full font-body-md transition-transform active:scale-95";
                 } else {
-                    btn.className = "bg-white border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-all";
+                    btn.className = "bg-ivory border border-sage text-on-surface-variant px-lg py-sm rounded-full font-body-md hover:bg-surface-container-low transition-colors";
                 }
             }
         });

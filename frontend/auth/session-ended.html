@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Session Ended | Tohfa Artisan Studio</title>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&amp;family=DM+Sans:wght@400;500;700&amp;family=Lora:ital,wght@0,400;0,500;1,400&amp;family=Playfair+Display:ital,wght@0,300;0,400;1,400&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
-<!-- Theme Configuration -->
-<script id="tailwind-config">
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Session Ended | Tohfa</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&amp;family=DM+Sans:wght@400;500;700&amp;family=Lora:ital,wght@0,400;0,500;1,400&amp;family=Playfair+Display:ital,wght@0,300;0,400;1,400&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
         theme: {
@@ -119,101 +116,73 @@
         },
       }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
-        .scrim-overlay {
-            background: rgba(197, 214, 188, 0.6); /* sage-soft with opacity */
-            backdrop-filter: blur(8px);
-        }
         .sketch-texture {
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10q5 10 10 0t10 0' stroke='%23C5D6BC' stroke-width='0.5' fill='none' opacity='0.2'/%3E%3C/svg%3E");
-        }
-        .parchment-glow {
-            box-shadow: 0 20px 40px -10px rgba(58, 51, 40, 0.12);
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.08;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="bg-background font-body-main text-on-surface overflow-hidden">
-<!-- TopNavBar Shell (Background) -->
-<header class="fixed top-0 w-full z-40 bg-surface-container-lowest border-b border-sage-soft shadow-sm shadow-text-muted/10 flex justify-between items-center px-container-padding h-16 pointer-events-none opacity-50">
-<div class="font-hero-title italic text-primary text-product-title">Tohfa</div>
-<div class="hidden md:flex gap-8 items-center text-on-surface-variant font-body-main text-body-main">
-<span class="cursor-default">Collections</span>
-<span class="cursor-default">Workshops</span>
-<span class="cursor-default">About</span>
-</div>
-<div class="flex items-center gap-6">
-<span class="material-symbols-outlined text-primary">shopping_bag</span>
-<span class="material-symbols-outlined text-primary">person</span>
-</div>
-</header>
-<!-- Main Content Background (Blurred Discovery Placeholder) -->
-<main class="w-full h-screen relative pt-16 sketch-texture">
-<div class="max-w-7xl mx-auto p-container-padding grid grid-cols-1 md:grid-cols-3 gap-8 opacity-20 filter blur-[2px]">
-<!-- Blurred placeholders to simulate "Discovery Home" background -->
-<div class="h-80 bg-surface-container rounded-lg"></div>
-<div class="h-80 bg-surface-container rounded-lg"></div>
-<div class="h-80 bg-surface-container rounded-lg"></div>
-<div class="h-80 bg-surface-container rounded-lg"></div>
-<div class="h-80 bg-surface-container rounded-lg"></div>
-<div class="h-80 bg-surface-container rounded-lg"></div>
-</div>
-<!-- Session Ended Scrim & Modal -->
-<div class="fixed inset-0 z-50 flex items-center justify-center scrim-overlay p-6">
-<!-- Modal Card -->
-<div class="bg-surface-ivory w-full max-w-md border border-sage-soft rounded-xl parchment-glow overflow-hidden transform scale-100 transition-all duration-500 ease-out flex flex-col items-center p-10 relative">
-<!-- Hand-drawn line motif -->
-<div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sage-soft via-gold-soft to-sage-soft opacity-40"></div>
-<!-- Chibi Artisan Illustration -->
-<div class="mb-8 w-64 h-64 flex items-center justify-center">
-<img alt="A charming chibi-style illustration of a young artisan with soft green hair, peacefully napping at a wooden workbench. On the table are several warm-toned pottery jars, brushes in a holder, and scattered clay tools. The lighting is soft and ethereal, capturing a warm, sun-drenched studio atmosphere with delicate watercolor textures and organic ink lines. The overall mood is quiet, restful, and handcrafted." class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ugPmY0zKYgsAjuqrJo0R1uQZcttttKpYOqM8KuOZyrtKcUkTfbblb2AXGHg-lCvJ01p4hZzFyMpelF3omLrreeJ05sZv6KdoFJuKJu832w_I8MdK1QwT2-nSc6UHWh0baU9OL9qD70MDjvsURSHMRT63v0Gc7c7YLYQ9CQrpVZPn_bQUz31zBr_wdqmLZPQqq2miurvSneFUJXce1XpyAJBnemXkiCdXfWrvbRZDi_CNs5Kt-XykDEbmIa_"/>
-</div>
-<!-- Typography -->
-<h1 class="font-hero-title text-section-heading text-primary text-center mb-4">
-                    Your session has rested
-                </h1>
-<p class="font-artisan-name italic text-body-main text-text-muted text-center mb-10 max-w-xs">
-                    For your safety, please log in again.
-                </p>
-<!-- Actions -->
-<button class="w-full bg-primary text-on-primary py-4 rounded-lg font-body-main text-body-main font-bold hover:bg-primary-container transition-all active:scale-[0.98] shadow-sm">
-                    Log in
-                </button>
-<button class="mt-4 text-text-faint hover:text-primary transition-colors text-label-ui">
-                    Return to gallery
-                </button>
-</div>
-</div>
-</main>
-<!-- Footer Shell (Background) -->
-<footer class="w-full bg-surface-container p-container-padding opacity-50 pointer-events-none mt-auto">
-<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-stack-md">
-<div class="flex flex-col gap-2">
-<div class="font-hero-title text-section-heading text-primary">Tohfa</div>
-<p class="font-body-main text-body-main text-text-muted">© 2024 Tohfa Artisan Studio. Crafted with intention.</p>
-</div>
-<div class="grid grid-cols-2 gap-x-12 gap-y-2">
-<span class="text-text-muted">The Maker's Hand</span>
-<span class="text-text-muted">Artisan Stories</span>
-<span class="text-text-muted">Process &amp; Provenance</span>
-<span class="text-text-muted">Sustainable Practice</span>
-</div>
-</div>
-</footer>
-<script>
+<body class="bg-[#D8E8D0] font-body-main text-on-surface overflow-x-hidden">
+    
+    <!-- Top Navigation -->
+    <div id="tohfa-navbar"></div>
+
+    <div class="fixed inset-0 sketch-texture z-0"></div>
+
+    <!-- Main Canvas -->
+    <main class="min-h-[calc(100vh-128px)] flex items-center justify-center py-12 px-6 bg-[#D8E8D0] relative z-10">
+        <!-- Session Ended Modal Card -->
+        <div class="bg-[#FDFAF5] w-full max-w-[360px] border border-[#D4C9B8] rounded-[16px] shadow-[0_4px_24px_rgba(0,0,0,0.07)] overflow-hidden flex flex-col items-center p-10 relative bg-surface-ivory">
+            <!-- Hand-drawn line motif -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sage-soft via-gold-soft to-sage-soft opacity-40"></div>
+            
+            <!-- Chibi Artisan Illustration -->
+            <div class="mb-6 w-[120px] h-[120px] flex items-center justify-center">
+                <img alt="A charming chibi-style illustration of a young artisan peacefully napping at a wooden workbench." class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ugPmY0zKYgsAjuqrJo0R1uQZcttttKpYOqM8KuOZyrtKcUkTfbblb2AXGHg-lCvJ01p4hZzFyMpelF3omLrreeJ05sZv6KdoFJuKJu832w_I8MdK1QwT2-nSc6UHWh0baU9OL9qD70MDjvsURSHMRT63v0Gc7c7YLYQ9CQrpVZPn_bQUz31zBr_wdqmLZPQqq2miurvSneFUJXce1XpyAJBnemXkiCdXfWrvbRZDi_CNs5Kt-XykDEbmIa_"/>
+            </div>
+
+            <!-- Typography -->
+            <h1 class="font-serif italic text-2xl text-[#2D5016] text-center mb-2">
+                Your session has rested
+            </h1>
+            <p class="font-serif italic text-sm text-[#6B6B6B] text-center mb-6">
+                For your safety, please log in again.
+            </p>
+
+            <!-- Actions -->
+            <button onclick="window.location.href='/auth/login.html'" class="w-full bg-[#2D5016] text-white py-[14px] rounded-[8px] font-sans font-semibold text-sm hover:bg-[#1e360f] transition-all active:scale-[0.98] shadow-md">
+                Log in
+            </button>
+            <a href="/" class="mt-4 text-sm text-[#6B6B6B] hover:text-[#2D5016] transition-colors font-medium">
+                Return to gallery
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="tohfa-footer"></div>
+
+    <script>
         // Simple entrance animation for the modal
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.querySelector('.bg-surface-ivory');
-            modal.style.opacity = '0';
-            modal.style.transform = 'translateY(20px) scale(0.95)';
-            
-            setTimeout(() => {
-                modal.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-                modal.style.opacity = '1';
-                modal.style.transform = 'translateY(0) scale(1)';
-            }, 100);
+            if (modal) {
+                modal.style.opacity = '0';
+                modal.style.transform = 'translateY(20px) scale(0.95)';
+                
+                setTimeout(() => {
+                    modal.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                    modal.style.opacity = '1';
+                    modal.style.transform = 'translateY(0) scale(1)';
+                }, 100);
+            }
         });
     </script>
-</body></html>
+    <script src="../components/tohfa-include.js"></script>
+</body>
+</html>

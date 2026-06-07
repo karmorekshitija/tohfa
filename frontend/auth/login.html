@@ -126,85 +126,115 @@
         }
     </style>
 </head>
-<body class="botanical-bg font-body-md text-on-surface min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop relative overflow-hidden">
+<body class="bg-[#F0EDE6] text-text-default font-body-main selection:bg-violet-soft selection:text-accent-violet overflow-x-hidden">
+<!-- TopNavBar -->
+<div id="tohfa-navbar"></div>
+
+<main class="min-h-[calc(100vh-128px)] flex flex-col items-center justify-center py-12 px-6 bg-[#F0EDE6] relative">
 <!-- Decorative Botanical Sprigs -->
-<div class="absolute top-0 left-0 w-64 h-64 opacity-10 pointer-events-none select-none -translate-x-1/4 -translate-y-1/4 rotate-12">
-<img class="w-full h-full object-contain" data-alt="A delicate hand-drawn botanical illustration of wild herbs and thin stems, rendered in a minimalist fine-line style with sage green ink on a textured cream paper background. The artwork feels artisanal and organic, fitting the slow-living aesthetic of a boutique stationery brand. Soft, high-key lighting illuminates the subtle paper texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_SD2xwVeJ3fsFyJEuk-3J3oW6PIEZdRhVnpyl_GMOwGqWeh8VM3RW5BWk17kw74HWD4XdL-njooX2FFKWQxVhhQmdjI4gOFc5bg_fl-jcIyPdPRVvkVmic-B0Q7GlgqORYcLhOD7rEs6if1B1zs7lk9te70a9ghECFYe9T2WavpA5Uhk6MUWGl1O2VKJS7BeytweT1PdC2oYiMDj3BxVAfqpoz0uXthTYs2eRWq7ktWVuB98bllN_M4cNLDXRKmMEiTMPPsOe90E"/>
+<div class="absolute top-0 left-0 w-64 h-64 opacity-10 pointer-events-none select-none -translate-x-1/4 -translate-y-1/4 rotate-12 z-0">
+<img class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_SD2xwVeJ3fsFyJEuk-3J3oW6PIEZdRhVnpyl_GMOwGqWeh8VM3RW5BWk17kw74HWD4XdL-njooX2FFKWQxVhhQmdjI4gOFc5bg_fl-jcIyPdPRVvkVmic-B0Q7GlgqORYcLhOD7rEs6if1B1zs7lk9te70a9ghECFYe9T2WavpA5Uhk6MUWGl1O2VKJS7BeytweT1PdC2oYiMDj3BxVAfqpoz0uXthTYs2eRWq7ktWVuB98bllN_M4cNLDXRKmMEiTMPPsOe90E"/>
 </div>
-<div class="absolute bottom-0 right-0 w-80 h-80 opacity-10 pointer-events-none select-none translate-x-1/4 translate-y-1/4 -rotate-12">
-<img class="w-full h-full object-contain" data-alt="A sophisticated hand-drawn line art illustration of a graceful butterfly among wild flowers. The drawing is executed in a muted earth grey and sage green palette, emphasizing artisanal craftsmanship and romantic minimalism. The scene is set against a clean, elegant light-mode background, evoking a sun-drenched garden studio mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvK5Z6vmL2WV2TwCCqDh3VaI2QXnU1wlU2umhl3ogQ9MyTNhtEkMHPTUpSZRP_sikj6Fa04AbNF2w2SzvNPJoNZAbGarUpx2mQ0EAoiv-RGsQWz91Hmm6MwlX0G_9tT-1zyIwWx0Q-ZNlDo7hM_jRDY1pqc_CwpXo-IsIyThGtkCdP5u4HMuryJUhRPf1dyOZj8j4sN_0TwB4jWtvYW3hUn68qjmjMt2lFs9Q2rlC2G8sAprqswhnbFNhjPPB1BPeL5cpL-uHUQ8Q"/>
-</div>
-<!-- Login Container -->
-<main class="w-full max-w-[440px] z-10">
-<div class="bg-surface-container-lowest border border-outline-variant p-8 md:p-10 rounded-lg shadow-sm">
-<!-- Logo Section -->
-<header class="text-center mb-10">
-<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight mb-2">CraftNest</h1>
-<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Artisanal Marketplace</p>
-</header>
-<!-- Tabs -->
-<div class="flex border-b border-outline-variant mb-8">
-<button class="flex-1 py-3 font-label-sm text-label-sm uppercase transition-all duration-300 tab-active" id="tab-buyer" onclick="switchTab('buyer')">
-                    Login as Buyer
-                </button>
-<button class="flex-1 py-3 font-label-sm text-label-sm uppercase transition-all duration-300 tab-inactive" id="tab-seller" onclick="switchTab('seller')">
-                    Login as Seller
-                </button>
+<div class="absolute bottom-0 right-0 w-80 h-80 opacity-10 pointer-events-none select-none translate-x-1/4 translate-y-1/4 -rotate-12 z-0">
+<img class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvK5Z6vmL2WV2TwCCqDh3VaI2QXnU1wlU2umhl3ogQ9MyTNhtEkMHPTUpSZRP_sikj6Fa04AbNF2w2SzvNPJoNZAbGarUpx2mQ0EAoiv-RGsQWz91Hmm6MwlX0G_9tT-1zyIwWx0Q-ZNlDo7hM_jRDY1pqc_CwpXo-IsIyThGtkCdP5u4HMuryJUhRPf1dyOZj8j4sN_0TwB4jWtvYW3hUn68qjmjMt2lFs9Q2rlC2G8sAprqswhnbFNhjPPB1BPeL5cpL-uHUQ8Q"/>
 </div>
 
-<!-- General Success Alert Banner -->
-<div id="general-success" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-md mb-6 flex items-start gap-2.5">
-    <span class="material-symbols-outlined text-[20px] text-emerald-600 shrink-0 mt-0.5">check_circle</span>
-    <p id="general-success-text" class="font-body-md text-[13px] leading-relaxed"></p>
-</div>
+<!-- Login Card Container -->
+<div class="relative w-full max-w-[440px] z-10">
+    <!-- Scissor Motif -->
+    <div class="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+        <span class="material-symbols-outlined text-[#6B6B6B] text-3xl">content_cut</span>
+        <div class="h-6 w-px bg-sage-soft mt-1"></div>
+    </div>
+    <div class="bg-[#FDFAF5] border border-[#D4C9B8] rounded-[16px] p-[40px] flex flex-col items-center shadow-[0_4px_24px_rgba(0,0,0,0.07)]">
+        <!-- Logo Section -->
+        <header class="text-center mb-6 w-full">
+            <span class="font-sans text-xs font-semibold text-[#6B6B6B] tracking-[0.2em] block mb-1 uppercase">WELCOME BACK</span>
+            <h1 class="font-serif text-3xl font-bold text-[#2D5016] mb-1">Return to the nest</h1>
+            <div class="flex items-center justify-center gap-2 mt-2">
+                <div class="h-[1px] w-8 bg-[#D4C9B8]"></div>
+                <span class="font-serif text-lg italic text-[#2D5016]">Tohfa<span class="text-[#C8973A]">.</span></span>
+                <div class="h-[1px] w-8 bg-[#D4C9B8]"></div>
+            </div>
+        </header>
 
-<!-- General Error Alert Banner -->
-<div id="general-error" class="hidden bg-error-container border border-error text-on-error-container p-4 rounded-md mb-6 flex items-start gap-2.5">
-    <span class="material-symbols-outlined text-[20px] text-error shrink-0 mt-0.5">warning</span>
-    <p id="general-error-text" class="font-body-md text-[13px] leading-relaxed"></p>
-</div>
+        <!-- Tabs -->
+        <div class="flex border-b border-[#D4C9B8]/40 mb-6 w-full">
+            <button class="flex-1 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 pb-3" id="tab-buyer" onclick="switchTab('buyer')">
+                Buyer Login
+            </button>
+            <button class="flex-1 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 pb-3" id="tab-seller" onclick="switchTab('seller')">
+                Seller Login
+            </button>
+        </div>
 
-<!-- Login Form -->
-<form class="space-y-6" id="login-form">
-<!-- Phone Field (Seller Only) -->
-<div class="hidden transition-all duration-300" id="phone-container">
-<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="phone">Phone Number</label>
-<input class="w-full bg-transparent border border-outline-variant px-4 py-3 text-body-md font-body-md focus:border-primary transition-colors" id="phone" name="phone" placeholder="+1 (555) 000-0000" type="tel"/>
-</div>
-<!-- Email Field -->
-<div>
-<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="email">Email Address</label>
-<input class="w-full bg-transparent border border-outline-variant px-4 py-3 text-body-md font-body-md focus:border-primary transition-colors" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
-</div>
-<!-- Password Field -->
-<div>
-<div class="flex justify-between items-center mb-2">
-<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase" for="password">Password</label>
-<a class="font-label-sm text-[10px] text-on-surface-variant hover:text-primary transition-colors uppercase underline" href="/auth/forgot-password.html">Forgot?</a>
-</div>
-<input class="w-full bg-transparent border border-outline-variant px-4 py-3 text-body-md font-body-md focus:border-primary transition-colors" id="password" name="password" placeholder="••••••••" required="" type="password"/>
-</div>
-<!-- Action Button -->
-<button class="w-full bg-primary-container text-on-primary-container py-4 font-label-sm text-label-sm uppercase font-medium tracking-widest hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95" type="submit" id="submit-btn">
-                    Login
-                </button>
-</form>
-<!-- Footer links inside card -->
-<footer class="mt-10 pt-6 border-t border-outline-variant text-center">
-<p class="font-body-md text-[14px] text-on-surface-variant">
-                    New to the nest? 
-                    <a class="text-primary font-medium hover:underline ml-1" href="signup-buyer.html" id="signup-link">Create an account</a>
-</p>
-</footer>
-</div>
-<!-- Global Navigation Suppression - Page is focused Journey -->
-<div class="mt-8 text-center">
-<a class="inline-flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors uppercase" href="/">
-<span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                Back to Explore
+        <!-- General Success Alert Banner -->
+        <div id="general-success" class="hidden w-full bg-[#E0EDD8] border border-[#C5D6BC] text-[#2D5016] p-4 rounded-[8px] mb-6 flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-[20px] text-[#2D5016] shrink-0 mt-0.5">check_circle</span>
+            <p id="general-success-text" class="font-sans text-xs leading-relaxed"></p>
+        </div>
+
+        <!-- General Error Alert Banner -->
+        <div id="general-error" class="hidden w-full bg-[#FADBD8] border border-[#C0392B] text-[#C0392B] p-4 rounded-[8px] mb-6 flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-[20px] text-[#C0392B] shrink-0 mt-0.5">warning</span>
+            <p id="general-error-text" class="font-sans text-xs leading-relaxed"></p>
+        </div>
+
+        <!-- Login Form -->
+        <form class="space-y-4 w-full text-left" id="login-form">
+            <!-- Phone Field (Seller Only) -->
+            <div class="hidden transition-all duration-300" id="phone-container">
+                <label class="block font-sans text-sm font-medium text-[#1A1A1A] mb-1.5" for="phone">Phone Number</label>
+                <input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="phone" name="phone" placeholder="+1 (555) 000-0000" type="tel"/>
+            </div>
+            <!-- Email Field -->
+            <div>
+                <label class="block font-sans text-sm font-medium text-[#1A1A1A] mb-1.5" for="email">Email Address</label>
+                <input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
+            </div>
+            <!-- Password Field -->
+            <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                    <label class="block font-sans text-sm font-medium text-[#1A1A1A]" for="password">Password</label>
+                    <a class="text-xs text-[#2D5016] hover:underline font-semibold" href="/auth/forgot-password.html">Forgot password?</a>
+                </div>
+                <div class="relative w-full">
+                    <input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B6B6B] hover:text-[#2D5016] transition-colors" onclick="togglePassword()" type="button">
+                        <span class="material-symbols-outlined text-lg" id="password-toggle-icon">visibility</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Action Button -->
+            <button class="w-full bg-[#2D5016] text-white font-semibold text-sm py-[14px] rounded-[8px] hover:bg-[#1e360f] transition-all duration-300 shadow-md active:scale-[0.98] mt-4" type="submit" id="submit-btn">
+                Login
+            </button>
+        </form>
+        <!-- Footer links inside card -->
+        <footer class="mt-6 pt-5 border-t border-[#D4C9B8]/40 text-center w-full z-20">
+            <p class="text-sm text-[#6B6B6B]">
+                New here? 
+                <a class="text-[#2D5016] font-semibold hover:underline ml-1" href="signup-buyer.html" id="signup-link">Create an account</a>
+            </p>
+            <a class="font-sans text-xs text-[#2D5016] hover:text-[#C8973A] transition-colors tracking-widest font-semibold uppercase flex items-center justify-center gap-2 mt-4" href="signup-seller.html">
+                ✦ SELL ON TOHFA
             </a>
+        </footer>
+        <!-- Cozy Cat Illustration -->
+        <div class="w-32 md:w-36 pointer-events-none drop-shadow-sm mt-6 flex justify-center">
+            <img alt="Curled sleeping cat illustration" class="w-full h-auto object-contain max-h-[120px]" src="https://lh3.googleusercontent.com/aida/ADBb0uguL628U-zz3tGpzegERPAMsrnAPYOBSCfxEaw1TqKdEbn5rxGmPytFgXj6JwfQX_MO-7DOXQBXBOJodYciMHF3sQVz58CfMgL53mE7rgEoSSOdGVMEd3N-_MQuYiIvbOX7Yj_1PawgpcXr59jivk-uzSimXee9IxwpDapu1mVdxof-OPqc8se15_5vWFIBZiOjQQpFj8lYfLlS4S33T03fqOP3tT_ZuMWxCuE00uiXapAr7HwnpEVSJowe"/>
+        </div>
+    </div>
+    <!-- Back to Explore Button -->
+    <div class="mt-6 text-center">
+        <a class="inline-flex items-center gap-2 text-xs font-semibold text-[#6B6B6B] hover:text-[#2D5016] transition-colors uppercase tracking-wider" href="/">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Back to Explore
+        </a>
+    </div>
 </div>
 </main>
+<div id="tohfa-footer"></div>
 <script type="module">
         import apiClient from '/src/utils/apiClient.js';
         let currentRole = 'buyer';
@@ -333,8 +363,42 @@
             } finally {
                 submitBtn.innerText = originalText;
                 submitBtn.style.opacity = '1';
-                submitBtn.disabled = false;
             }
         });
     </script>
-</body></html>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('password-toggle-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = 'visibility';
+            }
+        }
+
+        // Lightweight hover animation for the card
+        const card = document.querySelector('.bg-\\[\\#FDFAF5\\]');
+        if (card) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 30;
+                const rotateY = (centerX - x) / 30;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            });
+        }
+    </script>
+    <script src="../components/tohfa-include.js"></script>
+</body>
+</html>

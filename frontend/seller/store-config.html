@@ -130,34 +130,35 @@
 <!-- Global Layout Wrapper -->
 <div class="flex min-h-screen">
 <!-- SideNavBar Component -->
+<!-- Sidebar from SCREEN_17 -->
 <!-- Standardised Left Sidebar (Task 37) -->
 <aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
   <div class="px-4 mb-8 flex flex-col items-center">
-    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
     <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
   </div>
   <nav class="flex-1 space-y-1">
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="02_tofa_seller_studio_-_home_code.html">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html">
       <span class="material-symbols-outlined mb-1 text-2xl">home</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="14_tofa_seller_studio_-_catalog_unified_layout_code.html">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html">
       <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="09_tofa_seller_studio_-_orders_code.html">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html">
       <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="07_tofa_seller_studio_-_analytics_enhanced_style_code.html">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
       <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
       <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="04_tofa_seller_studio_-_store_config_code.html">
+    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/store-config.html">
       <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
     </a>
@@ -165,14 +166,17 @@
       <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="11_tofa_seller_studio_-_profile__settings_code.html">
+    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html">
       <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
       <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
     </a>
   </nav>
-  <div class="px-2 mt-auto pt-6">
-    <button class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+  <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
+    <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
       View Store
+    </button>
+    <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
+      Logout
     </button>
   </div>
 </aside>
@@ -512,14 +516,13 @@
 
 
 
-<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const token = sessionStorage.getItem('access_token');
+  const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
   
   // 1. Auth check: if no token is found, redirect to login
   if (!token && (window.location.protocol.startsWith('http'))) {
-    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    window.location.href = '/auth/login.html?next=' + encodeURIComponent(window.location.pathname);
     return;
   }
   
@@ -534,9 +537,14 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(res => res.json())
     .then(data => {
       if (data && data.success && data.data && data.data.seller) {
-        const dbEnabled = !!data.data.seller.zai_mode_enabled;
+        const seller = data.data.seller;
+        const dbEnabled = !!seller.zai_mode_enabled;
         localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
         updateZaiUI(dbEnabled);
+        if (seller.avatar_url) {
+          const avatarEl = document.getElementById('sidebar-avatar');
+          if (avatarEl) avatarEl.src = seller.avatar_url;
+        }
       }
     })
     .catch(err => console.error("Error syncing ZAI Mode:", err));
@@ -609,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // 4. Handle View Store button relative link click or navigation
-  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
+  const viewStoreBtn = document.getElementById('view-store-btn');
   if (viewStoreBtn) {
     viewStoreBtn.addEventListener('click', () => {
       if (token) {
@@ -631,6 +639,26 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         window.location.href = '/';
       }
+    });
+  }
+
+  // 5. Logout Action
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
+      if (token && refresh) {
+        fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ refresh_token: refresh })
+        }).catch(err => console.error('Logout failed:', err));
+      }
+      sessionStorage.clear();
+      window.location.href = '/auth/login.html';
     });
   }
 });

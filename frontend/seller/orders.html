@@ -1,58 +1,143 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Orders | Seller Studio | Tohfa</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-    tailwind.config = {
-        darkMode:"class",
-        theme: { extend: {
-            "colors": {
-                "surface-container-low":"#faf2e9","surface-container":"#f4ede3","surface-container-high":"#efe7dd",
-                "surface-container-highest":"#e9e1d8","outline-variant":"#c6c7bb","outline":"#76786e",
-                "on-surface":"#1e1b15","on-surface-variant":"#45483f","surface":"#fff8f1","background":"#fff8f1",
-                "primary":"#576242","primary-fixed":"#dbe8bf","primary-fixed-dim":"#bfcba4",
-                "on-primary":"#ffffff","on-primary-container":"#3c4628","custom-primary":"#a8b48e",
-                "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
-                "secondary-container":"#f7d5f8","on-secondary-container":"#745a78",
-                "tertiary-fixed":"#e7e2d9","on-tertiary-container":"#44423c"
-            },
-            "spacing": { "margin-mobile":"20px","margin-desktop":"80px","container-max":"1200px" },
-            "fontFamily": { "headline-md":["EB Garamond","serif"],"headline-lg":["EB Garamond","serif"] }
-        }}
-    }
-</script>
-<style>
-    body { font-family:'Be Vietnam Pro',sans-serif; background-color:#fff8f1; color:#1e1b15; }
-    h1,h2,h3 { font-family:'EB Garamond',serif; }
-    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
-    .no-scrollbar::-webkit-scrollbar { display:none; } .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
-    .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
-    .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center; }
-    tr.order-row:hover { background:#f4ede380; cursor:pointer; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-    .fade-in { animation:fadeIn 0.25s ease forwards; }
-</style>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Orders | Seller Studio | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode:"class",
+            theme: { extend: {
+                "colors": {
+                    "surface-variant": "#e2e3df",
+                    "on-secondary-fixed-variant": "#324e29",
+                    "surface": "#f9faf5",
+                    "on-primary-container": "#b7e9c6",
+                    "primary-fixed": "#bceecb",
+                    "on-tertiary-fixed-variant": "#54387e",
+                    "surface-container": "#edeeea",
+                    "primary-container": "#3d6b4f",
+                    "on-tertiary-container": "#e8d6ff",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1a1c1a",
+                    "on-secondary-container": "#4d6a43",
+                    "tertiary": "#573b81",
+                    "secondary": "#49663f",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f0f1ed",
+                    "surface-container-high": "#e7e9e4",
+                    "surface-container-highest": "#e2e3df",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#ecdcff",
+                    "tertiary-fixed-dim": "#d6baff",
+                    "outline-variant": "#c1c9c0",
+                    "inverse-primary": "#a0d2b0",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#c8e9b8",
+                    "outline": "#717972",
+                    "inverse-surface": "#2e312e",
+                    "primary-fixed-dim": "#a0d2b0",
+                    "on-tertiary-fixed": "#270550",
+                    "surface-container-low": "#f3f4f0",
+                    "on-surface-variant": "#414942",
+                    "secondary-fixed": "#caecbb",
+                    "secondary-fixed-dim": "#afd0a0",
+                    "on-surface": "#1a1c1a",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f9faf5",
+                    "surface-tint": "#3a684c",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#d9dad6",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#002110",
+                    "on-secondary-fixed": "#062103",
+                    "background": "#f9faf5",
+                    "primary": "#255338",
+                    "tertiary-container": "#70539b",
+                    "on-primary-fixed-variant": "#214f36",
+                    "parchment": "#F7F3EC",
+                    "sage": "#8FAF82",
+                    "forest": "#3D6B4F",
+                    "gold": "#C8973A",
+                    "violet": "#8B5CF6",
+                    "custom-primary": "#255338"
+                },
+                "spacing": { "margin-mobile":"20px","margin-desktop":"64px","container-max":"1280px" },
+                "fontFamily": { "headline-md":["Playfair Display","serif"],"headline-lg":["Playfair Display","serif"] }
+            }}
+        }
+    </script>
+    <style>
+        body { font-family:'DM Sans',sans-serif; background-color:#F7F3EC; color:#1a1c1a; }
+        h1,h2,h3 { font-family:'Playfair Display',serif; }
+        .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+        .no-scrollbar::-webkit-scrollbar { display:none; } .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+        @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+        .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+        .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center; }
+        tr.order-row:hover { background:#f4ede380; cursor:pointer; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+        .fade-in { animation:fadeIn 0.25s ease forwards; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+    </style>
 </head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+<body class="min-h-screen opacity-0 transition-opacity duration-300 bg-parchment" id="body-content">
 
-<!-- Nav -->
-<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-        <a href="/seller/dashboard.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
-            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
-        </a>
-        <span class="font-headline-lg text-on-background text-2xl" style="font-family:'Playfair Display',serif;font-style:italic;">Tohfa<span style="color:#D4AF37;">.</span></span>
+<!-- Left Sidebar (130px) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+    <div class="px-4 mb-8 flex flex-col items-center">
+        <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+        <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
     </div>
-    <button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors">
-        <span class="material-symbols-outlined text-2xl hover:text-error transition-colors">logout</span>
-    </button>
-</nav>
+    <nav class="flex-1 space-y-1">
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/orders.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+            <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+        </a>
+    </nav>
+    <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
+        <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+            View Store
+        </button>
+        <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
+            Logout
+        </button>
+    </div>
+</aside>
 
 <!-- Toast -->
 <div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
@@ -65,7 +150,7 @@
     <div class="bg-surface rounded-xl shadow-2xl w-full max-w-xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 sticky top-0 bg-surface z-10">
             <div>
-                <h2 class="font-headline-md text-xl">Order Detail</h2>
+                <h2 class="font-headline-md text-xl text-primary">Order Detail</h2>
                 <p id="modal-order-ref" class="text-xs text-on-surface-variant font-mono"></p>
             </div>
             <button id="close-order-modal" class="p-2 hover:bg-surface-container rounded-full">
@@ -78,16 +163,16 @@
     </div>
 </div>
 
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20 ml-[130px]">
 
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h1 class="font-headline-md text-3xl mb-1">Seller Orders</h1>
+            <h1 class="font-headline-md text-3xl mb-1 text-primary">Seller Orders</h1>
             <p class="text-sm text-on-surface-variant" id="orders-count-label">Loading orders…</p>
         </div>
         <!-- Period selector -->
-        <select id="period-select" class="bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary self-start sm:self-auto">
+        <select id="period-select" class="bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest self-start sm:self-auto">
             <option value="30d">Last 30 Days</option>
             <option value="90d">Last 90 Days</option>
         </select>
@@ -95,37 +180,37 @@
 
     <!-- KPI strip -->
     <div id="kpi-strip" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
             <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Total Orders</div>
-            <div id="kpi-total" class="text-2xl font-bold text-custom-primary">—</div>
+            <div id="kpi-total" class="text-2xl font-bold text-forest">—</div>
         </div>
-        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
             <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Awaiting Action</div>
             <div id="kpi-pending" class="text-2xl font-bold text-error">—</div>
         </div>
-        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
             <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">On-Time Rate</div>
-            <div id="kpi-ontime" class="text-2xl font-bold text-custom-primary">—</div>
+            <div id="kpi-ontime" class="text-2xl font-bold text-forest">—</div>
         </div>
-        <div class="bg-surface-container p-4 rounded-xl border border-outline-variant/20">
+        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
             <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Avg Dispatch</div>
-            <div id="kpi-dispatch" class="text-2xl font-bold text-custom-primary">—</div>
+            <div id="kpi-dispatch" class="text-2xl font-bold text-forest">—</div>
         </div>
     </div>
 
     <!-- Filters + search -->
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
         <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
-            <button class="filter-btn active-filter bg-custom-primary text-on-primary px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap" data-status="all">All</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="pending">Pending</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="crafting">Crafting</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="shipped">Shipped</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="delivered">Delivered</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-custom-primary" data-status="cancelled">Cancelled</button>
+            <button class="filter-btn active-filter bg-forest text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap" data-status="all">All</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="pending">Pending</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="crafting">Crafting</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="shipped">Shipped</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="delivered">Delivered</button>
+            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="cancelled">Cancelled</button>
         </nav>
         <div class="flex-1 relative">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
-            <input id="search-input" type="text" placeholder="Search order ID or buyer…" class="w-full bg-surface-container border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary"/>
+            <input id="search-input" type="text" placeholder="Search order ID or buyer…" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest"/>
         </div>
     </div>
 
@@ -133,7 +218,7 @@
     <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
         <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
         <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load orders.</p>
-        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
+        <button id="retry-btn" class="bg-forest text-white py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
     </div>
 
     <!-- Loading skeleton -->
@@ -151,7 +236,7 @@
     </div>
 
     <!-- Orders table -->
-    <div id="orders-table-wrap" class="hidden overflow-x-auto bg-surface-container-low rounded-xl border border-outline-variant/20 shadow-sm">
+    <div id="orders-table-wrap" class="hidden overflow-x-auto bg-surface border border-outline-variant/20 rounded-xl shadow-sm">
         <table class="w-full text-sm">
             <thead class="bg-surface-container border-b border-outline-variant/30">
                 <tr>
@@ -169,10 +254,6 @@
     </div>
 
 </main>
-
-<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
-    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
-</footer>
 
 <script>
 const API_BASE = window.location.origin;
@@ -207,7 +288,7 @@ function statusBadge(s) {
         pending:   'bg-secondary-container text-on-secondary-container',
         crafting:  'bg-primary-fixed text-on-primary-container',
         shipped:   'bg-tertiary-fixed text-on-tertiary-container',
-        delivered: 'bg-custom-primary text-on-primary',
+        delivered: 'bg-forest text-white',
         cancelled: 'bg-error-container text-on-error-container'
     };
     const labels = { pending:'Pending', crafting:'Crafting', shipped:'Shipped', delivered:'Delivered', cancelled:'Cancelled' };
@@ -258,13 +339,13 @@ async function loadOrders() {
         document.getElementById('orders-tbody').innerHTML = orders.map(o => `
             <tr class="order-row border-b border-outline-variant/20 fade-in" data-id="${o.internal_id}">
                 <td class="py-3 px-4 font-mono text-xs text-on-surface-variant">${o.order_id || '—'}</td>
-                <td class="py-3 px-4 hidden sm:table-cell"><span class="font-medium text-sm truncate max-w-[140px] block">${o.item_title || '—'}</span></td>
+                <td class="py-3 px-4 hidden sm:table-cell"><span class="font-medium text-sm truncate max-w-[140px] block text-primary">${o.item_title || '—'}</span></td>
                 <td class="py-3 px-4 hidden md:table-cell text-sm text-on-surface-variant">${o.buyer_name || '—'}</td>
                 <td class="py-3 px-4 hidden lg:table-cell text-xs text-on-surface-variant">${formatDate(o.order_date)}</td>
-                <td class="py-3 px-4 text-right font-semibold text-sm text-custom-primary">${formatPaise(o.total_paise)}</td>
+                <td class="py-3 px-4 text-right font-semibold text-sm text-forest">${formatPaise(o.total_paise)}</td>
                 <td class="py-3 px-4 text-center">${statusBadge(o.fulfillment_status)}</td>
                 <td class="py-3 px-4 text-center">
-                    <button class="view-btn text-xs font-semibold text-custom-primary hover:underline" data-id="${o.internal_id}">View</button>
+                    <button class="view-btn text-xs font-semibold text-forest hover:underline" data-id="${o.internal_id}">View</button>
                 </td>
             </tr>
         `).join('');
@@ -298,7 +379,7 @@ async function openOrderDetail(internalId) {
 
         const events = (o.tracking_events || []).map(ev =>
             `<div class="flex items-start gap-2 text-xs">
-                <span class="text-custom-primary mt-0.5 font-bold uppercase tracking-wider">${ev.status}</span>
+                <span class="text-forest mt-0.5 font-bold uppercase tracking-wider">${ev.status}</span>
                 <span class="text-on-surface-variant">${formatDate(ev.occurred_at)}</span>
              </div>`
         ).join('');
@@ -311,8 +392,8 @@ async function openOrderDetail(internalId) {
             </div>
             <div class="space-y-1">
                 <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Item & Amount</p>
-                <p class="font-semibold">${o.item_title || '—'}</p>
-                <p class="text-custom-primary font-bold">${formatPaise(o.total_paise)}</p>
+                <p class="font-semibold text-primary">${o.item_title || '—'}</p>
+                <p class="text-forest font-bold">${formatPaise(o.total_paise)}</p>
             </div>
             <div class="space-y-1">
                 <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Current Status</p>
@@ -325,19 +406,19 @@ async function openOrderDetail(internalId) {
             <div class="border-t border-outline-variant/30 pt-4 space-y-3">
                 <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Update Fulfillment Status</p>
                 <div class="flex gap-2">
-                    <select id="status-select-${internalId}" class="flex-1 bg-surface-container border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
+                    <select id="status-select-${internalId}" class="flex-1 bg-surface border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest">
                         <option value="crafting">Crafting</option>
                         <option value="shipped">Shipped</option>
                         <option value="delivered">Delivered</option>
                         <option value="cancelled">Cancelled</option>
                     </select>
-                    <button id="update-status-btn-${internalId}" class="bg-custom-primary text-on-primary px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-all" data-id="${internalId}">
+                    <button id="update-status-btn-${internalId}" class="bg-forest text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-all" data-id="${internalId}">
                         Update
                     </button>
                 </div>
                 <!-- Tracking number -->
                 <div class="flex gap-2">
-                    <input id="tracking-input-${internalId}" type="text" placeholder="Add tracking number…" class="flex-1 bg-surface-container border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" value="${o.tracking_number || ''}"/>
+                    <input id="tracking-input-${internalId}" type="text" placeholder="Add tracking number…" class="flex-1 bg-surface border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest" value="${o.tracking_number || ''}"/>
                     <button id="add-tracking-btn-${internalId}" class="border border-outline text-on-surface px-5 py-2 rounded-full text-sm font-semibold hover:bg-surface-container transition-all" data-id="${internalId}">
                         Set
                     </button>
@@ -411,11 +492,9 @@ function attachTableListeners() {
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => {
-            b.classList.remove('bg-custom-primary','text-on-primary','active-filter');
-            b.classList.add('text-on-surface-variant','hover:text-custom-primary');
+            b.className = 'filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest';
         });
-        btn.classList.add('bg-custom-primary','text-on-primary','active-filter');
-        btn.classList.remove('text-on-surface-variant','hover:text-custom-primary');
+        btn.className = 'filter-btn active-filter bg-forest text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap';
         currentStatus = btn.dataset.status;
         loadOrders();
     });
@@ -440,16 +519,6 @@ document.getElementById('order-detail-modal').addEventListener('click', (e) => {
 // ── Retry ─────────────────────────────────────────────────────
 document.getElementById('retry-btn').addEventListener('click', loadOrders);
 
-// ── Logout ────────────────────────────────────────────────────
-document.getElementById('logout-btn').addEventListener('click', () => {
-    const token = sessionStorage.getItem('tohfa_access_token');
-    const refresh = sessionStorage.getItem('tohfa_refresh_token');
-    if (token && refresh) {
-        fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
-    }
-    sessionStorage.clear(); window.location.href = '/auth/login.html';
-});
-
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
     const token = sessionStorage.getItem('tohfa_access_token');
@@ -461,9 +530,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         const pd = await pr.json();
         const u  = pd.data || pd;
         if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+
+        if (u.avatar_url) {
+            document.getElementById('sidebar-avatar').src = u.avatar_url;
+        }
     } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
 
     loadOrders();
+
+    // ── View Store Action ──────────────────────────
+    const viewStoreBtn = document.getElementById('view-store-btn');
+    if (viewStoreBtn) {
+        viewStoreBtn.addEventListener('click', () => {
+            fetch(`${API_BASE}/api/seller/profile`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const profileData = data.data || data;
+                if (profileData && profileData.handle) {
+                    window.location.href = `/store/${profileData.handle}`;
+                } else {
+                    window.location.href = '/';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching seller profile:', err);
+                window.location.href = '/';
+            });
+        });
+    }
+
+    // ── Logout ────────────────────────────────────────────────────
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        const refresh = sessionStorage.getItem('tohfa_refresh_token');
+        if (token && refresh) {
+            fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+        }
+        sessionStorage.clear(); window.location.href = '/auth/login.html';
+    });
 });
 </script>
 </body>

@@ -140,9 +140,9 @@
         }
     </script>
 </head>
-<body class="bg-surface ink-wash-bg min-h-screen flex flex-col font-body-main text-text-default">
-<!-- TopNavBar (Shared Component) -->
-<header class="w-full h-16 bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-sage-soft dark:border-outline-variant shadow-sm dark:shadow-none z-50 sticky top-0">
+<body class="bg-[#F0EDE6] min-h-screen flex flex-col font-body-main text-text-default">
+<!-- TopNavBar (Seller Navbar) -->
+<header class="w-full h-16 bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-sage-soft dark:border-outline-variant shadow-sm dark:shadow-none z-50 sticky top-0 bg-[#FDFAF5]">
 <div class="flex justify-between items-center px-container-padding max-w-7xl mx-auto h-full">
 <div class="flex items-center gap-stack-md">
 <span class="font-product-title text-product-title italic text-primary dark:text-primary-fixed cursor-pointer active:scale-95 transition-transform">
@@ -160,91 +160,77 @@
 </div>
 </div>
 </header>
+
 <!-- Main Content Canvas -->
-<main class="flex-grow flex items-center justify-center p-container-padding relative overflow-hidden">
+<main class="flex-grow flex items-center justify-center p-container-padding relative overflow-hidden bg-[#F0EDE6]">
 <div class="sketch-watermark"></div>
 <!-- Login Card -->
-<div class="relative w-full max-w-[440px] z-10">
+<div class="relative w-full max-w-[460px] z-10">
 <!-- Scissor Motif -->
 <div class="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
-<span class="material-symbols-outlined text-text-faint text-3xl" data-icon="content_cut">content_cut</span>
+<span class="material-symbols-outlined text-[#6B6B6B] text-3xl" data-icon="content_cut">content_cut</span>
 <div class="h-6 w-px bg-sage-soft mt-1"></div>
 </div>
-<div class="bg-surface-ivory border border-sage-soft rounded-xl parchment-glow overflow-visible p-10 flex flex-col items-center">
+<div class="bg-[#FDFAF5] border border-[#D4C9B8] rounded-[16px] p-[40px] flex flex-col items-center shadow-[0_4px_24px_rgba(0,0,0,0.07)]">
 <!-- Card Header -->
-<div class="text-center mb-8">
-<span class="font-eyebrow-caps text-eyebrow-caps text-text-faint tracking-widest block mb-2">WELCOME BACK</span>
-<h1 class="font-hero-title text-3xl text-primary-deep mb-1">Return to the nest</h1>
-<div class="flex items-center justify-center gap-2">
-<div class="h-[1px] w-8 bg-sage-soft"></div>
-<span class="font-product-title text-xl italic text-primary">Tohfa<span class="text-highlight-gold">.</span></span>
-<div class="h-[1px] w-8 bg-sage-soft"></div>
+<div class="text-center mb-6 w-full">
+<span class="font-sans text-xs font-semibold text-[#6B6B6B] tracking-[0.2em] block mb-1 uppercase">WELCOME BACK</span>
+<h1 class="font-serif text-3xl font-bold text-[#1A1A1A] mb-1">Return to the nest</h1>
+<div class="flex items-center justify-center gap-2 mt-2">
+<div class="h-[1px] w-8 bg-[#D4C9B8]"></div>
+<span class="font-serif text-lg italic text-[#2D5016]">Tohfa<span class="text-[#C8973A]">.</span></span>
+<div class="h-[1px] w-8 bg-[#D4C9B8]"></div>
 </div>
 </div>
 <!-- Form -->
-<form class="w-full flex flex-col gap-5" id="loginForm">
+<form class="w-full flex flex-col gap-4" id="loginForm">
 <!-- Error Handling Slots (Hidden by default) -->
 <div class="hidden bg-danger-terracotta/10 border border-danger-terracotta/20 text-danger-terracotta p-3 rounded-lg flex items-center gap-2 text-sm" id="error401">
 <span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
 <span class="font-label-ui">Hm, that credential set doesn't seem right.</span>
 </div>
-<div class="flex flex-col gap-1.5">
-<label class="font-label-ui text-label-ui text-text-muted ml-1" for="email">Email address</label>
-<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-main" id="email" placeholder="artisan@tohfa.studio" type="email"/>
+<div class="flex flex-col gap-1.5 text-left">
+<label class="font-sans text-sm font-medium text-[#1A1A1A] ml-1" for="email">Email address</label>
+<input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="email" placeholder="artisan@tohfa.studio" type="email"/>
 </div>
-<div class="flex flex-col gap-1.5">
-<label class="font-label-ui text-label-ui text-text-muted ml-1" for="password">Password</label>
-<div class="relative">
-<input class="w-full px-4 py-3 bg-white/50 border border-sage-soft rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-main" id="password" placeholder="••••••••" type="password"/>
-<button class="absolute right-4 top-1/2 -translate-y-1/2 text-text-faint hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<div class="flex flex-col gap-1.5 text-left w-full">
+<label class="font-sans text-sm font-medium text-[#1A1A1A] ml-1" for="password">Password</label>
+<div class="relative w-full">
+<input class="w-full bg-[#FDFAF5] border-[1.5px] border-[#D4C9B8] rounded-[8px] px-[14px] py-[12px] font-sans text-sm text-[#1A1A1A] focus:ring-1 focus:ring-[#2D5016] focus:border-[#2D5016] transition-all outline-none" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B6B6B] hover:text-[#2D5016] transition-colors" onclick="togglePassword()" type="button">
 <span class="material-symbols-outlined" data-icon="visibility" id="passIcon">visibility</span>
 </button>
 </div>
-<div class="flex justify-end">
-<a class="text-accent-violet hover:underline text-sm font-label-ui" href="#">Forgot password?</a>
+<div class="flex justify-end mt-1">
+<a class="text-xs text-[#2D5016] hover:underline font-medium" href="#">Forgot password?</a>
 </div>
 </div>
-<button class="w-full bg-primary text-white font-label-ui py-4 rounded-lg hover:bg-primary-deep active:scale-[0.98] transition-all shadow-md mt-2" type="submit">
+<button class="w-full bg-[#2D5016] text-white font-semibold text-sm py-[14px] rounded-[8px] hover:bg-[#1e360f] transition-all duration-300 shadow-md active:scale-[0.98] mt-2" type="submit">
                         Log in
                     </button>
 </form>
 <!-- Divider -->
-<div class="w-full flex items-center gap-4 my-8">
-<div class="flex-grow h-[1px] bg-sage-soft/50"></div>
-<span class="font-artisan-name italic text-text-faint">or</span>
-<div class="flex-grow h-[1px] bg-sage-soft/50"></div>
+<div class="w-full flex items-center gap-4 my-6 opacity-30">
+<div class="flex-grow h-[1px] bg-[#D4C9B8]"></div>
+<span class="font-sans text-xs text-[#6B6B6B]">or</span>
+<div class="flex-grow h-[1px] bg-[#D4C9B8]"></div>
 </div>
 <!-- Card Footer -->
-<div class="flex flex-col items-center gap-4 text-center">
-<p class="font-body-main text-sm">New here? <a class="text-accent-violet font-medium hover:underline" href="#">Create an account</a></p>
-<a class="font-eyebrow-caps text-eyebrow-caps text-text-muted tracking-widest hover:text-highlight-gold transition-colors flex items-center gap-1 mt-2" href="#">
+<div class="flex flex-col items-center gap-3 text-center w-full z-20">
+<p class="text-sm text-[#6B6B6B]">New here? <a class="text-[#2D5016] font-semibold hover:underline" href="#">Create an account</a></p>
+<a class="font-sans text-xs text-[#2D5016] hover:text-[#C8973A] transition-colors tracking-widest font-semibold uppercase flex items-center justify-center gap-2 mt-1" href="#">
 <span class="material-symbols-outlined text-[14px]" data-icon="auto_awesome" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span> 
                         SELL ON TOHFA
                     </a>
 </div>
 <!-- Cozy Cat Illustration -->
-<div class="absolute -bottom-16 left-1/2 -translate-x-1/2 w-48 pointer-events-none drop-shadow-sm">
-<img alt="Curled sleeping cat illustration" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida/ADBb0uguL628U-zz3tGpzegERPAMsrnAPYOBSCfxEaw1TqKdEbn5rxGmPytFgXj6JwfQX_MO-7DOXQBXBOJodYciMHF3sQVz58CfMgL53mE7rgEoSSOdGVMEd3N-_MQuYiIvbOX7Yj_1PawgpcXr59jivk-uzSimXee9IxwpDapu1mVdxof-OPqc8se15_5vWFIBZiOjQQpFj8lYfLlS4S33T03fqOP3tT_ZuMWxCuE00uiXapAr7HwnpEVSJowe"/>
+<div class="w-32 md:w-36 pointer-events-none drop-shadow-sm mt-6 flex justify-center">
+<img alt="Curled sleeping cat illustration" class="w-full h-auto object-contain max-h-[120px]" src="https://lh3.googleusercontent.com/aida/ADBb0uguL628U-zz3tGpzegERPAMsrnAPYOBSCfxEaw1TqKdEbn5rxGmPytFgXj6JwfQX_MO-7DOXQBXBOJodYciMHF3sQVz58CfMgL53mE7rgEoSSOdGVMEd3N-_MQuYiIvbOX7Yj_1PawgpcXr59jivk-uzSimXee9IxwpDapu1mVdxof-OPqc8se15_5vWFIBZiOjQQpFj8lYfLlS4S33T03fqOP3tT_ZuMWxCuE00uiXapAr7HwnpEVSJowe"/>
 </div>
 </div>
 </div>
 </main>
-<!-- Footer (Shared Component) -->
-<footer class="w-full py-section-gap bg-surface-container-low dark:bg-surface-container-low border-t border-sage-soft dark:border-outline-variant z-10">
-<div class="flex flex-col md:flex-row justify-between items-center px-container-padding max-w-7xl mx-auto gap-stack-md">
-<div class="flex flex-col items-center md:items-start gap-2">
-<span class="font-product-title text-product-title text-primary dark:text-primary-fixed">Tohfa Artisan Collective</span>
-<p class="font-label-ui text-label-ui text-text-muted dark:text-on-surface-variant">© 2024 Tohfa Artisan Collective. All rights reserved.</p>
-</div>
-<div class="flex flex-wrap justify-center gap-6">
-<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Our Story</a>
-<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Sustainability</a>
-<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Artisan Grants</a>
-<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Terms of Service</a>
-<a class="text-text-muted dark:text-on-surface-variant hover:text-highlight-gold transition-colors font-label-ui text-label-ui" href="#">Privacy Policy</a>
-</div>
-</div>
-</footer>
+<div id="tohfa-footer"></div>
 <script>
         function togglePassword() {
             const passInput = document.getElementById('password');
@@ -280,4 +266,4 @@
             animation: shake 0.2s ease-in-out 0s 2;
         }
     </style>
-</body></html>
+<script src="../components/tohfa-include.js"></script></body></html>

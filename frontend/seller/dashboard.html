@@ -1,340 +1,428 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Seller Studio | Tohfa</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>TOFA Seller Studio - Home</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "secondary-fixed-dim": "#ddbcdf",
-                        "primary-container": "#a8b48e",
-                        "on-secondary-container": "#745a78",
-                        "on-tertiary-fixed-variant": "#494740",
-                        "on-surface-variant": "#45483f",
-                        "surface-bright": "#fff8f1",
-                        "secondary-container": "#f7d5f8",
-                        "on-error": "#ffffff",
-                        "on-tertiary-fixed": "#1d1c16",
-                        "tertiary-container": "#b3afa7",
-                        "surface-container-low": "#faf2e9",
-                        "surface-container": "#f4ede3",
-                        "on-primary-fixed-variant": "#404a2c",
-                        "primary": "#576242",
-                        "surface-variant": "#e9e1d8",
+                    colors: {
+                        "surface-variant": "#e2e3df",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface": "#f9faf5",
+                        "on-primary-container": "#b7e9c6",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "surface-container": "#edeeea",
+                        "primary-container": "#3d6b4f",
+                        "on-tertiary-container": "#e8d6ff",
                         "on-secondary": "#ffffff",
-                        "outline-variant": "#c6c7bb",
-                        "secondary-fixed": "#fad8fb",
-                        "outline": "#76786e",
-                        "on-tertiary": "#ffffff",
-                        "error": "#ba1a1a",
-                        "primary-fixed": "#dbe8bf",
-                        "on-tertiary-container": "#44423c",
-                        "surface-container-high": "#efe7dd",
+                        "on-background": "#1a1c1a",
+                        "on-secondary-container": "#4d6a43",
+                        "tertiary": "#573b81",
+                        "secondary": "#49663f",
                         "on-error-container": "#93000a",
-                        "inverse-on-surface": "#f7f0e6",
-                        "background": "#fff8f1",
-                        "on-secondary-fixed-variant": "#573e5b",
-                        "surface-tint": "#576242",
-                        "error-container": "#ffdad6",
-                        "tertiary": "#615e57",
-                        "surface-container-highest": "#e9e1d8",
-                        "primary-fixed-dim": "#bfcba4",
-                        "on-primary-container": "#3c4628",
-                        "tertiary-fixed": "#e7e2d9",
-                        "inverse-surface": "#33302a",
-                        "inverse-primary": "#bfcba4",
-                        "surface-dim": "#e0d9cf",
-                        "on-surface": "#1e1b15",
-                        "surface": "#fff8f1",
-                        "tertiary-fixed-dim": "#cac6be",
-                        "secondary": "#705673",
-                        "on-secondary-fixed": "#28132d",
-                        "on-primary-fixed": "#151e05",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-high": "#e7e9e4",
+                        "surface-container-highest": "#e2e3df",
                         "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ecdcff",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "outline-variant": "#c1c9c0",
+                        "inverse-primary": "#a0d2b0",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#c8e9b8",
+                        "outline": "#717972",
+                        "inverse-surface": "#2e312e",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-tertiary-fixed": "#270550",
+                        "surface-container-low": "#f3f4f0",
+                        "on-surface-variant": "#414942",
+                        "secondary-fixed": "#caecbb",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-surface": "#1a1c1a",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f9faf5",
+                        "surface-tint": "#3a684c",
                         "surface-container-lowest": "#ffffff",
-                        "on-background": "#1e1b15",
-                        "custom-primary": "#a8b48e"
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d9dad6",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#002110",
+                        "on-secondary-fixed": "#062103",
+                        "background": "#f9faf5",
+                        "primary": "#255338",
+                        "tertiary-container": "#70539b",
+                        "on-primary-fixed-variant": "#214f36",
+                        "parchment": "#F7F3EC",
+                        "sage": "#8FAF82",
+                        "forest": "#3D6B4F",
+                        "gold": "#C8973A",
+                        "violet": "#8B5CF6"
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
                     },
-                    "spacing": {
+                    spacing: {
                         "margin-mobile": "20px",
                         "gutter": "24px",
-                        "unit": "8px",
-                        "container-max": "1200px",
-                        "margin-desktop": "80px"
+                        "container-max-width": "1280px",
+                        "margin-desktop": "64px",
+                        "unit": "8px"
                     },
-                    "fontFamily": {
-                        "headline-md": ["EB Garamond", "serif"],
-                        "headline-lg": ["EB Garamond", "serif"],
-                        "body-md": ["Be Vietnam Pro", "sans-serif"],
-                        "headline-lg-mobile": ["EB Garamond", "serif"],
-                        "body-lg": ["Be Vietnam Pro", "sans-serif"],
-                        "label-sm": ["Be Vietnam Pro", "sans-serif"],
-                        "display-lg": ["EB Garamond", "serif"]
+                    fontFamily: {
+                        "body-md": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "data-mono": ["Space Mono"],
+                        "headline-md": ["Playfair Display"],
+                        "label-caps": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
+                        "headline-sm": ["Playfair Display"],
+                        "cinzel": ["Cinzel"],
+                        "lora": ["Lora"]
                     },
-                    "fontSize": {
-                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "400"}],
-                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "300"}],
-                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "400"}],
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
-                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
-                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}]
+                    fontSize: {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
                     }
                 },
             },
         }
     </script>
-<style>
-        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f1; color: #1e1b15; }
-        h1, h2, h3, .font-headline { font-family: 'EB Garamond', serif; color: #1e1b15; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .active-tab { border-bottom: 2px solid #a8b48e; color: #a8b48e; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Skeleton loader animation */
-        @keyframes shimmer {
-            0% { background-position: -400px 0; }
-            100% { background-position: 400px 0; }
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .skeleton {
-            background: linear-gradient(90deg, #efe7dd 25%, #e0d9cf 50%, #efe7dd 75%);
-            background-size: 400px 100%;
-            animation: shimmer 1.4s infinite;
-            border-radius: 4px;
+        .botanical-watermark {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.08;
+            pointer-events: none;
         }
+        .pressed-flower-bg {
+            background: radial-gradient(circle at top right, rgba(143, 175, 130, 0.05) 0%, transparent 40%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
-<!-- Top Navigation -->
-<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center">
-<div class="h-8 flex items-center">
-<span class="font-headline-lg text-on-background text-2xl" style="font-family: 'Playfair Display', 'EB Garamond', serif; font-style: italic;">Tohfa<span style="color: #D4AF37;">.</span></span>
-</div>
-<div class="flex gap-4 items-center">
-<button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary-fixed text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined text-[16px]">flutter_dash</span>
-ZAI Mode
-</button>
-<button id="logout-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center" title="Logout">
-<span class="material-symbols-outlined text-on-surface text-2xl hover:text-error transition-colors">logout</span>
-</button>
-<button class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined text-on-surface text-2xl">menu</span>
-</button>
-</div>
-</nav>
+<body class="bg-parchment text-on-surface font-body-md selection:bg-secondary-container/50 min-h-screen">
 
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
-
-    <!-- ── ERROR STATE ─────────────────────────────────────────── -->
-    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
-        <p class="text-on-surface-variant text-center font-body-md" id="error-message">Failed to load dashboard data.</p>
-        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">
-            Try Again
+<!-- Left Sidebar (130px) -->
+<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
+    <div class="px-4 mb-8 flex flex-col items-center">
+        <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+        <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+    </div>
+    <nav class="flex-1 space-y-1">
+        <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/dashboard.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">home</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
+            <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+        </a>
+        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html">
+            <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+        </a>
+    </nav>
+    <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
+        <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
+            View Store
+        </button>
+        <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
+            Logout
         </button>
     </div>
+</aside>
 
-    <!-- ── LOADING SKELETON ────────────────────────────────────── -->
-    <div id="loading-state">
-        <!-- Header skeleton -->
-        <section class="flex flex-col md:flex-row items-center md:items-end gap-8 mb-12">
-            <div class="skeleton w-32 h-32 md:w-40 md:h-40 rounded-full"></div>
-            <div class="flex-grow space-y-3 w-full">
-                <div class="skeleton h-8 w-48 rounded"></div>
-                <div class="skeleton h-4 w-36 rounded"></div>
-                <div class="skeleton h-4 w-56 rounded"></div>
-                <div class="flex gap-10 pt-4">
-                    <div class="space-y-1"><div class="skeleton h-6 w-12 rounded"></div><div class="skeleton h-3 w-16 rounded mt-1"></div></div>
-                    <div class="space-y-1"><div class="skeleton h-6 w-12 rounded"></div><div class="skeleton h-3 w-16 rounded mt-1"></div></div>
-                    <div class="space-y-1"><div class="skeleton h-6 w-12 rounded"></div><div class="skeleton h-3 w-16 rounded mt-1"></div></div>
+<!-- Main Panel -->
+<main class="ml-[130px] p-10 min-h-screen relative">
+    
+    <!-- (A) Welcome bar -->
+    <header class="flex justify-between items-center mb-10 relative">
+        <div>
+            <h2 class="font-display-lg text-primary">Welcome back, <span id="seller-display-name">—</span> 🌸</h2>
+            <p class="text-on-surface-variant font-lora italic" id="seller-date-label">—</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="zai-toggle-btn" class="flex items-center bg-surface-container-lowest border border-sage/30 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+                <span class="material-symbols-outlined text-violet mr-2" id="zai-toggle-icon" style="font-variation-settings: &quot;FILL&quot; 0;">flutter_dash</span>
+                <span class="font-cinzel text-xs font-bold text-on-surface-variant">ZAI Mode</span>
+                <div class="ml-3 w-8 h-4 bg-surface-container-highest rounded-full relative border border-sage/20" id="zai-toggle-bg">
+                    <div class="absolute left-0.5 top-0.5 w-3 h-3 bg-sage rounded-full transition-all" id="zai-toggle-circle"></div>
                 </div>
             </div>
-        </section>
-        <!-- KPI skeleton -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="skeleton h-28 rounded-xl"></div>
-            <div class="skeleton h-28 rounded-xl"></div>
-            <div class="skeleton h-28 rounded-xl"></div>
-            <div class="skeleton h-28 rounded-xl"></div>
+            <button id="header-view-store-btn" class="flex items-center gap-2 bg-forest text-white px-6 py-2.5 rounded-full font-body-md hover:shadow-lg transition-all active:scale-95">
+                View your store <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </button>
         </div>
-        <!-- Table skeleton -->
-        <div class="skeleton h-48 rounded-xl"></div>
+    </header>
+
+    <!-- (B) Date-range chips -->
+    <div class="flex gap-2 mb-8" id="period-chips">
+        <button class="px-5 py-1.5 rounded-full bg-forest text-white font-cinzel text-[11px] font-bold tracking-widest shadow-sm" data-period="7d">7 DAYS</button>
+        <button class="px-5 py-1.5 rounded-full bg-surface-container-lowest border border-sage/20 text-on-surface-variant font-cinzel text-[11px] font-bold tracking-widest hover:bg-secondary-container/20 transition-colors" data-period="30d">30 DAYS</button>
+        <button class="px-5 py-1.5 rounded-full bg-surface-container-lowest border border-sage/20 text-on-surface-variant font-cinzel text-[11px] font-bold tracking-widest hover:bg-secondary-container/20 transition-colors" data-period="90d">90 DAYS</button>
     </div>
 
-    <!-- ── DASHBOARD CONTENT ──────────────────────────────────── -->
-    <div id="dashboard-content" class="hidden">
+    <!-- Loading Screen overlay inside main content -->
+    <div id="loading-overlay" class="py-24 text-center font-lora italic text-primary">
+        Gathering studio records...
+    </div>
 
-        <!-- Artisan Header -->
-        <section class="flex flex-col md:flex-row items-center md:items-end gap-8 mb-12">
-            <div class="relative">
-                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm">
-                    <img id="seller-avatar" alt="Seller Profile" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Seller&background=a8b48e&color=fff"/>
+    <!-- Dashboard Content Wrapper (Hidden during load) -->
+    <div id="dashboard-content" class="hidden">
+        
+        <!-- (C) KPI Tiles -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <!-- Order Value / Revenue -->
+            <div class="bg-surface-container-lowest border border-sage/30 rounded-xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <h3 class="font-cinzel text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-2">Order Value</h3>
+                <div class="flex items-baseline gap-2">
+                    <p id="kpi-revenue" class="font-data-mono text-2xl font-bold text-primary">₹0</p>
+                    <span id="kpi-revenue-change" class="text-[10px] font-data-mono text-primary flex items-center">—</span>
                 </div>
-                <div class="absolute bottom-1 right-1 bg-custom-primary text-on-primary p-1 rounded-full border-2 border-surface">
-                    <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">verified</span>
-                </div>
-            </div>
-            <div class="flex-grow text-center md:text-left">
-                <h1 id="seller-name" class="font-headline-md text-3xl mb-1">—</h1>
-                <p class="font-body-md text-on-surface-variant mb-2 flex items-center justify-center md:justify-start gap-1">
-                    Artisan Studio
-                </p>
-                <p id="seller-date" class="font-body-md text-sm text-on-surface-variant mb-6"></p>
-                <div class="flex gap-10 justify-center md:justify-start border-t border-outline-variant/30 pt-6">
-                    <div>
-                        <div id="stat-orders" class="text-xl font-semibold">—</div>
-                        <div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Orders (period)</div>
-                    </div>
-                    <div>
-                        <div id="stat-revenue" class="text-xl font-semibold">—</div>
-                        <div class="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Revenue</div>
-                    </div>
+                <div class="mt-4 h-8 w-full">
+                    <svg class="w-full h-full stroke-sage fill-none stroke-2" viewBox="0 0 100 20">
+                        <path d="M0 15 Q 10 10, 20 12 T 40 8 T 60 14 T 80 5 T 100 10"></path>
+                    </svg>
                 </div>
             </div>
-            <div class="flex flex-col gap-3 w-full md:w-auto">
-                <a href="/seller/profile.html" class="bg-custom-primary text-on-primary text-center py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Edit Profile</a>
-                <button class="border border-outline text-on-surface py-2.5 px-8 rounded-full font-semibold text-sm hover:bg-surface-container transition-all">Share Studio</button>
+            
+            <!-- Total Orders -->
+            <div class="bg-surface-container-lowest border border-sage/30 rounded-xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <h3 class="font-cinzel text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-2">Total Orders</h3>
+                <div class="flex items-baseline gap-2">
+                    <p id="kpi-orders" class="font-data-mono text-2xl font-bold text-primary">0</p>
+                    <span id="kpi-orders-change" class="text-[10px] font-data-mono text-primary flex items-center">—</span>
+                </div>
+                <div class="mt-4 h-8 w-full">
+                    <svg class="w-full h-full stroke-sage fill-none stroke-2" viewBox="0 0 100 20">
+                        <path d="M0 18 Q 15 15, 30 17 T 50 10 T 75 12 T 100 2"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Website Visits -->
+            <div class="bg-surface-container-lowest border border-sage/30 rounded-xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <h3 class="font-cinzel text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-2">Website Visits</h3>
+                <div class="flex items-baseline gap-2">
+                    <p id="kpi-visits" class="font-data-mono text-2xl font-bold text-primary">0</p>
+                </div>
+                <div class="mt-4 h-8 w-full">
+                    <svg class="w-full h-full stroke-sage fill-none stroke-2" viewBox="0 0 100 20">
+                        <path d="M0 10 Q 20 15, 40 10 T 70 8 T 100 15"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Conversion Rate -->
+            <div class="bg-surface-container-lowest border border-sage/30 rounded-xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <h3 class="font-cinzel text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-2">Conversion</h3>
+                <div class="flex items-baseline gap-2">
+                    <p id="kpi-conversion" class="font-data-mono text-2xl font-bold text-primary">0.0%</p>
+                </div>
+                <div class="mt-4 h-8 w-full">
+                    <svg class="w-full h-full stroke-sage fill-none stroke-2" viewBox="0 0 100 20">
+                        <path d="M0 15 L 20 12 L 40 14 L 60 8 L 80 10 L 100 4"></path>
+                    </svg>
+                </div>
             </div>
         </section>
 
-        <!-- Tabs Section -->
-        <nav class="flex border-b border-outline-variant/50 mb-10 overflow-x-auto no-scrollbar">
-            <a href="/seller/upload-reel.html" class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4 text-center">Upload Reel</a>
-            <a href="/seller/catalog.html" class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4 text-center">Upload Product</a>
-            <a href="/seller/orders.html" class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant hover:text-custom-primary transition-colors whitespace-nowrap px-4 text-center">Activity</a>
-            <span class="flex-1 py-4 text-sm font-semibold uppercase tracking-wider active-tab transition-colors whitespace-nowrap px-4 text-center cursor-default">Dashboard</span>
-        </nav>
-
-        <!-- Dashboard Content -->
-        <div class="space-y-12">
-
-            <!-- ZAI Tip Banner -->
-            <div id="zai-tip-banner" class="hidden bg-primary-fixed border border-primary-fixed-dim rounded-xl px-6 py-4 flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
-                <div>
-                    <p class="text-sm font-semibold text-on-primary-container mb-0.5">ZAI Mode Tip</p>
-                    <p id="zai-tip-text" class="text-sm text-on-primary-fixed-variant"></p>
+        <!-- (D) Row 1: Low Stock Alerts & Announcements -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+            <!-- Low Stock Alerts -->
+            <div id="low-stock-section" class="lg:col-span-7 bg-surface-container-lowest border border-sage/30 rounded-2xl p-8 shadow-sm relative overflow-hidden animate-fade-in">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-headline-sm text-primary flex items-center gap-2">
+                        Low Stock Alerts
+                        <span id="low-stock-alert-dot" class="w-2 h-2 bg-amber-500 rounded-full hidden"></span>
+                    </h3>
+                    <a href="/seller/catalog.html" class="text-gold font-cinzel text-[10px] font-bold border-b border-gold/40 hover:border-gold transition-all tracking-widest uppercase">VIEW CATALOG</a>
+                </div>
+                <div class="space-y-4" id="low-stock-list">
+                    <!-- Populated dynamically -->
+                </div>
+                <p id="low-stock-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">All products are well-stocked 🎉</p>
+                
+                <!-- ZAI Tip inside Stock Section -->
+                <div id="zai-tip-banner" class="hidden mt-6 flex items-start gap-3 p-4 bg-on-tertiary-fixed/10 rounded-xl border border-tertiary/20">
+                    <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: &quot;FILL&quot; 1;">lightbulb</span>
+                    <div>
+                        <p class="text-xs font-lora italic text-tertiary leading-relaxed">
+                            <span class="font-bold">ZAI Tip:</span> <span id="zai-tip-text">...</span>
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Analytics KPI Cards -->
-            <section>
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-headline-md text-2xl">Studio Analytics</h2>
-                    <span id="period-badge" class="text-xs font-semibold px-3 py-1 bg-surface-container rounded-full text-on-surface-variant uppercase tracking-widest">Last 7 Days</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Revenue -->
-                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Revenue</div>
-                        <div id="kpi-revenue" class="text-2xl font-bold text-custom-primary mb-1">—</div>
-                        <div id="kpi-revenue-change" class="flex items-center gap-1 text-sm text-custom-primary font-medium">
-                            <span class="material-symbols-outlined text-sm">trending_flat</span> —
-                        </div>
-                    </div>
-                    <!-- Orders -->
-                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Orders</div>
-                        <div id="kpi-orders" class="text-2xl font-bold text-custom-primary mb-1">—</div>
-                        <div id="kpi-orders-change" class="flex items-center gap-1 text-sm text-custom-primary font-medium">
-                            <span class="material-symbols-outlined text-sm">trending_flat</span> —
-                        </div>
-                    </div>
-                    <!-- Visits -->
-                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Visits</div>
-                        <div id="kpi-visits" class="text-2xl font-bold text-custom-primary mb-1">—</div>
-                        <div class="text-sm text-on-surface-variant">Profile page views</div>
-                    </div>
-                    <!-- Conversion -->
-                    <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-                        <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Conversion</div>
-                        <div id="kpi-conversion" class="text-2xl font-bold text-custom-primary mb-1">—</div>
-                        <div class="text-sm text-on-surface-variant">Orders / Visits</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Low Stock Alerts -->
-            <section id="low-stock-section">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-headline-md text-2xl flex items-center gap-2">
-                        <span class="material-symbols-outlined text-error text-2xl" style="font-variation-settings: 'FILL' 1;">warning</span>
-                        Low Stock Alerts
-                    </h2>
-                    <a href="/seller/catalog.html" class="text-xs font-bold text-custom-primary hover:underline underline-offset-4 tracking-widest uppercase">Manage All</a>
-                </div>
-                <div id="low-stock-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Announcements -->
+            <div id="announcements-section" class="lg:col-span-5 bg-surface-container-lowest border border-sage/30 rounded-2xl p-8 shadow-sm relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <h3 class="font-headline-sm text-primary mb-6">Announcements</h3>
+                <div class="space-y-6" id="announcements-list">
                     <!-- Populated dynamically -->
                 </div>
-                <p id="low-stock-empty" class="hidden text-center text-on-surface-variant py-8 text-sm">All products are well-stocked 🎉</p>
-            </section>
+                <p id="announcements-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">No recent announcements.</p>
+            </div>
+        </div>
 
+        <!-- (E) Row 2: Recent Orders & Quick Actions -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
             <!-- Recent Orders -->
-            <section>
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-headline-md text-2xl">Recent Orders</h2>
-                    <a href="/seller/orders.html" class="text-xs font-bold text-custom-primary hover:underline underline-offset-4 tracking-widest uppercase">View All</a>
+            <div class="lg:col-span-8 bg-surface-container-lowest border border-sage/30 rounded-2xl p-8 shadow-sm relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-headline-sm text-primary">Recent Orders</h3>
+                    <a class="text-forest font-cinzel text-[10px] font-bold flex items-center gap-1 hover:gap-2 transition-all tracking-widest" href="/seller/orders.html">VIEW ALL ORDERS →</a>
                 </div>
-                <div class="bg-surface-container-low rounded-xl border border-outline-variant/20 overflow-hidden shadow-sm">
-                    <table class="w-full text-sm">
-                        <thead class="bg-surface-container border-b border-outline-variant/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left" id="recent-orders-table">
+                        <thead class="border-b border-sage/20">
                             <tr>
-                                <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Order ID</th>
-                                <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden sm:table-cell">Item</th>
-                                <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden md:table-cell">Buyer</th>
-                                <th class="text-right py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Amount</th>
-                                <th class="text-center py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Status</th>
+                                <th class="pb-4 font-cinzel text-[10px] uppercase tracking-widest text-on-surface-variant">Order / Item</th>
+                                <th class="pb-4 font-cinzel text-[10px] uppercase tracking-widest text-on-surface-variant">Buyer</th>
+                                <th class="pb-4 font-cinzel text-[10px] uppercase tracking-widest text-on-surface-variant">Amount</th>
+                                <th class="pb-4 font-cinzel text-[10px] uppercase tracking-widest text-on-surface-variant">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="recent-orders-body">
+                        <tbody class="divide-y divide-sage/10" id="recent-orders-body">
                             <!-- Populated dynamically -->
                         </tbody>
                     </table>
-                    <p id="orders-empty" class="hidden text-center text-on-surface-variant py-8 text-sm">No orders yet. Start selling!</p>
+                    <p id="orders-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">No orders received yet. Start listing!</p>
                 </div>
-            </section>
+            </div>
 
-            <!-- Announcements -->
-            <section id="announcements-section" class="hidden">
-                <h2 class="font-headline-md text-2xl mb-6">Studio Announcements</h2>
-                <div id="announcements-list" class="space-y-4">
-                    <!-- Populated dynamically -->
+            <!-- Quick Actions -->
+            <div class="lg:col-span-4 bg-surface-container-lowest border border-sage/30 rounded-2xl p-8 shadow-sm relative overflow-hidden">
+                <div class="botanical-watermark absolute inset-0"></div>
+                <h3 class="font-headline-sm text-primary mb-6">Quick Actions</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="/seller/catalog.html" class="flex flex-col items-center justify-center p-6 bg-parchment border border-sage/20 rounded-xl hover:border-forest hover:bg-secondary-container/10 transition-all group">
+                        <div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-forest">add_circle</span>
+                        </div>
+                        <span class="font-cinzel text-[9px] font-bold text-on-surface-variant tracking-widest text-center">ADD LISTING</span>
+                    </a>
+                    <a href="/seller/orders.html" class="flex flex-col items-center justify-center p-6 bg-parchment border border-sage/20 rounded-xl hover:border-forest hover:bg-secondary-container/10 transition-all group">
+                        <div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-forest">package_2</span>
+                        </div>
+                        <span class="font-cinzel text-[9px] font-bold text-on-surface-variant tracking-widest text-center">MANAGE ORDERS</span>
+                    </a>
+                    <a href="/seller/upload-reel.html" class="flex flex-col items-center justify-center p-6 bg-parchment border border-sage/20 rounded-xl hover:border-forest hover:bg-secondary-container/10 transition-all group">
+                        <div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-forest">campaign</span>
+                        </div>
+                        <span class="font-cinzel text-[9px] font-bold text-on-surface-variant tracking-widest text-center">POST REEL</span>
+                    </a>
+                    <a href="/seller/analytics.html" class="flex flex-col items-center justify-center p-6 bg-parchment border border-sage/20 rounded-xl hover:border-forest hover:bg-secondary-container/10 transition-all group">
+                        <div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-forest">bar_chart</span>
+                        </div>
+                        <span class="font-cinzel text-[9px] font-bold text-on-surface-variant tracking-widest text-center">ANALYTICS</span>
+                    </a>
                 </div>
-            </section>
-
+            </div>
         </div>
+
+        <!-- (F) Revenue vs Visits Chart -->
+        <section class="bg-surface-container-lowest border border-sage/30 rounded-2xl p-8 shadow-sm relative overflow-hidden mb-10">
+            <div class="absolute inset-0 bg-sage opacity-5 pointer-events-none" style="mask-image: radial-gradient(circle, black, transparent);"></div>
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="font-headline-sm text-primary">Store Performance Overview</h3>
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-forest"></div>
+                        <span class="font-cinzel text-[10px] font-bold text-on-surface-variant tracking-widest">REVENUE</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full border-2 border-violet border-dashed bg-transparent"></div>
+                        <span class="font-cinzel text-[10px] font-bold text-on-surface-variant tracking-widest">VISITS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="h-64 w-full relative">
+                <!-- Simple SVG Mock Chart -->
+                <svg class="w-full h-full" viewBox="0 0 1000 200">
+                    <!-- Revenue Line -->
+                    <path d="M0 180 L 100 160 L 200 170 L 300 120 L 400 100 L 500 130 L 600 60 L 700 80 L 800 40 L 900 60 L 1000 30" fill="none" stroke="#3D6B4F" stroke-width="3"></path>
+                    <!-- Visits Line (Dashed) -->
+                    <path d="M0 190 L 100 180 L 200 185 L 300 160 L 400 150 L 500 170 L 600 120 L 700 130 L 800 110 L 900 115 L 1000 90" fill="none" stroke="#8B5CF6" stroke-dasharray="8,4" stroke-width="2"></path>
+                    <!-- Axis Labels -->
+                    <g class="font-data-mono text-[8px] fill-on-surface-variant/40">
+                        <text x="0" y="198">17 JUL</text>
+                        <text x="250" y="198">19 JUL</text>
+                        <text x="500" y="198">21 JUL</text>
+                        <text x="750" y="198">23 JUL</text>
+                        <text x="960" y="198">TODAY</text>
+                    </g>
+                </svg>
+            </div>
+        </section>
+
     </div>
 
+    <!-- Footer watermark -->
+    <div class="mt-12 flex justify-center opacity-10">
+        <img alt="TOFA Logo" class="w-32 grayscale brightness-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
+    </div>
 </main>
-<!-- Simple Footer -->
-<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
-<p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
-</footer>
 
 <script>
     const API_BASE_URL = window.location.origin;
+    let selectedPeriod = '7d';
 
     // ── Utility: format paise to ₹ ───────────────────────────────
     function formatPaise(paise) {
-        if (paise == null) return '₹0.00';
-        const rupees = paise / 100;
-        return '₹' + rupees.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (paise == null) return '₹0';
+        const rupees = Math.round(paise / 100);
+        return '₹' + rupees.toLocaleString('en-IN', { maximumFractionDigits: 0 });
     }
 
     // ── Utility: order status badge ───────────────────────────────
@@ -348,45 +436,65 @@ ZAI Mode
             refunded:   { cls: 'bg-surface-container-high text-on-surface-variant', label: 'Refunded' },
         };
         const s = map[status] || { cls: 'bg-surface-container text-on-surface-variant', label: status };
-        return `<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter ${s.cls}">${s.label}</span>`;
+        return `<span class="px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-tighter ${s.cls}">${s.label}</span>`;
     }
 
-    // ── Utility: period label ─────────────────────────────────────
-    function periodLabel(period) {
-        return { '7d': 'Last 7 Days', '30d': 'Last 30 Days', '90d': 'Last 90 Days' }[period] || period;
+    // ── Utility: change percentage ────────────────────────────────
+    function formatPercentChange(pct) {
+        if (pct === 0 || pct == null) return '0%';
+        if (pct > 0) return `↑${Math.round(pct)}%`;
+        return `↓${Math.round(Math.abs(pct))}%`;
     }
 
-    // ── Utility: change indicator ─────────────────────────────────
-    function changeBadge(pct) {
-        if (pct === 0) return '<span class="material-symbols-outlined text-sm">trending_flat</span> 0%';
-        if (pct > 0) return `<span class="material-symbols-outlined text-sm">trending_up</span> +${pct.toFixed(1)}%`;
-        return `<span class="material-symbols-outlined text-sm text-error">trending_down</span> ${pct.toFixed(1)}%`;
-    }
-
-    // ── Render dashboard with API data ────────────────────────────
-    function renderDashboard(data) {
-        const { seller, date_label, period, kpis, low_stock_alerts, recent_orders, announcements, zai_tip } = data;
-
-        // Header
-        document.getElementById('seller-name').textContent = seller.display_name || 'Artisan Studio';
-        document.getElementById('seller-date').textContent = date_label || '';
-        if (seller.avatar_url) {
-            document.getElementById('seller-avatar').src = seller.avatar_url;
+    // ── Update ZAI Mode UI State ─────────────────────────────────
+    function updateZaiUI(enabled) {
+        const circle = document.getElementById('zai-toggle-circle');
+        const bg = document.getElementById('zai-toggle-bg');
+        const icon = document.getElementById('zai-toggle-icon');
+        const banner = document.getElementById('zai-tip-banner');
+        
+        if (circle && bg && icon) {
+            if (enabled) {
+                circle.className = 'absolute right-0.5 top-0.5 w-3 h-3 bg-violet rounded-full transition-all';
+                bg.className = 'ml-3 w-8 h-4 bg-surface-container-highest rounded-full relative border border-sage/20';
+                icon.style.fontVariationSettings = "'FILL' 1";
+            } else {
+                circle.className = 'absolute left-0.5 top-0.5 w-3 h-3 bg-sage rounded-full transition-all';
+                bg.className = 'ml-3 w-8 h-4 bg-secondary-container/30 rounded-full relative border border-sage/20';
+                icon.style.fontVariationSettings = "'FILL' 0";
+            }
         }
 
-        // Header stats
-        document.getElementById('stat-orders').textContent = kpis.total_orders ?? 0;
-        document.getElementById('stat-revenue').textContent = formatPaise(kpis.order_value_paise);
+        if (banner) {
+            const hasText = document.getElementById('zai-tip-text').textContent.trim() !== '' && document.getElementById('zai-tip-text').textContent.trim() !== '...';
+            if (enabled && hasText) {
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+    }
 
-        // Period badge
-        document.getElementById('period-badge').textContent = periodLabel(period);
+    // ── Render dynamic dashboard data ──────────────────────────────
+    function renderDashboard(data) {
+        const { seller, date_label, kpis, low_stock_alerts, recent_orders, announcements, zai_tip } = data;
 
-        // KPI Cards
+        // Header info
+        document.getElementById('seller-display-name').textContent = seller.display_name || 'Artisan Studio';
+        document.getElementById('seller-date-label').textContent = date_label || '';
+        
+        if (seller.avatar_url) {
+            document.getElementById('sidebar-avatar').src = seller.avatar_url;
+        }
+
+        // KPIs
         document.getElementById('kpi-revenue').textContent = formatPaise(kpis.order_value_paise);
-        document.getElementById('kpi-revenue-change').innerHTML = changeBadge(kpis.order_value_change_pct || 0);
-
+        document.getElementById('kpi-revenue-change').textContent = formatPercentChange(kpis.order_value_change_pct);
+        
         document.getElementById('kpi-orders').textContent = kpis.total_orders ?? 0;
-        document.getElementById('kpi-orders-change').innerHTML = changeBadge(kpis.new_orders_since_last_period || 0);
+        document.getElementById('kpi-orders-change').textContent = kpis.new_orders_since_last_period != null
+            ? `+${kpis.new_orders_since_last_period} new`
+            : '';
 
         document.getElementById('kpi-visits').textContent = kpis.website_visits != null
             ? kpis.website_visits.toLocaleString('en-IN')
@@ -397,82 +505,110 @@ ZAI Mode
 
         // ZAI Tip
         if (zai_tip) {
-            document.getElementById('zai-tip-banner').classList.remove('hidden');
             document.getElementById('zai-tip-text').textContent = zai_tip;
         }
 
-        // Low Stock Alerts
+        // Low Stock list
         const lowStockList = document.getElementById('low-stock-list');
         const lowStockEmpty = document.getElementById('low-stock-empty');
+        const alertDot = document.getElementById('low-stock-alert-dot');
+        
         if (low_stock_alerts && low_stock_alerts.length > 0) {
+            lowStockList.classList.remove('hidden');
+            lowStockEmpty.classList.add('hidden');
+            if (alertDot) alertDot.classList.remove('hidden');
+            
             lowStockList.innerHTML = low_stock_alerts.map(item => {
-                const stockColor = item.stock_count === 0
-                    ? 'text-error bg-error-container'
-                    : 'text-on-primary-container bg-primary-fixed';
+                const isOut = item.stock_count === 0;
+                const stockMsg = isOut ? 'Out of stock' : `Only ${item.stock_count} units left`;
+                
                 return `
-                    <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-4 flex justify-between items-center shadow-sm">
-                        <div>
-                            <p class="font-semibold text-sm truncate max-w-[180px]">${item.title}</p>
-                            <p class="text-xs text-on-surface-variant mt-0.5">Listing ID: ${item.listing_id}</p>
+                    <div class="flex items-center justify-between p-4 bg-secondary-container/5 rounded-xl border border-sage/10 group hover:border-sage/40 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container">
+                                <img class="w-full h-full object-cover" src="${item.cover_photo_url || 'https://ui-avatars.com/api/?name=Product'}" alt="${item.title}">
+                            </div>
+                            <div>
+                                <h4 class="font-body-md font-bold text-primary">${item.title}</h4>
+                                <p class="font-data-mono text-[11px] text-error">${stockMsg}</p>
+                            </div>
                         </div>
-                        <span class="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-tight ${stockColor}">
-                            ${item.stock_count === 0 ? 'Out of Stock' : item.stock_count + ' left'}
-                        </span>
+                        <a href="/seller/catalog.html" class="bg-forest text-white px-4 py-1.5 rounded-full text-xs font-bold hover:scale-105 transition-transform">Restock</a>
                     </div>
                 `;
             }).join('');
         } else {
             lowStockList.classList.add('hidden');
             lowStockEmpty.classList.remove('hidden');
+            if (alertDot) alertDot.classList.add('hidden');
         }
 
-        // Recent Orders
-        const tbody = document.getElementById('recent-orders-body');
+        // Recent Orders list
+        const recentOrdersBody = document.getElementById('recent-orders-body');
         const ordersEmpty = document.getElementById('orders-empty');
+        const table = document.getElementById('recent-orders-table');
+
         if (recent_orders && recent_orders.length > 0) {
-            tbody.innerHTML = recent_orders.map(order => `
-                <tr class="border-b border-outline-variant/20 hover:bg-surface-container/50 transition-colors">
-                    <td class="py-3 px-4 font-mono text-xs text-on-surface-variant">${order.order_id || '—'}</td>
-                    <td class="py-3 px-4 hidden sm:table-cell">
-                        <span class="font-medium text-sm truncate max-w-[150px] block">${order.item_title || '—'}</span>
+            table.classList.remove('hidden');
+            ordersEmpty.classList.add('hidden');
+            
+            recentOrdersBody.innerHTML = recent_orders.map(order => `
+                <tr class="group hover:bg-secondary-container/5 transition-colors cursor-pointer" onclick="window.location.href='/seller/orders.html'">
+                    <td class="py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded bg-surface-container">
+                                <img class="w-full h-full object-cover rounded" src="${order.item_image || 'https://ui-avatars.com/api/?name=Product'}" alt="${order.item_title}">
+                            </div>
+                            <div>
+                                <p class="font-data-mono text-xs font-bold text-primary">#${order.order_id || '—'}</p>
+                                <p class="text-[10px] text-on-surface-variant">${order.item_title || '—'}</p>
+                            </div>
+                        </div>
                     </td>
-                    <td class="py-3 px-4 hidden md:table-cell text-sm text-on-surface-variant">${order.buyer_name || '—'}</td>
-                    <td class="py-3 px-4 text-right font-semibold text-sm text-custom-primary">${formatPaise(order.amount_paise)}</td>
-                    <td class="py-3 px-4 text-center">${statusBadge(order.status)}</td>
+                    <td class="py-4 font-lora italic text-sm text-on-surface">${order.buyer_name || '—'}</td>
+                    <td class="py-4 font-data-mono text-xs text-primary">${formatPaise(order.amount_paise)}</td>
+                    <td class="py-4">
+                        ${statusBadge(order.status)}
+                    </td>
                 </tr>
             `).join('');
         } else {
-            tbody.parentElement.classList.add('hidden');
+            table.classList.add('hidden');
             ordersEmpty.classList.remove('hidden');
         }
 
         // Announcements
+        const announcementsList = document.getElementById('announcements-list');
+        const announcementsEmpty = document.getElementById('announcements-empty');
+        
         if (announcements && announcements.length > 0) {
-            const section = document.getElementById('announcements-section');
-            const list = document.getElementById('announcements-list');
-            section.classList.remove('hidden');
-            list.innerHTML = announcements.map(ann => `
-                <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-5 flex gap-4 items-start shadow-sm">
-                    <span class="material-symbols-outlined text-custom-primary text-2xl mt-0.5" style="font-variation-settings: 'FILL' 1;">${ann.icon || 'campaign'}</span>
-                    <div>
-                        <p class="font-semibold mb-1">${ann.title}</p>
-                        <p class="text-sm text-on-surface-variant">${ann.body}</p>
-                    </div>
+            announcementsList.classList.remove('hidden');
+            announcementsEmpty.classList.add('hidden');
+            
+            announcementsList.innerHTML = announcements.map(ann => `
+                <div class="relative pl-6">
+                    <span class="absolute left-0 top-1 text-gold text-lg material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">${ann.icon || 'local_florist'}</span>
+                    <h4 class="font-lora font-bold text-primary text-base">${ann.title}</h4>
+                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">${ann.body}</p>
                 </div>
             `).join('');
+        } else {
+            announcementsList.classList.add('hidden');
+            announcementsEmpty.classList.remove('hidden');
         }
+
+        // Now update ZAI banner display after zai_tip is rendered
+        const isEnabled = localStorage.getItem('zai_mode') === 'true';
+        updateZaiUI(isEnabled);
     }
 
-    // ── Main load function ────────────────────────────────────────
+    // ── Load dashboard data ──────────────────────────────────────
     async function loadDashboard() {
-        const loadingEl = document.getElementById('loading-state');
-        const errorEl   = document.getElementById('error-state');
-        const contentEl = document.getElementById('dashboard-content');
-
-        // Show loading, hide others
-        loadingEl.classList.remove('hidden');
-        errorEl.classList.add('hidden');
-        contentEl.classList.add('hidden');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const content = document.getElementById('dashboard-content');
+        
+        loadingOverlay.classList.remove('hidden');
+        content.classList.add('hidden');
 
         const accessToken = sessionStorage.getItem('tohfa_access_token');
         if (!accessToken) {
@@ -481,7 +617,7 @@ ZAI Mode
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/seller/dashboard`, {
+            const response = await fetch(`${API_BASE_URL}/api/seller/dashboard?period=${selectedPeriod}`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${accessToken}` }
             });
@@ -499,13 +635,8 @@ ZAI Mode
             const resp = await response.json();
             const data = resp.data || resp;
 
-            // Verify role via profile if needed
-            if (!data.seller) {
-                throw new Error('Not a seller account');
-            }
-
-            loadingEl.classList.add('hidden');
-            contentEl.classList.remove('hidden');
+            loadingOverlay.classList.add('hidden');
+            content.classList.remove('hidden');
             renderDashboard(data);
 
             if (data.seller) {
@@ -514,34 +645,26 @@ ZAI Mode
                 updateZaiUI(dbEnabled);
             }
 
-            // Fade in body
-            document.getElementById('body-content').classList.remove('opacity-0');
-
         } catch (err) {
-            console.error('Dashboard load error:', err);
-            loadingEl.classList.add('hidden');
-            document.getElementById('error-message').textContent =
-                err.message || 'Failed to load dashboard. Please try again.';
-            errorEl.classList.remove('hidden');
-            document.getElementById('body-content').classList.remove('opacity-0');
+            console.error('Error loading dashboard:', err);
+            loadingOverlay.textContent = 'Failed to load studio dashboard records. Please reload the page.';
         }
     }
 
     // ── DOMContentLoaded ──────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', async function () {
-        // Guard: must have session
         const accessToken = sessionStorage.getItem('tohfa_access_token');
         if (!accessToken) {
             window.location.href = '/auth/login.html';
             return;
         }
 
-        // Guard: verify role is seller
+        // Guard: Verify user is a seller
         try {
             const profileRes = await fetch(`${API_BASE_URL}/api/profile/me`, {
                 headers: { 'Authorization': `Bearer ${accessToken}` }
             });
-            if (!profileRes.ok) throw new Error('Auth check failed');
+            if (!profileRes.ok) throw new Error('Auth verification failed');
             const profileData = await profileRes.json();
             const user = profileData.data || profileData;
             if (user.role !== 'seller') {
@@ -555,96 +678,105 @@ ZAI Mode
         }
 
         await loadDashboard();
-    });
 
-    // ── Retry button ──────────────────────────────────────────────
-    document.getElementById('retry-btn').addEventListener('click', loadDashboard);
+        // ── Period Chips Event Listeners ──────────────────────────
+        const chips = document.querySelectorAll('#period-chips button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', async () => {
+                chips.forEach(c => {
+                    c.className = 'px-5 py-1.5 rounded-full bg-surface-container-lowest border border-sage/20 text-on-surface-variant font-cinzel text-[11px] font-bold tracking-widest hover:bg-secondary-container/20 transition-colors';
+                });
+                chip.className = 'px-5 py-1.5 rounded-full bg-forest text-white font-cinzel text-[11px] font-bold tracking-widest shadow-sm';
+                selectedPeriod = chip.dataset.period;
+                await loadDashboard();
+            });
+        });
 
-    // ── Logout listener ───────────────────────────────────────────
-    document.getElementById('logout-btn').addEventListener('click', function () {
-        const accessToken = sessionStorage.getItem('tohfa_access_token');
-        const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
-
-        if (accessToken && refreshToken) {
-            fetch('/api/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: JSON.stringify({ refresh_token: refreshToken })
-            }).catch(err => console.error('Logout request failed:', err));
+        // ── ZAI Mode Toggle Click Handler ──────────────────────────
+        const toggleBtn = document.getElementById('zai-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const circle = document.getElementById('zai-toggle-circle');
+                const isEnabled = circle.classList.contains('right-0.5');
+                const nextEnabled = !isEnabled;
+                
+                updateZaiUI(nextEnabled);
+                localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+                
+                const token = sessionStorage.getItem('tohfa_access_token');
+                if (token) {
+                    fetch(`${API_BASE_URL}/api/seller/zai-mode`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ enabled: nextEnabled })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data || !data.success) {
+                            console.error("Failed to update ZAI Mode in DB");
+                        }
+                    })
+                    .catch(err => console.error("Error updating ZAI Mode:", err));
+                }
+            });
         }
-        sessionStorage.removeItem('tohfa_access_token');
-        sessionStorage.removeItem('tohfa_refresh_token');
-        sessionStorage.removeItem('tohfa_user');
-        window.location.href = '/auth/login.html';
-    });
 
-    // ── ZAI Mode Sync ────────────────────────────────────────────────
-    function updateZaiUI(enabled) {
-        const btn = document.getElementById('zai-toggle-btn');
-        if (btn) {
-            if (enabled) {
-                btn.classList.add('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
-                const icon = btn.querySelector('.material-symbols-outlined');
-                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
-            } else {
-                btn.classList.remove('bg-primary-fixed', 'text-on-primary-container', 'border-primary-fixed-dim');
-                const icon = btn.querySelector('.material-symbols-outlined');
-                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
-            }
-        }
-        const banner = document.getElementById('zai-tip-banner');
-        if (banner) {
-            const hasText = document.getElementById('zai-tip-text').textContent.trim() !== '';
-            if (enabled && hasText) {
-                banner.classList.remove('hidden');
-            } else {
-                banner.classList.add('hidden');
-            }
-        }
-    }
-
-    const toggleBtn = document.getElementById('zai-toggle-btn');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            const isEnabled = toggleBtn.classList.contains('bg-primary-fixed');
-            const nextEnabled = !isEnabled;
-            
-            updateZaiUI(nextEnabled);
-            localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
-            
+        // ── View Store Action ──────────────────────────
+        const viewStoreAction = () => {
             const token = sessionStorage.getItem('tohfa_access_token');
             if (token) {
-                fetch('/api/seller/zai-mode', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ enabled: nextEnabled })
+                fetch(`${API_BASE_URL}/api/seller/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 })
                 .then(res => res.json())
                 .then(data => {
-                    if (!data || !data.success) {
-                        console.error("Failed to update ZAI Mode in DB");
+                    const profileData = data.data || data;
+                    if (profileData && profileData.handle) {
+                        window.location.href = `/store/${profileData.handle}`;
+                    } else {
+                        window.location.href = '/';
                     }
                 })
-                .catch(err => console.error("Error updating ZAI Mode:", err));
+                .catch(err => {
+                    console.error('Error fetching seller profile:', err);
+                    window.location.href = '/';
+                });
+            } else {
+                window.location.href = '/';
             }
-        });
-    }
+        };
 
-    // Initialize ZAI Mode UI on load
-    const initialZai = localStorage.getItem('zai_mode') === 'true';
-    updateZaiUI(initialZai);
+        const viewStoreBtn = document.getElementById('view-store-btn');
+        if (viewStoreBtn) viewStoreBtn.addEventListener('click', viewStoreAction);
+        
+        const headerViewStoreBtn = document.getElementById('header-view-store-btn');
+        if (headerViewStoreBtn) headerViewStoreBtn.addEventListener('click', viewStoreAction);
 
-    // ── Micro-interactions ────────────────────────────────────────
-    document.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('mousedown', () => { btn.style.transform = 'scale(0.97)'; });
-        btn.addEventListener('mouseup',   () => { btn.style.transform = 'scale(1)'; });
-        btn.addEventListener('mouseleave',() => { btn.style.transform = 'scale(1)'; });
+        // ── Logout Action ──────────────────────────────
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                const token = sessionStorage.getItem('tohfa_access_token');
+                const refresh = sessionStorage.getItem('tohfa_refresh_token');
+                if (token && refresh) {
+                    fetch(`${API_BASE_URL}/api/auth/logout`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ refresh_token: refresh })
+                    }).catch(err => console.error('Logout failed:', err));
+                }
+                sessionStorage.clear();
+                window.location.href = '/auth/login.html';
+            });
+        }
     });
 </script>
-</body></html>
+
+</body>
+</html>
