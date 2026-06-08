@@ -109,7 +109,17 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(37, 83, 56, 0.12);
         }
-    </style>
+    <style>
+/* Existing styles */
+.ink-wash-gradient { background: linear-gradient(135deg, #C8D7BF 0%, #E8F0E4 50%, #F1EADD 100%); }
+.artisan-card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.artisan-card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37, 83, 56, 0.12); }
+/* Address panel styles */
+.scrim-overlay { background-color: rgba(229,216,200,0.4); backdrop-filter: blur(2px); }
+.bottom-sheet { box-shadow: 0 -4px 20px rgba(58,51,40,0.08); max-width: 375px; margin: 0 auto; }
+.input-focus-glow { box-shadow: 0 0 0 4px rgba(123,94,167,0.05); }
+.hand-drawn-underline::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 1px; background: currentColor; opacity: 0.6; }
+</style>
 </head>
 <body class="bg-surface text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- Top Navigation -->
@@ -231,6 +241,11 @@
       <p class="font-title-serif text-on-surface">Addresses</p>
       <p id="hub-addresses-count" class="text-xs text-outline mt-xs">0 saved locations</p>
     </a>
+    <button id="add-address-btn" class="mt-sm w-full py-md px-lg border border-sage rounded-xl bg-white text-secondary font-body-md flex items-center justify-center gap-sm hover:bg-surface-container-low transition-all duration-300 group active:scale-[0.98]">
+      <span class="material-symbols-outlined group-hover:rotate-90 transition-transform">add</span>
+      Add a new address
+    </button>
+    <div id="saved-addresses-container" class="mt-md space-y-md"></div>
     <a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="/buyer/notifications.html">
       <span class="material-symbols-outlined text-secondary mb-md" data-icon="notifications">notifications</span>
       <p class="font-title-serif text-on-surface">Notifications</p>
@@ -466,7 +481,160 @@
         sessionStorage.clear();
         window.location.href = '/auth/login.html';
     });
+<!-- Address Panel (hidden by default) -->
+<div id="scrim-overlay" class="fixed inset-0 scrim-overlay hidden z-10"></div>
+<div id="bottom-sheet" class="fixed inset-x-0 bottom-0 z-20 flex justify-center items-end hidden">
+  <div class="bottom-sheet bg-white w-full rounded-t-[24px] relative flex flex-col max-h-[90vh] overflow-hidden">
+    <div class="w-full flex justify-center pt-sm pb-xs">
+      <div class="w-12 h-1 bg-sage-soft rounded-full opacity-60"></div>
+    </div>
+    <div class="px-margin-mobile py-md flex items-center justify-between border-b border-outline-variant/30">
+      <h2 class="font-headline-lg-mobile text-[20px] italic font-medium text-primary">Add New Address</h2>
+      <button class="p-xs hover:bg-surface-container-high rounded-full transition-colors" id="close-address-panel">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <div class="px-margin-mobile py-lg space-y-lg overflow-y-auto pb-[100px]">
+      <!-- FORM FIELDS (copied from design) -->
+      <div class="space-y-md">
+        <div class="space-y-xs group">
+          <label class="font-label-caps text-[10px] text-tertiary-container uppercase tracking-widest flex justify-between">Full Name<span class="text-[8px] opacity-50">REQUIRED</span></label>
+          <div class="relative">
+            <input id="full-name-input" class="w-full bg-[#f8f6f0] border-2 border-violet-focus px-md py-sm rounded-lg text-body-md focus:outline-none input-focus-glow" type="text" placeholder="Full Name" />
+            <div class="absolute right-md top-1/2 -translate-y-1/2"><div class="w-1.5 h-1.5 rounded-full bg-violet-focus animate-pulse"></div></div>
+          </div>
+        </div>
+        <div class="space-y-xs">
+          <label class="font-label-caps text-[10px] text-tertiary-container uppercase tracking-widest">Phone Number</label>
+          <input id="phone-input" class="w-full bg-ivory-input border border-sage-soft px-md py-sm rounded-lg text-body-md" type="tel" placeholder="+1 (555) 000-0000" />
+        </div>
+        <div class="space-y-xs">
+          <label class="font-label-caps text-[10px] text-tertiary-container uppercase tracking-widest">Street Address</label>
+          <textarea id="street-address-input" class="w-full bg-ivory-input border border-sage-soft px-md py-sm rounded-lg text-body-md" placeholder="Building, Street, Area" rows="2"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-md">
+          <div class="space-y-xs">
+            <label class="font-label-caps text-[10px] text-tertiary-container uppercase tracking-widest">City</label>
+            <input id="city-input" class="w-full bg-ivory-input border border-sage-soft px-md py-sm rounded-lg text-body-md" type="text" placeholder="London" />
+          </div>
+          <div class="space-y-xs">
+            <label class="font-label-caps text-[10px] text-tertiary-container uppercase tracking-widest">State</label>
+            <input id="state-input" class="w-full bg-ivory-input border border-sage-soft px-md py-sm rounded-lg text-body-md" type="text" placeholder="State" />
+          </div>
+        </div>
+        <div class="space-y-xs">
+          <label class="font-label-caps text-[10px] text-tertiary-container uppercase tracking-widest">Postal Code</label>
+          <input id="pincode-input" class="w-full bg-ivory-input border border-sage-soft px-md py-sm rounded-lg text-body-md" type="text" placeholder="E1 6AN" />
+        </div>
+        <div class="flex items-center justify-between py-sm">
+          <div class="space-y-xs">
+            <p class="font-title-serif text-sm">Set as default address</p>
+            <p class="text-xs opacity-60">This will be used for your future orders.</p>
+          </div>
+          <div class="w-12 h-6 bg-secondary-container rounded-full relative cursor-pointer" id="default-toggle-wrapper">
+            <input type="checkbox" id="default-toggle" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <div class="absolute right-1 top-1 w-4 h-4 bg-forest-brand rounded-full"></div>
+          </div>
+        </div>
+      </div>
+      <div class="p-margin-mobile bg-white/80 backdrop-blur-md border-t border-outline-variant/30 sticky bottom-0 z-40">
+        <button id="save-address-btn" class="w-full bg-forest-brand text-white font-bold py-md rounded-lg hover:bg-opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm">
+          <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">save</span>
+          Save Address
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Toggle panel visibility
+  const scrim = document.getElementById('scrim-overlay');
+  const sheet = document.getElementById('bottom-sheet');
+  document.getElementById('add-address-btn').addEventListener('click', () => { scrim.classList.remove('hidden'); sheet.classList.remove('hidden'); });
+  document.getElementById('close-address-panel').addEventListener('click', () => { scrim.classList.add('hidden'); sheet.classList.add('hidden'); });
+  scrim.addEventListener('click', () => { scrim.classList.add('hidden'); sheet.classList.add('hidden'); });
 
+  // Save address handler
+  document.getElementById('save-address-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const payload = {
+      full_name: document.getElementById('full-name-input').value,
+      phone: document.getElementById('phone-input').value,
+      line1: document.getElementById('street-address-input').value,
+      city: document.getElementById('city-input').value,
+      state: document.getElementById('state-input').value,
+      pincode: document.getElementById('pincode-input').value,
+      is_default: document.getElementById('default-toggle').checked ? 1 : 0,
+    };
+    try {
+      const res = await apiClient.post('/addresses', payload);
+      if (res.data?.success) {
+        // refresh UI
+        loadSavedAddresses();
+        init(); // refresh default shipping display
+        scrim.classList.add('hidden');
+        sheet.classList.add('hidden');
+      } else {
+        alert('Failed to save address');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error saving address');
+    }
+  });
+
+  async function loadSavedAddresses() {
+    try {
+      const res = await apiClient.get('/addresses');
+      if (res.data?.success) {
+        const container = document.getElementById('saved-addresses-container');
+        container.innerHTML = '';
+        res.data.data.addresses.forEach(addr => {
+          const isDefault = addr.is_default === 1;
+          const card = document.createElement('div');
+          card.className = 'bg-ivory border border-sage rounded-xl p-lg card-shadow transition-all duration-300 hover:-translate-y-1 mb-lg';
+          card.innerHTML = `
+            <div class="flex justify-between items-start mb-md">
+              <div class="flex gap-sm">
+                <span class="px-3 py-1 bg-gold-brand/10 border border-gold-brand/30 text-gold-brand font-label-caps text-[10px] rounded-full">${addr.address_type?.toUpperCase() || 'HOME'}</span>
+                ${isDefault ? '<span class="px-3 py-1 bg-secondary/10 border border-secondary/30 text-secondary font-label-caps text-[10px] rounded-full">DEFAULT</span>' : ''}
+              </div>
+            </div>
+            <h3 class="font-card-title text-title-serif text-on-surface mb-xs">${addr.full_name || ''}</h3>
+            <p class="text-on-surface-variant font-body-md leading-relaxed mb-md">
+              ${addr.line1}<br/>
+              ${addr.city}, ${addr.state} ${addr.pincode}
+            </p>
+            <div class="flex items-center gap-xs font-data-price text-on-surface mb-lg">
+              <span class="material-symbols-outlined text-sm text-outline">call</span>
+              ${addr.phone}
+            </div>
+            <div class="flex gap-lg border-t border-outline-variant pt-md">
+              <button class="text-violet-brand font-bold text-sm hover:underline flex items-center gap-xs" data-id="${addr.id}" onclick="editAddress(${addr.id})"><span class="material-symbols-outlined text-sm">edit</span> Edit</button>
+              <button class="text-terracotta font-bold text-sm hover:underline flex items-center gap-xs" data-id="${addr.id}" onclick="deleteAddress(${addr.id})"><span class="material-symbols-outlined text-sm">delete</span> Delete</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+    } catch (err) {
+      console.error('Failed to load saved addresses', err);
+    }
+  }
+
+  // Placeholder edit/delete functions (to be implemented later)
+  window.editAddress = (id) => { alert('Edit not implemented'); };
+  window.deleteAddress = async (id) => {
+    if (!confirm('Delete this address?')) return;
+    try {
+      const res = await apiClient.delete(`/addresses/${id}`);
+      if (res.data?.success) loadSavedAddresses();
+    } catch (e) { console.error(e); }
+  };
+
+  // Load saved addresses on page init
+  loadSavedAddresses();
+</script>
     // Initial load
     init();
     updateCartBadge();
