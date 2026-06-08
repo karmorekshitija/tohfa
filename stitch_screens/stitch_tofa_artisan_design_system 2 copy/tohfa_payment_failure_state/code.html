@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payment Failed - Tohfa Artisan Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Merriweather:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#caecbb",
+                    "surface-container-low": "#fff2e1",
+                    "inverse-primary": "#a0d2b0",
+                    "surface-variant": "#ede1d1",
+                    "surface-bright": "#fff8f3",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#214f36",
+                    "tertiary-container": "#70539b",
+                    "primary-fixed": "#bceecb",
+                    "primary": "#255338",
+                    "on-tertiary-fixed-variant": "#54387e",
+                    "inverse-surface": "#362f25",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#3d6b4f",
+                    "surface-tint": "#3a684c",
+                    "surface-container-highest": "#ede1d1",
+                    "on-error-container": "#93000a",
+                    "secondary": "#49663f",
+                    "surface-dim": "#e5d8c8",
+                    "surface": "#fff8f3",
+                    "on-error": "#ffffff",
+                    "surface-container": "#f9ecdc",
+                    "on-surface-variant": "#414942",
+                    "inverse-on-surface": "#fcefde",
+                    "outline-variant": "#c1c9c0",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#c8e9b8",
+                    "on-background": "#211b11",
+                    "on-secondary-fixed": "#062103",
+                    "on-primary-container": "#b7e9c6",
+                    "tertiary": "#573b81",
+                    "outline": "#717972",
+                    "on-surface": "#211b11",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#a0d2b0",
+                    "on-tertiary-container": "#e8d6ff",
+                    "on-primary-fixed": "#002110",
+                    "background": "#fff8f3",
+                    "secondary-fixed-dim": "#afd0a0",
+                    "tertiary-fixed": "#ecdcff",
+                    "on-tertiary-fixed": "#270550",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#f3e6d6",
+                    "on-secondary-fixed-variant": "#324e29",
+                    "tertiary-fixed-dim": "#d6baff",
+                    "on-secondary-container": "#4d6a43",
+                    "terracotta": "#b14b3e",
+                    "sage": "#717972",
+                    "ivory": "#FCFAF5",
+                    "gold": "#967b4c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "margin-mobile": "20px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xl": "40px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["DM Sans"],
+                    "label-caps": ["Cinzel"],
+                    "title-serif": ["Merriweather"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-hero": ["Playfair Display"],
+                    "data-price": ["Space Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                    "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                    "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-splat {
+            background-image: radial-gradient(circle, rgba(177,75,62,0.1) 0%, transparent 70%);
+        }
+        .sketch-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.05;
+        }
+        .terracotta-glow {
+            box-shadow: 0 0 30px rgba(177,75,62,0.15);
+        }
+        .warm-card-shadow {
+            box-shadow: 0 10px 30px -5px rgba(58, 51, 40, 0.08);
+        }
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .mascot-float {
+            animation: gentle-float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-[#FFFFFF] text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-outline-variant">
+<div class="flex flex-col md:flex-row items-center justify-between px-margin-mobile md:px-margin-desktop py-md max-w-full mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-display-hero text-headline-lg italic text-primary">Tohfa<span class="text-[#967b4c]">.</span></span>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Home</a>
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Category</a>
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Reels</a>
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-lg">
+<button class="material-symbols-outlined text-on-surface-variant hover:opacity-80 transition-opacity">shopping_bag</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center py-xl px-margin-mobile">
+<div class="max-w-2xl w-full flex flex-col items-center text-center space-y-lg">
+<!-- Failure Icon -->
+<div class="relative">
+<div class="absolute inset-0 terracotta-glow rounded-full scale-150"></div>
+<div class="w-20 h-20 rounded-full bg-error-container flex items-center justify-center z-10 relative">
+<span class="material-symbols-outlined text-terracotta text-4xl font-bold">close</span>
+</div>
+</div>
+<!-- Header Text -->
+<div class="space-y-sm">
+<h1 class="font-headline-lg text-[26px] italic text-primary leading-tight">Payment unsuccessful</h1>
+<p class="font-body-md text-[14px] text-on-surface-variant">We couldn't process your payment. No amount was deducted.</p>
+<p class="font-data-price text-[12px] text-outline tracking-wider uppercase">ERROR CODE: PAYMENT_FAILED · ORDER NOT PLACED</p>
+</div>
+<!-- Details Section with Mascot -->
+<div class="w-full flex flex-col md:flex-row items-center md:items-end justify-center gap-lg mt-md">
+<!-- Details Card -->
+<div class="relative bg-ivory border border-outline-variant rounded-xl p-lg warm-card-shadow text-left max-w-sm w-full overflow-hidden">
+<!-- Subtle Ink Sketch Texture Overlay -->
+<div class="absolute inset-0 opacity-[0.07] pointer-events-none flex items-center justify-center">
+<span class="material-symbols-outlined text-9xl">heart_broken</span>
+</div>
+<div class="relative z-10">
+<h2 class="font-label-caps text-[10px] text-gold mb-md">WHAT HAPPENED?</h2>
+<ul class="space-y-sm text-[13px] text-on-surface-variant list-none">
+<li class="flex items-start gap-sm">
+<span class="text-gold mt-1">◈</span> Bank declined the transaction
+                            </li>
+<li class="flex items-start gap-sm">
+<span class="text-gold mt-1">◈</span> Session timed out
+                            </li>
+<li class="flex items-start gap-sm">
+<span class="text-gold mt-1">◈</span> Incorrect card details
+                            </li>
+<li class="flex items-start gap-sm">
+<span class="text-gold mt-1">◈</span> Network issue during payment
+                            </li>
+</ul>
+</div>
+</div>
+<!-- Mascot -->
+<div class="mascot-float hidden md:block">
+<img class="w-32 h-32 object-contain" data-alt="A charming Chibi-style artisan girl mascot for a boutique studio, wearing a sage green apron over a cream dress. She holds a small notepad and pencil with a sympathetic, kind expression. The illustration is in a soft watercolor style with hand-drawn ink outlines on an ivory background, reflecting a warm and intentional artisan brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPGmN2TlohJ2Cfae5kWQhuUAWKjyMiQvhjsjN8HlrMPR7TQ3NhmbQtsIRIlr2dmsauBQwrA7pzk3XXdSEI3-Kl2xsMWTI2eVhsGdfqeo-N4Qhx-wQ-BUpUYhktqMIVyJijCCxZT69RGMQ5P14E0o2Wwpgr9B3Rr-ybI0RZ_tXj5jf-KlnIR5-L32-DnGnj9wqzcWzzc8mcHdqdPlrvlRbfJdA8N-J3IO7xoz3xmhTOgMg01wym-hcXeWQYzp5ycobpang2SBsl-QU"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-md w-full max-w-xs mt-xl">
+<button class="h-12 bg-primary text-white font-body-md rounded-lg active:scale-95 transition-all hover:opacity-90">
+                    Try again
+                </button>
+<button class="h-12 bg-white border border-outline text-primary font-body-md rounded-lg active:scale-95 transition-all hover:bg-surface">
+                    Try a different method
+                </button>
+<a class="text-tertiary font-body-md text-sm mt-sm hover:underline flex items-center justify-center gap-xs" href="#">
+                    Contact support <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full relative bg-surface-container border-t border-outline-variant mt-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl px-margin-mobile md:px-margin-desktop py-xl max-w-7xl mx-auto">
+<div class="space-y-md">
+<span class="font-display-hero text-headline-lg text-primary">Tohfa</span>
+<p class="font-body-md text-on-surface-variant">© 2024 TOFA Artisan Studio. Handcrafted with intention.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-caps text-label-caps text-primary">Studio Journal</h4>
+<nav class="flex flex-col gap-xs">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Studio Journal</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Artisan Partners</a>
+</nav>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-caps text-label-caps text-primary">Support</h4>
+<nav class="flex flex-col gap-xs">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a>
+</nav>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

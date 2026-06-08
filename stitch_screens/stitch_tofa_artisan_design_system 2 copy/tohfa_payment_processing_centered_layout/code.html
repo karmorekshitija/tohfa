@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payment Processing | Tofha</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Merriweather:ital,wght@0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;1,400;1,700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100..900&amp;family=DM+Sans:wght@100..900&amp;family=Merriweather:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-primary-container": "#b7e9c6",
+                "secondary": "#49663f",
+                "inverse-on-surface": "#fcefde",
+                "tertiary-container": "#70539b",
+                "surface-container-highest": "#ede1d1",
+                "surface-tint": "#3a684c",
+                "on-primary": "#ffffff",
+                "primary-container": "#3d6b4f",
+                "error-container": "#ffdad6",
+                "tertiary-fixed": "#ecdcff",
+                "primary-fixed-dim": "#a0d2b0",
+                "primary": "#255338",
+                "on-tertiary": "#ffffff",
+                "error": "#ba1a1a",
+                "surface-container-low": "#fff2e1",
+                "tertiary-fixed-dim": "#d6baff",
+                "primary-fixed": "#bceecb",
+                "on-tertiary-fixed": "#270550",
+                "on-secondary-fixed-variant": "#324e29",
+                "surface-dim": "#e5d8c8",
+                "secondary-fixed": "#caecbb",
+                "inverse-primary": "#a0d2b0",
+                "on-background": "#211b11",
+                "background": "#ffffff",
+                "surface-variant": "#ede1d1",
+                "surface-container-high": "#f3e6d6",
+                "inverse-surface": "#362f25",
+                "on-error-container": "#93000a",
+                "on-surface-variant": "#414942",
+                "on-secondary": "#ffffff",
+                "on-error": "#ffffff",
+                "on-surface": "#211b11",
+                "secondary-fixed-dim": "#afd0a0",
+                "surface": "#fff8f3",
+                "outline-variant": "#c1c9c0",
+                "on-secondary-container": "#4d6a43",
+                "outline": "#717972",
+                "on-tertiary-fixed-variant": "#54387e",
+                "surface-bright": "#fff8f3",
+                "surface-container": "#f9ecdc",
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary-container": "#e8d6ff",
+                "secondary-container": "#c8e9b8",
+                "on-primary-fixed-variant": "#214f36",
+                "on-secondary-fixed": "#062103",
+                "tertiary": "#573b81",
+                "on-primary-fixed": "#002110",
+                "sage": "#8FAF82",
+                "sage-soft": "#C5D6BC",
+                "forest": "#3D6B4F",
+                "gold": "#C8973A",
+                "ink": "#3A3328",
+                "muted": "#6E6453",
+                "muted-light": "#9A8F7A"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "unit": "4px",
+                "margin-desktop": "64px",
+                "md": "16px",
+                "xs": "4px",
+                "lg": "24px",
+                "gutter": "16px",
+                "margin-mobile": "20px",
+                "sm": "8px",
+                "xl": "40px"
+            },
+            "fontFamily": {
+                "data-price": ["Space Mono"],
+                "body-md": ["DM Sans"],
+                "headline-lg": ["Playfair Display"],
+                "label-caps": ["Cinzel"],
+                "title-serif": ["Merriweather"]
+            },
+            "fontSize": {
+                "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: rotate 2s linear infinite;
+        }
+        .ink-texture {
+            mask-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+        .shadow-warm {
+            box-shadow: 0 4px 20px -2px rgba(58, 51, 40, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-white text-ink font-body-md min-h-screen overflow-hidden flex flex-col">
+<!-- Top Navigation Bar (Full Width) -->
+<header class="w-full h-[60px] bg-white border-b border-sage shadow-warm sticky top-0 z-50 flex items-center px-margin-desktop">
+<div class="flex-1 flex items-center">
+<span class="font-headline-lg italic text-[22px] text-forest leading-none">
+                Tofha<span class="text-gold">.</span>
+</span>
+</div>
+<nav class="hidden md:flex flex-1 justify-center items-center gap-xl">
+<a class="text-[13px] text-muted font-body-md hover:text-forest transition-colors" href="#">Home</a>
+<a class="text-[13px] text-muted font-body-md hover:text-forest transition-colors" href="#">Category</a>
+<a class="text-[13px] text-muted font-body-md hover:text-forest transition-colors" href="#">Reels</a>
+<a class="text-[13px] text-muted font-body-md hover:text-forest transition-colors" href="#">Profile</a>
+</nav>
+<div class="flex-1 flex justify-end items-center gap-[14px] text-ink">
+<span class="material-symbols-outlined text-[24px] cursor-pointer" data-icon="search">search</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer" data-icon="favorite">favorite</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer" data-icon="shopping_bag">shopping_bag</span>
+</div>
+</header>
+<!-- Main Content (Centered) -->
+<main class="flex flex-col items-center justify-center relative px-margin-mobile min-h-[calc(100vh-60px)]">
+<!-- Atmospheric Watermarks -->
+<!-- Wax Tape Top-Left -->
+<div class="absolute top-10 left-10 opacity-[0.08] pointer-events-none select-none">
+<img class="w-32 h-12 object-cover rotate-[-12deg]" data-alt="A vintage strip of adhesive paper tape or washi tape with a subtle fibrous texture, appearing slightly translucent and worn, in a warm cream tone against a pure white background. The style is tactile and minimalist, reminiscent of a master crafter's workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDStRoexseYloobS0OMtzLYq-LPzlSCfjgdogmgP7axpq9v2x4i7-rf6yzbvxJbR3FVKQfBCDbADDFN2fb3F1KFlSJ4C9Z5iuB_2EnlhsGnxB2JxHvRb12y0-ACBl5L9N4dApGaZsnFELIgwemVwtTNtkvBt6krAYWBF7Lbt5rfzISYXTRISW7z5X4gt5_H2HesYEcPw-sr1I9fc6axfgOzESRM0hNfT6TD4Ca9csaMjUPhgAJV2PUFYU72yCwXwKvRHCj6zQqgw7U"/>
+</div>
+<!-- Pressed Botanical Bottom-Right -->
+<div class="absolute bottom-10 right-10 opacity-[0.07] pointer-events-none select-none">
+<img class="w-48 h-48 object-contain" data-alt="A delicate, pressed botanical leaf with intricate vein patterns, presented as a faint ink-stamped watermark. The visual style is artisanal and organic, mirroring the look of a dried sprig inside an old journal, with a muted olive and sage color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIvyLzn3t7vF2dItnd7Qp9qBvpq4kGmn4lbV-KlF54zoRqWNucwq7m1QpyfDtkTj2EyWn1QyuqEHWsJ-LP22ZeKkAAFzjspCS-qcovXpEV4ihuq0TQgHrOIbvJKGNkJ-L8OK8qJJ2fwiviMi0uB5gLudpKdiaDl-XCX9e8lM7hHDXowC0GwN0RwxjAcaWLb5EtOOIYc3T5KUyEA-iALcl84gN3Y8W3vfWKMncXCWZzkcpJQsSU82jw3VleZFh099z_kKIpAXQ4nV4"/>
+</div>
+<!-- Thread Spool Bottom-Left -->
+<div class="absolute bottom-12 left-12 opacity-[0.08] pointer-events-none select-none">
+<img class="w-24 h-24 object-contain grayscale" data-alt="A vintage wooden spool of sewing thread with subtle linen texture and loose fibers, rendered in a soft ink-sketch style. The mood is nostalgic and intentional, representing the handcrafted quality of an artisan studio in a high-key, minimalist composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVSzLbrrmnmFjpoCx488atoyWW24Co0sb1zjOsc9R9gEVGQx4ocBXqt__uZL8szKo5AcWJGZ9zyL6EFbVwjWW9C8Kv5c7R4ZIqK1BdqEGhinbqVuU_amFbnt37BkbWirX7IQOPrExfwyraipVv5ure_-oEJ33hiTgAWxfLueEIBYtSbtbp5DruCew9YfU2teJC9L-iOfFZ5g5sB0-ECI3JV9mf85dombAoTOmePB54GpoOGtkWvrcDedix6D4SIR9Axd8ej-G1V5U"/>
+</div>
+<!-- Payment Loader Section -->
+<div class="flex flex-col items-center text-center z-10 max-w-[375px]">
+<!-- Circular Loader -->
+<div class="relative w-[96px] h-[96px] flex items-center justify-center">
+<!-- Outer Glow -->
+<div class="absolute inset-[-48px] rounded-full bg-[radial-gradient(circle,rgba(61,107,79,0.08)_0%,transparent_70%)]"></div>
+<svg class="w-full h-full transform -rotate-90 animate-spin-slow">
+<circle class="opacity-100" cx="48" cy="48" fill="transparent" r="42" stroke="#C5D6BC" stroke-width="6"></circle>
+<circle cx="48" cy="48" fill="transparent" r="42" stroke="#3D6B4F" stroke-dasharray="198" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+</div>
+<!-- Status Text -->
+<div class="mt-xl">
+<h1 class="font-headline-lg italic text-[26px] text-ink leading-tight">Processing your payment…</h1>
+<p class="mt-[8px] font-body-md text-[14px] text-muted">Please do not press back or close the app.</p>
+</div>
+<!-- Amount Display -->
+<div class="mt-lg">
+<p class="font-data-price text-[28px] text-gold tracking-tight">₹1,248</p>
+<p class="mt-[6px] font-label-caps text-[10px] text-muted-light">AMOUNT BEING PROCESSED</p>
+</div>
+<!-- Artisan Texture (Gift Box Sketch) -->
+<div class="mt-xl opacity-[0.09] w-[120px]">
+<img class="w-full grayscale mix-blend-multiply" data-alt="A refined, minimalist ink-sketch line-art illustration showing two graceful hands delicately tying a thin ribbon bow on a minimalist gift box. The visual style is handcrafted and literary, with clean, deliberate strokes that evoke the feeling of a quiet artisan studio session." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBflJ1Y4tpOkjXY1SIouYWssp5zqOv_e7MOhiIIyJ0NKIhS5OvKRH3VKq47xKQP8qtcVdQn2pP-Qbv1qqVPOzrznKw9A43ST-NIHkTy7Ws38gXrIOL_6chqbN_h9OIQ3HxEA2HBt0Lfm8aPVnfk2RKYn1aBsE-w9XdVHcoXxm29uuiQMJMXtS2auBFKihAntficbYzpVMTDUiEv_6MJxZRaTjCY-Jn9leh1xJC5taYOfdicNoUskzyqd7DhlfUvurXu1y2LD0ofSvc"/>
+</div>
+<!-- Security Badge -->
+<div class="mt-xl flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-muted-light" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-body-md text-[12px] text-muted-light tracking-wide">100% secure · Powered by Razorpay</span>
+</div>
+</div>
+</main>
+<script>
+        // Simulate a tiny micro-interaction for the "processing" dots if needed
+        const statusText = document.querySelector('h1');
+        let dots = 0;
+        setInterval(() => {
+            dots = (dots + 1) % 4;
+            const dotStr = ".".repeat(dots);
+            const baseText = "Processing your payment";
+            statusText.innerHTML = `${baseText}<span class="inline-block w-4 text-left">${dotStr}</span>`;
+        }, 600);
+    </script>
+</body></html>

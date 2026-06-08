@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Confirmed | Tohfa Artisan Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Merriweather:wght@300;400;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100..900&amp;family=DM+Sans:wght@100..900&amp;family=Merriweather:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .confetti-layer {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(73, 102, 63, 0.07) 1px, transparent 1px),
+                radial-gradient(circle at 90% 80%, rgba(87, 59, 129, 0.07) 2px, transparent 2px),
+                radial-gradient(circle at 50% 50%, rgba(186, 26, 26, 0.05) 1px, transparent 1px);
+            background-size: 120px 120px;
+        }
+        .botanical-watermark {
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.1));
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.1));
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#caecbb",
+                        "surface-container-low": "#fff2e1",
+                        "inverse-primary": "#a0d2b0",
+                        "surface-variant": "#ede1d1",
+                        "surface-bright": "#fff8f3",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#214f36",
+                        "tertiary-container": "#70539b",
+                        "primary-fixed": "#bceecb",
+                        "primary": "#255338",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "inverse-surface": "#362f25",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#3d6b4f",
+                        "surface-tint": "#3a684c",
+                        "surface-container-highest": "#ede1d1",
+                        "on-error-container": "#93000a",
+                        "secondary": "#49663f",
+                        "surface-dim": "#e5d8c8",
+                        "surface": "#fff8f3",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f9ecdc",
+                        "on-surface-variant": "#414942",
+                        "inverse-on-surface": "#fcefde",
+                        "outline-variant": "#c1c9c0",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#c8e9b8",
+                        "on-background": "#211b11",
+                        "on-secondary-fixed": "#062103",
+                        "on-primary-container": "#b7e9c6",
+                        "tertiary": "#573b81",
+                        "outline": "#717972",
+                        "on-surface": "#211b11",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-primary-fixed": "#002110",
+                        "background": "#fff8f3",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-tertiary-fixed": "#270550",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#f3e6d6",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-secondary-container": "#4d6a43"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "margin-mobile": "20px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["Cinzel"],
+                        "title-serif": ["Merriweather"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "data-price": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-[#FFFFFF] min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- Confetti Overlay -->
+<div class="fixed inset-0 pointer-events-none confetti-layer z-0"></div>
+<!-- Top Navigation (Shell Implementation) -->
+<header class="w-full top-0 sticky z-50 bg-surface/80 backdrop-blur-sm border-b border-outline-variant">
+<nav class="flex flex-col md:flex-row items-center justify-between px-margin-mobile md:px-margin-desktop py-md max-w-full mx-auto">
+<div class="flex items-center gap-xs">
+<span class="font-display-hero text-[32px] italic text-primary">Tohfa</span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-4 ml-[-4px]"></span>
+</div>
+<div class="flex items-center gap-xl mt-md md:mt-0">
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Home</a>
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Category</a>
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Reels</a>
+<a class="font-title-serif text-title-serif text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Profile</a>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<button class="material-symbols-outlined text-on-surface-variant hover:opacity-80 transition-opacity">shopping_bag</button>
+</div>
+</nav>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center px-margin-mobile py-xl relative z-10">
+<div class="max-w-md w-full flex flex-col items-center text-center">
+<!-- Success Icon -->
+<div class="relative mb-lg">
+<div class="absolute inset-0 rounded-full scale-150 blur-xl bg-[#3d6b4f]/10"></div>
+<div class="w-[80px] h-[80px] bg-secondary-container rounded-full flex items-center justify-center relative z-10">
+<span class="material-symbols-outlined text-[40px] text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Headline & Status -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary mb-xs">Order confirmed! ✦</h1>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-xs">Your payment of ₹1,248 was successful.</p>
+<p class="font-data-price text-[13px] text-outline tracking-wider uppercase mb-xl">ORDER #TH-20847 · PAID VIA GPAY</p>
+<!-- Confirmation Card & Mascot Group -->
+<div class="relative w-full mb-xl pt-4">
+<!-- Mascot -->
+<div class="absolute -right-12 -top-16 w-32 h-32 z-20 pointer-events-none hidden sm:block">
+<img alt="Tohfa Mascot" class="w-full h-full object-contain drop-shadow-sm" data-alt="A charming Chibi-style artisan mascot with a high ponytail and a gift-shop apron featuring a small logo. She is smiling warmly and holding a beautifully wrapped small gift box with a silk ribbon. The illustration is a delicate pencil sketch with soft watercolor highlights, fitting the handcrafted aesthetic of an artisan studio gallery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDhrM4xk8-gCt9PzjnvroMgPcNJxQLe-5VZ5G1WJEt8jmTdgXy2JZVWNwwhZouBzxg1DmqPnIHbBq2gg4iSfnDK-5e6P8XT8VfYrOFPcAQWPQFeJ_Ky51X1MeJXARP-Q1PenUS57xADeDGBZEgFmj-dEF-6tUqZ8EcMV1gY8JHk7q1sWP94zkVu3J4hpaZILw6Mb8pVW-eXkYifB3VFMHm0uksomGwkh1p-SOu4dW6xKrIiCvb99piq7ZDfpA1IuqQor8jlcGVlo0"/>
+</div>
+<!-- Card -->
+<div class="bg-[#FCFAF5] border border-secondary-container rounded-xl p-lg text-left shadow-[0_8px_30px_rgb(58,51,40,0.08)] relative overflow-hidden">
+<!-- Internal Botanical Watermark -->
+<div class="absolute inset-0 opacity-[0.07] pointer-events-none flex items-center justify-center botanical-watermark">
+<span class="material-symbols-outlined text-[120px]" data-icon="potted_plant">potted_plant</span>
+</div>
+<div class="relative z-10">
+<span class="font-label-caps text-[10px] text-[#D4AF37] block mb-md">ORDER SUMMARY</span>
+<div class="flex items-center gap-md mb-lg">
+<div class="flex -space-x-4">
+<img class="w-14 h-14 rounded-lg object-cover border-2 border-[#FCFAF5] shadow-sm" data-alt="A handcrafted ceramic mug with a warm glaze sitting on a wooden table in a sunlit studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdsDk9RXyoHDtnQgGLpf5RCs3uhzh4itxVYNo_9l5IhT1btAEWn8mBkD-94dK-ajYheukstMPrGrZQ6vv5xCtq4PuW8qTgc_Scc8VyjguLb2rj183K_TYjP_zYCA4wY3mRvY4Eu6nh1u316SaHDHEhSZUR96ap2hyzjSGgdr6YzthQKV8WN99JrqhfTM9dxoIVF54g2FKz1g43PG-1_ZFX100iiiHCFQ5PhjDqbQgr_fk0lMRGTFfpTHB0kFpZ95NZqtoVRalH-cM"/>
+<img class="w-14 h-14 rounded-lg object-cover border-2 border-[#FCFAF5] shadow-sm" data-alt="A set of artisan hand-poured lavender candles with botanical sprigs visible in the wax." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBhBk54lj4pgF8bJJGN8ySUm9JjHoNRmIyi5MqlTRiBi55GBez_5HqTw2VNt9ypAt7FjtqgUtX64hdkT_31I4sgDTeKwDNmRwXXzruJUFBgIaGcV31625TBTYXQnahvcR5-eIVdPoOVvdKmq5aUfL1Nl47ACdZ4S_2zxfypQf8J0GEuL5pwtVC4aj6wf1ErOPoJwRhX6SAjgn4KGj897f20HtxBqTZ2_XvnM-bIL1BHJc_3t04RFzcxHtbpptT42PogmE10WNCRGQ"/>
+<img class="w-14 h-14 rounded-lg object-cover border-2 border-[#FCFAF5] shadow-sm" data-alt="A hand-woven textile wall hanging with earthy forest green and ivory tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtZ1CsuFy_TLfifSZBX0nUnxQRlxdv4NN8d8B-AjKnYtybA0wqlN_4VCR1-JW5v7IJkbaVUh_9kGtoSwkoe0asschIvC2djslvSINh_eQLaCIFvWY0SHIUvaxS9r_PtH4MKqL8oqsd5kHElfgN6NUKCVUpulUHIier1VViI_ou3SoIPuXeC7eg2iKYrw2QYJzvmUK5NqcsFJ4HnwRyqz0-FIWTVuARtHVzZs7Y0Y_VsLRHv5AenjXnmIx1jwul3sHSVD-UJ8tzTGk"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-[13px] text-on-surface">3 items from 2 studios</span>
+<span class="font-data-price text-data-price text-[#D4AF37]">₹1,248 paid</span>
+</div>
+</div>
+<div class="pt-md border-t border-outline-variant/30 flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline text-[16px]" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-caps text-[10px] text-outline">ESTIMATED DELIVERY: 5–7 DAYS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="w-full flex flex-col gap-md">
+<button class="w-full h-[48px] bg-primary text-on-primary rounded-xl font-body-md font-bold hover:opacity-90 active:scale-95 transition-all shadow-sm">
+                    Track my order
+                </button>
+<a class="text-tertiary font-body-md text-[14px] hover:underline transition-all" href="#">
+                    Continue shopping →
+                </a>
+</div>
+</div>
+</main>
+<!-- Footer (Shell Implementation) -->
+<footer class="w-full bottom-0 relative bg-surface-container border-t border-outline-variant mt-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl px-margin-mobile md:px-margin-desktop py-xl max-w-7xl mx-auto">
+<div class="flex flex-col gap-md">
+<span class="font-display-hero text-[28px] text-primary">Tohfa</span>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 TOFA Artisan Studio. Handcrafted with intention.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-caps text-label-caps text-primary">Studio</span>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Studio Journal</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-caps text-label-caps text-primary">Service</span>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Artisan Partners</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the track button
+        document.querySelector('button').addEventListener('click', function() {
+            this.innerHTML = '<span class="flex items-center justify-center gap-2"><span class="animate-spin material-symbols-outlined">sync</span> Loading...</span>';
+            setTimeout(() => {
+                this.innerHTML = 'Track my order';
+            }, 1500);
+        });
+    </script>
+</body></html>
