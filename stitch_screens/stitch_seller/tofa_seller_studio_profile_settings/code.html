@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Artisan Studio - Profile Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Merriweather:wght@400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#062103",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#211b11",
+                        "inverse-primary": "#a0d2b0",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "tertiary": "#573b81",
+                        "secondary-fixed": "#caecbb",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface-variant": "#ede1d1",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-primary-fixed": "#002110",
+                        "outline": "#717972",
+                        "inverse-surface": "#362f25",
+                        "surface-container": "#f9ecdc",
+                        "surface-container-highest": "#ede1d1",
+                        "primary": "#255338",
+                        "on-background": "#211b11",
+                        "surface-dim": "#e5d8c8",
+                        "surface-bright": "#fff8f3",
+                        "inverse-on-surface": "#fcefde",
+                        "surface-container-high": "#f3e6d6",
+                        "secondary-container": "#c8e9b8",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-tertiary-fixed": "#270550",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-secondary-container": "#4d6a43",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface-container-low": "#fff2e1",
+                        "outline-variant": "#c1c9c0",
+                        "on-primary-container": "#b7e9c6",
+                        "background": "#fff8f3",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#3a684c",
+                        "surface": "#fff8f3",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#3d6b4f",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#70539b",
+                        "secondary": "#49663f",
+                        "on-surface-variant": "#414942"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-desktop": "64px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "40px",
+                        "margin-mobile": "20px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "label-caps": ["Cinzel"],
+                        "data-price": ["Space Mono"],
+                        "headline-lg": ["Playfair Display"],
+                        "title-serif": ["Merriweather"],
+                        "display-hero": ["Playfair Display"],
+                        "body-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #717972; /* sage-ish */
+            border-radius: 4px;
+        }
+        
+        .botanical-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .gold-bullet::before {
+            content: "✦";
+            color: #d4af37; /* Gold */
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #255338 !important; /* Forest */
+            box-shadow: 0 0 0 1px #255338;
+        }
+
+        .sage-ring {
+            box-shadow: 0 0 0 4px #c1c9c0;
+        }
+    </style>
+</head>
+<body class="bg-[#FFFFFF] text-on-surface selection:bg-secondary-container">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface-container-low border-r border-outline-variant flex flex-col items-center py-lg space-y-md z-50">
+<div class="font-headline-lg text-headline-lg italic text-primary mb-xl">T</div>
+<nav class="flex flex-col space-y-md">
+<!-- Navigation Items Mapping -->
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">home</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu_book</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">calendar_today</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">inventory_2</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bar_chart</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chat</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">grade</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">movie_filter</span>
+</button>
+<button class="p-sm rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<!-- Active Tab: Profile -->
+<button class="p-sm rounded-lg text-tertiary relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-tertiary after:rounded-full scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+</nav>
+</aside>
+<!-- Top AppBar -->
+<header class="fixed top-0 right-0 left-[72px] h-16 bg-[#FFFFFF] flex justify-between items-center px-margin-desktop z-40">
+<h1 class="font-headline-lg text-headline-lg italic text-primary">TOFA <span class="font-body-md not-italic text-on-surface-variant">Artisan Studio</span></h1>
+<div class="flex items-center space-x-lg">
+<span class="material-symbols-outlined text-on-surface-variant hover:opacity-80 cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:opacity-80 cursor-pointer">help_outline</span>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img alt="Artisan Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a female ceramic artisan in a sunlit studio, her expression warm and focused. She is wearing a soft linen apron dusted with dry clay. The background is blurred, showing shelves of earthy pottery and tools, maintaining a bright, light-mode aesthetic with soft natural light. The overall mood is professional yet deeply personal and craft-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCUyTbPNHVyLe6UCedTCxZxhJcMEDA2b9ue61pCDXUv7vyYb53EQgG8zlF_wTxLP3wy-_gQjpK-5om90qxpN9tdFklbXKQCbAjEXRgHw5-WXhWZfO-h8jnaP-l6AdBhgItw_8xnhNEccLYy6-NAauDL61N3C40KIT3ugmuaGnns4Z6AESN-wVwGBz9KP70eNMfmA_ncks05-8SxiPfDcwBtd1TXFP7caSkvWivj0Z3JYXWF5RfFCpDd0JHDO3d4czd2eblYE8yXdg"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pl-[72px] pt-16 min-h-screen">
+<div class="max-w-7xl mx-auto px-margin-desktop py-xl">
+<!-- Page Title -->
+<div class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary">Seller Profile</h2>
+<p class="font-body-md text-on-surface-variant">What buyers see on your public store page</p>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-10 gap-xl relative">
+<!-- Left Column (60%) -->
+<div class="md:col-span-6 space-y-xl relative">
+<div class="absolute inset-0 botanical-overlay rounded-xl"></div>
+<div class="relative z-10 space-y-xl">
+<!-- Profile Photo -->
+<div class="flex items-center space-x-lg">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full overflow-hidden sage-ring border-2 border-white">
+<img alt="Profile Upload" class="w-full h-full object-cover" data-alt="A warm and inviting headshot of an artisan, an elderly woman with kind eyes and silver hair, wearing an olive green linen shirt. She stands in front of a neutral-toned wall with soft shadows. The lighting is bright and airy, reflecting a clean and modern studio brand. The image is circular and framed with a minimalist border." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARTJJj2_UA9Cp6KqF5g-exyCEvahcIsg7LHQwB_GZ4qoHJwj8WWvjVu7hKKAK8IMGjzQAqJ69aMnVlGls-EC5S58I3IQ7IJiXomU9vYCQH4VN_9qU2FZ6Kb9iLSDPrhbCUa8OCvEI9FXHT2xLzueriIoCV_Wz8WYFpQNmGYDQtLnZ6HmdPoc_lCaNPNgGlMeRJ43vhhYHIO-rox9-IkPnT5Dw4mWW6irB28Nl2tLvl7eNEQgAffVmX4QatJ3CeHK9df0nvWt37tBo"/>
+</div>
+<button class="absolute bottom-1 right-1 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform" type="button">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<div>
+<h3 class="font-title-serif text-title-serif text-on-surface">Store Identity</h3>
+<p class="text-sm text-on-surface-variant">Update your public avatar and core details.</p>
+</div>
+</div>
+<!-- Form Inputs -->
+<div class="space-y-lg">
+<div class="space-y-xs">
+<label class="font-body-md font-bold text-on-surface-variant flex items-center gold-bullet">Display Name</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-md font-body-md text-on-surface" type="text" value="Elara Handcrafted"/>
+</div>
+<div class="space-y-xs">
+<label class="font-body-md font-bold text-on-surface-variant flex items-center gold-bullet">Personal Tagline</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-md font-body-md text-on-surface" placeholder="e.g. Master weaver of organic linens" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-lg">
+<div class="space-y-xs">
+<label class="font-body-md font-bold text-on-surface-variant flex items-center gold-bullet">Instagram Handle</label>
+<div class="relative">
+<span class="absolute left-md top-1/2 -translate-y-1/2 text-primary font-bold">@</span>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-md pl-10 font-body-md text-on-surface" type="text" value="elaracrafts"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-body-md font-bold text-on-surface-variant flex items-center gold-bullet">WhatsApp Business</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-md font-data-price text-data-price text-on-surface" type="text" value="+91 98200 45678"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-body-md font-bold text-on-surface-variant flex items-center gold-bullet">City</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-md font-body-md text-on-surface" type="text" value="Jaipur, Rajasthan"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (40%) -->
+<div class="md:col-span-4 space-y-xl relative">
+<div class="absolute inset-0 botanical-overlay rounded-xl"></div>
+<div class="relative z-10 space-y-xl">
+<!-- Verification Badges -->
+<div class="space-y-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">Verification Badges</h3>
+<div class="flex flex-wrap gap-sm">
+<span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">verified</span> Identity Verified
+                                </span>
+<span class="bg-[#d4af37] text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">account_balance</span> GST Registered
+                                </span>
+<span class="bg-tertiary text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">task_alt</span> 50+ Orders
+                                </span>
+<div class="group relative">
+<span class="bg-surface-dim text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold flex items-center cursor-not-allowed opacity-60">
+<span class="material-symbols-outlined text-[14px] mr-1">lock</span> 100+ Reviews
+                                    </span>
+<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 p-2 bg-on-surface text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-center">
+                                        Complete 100 reviews to unlock
+                                    </div>
+</div>
+</div>
+</div>
+<!-- Workspace Gallery -->
+<div class="space-y-sm">
+<div>
+<label class="font-body-md font-bold text-on-surface flex items-center">Workspace Gallery</label>
+<p class="text-[12px] italic font-serif text-on-surface-variant opacity-80">Behind-the-scenes workspace photos (not product photos)</p>
+</div>
+<div class="grid grid-cols-3 gap-sm">
+<div class="aspect-square relative group">
+<img alt="Workspace 1" class="w-full h-full object-cover rounded-lg" data-alt="A high-angle photo of a clean, minimalist pottery workspace featuring a wooden potter's wheel and neat rows of unfinished clay vessels. The lighting is soft and natural, coming from a large window. The palette is dominated by warm wood tones and creamy clay whites, reinforcing a tactile and soulful artisan aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlu5VTnzCIuLqMKouzcHgtEMSvp11FUMd7b-SEfl6aTe5o3OXKOKt3_Ipd2N8rgPvMYfEwDS_qhRUyN8w9-Fy4w7uQRY16XVx2opd-Jp_GC6zaF7zHI7O9brKS087lAJJQjEM_sJOzXiOLhM1f8SgvZfW6D6IW1nlQbpboUiwztial7jdTO6yomfVRSYLOYairXIcprZRXrCsHDjBHjm9hfyoN98s9RANvq_Cn-p2cpTsqMm6dsRk-T86j9W_CcIGDh-EMW4yNjTk"/>
+<button class="absolute top-1 right-1 bg-white/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<div class="aspect-square relative group">
+<img alt="Workspace 2" class="w-full h-full object-cover rounded-lg" data-alt="Close-up detail of an artisan's workbench covered in sketchbooks, dried botanical sprigs, and high-quality drawing tools. The composition is artistic and intentional, with soft diffused light creating a serene, literary atmosphere. The color scheme is light ivory and sage green, following the brand's minimalist and tactile identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEd09uFjVf_Vx-zs04ImM9-GiqE_nbP-lhLOYVfckqdoxkqGdGbWsDh8rhcJff79OP4gxMgfyZmLS1eG3pF5msc3n7E7Yad-NZkthoMrlRUdlxV9RILNwNGgDDCXhB44-23PCd-kYhlQ0MPZO1IUm7FEhzU47fQOw1I5oZvNr4hUVEZuuFBK9MK8E594RTwEboV9eoy1Fn4iGQpCjUuwHsvMcdzEZ2ZNeLArzHdv8jDk51BobYbuN15B-0ivGRCrjIrqNRQfF4rwQ"/>
+<button class="absolute top-1 right-1 bg-white/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<!-- Empty Slots -->
+<div class="aspect-square border-2 border-dashed border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-outline">add_photo_alternate</span>
+</div>
+<div class="aspect-square border-2 border-dashed border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-outline">add_photo_alternate</span>
+</div>
+<div class="aspect-square border-2 border-dashed border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-outline">add_photo_alternate</span>
+</div>
+<div class="aspect-square border-2 border-dashed border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-outline">add_photo_alternate</span>
+</div>
+</div>
+</div>
+<!-- Store Story -->
+<div class="space-y-xs">
+<label class="font-body-md font-bold text-on-surface">Tell buyers how you started</label>
+<textarea class="w-full bg-white border border-outline-variant rounded-lg p-md font-body-md text-on-surface resize-none" placeholder="Share your craft journey..." rows="5"></textarea>
+</div>
+<!-- Bottom Action -->
+<button class="w-full bg-primary text-white py-4 rounded-lg font-bold font-body-md hover:opacity-90 active:scale-[0.98] transition-all shadow-md" type="submit">
+                            Save Profile
+                        </button>
+</div>
+</div>
+</form>
+</div>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('scale-[1.01]');
+                    input.parentElement.style.transition = 'transform 0.2s ease-out';
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('scale-[1.01]');
+                });
+            });
+
+            // Smooth scrollbar indicator
+            window.addEventListener('scroll', () => {
+                const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                // Possible logic for a progress bar if needed
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Artisan Studio | Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #fff8f3; /* surface */
+            -webkit-font-smoothing: antialiased;
+        }
+        .botanical-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            mix-blend-mode: multiply;
+        }
+        .artisan-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .artisan-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .artisan-scroll::-webkit-scrollbar-thumb {
+            background: #717972;
+            border-radius: 10px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-dot {
+            position: absolute;
+            bottom: -4px;
+            width: 4px;
+            height: 4px;
+            background-color: #573b81; /* tertiary */
+            border-radius: 50%;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#255338",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#3d6b4f",
+                        "on-primary-container": "#b7e9c6",
+                        "secondary": "#49663f",
+                        "secondary-container": "#c8e9b8",
+                        "tertiary": "#573b81",
+                        "tertiary-container": "#70539b",
+                        "surface": "#fff8f3",
+                        "surface-variant": "#ede1d1",
+                        "surface-container": "#f9ecdc",
+                        "surface-container-low": "#fff2e1",
+                        "background": "#fff8f3",
+                        "outline": "#717972",
+                        "outline-variant": "#c1c9c0",
+                        "error": "#ba1a1a",
+                        "gold": "#d4af37",
+                        "sage": "#717972",
+                        "parchment": "#F7F3EC"
+                    },
+                    "fontFamily": {
+                        "title-serif": ["Merriweather", "serif"],
+                        "body-md": ["DM Sans", "sans-serif"],
+                        "label-caps": ["Cinzel", "serif"],
+                        "display-hero": ["Playfair Display", "serif"],
+                        "data-price": ["Space Mono", "monospace"],
+                        "headline-lg": ["Playfair Display", "serif"]
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "margin-desktop": "64px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed h-screen left-0 top-0 w-[72px] bg-surface-container dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col items-center py-lg space-y-md z-50">
+<div class="mb-xl">
+<span class="font-display-hero text-headline-lg italic text-primary">T.</span>
+</div>
+<!-- Navigation Items -->
+<nav class="flex flex-col space-y-lg flex-1">
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</button>
+<!-- ACTIVE: Analytics -->
+<button class="relative flex items-center justify-center text-tertiary hover:scale-95 transition-transform duration-200 after:content-[''] after:absolute after:bottom-[-4px] after:w-1 after:h-1 after:bg-tertiary after:rounded-full">
+<span class="material-symbols-outlined" data-icon="insights" style="font-variation-settings: 'FILL' 1;">insights</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="movie_filter">movie_filter</span>
+</button>
+</nav>
+<div class="flex flex-col space-y-lg mt-auto pb-md">
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-72px)] bg-background flex justify-between items-center h-16 px-margin-desktop z-40">
+<h1 class="font-display-hero text-headline-lg italic text-primary">Tofha <span class="text-gold">.</span></h1>
+<div class="flex items-center space-x-lg">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors" data-icon="search">search</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors" data-icon="filter_list">filter_list</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[72px] mt-16 p-lg max-w-[1280px] mx-auto min-h-screen relative">
+<!-- Botanical Watermark Decorations -->
+<div class="absolute top-10 right-10 opacity-5 pointer-events-none w-64 h-64 grayscale contrast-125">
+<img class="w-full h-full object-contain" data-alt="A delicate, vintage botanical illustration of a dried fern leaf. The artwork has a handcrafted feel with visible ink texture and fine line work, rendered in a soft sage green. It appears as a subtle, translucent watermark against an ivory paper background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVszdfjvLKaAkga48h0Mtl8EfXa7QK4U6x-Py4Z8BIbhcsp__BDet3XdGu2PEyI-KcLyY-iytyz-SOeOjY_-_tYY5-lbnGBP6Owi4C6BKXFtGkSn_EpOIg1JJjPcbNSEqiEHSmVCODwaxM1sybL7jZsbJ9zKlXs46H0Q3lc4yfeIGruJWpS0xtmNOSv00OG8rZEA-jmh64EZjbvdaTeWfoMM6tp2jMWZwOVm-tQDlPx_2qEHl1b3XUDxgsUBrE_SbNx7l6PmExb1U"/>
+</div>
+<div class="absolute bottom-10 left-10 opacity-5 pointer-events-none w-80 h-80 grayscale rotate-12">
+<img class="w-full h-full object-contain" data-alt="A refined, hand-sketched illustration of a wild rose sprig with small blossoms and leaves. The aesthetic is that of a master crafter's sketchbook, with faint pencil marks and ink bleeds. The drawing is incredibly light, serving as a decorative atmospheric element on the page." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3WmKW5FUoqH4yhQpz6G2PzJRd6VSha7qD03UzLAh0R815t5WHe4MI1Mvlg7MaEYuBPaXpaTdJqP8RykuoSwLjdwUBNSGyL4VPieXoiMmuYjwpwFJkI091eHEU5dKFiGIs_1MJvl1G3eybWfdw9bmvU1x5QuA-HWVvHRy7o_IpNIGnS7DPLM_zWapcOWfvoSmByBMDUrBryM8W8HQgGbxgM_YpPeYrl_WsqZow3zPiGEgafuO1IEkxzdAI-1TJQIzXkAMeTrC37z8"/>
+</div>
+<!-- Section: Filters -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center mb-xl gap-md">
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-xs rounded-full border border-outline-variant text-label-caps bg-surface hover:bg-surface-container transition-colors">This Week</button>
+<button class="px-md py-xs rounded-full bg-primary text-on-primary text-label-caps border border-primary shadow-sm">This Month</button>
+<button class="px-md py-xs rounded-full border border-outline-variant text-label-caps bg-surface hover:bg-surface-container transition-colors">Last 3 Months</button>
+<button class="px-md py-xs rounded-full border border-outline-variant text-label-caps bg-surface hover:bg-surface-container transition-colors flex items-center gap-xs">
+                    Custom Range <span class="material-symbols-outlined text-[14px]" data-icon="calendar_month">calendar_month</span>
+</button>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-body-md text-on-surface-variant">vs previous period</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+<!-- Section: KPI Cards -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-lg mb-xl">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant/30 rounded-lg shadow-sm">
+<p class="font-display-hero italic text-on-surface-variant text-[14px] mb-xs">Total Revenue</p>
+<h3 class="font-data-price text-headline-lg text-primary">₹42,500</h3>
+<p class="text-[12px] text-primary flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> +12%
+                </p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant/30 rounded-lg shadow-sm">
+<p class="font-display-hero italic text-on-surface-variant text-[14px] mb-xs">Total Orders</p>
+<h3 class="font-data-price text-headline-lg text-on-surface">124</h3>
+<p class="text-[12px] text-on-surface-variant font-body-md mt-xs">(42 custom / 82 pre-made)</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant/30 rounded-lg shadow-sm">
+<p class="font-display-hero italic text-on-surface-variant text-[14px] mb-xs">Avg Order Value</p>
+<h3 class="font-data-price text-headline-lg text-on-surface">₹342</h3>
+<p class="text-[12px] text-on-surface-variant flex items-center gap-xs mt-xs">
+                    Stable vs last month
+                </p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant/30 rounded-lg shadow-sm">
+<p class="font-display-hero italic text-on-surface-variant text-[14px] mb-xs">Repeat Buyer Rate</p>
+<div class="flex items-center justify-between">
+<h3 class="font-data-price text-headline-lg text-on-surface">28%</h3>
+<span class="material-symbols-outlined text-sage" data-icon="donut_small">donut_small</span>
+</div>
+<p class="text-[12px] text-on-surface-variant mt-xs">Goal: 30%</p>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant/30 rounded-lg shadow-sm">
+<p class="font-display-hero italic text-on-surface-variant text-[14px] mb-xs">On-time Dispatch</p>
+<h3 class="font-data-price text-headline-lg text-primary">94%</h3>
+<div class="w-full bg-surface-container h-1 mt-md rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 94%"></div>
+</div>
+</div>
+</section>
+<!-- Section: Charts Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-lg mb-xl">
+<!-- Chart 1: Revenue Over Time -->
+<div class="bg-parchment p-lg rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-center mb-lg">
+<h4 class="font-display-hero italic text-title-serif">Revenue Over Time</h4>
+<span class="material-symbols-outlined text-sage cursor-pointer" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="h-64 relative flex items-end justify-between border-l border-b border-sage/30 pb-2 pl-2">
+<!-- Fake Chart Rendering with CSS -->
+<div class="absolute inset-x-2 bottom-4 h-full flex items-end justify-around space-x-2">
+<div class="w-full h-[30%] bg-primary/20 relative group">
+<div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
+<div class="w-full h-[40%] absolute bottom-full left-0 border-r border-primary/40 -rotate-12 transform origin-bottom"></div>
+</div>
+<div class="w-full h-[45%] bg-primary/20 relative group">
+<div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
+</div>
+<div class="w-full h-[35%] bg-primary/20 relative"></div>
+<div class="w-full h-[60%] bg-primary/20 relative group">
+<div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
+</div>
+<div class="w-full h-[80%] bg-primary/20 relative group">
+<div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
+</div>
+<div class="w-full h-[75%] bg-primary/20 relative"></div>
+</div>
+<!-- Axis Labels -->
+<div class="absolute -left-10 inset-y-0 flex flex-col justify-between text-[10px] font-data-price text-sage py-2">
+<span>₹10k</span>
+<span>₹5k</span>
+<span>0</span>
+</div>
+<div class="absolute -bottom-6 inset-x-0 flex justify-between text-[10px] font-data-price text-sage px-4">
+<span>WK 1</span>
+<span>WK 2</span>
+<span>WK 3</span>
+<span>WK 4</span>
+</div>
+</div>
+</div>
+<!-- Chart 2: Best-Selling Products -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant/20 shadow-sm">
+<div class="flex justify-between items-center mb-lg">
+<h4 class="font-display-hero italic text-title-serif">Best-Selling Products</h4>
+</div>
+<div class="space-y-md">
+<div class="space-y-xs">
+<div class="flex justify-between text-body-md text-on-surface-variant px-1">
+<span>Sandalwood Incense Set</span>
+<span class="font-data-price">₹12.4k</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-body-md text-on-surface-variant px-1">
+<span>Hand-poured Soy Candle</span>
+<span class="font-data-price">₹9.2k</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 65%"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-body-md text-on-surface-variant px-1">
+<span>Embroidered Linen Napkin</span>
+<span class="font-data-price">₹6.1k</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 45%"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-body-md text-on-surface-variant px-1">
+<span>Ceramic Matcha Bowl</span>
+<span class="font-data-price">₹4.8k</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 35%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart 3: Orders by Day of Week -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant/20 shadow-sm">
+<h4 class="font-display-hero italic text-title-serif mb-lg">Orders by Day of Week</h4>
+<div class="h-64 flex items-end justify-between gap-sm relative pb-8">
+<!-- Friday Highlight -->
+<div class="absolute top-0 right-4 bg-[#fff2e1] border border-gold/40 p-2 rounded text-[11px] flex items-center gap-xs">
+<span class="text-gold">✦</span> "You get most orders on Friday"
+                    </div>
+<div class="flex-1 bg-surface-container-high h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-surface-container-high h-[35%] rounded-t-sm"></div>
+<div class="flex-1 bg-surface-container-high h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-surface-container-high h-[50%] rounded-t-sm"></div>
+<!-- Friday -->
+<div class="flex-1 bg-primary h-[90%] rounded-t-sm relative">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-data-price text-[10px] text-primary font-bold">42</div>
+</div>
+<div class="flex-1 bg-surface-container-high h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-surface-container-high h-[30%] rounded-t-sm"></div>
+<!-- Labels -->
+<div class="absolute bottom-0 inset-x-0 flex justify-between text-[10px] font-label-caps text-sage">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span class="text-primary font-bold">Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</div>
+<!-- Chart 4: Cancellation / RTO -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant/20 shadow-sm flex flex-col">
+<h4 class="font-display-hero italic text-title-serif mb-lg">Cancellation / RTO</h4>
+<div class="flex-1 flex items-center justify-around">
+<div class="relative w-40 h-40">
+<!-- Pseudo Donut Chart with SVG -->
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="80 100" stroke-width="4"></circle>
+<circle class="stroke-gold" cx="18" cy="18" fill="none" r="16" stroke-dasharray="15 100" stroke-dashoffset="-80" stroke-width="4"></circle>
+<circle class="stroke-error" cx="18" cy="18" fill="none" r="16" stroke-dasharray="5 100" stroke-dashoffset="-95" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-data-price text-headline-lg">124</span>
+<span class="text-[10px] text-sage">Total</span>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+<span class="text-body-md text-on-surface-variant">Completed (80%)</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 bg-gold rounded-full"></div>
+<span class="text-body-md text-on-surface-variant">RTO (15%)</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 bg-error rounded-full"></div>
+<span class="text-body-md text-on-surface-variant">Cancelled (5%)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Insights Section -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Insight 1 -->
+<div class="bg-parchment p-lg border-l-4 border-gold rounded-r-xl shadow-sm hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="timer">timer</span>
+<div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                            Your avg production time is <span class="font-bold">2.3 days</span> vs stated 2 days.
+                        </p>
+<button class="mt-sm text-label-caps text-primary border-b border-primary/30 pb-xs flex items-center gap-xs">
+                            Adjust Lead Time <span class="material-symbols-outlined text-[12px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Insight 2 -->
+<div class="bg-parchment p-lg border-l-4 border-gold rounded-r-xl shadow-sm hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-gold text-[24px]" data-icon="warning">warning</span>
+<div>
+<p class="text-body-md text-on-surface leading-relaxed">
+<span class="font-bold">Resin coasters:</span> highest return rate (12%). Consider revising packaging.
+                        </p>
+<button class="mt-sm text-label-caps text-primary border-b border-primary/30 pb-xs flex items-center gap-xs">
+                            See Feedback <span class="material-symbols-outlined text-[12px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Insight 3 -->
+<div class="bg-parchment p-lg border-l-4 border-gold rounded-r-xl shadow-sm hover:translate-y-[-2px] transition-transform">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-gold text-[24px]" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<p class="text-body-md text-on-surface leading-relaxed">
+                            This Diwali season: <span class="font-bold">2.4x revenue</span> vs last year. ✦
+                        </p>
+<p class="text-[12px] text-on-surface-variant mt-xs">Trending high in Home Decor category.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Decoration and Signature -->
+<footer class="mt-xl pt-lg border-t border-outline-variant text-center pb-xl">
+<p class="font-display-hero italic text-on-surface-variant text-body-md">Handcrafted insights for a soulful studio.</p>
+<div class="flex justify-center gap-xs mt-md">
+<span class="text-gold">✦</span>
+<span class="text-gold">✦</span>
+<span class="text-gold">✦</span>
+</div>
+</footer>
+</main>
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('button, .material-symbols-outlined').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.96)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = '';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+            });
+        });
+
+        // Background Atmosphere - subtle particle/ink effect
+        const createInkSpeck = () => {
+            if (Math.random() > 0.05) return;
+            const canvas = document.querySelector('main');
+            const speck = document.createElement('div');
+            speck.style.position = 'absolute';
+            speck.style.width = Math.random() * 2 + 'px';
+            speck.style.height = Math.random() * 2 + 'px';
+            speck.style.backgroundColor = '#717972';
+            speck.style.opacity = '0.05';
+            speck.style.top = Math.random() * 100 + '%';
+            speck.style.left = Math.random() * 100 + '%';
+            speck.style.pointerEvents = 'none';
+            canvas.appendChild(speck);
+        };
+        for(let i=0; i<50; i++) createInkSpeck();
+    </script>
+</body></html>

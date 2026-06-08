@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa | Listing Published</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+        @keyframes fill {
+            100% { box-shadow: inset 0px 0px 0px 30px transparent; }
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #49663f; /* Sage-ish Forest */
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        .botanical-overlay {
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#caecbb",
+                        "on-primary-fixed": "#002110",
+                        "on-tertiary-container": "#e8d6ff",
+                        "tertiary-fixed": "#ecdcff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface": "#fff8f3",
+                        "primary-fixed": "#bceecb",
+                        "on-surface-variant": "#414942",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#3a684c",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-tertiary-fixed": "#270550",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container": "#f9ecdc",
+                        "inverse-surface": "#362f25",
+                        "surface-dim": "#e5d8c8",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "background": "#fff8f3",
+                        "surface-variant": "#ede1d1",
+                        "outline": "#717972",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c1c9c0",
+                        "inverse-on-surface": "#fcefde",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface-container-low": "#fff2e1",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary": "#49663f",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#f3e6d6",
+                        "surface-container-highest": "#ede1d1",
+                        "tertiary": "#573b81",
+                        "surface-bright": "#fff8f3",
+                        "primary-container": "#3d6b4f",
+                        "primary": "#255338",
+                        "on-background": "#211b11",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-secondary-container": "#4d6a43",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "secondary-container": "#c8e9b8",
+                        "on-secondary-fixed": "#062103",
+                        "inverse-primary": "#a0d2b0",
+                        "tertiary-container": "#70539b",
+                        "on-surface": "#211b11"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "xs": "4px",
+                        "margin-mobile": "20px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "margin-desktop": "64px",
+                        "lg": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Cinzel"],
+                        "body-md": ["DM Sans"],
+                        "title-serif": ["Merriweather"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "data-price": ["Space Mono"],
+                        "display-hero": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-serif": ["18px", { "lineHeight": "24px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "400" }],
+                        "data-price": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "display-hero": ["48px", { "lineHeight": "56px", "fontWeight": "300" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant flex flex-col items-center py-lg space-y-xl z-50">
+<div class="mb-xl">
+<span class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary">T</span>
+</div>
+<nav class="flex flex-col items-center space-y-lg w-full">
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors flex flex-col items-center">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<button class="text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-tertiary after:rounded-full active:scale-95 transition-transform duration-200 flex flex-col items-center">
+<span class="material-symbols-outlined">inventory_2</span>
+</button>
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors flex flex-col items-center">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors flex flex-col items-center">
+<span class="material-symbols-outlined">leaderboard</span>
+</button>
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors flex flex-col items-center">
+<span class="material-symbols-outlined">brush</span>
+</button>
+</nav>
+<div class="mt-auto flex flex-col items-center space-y-lg">
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors flex flex-col items-center">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="Artisan Profile" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCymId3akHoclNz8cneQB1NA8IyAWLpKWES7EcV5EOihYG5lnze9K_FpRzKSqU4X0HP6fBzJKg3Y7UOFIdQd-V_UVXrjqPpQYW-NBLfNpWcyiNiN17-TX_9Xkhgc0ANiKPTZ64l1-27JsMO1PK8YIPSPFigrqov7hv2VDt7Uja9tynIuS-kWG0SCQbvQIXDhr8iQhWrTiZiTCq5FvUL7ZAyWwdeOXxNIvZolD170Jq14LulLWZJHTYFyKGgQ5ro02OCyWmuxsZsjsE"/>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-[72px] h-[72px] z-40 bg-background/80 backdrop-blur-md flex justify-between items-center px-lg">
+<div class="flex items-center gap-sm">
+<span class="font-headline-lg text-headline-lg italic text-primary dark:text-primary-fixed">Tohfa</span>
+<span class="text-outline-variant px-sm">/</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Listing Wizard</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm text-on-surface-variant hover:opacity-80 transition-opacity active:scale-[0.98]">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:opacity-80 transition-opacity active:scale-[0.98]">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[72px] mt-[72px] flex-grow relative flex items-center justify-center min-h-[calc(100vh-72px)] overflow-hidden">
+<!-- Faint botanical watercolor hero image -->
+<div class="absolute inset-0 z-0 opacity-[0.15] pointer-events-none botanical-overlay">
+<img class="w-full h-full object-cover" data-alt="A delicate, ethereal watercolor painting of botanical sprigs and pressed flowers on handmade ivory paper. The lighting is soft and diffused, mimicking a sun-drenched artisan studio at golden hour. The palette consists of muted forest greens, faint sage, and warm ochre, creating a serene and organic atmosphere consistent with high-end minimal craft aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwufkkcndltImy7od6xPRyDorgAosVjuLQkEAtClqolaOa4n9KWJHsN9bZtfXIKQWxVzyps1UOBWhTLtZaJXTBhfA88c2YRdxF882trxTZuLKjrVdjmStTYQ-BIlNvJVLN674FKlbxzIDPoFY-Hwx8CwnF2rKbPPCLHia5tLRl_50Tz_of2WBytqHS8kjEFZv897kNgr2UJNhXLZOL2IbqlahOP8C30AGw7xGp36Db_jrk9APUkcwpWyo_lkIRZ3UMmnrBXrzW9Bk"/>
+</div>
+<!-- Success Modal -->
+<section class="relative z-10 w-full max-w-[640px] mx-margin-mobile px-md py-xl md:px-xl">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_60px_-15px_rgba(58,51,40,0.12)] border border-outline-variant p-lg md:p-xl flex flex-col items-center text-center">
+<!-- Animated Checkmark -->
+<div class="mb-lg">
+<svg class="w-20 h-20" viewbox="0 0 52 52">
+<circle class="checkmark-circle" cx="26" cy="26" fill="none" r="25"></circle>
+<path class="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8" fill="none"></path>
+</svg>
+</div>
+<!-- Headline -->
+<h1 class="font-headline-lg text-headline-lg text-primary mb-sm">
+                    Your listing is live! ✦
+                </h1>
+<!-- Subline -->
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-sm">
+                    Moonlight Jasmine Resin Study is now visible to buyers.
+                </p>
+<!-- Action Card Row (3 cards) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md w-full mb-xl">
+<!-- Share to Instagram -->
+<button class="flex flex-col items-center justify-center p-md bg-[#8B5CF6] text-white rounded-lg hover:scale-[1.02] transition-transform active:scale-95 group">
+<span class="material-symbols-outlined mb-sm text-2xl group-hover:rotate-12 transition-transform">share</span>
+<span class="font-label-caps text-[10px] tracking-wider">Share to Instagram</span>
+</button>
+<!-- Upload a Reel -->
+<button class="flex flex-col items-center justify-center p-md bg-primary-container text-on-primary-container rounded-lg hover:scale-[1.02] transition-transform active:scale-95 group">
+<span class="material-symbols-outlined mb-sm text-2xl group-hover:-translate-y-1 transition-transform">video_library</span>
+<span class="font-label-caps text-[10px] tracking-wider">Upload a Reel</span>
+</button>
+<!-- View in Catalog -->
+<button class="flex flex-col items-center justify-center p-md bg-[#F7F3EC] border border-outline-variant/30 text-primary rounded-lg hover:scale-[1.02] transition-transform active:scale-95 group">
+<span class="material-symbols-outlined mb-sm text-2xl group-hover:scale-110 transition-transform">library_books</span>
+<span class="font-label-caps text-[10px] tracking-wider">View in Catalog</span>
+</button>
+</div>
+<!-- Footer Link -->
+<a class="font-label-caps text-[11px] text-on-surface-variant/70 hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-px" href="#">
+                    Go to Dashboard
+                </a>
+</div>
+<!-- Subtle Texture Overlay for the card -->
+<div class="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] mix-blend-multiply rounded-xl"></div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-[72px] right-0 bg-surface-container-lowest dark:bg-surface-container-highest border-t border-outline-variant flex flex-col md:flex-row justify-between items-center py-sm px-lg z-40">
+<div class="font-label-caps text-[10px] text-primary">© 2024 Tohfa Artisan Studio. Handcrafted with intention.</div>
+<div class="flex space-x-md mt-xs md:mt-0">
+<a class="font-label-caps text-[10px] text-on-secondary-fixed-variant hover:text-tertiary transition-colors" href="#">Support</a>
+<a class="font-label-caps text-[10px] text-on-secondary-fixed-variant hover:text-tertiary transition-colors" href="#">Studio Guidelines</a>
+<a class="font-label-caps text-[10px] text-on-secondary-fixed-variant hover:text-tertiary transition-colors" href="#">Privacy</a>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for the share buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Haptic feedback logic could go here
+                console.log('Action triggered');
+            });
+        });
+
+        // Initialize any specific UI states
+        window.onload = () => {
+            // Checkmark animation triggers automatically via CSS
+        };
+    </script>
+</body></html>

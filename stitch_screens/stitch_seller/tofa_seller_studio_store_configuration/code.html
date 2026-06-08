@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Store Config | TOFA Seller Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#573b81",
+                        "on-primary-fixed": "#002110",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "primary-fixed": "#bceecb",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#211b11",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "outline": "#717972",
+                        "secondary-fixed": "#caecbb",
+                        "secondary": "#49663f",
+                        "surface-variant": "#ede1d1",
+                        "tertiary-fixed": "#ecdcff",
+                        "surface": "#fff8f3",
+                        "inverse-on-surface": "#fcefde",
+                        "inverse-primary": "#a0d2b0",
+                        "surface-dim": "#e5d8c8",
+                        "on-secondary-container": "#4d6a43",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "background": "#fff8f3",
+                        "secondary-container": "#c8e9b8",
+                        "on-background": "#211b11",
+                        "outline-variant": "#c1c9c0",
+                        "on-secondary-fixed": "#062103",
+                        "on-tertiary-container": "#e8d6ff",
+                        "primary": "#255338",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#ede1d1",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fff8f3",
+                        "surface-tint": "#3a684c",
+                        "on-tertiary-fixed": "#270550",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container-high": "#f3e6d6",
+                        "inverse-surface": "#362f25",
+                        "primary-container": "#3d6b4f",
+                        "tertiary-container": "#70539b",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#fff2e1",
+                        "on-surface-variant": "#414942",
+                        "on-primary-fixed-variant": "#214f36",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-container": "#f9ecdc",
+                        "on-secondary": "#ffffff",
+                        "sage": "#8FAF82",
+                        "gold": "#D4AF37",
+                        "ivory": "#fff8f3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["DM Sans"],
+                        "title-serif": ["Merriweather"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "label-caps": ["Cinzel"],
+                        "data-price": ["Space Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #ffffff; color: #211b11; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .artisan-card { border: 1px solid rgba(143, 175, 130, 0.3); background-color: #fff8f3; position: relative; overflow: hidden; }
+        .botanical-watermark { position: absolute; right: -20px; bottom: -20px; opacity: 0.08; pointer-events: none; width: 160px; height: 160px; }
+        .custom-toggle:checked + .toggle-dot { transform: translateX(100%); background-color: #255338; }
+        .custom-toggle:checked { background-color: #c8e9b8; }
+    </style>
+</head>
+<body class="font-body-md overflow-x-hidden">
+<!-- FIXED SIDENAV (72px) -->
+<aside class="fixed h-screen left-0 top-0 w-[72px] bg-surface-container border-r border-outline-variant flex flex-col items-center py-lg space-y-md z-50">
+<div class="mb-xl">
+<span class="font-display-hero text-headline-lg italic text-primary">T</span>
+</div>
+<nav class="flex flex-col space-y-md">
+<!-- Simplified Sidebar Logic: Config Active -->
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Home">
+<span class="material-symbols-outlined">home</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Catalog">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Orders">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Inventory">
+<span class="material-symbols-outlined">inventory_2</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Analytics">
+<span class="material-symbols-outlined">insights</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Messages">
+<span class="material-symbols-outlined">chat</span>
+</button>
+<div class="relative flex items-center justify-center text-tertiary after:content-[''] after:absolute after:bottom-[-4px] after:w-1 after:h-1 after:bg-tertiary after:rounded-full" title="Config">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<button class="flex items-center justify-center text-on-surface-variant hover:scale-95 transition-transform duration-200" title="Profile">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</nav>
+</aside>
+<!-- TOP APP BAR (W-calc) -->
+<header class="fixed top-0 right-0 w-[calc(100%-72px)] h-16 bg-white flex justify-between items-center px-margin-desktop z-40">
+<h1 class="font-display-hero text-headline-lg italic text-primary">Tofha <span class="text-gold">.</span> <span class="font-label-caps text-label-caps tracking-[0.2em] ml-2 text-on-surface-variant">Seller Studio</span></h1>
+<div class="flex items-center space-x-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">search</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">notifications</span>
+<div class="w-8 h-8 rounded-full border border-sage overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a serene female ceramic artist with soft morning light hitting her face. The background shows a blurry pottery studio with shelves of handmade terracotta vases. The aesthetic is clean, warm, and professional, aligned with high-end artisan branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvMqmtOBwDV7cz0n8j9qyl7vb9wzdzgBtQ8PWOB25vSX5W1yG9roG2N2c1zEBhDsDA2J8nbXxRDdufcNBxUaFCvXNo_BafCoXOSxs0HH1eVoN6mWuznL0W_atLnreHClygLlqJRIEzMh0SJEmct_ivH0Trzm_wUQEfOmpXlofnmM93rGSX67hFnAQRkO-J4KanfnCeq440EOckg07De116JUujqk7vMxNyr-QDBqMCBUA8yXiuLCJgGKD4_lkiTThtHtKfZMPH5UY"/>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[72px] pt-24 min-h-screen bg-white">
+<div class="max-w-[1400px] mx-auto px-margin-desktop flex gap-xl">
+<!-- SUB-NAVIGATION COLUMN -->
+<nav class="w-64 flex-shrink-0">
+<div class="space-y-sm sticky top-28">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-md opacity-60">Store Management</p>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg bg-secondary-container text-primary font-bold transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+<span class="font-body-md text-body-md">Store Identity</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span class="font-body-md text-body-md">Payment &amp; Payouts</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+<span class="font-body-md text-body-md">GST &amp; Compliance</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">history_toggle_off</span>
+<span class="font-body-md text-body-md">Availability &amp; Cutoffs</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+<span class="font-body-md text-body-md">Notifications</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+<span class="font-body-md text-body-md">Shipping Defaults</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">edit_document</span>
+<span class="font-body-md text-body-md">Form Customization</span>
+</a>
+</div>
+</nav>
+<!-- CONTENT PANEL (Right) -->
+<div class="flex-grow space-y-xl pb-xl">
+<!-- SECTION: STORE IDENTITY -->
+<section class="space-y-lg">
+<div class="flex justify-between items-end border-b border-outline-variant pb-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Store Identity</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">How your craft is presented to the world.</p>
+</div>
+<button class="bg-primary text-white px-lg py-sm rounded-full font-body-md flex items-center gap-xs hover:scale-[1.02] transition-transform">
+                            Save Changes
+                        </button>
+</div>
+<div class="grid grid-cols-12 gap-lg">
+<!-- Branding Card -->
+<div class="col-span-12 lg:col-span-8 artisan-card p-lg rounded-xl shadow-sm">
+<div class="flex gap-lg">
+<div class="flex-shrink-0 space-y-sm">
+<div class="w-32 h-32 rounded-full border-2 border-sage overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:opacity-50 transition-opacity" data-alt="A macro shot of a ceramicist's logo stamped into wet clay. The studio name 'Earth &amp; Hearth' is visible in a minimalist serif font. Soft daylight highlights the gritty texture of the clay and the delicate floral imprint surrounding the text." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo0guxCC1UafxI4JttmhMHinbgUN2SKWqF-U1QdHlC86HkSjZWfTy4fw0Ci4YHj0HHMSDA3gyMEdfnk0fQf5co7UPTd2Db2fSY_B-3RhOHnKod8l9uSDlmReU5cL-jKkz_W_neVJUoUAM9RE1lLANm6hb8WMlAM01LC1oglix9cCSJkbVCPgDJXk9M2D_eqDdcjlA4EBG4FnPhzDsREJOojBT0eR1zvNAsOxqNK6UfQfEaOo1oVk0ozUJ9YOdaWx127Kh2arw5g_M"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined text-white">photo_camera</span>
+</div>
+</div>
+<p class="text-center font-label-caps text-[10px] text-sage">Shop Avatar</p>
+</div>
+<div class="flex-grow space-y-md">
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">Shop Name</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-1 focus:ring-primary focus:border-primary" type="text" value="Earth &amp; Hearth Ceramics"/>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">Tagline</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-1 focus:ring-primary focus:border-primary" type="text" value="Quiet objects for slow living."/>
+</div>
+</div>
+</div>
+<div class="mt-lg">
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">Artist Bio</label>
+<textarea class="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-1 focus:ring-primary focus:border-primary" rows="4">Rooted in the coastal landscapes of the South, Earth &amp; Hearth produces small-batch, wheel-thrown stoneware that prioritizes the tactility of the earth and the warmth of the home. Each piece is unique, reflecting the natural variations of the firing process.</textarea>
+</div>
+<img alt="" class="botanical-watermark opacity-[0.05]" src="https://www.transparenttextures.com/patterns/natural-paper.png"/>
+</div>
+<!-- Status & Quick Actions -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<div class="artisan-card p-lg rounded-xl flex items-center justify-between">
+<div>
+<h4 class="font-title-serif text-title-serif">Accepting Orders</h4>
+<p class="text-on-surface-variant text-[12px]">Temporarily pause your shop</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only custom-toggle" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant rounded-full transition-colors"></div>
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+</label>
+</div>
+<div class="artisan-card p-lg rounded-xl flex-grow">
+<h4 class="font-label-caps text-label-caps mb-md">Specializations</h4>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-xs bg-sage-soft text-primary bg-opacity-10 border border-sage rounded-full text-[12px] flex items-center gap-xs">
+<span class="text-gold">✦</span> Wheel-Thrown
+                                    </span>
+<span class="px-sm py-xs bg-sage-soft text-primary bg-opacity-10 border border-sage rounded-full text-[12px] flex items-center gap-xs">
+<span class="text-gold">✦</span> Wood-Fired
+                                    </span>
+<span class="px-sm py-xs bg-sage-soft text-primary bg-opacity-10 border border-sage rounded-full text-[12px] flex items-center gap-xs">
+<span class="text-gold">✦</span> Stoneware
+                                    </span>
+<button class="px-sm py-xs border border-dashed border-outline-variant rounded-full text-[12px] text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
+                                        + Add New
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: PAYMENT & PAYOUTS (Preview) -->
+<section class="space-y-lg opacity-80 filter grayscale-[0.2]">
+<div class="flex items-end border-b border-outline-variant pb-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Payment &amp; Payouts</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage where your earnings are settled.</p>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-lg">
+<div class="col-span-12 lg:col-span-6 artisan-card p-lg rounded-xl bg-[#F7F3EB]">
+<h4 class="font-label-caps text-label-caps mb-md text-secondary">Bank Details</h4>
+<div class="space-y-md">
+<div class="flex justify-between items-center border-b border-outline-variant border-opacity-30 pb-sm">
+<span class="text-[14px] text-on-surface-variant">Account Holder</span>
+<span class="font-data-price text-data-price">MARIAH G. WOODS</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant border-opacity-30 pb-sm">
+<span class="text-[14px] text-on-surface-variant">Bank Name</span>
+<span class="font-data-price text-data-price">HDFC BANK LTD.</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant border-opacity-30 pb-sm">
+<span class="text-[14px] text-on-surface-variant">Account Number</span>
+<span class="font-data-price text-data-price">•••• •••• 5690</span>
+</div>
+</div>
+<div class="mt-lg pt-md flex justify-end">
+<button class="text-primary font-bold flex items-center gap-xs text-[14px] hover:underline">
+<span class="material-symbols-outlined text-[18px]">edit</span> Edit Details
+                                </button>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-6 artisan-card p-lg rounded-xl">
+<h4 class="font-label-caps text-label-caps mb-md">Recent Payouts</h4>
+<div class="space-y-sm">
+<div class="flex justify-between text-[13px] font-data-price py-xs border-b border-outline-variant border-opacity-10">
+<span class="text-on-surface-variant">OCT 12, 2023</span>
+<span class="text-primary font-bold">₹14,500.00</span>
+<span class="px-xs rounded bg-sage bg-opacity-20 text-primary text-[10px] self-center">SETTLED</span>
+</div>
+<div class="flex justify-between text-[13px] font-data-price py-xs border-b border-outline-variant border-opacity-10">
+<span class="text-on-surface-variant">SEP 28, 2023</span>
+<span class="text-primary font-bold">₹8,920.00</span>
+<span class="px-xs rounded bg-sage bg-opacity-20 text-primary text-[10px] self-center">SETTLED</span>
+</div>
+<div class="flex justify-between text-[13px] font-data-price py-xs border-b border-outline-variant border-opacity-10">
+<span class="text-on-surface-variant">SEP 15, 2023</span>
+<span class="text-primary font-bold">₹22,100.00</span>
+<span class="px-xs rounded bg-sage bg-opacity-20 text-primary text-[10px] self-center">SETTLED</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: GST & COMPLIANCE -->
+<section class="space-y-lg">
+<div class="flex items-end border-b border-outline-variant pb-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">GST &amp; Compliance</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Regulatory details for your business entity.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<div class="artisan-card p-lg rounded-xl">
+<div class="flex items-center justify-between mb-lg">
+<h4 class="font-title-serif text-title-serif">GST Registration</h4>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only custom-toggle" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant rounded-full transition-colors"></div>
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+</label>
+</div>
+<div class="space-y-md">
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">GSTIN</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-sm font-data-price" type="text" value="22AAAAA0000A1Z5"/>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant border-opacity-20 flex gap-md">
+<span class="material-symbols-outlined text-gold">info</span>
+<p class="text-[13px] text-on-surface-variant leading-tight">Your GSTIN is verified. Tax will be collected and remitted according to category defaults.</p>
+</div>
+</div>
+</div>
+<div class="artisan-card p-lg rounded-xl border-error border-opacity-30 bg-error-container bg-opacity-5">
+<h4 class="font-label-caps text-label-caps mb-sm text-error">Revenue Alert</h4>
+<p class="text-body-md mb-md">You have reached <span class="font-bold">85%</span> of the ₹20L threshold for mandatory GST registration.</p>
+<div class="w-full bg-outline-variant rounded-full h-2 mb-sm">
+<div class="bg-error h-2 rounded-full" style="width: 85%"></div>
+</div>
+<p class="text-[12px] italic text-on-surface-variant">Current Revenue: ₹17,04,500</p>
+</div>
+</div>
+</section>
+<!-- SECTION: NOTIFICATIONS MATRIX -->
+<section class="space-y-lg">
+<div class="flex items-end border-b border-outline-variant pb-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Notifications</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Control how we keep you in the loop.</p>
+</div>
+</div>
+<div class="artisan-card rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high border-b border-outline-variant">
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">Event</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant text-center">Email</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant text-center">WhatsApp</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant text-center">In-App</th>
+</tr>
+</thead>
+<tbody class="text-body-md divide-y divide-outline-variant divide-opacity-30">
+<tr>
+<td class="p-md">
+<p class="font-bold">New Order</p>
+<p class="text-[12px] text-on-surface-variant">When a customer places a new order</p>
+</td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+</tr>
+<tr>
+<td class="p-md">
+<p class="font-bold">Order Cancelled</p>
+<p class="text-[12px] text-on-surface-variant">When an order is cancelled by the buyer</p>
+</td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+</tr>
+<tr>
+<td class="p-md">
+<p class="font-bold">Stock Warning</p>
+<p class="text-[12px] text-on-surface-variant">When inventory falls below 5 units</p>
+</td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+</tr>
+<tr>
+<td class="p-md">
+<p class="font-bold">Payout Success</p>
+<p class="text-[12px] text-on-surface-variant">When earnings are credited to your bank</p>
+</td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-md text-center"><input checked="" class="rounded border-sage text-primary focus:ring-primary" type="checkbox"/></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<div class="h-10"></div> <!-- Bottom Spacer -->
+</div>
+</div>
+</main>
+<!-- FAB for Contextual Help (Hidden on subpages but included for Studio consistency) -->
+<div class="fixed bottom-lg right-lg z-50">
+<button class="bg-tertiary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform" title="Help &amp; Support">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<script>
+        // Simple Interaction logic
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.closest('.artisan-card')?.classList.add('ring-1', 'ring-sage', 'ring-opacity-20');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.closest('.artisan-card')?.classList.remove('ring-1', 'ring-sage', 'ring-opacity-20');
+            });
+        });
+
+        // Tab logic simulation
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navLinks.forEach(l => {
+                    l.classList.remove('bg-secondary-container', 'text-primary', 'font-bold');
+                    l.classList.add('text-on-surface-variant', 'hover:bg-surface-container');
+                });
+                link.classList.add('bg-secondary-container', 'text-primary', 'font-bold');
+                link.classList.remove('text-on-surface-variant', 'hover:bg-surface-container');
+                
+                // Content Switcher would go here in a full SPA
+                console.log('Navigated to:', link.innerText.trim());
+            });
+        });
+    </script>
+</body></html>

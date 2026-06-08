@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Birthday Reminders | Tohfa Artisan Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&amp;family=Cinzel:wght@700&amp;family=Playfair+Display:ital,wght@0,400;1,400;1,700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-splat {
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-46.2C87.4,-33.3,90,-17.7,89.1,-2.4C88.2,12.9,83.8,27.9,75.9,40.8C68,53.7,56.5,64.4,43.2,71.8C29.9,79.2,15,83.2,0.1,83C-14.8,82.8,-29.6,78.3,-43,71C-56.3,63.7,-68.2,53.6,-75.7,40.8C-83.3,28.1,-86.5,12.6,-86.3,-2.8C-86.1,-18.2,-82.5,-33.5,-74,-45.8C-65.4,-58.1,-52,-67.4,-38.3,-74.8C-24.6,-82.2,-10.7,-87.7,2.1,-91.4C14.9,-95.1,29.7,-83.6,44.7,-76.4Z' transform='translate(100 100)' /%3E%3C/svg%3E");
+        }
+        .watermark-pattern {
+            pointer-events: none;
+            user-select: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#f3e6d6",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#e5d8c8",
+                        "secondary": "#49663f",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#70539b",
+                        "inverse-on-surface": "#fcefde",
+                        "on-primary-container": "#b7e9c6",
+                        "primary-fixed": "#bceecb",
+                        "secondary-fixed": "#caecbb",
+                        "inverse-primary": "#a0d2b0",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#3a684c",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface": "#fff8f3",
+                        "on-secondary-container": "#4d6a43",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-container-highest": "#ede1d1",
+                        "primary-container": "#3d6b4f",
+                        "primary": "#255338",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "tertiary": "#573b81",
+                        "outline": "#717972",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#002110",
+                        "on-secondary-fixed": "#062103",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-tertiary-fixed": "#270550",
+                        "background": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#211b11",
+                        "inverse-surface": "#362f25",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#211b11",
+                        "surface-container-low": "#fff2e1",
+                        "surface-container": "#f9ecdc",
+                        "surface-variant": "#ede1d1",
+                        "tertiary-fixed": "#ecdcff",
+                        "secondary-container": "#c8e9b8",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#414942",
+                        "outline-variant": "#c1c9c0",
+                        "ivory": "#FCFAF5",
+                        "sage": "#717972",
+                        "gold": "#A68942"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "margin-desktop": "64px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "margin-mobile": "20px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "title-serif": ["Merriweather"],
+                        "label-caps": ["Cinzel"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "data-price": ["Space Mono"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 h-[60px] bg-white border-b border-outline-variant z-50 flex items-center justify-between px-margin-desktop">
+<div class="flex items-center">
+<span class="font-headline-lg italic text-[22px] text-primary tracking-tight">Tofha<span class="text-gold">.</span></span>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Category</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Reels</a>
+<a class="font-body-md text-primary font-bold border-b-2 border-primary pb-1" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-lg">
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant">search</span>
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant">notifications</span>
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant">favorite</span>
+<div class="relative cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-gold text-[10px] text-white rounded-full w-4 h-4 flex items-center justify-center font-bold">2</span>
+</div>
+</div>
+</header>
+<main class="pt-[60px] max-w-4xl mx-auto px-margin-mobile md:px-0">
+<!-- Section 1: Page Header -->
+<section class="relative py-xl px-md bg-white overflow-hidden">
+<div class="relative z-10">
+<p class="font-label-caps text-[10px] text-gold mb-2">NEVER FORGET A BIRTHDAY ✦</p>
+<h1 class="font-headline-lg italic text-[26px] text-on-surface mb-2">Birthday Reminders</h1>
+<p class="font-body-md text-[13px] text-[#6E6453] max-w-sm">We'll remind you 7 days before so you never miss a moment.</p>
+</div>
+<!-- Watermark -->
+<div class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.08] pointer-events-none">
+<img alt="Artisan sketch cake" class="w-40 grayscale" data-alt="A subtle, hand-drawn ink sketch of a multi-tiered birthday cake decorated with delicate ribbons and botanical sprigs. The illustration is minimalist and refined, rendered in a soft ink-style aesthetic with fine lines, designed to look like a watermark on a white paper background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqvv8OdUaows9IXCdj5vepDu3MgM3db-8LWwPDNaJWF5hwCqY-mHLJD7Kb5V94V8h2qjZQjEIWSGojVWMKhtHAKZekGjRyqz88ArxvdA6fu5jNiWXuGvhw649k4nX6EF7oMViqz_DpxLizj8yzOBzAop4i2QDFxvesI01hrTRROkzXGu44vj03K2EvOxc7T_KyWsCmr5U1Rofp_yScDupwtbXQGQPvcau8xvM_4D9U227D4s-cCO76qsuK4pmiGtWRi5Cf6T3DmL4"/>
+</div>
+</section>
+<!-- Section 2: Hero Strip -->
+<section class="relative full-width-mobile bg-[#F1EADD] h-[88px] flex items-center justify-between px-md mb-xl">
+<div class="flex flex-col">
+<h2 class="font-headline-lg italic text-primary text-lg">Upcoming birthdays ✦</h2>
+<p class="font-body-md text-[13px] text-on-surface-variant">You have 2 birthdays in the next 30 days.</p>
+</div>
+<div class="flex items-center relative">
+<img alt="Cake illustration" class="w-12 h-12 object-contain" data-alt="A small, stylized artisan sketch of a birthday cake with a single candle, rendered in fine brown ink. The style is whimsical and tactile, mimicking a hand-drawn illustration in a sketchbook. The colors are muted and earthy to match the studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVKIW3GQ0BJ9xRhQpMSYXH-2tClu8_gG7C3nVlg68LJqH2AwRf-9lQL1i3i5WfolJCCUhLSox2ihScaFs_4IldMP5FpGnkrLZXCXMOXJ6nXGX_V2_eyPwoseIP2QQEr-psh6yzPhxyJFjD3IZDRPdAeWdWWwg1DJQgVPSsULz58gch1T0Q6pBrd8rvVUjwJFegaotrKIZ5f-py2t71ym6kGQl6QxLP0K3372RXHVoPJDmR0h0vs0jdb7EHuwDibDivUHSbXlIL5JM"/>
+<!-- Scattered Watermarks -->
+<div class="absolute -left-20 top-0 opacity-[0.07] rotate-12">
+<span class="material-symbols-outlined text-3xl">psychology_alt</span>
+</div>
+<div class="absolute -right-4 bottom-0 opacity-[0.09] rotate-45">
+<span class="material-symbols-outlined text-2xl">label</span>
+</div>
+</div>
+</section>
+<!-- Section 3: Upcoming Birthdays Strip -->
+<section class="mb-xl relative">
+<div class="absolute top-1/2 right-10 opacity-[0.08] rotate-[-15deg] pointer-events-none">
+<span class="material-symbols-outlined text-6xl">content_cut</span>
+</div>
+<p class="font-label-caps text-[10px] text-gold mb-md">COMING SOON</p>
+<div class="flex overflow-x-auto gap-md hide-scrollbar pb-sm">
+<!-- Chip 1 -->
+<div class="flex-shrink-0 w-[80px] h-[96px] bg-ivory border border-sage rounded-[14px] flex flex-col items-center justify-center shadow-[4px_4px_10px_rgba(58,51,40,0.08)]">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs mb-1 overflow-hidden">
+<img alt="Riya" data-alt="A warm, soft-focus portrait of a young woman with a kind smile, used for a user profile avatar. The lighting is natural and golden-hour inspired, creating a cozy and personal feel consistent with a handmade brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-RlBrElEmAe_7nOI5MBJlkmaIYkE8KHoRI0fJiJ7G7tozJS_mMQHepWpRAL_N1n4jANfATfLe-otjb6Yea8HL6mqm246a-NlPZRYBFryFXWrKL7SSZHk5Po7egdrxcTpBN3m8blXftv_vV75nGS1p-MVG_thAwTavGOJ0VN8dFbpRZLXTMSMr1gyStYwX7zXpJlB8WD6oR5up1SyOx2bNvmRvlTYmisHbZLPDbmupRJDD__gdfKc5XnyPxendPROZ06Rq5_0rPSs"/>
+</div>
+<span class="font-title-serif text-[13px] text-on-surface">Riya</span>
+<span class="font-data-price text-[11px] text-gold mb-1">15 Aug</span>
+<div class="bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="font-label-caps text-[8px] text-primary">IN 3 DAYS</span>
+</div>
+</div>
+<!-- Chip 2 -->
+<div class="flex-shrink-0 w-[80px] h-[96px] bg-ivory border border-sage rounded-[14px] flex flex-col items-center justify-center shadow-[4px_4px_10px_rgba(58,51,40,0.08)] scale-105">
+<div class="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-white font-bold text-xs mb-1">
+                        A
+                    </div>
+<span class="font-title-serif text-[13px] text-on-surface">Aditya</span>
+<span class="font-data-price text-[11px] text-gold mb-1">08 Jun</span>
+<div class="bg-secondary-container px-2 py-0.5 rounded-full flex items-center gap-0.5">
+<span class="font-label-caps text-[8px] text-primary">TODAY 🎂</span>
+</div>
+</div>
+<!-- Chip 3 -->
+<div class="flex-shrink-0 w-[80px] h-[96px] bg-ivory border border-sage rounded-[14px] flex flex-col items-center justify-center shadow-[4px_4px_10px_rgba(58,51,40,0.08)]">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-primary font-bold text-xs mb-1">
+                        M
+                    </div>
+<span class="font-title-serif text-[13px] text-on-surface">Maa</span>
+<span class="font-data-price text-[11px] text-gold mb-1">22 Sep</span>
+<div class="bg-error-container px-2 py-0.5 rounded-full">
+<span class="font-label-caps text-[8px] text-error">IN 2 DAYS</span>
+</div>
+</div>
+<!-- Chip Placeholder -->
+<div class="flex-shrink-0 w-[80px] h-[96px] bg-white border border-dashed border-outline-variant rounded-[14px] flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant">add</span>
+</div>
+</div>
+</section>
+<!-- Section 4: Add New Person Button -->
+<section class="mb-xl">
+<button class="w-full h-12 bg-white border border-sage rounded-[14px] flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-primary">add</span>
+<span class="font-body-md font-semibold text-primary">Add a birthday</span>
+</button>
+</section>
+<!-- Section 5: All Saved Birthdays List -->
+<section class="mb-xl relative">
+<p class="font-label-caps text-[10px] text-gold mb-md">ALL BIRTHDAYS</p>
+<div class="space-y-md">
+<!-- Card 1 -->
+<div class="bg-ivory border border-sage rounded-[16px] p-md shadow-[4px_4px_12px_rgba(58,51,40,0.08)] relative overflow-hidden">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Riya" data-alt="Portrait of a woman used for contact identification. The style is warm, authentic, and naturally lit, reflecting the personal and human-centric values of the Tohfa brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMirHrVJL4jncWBzc6sQoRRfunhcr_OZ7xqTu1xPNxTQ6bjpxnv6u9Ay15MbS58k22kigEJl_cSyUCGYElPSBaQ9vg85S4i-bOGO1J1C7Qu4isZRxvzo_aKFP0BgQgJ7wgl__5JhofM7Sctce3oe7sk1uExm3CGnY9oqfnW8D-lC5QcJc1cQtqZ2KtRLHCAFd3bgbdYgE3nwen6fm1XNjZHxuWJgTbOck9ki0aeCln0RhcrGaGY4TSqJ_txm7H9WW52C8IPmvDkEA"/>
+</div>
+<div>
+<h3 class="font-title-serif text-lg text-on-surface">Riya</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant">SISTER • 15 AUG</p>
+</div>
+</div>
+<div class="bg-secondary-container px-3 py-1 rounded-full">
+<span class="font-label-caps text-[10px] text-primary">IN 3 DAYS</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-sm border-t border-dashed border-outline-variant mt-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-sm">home</span>
+<span class="font-body-md text-[13px] text-on-surface-variant">Address saved</span>
+</div>
+<a class="font-body-md text-[13px] text-secondary hover:underline" href="#">Change →</a>
+</div>
+<div class="flex items-center gap-md pt-sm">
+<button class="flex items-center gap-xs text-primary font-body-md text-[14px] hover:underline">
+<span class="material-symbols-outlined text-sm">redeem</span> Shop gift
+                        </button>
+<div class="flex-grow"></div>
+<div class="flex items-center gap-md">
+<button class="text-tertiary font-label-caps text-[11px] hover:opacity-70 transition-opacity">EDIT</button>
+<div class="w-[1px] h-3 bg-sage"></div>
+<button class="text-error font-label-caps text-[11px] hover:opacity-70 transition-opacity">DELETE</button>
+</div>
+</div>
+<!-- Small watermark -->
+<div class="absolute -right-2 -bottom-2 opacity-[0.06] rotate-[-20deg]">
+<span class="material-symbols-outlined text-5xl">inventory_2</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-ivory border border-sage rounded-[16px] p-md shadow-[4px_4px_12px_rgba(58,51,40,0.08)] relative">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-full bg-gold flex items-center justify-center text-white font-bold text-lg">A</div>
+<div>
+<h3 class="font-title-serif text-lg text-on-surface">Aditya</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant">BEST FRIEND • 08 JUN</p>
+</div>
+</div>
+<div class="bg-secondary-container px-3 py-1 rounded-full animate-pulse">
+<span class="font-label-caps text-[10px] text-primary">BIRTHDAY TODAY 🎂</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-sm border-t border-dashed border-outline-variant mt-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-error text-sm">location_off</span>
+<span class="font-body-md text-[13px] text-on-surface-variant italic">No address provided</span>
+</div>
+<a class="font-body-md text-[13px] text-primary font-bold hover:underline" href="#">＋ Add their address</a>
+</div>
+<div class="flex items-center gap-md pt-sm">
+<button class="flex items-center gap-xs text-primary font-body-md text-[14px] hover:underline">
+<span class="material-symbols-outlined text-sm">redeem</span> Shop gift
+                        </button>
+<div class="flex-grow"></div>
+<div class="flex items-center gap-md">
+<button class="text-tertiary font-label-caps text-[11px]">EDIT</button>
+<div class="w-[1px] h-3 bg-sage"></div>
+<button class="text-error font-label-caps text-[11px]">DELETE</button>
+</div>
+</div>
+<div class="absolute right-4 bottom-12 opacity-[0.09] pointer-events-none">
+<span class="material-symbols-outlined text-3xl">label_important</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-ivory border border-sage rounded-[16px] p-md shadow-[4px_4px_12px_rgba(58,51,40,0.08)]">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-primary font-bold text-lg">M</div>
+<div>
+<h3 class="font-title-serif text-lg text-on-surface">Maa</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant">MOM • 22 SEP</p>
+</div>
+</div>
+<div class="bg-surface-dim px-3 py-1 rounded-full">
+<span class="font-label-caps text-[10px] text-on-surface-variant">IN 106 DAYS</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-sm border-t border-dashed border-outline-variant mt-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-sm">home</span>
+<span class="font-body-md text-[13px] text-on-surface-variant">Address saved</span>
+</div>
+</div>
+<div class="flex items-center gap-md pt-sm">
+<button class="flex items-center gap-xs text-primary font-body-md text-[14px] hover:underline">
+<span class="material-symbols-outlined text-sm">redeem</span> View wishlist
+                        </button>
+<div class="flex-grow"></div>
+<div class="flex items-center gap-md">
+<button class="text-tertiary font-label-caps text-[11px]">EDIT</button>
+<div class="w-[1px] h-3 bg-sage"></div>
+<button class="text-error font-label-caps text-[11px]">DELETE</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 6: Reminder Settings Card -->
+<section class="mb-xl px-xs">
+<div class="bg-ivory border border-sage rounded-[18px] p-xl relative overflow-hidden shadow-[4px_4px_15px_rgba(58,51,40,0.05)]">
+<div class="relative z-10">
+<p class="font-label-caps text-[10px] text-gold mb-2">REMINDER SETTINGS</p>
+<h2 class="font-headline-lg italic text-[16px] text-on-surface mb-2">When should we remind you?</h2>
+<p class="font-body-md text-[13px] text-[#6E6453] mb-md">Currently notifying you <span class="text-primary font-bold">7 days</span> before the date.</p>
+<a class="font-body-md text-[13px] text-tertiary hover:underline flex items-center gap-1" href="#">
+                        Change reminder timing →
+                    </a>
+</div>
+<!-- Bell Watermark -->
+<div class="absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.08] pointer-events-none">
+<span class="material-symbols-outlined text-7xl">notifications_active</span>
+</div>
+</div>
+</section>
+<!-- Aesthetic Footer Elements (Scatter marks) -->
+<div class="flex justify-center gap-xl opacity-[0.09] py-xl pointer-events-none">
+<span class="material-symbols-outlined text-3xl rotate-12">park</span>
+<span class="material-symbols-outlined text-3xl -rotate-12">local_florist</span>
+<span class="material-symbols-outlined text-3xl rotate-45">stylus</span>
+</div>
+</main>
+<footer class="bg-surface-container-low py-xl px-margin-desktop border-t border-outline-variant mt-xl">
+<div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="font-label-caps text-primary text-[12px]">TOFA Artisan Studio</div>
+<div class="flex gap-lg">
+<a class="font-body-md text-[13px] text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
+<a class="font-body-md text-[13px] text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<p class="font-body-md text-[11px] text-on-surface-variant italic">© 2024 TOFA Artisan Studio. Handcrafted with intention.</p>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Hover scaling for birthday chips
+        document.querySelectorAll('.flex-shrink-0').forEach(chip => {
+            chip.addEventListener('mouseenter', () => {
+                if (!chip.classList.contains('scale-105')) {
+                    chip.style.transform = 'scale(1.05)';
+                    chip.style.transition = 'transform 0.2s ease-out';
+                }
+            });
+            chip.addEventListener('mouseleave', () => {
+                if (!chip.classList.contains('scale-105')) {
+                    chip.style.transform = 'scale(1)';
+                }
+            });
+        });
+
+        // Atmosphere: Subtle parallax or fade in
+        window.addEventListener('scroll', () => {
+            const watermarks = document.querySelectorAll('.material-symbols-outlined');
+            watermarks.forEach(mark => {
+                const speed = 0.05;
+                const rect = mark.getBoundingClientRect();
+                if(rect.top < window.innerHeight && rect.bottom > 0) {
+                   const move = (window.scrollY * speed) % 10;
+                   mark.style.transform = `translateY(${move}px)`;
+                }
+            });
+        });
+    </script>
+</body></html>

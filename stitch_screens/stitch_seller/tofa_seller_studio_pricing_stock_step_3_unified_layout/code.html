@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Seller Studio - Pricing &amp; Stock</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: radial-gradient(circle at 2px 2px, rgba(73, 102, 63, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .pressed-flower-texture {
+            mask-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            opacity: 0.08;
+        }
+        input:focus {
+            outline: none;
+            border-color: #255338 !important;
+            ring: 1px solid #255338;
+        }
+        .step-progress-line {
+            background: linear-gradient(to right, #255338 50%, #c1c9c0 50%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed-dim": "#d6baff",
+                      "on-secondary-container": "#4d6a43",
+                      "surface-dim": "#e5d8c8",
+                      "secondary-fixed": "#caecbb",
+                      "on-error-container": "#93000a",
+                      "primary-fixed": "#bceecb",
+                      "inverse-surface": "#362f25",
+                      "surface-bright": "#fff8f3",
+                      "inverse-primary": "#a0d2b0",
+                      "background": "#fff8f3",
+                      "on-tertiary-fixed-variant": "#54387e",
+                      "tertiary-container": "#70539b",
+                      "surface-container-high": "#f3e6d6",
+                      "surface-container-low": "#fff2e1",
+                      "primary-container": "#3d6b4f",
+                      "on-surface": "#211b11",
+                      "tertiary": "#573b81",
+                      "surface-tint": "#3a684c",
+                      "outline-variant": "#c1c9c0",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "secondary-container": "#c8e9b8",
+                      "surface-variant": "#ede1d1",
+                      "outline": "#717972",
+                      "on-secondary-fixed": "#062103",
+                      "surface-container-highest": "#ede1d1",
+                      "surface-container": "#f9ecdc",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "secondary": "#49663f",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#002110",
+                      "error": "#ba1a1a",
+                      "on-primary-container": "#b7e9c6",
+                      "on-tertiary-fixed": "#270550",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#211b11",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#e8d6ff",
+                      "error-container": "#ffdad6",
+                      "on-surface-variant": "#414942",
+                      "on-primary": "#ffffff",
+                      "surface": "#fff8f3",
+                      "primary": "#255338",
+                      "inverse-on-surface": "#fcefde",
+                      "on-primary-fixed-variant": "#214f36",
+                      "tertiary-fixed": "#ecdcff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "xl": "40px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "margin-mobile": "20px",
+                      "margin-desktop": "64px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Playfair Display"],
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "display-hero": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "title-serif": ["Merriweather"],
+                      "label-caps": ["Cinzel"],
+                      "data-price": ["Space Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background font-body-md text-on-surface min-h-screen flex">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant flex flex-col items-center py-lg space-y-xl z-50">
+<div class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary mb-xl">T</div>
+<nav class="flex flex-col items-center space-y-lg w-full">
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<button class="text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-tertiary after:rounded-full hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</button>
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">leaderboard</span>
+</button>
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">brush</span>
+</button>
+</nav>
+<div class="mt-auto space-y-lg">
+<button class="text-on-surface-variant/70 dark:text-on-surface-variant/50 hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[72px] w-full flex flex-col min-h-screen">
+<!-- TopAppBar (Wizard Context) -->
+<header class="sticky top-0 z-40 bg-background/80 backdrop-blur-md h-[72px] flex items-center justify-between px-lg w-full">
+<div class="flex items-center gap-md">
+<span class="font-headline-lg text-headline-lg italic text-primary">Tohfa</span>
+<span class="h-6 w-[1px] bg-outline-variant"></span>
+<span class="font-title-serif text-title-serif text-primary">New Listing Wizard</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="px-md py-sm rounded-lg border border-outline text-secondary font-medium hover:bg-surface-container-low transition-all active:scale-[0.98]">Save Draft</button>
+<button class="px-lg py-sm rounded-lg bg-primary text-white font-medium hover:opacity-90 shadow-sm active:scale-[0.98]">Next Step</button>
+</div>
+</header>
+<!-- Horizontal Step Progress -->
+<section class="px-margin-desktop py-lg border-b border-outline-variant bg-surface-container-lowest">
+<div class="max-w-5xl mx-auto w-full">
+<div class="flex items-center justify-between relative">
+<!-- Progress Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] -translate-y-1/2 bg-outline-variant z-0">
+<div class="h-full bg-primary w-[50%]"></div>
+</div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">Photos</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">Details</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center border-2 border-primary shadow-[0_0_0_4px_rgba(37,83,56,0.1)]">
+<span class="text-sm font-bold">3</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary font-bold">Pricing &amp; Stock</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center border-2 border-outline-variant">
+<span class="text-sm font-bold">4</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Shipping</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center border-2 border-outline-variant">
+<span class="text-sm font-bold">5</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Preview</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center border-2 border-outline-variant">
+<span class="text-sm font-bold">6</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Publish</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Area -->
+<section class="flex flex-1 botanical-overlay">
+<!-- Left 60% Form -->
+<div class="w-3/5 p-margin-desktop border-r border-outline-variant space-y-xl relative overflow-hidden">
+<div class="absolute -top-10 -right-10 opacity-10 pointer-events-none rotate-12">
+<img alt="Botanical Fern" class="w-64 h-64 object-contain" data-alt="A highly detailed close-up of a delicate dried fern leaf pressed between sheets of off-white handmade paper. The lighting is soft and diffused, creating a serene and organic atmosphere consistent with an artisan studio aesthetic. The color palette features muted sage greens and warm ivory tones, emphasizing a natural, handcrafted texture and literary mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAimnbYiqoS5Bc6HHDPMtCntvLkm5U9Ou0RWkFW2X4fiJSOyZfOBf-XgOFGeMFzhtOH1AroZWD23KJ3KbHHbASECTkV765iS8X_86nijZT1-rt9nvbCWR0MDpBaUUO4SY7wpF3HD_vRzkMkRgo6KG19QPcuQ53N1sYcIeZcH2XWCkgx5L1S2gIObxs0t2RdjbnXh2vpvY_F6gpSuu8_VHuLkn9Aob7uKP33B4I3dPxDDBSJL2XSwQJgd6F7gAdTN-stHqkX10whKd0"/>
+</div>
+<div class="max-w-2xl space-y-xl relative z-10">
+<!-- Base Price Section -->
+<div class="space-y-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">The Worth of Your Craft</h2>
+<div class="p-lg rounded-xl bg-surface-container-lowest border border-secondary/20 shadow-sm flex items-center justify-between">
+<div class="space-y-xs">
+<label class="font-label-caps text-on-surface-variant">Base Listing Price</label>
+<p class="text-sm text-on-surface-variant italic">Consider materials, time, and your unique artistry.</p>
+</div>
+<div class="flex items-center border-b-2 border-primary pb-sm w-48 group">
+<span class="font-data-price text-headline-lg text-primary mr-sm">₹</span>
+<input class="w-full bg-transparent border-none p-0 font-data-price text-headline-lg text-primary focus:ring-0" placeholder="0.00" type="number" value="2450"/>
+</div>
+</div>
+</div>
+<!-- Variants Section -->
+<div class="space-y-md">
+<div class="flex justify-between items-end">
+<h3 class="font-title-serif text-title-serif text-primary">Artisan Variants</h3>
+<button class="flex items-center gap-xs text-primary font-bold text-sm hover:underline">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+                                Add variant
+                            </button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container text-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant">
+<tr>
+<th class="px-md py-sm">Variant Name</th>
+<th class="px-md py-sm">Price Adjustment</th>
+<th class="px-md py-sm text-center">Capacity</th>
+<th class="px-md py-sm w-12"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr>
+<td class="px-md py-md">
+<input class="w-full bg-transparent border-none p-0 text-sm focus:ring-0" type="text" value="Embroidered Monogram"/>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="text-secondary font-data-price">₹</span>
+<input class="w-20 bg-transparent border-none p-0 font-data-price text-sm focus:ring-0" type="number" value="450"/>
+</div>
+</td>
+<td class="px-md py-md text-center">
+<input class="w-12 bg-transparent border-none p-0 text-center text-sm focus:ring-0" type="number" value="5"/>
+</td>
+<td class="px-md py-md text-on-surface-variant/40 hover:text-error cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</td>
+</tr>
+<tr class="bg-surface-container-low/30">
+<td class="px-md py-md">
+<input class="w-full bg-transparent border-none p-0 text-sm focus:ring-0" type="text" value="Premium Oak Frame"/>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="text-secondary font-data-price">₹</span>
+<input class="w-20 bg-transparent border-none p-0 font-data-price text-sm focus:ring-0" type="number" value="1200"/>
+</div>
+</td>
+<td class="px-md py-md text-center">
+<input class="w-12 bg-transparent border-none p-0 text-center text-sm focus:ring-0" type="number" value="2"/>
+</td>
+<td class="px-md py-md text-on-surface-variant/40 hover:text-error cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Capacity Section -->
+<div class="space-y-md border-t border-outline-variant pt-lg">
+<h3 class="font-title-serif text-title-serif text-primary">Production Limits</h3>
+<div class="grid grid-cols-3 gap-lg">
+<div class="p-md rounded-lg border border-outline-variant bg-surface-container-low/50">
+<label class="font-label-caps text-[10px] block mb-xs">Daily Max Slots</label>
+<input class="w-full bg-transparent border-none p-0 text-xl font-data-price text-primary focus:ring-0" id="daily-cap" type="number" value="4"/>
+</div>
+<div class="p-md rounded-lg border border-outline-variant bg-surface-container-low/20">
+<label class="font-label-caps text-[10px] block mb-xs">Weekly Auto-Calc</label>
+<input class="w-full bg-transparent border-none p-0 text-xl font-data-price text-on-surface-variant/60" disabled="" type="text" value="24 Slots"/>
+</div>
+<div class="p-md rounded-lg border border-outline-variant bg-surface-container-low/50">
+<label class="font-label-caps text-[10px] block mb-xs">Monthly Ceiling</label>
+<input class="w-full bg-transparent border-none p-0 text-xl font-data-price text-primary focus:ring-0" type="number" value="90"/>
+</div>
+</div>
+</div>
+<!-- Pre-booking Toggle -->
+<div class="flex items-center justify-between p-lg rounded-xl border border-outline-variant bg-surface-container-lowest">
+<div class="space-y-xs">
+<span class="font-title-serif text-sm">Allow Pre-booking</span>
+<p class="text-xs text-on-surface-variant">Let customers reserve slots in advance</p>
+</div>
+<div class="flex items-center gap-md">
+<select class="rounded-lg border-outline-variant bg-surface-container text-sm font-medium py-1 px-md focus:border-primary focus:ring-1 focus:ring-primary">
+<option>1 Week</option>
+<option selected="">2 Weeks</option>
+<option>1 Month</option>
+</select>
+<div class="w-12 h-6 bg-primary rounded-full relative cursor-pointer flex items-center px-1">
+<div class="w-4 h-4 bg-white rounded-full ml-auto"></div>
+</div>
+</div>
+</div>
+<!-- Order Limits -->
+<div class="grid grid-cols-2 gap-lg pt-md">
+<div class="space-y-xs">
+<label class="font-label-caps text-[10px]">Min order Qty</label>
+<input class="w-full rounded-lg border-outline-variant bg-surface-container-lowest p-md focus:border-primary" type="number" value="1"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-[10px]">Max per single order</label>
+<input class="w-full rounded-lg border-outline-variant bg-surface-container-lowest p-md focus:border-primary" type="number" value="5"/>
+</div>
+</div>
+<!-- Festive Cutoff & Raw Materials -->
+<div class="grid grid-cols-2 gap-lg">
+<div class="p-lg rounded-xl border border-secondary-container bg-secondary-container/10">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-secondary">event_busy</span>
+<span class="font-title-serif text-sm">Festive Cutoff</span>
+</div>
+<input class="w-full bg-transparent border-b border-secondary/30 pb-xs text-sm placeholder:italic focus:border-secondary focus:ring-0" placeholder="Manage manually..." type="text"/>
+</div>
+<div class="p-lg rounded-xl border border-tertiary/20 bg-surface-container-lowest">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-tertiary">inventory</span>
+<span class="font-title-serif text-sm">Raw Materials</span>
+</div>
+<a class="text-tertiary text-xs font-bold hover:underline" href="#">Link to Inventory →</a>
+<div class="mt-sm flex items-center justify-between">
+<span class="text-[10px] font-label-caps opacity-70">Auto-deduction</span>
+<div class="w-8 h-4 bg-outline-variant rounded-full relative cursor-pointer flex items-center px-1">
+<div class="w-2.5 h-2.5 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right 40% Summary Panel -->
+<div class="w-2/5 p-margin-desktop bg-surface-container-low/40">
+<div class="sticky top-28 space-y-xl">
+<!-- Pricing Summary Card -->
+<div class="bg-surface-container-lowest p-xl rounded-2xl border border-outline-variant shadow-lg relative overflow-hidden">
+<!-- Floral Watermark -->
+<div class="absolute -bottom-4 -left-4 pressed-flower-texture text-primary">
+<span class="material-symbols-outlined text-[80px]">eco</span>
+</div>
+<h3 class="font-label-caps text-on-surface-variant mb-lg">Revenue Projection</h3>
+<div class="space-y-md border-b border-outline-variant pb-lg mb-lg">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant italic">Base Artist Value</span>
+<span class="font-data-price text-primary">₹ 2,450.00</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant/70">Studio Platform Fee (8%)</span>
+<span class="font-data-price text-error">- ₹ 196.00</span>
+</div>
+</div>
+<div class="flex justify-between items-center mb-xl">
+<div class="space-y-xs">
+<span class="font-title-serif text-primary">Estimated Payout</span>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">per completed order</p>
+</div>
+<span class="font-data-price text-2xl text-primary font-bold">₹ 2,254.00</span>
+</div>
+<button class="w-full py-md rounded-xl bg-primary text-white font-bold hover:opacity-90 shadow-md transition-all">Preview Payout Schedule</button>
+</div>
+<!-- Mini Capacity Calendar -->
+<div class="bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant shadow-sm">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-title-serif text-sm text-primary">Next 7 Days Availability</h3>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-[10px] font-label-caps">Booked</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full border border-secondary"></div>
+<span class="text-[10px] font-label-caps">Open</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-sm">
+<!-- Mon -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">MON</span>
+<div class="flex flex-col gap-1 w-full">
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+</div>
+</div>
+<!-- Tue -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">TUE</span>
+<div class="flex flex-col gap-1 w-full">
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+</div>
+</div>
+<!-- Wed -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">WED</span>
+<div class="flex flex-col gap-1 w-full">
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+</div>
+</div>
+<!-- Thu -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">THU</span>
+<div class="flex flex-col gap-1 w-full">
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 bg-primary rounded-full w-full"></div>
+<div class="h-2 bg-primary rounded-full w-full"></div>
+</div>
+</div>
+<!-- Fri -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">FRI</span>
+<div class="flex flex-col gap-1 w-full">
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+<div class="h-2 border border-secondary rounded-full w-full"></div>
+</div>
+</div>
+<!-- Sat -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">SAT</span>
+<div class="flex flex-col gap-1 w-full text-secondary/30">
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+</div>
+</div>
+<!-- Sun -->
+<div class="flex flex-col items-center gap-xs">
+<span class="text-[10px] font-label-caps opacity-50">SUN</span>
+<div class="flex flex-col gap-1 w-full text-secondary/30">
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+<div class="h-2 bg-surface-container-high rounded-full w-full"></div>
+</div>
+</div>
+</div>
+<p class="mt-md text-[10px] text-center italic text-on-surface-variant">Saturday &amp; Sunday are marked as personal studio holidays.</p>
+</div>
+<!-- Info Tip -->
+<div class="p-md bg-secondary-container/20 rounded-xl border border-secondary/10 flex gap-md">
+<span class="material-symbols-outlined text-secondary">lightbulb</span>
+<p class="text-xs text-on-secondary-fixed-variant leading-relaxed">
+                            Pro Tip: 85% of top artisans allow pre-booking of at least 2 weeks to stabilize their monthly commission flow.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer (Shared Component Structure) -->
+<footer class="relative w-full mt-auto border-t border-outline-variant bg-surface-container-lowest flex flex-col md:flex-row justify-between items-center py-md px-margin-desktop">
+<span class="font-label-caps text-label-caps text-primary">© 2024 Tohfa Artisan Studio. Handcrafted with intention.</span>
+<div class="flex gap-lg mt-md md:mt-0">
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-tertiary transition-colors" href="#">Support</a>
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-tertiary transition-colors" href="#">Studio Guidelines</a>
+<a class="font-label-caps text-label-caps text-on-secondary-fixed-variant hover:text-tertiary transition-colors" href="#">Privacy</a>
+</div>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for capacity sync
+        const dailyInput = document.getElementById('daily-cap');
+        const weeklyCalc = document.querySelector('input[disabled]');
+
+        dailyInput.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value) || 0;
+            weeklyCalc.value = `${val * 6} Slots`; // Assuming 6 working days
+        });
+
+        // Soft active state for variant rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                row.classList.add('scale-[0.99]');
+                setTimeout(() => row.classList.remove('scale-[0.99]'), 100);
+            });
+        });
+    </script>
+</body></html>

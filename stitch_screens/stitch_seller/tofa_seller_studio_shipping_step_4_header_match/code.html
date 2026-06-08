@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Artisan Studio - Create Listing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500&amp;family=Merriweather:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#270550",
+                    "tertiary-fixed": "#ecdcff",
+                    "secondary": "#49663f",
+                    "on-tertiary-container": "#e8d6ff",
+                    "secondary-container": "#c8e9b8",
+                    "on-secondary-fixed": "#062103",
+                    "surface-dim": "#e5d8c8",
+                    "on-secondary-container": "#4d6a43",
+                    "surface-container-high": "#f3e6d6",
+                    "on-primary-fixed-variant": "#214f36",
+                    "surface-bright": "#fff8f3",
+                    "surface-variant": "#ede1d1",
+                    "surface-container-low": "#fff2e1",
+                    "surface-tint": "#3a684c",
+                    "primary": "#255338",
+                    "on-primary": "#ffffff",
+                    "background": "#fff8f3",
+                    "on-surface": "#211b11",
+                    "outline": "#717972",
+                    "outline-variant": "#c1c9c0",
+                    "surface": "#fff8f3",
+                    "tertiary": "#573b81"
+            },
+            "fontFamily": {
+                    "label-caps": ["Cinzel"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-hero": ["Playfair Display"],
+                    "title-serif": ["Merriweather"],
+                    "body-md": ["DM Sans"],
+                    "data-price": ["Space Mono"]
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "xl": "40px"
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/pinstriped-suit.png");
+            opacity: 0.05;
+        }
+        .step-completed {
+            @apply bg-primary text-white;
+        }
+        .step-active {
+            @apply ring-2 ring-primary ring-offset-2 bg-secondary text-white;
+        }
+        .step-upcoming {
+            @apply bg-surface-container-high text-on-surface-variant;
+        }
+        /* Custom scrollbar for a journal feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #fff8f3; }
+        ::-webkit-scrollbar-thumb { background: #c1c9c0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden">
+<!-- Fixed Side Navigation (The Anchor) -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface-container-low border-r border-outline-variant flex flex-col items-center py-lg gap-md z-50">
+<div class="font-display-hero text-headline-lg italic text-primary mb-xl">T</div>
+<nav class="flex flex-col gap-lg flex-1">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="home">home</button>
+<!-- Active Tab: Catalog -->
+<button class="material-symbols-outlined text-primary relative after:content-[''] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-tertiary after:rounded-full" data-icon="grid_view">grid_view</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="shopping_bag">shopping_bag</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="calendar_today">calendar_today</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="inventory_2">inventory_2</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="insights">insights</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="forum">forum</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="star">star</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="movie_filter">movie_filter</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="settings">settings</button>
+</nav>
+<button class="p-sm rounded-full bg-primary text-white hover:scale-110 transition-transform shadow-lg group relative" title="View Store">
+<span class="material-symbols-outlined" data-icon="store">store</span>
+<span class="absolute left-16 bg-primary text-white px-md py-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-label-caps">View Store</span>
+</button>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[72px] min-h-screen">
+<!-- Top Navigation / Progress Header -->
+<header class="sticky top-0 z-40 bg-background/80 backdrop-blur-md px-margin-desktop h-20 flex items-center border-b border-outline-variant/30">
+<div class="flex items-center justify-between w-full">
+<div class="flex flex-col">
+<h1 class="font-headline-lg text-primary italic">Create Listing</h1>
+<p class="text-[10px] font-label-caps text-secondary tracking-widest uppercase">Step 4: Logistics &amp; Care</p>
+</div>
+<!-- Progress Tracker -->
+<div class="flex items-center gap-sm">
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-full flex items-center justify-center text-xs step-completed"><span class="material-symbols-outlined text-sm" data-icon="check">check</span></span>
+<div class="hidden lg:block h-[1px] w-8 bg-primary"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-full flex items-center justify-center text-xs step-completed"><span class="material-symbols-outlined text-sm" data-icon="check">check</span></span>
+<div class="hidden lg:block h-[1px] w-8 bg-primary"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-full flex items-center justify-center text-xs step-completed"><span class="material-symbols-outlined text-sm" data-icon="check">check</span></span>
+<div class="hidden lg:block h-[1px] w-8 bg-primary"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-10 h-10 rounded-full flex items-center justify-center text-xs step-active font-bold">4</span>
+<div class="hidden lg:block h-[1px] w-8 bg-outline-variant"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-full flex items-center justify-center text-xs step-upcoming">5</span>
+<div class="hidden lg:block h-[1px] w-8 bg-outline-variant"></div>
+</div>
+<span class="w-8 h-8 rounded-full flex items-center justify-center text-xs step-upcoming">6</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-secondary font-medium hover:underline text-sm">Save Draft</button>
+<button class="bg-primary text-white px-lg py-sm rounded shadow-md hover:bg-opacity-90 transition-all font-medium text-sm flex items-center gap-2">
+                        Next Step
+                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Wizard Content -->
+<div class="flex flex-col md:flex-row p-margin-desktop gap-xl">
+<!-- Left Form Panel (60%) -->
+<section class="w-full md:w-[60%] flex flex-col gap-xl">
+<!-- Shipping Method -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant relative overflow-hidden group">
+<div class="botanical-overlay absolute inset-0 pointer-events-none"></div>
+<h3 class="font-title-serif text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="local_shipping">local_shipping</span>
+                        Shipping Method
+                    </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<label class="flex items-center gap-md p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors">
+<input checked="" class="rounded text-primary focus:ring-primary h-5 w-5" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-medium text-sm">Courier</span>
+<span class="text-xs text-on-surface-variant">Shiprocket / Delhivery</span>
+</div>
+</label>
+<label class="flex items-center gap-md p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors">
+<input class="rounded text-primary focus:ring-primary h-5 w-5" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-medium text-sm">Local Delivery</span>
+<span class="text-xs text-on-surface-variant">Hyper-local couriers</span>
+</div>
+</label>
+<label class="flex items-center gap-md p-md border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors">
+<input class="rounded text-primary focus:ring-primary h-5 w-5" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-medium text-sm">Buyer Pickup</span>
+<span class="text-xs text-on-surface-variant">Studio visits only</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Packaging Type -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant relative overflow-hidden">
+<div class="botanical-overlay absolute inset-0 pointer-events-none"></div>
+<h3 class="font-title-serif text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="inventory">inventory</span>
+                        Packaging Type
+                    </h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-md">
+<label class="relative flex flex-col items-center gap-2 p-md border border-outline-variant rounded-lg cursor-pointer hover:border-primary peer-checked:bg-primary/10 group">
+<input checked="" class="sr-only peer" name="packaging" type="radio"/>
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform" data-icon="box">box</span>
+<span class="text-xs font-medium">Standard</span>
+<div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-lg pointer-events-none"></div>
+</label>
+<label class="relative flex flex-col items-center gap-2 p-md border border-outline-variant rounded-lg cursor-pointer hover:border-primary group">
+<input class="sr-only peer" name="packaging" type="radio"/>
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform" data-icon="brand_awareness">brand_awareness</span>
+<span class="text-xs font-medium text-center">Custom Branded</span>
+<div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-lg pointer-events-none"></div>
+</label>
+<label class="relative flex flex-col items-center gap-2 p-md border border-outline-variant rounded-lg cursor-pointer hover:border-primary group">
+<input class="sr-only peer" name="packaging" type="radio"/>
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform" data-icon="eco">eco</span>
+<span class="text-xs font-medium text-center">Eco-Friendly</span>
+<div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-lg pointer-events-none"></div>
+</label>
+<label class="relative flex flex-col items-center gap-2 p-md border border-outline-variant rounded-lg cursor-pointer hover:border-primary group">
+<input class="sr-only peer" name="packaging" type="radio"/>
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform" data-icon="minor_crash">minor_crash</span>
+<span class="text-xs font-medium text-center">Fragile-Rated</span>
+<div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-lg pointer-events-none"></div>
+</label>
+</div>
+</div>
+<!-- Packaging Checklist Builder -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant relative overflow-hidden">
+<h3 class="font-title-serif text-primary mb-md flex items-center justify-between">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="checklist">checklist</span>
+                            Packaging Checklist
+                        </span>
+<button class="text-xs font-label-caps text-secondary hover:text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span> Add Item
+                        </button>
+</h3>
+<div class="space-y-sm">
+<div class="flex items-center gap-md p-sm bg-surface-container-low rounded border border-outline-variant/30 group">
+<span class="material-symbols-outlined text-outline-variant cursor-grab active:cursor-grabbing" data-icon="drag_indicator">drag_indicator</span>
+<span class="text-sm flex-1">Clean the piece from studio dust</span>
+<button class="material-symbols-outlined text-outline-variant hover:text-error text-sm opacity-0 group-hover:opacity-100 transition-opacity" data-icon="delete">delete</button>
+</div>
+<div class="flex items-center gap-md p-sm bg-surface-container-low rounded border border-outline-variant/30 group">
+<span class="material-symbols-outlined text-outline-variant cursor-grab active:cursor-grabbing" data-icon="drag_indicator">drag_indicator</span>
+<span class="text-sm flex-1">Wrap in honeycomb paper</span>
+<button class="material-symbols-outlined text-outline-variant hover:text-error text-sm opacity-0 group-hover:opacity-100 transition-opacity" data-icon="delete">delete</button>
+</div>
+<div class="flex items-center gap-md p-sm bg-surface-container-low rounded border border-outline-variant/30 group">
+<span class="material-symbols-outlined text-outline-variant cursor-grab active:cursor-grabbing" data-icon="drag_indicator">drag_indicator</span>
+<span class="text-sm flex-1">Add wax seal to inner envelope</span>
+<button class="material-symbols-outlined text-outline-variant hover:text-error text-sm opacity-0 group-hover:opacity-100 transition-opacity" data-icon="delete">delete</button>
+</div>
+</div>
+</div>
+<!-- Dispatch SLA & Return Policy -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-xl">
+<div class="bg-white p-lg rounded-xl border border-outline-variant">
+<label class="font-title-serif text-primary block mb-sm">Dispatch SLA</label>
+<div class="flex items-center gap-md">
+<input class="w-20 bg-surface-container-low border-outline-variant rounded-md text-center font-data-price text-primary" type="number" value="3"/>
+<span class="text-sm text-on-surface-variant italic">days after order</span>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant">
+<label class="font-title-serif text-primary block mb-sm">Return Policy</label>
+<select class="w-full bg-surface-container-low border-outline-variant rounded-md text-sm text-on-surface-variant focus:ring-primary">
+<option>No returns</option>
+<option selected="">7-day returns</option>
+<option>15-day returns</option>
+</select>
+<p class="text-[10px] text-error mt-xs hidden">* Locked for customized items</p>
+</div>
+</div>
+<!-- Weight & Dimensions -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant">
+<h3 class="font-title-serif text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="square_foot">square_foot</span>
+                        Weight &amp; Dimensions
+                    </h3>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-md">
+<div class="flex flex-col gap-xs">
+<span class="text-[10px] font-label-caps text-secondary uppercase">Weight (g)</span>
+<input class="w-full font-data-price bg-surface-container-low border-outline-variant rounded-md p-sm text-primary" placeholder="450" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<span class="text-[10px] font-label-caps text-secondary uppercase">Length (cm)</span>
+<input class="w-full font-data-price bg-surface-container-low border-outline-variant rounded-md p-sm text-primary" placeholder="20" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<span class="text-[10px] font-label-caps text-secondary uppercase">Width (cm)</span>
+<input class="w-full font-data-price bg-surface-container-low border-outline-variant rounded-md p-sm text-primary" placeholder="15" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<span class="text-[10px] font-label-caps text-secondary uppercase">Height (cm)</span>
+<input class="w-full font-data-price bg-surface-container-low border-outline-variant rounded-md p-sm text-primary" placeholder="10" type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Live Preview Panel (40%) -->
+<aside class="w-full md:w-[40%] flex flex-col gap-lg sticky top-24 h-fit">
+<div class="bg-primary/5 p-lg rounded-2xl border border-primary/20 relative overflow-hidden shadow-inner">
+<h4 class="font-label-caps text-secondary text-xs mb-lg tracking-widest uppercase">Buyer View Preview</h4>
+<div class="flex flex-col gap-md">
+<!-- Product Preview Card (Simplified) -->
+<div class="bg-white rounded-xl overflow-hidden border border-outline-variant shadow-sm flex flex-col">
+<img alt="Product Preview" class="w-full h-48 object-cover" data-alt="A macro photograph of a handcrafted ceramic vase with a textured matte sage green glaze, standing on a rustic wooden studio table. The lighting is soft and golden, coming from a nearby window, casting a gentle shadow. The scene evokes a quiet, artisanal workspace filled with natural textures and a sense of slow craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBNJajxOIiZl5zUHB3xhSx81XVxuzKioX-_HcYHxU31TUOiHnaWMTEUR92M_sH1KuQ54zbfTYmfPbIr1NWAIqpHmkCkMOboyMDFWthF0doDKH_FxFf1HNDEoRaEJybCSReywDAB0G6xY4b2d10p2sOAcpA4VRLleg0EAxAOt6xbolejQztnFawMLM7H_JCq7bMdrRS138ymDr3K5OGlmpahwoEPWe7z6eT0-Jh2bnB5muqYbYoZ_ja3yBCCK9vOwpKQwEVTtRTGzc"/>
+<div class="p-md flex flex-col gap-sm">
+<h5 class="font-title-serif text-primary">Aura Ceramic Bud Vase</h5>
+<div class="flex flex-wrap gap-xs">
+<!-- Dynamic Shipping Badge -->
+<span class="px-2 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="bolt">bolt</span> Ships in 3 days
+                                    </span>
+<span class="px-2 py-1 rounded-full bg-surface-container-high text-secondary text-[10px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="eco">eco</span> Eco-Friendly Packaging
+                                    </span>
+<span class="px-2 py-1 rounded-full bg-surface-container-high text-secondary text-[10px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="assignment_return">assignment_return</span> 7-Day Returns
+                                    </span>
+</div>
+</div>
+</div>
+<!-- Logistics Detail (Buyer Perspective) -->
+<div class="flex items-center gap-md p-md bg-white/60 backdrop-blur rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+<div>
+<p class="text-xs font-bold text-primary">TOFA Logistics Guaranteed</p>
+<p class="text-[10px] text-on-surface-variant">Real-time tracking and insured fragile handling via Delhivery.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Studio Tip Card -->
+<div class="bg-surface-container-high p-lg rounded-xl border border-secondary/20 relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+<span class="material-symbols-outlined text-[120px] text-secondary" data-icon="eco">eco</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-label-caps text-[10px] tracking-widest uppercase">Studio Tip</span>
+</div>
+<h5 class="font-title-serif text-primary mb-xs">Safe Travels</h5>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                            "For ceramics and glass, ensure there's at least 2 inches of padding on all sides. Honeycomb paper isn't just eco-friendly—its structural tension provides superior impact absorption over traditional plastic wrap."
+                        </p>
+<div class="mt-md pt-md border-t border-secondary/10">
+<p class="text-[10px] italic text-secondary">— Mira, TOFA Master Potter</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Success Toast (Hidden) -->
+<div class="fixed bottom-margin-desktop right-margin-desktop bg-primary text-white px-lg py-md rounded-xl shadow-2xl flex items-center gap-md translate-y-24 opacity-0 transition-all duration-500 z-[100]" id="toast">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+<span class="text-sm font-medium">Draft saved successfully</span>
+</div>
+<script>
+        // Micro-interactions
+        const inputs = document.querySelectorAll('input, select');
+        const toast = document.getElementById('toast');
+
+        // Simple draft save simulation
+        let saveTimeout;
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                clearTimeout(saveTimeout);
+                toast.classList.remove('translate-y-24', 'opacity-0');
+                saveTimeout = setTimeout(() => {
+                    toast.classList.add('translate-y-24', 'opacity-0');
+                }, 3000);
+            });
+        });
+
+        // Hover animation for side nav
+        const navButtons = document.querySelectorAll('aside nav button');
+        navButtons.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.classList.add('scale-110');
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.classList.remove('scale-110');
+            });
+        });
+    </script>
+</body></html>

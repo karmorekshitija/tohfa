@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Preview Listing | TOFA Artisan Studio</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#211b11",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "primary-fixed": "#bceecb",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#002110",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "tertiary": "#573b81",
+                        "surface-dim": "#e5d8c8",
+                        "on-secondary-container": "#4d6a43",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ecdcff",
+                        "surface": "#fff8f3",
+                        "inverse-on-surface": "#fcefde",
+                        "inverse-primary": "#a0d2b0",
+                        "secondary": "#49663f",
+                        "surface-variant": "#ede1d1",
+                        "outline": "#717972",
+                        "secondary-fixed": "#caecbb",
+                        "outline-variant": "#c1c9c0",
+                        "on-secondary-fixed": "#062103",
+                        "on-tertiary-container": "#e8d6ff",
+                        "primary": "#255338",
+                        "on-error-container": "#93000a",
+                        "on-background": "#211b11",
+                        "secondary-container": "#c8e9b8",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "background": "#fff8f3",
+                        "on-surface-variant": "#414942",
+                        "on-primary-fixed-variant": "#214f36",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-container": "#f9ecdc",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#3d6b4f",
+                        "tertiary-container": "#70539b",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#fff2e1",
+                        "surface-tint": "#3a684c",
+                        "on-tertiary-fixed": "#270550",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container-high": "#f3e6d6",
+                        "inverse-surface": "#362f25",
+                        "surface-container-highest": "#ede1d1",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fff8f3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin-desktop": "64px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "margin-mobile": "20px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "label-caps": ["Cinzel"],
+                        "data-price": ["Space Mono"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "title-serif": ["Merriweather"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-completed { @apply text-primary-container; }
+        .botanical-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(73, 102, 63, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .annotation-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .7; transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest font-body-md text-on-surface overflow-x-hidden">
+<!-- Persistent SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface dark:bg-surface-dim border-r border-outline-variant dark:border-outline flex flex-col items-center py-lg gap-md z-50">
+<div class="font-display-hero text-headline-lg italic text-primary dark:text-primary-fixed mb-xl">T</div>
+<div class="flex flex-col gap-lg items-center">
+<button class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-200">home</button>
+<div class="relative after:content-[''] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-tertiary after:rounded-full">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">grid_view</button>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">shopping_bag</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">calendar_today</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">inventory_2</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">insights</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">forum</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">star</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">settings</button>
+</div>
+<div class="mt-auto">
+<img alt="Artisan Profile" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZftMgZakkOYrGKXiHb9GvOHfUxWuFhrD8IUyXrlVhOXeWHqb7NaV5e5nLtxyF8PhzZmHqw0aOJQh932Pk6t7HcniT97g7sU675umB_hOUYshPojubGrN2A8ynoEXga5pgrhNjnaI1775Spy61DExdGboCL6t0GpCg4WZDudaRa24oXOVrZDxqi1nz5F1ttsvah80KdO_HG6sQo2sUXAWutG42KBw9fg2rcGHvO5HHqDM81nPHE3b7OT7DGXOUwA64xF4cKnqfy7A"/>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[72px] min-h-screen flex flex-col botanical-bg">
+<!-- Top Step Progress Bar -->
+<header class="h-16 flex items-center justify-between px-margin-desktop bg-surface/80 backdrop-blur-md sticky top-0 z-40">
+<div class="flex items-center gap-md">
+<span class="font-display-hero text-headline-lg text-primary italic">Tofha Artisan Studio</span>
+<span class="text-outline-variant">/</span>
+<span class="font-body-md text-on-surface-variant">New Listing Preview</span>
+</div>
+<nav class="flex items-center gap-xl">
+<div class="flex items-center gap-sm text-primary-container">
+<span class="material-symbols-outlined text-md" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-caps font-label-caps">Photos</span>
+</div>
+<div class="flex items-center gap-sm text-primary-container">
+<span class="material-symbols-outlined text-md" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-caps font-label-caps">Details</span>
+</div>
+<div class="flex items-center gap-sm text-primary-container">
+<span class="material-symbols-outlined text-md" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-caps font-label-caps">Pricing</span>
+</div>
+<div class="flex items-center gap-sm text-primary-container">
+<span class="material-symbols-outlined text-md" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-caps font-label-caps">Shipping</span>
+</div>
+<div class="flex items-center gap-sm text-primary border-b-2 border-primary pb-1">
+<span class="text-label-caps font-label-caps">Preview</span>
+</div>
+<div class="flex items-center gap-sm text-outline-variant">
+<span class="text-label-caps font-label-caps">Publish</span>
+</div>
+</nav>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant">help_outline</span>
+</div>
+</header>
+<!-- Preview Area -->
+<section class="flex-1 py-xl px-margin-desktop flex flex-col items-center">
+<!-- Preview Controls -->
+<div class="w-full max-w-[960px] flex justify-between items-end mb-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary">Final Review</h1>
+<p class="text-on-surface-variant">This is how your masterpiece will appear to collectors.</p>
+</div>
+<div class="bg-surface-container-low px-md py-sm rounded-full border border-outline-variant flex items-center gap-sm">
+<span class="text-label-caps font-label-caps text-secondary">Preview as buyer</span>
+<div class="w-10 h-5 bg-primary-container rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Browser Mockup -->
+<div class="w-full max-w-[960px] bg-white rounded-xl shadow-[0_12px_48px_rgba(58,51,40,0.08)] border border-outline-variant overflow-hidden relative">
+<!-- Browser Header -->
+<div class="h-10 bg-surface-container-highest border-b border-outline-variant flex items-center px-md gap-sm">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-container"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed"></div>
+</div>
+<div class="flex-1 mx-xl bg-white rounded-md h-6 border border-outline-variant flex items-center px-sm">
+<span class="text-[10px] text-outline">tofha.artisan/studio/moonlight-jasmine-resin-study</span>
+</div>
+</div>
+<!-- Mockup Content (Buyer View) -->
+<div class="p-xl grid grid-cols-12 gap-xl bg-surface-container-lowest">
+<!-- Product Image Section -->
+<div class="col-span-7 space-y-md relative">
+<div class="relative group">
+<img alt="Moonlight Jasmine Resin Study" class="w-full h-[540px] object-cover rounded-xl border border-sage" data-alt="A highly detailed close-up of a handcrafted resin botanical study featuring delicate white jasmine petals suspended in crystal clear resin. The piece is set against a textured, sun-drenched wooden artisan table with soft shadows. The lighting is warm and natural, evoking a quiet afternoon in a serene artist studio. The composition emphasizes the tactile, organic quality of the flower and the smooth, glass-like finish of the resin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4fjVX2uk4BGlxHaP7NmTsMIehV8_X4aO1LNSynx8Y-DMTjDgnCgxbK_4d9dvmlQkmMhg_HBUWx8ic9m4PH1O5MGYDyTstrfgxX8Lejkwov27zVuxQ3wTV2dBw5vpRZK0fOoq44tVOU0Rb_YTv9rktVoC9yYVbRGdi_rJAT_NJhDYpQUQBStk-mDF_iCre3NbCWexwt_OGFJZKGd9Is_eiyxijEJQ4vOP-K7lYPViRnnYLgr9Yv1sBMiVMZzmTtjxmuhhtV0OS3Bc"/>
+<!-- Annotation Tooltip: Photo -->
+<div class="absolute top-1/4 right-8 z-10 annotation-pulse">
+<div class="bg-primary/90 text-white px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 shadow-lg backdrop-blur-sm">
+<span class="material-symbols-outlined text-sm">info</span>
+<span>High-res focus on details</span>
+</div>
+<div class="w-3 h-3 bg-primary rotate-45 -mt-1.5 ml-4"></div>
+</div>
+</div>
+<div class="flex gap-md">
+<img class="w-20 h-20 object-cover rounded-lg border border-outline-variant" data-alt="Secondary product shot of botanical resin jewelry resting on a pieces of raw linen. Soft daylight highlights the intricate textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD984DBxow_TzgZWuBcjbKp5YqAbFWDfaOjrMFad7FSx_e-i3tkQ6qHMKT_21-b83qlj8DfjdPKbXWbqu6bVOghiruVNqjcdanAfUn0hnX-yC-0j5gQ29G--qzZopvo4zatkoJLdN5D52Yb-9MfgpW1fNjCRXy1WKkf9FMALiOBmuIdnHKFjzVhHsHC6IkjkoM8T9tTnIje5q43mQS5Xub02_nwUskPifjvsFtUcYBJCAgu7v3jH5TcRKTR1t8eao7rVz8YaY6-1To"/>
+<img class="w-20 h-20 object-cover rounded-lg border border-outline-variant" data-alt="Process shot of an artisan's hand carefully arranging dried flower petals for a resin pour. Warm studio lighting creates an intimate feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFfg0oRKUiPHziiQJwnrJzPTmLARYxHM2Y7CqvD-XTn6DcY8GgOm3Y7zP2X6uSL12EPvAX6AccZi_agc5_aF6V-ci2nRoJ7tLgoG4VdqbTc_DmcmqJ5g6G5D6UearuCC_7RxK7wMJNXrp0wYk47bPGDHFtfQqM5JlYJ1tWwiSnJ7SmoBiFPbdcMi9gPYVTHnPX4rC1YL79PKsuG9MkzuYSFXVhocKfVvJx--bVGfIu-eN-9i2QfiqqgMwFjPrBEX167LJqNyhi7OA"/>
+<div class="w-20 h-20 bg-surface-container border border-dashed border-outline-variant rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">add_a_photo</span>
+</div>
+</div>
+</div>
+<!-- Product Details Section -->
+<div class="col-span-5 flex flex-col">
+<div class="relative mb-md">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-sm leading-tight">Moonlight Jasmine Resin Study</h2>
+<!-- Annotation Tooltip: Title -->
+<div class="absolute -top-10 -right-4 annotation-pulse">
+<div class="bg-primary/90 text-white px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 shadow-lg">
+<span class="material-symbols-outlined text-sm">edit</span>
+<span>Playfair Serif Heading</span>
+</div>
+<div class="w-3 h-3 bg-primary rotate-45 -mt-1.5 ml-4"></div>
+</div>
+</div>
+<div class="flex items-baseline gap-sm mb-lg">
+<span class="font-data-price text-2xl text-secondary">$148.00</span>
+<span class="text-label-caps font-label-caps text-outline-variant">Free Shipping</span>
+</div>
+<div class="flex gap-sm mb-xl">
+<div class="bg-secondary-fixed-dim text-on-secondary-fixed-variant px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border border-secondary/20">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+<span>Ships in 3-5 days</span>
+</div>
+<!-- Annotation Tooltip: Shipping -->
+<div class="absolute right-12 mt-12 annotation-pulse">
+<div class="bg-primary/90 text-white px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 shadow-lg">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>Dynamic lead times</span>
+</div>
+<div class="w-3 h-3 bg-primary rotate-45 -mt-1.5 ml-4"></div>
+</div>
+<div class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border border-primary/20">
+<span class="material-symbols-outlined text-sm">eco</span>
+<span>Eco-friendly packaging</span>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary py-lg rounded-xl font-bold hover:bg-primary/90 transition-all active:scale-95 mb-md">
+                            Add to Bag
+                        </button>
+<div class="mt-xl">
+<h3 class="font-title-serif text-title-serif text-on-surface mb-sm">The Story Behind the Piece</h3>
+<p class="text-on-surface-variant text-sm italic leading-relaxed">
+                                "Captured during the full moon of early spring, these jasmine blossoms were hand-pressed to preserve their delicate luminescence. Each study is a meditation on the fleeting nature of botanical beauty, forever held in time."
+                            </p>
+</div>
+<div class="mt-auto pt-xl border-t border-outline-variant flex items-center gap-md">
+<img class="w-12 h-12 rounded-full border border-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZjmvBKVvhe5FZkPNvBkXwG3WDKvs0xks21287C8eQUkDJCO-DdNjvhmHjT04rErmtv15w0b5EORYUTIplT3A5FV16gWXcvo8f3VdpBBbLyrg49qIsOKmYKLa3I8ekMDulpDy59AunHNJySVqH6XkedvZMdSArHnrgV4Cb3sPZqbmrWbrYwA0Vzbxu_PmWrhr6ksUo0WRDss6rEXgzITuBmoZdf71LyCRYUTPgmof3c-cvWga5B9c2e9WumduJ5rUtXYf2OQM8Yns"/>
+<div>
+<p class="font-title-serif text-sm">Elena Vancamp</p>
+<p class="text-[10px] font-label-caps text-outline uppercase tracking-wider">Artisan at TOFA Studio</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Botanical Watermark -->
+<div class="absolute bottom-4 right-4 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-8xl text-primary">potted_plant</span>
+</div>
+</div>
+</section>
+<!-- Footer Action Bar -->
+<footer class="h-24 bg-white border-t border-outline-variant px-margin-desktop flex items-center justify-between sticky bottom-0 z-50">
+<button class="flex items-center gap-sm px-lg py-md border border-outline rounded-xl text-primary font-medium hover:bg-surface transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+                Back
+            </button>
+<div class="flex items-center gap-lg">
+<div class="text-right">
+<p class="text-xs text-on-surface-variant">Last saved 2m ago</p>
+<p class="text-sm font-bold text-primary">Ready to reach collectors</p>
+</div>
+<button class="flex items-center gap-sm px-xl py-md bg-primary text-on-primary rounded-xl font-bold shadow-lg shadow-primary/20 hover:translate-y-[-2px] active:translate-y-0 transition-all">
+                    Looks good — Publish
+                    <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</footer>
+</main>
+<script>
+        // Simple toggle simulation for the "Preview as buyer" switch
+        const toggle = document.querySelector('.bg-primary-container');
+        const knob = toggle.querySelector('div');
+        let isBuyer = true;
+
+        toggle.addEventListener('click', () => {
+            isBuyer = !isBuyer;
+            if(isBuyer) {
+                knob.style.right = '4px';
+                knob.style.left = 'auto';
+                toggle.classList.replace('bg-outline-variant', 'bg-primary-container');
+                // Could hide/show annotations here
+            } else {
+                knob.style.left = '4px';
+                knob.style.right = 'auto';
+                toggle.classList.replace('bg-primary-container', 'bg-outline-variant');
+            }
+        });
+
+        // Interactive hover for annotations
+        document.querySelectorAll('.annotation-pulse').forEach(anno => {
+            anno.addEventListener('mouseenter', () => {
+                anno.style.animationPlayState = 'paused';
+            });
+            anno.addEventListener('mouseleave', () => {
+                anno.style.animationPlayState = 'running';
+            });
+        });
+    </script>
+</body></html>

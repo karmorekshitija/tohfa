@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Artisan Studio - Catalog</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@400;700&amp;family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary-container": "#70539b",
+                "surface-tint": "#3a684c",
+                "surface-container-high": "#f3e6d6",
+                "on-secondary-container": "#4d6a43",
+                "background": "#fff8f3",
+                "secondary-container": "#c8e9b8",
+                "on-surface-variant": "#414942",
+                "on-surface": "#211b11",
+                "surface": "#fff8f3",
+                "primary-container": "#3d6b4f",
+                "on-secondary-fixed-variant": "#324e29",
+                "secondary": "#49663f",
+                "on-error-container": "#93000a",
+                "outline-variant": "#c1c9c0",
+                "on-tertiary": "#ffffff",
+                "surface-dim": "#e5d8c8",
+                "secondary-fixed": "#caecbb",
+                "inverse-on-surface": "#fcefde",
+                "on-primary-container": "#b7e9c6",
+                "on-primary": "#ffffff",
+                "secondary-fixed-dim": "#afd0a0",
+                "inverse-surface": "#362f25",
+                "primary-fixed-dim": "#a0d2b0",
+                "inverse-primary": "#a0d2b0",
+                "on-background": "#211b11",
+                "surface-container": "#f9ecdc",
+                "surface-bright": "#fff8f3",
+                "on-primary-fixed-variant": "#214f36",
+                "primary-fixed": "#bceecb",
+                "primary": "#255338",
+                "tertiary-fixed-dim": "#d6baff",
+                "on-primary-fixed": "#002110",
+                "surface-container-highest": "#ede1d1",
+                "on-secondary": "#ffffff",
+                "on-tertiary-container": "#e8d6ff",
+                "surface-container-low": "#fff2e1",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6",
+                "tertiary-fixed": "#ecdcff",
+                "surface-container-lowest": "#ffffff",
+                "outline": "#717972",
+                "on-tertiary-fixed-variant": "#54387e",
+                "tertiary": "#573b81",
+                "on-secondary-fixed": "#062103",
+                "on-tertiary-fixed": "#270550",
+                "on-error": "#ffffff",
+                "surface-variant": "#ede1d1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "xl": "40px",
+                "sm": "8px",
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "xs": "4px",
+                "gutter": "16px",
+                "unit": "4px",
+                "md": "16px",
+                "lg": "24px"
+        },
+        "fontFamily": {
+                "display-hero": ["Playfair Display"],
+                "headline-lg-mobile": ["Playfair Display"],
+                "headline-lg": ["Playfair Display"],
+                "body-md": ["DM Sans"],
+                "label-caps": ["Cinzel"],
+                "data-price": ["Space Mono"],
+                "title-serif": ["Merriweather"]
+        },
+        "fontSize": {
+                "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+        }
+      },
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 10 C50 10 70 30 70 50 C70 70 50 90 50 90 C50 90 30 70 30 50 C30 30 50 10 50 10 Z' fill='none' stroke='%2349663f' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+            background-size: 120px;
+        }
+        .header-glow {
+            background: radial-gradient(circle at top right, rgba(200, 233, 184, 0.2) 0%, transparent 60%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(58, 51, 40, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface border-r border-outline-variant flex flex-col items-center py-lg space-y-xl z-50">
+<div class="mb-xl">
+<span class="font-display-hero text-headline-lg italic text-primary">T</span>
+</div>
+<nav class="flex flex-col gap-lg overflow-y-auto no-scrollbar pb-xl">
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">home</span>
+</a>
+<a class="text-tertiary relative after:content-[''] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-tertiary after:rounded-full scale-95 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">star</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">movie_filter</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined">settings</span>
+</a>
+<a class="text-secondary flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors group mt-auto" href="#">
+<span class="material-symbols-outlined">person</span>
+</a>
+</nav>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-[72px] z-40 bg-background/80 backdrop-blur-md flex justify-between items-center h-16 px-margin-desktop w-full">
+<div class="flex items-center gap-md">
+<span class="font-display-hero text-headline-lg text-primary italic">Tohfa</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:border-primary w-64" placeholder="Search products..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[72px] pt-16 min-h-screen header-glow">
+<div class="max-w-[1440px] mx-auto px-margin-desktop py-xl">
+<!-- Page Header -->
+<section class="flex justify-between items-end mb-xl">
+<div>
+<h1 class="font-display-hero text-display-hero text-primary mb-xs">My Catalog</h1>
+<p class="font-body-md text-on-surface-variant">
+<span class="font-data-price text-secondary">23</span> active listings · 
+                        <span class="font-data-price text-secondary">3</span> paused · 
+                        <span class="font-data-price text-secondary">2</span> drafts
+                    </p>
+</div>
+<div class="flex gap-md">
+<button class="px-lg py-sm border border-outline rounded-lg text-primary font-bold hover:bg-surface-container-high transition-transform active:scale-95">
+                        Bulk Edit Prices
+                    </button>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg font-bold flex items-center gap-xs hover:bg-primary/90 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        Add Product
+                    </button>
+</div>
+</section>
+<!-- Filter & Sort Row -->
+<section class="flex justify-between items-center border-b border-outline-variant mb-xl pb-2">
+<div class="flex gap-xl">
+<button class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-2">All</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2">Active</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2">Paused</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2">Drafts</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2">Customized</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2">Pre-made</button>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-label-caps text-on-surface-variant">Sort By:</span>
+<select class="bg-transparent border-none font-body-md text-primary focus:ring-0 cursor-pointer">
+<option>Newest</option>
+<option>Best Selling</option>
+<option>Price High–Low</option>
+<option>Capacity Low–High</option>
+</select>
+</div>
+</section>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+<!-- Card 1: Custom Product -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative">
+<div class="aspect-[16/9] relative overflow-hidden">
+<img alt="Hand-painted ceramic tea set" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A close-up of a hand-painted ceramic tea set with delicate botanical patterns in forest green and gold. The tea set is placed on a rustic wooden table in a sun-drenched studio with soft, warm lighting. The aesthetic is tactile and minimalist, showcasing the human touch of the artisan's craft. The background is slightly blurred, emphasizing the intricate details of the pottery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhjacahTSOXRj0iK9cTtrSTonMMMahuo_XdscNps9qm6I_gp8OVd6qxW2QWbXCxIYi0XYEj0czWvn965Ev-BSss0T0BEdUFwyQJCkJOlSvTEAzoG53i_IZV1Soq8zXC7iDmDWxFiVLZXGwdccEWaDADtjmbd5z1fRUUbo-wBkwL9fr-BcNIgGtvAiOZ8TcnigpqFs8B-qA04kSFdDSa-zCgcAE4KWeo3TVX-fjHA7vAp5XCKoYf3VQSdKTMwGmnJiKrUHQlwemQW4"/>
+<div class="absolute top-md left-md bg-tertiary-container text-white px-3 py-1 rounded-full font-label-caps text-[10px]">
+                            CUSTOM
+                        </div>
+<button class="absolute top-md right-md bg-white/80 backdrop-blur-md p-1.5 rounded-full hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="p-lg relative botanical-overlay">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-display-hero text-title-serif text-on-surface">Meadow Ceramic Set</h3>
+<span class="font-data-price text-primary text-[16px]">$85.00</span>
+</div>
+<div class="flex gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container-high text-primary-fixed-variant rounded-full text-[10px] font-label-caps">Diwali</span>
+<span class="px-2 py-0.5 bg-surface-container-high text-primary-fixed-variant rounded-full text-[10px] font-label-caps">Wedding</span>
+</div>
+<div class="bg-surface-container-low px-sm py-1 rounded mb-md flex items-center gap-xs inline-block">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="font-body-md text-[13px]">⏱ 3–5 days</span>
+</div>
+<div class="mt-xl">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Daily Capacity</span>
+<span class="font-data-price text-[12px]">4 / 10 per day</span>
+</div>
+<div class="h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[40%] rounded-full"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2: Paused State -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative">
+<div class="aspect-[16/9] relative overflow-hidden">
+<img alt="Personalized leather journal" class="w-full h-full object-cover" data-alt="A collection of handmade leather bookmarks and a journal with embossed floral motifs. The items are lying on a cream-colored textured paper background. The lighting is diffused and atmospheric, creating soft shadows. The overall feel is antique and soulful, capturing a master crafter's sketchbook vibe with warm brown and ivory tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvI008YiQewjwZ_mxJpUpl38wMbXzMvPaWBtF3BlP2T9lw95s_iCmXRI2_BdNuwEvwGsRLTF4kfJBmk1aUqhmtz9_SM8_153Ztb2sDAtrbCjCIAb5omSa-HuAIwpwDxmf6U7NRSiG-BK1i9z7hHeuLg4LaGAntbTPpLM1EiF4Wm3uLiqAE_egXb5ZvuPtrAYqxrWGg483qvO2qFAu-_ft18xd-7QrMCXrrZyYhGIPEeRypuUy6UHu6iqHcOA_fePGFavmRE5_xbzk"/>
+<!-- Paused Wash -->
+<div class="absolute inset-0 bg-primary/40 backdrop-blur-[2px] flex items-center justify-center">
+<span class="font-label-caps text-white text-headline-lg tracking-widest">PAUSED</span>
+</div>
+<button class="absolute top-md right-md bg-white/80 backdrop-blur-md p-1.5 rounded-full hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="p-lg relative botanical-overlay opacity-60">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-display-hero text-title-serif text-on-surface">Toscana Leather Journal</h3>
+<span class="font-data-price text-primary text-[16px]">$42.00</span>
+</div>
+<div class="bg-surface-container-low px-sm py-1 rounded mb-md flex items-center gap-xs inline-block">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="font-body-md text-[13px]">⏱ 2 days</span>
+</div>
+<div class="mt-xl">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Daily Capacity</span>
+<span class="font-data-price text-[12px]">0 / 15 per day</span>
+</div>
+<div class="h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-outline w-[0%] rounded-full"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3: Full Capacity -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative">
+<div class="aspect-[16/9] relative overflow-hidden">
+<img alt="Handmade lavender sachets" class="w-full h-full object-cover" data-alt="Handmade linen sachets filled with dried lavender, tied with rustic twine and featuring small hand-stamped botanical tags. The sachets are arranged neatly on a distressed wooden tray. The scene is lit with natural sunlight, highlighting the texture of the linen. The color palette includes soft sage, lavender, and warm wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA75P_xb-CEsTTuS8Trw4cmxjcwsaxS_mp60lmBT62WHijhuAs0kOq16HGGHuI-sVWaq0DaJj6KLKqa9d175VUH2YO1FRWmsuZofLbvY9XGTFOX8O5mlU1YXV8KJv0cxiDE7Mw8lLvwP4qHp1j7_PlB_-LNO1ym2yI-Rzcv7k-W5XOR8EE-E3I8clGWWJqI83A2QfMSn1a0zSUwIuyFVOrcd_M4-XvFITADECwsBHitMjUHzw1Wgv_0b7PSSoIJvUuK8cE5VCLNi1w"/>
+<div class="absolute top-md left-md bg-secondary text-white px-3 py-1 rounded-full font-label-caps text-[10px]">
+                            PRE-MADE
+                        </div>
+<!-- Full Capacity Badge -->
+<div class="absolute bottom-md left-md bg-primary text-on-primary px-3 py-1 rounded-sm font-label-caps text-[10px]">
+                            FULL — PRE-BOOKING ONLY
+                        </div>
+<button class="absolute top-md right-md bg-white/80 backdrop-blur-md p-1.5 rounded-full hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="p-lg relative botanical-overlay">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-display-hero text-title-serif text-on-surface">Provence Linen Sachets</h3>
+<span class="font-data-price text-primary text-[16px]">$18.00</span>
+</div>
+<div class="bg-surface-container-low px-sm py-1 rounded mb-md flex items-center gap-xs inline-block">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="font-body-md text-[13px]">⏱ 1 day</span>
+</div>
+<div class="mt-xl">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Daily Capacity</span>
+<span class="font-data-price text-[12px] text-primary font-bold">12 / 12 per day</span>
+</div>
+<div class="h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full rounded-full"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4: Draft / Generic Pre-made -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative">
+<div class="aspect-[16/9] relative overflow-hidden">
+<img alt="Artisan greeting cards" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A set of artisan greeting cards featuring hand-pressed botanical patterns and elegant calligraphy. Each card is paired with a kraft paper envelope. The arrangement is artistic and layered, shot from an overhead angle. The light is soft and even, highlighting the paper's texture. The mood is literary and warm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFL_Tu9cDsfyt2FCAMv0nIuM7I3RhkraP5mqjwRl5uliwfHDIxZlhlqhZsAghiTG3gm533-u_i3_xgtV92_R9wXy-dzYQuSDtCf4gDArMnDj0TRpAhmKR0pO9oqxfiHST9tAUx6dPKYE2Z-EeX8DerWsKuabN_cz3O3DuC0ThHxRY6XBJBlgVkOgQrdXZphhX2PHUnJxhcS6mzTjPPmGgE9W0tf3HKZjAOlD1hreGSjoX9wQx-AHzgbjw44V2zCMhyFAb2ghSRq_w"/>
+<div class="absolute top-md left-md bg-secondary text-white px-3 py-1 rounded-full font-label-caps text-[10px]">
+                            PRE-MADE
+                        </div>
+<button class="absolute top-md right-md bg-white/80 backdrop-blur-md p-1.5 rounded-full hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="p-lg relative botanical-overlay">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-display-hero text-title-serif text-on-surface">Botanical Card Set</h3>
+<span class="font-data-price text-primary text-[16px]">$24.50</span>
+</div>
+<div class="flex gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container-high text-primary-fixed-variant rounded-full text-[10px] font-label-caps">Eid</span>
+</div>
+<div class="bg-surface-container-low px-sm py-1 rounded mb-md flex items-center gap-xs inline-block">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="font-body-md text-[13px]">⏱ 2–3 days</span>
+</div>
+<div class="mt-xl">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Daily Capacity</span>
+<span class="font-data-price text-[12px]">8 / 20 per day</span>
+</div>
+<div class="h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[40%] rounded-full"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 5: Wedding Focus -->
+<article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative">
+<div class="aspect-[16/9] relative overflow-hidden">
+<img alt="Custom wedding favors" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Dainty glass jars filled with artisanal honey and topped with burlap and twine. Personalized labels with elegant typography are tied to each jar. The jars are arranged in a vintage wooden crate. The lighting is bright and celebratory, reflecting a high-end wedding aesthetic. The colors are dominated by warm gold, ivory, and soft wood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdrACXPhqosD6gps9o-dKulJxD4qTvQT8M9_lwruL52QYEPY9tuFNix61N-0e6xSQcz7vFOfjPiAWXF63EmylRhqzBerdlCTd2FR0yZ7y__QKlDUfUGa-HkLB-BOe5vHZIkcq3Ul8kZUR8jNojqnhjaELKprIoBCOyTS7nqEz60JWvVKtLehP6ng7h-9NpC_boGViTh9crZMH7dhfy5f9-9pydt2zktQ2MITJDW-TR6wiOhBQR7W8i2dUm-DGGQy5tKN6KWD1Lx7Q"/>
+<div class="absolute top-md left-md bg-tertiary-container text-white px-3 py-1 rounded-full font-label-caps text-[10px]">
+                            CUSTOM
+                        </div>
+<button class="absolute top-md right-md bg-white/80 backdrop-blur-md p-1.5 rounded-full hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="p-lg relative botanical-overlay">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-display-hero text-title-serif text-on-surface">Artisan Honey Favors</h3>
+<span class="font-data-price text-primary text-[16px]">$125.00</span>
+</div>
+<div class="flex gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container-high text-primary-fixed-variant rounded-full text-[10px] font-label-caps">Wedding</span>
+</div>
+<div class="bg-surface-container-low px-sm py-1 rounded mb-md flex items-center gap-xs inline-block">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="font-body-md text-[13px]">⏱ 7–10 days</span>
+</div>
+<div class="mt-xl">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Daily Capacity</span>
+<span class="font-data-price text-[12px]">1 / 5 per day</span>
+</div>
+<div class="h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[20%] rounded-full"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 6: Add New Card Placeholder -->
+<article class="border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-xl group hover:border-primary transition-colors cursor-pointer">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</div>
+<span class="font-label-caps text-on-surface-variant group-hover:text-primary transition-colors">Create New Listing</span>
+<p class="font-body-md text-[12px] text-outline text-center mt-sm">Templates available for rapid setup</p>
+</article>
+</div>
+</div>
+</main>
+<!-- Floating Action Button for Support/Help -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-tertiary text-on-tertiary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined">auto_fix</span>
+</button>
+<script>
+        // Simple Interaction logic for three-dot menu (Mockup)
+        document.querySelectorAll('button .material-symbols-outlined:contains("more_vert")').forEach(btn => {
+            btn.closest('button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Logic to show/hide menu would go here
+                console.log('Action menu triggered');
+            });
+        });
+
+        // Hover animation for capacity bars
+        document.querySelectorAll('.h-1.5').forEach(bar => {
+            bar.addEventListener('mouseenter', () => {
+                const fill = bar.querySelector('div');
+                fill.style.filter = 'brightness(1.1)';
+            });
+            bar.addEventListener('mouseleave', () => {
+                const fill = bar.querySelector('div');
+                fill.style.filter = 'none';
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Seller Studio | Home Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-error-container": "#93000a",
+                "surface-tint": "#3a684c",
+                "primary-fixed-dim": "#a0d2b0",
+                "on-tertiary-container": "#e8d6ff",
+                "error": "#ba1a1a",
+                "on-surface": "#211b11",
+                "on-primary": "#ffffff",
+                "surface-container-high": "#f3e6d6",
+                "on-secondary-container": "#4d6a43",
+                "on-primary-fixed-variant": "#214f36",
+                "surface-variant": "#ede1d1",
+                "surface-container-low": "#fff2e1",
+                "inverse-surface": "#362f25",
+                "secondary-container": "#c8e9b8",
+                "on-secondary": "#ffffff",
+                "on-error": "#ffffff",
+                "on-secondary-fixed": "#062103",
+                "tertiary-fixed": "#ecdcff",
+                "surface-dim": "#e5d8c8",
+                "surface-bright": "#fff8f3",
+                "surface-container-highest": "#ede1d1",
+                "on-tertiary": "#ffffff",
+                "on-secondary-fixed-variant": "#324e29",
+                "inverse-on-surface": "#fcefde",
+                "on-surface-variant": "#414942",
+                "primary-container": "#3d6b4f",
+                "outline-variant": "#c1c9c0",
+                "surface": "#fff8f3",
+                "surface-container": "#f9ecdc",
+                "on-tertiary-fixed": "#270550",
+                "error-container": "#ffdad6",
+                "on-primary-fixed": "#002110",
+                "background": "#fff8f3",
+                "primary-fixed": "#bceecb",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-container": "#70539b",
+                "secondary-fixed-dim": "#afd0a0",
+                "on-background": "#211b11",
+                "tertiary": "#573b81",
+                "inverse-primary": "#a0d2b0",
+                "tertiary-fixed-dim": "#d6baff",
+                "primary": "#255338",
+                "secondary": "#49663f",
+                "outline": "#717972",
+                "on-tertiary-fixed-variant": "#54387e",
+                "secondary-fixed": "#caecbb",
+                "on-primary-container": "#b7e9c6"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "md": "16px",
+                "xl": "40px",
+                "lg": "24px",
+                "sm": "8px",
+                "unit": "4px",
+                "xs": "4px",
+                "margin-desktop": "64px",
+                "margin-mobile": "20px",
+                "gutter": "16px"
+        },
+        "fontFamily": {
+                "headline-lg-mobile": ["Playfair Display"],
+                "body-md": ["DM Sans"],
+                "headline-lg": ["Playfair Display"],
+                "label-caps": ["Cinzel"],
+                "display-hero": ["Playfair Display"],
+                "title-serif": ["Merriweather"],
+                "data-price": ["Space Mono"]
+        },
+        "fontSize": {
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+        }
+      },
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-watermark {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .arc-progress {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 32;
+        }
+        /* Custom scrollbar to match the studio aesthetic */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c1c9c0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Sidebar Navigation (72px Fixed) -->
+<aside class="fixed left-0 top-0 h-screen w-[72px] bg-surface-container-low border-r border-outline-variant/40 flex flex-col items-center py-lg z-50">
+<div class="mb-xl flex flex-col items-center">
+<span class="font-headline-lg text-primary italic font-bold">T</span>
+<div class="w-1 h-1 rounded-full bg-tertiary mt-[-4px]"></div>
+</div>
+<nav class="flex-1 flex flex-col gap-md">
+<button class="p-sm text-primary bg-secondary-container rounded-lg transition-all active:scale-90" title="Home">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Catalog">
+<span class="material-symbols-outlined">inventory_2</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Orders">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Capacity">
+<span class="material-symbols-outlined">pending_actions</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Inventory">
+<span class="material-symbols-outlined">package_2</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Analytics">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Messages">
+<span class="material-symbols-outlined">mail</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Reviews">
+<span class="material-symbols-outlined">rate_review</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Reels">
+<span class="material-symbols-outlined">movie</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Config">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</nav>
+<div class="mt-auto flex flex-col gap-md items-center">
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all" title="Profile">
+<span class="material-symbols-outlined">person</span>
+</button>
+<button class="p-sm text-primary hover:bg-primary-container/20 rounded-full border border-primary/20 transition-all" title="View Store">
+<span class="material-symbols-outlined">storefront</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[72px] min-h-screen px-margin-desktop py-lg">
+<!-- Header -->
+<header class="flex justify-between items-end mb-xl">
+<div>
+<h1 class="font-headline-lg text-on-background flex items-center gap-sm">
+                    Good morning, Meera <span class="text-tertiary">✦</span>
+</h1>
+<p class="text-on-surface-variant font-body-md opacity-80 mt-xs">Welcome back to your creative sanctuary.</p>
+</div>
+<div class="flex items-center gap-lg">
+<div class="text-right">
+<span class="font-data-price text-data-price text-on-surface-variant tracking-widest uppercase">Oct 12, 2023</span>
+<p class="font-label-caps text-label-caps text-primary opacity-60">Thursday</p>
+</div>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-full font-body-md shadow-sm hover:opacity-90 transition-all flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                    View Store
+                </button>
+</div>
+</header>
+<!-- KPI Row -->
+<section class="grid grid-cols-4 gap-lg mb-xl">
+<!-- KPI 1 -->
+<div class="bg-surface border border-outline-variant/30 rounded-xl p-md shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 botanical-watermark"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 mb-sm">New Orders Today</p>
+<div class="flex items-baseline gap-sm">
+<span class="font-data-price text-[32px] text-on-surface">7</span>
+<span class="text-primary font-data-price text-xs flex items-center bg-secondary-container/30 px-xs rounded">+3 vs yesterday</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface border border-outline-variant/30 rounded-xl p-md shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 botanical-watermark"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 mb-sm">Orders Due Today</p>
+<div class="flex items-baseline gap-sm">
+<span class="font-data-price text-[32px] text-on-surface">4</span>
+<span class="text-error font-data-price text-xs flex items-center bg-error-container/30 px-xs rounded">2 overdue</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface border border-outline-variant/30 rounded-xl p-md shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 botanical-watermark"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 mb-sm">Revenue This Week</p>
+<div class="flex items-baseline gap-sm">
+<span class="font-data-price text-[32px] text-on-surface">₹12,450</span>
+<span class="text-primary font-data-price text-xs flex items-center bg-secondary-container/30 px-xs rounded">+18%</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface border border-outline-variant/30 rounded-xl p-md shadow-sm relative overflow-hidden group flex items-center justify-between">
+<div class="absolute inset-0 botanical-watermark"></div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 mb-sm">Capacity Used</p>
+<span class="font-data-price text-[32px] text-on-surface">68%</span>
+</div>
+<div class="relative w-16 h-16">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-surface-container-highest" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-primary arc-progress" cx="18" cy="18" fill="none" r="16" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center text-[10px] font-data-price">68%</span>
+</div>
+</div>
+</section>
+<!-- Main Body Grid -->
+<div class="grid grid-cols-12 gap-xl">
+<!-- Left Column (8 cols) -->
+<div class="col-span-8 flex flex-col gap-xl">
+<!-- Festive Warning Banner -->
+<div class="bg-surface-container-low border border-secondary-container/50 rounded-xl p-lg flex items-center justify-between shadow-sm border-l-4 border-l-on-secondary-container">
+<div class="flex gap-md items-center">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">celebration</span>
+</div>
+<div>
+<h4 class="font-title-serif text-title-serif text-on-surface">Diwali is in 18 days</h4>
+<p class="text-on-surface-variant text-body-md opacity-90">You have 34 active orders. Recommended cutoff: <span class="font-bold text-primary">Oct 15.</span></p>
+</div>
+</div>
+<button class="px-lg py-sm bg-on-secondary-container text-on-primary rounded-lg font-label-caps text-[10px] hover:opacity-90 transition-all">
+                        Set Cutoff Date
+                    </button>
+</div>
+<!-- Urgent Orders Section -->
+<section>
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-lg italic text-on-surface text-2xl">Urgent Orders</h3>
+<a class="text-tertiary text-body-md flex items-center gap-xs hover:underline" href="#">
+                            View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-highest/30">
+<tr>
+<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Product</th>
+<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Buyer</th>
+<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Deadline</th>
+<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a handcrafted artisanal ceramic mug with a delicate sage green botanical glaze. The lighting is soft and natural, emphasizing the organic texture of the clay and the fine details of the hand-painted leaf patterns. The overall aesthetic is warm and studio-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBObhx631wejl5kb5wke2J2Ydh-ZaLDSOL-8VCJtw3PA4xQNxu0CiThiBPGLqcK5pkuWTgPjp8fU5IjC-ZD9PgRn9yXgJIVHnmO622I203YA7AmwYoDq-Oj-_AZYSM6RWh_ky7b6rSQQJBYNOtgfRMXEoSeM9QPkcJ3MhUCavjBblFGyX6gi91cYRbus7HzPueeh0Cdo9M-E4klXR3-BLvcP2NVQJaO3BLJpxJIp90bm0_zQIr7ijfT_XUcz4Zzf5STRKehBm6u82E"/>
+</div>
+<span class="font-title-serif text-sm">Terra Botanical Mug</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Aavya Nair</span>
+<span class="text-xs text-on-surface-variant opacity-70">Bengaluru</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-price text-error">Today, 4 PM</td>
+<td class="px-lg py-md">
+<span class="px-sm py-1 rounded-full bg-tertiary-container/20 text-tertiary text-[10px] font-label-caps">Processing</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A beautifully crafted, hand-poured soy candle in a minimalist amber glass jar with a handwritten label that says 'Lavender Field'. The candle sits on a textured linen surface with a sprig of fresh lavender nearby. The light is diffused and ethereal, creating a serene, artisan-crafted atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPfoLEVNKuERONkDbNt1YKMINlkyEAFz_wbgkELYEw4v3ryHqwIwfagHYTHXOYcD8fkJQlQMmiYnF104R9dWVHj1Qe_H1r_8dcaFLSbB2B49dkYHTxoG5sVwn6X7BiGERFRNuLf7WY1I9Q-170u5l3RKlHB0q95_sAWu7_mhfr13MNu-HhsNGrA98kw0JvpFh9WpowRbg_VWzjWqPxXj_B7l8eMM1WJ9_iWzvaow4wRf43ZZZcuOFvIz0HDJdI30yWaL6USRSHnCE"/>
+</div>
+<span class="font-title-serif text-sm">Lavender Soy Candle</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Rohan Gupta</span>
+<span class="text-xs text-on-surface-variant opacity-70">New Delhi</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-price text-error">Today, 6 PM</td>
+<td class="px-lg py-md">
+<span class="px-sm py-1 rounded-full bg-secondary-container/40 text-secondary text-[10px] font-label-caps">Awaiting</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of an artisan's hand stitching a high-quality leather journal. The focus is on the needle and the thick waxed thread against the supple, dark brown leather. The background is a blurred artisan studio with wooden tools and parchment paper. The scene feels tactile and intentional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx0ZAU4Ij6ElQHf8C7XO0fjPkgpRpUyhFgYnG0wojEvUyRc1zVL_VBQ3cAtgCLEL3GLn5Q6hdeQvFCY-3UY_9q8pu0_EMO6RyNAWzRWNbMRfGeEVNYu9CVYhSJ5S4P0exKi8vwOsIVOPWm1H-5NbV9YFKU2vj-1PPCC7Ollo6Zer-AW-bbv9dbhhMaFpcFM8YX40n2_CoX3VP567ZFoB15Hro-d1xIGx-YcoWFaT5JoQK1cTisH3CGUiVRPDR47e_LLMHDMTosvjc"/>
+</div>
+<span class="font-title-serif text-sm">Leather Sketchbook</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Isha Verma</span>
+<span class="text-xs text-on-surface-variant opacity-70">Mumbai</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-price text-on-surface opacity-60">Tomorrow</td>
+<td class="px-lg py-md">
+<span class="px-sm py-1 rounded-full bg-tertiary-container/20 text-tertiary text-[10px] font-label-caps">Processing</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A delicate, handcrafted silver necklace with a tiny pressed flower encased in clear resin. The piece lies on a weathered wooden table next to a small brass jeweler's hammer. The light creates shimmering highlights on the metal and resin, emphasizing the human touch and artisanal process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWMXxHWgGH-KWtc_Gfpm3f1tWclZeLTF4bMhaEkusaS-3oSOZu0hbsH6QJfae5XA3frdfQQHH2CWnxj8G6PG7yKjt3_oeL7hHQIH6L3eIgjRZazi8nnBP1ApW_s8A4_bt_JtUDsbet3uSeuSzlvy8GcFtKHow_D9OwBASsio9HKx6tVnRQrBL_5du5jBZZk8l4qWQs1lR6kGSQd64w_n8fxVpHT9TBecviFP2pSHGK925dXdF5ivfQ5dy8HkZEtqICjvdOM_3yoIs"/>
+</div>
+<span class="font-title-serif text-sm">Pressed Petal Pendant</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-medium">Kabir Singh</span>
+<span class="text-xs text-on-surface-variant opacity-70">Chandigarh</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-price text-on-surface opacity-60">Oct 14</td>
+<td class="px-lg py-md">
+<span class="px-sm py-1 rounded-full bg-secondary-container/40 text-secondary text-[10px] font-label-caps">Awaiting</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Production Capacity Section -->
+<section>
+<h3 class="font-headline-lg italic text-on-surface text-2xl mb-lg">Today's Production Capacity</h3>
+<div class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm">
+<div class="grid grid-cols-2 gap-xl">
+<div class="flex flex-col gap-md">
+<div>
+<div class="flex justify-between items-end mb-xs">
+<span class="font-title-serif text-sm">Hand-Painting Session</span>
+<span class="font-data-price text-xs opacity-60">8/10 slots</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 80%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-xs">
+<span class="font-title-serif text-sm">Kiln Firing (Batch A)</span>
+<span class="font-data-price text-xs opacity-60">12/12 slots</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-md">
+<div>
+<div class="flex justify-between items-end mb-xs">
+<span class="font-title-serif text-sm">Custom Gift Wrapping</span>
+<span class="font-data-price text-xs opacity-60">3/15 slots</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 20%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-xs">
+<span class="font-title-serif text-sm">Inventory Check</span>
+<span class="font-data-price text-xs opacity-60">5/5 slots</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column (4 cols) -->
+<aside class="col-span-4 flex flex-col gap-xl">
+<!-- Quick Links -->
+<section class="flex flex-wrap gap-sm">
+<button class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span> New Order
+                    </button>
+<button class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px]">post_add</span> Add Product
+                    </button>
+<button class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[16px]">movie</span> Upload Reel
+                    </button>
+</section>
+<!-- Pending Actions -->
+<section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm">
+<h4 class="font-title-serif text-title-serif text-on-surface mb-lg flex items-center gap-xs">
+                        Pending Actions <span class="text-tertiary">✦</span>
+</h4>
+<ul class="flex flex-col gap-lg">
+<li class="flex items-start gap-md group cursor-pointer">
+<span class="text-secondary-container bg-primary p-1 rounded-full text-[12px] flex items-center justify-center shrink-0 mt-1">✦</span>
+<div>
+<p class="text-body-md font-medium text-on-surface group-hover:text-primary transition-colors">Confirm 4 orders from yesterday</p>
+<span class="text-xs text-on-surface-variant opacity-60">2 hours ago</span>
+</div>
+</li>
+<li class="flex items-start gap-md group cursor-pointer">
+<span class="text-secondary-container bg-primary p-1 rounded-full text-[12px] flex items-center justify-center shrink-0 mt-1">✦</span>
+<div>
+<p class="text-body-md font-medium text-on-surface group-hover:text-primary transition-colors">Reply to Priya's message</p>
+<span class="text-xs text-on-surface-variant opacity-60">4 hours ago</span>
+</div>
+</li>
+<li class="flex items-start gap-md group cursor-pointer">
+<span class="text-secondary-container bg-primary p-1 rounded-full text-[12px] flex items-center justify-center shrink-0 mt-1">✦</span>
+<div>
+<p class="text-body-md font-medium text-on-surface group-hover:text-primary transition-colors">Low stock alert: Sage Silk Ribbon</p>
+<span class="text-xs text-error font-medium">Urgent</span>
+</div>
+</li>
+<li class="flex items-start gap-md group cursor-pointer">
+<span class="text-secondary-container bg-primary p-1 rounded-full text-[12px] flex items-center justify-center shrink-0 mt-1">✦</span>
+<div>
+<p class="text-body-md font-medium text-on-surface group-hover:text-primary transition-colors">Review Diwali collection description</p>
+<span class="text-xs text-on-surface-variant opacity-60">Yesterday</span>
+</div>
+</li>
+</ul>
+</section>
+<!-- Repeat Buyer Spotlight -->
+<section class="bg-surface border border-outline-variant/30 border-l-4 border-l-primary rounded-xl p-lg shadow-sm relative overflow-hidden">
+<div class="absolute inset-0 botanical-watermark"></div>
+<div class="flex items-center gap-md mb-md">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A bright, cheerful portrait of a young woman with a warm smile, wearing artisanal silver jewelry and a soft linen shirt. The background is a sun-filled garden with soft-focus greenery. The image radiates positivity and a deep appreciation for handmade, thoughtful items." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADfuH5i4eUcE2Ll-Y2TzS4M6ZM6SaZiQl8V7OwLJmZMYNf3s27HA7kO3frKWyCUcv37DKkTPGHUFQ6ZMJpWD92nbaZe7f-_KwKNUV70iR1Sz63HnfYyty4Rdc_trUG_CR4IHYIHhJfHY5AY9_wi8O-oB5yuhYK1MO1FHUpTd4GOuEtXOB7wRWj_OILZwGGOSiZfCANAfAc6LtSGSlpxAjqKFFJ08p9FmU5azSXpvceAKCpPtazA_viaVOco2ZJVXf5gjxg06G8t0Q"/>
+</div>
+<div>
+<h4 class="font-title-serif text-title-serif text-on-surface">Priya Sharma</h4>
+<p class="font-label-caps text-[10px] text-primary">Repeat Buyer • 5 Orders</p>
+</div>
+</div>
+<div class="bg-surface-container-low/50 p-md rounded-lg border border-outline-variant/20 italic text-on-surface-variant text-sm mb-md">
+                        "Your mugs bring so much peace to my morning ritual. Looking forward to the Diwali collection!"
+                    </div>
+<button class="w-full py-sm bg-surface-container-highest/50 text-on-surface-variant rounded-lg font-label-caps text-[10px] hover:bg-surface-container-highest transition-all flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">mail</span> Send a Personal Note
+                    </button>
+</section>
+<!-- Studio Inspiration Card -->
+<section class="bg-secondary-container/20 border border-secondary-container rounded-xl p-lg text-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-lg opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[64px]">yard</span>
+</div>
+<h5 class="font-title-serif text-title-serif text-secondary mb-sm">Artisan's Tip</h5>
+<p class="text-body-md text-on-secondary-container leading-relaxed italic">
+                        "Creativity is not a resource, it is a practice. Tend to your studio like a garden."
+                    </p>
+<div class="mt-md h-px w-12 bg-secondary/30 mx-auto"></div>
+</section>
+</aside>
+</div>
+</main>
+<!-- Floating Action Button (FAB) - For Home/Dashboard context -->
+<button class="fixed bottom-lg right-lg w-16 h-16 bg-tertiary text-on-tertiary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40" title="Quick Action">
+<span class="material-symbols-outlined text-[32px]">edit_note</span>
+</button>
+<script>
+        // Micro-interaction for KPI cards and interactions
+        document.querySelectorAll('.bg-surface').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.1s ease';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple animation for the progress arc on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const arc = document.querySelector('.arc-progress');
+            if(arc) {
+                arc.style.strokeDashoffset = '100';
+                setTimeout(() => {
+                    arc.style.transition = 'stroke-dashoffset 1.5s ease-out';
+                    arc.style.strokeDashoffset = '32';
+                }, 200);
+            }
+        });
+    </script>
+</body></html>

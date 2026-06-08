@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Artisan Studio — Reviews</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@400;700&amp;family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#3d6b4f",
+                    "on-secondary-fixed": "#062103",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fff8f3",
+                    "secondary": "#49663f",
+                    "surface-dim": "#e5d8c8",
+                    "tertiary-fixed": "#ecdcff",
+                    "on-primary-fixed-variant": "#214f36",
+                    "tertiary-container": "#70539b",
+                    "inverse-surface": "#362f25",
+                    "inverse-primary": "#a0d2b0",
+                    "on-tertiary-fixed-variant": "#54387e",
+                    "secondary-container": "#c8e9b8",
+                    "on-background": "#211b11",
+                    "tertiary": "#573b81",
+                    "surface-container-highest": "#ede1d1",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#afd0a0",
+                    "on-tertiary-fixed": "#270550",
+                    "primary": "#255338",
+                    "surface-container-low": "#fff2e1",
+                    "surface": "#fff8f3",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#3a684c",
+                    "surface-variant": "#ede1d1",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#002110",
+                    "surface-container": "#f9ecdc",
+                    "outline": "#717972",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#bceecb",
+                    "on-surface-variant": "#414942",
+                    "on-surface": "#211b11",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#e8d6ff",
+                    "secondary-fixed": "#caecbb",
+                    "outline-variant": "#c1c9c0",
+                    "on-secondary-container": "#4d6a43",
+                    "inverse-on-surface": "#fcefde",
+                    "on-primary-container": "#b7e9c6",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#a0d2b0",
+                    "on-secondary-fixed-variant": "#324e29",
+                    "tertiary-fixed-dim": "#d6baff",
+                    "background": "#fff8f3",
+                    "surface-container-high": "#f3e6d6",
+                    "sage": "#8FAF82",
+                    "gold": "#C8973A",
+                    "parchment": "#FDFBF7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "xl": "40px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "body-md": ["DM Sans"],
+                    "headline-lg": ["Playfair Display"],
+                    "label-caps": ["Cinzel"],
+                    "display-hero": ["Playfair Display"],
+                    "title-serif": ["Merriweather"],
+                    "data-price": ["Space Mono"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                    "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                    "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'DM Sans', sans-serif; background-color: #fff8f3; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .star-filled { font-variation-settings: 'FILL' 1; color: #C8973A; }
+        .botanical-watermark {
+            mask-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .filter-tab-active { border-bottom: 2px solid #255338; color: #255338; font-weight: 700; }
+        .custom-shadow { box-shadow: 0 4px 20px -2px rgba(58, 51, 40, 0.08); }
+    </style>
+</head>
+<body class="text-on-surface selection:bg-primary-fixed">
+<!-- SideNavBar Shell -->
+<nav class="fixed left-0 top-0 h-full w-[72px] bg-surface-container-lowest border-r border-outline-variant flex flex-col items-center py-6 gap-8 z-50">
+<div class="font-headline-lg text-headline-lg text-primary italic">T</div>
+<div class="flex flex-col gap-6">
+<a class="flex items-center justify-center w-12 h-12 text-on-surface-variant hover:bg-secondary-container transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</a>
+<a class="flex items-center justify-center w-12 h-12 text-on-surface-variant hover:bg-secondary-container transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</a>
+<a class="flex items-center justify-center w-12 h-12 text-on-surface-variant hover:bg-secondary-container transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</a>
+<a class="flex items-center justify-center w-12 h-12 text-on-surface-variant hover:bg-secondary-container transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+</a>
+<a class="relative flex items-center justify-center w-12 h-12 bg-primary-container text-on-primary-container rounded-xl scale-95 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="reviews" style="font-variation-settings: 'FILL' 1;">reviews</span>
+</a>
+</div>
+<div class="mt-auto">
+<a class="flex items-center justify-center w-12 h-12 text-on-surface-variant hover:bg-secondary-container transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 left-[72px] h-16 bg-background flex justify-between items-center px-lg z-40">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-lg text-headline-lg text-primary">Tohfa <span class="italic text-gold">Reviews</span></h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 text-body-md focus:outline-none focus:border-primary w-64" placeholder="Search reviews..." type="text"/>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-opacity cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-opacity cursor-pointer" data-icon="help_outline">help_outline</span>
+</div>
+<img alt="Artisan Profile" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="A close-up portrait of a serene South Asian woman artisan in her 30s, smiling gently at the camera. She is wearing a soft linen earthy-toned apron and sits in a sun-drenched pottery studio. The background is softly blurred, showing shelves of clay pots and botanical sprigs. The lighting is warm and natural, creating a soft-focus professional profile image that feels human and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAab0Yd-KGaJxMObN-YFXykNYPeabfvl-UmBmrHPL3r-f-GIXC9bxWXY9ayqC_P05q9hQPqOopmcXAoSFltlTEhaQw1dAhrLWjQkrG3YLsZdEGVT24E9zMmvEWBrphENeN1pjFAkK8x-zHK7JL4U5Rgysz8TzwoFNAg2lBOQcrCrzWdXL96zknv_1RUvlmuYhwIWKRv1ljmk9FVqoyHCAa-IlaKchanunzUq-0fkvdpGTKrRkmvVzTpl2gpPEK9d_sewWHf8RKhwNg"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[72px] mt-16 p-lg md:p-xl">
+<!-- Top Summary Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Overall Rating -->
+<div class="bg-white border border-sage rounded-xl p-lg custom-shadow flex flex-col items-center justify-center text-center relative overflow-hidden">
+<div class="absolute inset-0 botanical-watermark bg-[url('https://www.transparenttextures.com/patterns/leaves.png')]"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Overall Rating</p>
+<h2 class="font-data-price text-[48px] text-primary mb-2">4.7</h2>
+<div class="flex gap-1 mb-1">
+<span class="material-symbols-outlined star-filled" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled" data-icon="star">star</span>
+<span class="material-symbols-outlined text-gold" data-icon="star_half" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+<p class="font-body-md text-on-surface-variant">Based on 128 reviews</p>
+</div>
+<!-- Total Reviews & Graph -->
+<div class="bg-white border border-sage rounded-xl p-lg custom-shadow relative overflow-hidden">
+<div class="absolute inset-0 botanical-watermark bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">Rating Distribution</p>
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="font-data-price text-xs w-4">5★</span>
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 75%"></div>
+</div>
+<span class="font-data-price text-xs w-8 text-right">96</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-data-price text-xs w-4">4★</span>
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-sage" style="width: 15%"></div>
+</div>
+<span class="font-data-price text-xs w-8 text-right">18</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-data-price text-xs w-4">3★</span>
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gold" style="width: 6%"></div>
+</div>
+<span class="font-data-price text-xs w-8 text-right">8</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-data-price text-xs w-4">2★</span>
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container" style="width: 3%"></div>
+</div>
+<span class="font-data-price text-xs w-8 text-right">4</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-data-price text-xs w-4">1★</span>
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error" style="width: 1%"></div>
+</div>
+<span class="font-data-price text-xs w-8 text-right">2</span>
+</div>
+</div>
+</div>
+<!-- Pending Requests -->
+<div class="bg-white border border-sage rounded-xl p-lg custom-shadow flex flex-col justify-between relative overflow-hidden">
+<div class="absolute inset-0 botanical-watermark bg-[url('https://www.transparenttextures.com/patterns/flower-trail.png')]"></div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Pending Requests</p>
+<h2 class="font-data-price text-[40px] text-primary">14</h2>
+<p class="font-body-md text-on-surface-variant italic">Waiting for feedback</p>
+</div>
+<button class="w-full mt-4 py-2 border border-primary text-primary font-body-md rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="send">send</span>
+                    Send reminders
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: Review List -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Filters -->
+<div class="flex gap-6 border-b border-outline-variant pb-2 overflow-x-auto">
+<button class="filter-tab-active pb-2 whitespace-nowrap font-label-caps">All Reviews</button>
+<button class="text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap font-label-caps transition-colors">5 ★</button>
+<button class="text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap font-label-caps transition-colors">4 ★</button>
+<button class="text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap font-label-caps transition-colors">3 ★ &amp; Below</button>
+<button class="text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap font-label-caps transition-colors flex items-center gap-2">
+                        Needs Reply
+                        <span class="w-2 h-2 bg-error rounded-full"></span>
+</button>
+</div>
+<!-- Review Card 1 (Replied) -->
+<div class="bg-white border border-sage rounded-xl p-md custom-shadow flex gap-md relative overflow-hidden">
+<div class="absolute top-2 right-2 botanical-watermark w-24 h-24 bg-[url('https://www.transparenttextures.com/patterns/leaves.png')]"></div>
+<div class="shrink-0">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-primary font-bold text-xl">S</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-body-md font-bold text-on-surface">Sarah Jenkins</h4>
+<p class="text-xs text-on-surface-variant font-label-caps tracking-tighter">Hand-Thrown Terracotta Bowl</p>
+</div>
+<span class="font-data-price text-xs text-outline">Oct 12, 2023</span>
+</div>
+<div class="flex gap-0.5 mb-3">
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-4 italic">
+                            "The terracotta pot is even more beautiful in person. The glaze has such a unique depth. It arrived perfectly packed in sustainable materials which I truly appreciate."
+                        </p>
+<div class="flex items-center gap-4 mb-4">
+<span class="font-label-caps text-[10px] bg-primary-container text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span> Verified Purchase
+                            </span>
+<span class="font-data-price text-[10px] text-outline">Order #TH-9821</span>
+</div>
+<!-- Reply Block -->
+<div class="bg-surface-container-low p-4 rounded-lg border-l-2 border-primary mt-2">
+<p class="font-body-md font-bold italic text-primary text-sm mb-1">Meera's Handcrafted Corner</p>
+<p class="font-body-md text-sm text-on-surface-variant">Thank you so much, Sarah! I'm delighted that the glaze spoke to you. It took several tries to get that specific shade of forest green just right. Enjoy!</p>
+</div>
+</div>
+</div>
+<!-- Review Card 2 (Needs Reply) -->
+<div class="bg-white border border-sage rounded-xl p-md custom-shadow flex gap-md relative overflow-hidden">
+<div class="absolute top-2 right-2 botanical-watermark w-24 h-24 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+<div class="shrink-0">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed-dim flex items-center justify-center text-tertiary font-bold text-xl">M</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-body-md font-bold text-on-surface">Mark Thompson</h4>
+<p class="text-xs text-on-surface-variant font-label-caps tracking-tighter">Linen Table Runner (Sage)</p>
+</div>
+<span class="font-data-price text-xs text-outline">Oct 14, 2023</span>
+</div>
+<div class="flex gap-0.5 mb-3">
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="star">star</span>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-4 italic">
+                            "Excellent quality fabric. My only minor gripe is that the shipping took two days longer than estimated, but the product itself is worth the wait."
+                        </p>
+<div class="flex items-center gap-4 mb-4">
+<span class="font-label-caps text-[10px] bg-primary-container text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span> Verified Purchase
+                            </span>
+<span class="font-data-price text-[10px] text-outline">Order #TH-9844</span>
+</div>
+<button class="text-primary border border-primary px-4 py-1.5 rounded-md text-sm font-bold hover:bg-primary-fixed transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="reply">reply</span>
+                            Reply to review
+                        </button>
+</div>
+</div>
+<!-- Review Card 3 -->
+<div class="bg-white border border-sage rounded-xl p-md custom-shadow flex gap-md relative overflow-hidden opacity-90">
+<div class="shrink-0">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold text-xl">A</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-body-md font-bold text-on-surface">Anita Rao</h4>
+<p class="text-xs text-on-surface-variant font-label-caps tracking-tighter">Brass Incense Holder</p>
+</div>
+<span class="font-data-price text-xs text-outline">Oct 09, 2023</span>
+</div>
+<div class="flex gap-0.5 mb-3">
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+<span class="material-symbols-outlined star-filled text-sm" data-icon="star">star</span>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-4 italic">
+                            "A small piece of art! The weight of the brass feels luxurious and it holds the sticks perfectly. I'll be buying these as gifts for the holidays."
+                        </p>
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] bg-primary-container text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span> Verified Purchase
+                            </span>
+<button class="text-outline hover:text-primary flex items-center gap-1 text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="thumb_up">thumb_up</span> 4 Helpful
+                             </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Auto-Request Settings -->
+<aside class="lg:col-span-4">
+<div class="bg-white border border-sage rounded-xl p-lg custom-shadow sticky top-24">
+<h3 class="font-headline-lg text-2xl text-primary mb-6">Auto-Request Settings</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<span class="font-body-md font-bold">Enable Auto-Requests</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div>
+<label class="block font-label-caps text-[11px] text-on-surface-variant mb-2">Send request after delivery</label>
+<div class="flex items-center border border-outline-variant rounded-lg overflow-hidden max-w-[140px]">
+<button class="p-2 hover:bg-surface-container-low text-primary"><span class="material-symbols-outlined text-sm" data-icon="remove">remove</span></button>
+<input class="w-full text-center border-none font-data-price focus:ring-0 text-sm" readonly="" type="text" value="3 Days"/>
+<button class="p-2 hover:bg-surface-container-low text-primary"><span class="material-symbols-outlined text-sm" data-icon="add">add</span></button>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-[11px] text-on-surface-variant mb-2">Message Template Preview</label>
+<div class="bg-parchment p-4 border border-outline-variant rounded-lg relative overflow-hidden">
+<div class="absolute inset-0 botanical-watermark bg-[url('https://www.transparenttextures.com/patterns/handmade-paper.png')]"></div>
+<p class="font-body-md text-sm italic text-on-surface-variant relative z-10">
+                                    "Hi [Name], your studio find has arrived! If it brings you joy, would you share a quick review? Your feedback helps my small studio thrive."
+                                </p>
+</div>
+</div>
+<ul class="space-y-2">
+<li class="flex items-start gap-2 text-xs text-on-surface-variant">
+<span class="text-gold">✦</span>
+                                Automatically filtered for successful deliveries.
+                            </li>
+<li class="flex items-start gap-2 text-xs text-on-surface-variant">
+<span class="text-gold">✦</span>
+                                Includes direct link to photo upload.
+                            </li>
+</ul>
+<button class="w-full bg-primary text-white font-body-md py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="save">save</span>
+                            Save Settings
+                        </button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple ripple-like effect on buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Toggle handling
+        const toggle = document.querySelector('input[type="checkbox"]');
+        toggle.addEventListener('change', (e) => {
+            console.log('Auto-Requests Enabled:', e.target.checked);
+        });
+    </script>
+</body></html>

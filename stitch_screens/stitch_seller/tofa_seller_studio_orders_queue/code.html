@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Artisan Studio | Order Queue</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Merriweather:wght@300;400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100..900&amp;family=DM+Sans:wght@100..900&amp;family=Merriweather:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#211b11",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#e5d8c8",
+                        "surface-bright": "#fff8f3",
+                        "surface-container-low": "#fff2e1",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-secondary-container": "#4d6a43",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary-fixed": "#270550",
+                        "surface-container-high": "#f3e6d6",
+                        "inverse-surface": "#362f25",
+                        "tertiary-container": "#70539b",
+                        "surface-container": "#f9ecdc",
+                        "secondary-container": "#c8e9b8",
+                        "primary-container": "#3d6b4f",
+                        "surface-variant": "#ede1d1",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-surface": "#211b11",
+                        "on-primary-container": "#b7e9c6",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "background": "#ffffff", // Overridden to Pure White as per request
+                        "on-secondary-fixed": "#062103",
+                        "surface-tint": "#3a684c",
+                        "surface-container-highest": "#ede1d1",
+                        "on-primary-fixed-variant": "#214f36",
+                        "outline": "#717972",
+                        "inverse-primary": "#a0d2b0",
+                        "tertiary-fixed": "#ecdcff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#fcefde",
+                        "surface": "#fff8f3",
+                        "error": "#ba1a1a",
+                        "primary": "#255338",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#414942",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "tertiary": "#573b81",
+                        "secondary": "#49663f",
+                        "outline-variant": "#c1c9c0",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "gold": "#D4AF37",
+                        "sage": "#8FAF82",
+                        "sage-soft": "#e9f0e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "margin-mobile": "20px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "title-serif": ["Merriweather"],
+                        "data-price": ["Space Mono"],
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["Cinzel"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            background-repeat: repeat;
+        }
+        .pressed-flower {
+            opacity: 0.08;
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
+        }
+        .order-row:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden botanical-overlay">
+<!-- Pressed Flower Watermarks -->
+<div class="pressed-flower top-10 left-40 scale-150 rotate-12">
+<span class="material-symbols-outlined text-[120px] text-sage">local_florist</span>
+</div>
+<div class="pressed-flower bottom-20 right-20 scale-125 -rotate-45">
+<span class="material-symbols-outlined text-[150px] text-sage">eco</span>
+</div>
+<!-- SideNavBar (Shared Component Guide Implementation) -->
+<aside class="h-screen w-[72px] fixed left-0 top-0 bg-[#f3f4f0] border-r border-outline-variant flex flex-col items-center py-8 gap-8 z-50">
+<div class="font-headline-lg text-primary italic text-2xl mb-4">T</div>
+<nav class="flex flex-col gap-6 w-full items-center">
+<button class="p-3 text-on-surface-variant opacity-70 hover:bg-secondary-container/30 transition-colors rounded-xl">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<button class="p-3 text-tertiary-container font-bold border-r-2 border-tertiary-container transition-colors rounded-none bg-secondary-container/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_basket</span>
+</button>
+<button class="p-3 text-on-surface-variant opacity-70 hover:bg-secondary-container/30 transition-colors rounded-xl">
+<span class="material-symbols-outlined">inventory_2</span>
+</button>
+<button class="p-3 text-on-surface-variant opacity-70 hover:bg-secondary-container/30 transition-colors rounded-xl">
+<span class="material-symbols-outlined">group</span>
+</button>
+<button class="p-3 text-on-surface-variant opacity-70 hover:bg-secondary-container/30 transition-colors rounded-xl mt-auto">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[72px] p-margin-desktop relative z-10">
+<!-- Filter Bar & Header -->
+<header class="flex flex-col gap-6 mb-xl">
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg italic text-primary">Order Queue</h1>
+<p class="text-on-surface-variant opacity-70 font-body-md mt-1">Curating handmade narratives for {{orders_count, 128}} patrons.</p>
+</div>
+<div class="flex gap-4 items-center">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-bright border border-sage rounded-lg font-data-price focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all w-64" placeholder="Search orders..." type="text"/>
+</div>
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg flex items-center gap-2 hover:opacity-90 transition-all font-body-md shadow-sm">
+<span class="material-symbols-outlined">add</span>
+                        Add Manual Order
+                    </button>
+</div>
+</div>
+<!-- Custom Tabs -->
+<div class="flex items-center border-b border-outline-variant gap-8 overflow-x-auto no-scrollbar">
+<button class="pb-3 px-1 border-b-2 border-primary text-primary font-bold whitespace-nowrap">All</button>
+<button class="pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Due Today</button>
+<button class="pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">In Production</button>
+<button class="pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Packed</button>
+<button class="pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Dispatched</button>
+<button class="pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1.5">
+                    Overdue <span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+</button>
+</div>
+</header>
+<!-- Order Table -->
+<section class="flex flex-col gap-4">
+<!-- Table Header -->
+<div class="grid grid-cols-12 px-6 py-2 font-label-caps text-on-surface-variant opacity-60">
+<div class="col-span-1">Deadline</div>
+<div class="col-span-1">Order ID</div>
+<div class="col-span-2">Buyer</div>
+<div class="col-span-2">Product</div>
+<div class="col-span-1">Type</div>
+<div class="col-span-1">Custom</div>
+<div class="col-span-1 text-center">Payment</div>
+<div class="col-span-2 text-center">Status</div>
+<div class="col-span-1 text-right">Actions</div>
+</div>
+<!-- Overdue Row -->
+<div class="order-row grid grid-cols-12 px-6 py-5 bg-error-container border border-sage rounded-xl items-center shadow-sm relative group cursor-pointer" onclick="toggleSlideOver()">
+<div class="col-span-1 font-data-price text-error font-bold flex flex-col">
+<span>Oct 22</span>
+<span class="text-[10px] uppercase">Overdue</span>
+</div>
+<div class="col-span-1 font-data-price text-primary">#TF-0042</div>
+<div class="col-span-2 flex flex-col">
+<span class="font-body-md font-bold text-on-surface flex items-center gap-1">
+                        Amara Singh <span class="material-symbols-outlined text-gold text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+</span>
+<span class="text-xs text-on-surface-variant">Mumbai, IN</span>
+</div>
+<div class="col-span-2 flex flex-col">
+<span class="font-body-md">Botanical Lino-cut Set</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-tertiary-container/10 text-tertiary-container w-fit mt-1">CUSTOM</span>
+</div>
+<div class="col-span-1">
+<span class="px-3 py-1 rounded-full bg-sage-soft text-secondary text-[10px] font-bold uppercase">Custom</span>
+</div>
+<div class="col-span-1">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-help" title="View Customization Notes">photo_camera</span>
+</div>
+<div class="col-span-1 flex justify-center">
+<span class="font-label-caps bg-primary-container text-on-primary-container px-2 py-1 rounded">PAID</span>
+</div>
+<div class="col-span-2 flex justify-center">
+<span class="px-4 py-1.5 rounded-lg bg-surface-bright border border-outline-variant text-xs font-bold text-secondary flex items-center gap-2 hover:bg-secondary-container transition-colors">
+                        QC Check <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="p-1 hover:bg-surface-variant rounded-full transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+<!-- Standard Row 1 -->
+<div class="order-row grid grid-cols-12 px-6 py-5 bg-white border border-sage rounded-xl items-center shadow-sm relative group cursor-pointer" onclick="toggleSlideOver()">
+<div class="col-span-1 font-data-price text-on-surface-variant">Oct 26</div>
+<div class="col-span-1 font-data-price text-primary">#TF-0043</div>
+<div class="col-span-2 flex flex-col">
+<span class="font-body-md font-bold text-on-surface">Julian Veras</span>
+<span class="text-xs text-on-surface-variant">Austin, USA</span>
+</div>
+<div class="col-span-2 flex flex-col">
+<span class="font-body-md">Hand-bound Journal</span>
+<span class="text-xs text-on-surface-variant italic">Midnight Blue Ink</span>
+</div>
+<div class="col-span-1">
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant text-[10px] font-bold uppercase">Pre-made</span>
+</div>
+<div class="col-span-1">—</div>
+<div class="col-span-1 flex justify-center">
+<span class="font-label-caps bg-primary-container text-on-primary-container px-2 py-1 rounded">PAID</span>
+</div>
+<div class="col-span-2 flex justify-center">
+<span class="px-4 py-1.5 rounded-lg bg-violet-soft bg-tertiary-fixed text-on-tertiary-fixed-variant text-xs font-bold flex items-center gap-2 hover:opacity-80 transition-opacity">
+                        Processing <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="p-1 hover:bg-surface-variant rounded-full transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+<!-- Standard Row 2 -->
+<div class="order-row grid grid-cols-12 px-6 py-5 bg-white border border-sage rounded-xl items-center shadow-sm relative group cursor-pointer">
+<div class="col-span-1 font-data-price text-gold">Today</div>
+<div class="col-span-1 font-data-price text-primary">#TF-0044</div>
+<div class="col-span-2 flex flex-col">
+<span class="font-body-md font-bold text-on-surface flex items-center gap-1">
+                        Sana Rashid <span class="material-symbols-outlined text-gold text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+</span>
+<span class="text-xs text-on-surface-variant">Dubai, UAE</span>
+</div>
+<div class="col-span-2 flex flex-col">
+<span class="font-body-md">Ceramic Incense Holder</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-tertiary-container/10 text-tertiary-container w-fit mt-1">CUSTOM</span>
+</div>
+<div class="col-span-1">
+<span class="px-3 py-1 rounded-full bg-sage-soft text-secondary text-[10px] font-bold uppercase">Custom</span>
+</div>
+<div class="col-span-1">
+<span class="material-symbols-outlined text-on-surface-variant">photo_camera</span>
+</div>
+<div class="col-span-1 flex justify-center">
+<span class="font-label-caps border border-gold text-gold px-2 py-1 rounded">UNPAID</span>
+</div>
+<div class="col-span-2 flex justify-center">
+<span class="px-4 py-1.5 rounded-lg bg-surface-container text-on-surface-variant text-xs font-bold flex items-center gap-2">
+                        Production <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="p-1 hover:bg-surface-variant rounded-full transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+</section>
+<!-- Bulk Actions Bar -->
+<section class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-surface-bright border border-sage-soft shadow-xl px-8 py-4 rounded-full flex items-center gap-8 z-40 transform translate-y-24 transition-transform duration-300" id="bulkActions">
+<span class="font-title-serif text-primary text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-gold">task_alt</span>
+                2 orders selected
+            </span>
+<div class="h-6 w-px bg-outline-variant"></div>
+<div class="flex gap-4">
+<button class="text-xs font-bold uppercase tracking-wider text-secondary hover:text-primary transition-colors">Mark as Packed</button>
+<button class="text-xs font-bold uppercase tracking-wider text-secondary hover:text-primary transition-colors">Mark as Dispatched</button>
+<button class="text-xs font-bold uppercase tracking-wider text-tertiary-container flex items-center gap-1 hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Export CSV
+                </button>
+</div>
+</section>
+</main>
+<!-- Order Detail Slide-over -->
+<div class="fixed inset-0 z-[60] pointer-events-none" id="slideOver">
+<div class="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 pointer-events-none" id="slideOverOverlay" onclick="toggleSlideOver()"></div>
+<aside class="absolute right-0 top-0 h-screen w-[450px] bg-white shadow-2xl border-l border-sage-soft translate-x-full transition-transform duration-500 ease-in-out pointer-events-auto p-10 flex flex-col gap-8 overflow-y-auto" id="slideOverContent">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-gold text-xs">Detail View</span>
+<h2 class="font-headline-lg text-primary text-2xl mt-1">Order #TF-0042</h2>
+</div>
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors" onclick="toggleSlideOver()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Customization Snapshot -->
+<div class="flex flex-col gap-4">
+<h3 class="font-title-serif text-sm border-b border-outline-variant pb-2 flex items-center gap-2">
+<span class="text-gold">✦</span> Customization Details
+                </h3>
+<div class="flex gap-4 items-start">
+<img alt="Order Thumbnail" class="w-24 h-24 object-cover rounded-xl border border-sage" data-alt="A high-quality close-up photograph of a handmade botanical lino-cut print with deep forest green ink on thick, textured cream-colored paper. The lighting is soft and natural, coming from a side window, highlighting the tactile ridges of the ink and the organic fibers of the paper. The aesthetic is artisanal, clean, and professional, perfectly fitting a premium craft studio gallery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATHuXWeRbkxj7IvI22FuVgVspx_p6_bwy9PJDHMhHvUxMGfalcMZFAPjpTyoLAkaAEXY1-jZoYI3y3tPrJZojiSFPL7rRpuPIWNaH46KmAXZ6AwGnog1j0YwSgTUZS11P2AApCcKZvC94bxPCYdFQ36ZTh3OIkXSDyM4r_Z-RC1-uWIinP1Ji9kv3M4p9zQXPwVHsYMvA8fmIoUnL6rpVSx3NBGiuOTj31VGbxJRnou6iGdsj7I38GdHbuhuUnABpAdcrfiRfXnkM"/>
+<div class="flex flex-col gap-2">
+<p class="text-sm font-body-md"><span class="font-bold">Engraving:</span> "Amara &amp; Rohan 2024"</p>
+<p class="text-sm font-body-md"><span class="font-bold">Ink Tone:</span> Custom Deep Sage Mix</p>
+<p class="text-xs text-on-surface-variant bg-surface-container-low p-2 rounded italic">"Please make the ink slightly more translucent toward the edges."</p>
+</div>
+</div>
+</div>
+<!-- Internal Notes Timeline -->
+<div class="flex flex-col gap-4">
+<h3 class="font-title-serif text-sm border-b border-outline-variant pb-2 flex items-center gap-2">
+<span class="text-gold">✦</span> Studio Notes
+                </h3>
+<div class="flex flex-col gap-4 pl-2 border-l-2 border-sage-soft">
+<div class="relative pl-6">
+<span class="absolute -left-[11px] top-0 w-4 h-4 rounded-full bg-sage-soft border-2 border-white"></span>
+<p class="text-xs font-bold">Oct 21, 14:20</p>
+<p class="text-sm text-on-surface-variant">Lino block carved. Waiting for ink mixture approval.</p>
+</div>
+<div class="relative pl-6">
+<span class="absolute -left-[11px] top-0 w-4 h-4 rounded-full bg-primary border-2 border-white"></span>
+<p class="text-xs font-bold text-primary">Oct 22, 09:10</p>
+<p class="text-sm text-on-surface-variant">Client requested extra heavy cardstock. Adjusted price.</p>
+</div>
+</div>
+<textarea class="w-full bg-surface-bright border border-outline-variant rounded-lg p-3 text-sm focus:ring-1 focus:ring-primary outline-none h-24 resize-none" placeholder="Add internal note..."></textarea>
+</div>
+<!-- Shipping Actions -->
+<div class="mt-auto pt-8 border-t border-outline-variant flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-[10px] text-on-surface-variant">Tracking ID (Courier)</label>
+<input class="font-data-price text-sm bg-surface-bright border border-sage rounded p-3 focus:ring-1 focus:ring-primary outline-none" placeholder="e.g. SHIP-88210-ART" type="text"/>
+</div>
+<button class="bg-secondary text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-primary transition-all">
+<span class="material-symbols-outlined">local_shipping</span>
+                    Generate Shiprocket Label
+                </button>
+</div>
+</aside>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        // Toggle slide-over logic
+        function toggleSlideOver() {
+            const slideOver = document.getElementById('slideOver');
+            const overlay = document.getElementById('slideOverOverlay');
+            const content = document.getElementById('slideOverContent');
+
+            if (content.classList.contains('translate-x-full')) {
+                slideOver.classList.remove('pointer-events-none');
+                overlay.classList.add('opacity-100');
+                overlay.classList.remove('pointer-events-none');
+                content.classList.remove('translate-x-full');
+            } else {
+                slideOver.classList.add('pointer-events-none');
+                overlay.classList.remove('opacity-100');
+                overlay.classList.add('pointer-events-none');
+                content.classList.add('translate-x-full');
+            }
+        }
+
+        // Simulating Bulk Actions Visibility
+        setTimeout(() => {
+            const bulk = document.getElementById('bulkActions');
+            bulk.classList.remove('translate-y-24');
+        }, 1500);
+
+        // Escape key to close slide-over
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const content = document.getElementById('slideOverContent');
+                if (!content.classList.contains('translate-x-full')) toggleSlideOver();
+            }
+        });
+    </script>
+</body></html>

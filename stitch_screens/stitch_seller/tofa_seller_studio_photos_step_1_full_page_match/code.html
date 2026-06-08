@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Artisan Studio - Step 1: Photos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Merriweather:wght@300;400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100..900&amp;family=DM+Sans:wght@100..900&amp;family=Merriweather:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#255338",
+                        "surface-bright": "#fff8f3",
+                        "outline-variant": "#c1c9c0",
+                        "background": "#fff8f3",
+                        "surface-variant": "#ede1d1",
+                        "surface-container-high": "#f3e6d6",
+                        "on-surface-variant": "#414942",
+                        "secondary-container": "#c8e9b8",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3a684c",
+                        "inverse-on-surface": "#fcefde",
+                        "tertiary-fixed": "#ecdcff",
+                        "primary-container": "#3d6b4f",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "primary-fixed": "#bceecb",
+                        "surface-container": "#f9ecdc",
+                        "on-tertiary-fixed": "#270550",
+                        "on-surface": "#211b11",
+                        "on-secondary-fixed": "#062103",
+                        "tertiary": "#573b81",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-tertiary-container": "#e8d6ff",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-background": "#211b11",
+                        "on-secondary-container": "#4d6a43",
+                        "surface-dim": "#e5d8c8",
+                        "secondary": "#49663f",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#362f25",
+                        "inverse-primary": "#a0d2b0",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#70539b",
+                        "on-primary-fixed-variant": "#214f36",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#ede1d1",
+                        "outline": "#717972",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container-low": "#fff2e1",
+                        "on-primary-fixed": "#002110",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "margin-mobile": "20px",
+                        "unit": "4px",
+                        "margin-desktop": "64px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "display-hero": ["Playfair Display"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "data-price": ["Space Mono"],
+                        "title-serif": ["Merriweather"],
+                        "label-caps": ["Cinzel"],
+                        "body-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .sketchbook-bg {
+            background-image: radial-gradient(#c1c9c0 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .ink-splat-active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: #573b81;
+            border-radius: 50%;
+        }
+        .dropzone-watermark {
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 20px -2px rgba(58, 51, 40, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background selection:bg-secondary-container selection:text-on-secondary-container min-h-screen">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-full w-[72px] bg-surface border-r border-outline-variant flex flex-col items-center py-lg space-y-xl z-50">
+<div class="mb-lg group cursor-pointer">
+<span class="font-display-hero text-headline-lg italic text-primary">T</span>
+</div>
+<nav class="flex flex-col gap-8 flex-grow">
+<!-- Active State: Catalog -->
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Home</span>
+</button>
+<button class="relative text-tertiary flex flex-col items-center justify-center gap-1 scale-95 transition-transform duration-200 ease-in-out ink-splat-active">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Catalog</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Capacity</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Analytics</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-[8px] tracking-tighter">Messages</span>
+</button>
+</nav>
+<div class="mt-auto space-y-6">
+<button class="flex flex-col items-center justify-center gap-1 group text-secondary transition-colors hover:text-primary">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="Tohfa Artisan Studio Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MNJHJ7qPk4v8_j044j8-znH4VOivQmb11xmbXZB0uTIdAJ_7X-WurgcFyAKc6t7KlJ9bREJtYNY92x-5rtu5SVAULZXLXbxZiEbp6Iq5mbUO_OMUHWdTj8hDJg-zoD5nKELOPUByhjGe4GXFPpiS0whVJQEuFAMAoBH_TYZPj6xzoTMpaQcHuxPct4ZACF0Nbn1urc0PzdgHsFaaohkWTAf0afatBIHOpuL6D9nNn0cy0Buzc2reIRVDDEcjyBIyftZck2J1_B8"/>
+</div>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-[72px] z-40 bg-background/80 backdrop-blur-md flex justify-between items-center h-16 px-margin-desktop w-full border-b border-surface-container-high">
+<div class="flex items-center gap-4">
+<h1 class="font-display-hero text-headline-lg text-primary italic">Listing Wizard</h1>
+<span class="text-outline-variant text-sm font-label-caps">/ New Artisan Treasure</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="bg-primary text-white px-lg py-sm rounded font-body-md hover:opacity-90 transition-opacity">
+                Save Draft
+            </button>
+</div>
+</header>
+<!-- Main Content Cluster -->
+<main class="ml-[72px] pt-24 pb-12 px-margin-desktop min-h-screen sketchbook-bg">
+<!-- Step Bar -->
+<nav class="max-w-5xl mx-auto mb-xl">
+<div class="flex items-center justify-between relative px-md">
+<!-- Line background -->
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant -z-10"></div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</div>
+<span class="font-label-caps text-[10px] text-primary">Photos</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold">2</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Details</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold">3</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Pricing &amp; Stock</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold">4</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Shipping</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold">5</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Preview</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold">6</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">Publish</span>
+</div>
+</div>
+</nav>
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-10 gap-xl items-start">
+<!-- Left Form Area (60%) -->
+<div class="lg:col-span-6 space-y-xl">
+<section class="bg-white p-lg rounded-xl custom-shadow border border-outline-variant/30">
+<header class="mb-lg">
+<h2 class="font-title-serif text-headline-lg text-primary mb-xs">Product Imagery</h2>
+<p class="text-on-surface-variant font-body-md italic">Capture the soul of your creation. High-resolution images help customers feel the texture and intent behind your work.</p>
+</header>
+<!-- Main Dropzone -->
+<div class="relative group cursor-pointer border-2 border-dashed border-outline-variant rounded-xl aspect-[16/9] flex flex-col items-center justify-center overflow-hidden transition-all hover:border-primary bg-surface-bright/50">
+<div class="absolute inset-0 flex items-center justify-center dropzone-watermark">
+<span class="material-symbols-outlined text-[180px] text-primary/20">filter_vintage</span>
+</div>
+<div class="relative z-10 text-center">
+<span class="material-symbols-outlined text-4xl text-primary mb-md">cloud_upload</span>
+<p class="font-title-serif text-lg text-primary mb-xs">Drag and drop your hero photo</p>
+<p class="text-sm text-on-surface-variant">or <span class="underline text-primary">browse files</span></p>
+<p class="mt-4 font-label-caps text-[10px] text-outline">Supported: JPG, PNG, WEBP (Max 10MB)</p>
+</div>
+</div>
+<!-- Thumbnail Grid -->
+<div class="mt-lg grid grid-cols-4 gap-md">
+<!-- Cover Item -->
+<div class="relative group aspect-square rounded-lg border border-primary bg-surface overflow-hidden transition-transform hover:scale-[1.02]">
+<img class="w-full h-full object-cover" data-alt="A high-quality close-up photograph of a handcrafted sage-green ceramic bowl sitting on a rough linen cloth. The lighting is soft and directional, coming from a side window to highlight the subtle ripples and glaze imperfections. The mood is calm and intentional, embodying a slow-living aesthetic with a minimalist color palette of greens and soft grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgPyNEKWLEOaOc7-ENer1SSqKOoLPZiXNOI1fFLCOAybtje6aOInd62SNes1KrdTAy__usZ0L3h3hcExzAIOgAw4xVdE_4Pr8gppxk1aXQKqWbtf9Ynl98xlRs1iXrR_sOwf7KTKz5R_Et-r18FXNQ-l_m86gS8bnD2yi_uiUy8YB4DpwHAwprKY43-KXKcXTuRVQZbjTm_TIVoeI0HnZfqPzLrcuMx_wafq4Pc6mVIoIQTghsPQu8DIGHpz7CiKNeaaqpwj0bAjw"/>
+<div class="absolute top-2 left-2 bg-primary text-white font-label-caps text-[8px] px-2 py-1 rounded shadow-sm">Cover</div>
+<div class="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white/90 p-1 rounded-full text-error hover:bg-white shadow-sm">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing text-white/70">
+<span class="material-symbols-outlined text-sm">drag_handle</span>
+</div>
+</div>
+<!-- Secondary Thumbnails -->
+<div class="relative group aspect-square rounded-lg border border-outline-variant bg-surface overflow-hidden hover:border-primary transition-colors">
+<img class="w-full h-full object-cover" data-alt="Macro detail of hand-carved wood patterns on the base of a ceramic piece. The lighting is low-key and dramatic, revealing deep textures and artisan tool marks. Warm golden-brown tones dominate the scene, creating a rich, tactile feeling of raw craftsmanship in a sun-drenched workshop setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwBe04T8fJWNrHJRDsOprjxrNXf3Yf2USRTzXLyr72D_F3JITm7I6lha9KudRbd4gB3saB7kRHh6QYUxaWX9fdqglsOhlAAKwUzAVYHoWUk4tYeeh9VIYguTIzvAlS4O1Vpssxnkvp634_0KXocMizCrjAFvAgPDCuNZTR7s7DN38349WUPhTTdD_suA0iWATbjmgp25GGOH600Zy6wZ1mDz-4lQqurcLfdjKW_t52Di7vh-o65L0V-goPaL9j1hGfYQd_OSkqsWM"/>
+<div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white/90 p-1 rounded-full text-error hover:bg-white shadow-sm">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+<div class="relative group aspect-square rounded-lg border border-outline-variant bg-surface overflow-hidden hover:border-primary transition-colors">
+<img class="w-full h-full object-cover" data-alt="A lifestyle shot of artisanal products arranged neatly on a wooden studio table. A ceramic bowl, a linen napkin, and a sprig of dried lavender are illuminated by natural light filtering through a sheer curtain. The composition is airy and clean, emphasizing a sophisticated, handmade lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_YshraSwj_cUyOSSykhRudk2dLOzgnwTN9x-YzEQIzlccKAPJFbGMXGTYu3m7p24Bn616C_H1aKuDRzMzLPAhGVwTca8b9jp6KAn31ZHPE_TBZLSv638-Ysa3_4HZmI3Yni8OlLuYW2080ZD82zMAmSkjlTgDGqPYuMi4s5r8L1gtQO887QpcQQ_RNMKpRnGnFFfPhHt_d47l7iTxxjCJ4Xm31ygV8cxELKMQ5VTAjhvO6_bRRtHakerJ_vVMMX2Mfl0ApWeRSTs"/>
+<div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white/90 p-1 rounded-full text-error hover:bg-white shadow-sm">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+<!-- Empty Slot -->
+<div class="aspect-square rounded-lg border border-dashed border-outline-variant flex flex-col items-center justify-center hover:bg-surface-bright transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-outline">add_a_photo</span>
+</div>
+</div>
+</section>
+<!-- Behind the Scenes -->
+<section class="bg-white p-lg rounded-xl custom-shadow border border-outline-variant/30">
+<header class="mb-lg">
+<h2 class="font-title-serif text-headline-lg text-primary mb-xs">Studio Narrative (Optional)</h2>
+<p class="text-on-surface-variant font-body-md italic">Show your process. Customers love seeing the workbench where the magic happens.</p>
+</header>
+<div class="border-2 border-dashed border-outline-variant rounded-xl py-xl flex flex-col items-center justify-center bg-surface-bright/30 group hover:border-tertiary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-3xl text-tertiary mb-sm">movie_filter</span>
+<p class="font-title-serif text-md text-tertiary">Add Process Photos or Reels</p>
+<p class="text-xs text-on-surface-variant mt-1">Short clips (15s) perform best for storytelling.</p>
+</div>
+</section>
+<div class="flex justify-end gap-md">
+<button class="px-xl py-md border border-outline text-on-surface-variant rounded-lg font-body-md hover:bg-surface transition-colors">Back to Dashboard</button>
+<button class="px-xl py-md bg-primary text-white rounded-lg font-body-md hover:opacity-90 shadow-lg flex items-center gap-2">
+                        Next: Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Right Preview Area (40%) -->
+<aside class="lg:col-span-4 sticky top-24">
+<div class="bg-surface-container p-lg rounded-xl border border-outline-variant/20">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-label-caps text-[11px] text-on-surface-variant">Live Preview</h3>
+<div class="flex items-center gap-1 text-[10px] text-primary">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+                            Updating...
+                        </div>
+</div>
+<!-- Product Card Preview -->
+<div class="bg-white rounded-lg overflow-hidden custom-shadow group border border-outline-variant/30 max-w-sm mx-auto">
+<div class="aspect-square overflow-hidden bg-surface-bright relative">
+<!-- Live Image Logic -->
+<img alt="Product Preview" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" id="preview-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCINsa7Gp1OlnOLDGZOQNgI9acslfJpQclps4QJsh328YYOIqJ9C833TVIDmjhyUAFHiO9_N8CssvX2BH_d09PXCr1mHb-1rts0d7_Gm_psiivvtp3LKWAcU_NLUmRetrn0fVhHd7NSWsWZmYVHoO4O5qNAAYsBfVNN-WcMs0jr2k0p4qXzClHwHX4K9TgVIROj9KNKMrfIQ5fUlrenvg0PFOaoY0gsQJe5s-6feFlDte5RejuXLX24yJHm6UWKbfrXcqebeCH0VMU"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm text-primary">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent h-16 pointer-events-none"></div>
+</div>
+<div class="p-md space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-title-serif text-title-serif text-on-surface" id="preview-name">New Artisan Treasure</h4>
+<p class="text-xs text-on-surface-variant font-body-md italic mt-0.5">Hand-crafted by Elena Vancamp</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">share</span>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex flex-col">
+<span class="text-[10px] font-label-caps text-outline leading-none mb-1">PRICE</span>
+<span class="font-data-price text-data-price text-primary" id="preview-price">₹0.00</span>
+</div>
+<div class="bg-secondary-container text-on-secondary-fixed-variant px-3 py-1 rounded text-[10px] font-label-caps">
+                                    SHIPS IN 3 DAYS
+                                </div>
+</div>
+<div class="pt-2">
+<div class="w-full h-[1px] bg-outline-variant/20 mb-3"></div>
+<div class="flex gap-1 text-gold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-[10px] text-outline-variant ml-2 font-body-md">(0 reviews)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-lg p-md bg-white/50 rounded-lg border border-outline-variant/20 italic text-xs text-on-surface-variant leading-relaxed">
+                        "Your shop preview shows exactly how customers see your soul-work. Take a moment to ensure every pixel reflects your studio's story."
+                    </div>
+</div>
+</aside>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for the "Cover" badge logic (Visual only)
+        const thumbnails = document.querySelectorAll('.aspect-square.group');
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                // In a real app, this would swap the cover photo
+                console.log('Thumbnail selected');
+            });
+        });
+
+        // Placeholder for live update simulation
+        const productName = document.getElementById('preview-name');
+        const productPrice = document.getElementById('preview-price');
+        
+        // Simulating some input delay
+        setTimeout(() => {
+            productName.classList.add('transition-colors');
+            productName.style.color = '#3a684c';
+            setTimeout(() => productName.style.color = '', 1000);
+        }, 3000);
+    </script>
+</body></html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Artisan Studio - Upload Reel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "tertiary": "#573b81",
+                "inverse-on-surface": "#fcefde",
+                "background": "#fff8f3",
+                "surface-container": "#f9ecdc",
+                "primary": "#255338",
+                "on-secondary": "#ffffff",
+                "secondary-container": "#c8e9b8",
+                "primary-fixed": "#bceecb",
+                "on-tertiary-container": "#e8d6ff",
+                "primary-fixed-dim": "#a0d2b0",
+                "surface-tint": "#3a684c",
+                "tertiary-container": "#70539b",
+                "on-primary-container": "#b7e9c6",
+                "surface-container-high": "#f3e6d6",
+                "on-error": "#ffffff",
+                "inverse-surface": "#362f25",
+                "tertiary-fixed": "#ecdcff",
+                "error-container": "#ffdad6",
+                "on-surface": "#211b11",
+                "surface-container-lowest": "#ffffff",
+                "surface": "#fff8f3",
+                "secondary-fixed-dim": "#afd0a0",
+                "surface-container-low": "#fff2e1",
+                "on-tertiary-fixed-variant": "#54387e",
+                "inverse-primary": "#a0d2b0",
+                "error": "#ba1a1a",
+                "outline": "#717972",
+                "primary-container": "#3d6b4f",
+                "on-error-container": "#93000a",
+                "on-background": "#211b11",
+                "outline-variant": "#c1c9c0",
+                "on-tertiary": "#ffffff",
+                "on-secondary-fixed": "#062103",
+                "on-primary-fixed": "#002110",
+                "surface-bright": "#fff8f3",
+                "on-primary-fixed-variant": "#214f36",
+                "on-tertiary-fixed": "#270550",
+                "on-secondary-fixed-variant": "#324e29",
+                "surface-variant": "#ede1d1",
+                "secondary-fixed": "#caecbb",
+                "on-primary": "#ffffff",
+                "secondary": "#49663f",
+                "on-secondary-container": "#4d6a43",
+                "surface-dim": "#e5d8c8",
+                "tertiary-fixed-dim": "#d6baff",
+                "surface-container-highest": "#ede1d1",
+                "on-surface-variant": "#414942"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-desktop": "64px",
+                "sm": "8px",
+                "xs": "4px",
+                "xl": "40px",
+                "lg": "24px",
+                "margin-mobile": "20px",
+                "gutter": "16px",
+                "md": "16px",
+                "unit": "4px"
+            },
+            "fontFamily": {
+                "display-hero": ["Playfair Display"],
+                "body-md": ["DM Sans"],
+                "label-caps": ["Cinzel"],
+                "headline-lg": ["Playfair Display"],
+                "title-serif": ["Merriweather"],
+                "data-price": ["Space Mono"]
+            },
+            "fontSize": {
+                "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .botanical-pattern {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-repeat: repeat;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c9c0;
+            border-radius: 10px;
+        }
+        .ink-splat::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #573b81;
+            border-radius: 50%;
+            box-shadow: 0 0 2px #573b81;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md custom-scrollbar">
+<!-- Side Navigation Shell -->
+<nav class="fixed left-0 top-0 h-full w-[72px] bg-background border-r border-outline-variant flex flex-col items-center py-lg h-screen z-50 overflow-y-auto">
+<div class="mb-xl">
+<span class="font-display-hero text-primary italic text-2xl">T</span>
+</div>
+<div class="flex flex-col gap-6 items-center flex-grow">
+<!-- Home -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Home">
+<span class="material-symbols-outlined">home</span>
+</button>
+<!-- Catalog -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Catalog">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<!-- Orders -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Orders">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<!-- Analytics -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Analytics">
+<span class="material-symbols-outlined">insights</span>
+</button>
+<!-- Messages -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Messages">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+<!-- Reels (Active) -->
+<button class="text-tertiary relative ink-splat flex flex-col items-center justify-center py-2 transition-colors duration-200 active:scale-90" title="Reels">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">movie</span>
+</button>
+<!-- Reviews -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Reviews">
+<span class="material-symbols-outlined">star_rate</span>
+</button>
+<!-- Settings -->
+<button class="text-on-surface-variant flex flex-col items-center justify-center py-2 transition-colors duration-200 hover:text-primary active:scale-90" title="Config">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="mt-auto pt-lg">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="A detailed, professional headshot of a female artisan studio owner in her 30s with a warm expression. She is in a sun-drenched, rustic studio setting with pottery wheels and wooden shelves in the soft-focus background. The lighting is golden hour, natural, and soft, emphasizing a handmade and authentic aesthetic. The image is clean, high-resolution, and perfectly suited for a creative business profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxbwjSidpONGhv9D6BnpEI8nU_LOaTrSMFBpMa1M4kdi8vNo7qJ9K3FbaAnKaK3q8X9jZ4BY2EKqiCyOm3whqROwYPERrojDuHqCuKMEi5cqOpMDTrDPFl-hk_HJaMJj249zuYGZ-l1ZMcjdx2PenXJTy_gRybwB7Z9ct5zuRY56UObXxjW2o2BVV4-EGXEdtnKc6IWWAVQTNw5h4ScwWm1krixCcOmhsTCNkfPclAyP89kpMRlF3B3-OIHYULXEosj61ih3Nnv_8"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-[72px] min-h-screen pb-32">
+<!-- Header -->
+<header class="pt-xl px-margin-desktop mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Upload a Reel</h1>
+<p class="font-body-md text-on-surface-variant mt-xs">Share your process and artisan journey with the community.</p>
+</header>
+<div class="px-margin-desktop grid grid-cols-12 gap-xl">
+<!-- Left Column: Upload Zone -->
+<div class="col-span-12 lg:col-span-4">
+<div class="relative group aspect-[9/16] w-full rounded-xl border-2 border-dashed border-outline-variant bg-surface flex flex-col items-center justify-center p-lg transition-all hover:border-primary hover:bg-surface-container-low cursor-pointer overflow-hidden">
+<!-- Botanical Watermark Overlay -->
+<div class="absolute inset-0 opacity-[0.08] pointer-events-none flex items-center justify-center">
+<span class="material-symbols-outlined text-[200px]">filter_vintage</span>
+</div>
+<div class="relative z-10 text-center">
+<div class="w-16 h-16 bg-secondary-container text-primary rounded-full flex items-center justify-center mx-auto mb-md">
+<span class="material-symbols-outlined text-3xl">upload_file</span>
+</div>
+<p class="font-title-serif text-primary text-title-serif mb-sm">Drop your story here</p>
+<p class="font-body-md text-on-surface-variant max-w-[200px] mx-auto">MP4 or MOV (max 100MB)</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Metadata Form -->
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl botanical-pattern shadow-sm">
+<form class="space-y-lg">
+<!-- Reel Title -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Reel Title</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-on-surface" placeholder="e.g., Morning Kiln Opening" type="text"/>
+</div>
+<!-- Caption -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Caption</label>
+<textarea class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-on-surface resize-none" placeholder="Tell the story behind this piece..." rows="4"></textarea>
+</div>
+<!-- Link to Products -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Link to Product(s)</label>
+<div class="flex flex-wrap gap-sm p-sm border border-outline-variant rounded-lg bg-white min-h-[46px]">
+<span class="inline-flex items-center gap-xs px-sm py-1 bg-primary text-white rounded-full text-sm font-body-md">
+                                    Vintage Fern Vessel
+                                    <button class="material-symbols-outlined text-sm hover:text-secondary-container" type="button">close</button>
+</span>
+<span class="inline-flex items-center gap-xs px-sm py-1 bg-primary text-white rounded-full text-sm font-body-md">
+                                    Linen Sketchbook
+                                    <button class="material-symbols-outlined text-sm hover:text-secondary-container" type="button">close</button>
+</span>
+<input class="flex-grow min-w-[120px] border-none p-0 focus:ring-0 text-sm font-body-md bg-transparent" placeholder="Search products..." type="text"/>
+</div>
+</div>
+<!-- Reel Type Pills -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-md">Reel Type</label>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-2 rounded-full border border-primary bg-primary text-white text-sm font-medium transition-all" type="button">Behind-the-Scenes</button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-white text-on-surface-variant text-sm font-medium hover:border-primary hover:text-primary transition-all" type="button">Product Showcase</button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-white text-on-surface-variant text-sm font-medium hover:border-primary hover:text-primary transition-all" type="button">ASMR Packing</button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-white text-on-surface-variant text-sm font-medium hover:border-primary hover:text-primary transition-all" type="button">Tutorial</button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-white text-on-surface-variant text-sm font-medium hover:border-primary hover:text-primary transition-all" type="button">Customer Reveal</button>
+</div>
+</div>
+<!-- Seasonal Tag -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Seasonal Tag</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-on-surface" placeholder="e.g., Autumn Equinox" type="text"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Visibility</label>
+<div class="flex items-center gap-md pt-sm">
+<label class="flex items-center gap-xs cursor-pointer">
+<input checked="" class="text-primary focus:ring-primary border-outline-variant" name="visibility" type="radio" value="public"/>
+<span class="text-sm font-body-md">Public</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer">
+<input class="text-primary focus:ring-primary border-outline-variant" name="visibility" type="radio" value="store"/>
+<span class="text-sm font-body-md">Store-only</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer">
+<input class="text-primary focus:ring-primary border-outline-variant" name="visibility" type="radio" value="draft"/>
+<span class="text-sm font-body-md">Draft</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Instagram Reminder -->
+<div class="pt-md border-t border-outline-variant">
+<label class="flex items-center gap-md group cursor-pointer">
+<div class="relative">
+<input class="peer hidden" type="checkbox"/>
+<div class="w-10 h-5 bg-outline-variant rounded-full peer-checked:bg-primary transition-all"></div>
+<div class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full peer-checked:translate-x-5 transition-all"></div>
+</div>
+<span class="text-on-surface font-body-md">Remind me to post on Instagram</span>
+</label>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Recent Makes Gallery Section -->
+<section class="mt-xl px-margin-desktop">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Recent Makes</h2>
+<button class="text-primary flex items-center gap-xs font-medium hover:underline">
+                    View All <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Reel Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group hover:shadow-lg transition-all">
+<div class="aspect-[9/16] relative bg-inverse-surface">
+<img alt="Process Reel 1" class="w-full h-full object-cover" data-alt="A portrait 9:16 vertical video frame capturing a detailed close-up of an artisan's hands working on a pottery wheel. The clay is being shaped into a delicate vessel as water glazes the surface. The background is a soft-focus workshop filled with wooden tools and unfinished earthenware. The lighting is moody and warm, highlighting the texture of the wet clay and the skin on the artisan's hands. Earthy tones of terracotta, sage, and deep brown dominate the frame." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkidUXMm0MANbKnHIlSztTd2KPW-8K-vWwPyLdB3tMqAevywZiYAWXlNJpKWG1eK09ibJyT-qPrOS420VaroHHa7Y2p7BcPXxhEnctkV4usLg9yiOXrNAeYyzTslgtepnjDX_2Fn_aTIXCQwra_dDfSdPtFfM84NRb552q6FhZ4mGVNMoenAPhPW2nKrU_uVjFk7uoM5Hxz91hl32D6X_bEfnmH6uc3N539iMP5haTEH0A_y3S09zwtLSnprcbxPn3AVtWR4h5CXc"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all"></div>
+<div class="absolute top-md right-md flex flex-col gap-xs">
+<button class="w-8 h-8 rounded-full bg-white/90 text-primary flex items-center justify-center hover:bg-white transition-all">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white/90 text-error flex items-center justify-center hover:bg-white transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+<div class="absolute bottom-md left-md">
+<span class="px-sm py-xs bg-primary/80 backdrop-blur-md text-white rounded text-[10px] font-label-caps tracking-widest uppercase">Shipped</span>
+</div>
+</div>
+<div class="p-md">
+<h3 class="font-title-serif text-on-surface text-lg mb-xs truncate">Wheel-thrown Vessels</h3>
+<div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span class="font-data-price text-sm">1,248 views</span>
+</div>
+<span class="font-data-price text-primary">Gold Star</span>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-2 py-[2px] bg-secondary-container text-on-secondary-container rounded text-[11px] font-body-md">Rustic Vase</span>
+</div>
+</div>
+</div>
+<!-- Reel Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group hover:shadow-lg transition-all">
+<div class="aspect-[9/16] relative bg-inverse-surface">
+<img alt="Process Reel 2" class="w-full h-full object-cover" data-alt="A 9:16 vertical shot of a stationery artisan hand-stitching a linen-covered sketchbook. The camera angle is top-down, showing the precision of the needle passing through thick, cream-colored paper. The workspace is covered with botanical sprigs and vintage sewing tools. The lighting is bright and airy, with soft shadows from a nearby window. Colors are dominated by natural linen, muted violet thread, and sage green botanical accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-UwxjgbYjHPSkERsyjxXnDXB0MN4d2UnkNsZHPax93eJonAiAa0TjQTdns0iOc6XJIUj9lvM1eNDVuZ9bSRh-lxrFBKU3bPXi-vdrN3jhojRB-w1KJE7sbUfeXvhce3JwK_fs5uRGaaKzDwcI3-iXDBt6ZDR8_SrYfpZmB0vLQ2O-RestT9xku8exIDMlVwp1k4enlrpZpgOImiPDIkXZnYjxUFF8fkpfxI8YqVQCIztD-x-2EoKE9KJI0KFKJV7Hsqqp4_jpf2c"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all"></div>
+<div class="absolute top-md right-md flex flex-col gap-xs">
+<button class="w-8 h-8 rounded-full bg-white/90 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white/90 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<div class="p-md">
+<h3 class="font-title-serif text-on-surface text-lg mb-xs truncate">Binding with Intention</h3>
+<div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span class="font-data-price text-sm">842 views</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-2 py-[2px] bg-secondary-container text-on-secondary-container rounded text-[11px] font-body-md">Linen Sketchbook</span>
+<span class="px-2 py-[2px] bg-secondary-container text-on-secondary-container rounded text-[11px] font-body-md">Violet Thread</span>
+</div>
+</div>
+</div>
+<!-- Reel Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group hover:shadow-lg transition-all">
+<div class="aspect-[9/16] relative bg-inverse-surface">
+<img alt="Process Reel 3" class="w-full h-full object-cover" data-alt="A vertical 9:16 aesthetic shot showing the packing process of a handmade artisan order. The scene features ivory tissue paper being folded over a glazed ceramic mug, which is then placed into a recycled cardboard box decorated with a botanical ink stamp. Dried lavender sprigs are placed on top. The style is minimalist and tactile, with high-key lighting that evokes a morning in a clean, modern studio. The color palette includes off-whites, warm browns, and earthy greens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Zj8Uc_pqrEXjyGblakHnTtk4qLstplTo8hx-hXO6CZoFmT2hZv7NkxxXVksyCNQF1g4XXrMVcUUkAUxs55Pbw1eGW_8SM-I1NEJLXJyq27iDsqbzJ03P1TN20KSqa1YbVSW1AYVcSkOurMxNCx1JKiNQ4K1m3Yk6fTqtPmHe8XKs3Sgq0GN1M4OEZGMtzWp7cszHiPXFHOgCg_S6_GpqG61PoWBcn1ywX7cjcx6M5VpovrMMK_Eo8S1CJorBMhJ0hTCc1p4uyoM"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all"></div>
+<div class="absolute top-md right-md flex flex-col gap-xs">
+<button class="w-8 h-8 rounded-full bg-white/90 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="w-8 h-8 rounded-full bg-white/90 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</div>
+</div>
+<div class="p-md">
+<h3 class="font-title-serif text-on-surface text-lg mb-xs truncate">ASMR Packing: Order #4022</h3>
+<div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span class="font-data-price text-sm">3,105 views</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-2 py-[2px] bg-secondary-container text-on-secondary-container rounded text-[11px] font-body-md">Botanical Mug</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-[72px] right-0 bg-white/80 backdrop-blur-md border-t border-outline-variant py-md px-margin-desktop flex items-center justify-between z-40">
+<div>
+<button class="px-xl py-2 border border-outline text-on-surface font-body-md rounded-lg hover:bg-surface-variant transition-all active:scale-95">
+                Save as Draft
+            </button>
+</div>
+<div class="flex items-center gap-md">
+<span class="text-on-surface-variant text-sm font-body-md italic hidden sm:inline">Ready to share your process?</span>
+<button class="px-xl py-2 bg-primary text-white font-body-md rounded-lg shadow-md hover:bg-primary-container transition-all active:scale-95 flex items-center gap-xs">
+                Publish Reel
+                <span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        // Simple drag & drop visual feedback
+        const dropZone = document.querySelector('.aspect-\\[9\\/16\\]');
+        if (dropZone) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('border-primary', 'bg-surface-container');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('border-primary', 'bg-surface-container');
+                }, false);
+            });
+        }
+
+        // Toggle Reel Type Pills
+        const pills = document.querySelectorAll('.flex.flex-wrap.gap-sm button');
+        pills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                pills.forEach(p => {
+                    p.classList.remove('bg-primary', 'text-white', 'border-primary');
+                    p.classList.add('bg-white', 'text-on-surface-variant', 'border-outline-variant');
+                });
+                pill.classList.remove('bg-white', 'text-on-surface-variant', 'border-outline-variant');
+                pill.classList.add('bg-primary', 'text-white', 'border-primary');
+            });
+        });
+    </script>
+</body></html>
