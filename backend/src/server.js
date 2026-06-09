@@ -760,6 +760,139 @@ app.get('/api/home/feed', rateLimit(60), optionalAuthenticateToken, (req, res) =
   }
 });
 
+// NEW ENDPOINT: GET /api/products/feed
+app.get('/api/products/feed', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  try {
+    const userId = req.user ? req.user.user_id : null;
+    
+    // 1. Get Sponsored Products
+    let sponsoredQuery = `
+      SELECT 
+        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.review_count, p.status, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name
+    `;
+    if (userId) {
+      sponsoredQuery += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      sponsoredQuery += `, 0 AS is_wishlisted`;
+    }
+    sponsoredQuery += `
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      JOIN sponsored_products sp_prod ON sp_prod.product_id = p.id
+      WHERE p.status = 'active' AND sp_prod.is_sponsored = 1
+      ORDER BY p.created_at DESC, p.id DESC
+    `;
+    
+    const sponsored = userId ? db.prepare(sponsoredQuery).all(userId) : db.prepare(sponsoredQuery).all();
+    sponsored.forEach(p => {
+      p.type = 'sponsored';
+      p.is_wishlisted = !!p.is_wishlisted;
+    });
+
+    // 2. Get Bestsellers (excluding sponsored)
+    const sponsoredIds = sponsored.map(p => p.id);
+    const sponsoredPlaceholder = sponsoredIds.length > 0 ? sponsoredIds.map(() => '?').join(',') : '0';
+
+    let bestsellerQuery = `
+      SELECT 
+        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.review_count, p.status, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name,
+        COALESCE((SELECT SUM(quantity) FROM order_items WHERE product_id = p.id), 0) AS sales_rank
+    `;
+    if (userId) {
+      bestsellerQuery += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      bestsellerQuery += `, 0 AS is_wishlisted`;
+    }
+    bestsellerQuery += `
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE p.status = 'active' AND p.id NOT IN (${sponsoredPlaceholder})
+      ORDER BY sales_rank DESC, p.created_at DESC, p.id DESC
+      LIMIT 8
+    `;
+    
+    const bestsellerParams = userId ? [userId, ...sponsoredIds] : [...sponsoredIds];
+    const bestSellers = db.prepare(bestsellerQuery).all(...bestsellerParams);
+    bestSellers.forEach(p => {
+      p.type = 'bestseller';
+      p.is_wishlisted = !!p.is_wishlisted;
+    });
+
+    // 3. Get Regular Products (excluding sponsored and bestsellers)
+    const excludeIds = [...sponsoredIds, ...bestSellers.map(p => p.id)];
+    const excludePlaceholder = excludeIds.length > 0 ? excludeIds.map(() => '?').join(',') : '0';
+
+    let regularQuery = `
+      SELECT 
+        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.review_count, p.status, p.seller_id,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url,
+        COALESCE(sp.shop_name, u.full_name) AS seller_name
+    `;
+    if (userId) {
+      regularQuery += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      regularQuery += `, 0 AS is_wishlisted`;
+    }
+    regularQuery += `
+      FROM products p
+      JOIN users u ON p.seller_id = u.id
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE p.status = 'active' AND p.id NOT IN (${excludePlaceholder})
+      ORDER BY p.created_at DESC, p.id DESC
+    `;
+
+    const regularParams = userId ? [userId, ...excludeIds] : [...excludeIds];
+    const regular = db.prepare(regularQuery).all(...regularParams);
+    regular.forEach(p => {
+      p.type = 'regular';
+      p.is_wishlisted = !!p.is_wishlisted;
+    });
+
+    // Combine them
+    const allProducts = [...sponsored, ...bestSellers, ...regular];
+
+    // Pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const paginatedProducts = allProducts.slice(offset, offset + limit);
+    const hasMore = (offset + limit) < allProducts.length;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        products: paginatedProducts,
+        has_more: hasMore,
+        next_page: hasMore ? page + 1 : null
+      }
+    });
+  } catch (err) {
+    console.error('Error in products feed:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+
 // TASK 16: GET /api/categories
 app.get('/api/categories', rateLimit(120), (req, res) => {
   try {

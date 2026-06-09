@@ -151,6 +151,7 @@ const migrateProducts = () => {
       stock_qty       INTEGER DEFAULT 0,
       ships_in_days   INTEGER DEFAULT 3,
       status          TEXT DEFAULT 'active',
+      ready_to_ship   INTEGER DEFAULT 0,
       avg_rating      REAL DEFAULT 0,
       review_count    INTEGER DEFAULT 0,
       created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -220,6 +221,23 @@ const migrateAddresses = () => {
 migrateAddresses();
 
 // Legacy orders, order_items, and reviews migrations removed for Part 4 recreation.
+const migrateOrderItems = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS order_items (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id    INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      product_id  INTEGER NOT NULL REFERENCES products(id),
+      product_name TEXT NOT NULL,
+      unit_price_paise INTEGER NOT NULL,
+      quantity    INTEGER NOT NULL DEFAULT 1,
+      image_url   TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+    CREATE INDEX IF NOT EXISTS idx_order_items_product ON order_items(product_id);
+  `);
+};
+migrateOrderItems();
+
 
 // Task 09: Migration for wishlists table
 const migrateWishlists = () => {
@@ -438,19 +456,20 @@ const migrateOrders = () => {
       id                  INTEGER  PRIMARY KEY AUTOINCREMENT,
       order_ref           TEXT     NOT NULL UNIQUE,   -- e.g. TF-0042
       buyer_id            INTEGER  NOT NULL REFERENCES users(id),
-      seller_id           INTEGER  NOT NULL REFERENCES users(id),
-      listing_id          INTEGER  NOT NULL REFERENCES listings(id),
+      seller_id           INTEGER  REFERENCES users(id),
+      listing_id          INTEGER  REFERENCES listings(id),
       variant_id          INTEGER  DEFAULT NULL REFERENCES listing_variants(id),
       quantity            INTEGER  NOT NULL DEFAULT 1,
-      unit_price          INTEGER  NOT NULL,   -- in paise, price at time of order
-      total_amount        INTEGER  NOT NULL,   -- in paise
-      platform_fee        INTEGER  NOT NULL,   -- 8% in paise
-      seller_payout       INTEGER  NOT NULL,   -- total_amount - platform_fee
+      unit_price          INTEGER,   -- in paise, price at time of order
+      total_amount        INTEGER,   -- in paise
+      platform_fee        INTEGER,   -- 8% in paise
+      seller_payout       INTEGER,   -- total_amount - platform_fee
       order_type          TEXT     NOT NULL DEFAULT 'pre-made' CHECK(order_type IN ('pre-made','custom')),
       status              TEXT     NOT NULL DEFAULT 'awaiting_payment'
                                    CHECK(status IN (
                                      'awaiting_payment','processing','in_production',
-                                     'packed','dispatched','delivered','cancelled','rto'
+                                     'packed','dispatched','delivered','cancelled','rto',
+                                     'Awaiting Payment','Processing','Dispatched','Delivered','Cancelled'
                                    )),
       payment_status      TEXT     NOT NULL DEFAULT 'unpaid' CHECK(payment_status IN ('unpaid','paid','refunded')),
       customization       TEXT     DEFAULT NULL,   -- JSON blob of custom instructions
@@ -459,6 +478,8 @@ const migrateOrders = () => {
       deadline_at         TEXT     DEFAULT NULL,
       dispatched_at       TEXT     DEFAULT NULL,
       delivered_at        TEXT     DEFAULT NULL,
+      cancel_reason       TEXT     DEFAULT NULL,
+      cancelled_at        TEXT     DEFAULT NULL,
       studio_notes        TEXT     DEFAULT NULL,   -- JSON array of note objects {ts, text}
       total_paise         INTEGER  DEFAULT 0,
       subtotal_paise      INTEGER  DEFAULT 0,
@@ -505,7 +526,8 @@ const migrateReels = () => {
     CREATE TABLE IF NOT EXISTS reels (
       id            INTEGER PRIMARY KEY AUTOINCREMENT,
       seller_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      title         TEXT    NOT NULL,
+      product_id    INTEGER REFERENCES products(id),
+      title         TEXT,
       caption       TEXT    DEFAULT NULL,
       video_url     TEXT    NOT NULL,
       thumbnail_url TEXT    DEFAULT NULL,
@@ -516,6 +538,10 @@ const migrateReels = () => {
       visibility    TEXT    DEFAULT 'draft' CHECK(visibility IN ('public','store-only','draft')),
       ig_reminder   INTEGER DEFAULT 0,
       view_count    INTEGER DEFAULT 0,
+      like_count    INTEGER DEFAULT 0,
+      comment_count INTEGER DEFAULT 0,
+      save_count    INTEGER DEFAULT 0,
+      status        TEXT    DEFAULT 'active',
       created_at    TEXT    DEFAULT (datetime('now')),
       updated_at    TEXT    DEFAULT (datetime('now'))
     );
@@ -538,11 +564,14 @@ const migrateReviews = () => {
   db.exec(`
     CREATE TABLE IF NOT EXISTS reviews (
       id              INTEGER PRIMARY KEY AUTOINCREMENT,
-      order_id        INTEGER NOT NULL REFERENCES orders(id),
-      buyer_id        INTEGER NOT NULL REFERENCES users(id),
-      seller_id       INTEGER NOT NULL REFERENCES users(id),
-      listing_id      INTEGER NOT NULL REFERENCES listings(id),
+      order_id        INTEGER REFERENCES orders(id),
+      buyer_id        INTEGER REFERENCES users(id),
+      seller_id       INTEGER REFERENCES users(id),
+      listing_id      INTEGER REFERENCES listings(id),
+      product_id      INTEGER REFERENCES products(id),
+      reviewer_id     INTEGER REFERENCES users(id),
       rating          INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+      body            TEXT,
       comment_text    TEXT    DEFAULT NULL,
       reply_text      TEXT    DEFAULT NULL,   -- seller reply
       replied_at      TEXT    DEFAULT NULL,

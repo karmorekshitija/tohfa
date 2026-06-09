@@ -1,0 +1,328 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Our Story | Tohfa Artisanal Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdbc9",
+                        "surface-variant": "#e4e2e1",
+                        "background": "#fbf9f8",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#331200",
+                        "on-surface": "#1b1c1c",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "tertiary": "#332d24",
+                        "surface-container": "#f0eded",
+                        "surface-dim": "#dcd9d9",
+                        "secondary": "#8f4d23",
+                        "primary": "#173320",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ece1d4",
+                        "primary-fixed": "#c9ebce",
+                        "surface-bright": "#fbf9f8",
+                        "primary-container": "#2d4a35",
+                        "secondary-container": "#fda775",
+                        "on-primary-fixed": "#03210f",
+                        "on-tertiary-container": "#b9afa3",
+                        "on-surface-variant": "#424842",
+                        "surface-tint": "#47654e",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c2c8c0",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#303030",
+                        "inverse-primary": "#aecfb3",
+                        "surface-container-highest": "#e4e2e1",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1b1c1c",
+                        "outline": "#727972",
+                        "on-primary-fixed-variant": "#304d38",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-secondary-container": "#773a11",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#494339",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#98b99e",
+                        "on-secondary-fixed-variant": "#71360d",
+                        "primary-fixed-dim": "#aecfb3",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "surface-container-high": "#eae8e7",
+                        "surface": "#fbf9f8",
+                        "secondary-fixed-dim": "#ffb68d",
+                        "on-tertiary-fixed": "#201b13",
+                        "on-tertiary": "#ffffff",
+                        "brand-cream": "#F5F0E8",
+                        "brand-forest": "#2D4A35",
+                        "brand-sand": "#E8DDD0",
+                        "brand-terracotta": "#C4784A"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1440px",
+                        "margin-desktop": "80px",
+                        "unit": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "label-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #F5F0E8; color: #173320; }
+        .linen-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/linen.png");
+        }
+        .grain-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+        .organic-mask-1 { clip-path: ellipse(45% 50% at 50% 50%); }
+        .organic-mask-2 { clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 20%); }
+        .organic-mask-3 { clip-path: inset(5% 10% 5% 10% round 30% 60% 40% 70%); }
+        
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .masonry-item { break-inside: avoid; margin-bottom: 24px; }
+        .hover-zoom:hover img { transform: scale(1.05); }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<nav class="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-primary/10">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md text-primary tracking-tight italic mb-4 md:mb-0" href="#">Tofa</a>
+<div class="flex gap-8 items-center"><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Category</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Reels</a><a class="font-label-md text-label-md text-primary border-b border-secondary pb-1" href="#">Profile</a></div>
+<div class="flex items-center gap-6 mt-4 md:mt-0"><button class="material-symbols-outlined text-primary hover:text-secondary transition-all duration-300 scale-95">search</button><button class="material-symbols-outlined text-primary hover:text-secondary transition-all duration-300 scale-95">notifications</button><button class="material-symbols-outlined text-primary hover:text-secondary transition-all duration-300 scale-95">favorite</button><button class="material-symbols-outlined text-primary hover:text-secondary transition-all duration-300 scale-95">shopping_bag</button></div>
+</div>
+</nav>
+<main>
+<section class="linen-texture py-24 md:py-32 flex flex-col md:flex-row items-stretch gap-12 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop fade-up visible" id="usp-banner">
+<div class="w-full md:w-[45%] rounded-xl overflow-hidden aspect-[4/5] shadow-2xl">
+<img alt="Potter hands molding clay" class="w-full h-full object-cover" data-alt="A close-up shot of an artisan's weathered, clay-covered hands gently shaping a rotating bowl on a potter's wheel. The scene is illuminated by warm, golden sunlight filtering through a rustic workshop window, catching the dust motes in the air. The mood is tranquil and focused, emphasizing the tactile connection between the maker and the earth. The aesthetic is organic and artisanal, with a palette of deep forest greens, warm creams, and earthy terracotta tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoYDucXjaBiXiW69rEdxrHHFpZCIJLQCg4wla2YyndECsmiQv6FBtufolt_ihuQ-klYOHNKW13tKjoirRgkMPje9nPb3aNghgnuI7eO0RtfSgt9QsV-5IJZKnVrAcj9kDZKOV0W27GNPUJEOfBkEmpQwbuBGospmWoOlc25Eu9iMXbzMwJ_miQGasn6IPPZVSXKfCxXyU1kqgPsiD1yWgZ-94houfaHvG4MI3IdqSGbqDLqNN6QYEJurrW_SP22KtPeDRJzgsO4Cg">
+</div>
+<div class="w-full md:w-[55%] flex flex-col justify-center border-l-4 border-brand-terracotta pl-8 md:pl-12">
+<span class="font-label-md text-label-md text-brand-forest tracking-[0.2em] mb-4">OUR PHILOSOPHY</span>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-6 max-w-xl">Every gift holds the hands that made it.</h1>
+<p class="font-body-lg italic text-on-surface-variant/80 mb-8 max-w-lg">
+                    "At Tohfa, every gift tells a story. We bring you hand-selected, sustainably crafted treasures made by real artisans — not factories."
+                </p>
+<div class="flex items-center gap-4 mb-10">
+<div class="h-px w-16 bg-brand-forest/20"></div>
+<span class="material-symbols-outlined text-brand-forest">eco</span>
+<div class="h-px w-16 bg-brand-forest/20"></div>
+</div>
+<div class="flex flex-wrap gap-4">
+<button class="bg-brand-forest text-brand-cream px-8 py-3 font-label-md uppercase tracking-widest hover:bg-opacity-90 transition-all">Explore Collection</button>
+<button class="border border-brand-forest text-brand-forest px-8 py-3 font-label-md uppercase tracking-widest hover:bg-brand-forest hover:text-white transition-all">Meet Our Artisans</button>
+</div>
+</div>
+</section>
+<section class="bg-brand-sand grain-texture py-24 md:py-32 fade-up visible">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Hands Behind Tohfa</h2>
+<div class="flex justify-center mb-4">
+<span class="material-symbols-outlined text-brand-terracotta">spa</span>
+</div>
+<p class="font-body-lg italic text-on-surface-variant/70">Meet the makers who craft every piece with love.</p>
+</div>
+<div id="artisans-grid" class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter">
+    <!-- Artisans will be dynamically loaded here by JavaScript -->
+</div>
+</section>
+<section class="relative h-[600px] flex items-center justify-center overflow-hidden fade-up visible">
+<div class="absolute inset-0 z-0">
+<img alt="Craftsman workshop detail" class="w-full h-full object-cover scale-110" data-alt="A wide, atmospheric shot of a master woodworker's workbench cluttered with vintage tools, rolls of fine leather, and half-finished wood projects. The workshop is dimly lit by a classic brass desk lamp, casting long, dramatic shadows and a warm glow over the tactile materials. Rainy window in the background adds a moody, slow-living vibe. The color palette is rich in deep forest green, warm terracotta, and earthy wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPBbWxLAv5lfCUHG4_fhQ1toL95dmzT8hxfu2LIxyf4vaYfZzic9KSiF7BrmOLC01KGXVdC_cYylkAWe_RzrhHjoW3bK-YncfK6C6UjzlN9jli2ON6BmGAsk-WZ0wFI64oNRNXTyIYO2JDDhnjT6XxkSpEIPXlOv5GhshNIymEe2rfajdE3xYXucUSiSaoIKLlNBXyaJmlVod5c67e6Jjbas9l4FYfnu7soYZFWUqu_rTe90Q9wQN2AtfP5v_4Ilew6k3uTjmLth8">
+<div class="absolute inset-0 bg-brand-forest/60 backdrop-blur-[2px]"></div>
+</div>
+<div class="relative z-10 text-center px-margin-mobile">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white mb-10 max-w-3xl mx-auto leading-tight italic">
+                    'Craftsmanship is not a transaction. It's a relationship.'
+                </h2>
+<button class="border-2 border-white text-white px-10 py-4 font-label-md uppercase tracking-[0.2em] hover:bg-white hover:text-brand-forest transition-all duration-300">
+                    Join the Tohfa Community
+                </button>
+</div>
+</section>
+</main>
+<footer class="bg-primary text-on-primary p-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter items-start max-w-container-max mx-auto">
+<div class="space-y-6">
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-primary tracking-widest uppercase">Tohfa</h2>
+<p class="font-body-md text-on-primary/70 italic">© 2024 Tohfa Artisanal Marketplace. Crafted for Slow Living.</p>
+<div class="flex gap-4">
+<a class="text-brand-terracotta hover:text-secondary-fixed transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-brand-terracotta hover:text-secondary-fixed transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-brand-terracotta hover:text-secondary-fixed transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h4 class="font-label-md uppercase tracking-widest text-brand-sand">Navigation</h4>
+<ul class="space-y-2">
+<li class=""><a class="font-body-md text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Sustainability</a></li>
+<li class=""><a class="font-body-md text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Our Artisans</a></li>
+<li class=""><a class="font-body-md text-secondary-fixed font-bold" href="#">Our Story</a></li>
+<li class=""><a class="font-body-md text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Journal</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md uppercase tracking-widest text-brand-sand">Service</h4>
+<ul class="space-y-2">
+<li class=""><a class="font-body-md text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Shipping</a></li>
+<li class=""><a class="font-body-md text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Care Guide</a></li>
+<li class=""><a class="font-body-md text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Returns</a></li>
+</ul>
+</div>
+</div>
+<div class="space-y-6">
+<h4 class="font-label-md uppercase tracking-widest text-brand-sand">Stay Inspired</h4>
+<p class="text-sm italic text-on-primary/60">Subscribe to receive artisan stories and exclusive collections.</p>
+<form id="newsletter-form" class="flex flex-col gap-4">
+<input class="bg-transparent border-b border-white/20 py-2 focus:border-brand-terracotta outline-none transition-colors text-white placeholder:text-white/30 font-body-md" placeholder="Your email address" type="email" required>
+<button class="self-start text-brand-terracotta font-label-md uppercase tracking-widest hover:text-white transition-colors" type="submit">Subscribe</button>
+</form>
+</div>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+            // Fetch Artisans
+            const grid = document.getElementById('artisans-grid');
+            if (grid) {
+                fetch('http://localhost:4000/api/artisans')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && data.data) {
+                            grid.innerHTML = data.data.map((artisan, index) => {
+                                const styles = [
+                                    { bg: 'bg-brand-forest text-white', tag: 'bg-brand-terracotta text-white', border: 'border-brand-cream' },
+                                    { bg: 'bg-brand-cream text-brand-forest', tag: 'bg-brand-terracotta text-white', border: 'border-brand-sand' },
+                                    { bg: 'bg-brand-forest text-white', tag: 'bg-brand-terracotta text-white', border: 'border-brand-cream' }
+                                ];
+                                const style = styles[index % styles.length];
+                                
+                                return `
+                                <div class="${style.bg} p-8 pt-20 rounded-2xl relative group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 organic-mask-${(index % 3) + 1} overflow-hidden shadow-lg border-2 ${style.border}">
+                                        <img alt="${artisan.user?.name}" class="w-full h-full object-cover" src="${artisan.coverImageUrl || 'https://via.placeholder.com/150'}">
+                                    </div>
+                                    <div class="mt-4 text-center">
+                                        <span class="inline-block ${style.tag} px-3 py-1 text-[10px] tracking-widest uppercase mb-4">${artisan.craft || 'Craft'} · ${artisan.location || 'Unknown'}</span>
+                                        <h3 class="font-headline-md text-2xl mb-4">${artisan.user?.name}</h3>
+                                        <div class="relative mb-6">
+                                            <span class="absolute -top-4 -left-2 text-4xl text-brand-terracotta font-serif opacity-50">“</span>
+                                            <p class="text-sm leading-relaxed italic opacity-90 px-4">${artisan.quote || artisan.bio || ''}</p>
+                                        </div>
+                                        <button onclick="followArtisan('${artisan.id}')" class="border border-current rounded-full px-6 py-2 text-[10px] tracking-widest uppercase hover:bg-current hover:text-surface transition-colors mb-8">Follow (<span id="count-${artisan.id}">${artisan.followerCount || 0}</span>)</button>
+                                        
+                                        <div class="grid grid-cols-4 gap-2 mt-auto">
+                                            ${(artisan.products || []).slice(0, 4).map(p => `
+                                                <div class="aspect-square bg-current/10 rounded overflow-hidden hover-zoom"><img class="w-full h-full object-cover transition-transform" alt="Product" src="${p.imageUrl}"></div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    <div onclick="window.location.href='/seller/${artisan.shopHandle || artisan.id}'" class="absolute inset-0 bg-brand-forest opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity rounded-2xl cursor-pointer">
+                                        <span class="text-brand-cream uppercase tracking-[0.3em] font-label-md">View Studio</span>
+                                        <span class="material-symbols-outlined text-brand-cream mt-4">arrow_forward</span>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('');
+                        }
+                    })
+                    .catch(err => console.error('Failed to fetch artisans:', err));
+            }
+
+            // Newsletter Form
+            const form = document.getElementById('newsletter-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = e.target.querySelector('input').value;
+                    fetch('http://localhost:4000/api/newsletter/subscribe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    }).then(res => res.json()).then(data => {
+                        if (data.success) {
+                            alert('Subscribed successfully!');
+                            e.target.reset();
+                        } else {
+                            alert('Subscription failed: ' + data.message);
+                        }
+                    });
+                });
+            }
+        });
+
+        window.followArtisan = function(id) {
+            fetch(`http://localhost:4000/api/artisans/${id}/follow`, { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const countEl = document.getElementById(`count-${id}`);
+                        if (countEl) countEl.innerText = data.data.followerCount;
+                        alert('Followed successfully!');
+                    } else {
+                        alert(data.message || 'Action failed');
+                    }
+                })
+                .catch(err => alert('You must be logged in to follow.'));
+        };
+    </script>
+
+
+</body></html>

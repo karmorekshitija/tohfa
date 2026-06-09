@@ -171,9 +171,7 @@
     <main class="relative">
         <!-- Hero Section -->
         <section class="px-margin-desktop pt-xl pb-lg text-center relative overflow-hidden">
-            <div class="absolute inset-0 flex justify-center items-center pointer-events-none opacity-[0.09] select-none">
-                <span id="silhouette-icon" class="material-symbols-outlined text-[300px]" style="font-variation-settings: 'wght' 100;">content_cut</span>
-            </div>
+
             <div class="relative z-10">
                 <p class="font-label-caps text-label-caps text-[#B8860B] mb-sm">BROWSE BY CRAFT</p>
                 <h1 class="font-display-hero text-display-hero text-primary mb-md">Find your gift <span class="font-normal italic">✦</span></h1>
@@ -548,15 +546,7 @@
 
 
 
-        // Parallax effect on the silhouette
-        window.addEventListener('mousemove', (e) => {
-            const silhouette = document.getElementById('silhouette-icon');
-            if (silhouette) {
-                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-                silhouette.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            }
-        });
+
 
         window.addEventListener('DOMContentLoaded', async () => {
             await checkAuthState();

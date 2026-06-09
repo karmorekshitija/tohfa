@@ -122,6 +122,62 @@
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
         }
+
+        /* Diagonal Corner Ribbon Styles */
+        .ribbon-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .ribbon-tag {
+            position: absolute;
+            top: 22px;
+            left: -32px;
+            width: 160px;
+            transform: rotate(-45deg);
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            line-height: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+        .ribbon-tag::before, .ribbon-tag::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            border-top: 3px solid rgba(0,0,0,0.4);
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+        }
+        .ribbon-tag::before { left: 0; }
+        .ribbon-tag::after { right: 0; }
+
+        .ribbon-sponsored {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .ribbon-bestseller {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
+        
+        /* Shimmer Animation for Skeletons */
+        .shimmer {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
     </style>
 </head>
 <body class="text-on-surface selection:bg-secondary-container bg-white">
@@ -214,8 +270,24 @@
 <section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-xl">
 <div class="grid grid-cols-12 gap-xl items-center">
 <div class="col-span-12 lg:col-span-7 relative">
-<div class="rounded-xl overflow-hidden aspect-[16/10] shadow-xl group">
-<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A detailed, close-up shot of a ceramicist's workspace with a soft-clay vase turning on a wooden potter's wheel. Sunlight streams in from a nearby window, casting long, gentle shadows and highlighting the earthy textures of the studio. The aesthetic is clean and minimalist with warm tones, high-key lighting, and a serene, hand-crafted atmosphere that emphasizes slow living and intentionality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBjSHDpc5HHHXnpAGCGGOIGRoumhZ9KlYdQmei0_40xNo1ftiEDRwwgy7CLHit8khhBsBrN82VUtp1Ancwg4HV13_20NgID3qzZN8ri6GsGRKSFFWZLqujEfX1aNxbOS4BRbn9pDCB0DkULgpZFq447D_KJ6WLA6pQgZ6ioSS8jr5DLWBb3QEoUjHf6WS34Xm2rWGRxkklcrCnRPe3XJZPvDcohsaRH-EuliTOZA5fnBgOd3fUr6qla_5R4vWfsQ_AHKo8At4ajSI">
+<div id="hero-slideshow-container" class="rounded-xl overflow-hidden aspect-[16/10] shadow-xl relative group">
+<!-- Slides will be injected here via JS -->
+<div id="hero-slides-wrapper" class="w-full h-full relative">
+    <div class="absolute inset-0 bg-surface-variant animate-pulse"></div> <!-- Skeleton -->
+</div>
+
+<!-- Navigation Arrows (Hidden by default, shown on hover) -->
+<button id="hero-slide-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-md backdrop-blur-sm active:scale-95">
+    <span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button id="hero-slide-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-md backdrop-blur-sm active:scale-95">
+    <span class="material-symbols-outlined">chevron_right</span>
+</button>
+
+<!-- Dot Indicators -->
+<div id="hero-slide-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+    <!-- Dots injected via JS -->
+</div>
 </div>
 <!-- Floating Quote Card -->
 <div class="absolute -bottom-10 -right-10 md:right-12 bg-surface-bright p-lg rounded-xl border border-outline-variant shadow-lg max-w-xs z-20">
@@ -244,257 +316,61 @@
 </div>
 </div>
 </section>
-<!-- Art Story Collection (Editorial/Masonry) -->
-<!-- Freshly Made (Endless Scroll Grid) -->
+<!-- For You (Endless Scroll Feed) -->
 <section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
-<div class="flex justify-between items-end mb-xl">
-<div>
-<h3 class="font-headline-lg text-headline-lg text-primary">Freshly Made</h3>
-<p class="font-body-md text-on-surface-variant">Handpicked treasures from this week's studio sessions.</p>
-</div>
-<button class="flex items-center gap-2 font-label-caps text-tertiary hover:gap-3 transition-all">
-                    View Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg relative">
-<!-- Product Card 1 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=129'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A beautiful, irregular hand-glazed ceramic bowl in a soft sage green color, resting on a rustic wooden surface. The bowl features a crackled glaze effect and organic edges, shot in high-key natural light that emphasizes its tactile quality and delicate form. The aesthetic is clean and artisanal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIlZOjtxc_awe6tB5cz4EzanNjyBomxKGOpkGYUUr5ckbOrtFYrKYpeccBhCBSS3rRDYVmzsVp0BLVS_xN6ptVyFFR_UD6CW74SwQba2McXT16SThooJEXQyLl9tBzARbYexiR5z9F4CmFxu8xLreOCuTlxZ_c_INC6FLdX3SOOQq1tpLdc88ZxTSM0JrdqQQ8LFQmSIld-XRV4K7hdh--fm4rxGAiz6D9mpa2aotyHUP1PqSp5jTNHSTmzV4KZ5kdCftK8stcJ4M">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#C8D7BF] text-[#255338] border border-[#C1C9C0]">Shipped</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹1,250</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Hand-Glazed Sage Bowl</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Elena Vancamp</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 3 days</span>
-</div>
-</div>
-</div>
-<!-- Product Card 2 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=130'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A solid oak wooden serving board with an artisan bread loaf placed upon it, shot in warm, golden afternoon light that brings out the deep wood grain. The scene is rustic yet refined, capturing a cozy home-kitchen moment. High contrast lighting with soft shadows creates a physical, tactile feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_RsH84rsLEhM9BhLqf1idDkj9dAbsbvMWZm1SqRABQA5zGpp3AvnJYMN4jzOXyu2Z6UxLqk9xhPIBs0mqlmiYSuth4kFJtMBQ8BZ6n08IWirhsJ74pgdM8Anrf2Qh9w4em9nIyPxApBoGj-MtilGIYtF3E9TMFE8UkzwGqRGO-5mTBTEqvzW7VHc85X-GD-4zAgnl78uP-9_ShxzVoxB7JQp1pNLdLzjmno8hE3TIsYu3SF_3JpBC0a4uaozm9mhcdB0i0DRolb8">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-violet-50 text-violet-800 border border-violet-200">Processing</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹2,800</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Oak &amp; Ash Board</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Woodworker Mark</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 7 days</span>
-</div>
-</div>
-</div>
-<!-- Product Card 3 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=131'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A delicate handmade lavender resin pendant with real dried petals suspended inside, hanging from a thin gold chain. The pendant is displayed on a soft velvet cushion in a pale violet hue. The lighting is soft and flattering, highlighting the crystalline clarity of the resin and the intricate botanical details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP4kU2c8zbx4Xaol1rHDXI_iQiG8J2VXxxvB-jzbLh_XTIhVyBTF0TsI0T85eqe7OWH7Vh2i2vnE9UYGBtNJVI_4euqnjUlXXTzpWi4NIKzegZuDo2Edf2dgu20_nJidPl9QurGAUZlQdGVpom5Y4YQLX496AgUJp3ydVNQpz8uDDSoA2iY7LdUF3_loB89opdKsqtrvhcyBUOQZhiY-ELrhBYU5ewxsTH2ux2_01NvbyYUvGoWnWy2MinnnRcuoz3sC3V766VCRA">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-dash text-[10px] text-[#211b11] bg-[#F1EADD] px-2 py-0.5 rounded-full">Awaiting Payment</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹950</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Lavender Pendant</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Petal Studio</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 2 days</span>
-</div>
-</div>
-</div>
-<!-- Product Card 4 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=132'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A stack of hand-dyed organic cotton beeswax wraps featuring delicate leaf patterns in sage and ochre. The fabric stack is tied with a simple jute twine, resting on a clean white linen surface. The visual style is light and airy, emphasizing sustainability and hand-made charm with a high-key light mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMJAxNgTh5SJQTRbeAoTilAZbugJo12R1x1plpxilDvUf5fwGA44tDsI1Xqln-3-lTYYk6Qfp8vlZk9EZnZ6XAwPx6JpMpic1kEYQeJPc6D4as7Xfvs3Qn2wDySy4HvervTSdrLLIyjlzH4D4viyX6aCUeg5JhYRYg37m_8X_dwEUM4jgVsyP4aBq8mw6s-2A2naomsiwsFD-sZxPK6NG8Hd3OKI-JexWyt2_7hFj3fhjsdeQHkhRyI9nTXGWFoAdtsRMHiGTqiDc">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-[#255338] text-white">Delivered</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹650</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Botanical Wraps</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Eco-Threads</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 4 days</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Mascot Interaction -->
+    <div class="flex justify-between items-end mb-xl">
+        <div>
+            <h3 class="font-headline-lg text-headline-lg text-primary">For You</h3>
+            <p class="font-body-md text-on-surface-variant">Handpicked treasures just for you</p>
+        </div>
+    </div>
+    
+    <!-- Product Grid: 2 columns on mobile, 4 columns on desktop -->
+    <div id="product-feed-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-lg relative">
+        <!-- Dynamic product cards will load here -->
+    </div>
+    
+    <!-- Skeleton Loaders -->
+    <div id="feed-skeletons" class="grid grid-cols-2 lg:grid-cols-4 gap-lg mt-lg hidden">
+        <!-- Skeleton Card 1 -->
+        <div class="bg-surface-bright rounded-xl border border-outline-variant p-md flex flex-col justify-between min-h-[350px]">
+            <div class="aspect-square rounded-lg shimmer mb-md w-full"></div>
+            <div class="h-4 w-1/3 shimmer mb-sm rounded"></div>
+            <div class="h-6 w-3/4 shimmer mb-xs rounded"></div>
+            <div class="h-4 w-1/2 shimmer mb-md rounded"></div>
+            <div class="h-10 w-full shimmer rounded-lg"></div>
+        </div>
+        <!-- Skeleton Card 2 -->
+        <div class="bg-surface-bright rounded-xl border border-outline-variant p-md flex flex-col justify-between min-h-[350px]">
+            <div class="aspect-square rounded-lg shimmer mb-md w-full"></div>
+            <div class="h-4 w-1/3 shimmer mb-sm rounded"></div>
+            <div class="h-6 w-3/4 shimmer mb-xs rounded"></div>
+            <div class="h-4 w-1/2 shimmer mb-md rounded"></div>
+            <div class="h-10 w-full shimmer rounded-lg"></div>
+        </div>
+        <!-- Skeleton Card 3 -->
+        <div class="bg-surface-bright rounded-xl border border-outline-variant p-md flex flex-col justify-between min-h-[350px]">
+            <div class="aspect-square rounded-lg shimmer mb-md w-full"></div>
+            <div class="h-4 w-1/3 shimmer mb-sm rounded"></div>
+            <div class="h-6 w-3/4 shimmer mb-xs rounded"></div>
+            <div class="h-4 w-1/2 shimmer mb-md rounded"></div>
+            <div class="h-10 w-full shimmer rounded-lg"></div>
+        </div>
+        <!-- Skeleton Card 4 -->
+        <div class="bg-surface-bright rounded-xl border border-outline-variant p-md flex flex-col justify-between min-h-[350px]">
+            <div class="aspect-square rounded-lg shimmer mb-md w-full"></div>
+            <div class="h-4 w-1/3 shimmer mb-sm rounded"></div>
+            <div class="h-6 w-3/4 shimmer mb-xs rounded"></div>
+            <div class="h-4 w-1/2 shimmer mb-md rounded"></div>
+            <div class="h-10 w-full shimmer rounded-lg"></div>
+        </div>
+    </div>
 
-</section>
-
-<!-- Sponsored Products Section -->
-<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
-<div class="flex justify-between items-end mb-xl">
-<div>
-<h3 class="font-headline-lg text-headline-lg text-primary">Sponsored Creations</h3>
-<p class="font-body-md text-on-surface-variant">Featured highlights curated by our artisan community.</p>
-</div>
-<button class="flex items-center gap-2 font-label-caps text-tertiary hover:gap-3 transition-all">
-                    View Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg relative">
-<!-- Sponsored Product Card 1 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=133'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A luxurious, thick woven organic wool throw blanket in earthy cream and grey tones, draped over a modern wooden armchair. Sunbeam from a window highlights the soft, fluffy texture of the wool. Minimalist Scandinavian style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU5MKh32XiupvdvJAge7v9Dd8A-5IczTYjRKRjG_XmvlMsZkdqixkrIKJbYnO2hoUc4igYoj1oyZ-xGYbyiq8tPkQ8I1ObKuyeYTTn_6CR5Yhm-3TSWGVsoeWvATRWJ8g6qqKHV-8_lbwKc8SClRFaPG-HoTK0tyc9GmDXv-2Ewdab_Unod1jBi4yQML44DvbOQ1w3DwvPun88ufsHaqViBpxgqJd8P2MQCfJIF2H_RxaVf3OmFOZuV3y5oxxqLxSeSaYZVPcZJGY">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹4,500</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Wool Throw Blanket</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Cozy Weaves</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 5 days</span>
-</div>
-</div>
-</div>
-<!-- Sponsored Product Card 2 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=134'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A vintage-style hand-bound dark brown leather journal resting on a wooden writing desk, alongside a classic calligraphy fountain pen. The leather has a weathered, rich texture with visible stitching details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAekO-e4Z9Kym-whZp3YzQjbeE59qwgo2jNvGw3G9dGQwoh2E_IcfvQztke526ZVoXyb33LsS-l6muEHwgQ-VhFICrD0UvBDQbYn-QsLbsQJyjwVivEwa9ewqvOlp9kf6SePxG7SmPGlU-ZEzxf1YItlN0AiEOnKDA5OG-1vHX2WDFCpDodVzxiD9sR-nEWWMRQ31u5b6xAB4_qOlDQDfWTXiyukP8Q9NKv6A3amWKhBPppUf2OGSxtI1WDCfEZkvU-eN_UmPOdrMo">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹1,850</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Leather Journal</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Artisan Bindings</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 2 days</span>
-</div>
-</div>
-</div>
-<!-- Sponsored Product Card 3 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=135'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A hand-poured soy wax candle in an amber glass jar, with lavender sprigs resting nearby. The warm flame of the candle creates a cozy and relaxing ambient light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDxJ5YDdesnrhfeluH3CqQNZ0Juy5CkgPLRx_Izr7rs0-A0p8Y45R6ekYKyIezhwPBATWtvuv1V7C6pDMLW9IS8axurKFlKOZa_LcZ88uT6ua55ipNAd6UAVZs7H3J17latC_ErfZTWBJZxX7GHcm6VF64gaOywMkbUiEquZK6Yp-prtITyz24gvZr7cpnPMGGEmjS0JabjCjGb5LWjlUnL37UOG6KGAvY4RNawvgNHL2X5ztgaXDJyAkjnjcSO489QzJ9dZYkLr0">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹750</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Soy Lavender Candle</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Candle Cove</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 3 days</span>
-</div>
-</div>
-</div>
-<!-- Sponsored Product Card 4 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=136'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="An abstract watercolor floral painting in soft pastel pinks and greens, framed in a clean light-colored wooden frame, hanging on a white wall in natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjDcLug000FlfJ3E5G3_AOIfAhQJ5cVI2PtwtmWa66LetQhs4LC6kwIVPd0PXzRUq--jqVerh3aa81JK1ChSre9ZTCvV3MaV0ZJmL5IoOADQqhgX1oWecSDR1D-12taTalWsaFXR-KGhJIqX6efYrSCoCJCmvY1tFw30KEoI6woKKBkjYj7sBIFlKAJkRgvcqvxv_hdcMCYFY-o6kBa-MwPZjK20tCW6R01csBFgXJt5Avqi81HJYXpf8EVa74lqkQlWN64na5y5o">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200">Sponsored</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹1,500</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Abstract Art Print</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Studio Bloom</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 4 days</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Bestselling Products Section -->
-<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
-<div class="flex justify-between items-end mb-xl">
-<div>
-<h3 class="font-headline-lg text-headline-lg text-primary">Bestselling Products</h3>
-<p class="font-body-md text-on-surface-variant">Our most loved creations, chosen by collectors.</p>
-</div>
-<button class="flex items-center gap-2 font-label-caps text-tertiary hover:gap-3 transition-all">
-                    View Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg relative">
-<!-- Bestselling Product Card 1 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=137'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A pair of beautifully matched ceramic tea mugs with an earthy dual-tone brown and cream glaze, steam gently rising from hot tea inside." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkNApOvwUZyNOP6tzGFWd7AgYYosGJ1xzLnjvDc0YAQhRfgxRNzvPNfTLADyHiu0_ldNx74UMc29QrxIbP319f3AxpCh14jItkvCgcV1ULR8MYWcYM4CEWLRe6px-CGhKZSdMMS2ffBYE0Di1EvKysgGIlr522IfxJvhW3t70pFIHqbCca6NTK-RCfSHGnWGpFN3-cQF1huori20XyXxQSUFEf7Nu-7CA6byxamj7mgoYIM5vjeiNemqrWuaD6LdX_DauHQwN6bZs">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹2,200</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Ceramic Tea Mug Set</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Earthy Clay</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 3 days</span>
-</div>
-</div>
-</div>
-<!-- Bestselling Product Card 2 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=138'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A delicate sterling silver ring featuring a detailed wildflower engraving, shown close up on a hand in natural sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU5MKh32XiupvdvJAge7v9Dd8A-5IczTYjRKRjG_XmvlMsZkdqixkrIKJbYnO2hoUc4igYoj1oyZ-xGYbyiq8tPkQ8I1ObKuyeYTTn_6CR5Yhm-3TSWGVsoeWvATRWJ8g6qqKHV-8_lbwKc8SClRFaPG-HoTK0tyc9GmDXv-2Ewdab_Unod1jBi4yQML44DvbOQ1w3DwvPun88ufsHaqViBpxgqJd8P2MQCfJIF2H_RxaVf3OmFOZuV3y5oxxqLxSeSaYZVPcZJGY">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹3,100</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Wildflower Silver Ring</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Silver Grace</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 5 days</span>
-</div>
-</div>
-</div>
-<!-- Bestselling Product Card 3 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=139'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="A modern macrame wall hanging with intricate knot patterns, suspended from a natural driftwood branch on a neutral wall." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAekO-e4Z9Kym-whZp3YzQjbeE59qwgo2jNvGw3G9dGQwoh2E_IcfvQztke526ZVoXyb33LsS-l6muEHwgQ-VhFICrD0UvBDQbYn-QsLbsQJyjwVivEwa9ewqvOlp9kf6SePxG7SmPGlU-ZEzxf1YItlN0AiEOnKDA5OG-1vHX2WDFCpDodVzxiD9sR-nEWWMRQ31u5b6xAB4_qOlDQDfWTXiyukP8Q9NKv6A3amWKhBPppUf2OGSxtI1WDCfEZkvU-eN_UmPOdrMo">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹1,950</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Macrame Wall Hanging</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Knot &amp; Thread</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 6 days</span>
-</div>
-</div>
-</div>
-<!-- Bestselling Product Card 4 -->
-<div class="group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 duration-700 opacity-100 translate-y-0 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=140'">
-<div class="aspect-square rounded-t-xl overflow-hidden p-3">
-<img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" data-alt="An organic herb garden starter kit with small clay pots, seeds, and soil pellets on a kitchen counter." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDxJ5YDdesnrhfeluH3CqQNZ0Juy5CkgPLRx_Izr7rs0-A0p8Y45R6ekYKyIezhwPBATWtvuv1V7C6pDMLW9IS8axurKFlKOZa_LcZ88uT6ua55ipNAd6UAVZs7H3J17latC_ErfZTWBJZxX7GHcm6VF64gaOywMkbUiEquZK6Yp-prtITyz24gvZr7cpnPMGGEmjS0JabjCjGb5LWjlUnL37UOG6KGAvY4RNawvgNHL2X5ztgaXDJyAkjnjcSO489QzJ9dZYkLr0">
-</div>
-<div class="p-md">
-<div class="flex justify-between items-start mb-sm">
-<span class="font-['Cinzel'] text-[12px] font-bold tracking-[0.1em] rounded-full px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200">Bestseller</span>
-<span class="font-data-price text-data-price text-[#B8860B]">₹1,100</span>
-</div>
-<h4 class="font-title-serif text-title-serif text-on-surface mb-xs">Organic Herb Garden Kit</h4>
-<div class="flex items-center justify-between mt-sm">
-<span class="font-body-md text-xs text-on-surface-variant">By Green Sprout</span>
-<span class="bg-surface-container-high text-[10px] px-2 py-1 rounded font-body-md text-outline">Ships in 2 days</span>
-</div>
-</div>
-</div>
-</div>
+    <!-- Scroll Anchor Trigger -->
+    <div id="feed-scroll-anchor" class="w-full h-10 mt-6"></div>
 </section>
 </main>
+
 <!-- Footer -->
 <footer class="w-full mt-xl border-t border-outline-variant/30 bg-white" style="background-color: #FFFFFF;">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-xl px-margin-desktop py-xl max-w-[1440px] mx-auto relative"><div class="hidden md:block absolute -top-14 right-margin-desktop z-10">
@@ -569,26 +445,197 @@
 </div>
 </div>
 </footer>
+
 <script type="module">
+    import apiClient from '../src/utils/apiClient.js';
 
-        // Subtle scroll reveal effect for product cards
-        const observerOptions = {
-            threshold: 0.1
-        };
+    let page = 1;
+    let loading = false;
+    let hasMore = true;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.remove('opacity-0', 'translate-y-10');
-                    entry.target.classList.add('opacity-100', 'translate-y-0');
+    const grid = document.getElementById('product-feed-grid');
+    const skeletons = document.getElementById('feed-skeletons');
+    const anchor = document.getElementById('feed-scroll-anchor');
+
+    async function loadNextBatch() {
+        if (loading || !hasMore) return;
+        loading = true;
+        skeletons.classList.remove('hidden');
+
+        try {
+            const response = await apiClient.get(`/products/feed?page=${page}&limit=8`);
+            const { products, has_more } = response.data.data;
+            
+            hasMore = has_more;
+            page++;
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer opacity-0 translate-y-10";
+                card.onclick = () => window.location.href = `/buyer/product.html?id=${product.id}`;
+
+                let ribbonHtml = '';
+                if (product.type === 'sponsored') {
+                    ribbonHtml = `
+                        <div class="ribbon-wrapper">
+                            <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
+                        </div>
+                    `;
+                } else if (product.type === 'bestseller') {
+                    ribbonHtml = `
+                        <div class="ribbon-wrapper">
+                            <div class="ribbon-tag ribbon-bestseller">Best Seller</div>
+                        </div>
+                    `;
                 }
-            });
-        }, observerOptions);
 
-        document.querySelectorAll('.group.bg-surface-bright').forEach(card => {
-            card.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
-            observer.observe(card);
+                const formattedPrice = `₹${(product.price_paise / 100).toLocaleString('en-IN')}`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="aspect-square rounded-t-xl overflow-hidden p-3 relative">
+                            ${ribbonHtml}
+                            <img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="${product.image_url}" alt="${product.name}">
+                        </div>
+                        <div class="p-md flex flex-col">
+                            <div class="flex justify-between items-baseline mb-sm">
+                                <span class="font-data-price text-data-price text-[#B8860B] font-bold text-lg">${formattedPrice}</span>
+                            </div>
+                            <h4 class="font-title-serif text-title-serif font-bold text-on-surface mb-xs line-clamp-1">${product.name}</h4>
+                            <span class="font-body-md text-xs text-on-surface-variant">By ${product.seller_name}</span>
+                        </div>
+                    </div>
+                    <div class="px-md pb-md">
+                        <button class="w-full bg-[#255338] text-white py-2 rounded-lg font-body-md text-sm hover:bg-opacity-90 transition-all active:scale-95 duration-200">
+                            Find It Here
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+                
+                // Trigger transition animation
+                setTimeout(() => {
+                    card.classList.remove('opacity-0', 'translate-y-10');
+                    card.classList.add('opacity-100', 'translate-y-0');
+                }, 50);
+            });
+
+        } catch (error) {
+            console.error('Failed to load products feed:', error);
+        } finally {
+            loading = false;
+            skeletons.classList.add('hidden');
+        }
+    }
+
+    // Set up intersection observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                loadNextBatch();
+            }
         });
-    </script>
+    }, {
+        rootMargin: '100px'
+    });
+
+    observer.observe(anchor);
+
+    // --- Hero Slideshow Logic ---
+    let currentSlide = 0;
+    let slides = [];
+    let slideInterval;
+    const SLIDE_DURATION = 4000;
+
+    const wrapper = document.getElementById('hero-slides-wrapper');
+    const dotsContainer = document.getElementById('hero-slide-dots');
+    const prevBtn = document.getElementById('hero-slide-prev');
+    const nextBtn = document.getElementById('hero-slide-next');
+
+    async function loadHeroSlides() {
+        try {
+            const response = await apiClient.get('/hero-slides');
+            if (response.data && response.data.success && response.data.data.length > 0) {
+                slides = response.data.data;
+                renderSlides();
+                startSlideshow();
+            } else {
+                // Fallback static image if no slides configured
+                wrapper.innerHTML = `<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBjSHDpc5HHHXnpAGCGGOIGRoumhZ9KlYdQmei0_40xNo1ftiEDRwwgy7CLHit8khhBsBrN82VUtp1Ancwg4HV13_20NgID3qzZN8ri6GsGRKSFFWZLqujEfX1aNxbOS4BRbn9pDCB0DkULgpZFq447D_KJ6WLA6pQgZ6ioSS8jr5DLWBb3QEoUjHf6WS34Xm2rWGRxkklcrCnRPe3XJZPvDcohsaRH-EuliTOZA5fnBgOd3fUr6qla_5R4vWfsQ_AHKo8At4ajSI" alt="Ceramic Artisan">`;
+            }
+        } catch (error) {
+            console.error('Failed to load hero slides:', error);
+            wrapper.innerHTML = `<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBjSHDpc5HHHXnpAGCGGOIGRoumhZ9KlYdQmei0_40xNo1ftiEDRwwgy7CLHit8khhBsBrN82VUtp1Ancwg4HV13_20NgID3qzZN8ri6GsGRKSFFWZLqujEfX1aNxbOS4BRbn9pDCB0DkULgpZFq447D_KJ6WLA6pQgZ6ioSS8jr5DLWBb3QEoUjHf6WS34Xm2rWGRxkklcrCnRPe3XJZPvDcohsaRH-EuliTOZA5fnBgOd3fUr6qla_5R4vWfsQ_AHKo8At4ajSI" alt="Ceramic Artisan">`;
+        }
+    }
+
+    function renderSlides() {
+        wrapper.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        slides.forEach((slide, index) => {
+            // Slide Image
+            const img = document.createElement('img');
+            img.src = slide.imageUrl || slide.image_url;
+            img.alt = slide.altText || slide.alt_text || 'Artisan Craft';
+            // Smooth fade classes
+            img.className = \`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out \${index === 0 ? 'opacity-100' : 'opacity-0'}\`;
+            img.id = \`hero-slide-\${index}\`;
+            wrapper.appendChild(img);
+
+            // Dot Indicator
+            const dot = document.createElement('button');
+            dot.className = \`w-2 h-2 rounded-full transition-all duration-300 \${index === 0 ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}\`;
+            dot.onclick = () => goToSlide(index);
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    function goToSlide(index) {
+        if (slides.length === 0) return;
+
+        // Hide current
+        document.getElementById(\`hero-slide-\${currentSlide}\`).classList.replace('opacity-100', 'opacity-0');
+        dotsContainer.children[currentSlide].classList.replace('bg-white', 'bg-white/50');
+        dotsContainer.children[currentSlide].classList.remove('scale-125');
+
+        // Update index
+        currentSlide = index;
+        if (currentSlide < 0) currentSlide = slides.length - 1;
+        if (currentSlide >= slides.length) currentSlide = 0;
+
+        // Show new
+        document.getElementById(\`hero-slide-\${currentSlide}\`).classList.replace('opacity-0', 'opacity-100');
+        dotsContainer.children[currentSlide].classList.replace('bg-white/50', 'bg-white');
+        dotsContainer.children[currentSlide].classList.add('scale-125');
+
+        // Reset timer when manually interacted
+        resetSlideshow();
+    }
+
+    function nextSlide() {
+        goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        goToSlide(currentSlide - 1);
+    }
+
+    function startSlideshow() {
+        slideInterval = setInterval(nextSlide, SLIDE_DURATION);
+    }
+
+    function resetSlideshow() {
+        clearInterval(slideInterval);
+        startSlideshow();
+    }
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // Initialize
+    loadHeroSlides();
+</script>
 </body>
 </html>

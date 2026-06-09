@@ -135,9 +135,22 @@
 <div class="p-lg border-t border-outline-variant/20 bg-surface-container-lowest/95 backdrop-blur-md z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
 <div class="flex items-start gap-md">
 <img alt="My Avatar" class="border border-[#C1C9C0] object-cover w-10 h-10 rounded-full object-cover  " data-alt="A close-up portrait of a thoughtful artisan in a light-filled workshop, wearing a simple linen shirt. The lighting is soft and golden, highlighting the creative and intentional personality of the brand. The backdrop features blurred wooden tools and crafting materials, maintaining a tactile, human-centric aesthetic consistent with the Tohfa Studio brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmHBnHAKz6S3jbxChAfiXCCiFfQdvs4CbrJWUQUUCE0Y2Vl-AdApzcQQmxwt5IFJBhG4wEAfD-PH-3vt1XGRKiUcs-dUG7LK4edl1nRPG7rhuLpw97vq6vc1MgjWBLeZkbXeDs8l4KgM_BncS_Mgg7ipjlyoKf5s8a9LAGFPRsoTXw55ex1zGF5JLKE0ONNcyrBTAN1X7ccMNK3bkfb65KvqwZrNybtk97QYj28D9CSPSQ3GSzd1ITWd8y2LgU8lKnc40QzmLmyrA">
-<div class="flex-grow relative">
-<textarea class="w-full bg-surface-container-low border border-outline-variant/40 rounded-xl px-md py-3 font-body-md text-on-surface placeholder:text-outline-variant focus:ring-1 focus:ring-primary focus:border-primary outline-none resize-none transition-all artisan-scroll" id="commentInput" oninput="updateCharCount(this)" placeholder="Add a comment..." rows="1"></textarea>
-<div class="flex justify-between items-center mt-2">
+<div class="flex-grow relative flex flex-col gap-3">
+<!-- Emoji Rows -->
+<div class="flex flex-col gap-2 w-full">
+    <!-- Quick Reactions -->
+    <div id="quick-reactions" class="flex items-center gap-3 overflow-x-auto artisan-scroll pb-1">
+        <!-- Injected via JS -->
+    </div>
+    
+    <!-- Suggestions (Hidden initially) -->
+    <div id="emoji-suggestions" class="flex items-center gap-3 overflow-x-auto artisan-scroll pb-1 hidden">
+        <!-- Injected via JS -->
+    </div>
+</div>
+
+<textarea class="w-full bg-surface-container-low border border-outline-variant/40 rounded-xl px-md py-3 font-body-md text-on-surface placeholder:text-outline-variant focus:ring-1 focus:ring-primary focus:border-primary outline-none resize-none transition-all artisan-scroll" id="commentInput" placeholder="Add a comment..." rows="1"></textarea>
+<div class="flex justify-between items-center mt-1">
 <span class="font-data-price text-xs text-outline" id="charCount">0/300</span>
 <button class="bg-primary text-white px-lg py-2 rounded-full font-body-md font-bold hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-xs active:scale-95">
                                     Send
@@ -152,6 +165,78 @@
 </main>
 <!-- Simple Interactions -->
 <script>
+        const DEFAULT_EMOJIS = ['❤️', '🔥', '🎁', '🥰', '👏', '✨', '🤩', '😍', '💕', '🎉'];
+        
+        // Setup Quick Reactions
+        const quickReactionsContainer = document.getElementById('quick-reactions');
+        if (quickReactionsContainer) {
+            quickReactionsContainer.innerHTML = DEFAULT_EMOJIS.map(emoji => `
+                <button type="button" class="text-2xl hover:scale-125 hover:-translate-y-1 transition-transform active:scale-95 cursor-pointer emoji-btn" onclick="insertEmoji('${emoji}')">
+                    ${emoji}
+                </button>
+            `).join('');
+        }
+
+        function insertEmoji(emoji) {
+            const textarea = document.getElementById('commentInput');
+            if (!textarea) return;
+
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+            const text = textarea.value;
+
+            textarea.value = text.substring(0, startPos) + emoji + text.substring(endPos, text.length);
+            
+            // Move cursor to after emoji
+            const newPos = startPos + emoji.length;
+            textarea.setSelectionRange(newPos, newPos);
+            textarea.focus();
+            
+            updateCharCount(textarea);
+            handleInput(textarea);
+        }
+
+        let debounceTimer;
+        
+        function handleInput(textarea) {
+            updateCharCount(textarea);
+            
+            const text = textarea.value;
+            const suggestionsContainer = document.getElementById('emoji-suggestions');
+            
+            if (text.trim() === '') {
+                suggestionsContainer.classList.add('hidden');
+                return;
+            }
+
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                fetch('http://localhost:4000/api/comments/emoji-suggestions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ partialText: text })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.emojis && data.emojis.length > 0) {
+                        suggestionsContainer.innerHTML = data.emojis.map(emoji => `
+                            <button type="button" class="text-2xl bg-surface-container hover:bg-surface-variant px-2 py-1 rounded-full hover:scale-110 transition-transform active:scale-95 cursor-pointer" onclick="insertEmoji('${emoji}')">
+                                ${emoji}
+                            </button>
+                        `).join('');
+                        suggestionsContainer.classList.remove('hidden');
+                    } else {
+                        suggestionsContainer.classList.add('hidden');
+                    }
+                })
+                .catch(err => console.error('Emoji fetch error:', err));
+            }, 300);
+        }
+
+        document.getElementById('commentInput').addEventListener('input', function() {
+            handleInput(this);
+        });
+
         function updateCharCount(textarea) {
             const count = textarea.value.length;
             document.getElementById('charCount').textContent = `${count}/300`;
