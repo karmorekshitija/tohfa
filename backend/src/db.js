@@ -486,6 +486,10 @@ const migrateInventoryMaterials = () => {
       unit           TEXT    NOT NULL CHECK(unit IN ('grams','pcs')),
       cost_per_unit  INTEGER NOT NULL DEFAULT 0,   -- in paise
       low_stock_threshold REAL DEFAULT 0.0,
+      stock_qty      REAL    DEFAULT 0.0,
+      min_threshold  REAL    DEFAULT 0.0,
+      supplier_name  TEXT    DEFAULT NULL,
+      supplier_phone TEXT    DEFAULT NULL,
       last_restocked TEXT    DEFAULT (datetime('now')),
       created_at     TEXT    DEFAULT (datetime('now')),
       updated_at     TEXT    DEFAULT (datetime('now'))
