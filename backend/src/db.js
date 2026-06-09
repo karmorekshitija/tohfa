@@ -400,6 +400,44 @@ const migrateListingImages = () => {
 };
 migrateListingImages();
 
+// Task 04: orders table migration (seller-facing view)
+const migrateOrders = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS orders (
+      id              INTEGER  PRIMARY KEY AUTOINCREMENT,
+      order_ref       TEXT     NOT NULL UNIQUE,   -- e.g. TF-0042
+      buyer_id        INTEGER  NOT NULL REFERENCES users(id),
+      seller_id       INTEGER  NOT NULL REFERENCES users(id),
+      listing_id      INTEGER  NOT NULL REFERENCES listings(id),
+      variant_id      INTEGER  DEFAULT NULL REFERENCES listing_variants(id),
+      quantity        INTEGER  NOT NULL DEFAULT 1,
+      unit_price      INTEGER  NOT NULL,   -- in paise, price at time of order
+      total_amount    INTEGER  NOT NULL,   -- in paise
+      platform_fee    INTEGER  NOT NULL,   -- 8% in paise
+      seller_payout   INTEGER  NOT NULL,   -- total_amount - platform_fee
+      order_type      TEXT     NOT NULL DEFAULT 'pre-made' CHECK(order_type IN ('pre-made','custom')),
+      status          TEXT     NOT NULL DEFAULT 'awaiting_payment'
+                               CHECK(status IN (
+                                 'awaiting_payment','processing','in_production',
+                                 'packed','dispatched','delivered','cancelled','rto'
+                               )),
+      payment_status  TEXT     NOT NULL DEFAULT 'unpaid' CHECK(payment_status IN ('unpaid','paid','refunded')),
+      customization   TEXT     DEFAULT NULL,   -- JSON blob of custom instructions
+      tracking_id     TEXT     DEFAULT NULL,
+      courier         TEXT     DEFAULT NULL,
+      deadline_at     TEXT     DEFAULT NULL,
+      dispatched_at   TEXT     DEFAULT NULL,
+      delivered_at    TEXT     DEFAULT NULL,
+      studio_notes    TEXT     DEFAULT NULL,   -- JSON array of note objects {ts, text}
+      created_at      TEXT     DEFAULT (datetime('now')),
+      updated_at      TEXT     DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_orders_seller ON orders(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+  `);
+};
+migrateOrders();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
