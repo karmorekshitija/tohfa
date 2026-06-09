@@ -331,33 +331,53 @@ migrateNotifications();
 const migrateListings = () => {
   db.exec(`
     CREATE TABLE IF NOT EXISTS listings (
-      id                INTEGER  PRIMARY KEY AUTOINCREMENT,
-      seller_id         INTEGER  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      title             TEXT     NOT NULL,
-      description       TEXT     DEFAULT NULL,
-      story             TEXT     DEFAULT NULL,
-      base_price        INTEGER  NOT NULL DEFAULT 0,   -- in paise
-      listing_type      TEXT     NOT NULL DEFAULT 'pre-made' CHECK(listing_type IN ('pre-made','custom')),
-      status            TEXT     NOT NULL DEFAULT 'draft' CHECK(status IN ('active','paused','draft')),
-      ships_in_days     INTEGER  NOT NULL DEFAULT 3,
-      dispatch_sla_days INTEGER  NOT NULL DEFAULT 1,
-      daily_max_slots   INTEGER  DEFAULT NULL,
-      weekly_cap        INTEGER  DEFAULT NULL,
-      monthly_ceiling   INTEGER  DEFAULT NULL,
-      allow_prebooking  INTEGER  DEFAULT 0,
-      min_order_qty     INTEGER  DEFAULT 1,
-      max_order_qty     INTEGER  DEFAULT NULL,
-      weight_g          INTEGER  DEFAULT NULL,
-      length_cm         REAL     DEFAULT NULL,
-      width_cm          REAL     DEFAULT NULL,
-      height_cm         REAL     DEFAULT NULL,
-      shipping_method   TEXT     DEFAULT 'courier' CHECK(shipping_method IN ('courier','local','pickup')),
-      packaging_type    TEXT     DEFAULT 'standard' CHECK(packaging_type IN ('standard','branded','eco','fragile')),
-      return_policy     TEXT     DEFAULT 'no-returns' CHECK(return_policy IN ('no-returns','7-day','15-day')),
-      is_eco_friendly   INTEGER  DEFAULT 0,
-      festive_tags      TEXT     DEFAULT NULL,   -- JSON array of strings e.g. '["Diwali","Wedding"]'
-      created_at        TEXT     DEFAULT (datetime('now')),
-      updated_at        TEXT     DEFAULT (datetime('now'))
+      id                    INTEGER  PRIMARY KEY AUTOINCREMENT,
+      seller_id             INTEGER  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title                 TEXT     NOT NULL,
+      primary_name          TEXT     DEFAULT NULL,
+      primary_medium        TEXT     DEFAULT NULL,
+      description           TEXT     DEFAULT NULL,
+      story                 TEXT     DEFAULT NULL,
+      base_price            INTEGER  NOT NULL DEFAULT 0,   -- in paise
+      price_paise           INTEGER  NOT NULL DEFAULT 0,   -- in paise, compatibility
+      listing_type          TEXT     NOT NULL DEFAULT 'pre-made' CHECK(listing_type IN ('pre-made','custom')),
+      status                TEXT     NOT NULL DEFAULT 'draft' CHECK(status IN ('active','paused','draft','deleted')),
+      ships_in_days         INTEGER  NOT NULL DEFAULT 3,
+      dispatch_sla_days     INTEGER  NOT NULL DEFAULT 1,
+      daily_max_slots       INTEGER  DEFAULT NULL,
+      weekly_cap            INTEGER  DEFAULT NULL,
+      monthly_ceiling       INTEGER  DEFAULT NULL,
+      allow_prebooking      INTEGER  DEFAULT 0,
+      prebooking_window     TEXT     DEFAULT NULL,
+      min_order_qty         INTEGER  DEFAULT 1,
+      max_order_qty         INTEGER  DEFAULT NULL,
+      weight_g              INTEGER  DEFAULT NULL,
+      weight_grams          INTEGER  DEFAULT NULL,
+      length_cm             REAL     DEFAULT NULL,
+      width_cm              REAL     DEFAULT NULL,
+      height_cm             REAL     DEFAULT NULL,
+      shipping_method       TEXT     DEFAULT 'courier' CHECK(shipping_method IN ('courier','local','pickup')),
+      packaging_type        TEXT     DEFAULT 'standard' CHECK(packaging_type IN ('standard','branded','eco','fragile')),
+      return_policy         TEXT     DEFAULT 'no-returns' CHECK(return_policy IN ('no-returns','7-day','15-day')),
+      is_eco_friendly       INTEGER  DEFAULT 0,
+      festive_tags          TEXT     DEFAULT NULL,   -- JSON array of strings e.g. '["Diwali","Wedding"]'
+      category              TEXT     DEFAULT NULL,
+      tags                  TEXT     DEFAULT NULL,
+      badges                TEXT     DEFAULT NULL,
+      published_at          TEXT     DEFAULT NULL,
+      stock_count           INTEGER  NOT NULL DEFAULT 0,
+      sku                   TEXT     DEFAULT NULL,
+      processing_time       TEXT     DEFAULT NULL,
+      gift_wrap_available   INTEGER  DEFAULT 0,
+      gift_wrap_price_paise INTEGER  DEFAULT 0,
+      handwritten_note      INTEGER  DEFAULT 0,
+      shipping_profile_id   INTEGER  DEFAULT NULL,
+      listing_score         INTEGER  DEFAULT 0,
+      view_count            INTEGER  DEFAULT 0,
+      sale_count            INTEGER  DEFAULT 0,
+      cover_photo_url       TEXT     DEFAULT NULL,
+      created_at            TEXT     DEFAULT (datetime('now')),
+      updated_at            TEXT     DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_listings_seller_id ON listings(seller_id);
     CREATE INDEX IF NOT EXISTS idx_listings_status    ON listings(status);
@@ -396,6 +416,17 @@ const migrateListingImages = () => {
       created_at  TEXT    DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_images_listing_id ON listing_images(listing_id);
+
+    CREATE TABLE IF NOT EXISTS listing_photos (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      listing_id  INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+      url         TEXT    NOT NULL,
+      is_cover    INTEGER DEFAULT 0,
+      is_video    INTEGER DEFAULT 0,
+      sort_order  INTEGER DEFAULT 0,
+      created_at  TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_photos_listing_id ON listing_photos(listing_id);
   `);
 };
 migrateListingImages();
@@ -404,33 +435,39 @@ migrateListingImages();
 const migrateOrders = () => {
   db.exec(`
     CREATE TABLE IF NOT EXISTS orders (
-      id              INTEGER  PRIMARY KEY AUTOINCREMENT,
-      order_ref       TEXT     NOT NULL UNIQUE,   -- e.g. TF-0042
-      buyer_id        INTEGER  NOT NULL REFERENCES users(id),
-      seller_id       INTEGER  NOT NULL REFERENCES users(id),
-      listing_id      INTEGER  NOT NULL REFERENCES listings(id),
-      variant_id      INTEGER  DEFAULT NULL REFERENCES listing_variants(id),
-      quantity        INTEGER  NOT NULL DEFAULT 1,
-      unit_price      INTEGER  NOT NULL,   -- in paise, price at time of order
-      total_amount    INTEGER  NOT NULL,   -- in paise
-      platform_fee    INTEGER  NOT NULL,   -- 8% in paise
-      seller_payout   INTEGER  NOT NULL,   -- total_amount - platform_fee
-      order_type      TEXT     NOT NULL DEFAULT 'pre-made' CHECK(order_type IN ('pre-made','custom')),
-      status          TEXT     NOT NULL DEFAULT 'awaiting_payment'
-                               CHECK(status IN (
-                                 'awaiting_payment','processing','in_production',
-                                 'packed','dispatched','delivered','cancelled','rto'
-                               )),
-      payment_status  TEXT     NOT NULL DEFAULT 'unpaid' CHECK(payment_status IN ('unpaid','paid','refunded')),
-      customization   TEXT     DEFAULT NULL,   -- JSON blob of custom instructions
-      tracking_id     TEXT     DEFAULT NULL,
-      courier         TEXT     DEFAULT NULL,
-      deadline_at     TEXT     DEFAULT NULL,
-      dispatched_at   TEXT     DEFAULT NULL,
-      delivered_at    TEXT     DEFAULT NULL,
-      studio_notes    TEXT     DEFAULT NULL,   -- JSON array of note objects {ts, text}
-      created_at      TEXT     DEFAULT (datetime('now')),
-      updated_at      TEXT     DEFAULT (datetime('now'))
+      id                  INTEGER  PRIMARY KEY AUTOINCREMENT,
+      order_ref           TEXT     NOT NULL UNIQUE,   -- e.g. TF-0042
+      buyer_id            INTEGER  NOT NULL REFERENCES users(id),
+      seller_id           INTEGER  NOT NULL REFERENCES users(id),
+      listing_id          INTEGER  NOT NULL REFERENCES listings(id),
+      variant_id          INTEGER  DEFAULT NULL REFERENCES listing_variants(id),
+      quantity            INTEGER  NOT NULL DEFAULT 1,
+      unit_price          INTEGER  NOT NULL,   -- in paise, price at time of order
+      total_amount        INTEGER  NOT NULL,   -- in paise
+      platform_fee        INTEGER  NOT NULL,   -- 8% in paise
+      seller_payout       INTEGER  NOT NULL,   -- total_amount - platform_fee
+      order_type          TEXT     NOT NULL DEFAULT 'pre-made' CHECK(order_type IN ('pre-made','custom')),
+      status              TEXT     NOT NULL DEFAULT 'awaiting_payment'
+                                   CHECK(status IN (
+                                     'awaiting_payment','processing','in_production',
+                                     'packed','dispatched','delivered','cancelled','rto'
+                                   )),
+      payment_status      TEXT     NOT NULL DEFAULT 'unpaid' CHECK(payment_status IN ('unpaid','paid','refunded')),
+      customization       TEXT     DEFAULT NULL,   -- JSON blob of custom instructions
+      tracking_id         TEXT     DEFAULT NULL,
+      courier             TEXT     DEFAULT NULL,
+      deadline_at         TEXT     DEFAULT NULL,
+      dispatched_at       TEXT     DEFAULT NULL,
+      delivered_at        TEXT     DEFAULT NULL,
+      studio_notes        TEXT     DEFAULT NULL,   -- JSON array of note objects {ts, text}
+      total_paise         INTEGER  DEFAULT 0,
+      subtotal_paise      INTEGER  DEFAULT 0,
+      shipping_paise      INTEGER  DEFAULT 0,
+      address_id          INTEGER  DEFAULT NULL,
+      razorpay_order_id   TEXT     DEFAULT NULL,
+      razorpay_payment_id TEXT     DEFAULT NULL,
+      created_at          TEXT     DEFAULT (datetime('now')),
+      updated_at          TEXT     DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_orders_seller ON orders(seller_id);
     CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
@@ -553,12 +590,30 @@ const migrateStoreConfig = () => {
       seller_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       txn_ref         TEXT    NOT NULL UNIQUE,   -- e.g. TXN-10042
       amount_paise    INTEGER NOT NULL,
-      status          TEXT    NOT NULL DEFAULT 'processing' CHECK(status IN ('processing','completed','failed')),
+      status          TEXT    NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','processing','settled','completed','failed')),
       payout_method   TEXT    NOT NULL DEFAULT 'bank_transfer',
+      scheduled_at    TEXT    DEFAULT NULL,
       created_at      TEXT    DEFAULT (datetime('now')),
       updated_at      TEXT    DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_payouts_seller ON payout_history(seller_id);
+
+    CREATE TABLE IF NOT EXISTS seller_team_members (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id  INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      name       TEXT    NOT NULL,
+      email      TEXT    NOT NULL,
+      role       TEXT    NOT NULL CHECK(role IN ('owner','admin','editor','viewer')),
+      created_at TEXT    DEFAULT (datetime('now')),
+      updated_at TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_stm_seller ON seller_team_members(seller_id);
+
+    CREATE TABLE IF NOT EXISTS zai_mode_state (
+      seller_id  INTEGER PRIMARY KEY REFERENCES seller_profiles(id) ON DELETE CASCADE,
+      enabled    INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT    DEFAULT (datetime('now'))
+    );
   `);
 };
 migrateStoreConfig();

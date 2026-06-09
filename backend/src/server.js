@@ -4478,7 +4478,7 @@ app.get('/api/seller/listings/:id', requireSeller, (req, res) => {
   try {
     const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(parseInt(req.params.id));
     if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
-    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    if (listing.seller_id !== req.user.user_id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
     return res.json({ success: true, data: buildListingDetail(listing.id) });
   } catch (err) {
     console.error('GET /api/seller/listings/:id error:', err);
@@ -4672,7 +4672,7 @@ app.post('/api/seller/listings/:id/photos', rateLimit(20), requireSeller, upload
     const listingId = parseInt(req.params.id);
     const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
     if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
-    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    if (listing.seller_id !== req.user.user_id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
     if (!req.file) return res.status(400).json({ error: true, message: 'File required', code: 'VALIDATION_ERROR' });
 
     const isCover = req.body.is_cover === 'true';
@@ -5130,6 +5130,129 @@ app.post('/api/seller/orders/:id/tracking', requireSeller, (req, res) => {
     });
   } catch (err) {
     console.error('POST /api/seller/orders/:id/tracking error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
+// TASK 17: GET /api/seller/messages
+// ============================================================
+app.get('/api/seller/messages', requireSeller, (req, res) => {
+  try {
+    const sellerId = req.user.user_id;
+    const { tab = 'all', thread_id } = req.query;
+
+    let query = `
+      SELECT t.*, u.full_name as buyer_name,
+             (SELECT body FROM messages WHERE thread_id = t.id ORDER BY id DESC LIMIT 1) as last_message,
+             o.order_ref
+      FROM message_threads t
+      JOIN users u ON u.id = t.buyer_id
+      LEFT JOIN orders o ON o.id = t.order_id
+      WHERE t.seller_id = ?
+    `;
+    const params = [sellerId];
+
+    if (tab === 'unread') {
+      query += ` AND t.has_unread = 1`;
+    }
+
+    query += ` ORDER BY t.last_msg_at DESC`;
+
+    const threadRows = db.prepare(query).all(...params);
+
+    const threads = threadRows.map(t => {
+      const parts = (t.buyer_name || '').split(' ');
+      const initials = parts.map(p => p[0]).join('').substring(0, 2).toUpperCase();
+      return {
+        thread_id: t.id,
+        buyer_name: t.buyer_name,
+        buyer_initials: initials || 'B',
+        last_message: t.last_message || '',
+        last_msg_at: t.last_msg_at,
+        has_unread: t.has_unread === 1,
+        order_ref: t.order_ref || null
+      };
+    });
+
+    let active_thread = null;
+
+    if (thread_id) {
+      const activeId = parseInt(thread_id);
+      const thread = db.prepare('SELECT * FROM message_threads WHERE id = ?').get(activeId);
+      if (!thread) {
+        return res.status(404).json({ error: true, message: 'Thread not found', code: 'NOT_FOUND' });
+      }
+      if (thread.seller_id !== sellerId) {
+        return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+      }
+
+      db.prepare('UPDATE message_threads SET has_unread = 0 WHERE id = ?').run(activeId);
+
+      const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(thread.buyer_id);
+      const orderLinked = thread.order_id ? db.prepare('SELECT * FROM orders WHERE id = ?').get(thread.order_id) : null;
+      let current_order = null;
+      if (orderLinked) {
+        const listing = db.prepare('SELECT title FROM listings WHERE id = ?').get(orderLinked.listing_id);
+        current_order = {
+          product_title: listing ? listing.title : 'Product',
+          total_amount: orderLinked.total_amount || orderLinked.total_paise || 0,
+          status: orderLinked.status,
+          deadline_at: orderLinked.deadline_at,
+          payment_status: orderLinked.payment_status
+        };
+      }
+
+      const orderHistoryRows = db.prepare(`
+        SELECT o.order_ref, o.created_at, l.title
+        FROM orders o
+        JOIN listings l ON l.id = o.listing_id
+        WHERE o.buyer_id = ? AND o.seller_id = ?
+        ORDER BY o.created_at DESC
+      `).all(thread.buyer_id, sellerId);
+
+      const order_history = orderHistoryRows.map(o => ({
+        title: o.title,
+        order_ref: o.order_ref,
+        date: o.created_at
+      }));
+
+      const msgRows = db.prepare(`
+        SELECT id, sender_id, body, created_at
+        FROM messages
+        WHERE thread_id = ?
+        ORDER BY created_at ASC
+      `).all(activeId);
+
+      const messages = msgRows.map(m => ({
+        id: m.id,
+        sender_role: m.sender_id === sellerId ? 'seller' : 'buyer',
+        body: m.body,
+        created_at: m.created_at
+      }));
+
+      active_thread = {
+        thread_id: activeId,
+        buyer: {
+          name: buyer ? buyer.full_name : 'Buyer',
+          is_verified: true,
+          order_ref: orderLinked ? orderLinked.order_ref : null,
+          current_order,
+          order_history
+        },
+        messages
+      };
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        threads,
+        active_thread
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/messages error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
 });
