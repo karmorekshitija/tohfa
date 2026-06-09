@@ -438,6 +438,26 @@ const migrateOrders = () => {
 };
 migrateOrders();
 
+// Task 05: inventory_materials table migration
+const migrateInventoryMaterials = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS inventory_materials (
+      id             INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      material_name  TEXT    NOT NULL,   -- e.g. "Merino Wool (Mustard)", "10\\" Clay Pot"
+      quantity_g_pcs REAL    NOT NULL DEFAULT 0.0,   -- weight in grams or piece count
+      unit           TEXT    NOT NULL CHECK(unit IN ('grams','pcs')),
+      cost_per_unit  INTEGER NOT NULL DEFAULT 0,   -- in paise
+      low_stock_threshold REAL DEFAULT 0.0,
+      last_restocked TEXT    DEFAULT (datetime('now')),
+      created_at     TEXT    DEFAULT (datetime('now')),
+      updated_at     TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_materials_seller ON inventory_materials(seller_id);
+  `);
+};
+migrateInventoryMaterials();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
