@@ -4631,14 +4631,33 @@ app.put('/api/seller/listings/:id', requireSeller, handleUpdateListing);
 // ============================================================
 // TASK 23: DELETE /api/seller/listings/:id (soft delete)
 // ============================================================
+// ============================================================
+// TASK 15: DELETE /api/seller/listings/:id (soft delete)
+// ============================================================
 app.delete('/api/seller/listings/:id', requireSeller, (req, res) => {
   try {
     const listingId = parseInt(req.params.id);
+    const sellerId = req.user.user_id;
+
     const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
-    if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
-    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    if (!listing) {
+      return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
+    }
+
+    if (listing.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
+
     db.prepare("UPDATE listings SET status = 'deleted', updated_at = datetime('now') WHERE id = ?").run(listingId);
-    return res.json({ success: true, data: { listing_id: listingId, status: 'deleted' } });
+
+    return res.json({
+      success: true,
+      data: {
+        id: listingId,
+        listing_id: listingId, // compatibility
+        status: 'deleted'
+      }
+    });
   } catch (err) {
     console.error('DELETE /api/seller/listings/:id error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
