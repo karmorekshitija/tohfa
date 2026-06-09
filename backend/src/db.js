@@ -507,6 +507,11 @@ const migrateReels = () => {
       thumbnail_url TEXT    DEFAULT NULL,
       duration_secs INTEGER DEFAULT NULL,
       share_to_instagram INTEGER DEFAULT 0,
+      reel_type     TEXT    DEFAULT NULL CHECK(reel_type IN ('process','behind_the_scenes','storytime','qa','tutorial','other','showcase')),
+      seasonal_tag  TEXT    DEFAULT NULL,
+      visibility    TEXT    DEFAULT 'draft' CHECK(visibility IN ('public','store-only','draft')),
+      ig_reminder   INTEGER DEFAULT 0,
+      view_count    INTEGER DEFAULT 0,
       created_at    TEXT    DEFAULT (datetime('now')),
       updated_at    TEXT    DEFAULT (datetime('now'))
     );

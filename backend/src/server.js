@@ -4705,65 +4705,154 @@ app.post('/api/seller/listings/:id/photos', rateLimit(20), requireSeller, upload
 });
 
 // ============================================================
-// TASK 25: POST /api/seller/reels
+// TASK 21: POST/GET/DELETE /api/seller/reels
 // ============================================================
-app.post('/api/seller/reels', rateLimit(10), requireSeller, uploadSellerReel.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), (req, res) => {
+app.post('/api/seller/reels', rateLimit(20), requireSeller, uploadSellerReel.fields([{ name: 'video', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), (req, res) => {
   try {
+    const sellerId = req.user.user_id;
     const body = req.body;
-    const caption = body.caption || '';
-    if (caption.length > 2200) {
-      return res.status(400).json({ error: true, message: 'Caption must be ≤ 2200 characters', code: 'VALIDATION_ERROR' });
-    }
-    if (!req.files || !req.files.video) {
-      return res.status(400).json({ error: true, message: 'Video file required', code: 'VALIDATION_ERROR' });
-    }
 
-    const videoFile = req.files.video[0];
-    const thumbFile = req.files.thumbnail ? req.files.thumbnail[0] : null;
-    const videoUrl = `/uploads/seller-reels/${videoFile.filename}`;
-    const thumbnailUrl = thumbFile ? `/uploads/seller-reels/${thumbFile.filename}` : null;
+    let title = body.title || 'Untitled Reel';
+    let caption = body.caption || '';
+    let videoUrl = body.video_url || '';
+    let thumbnailUrl = body.thumbnail_url || null;
+    let reelType = body.reel_type || 'process';
+    let seasonalTag = body.seasonal_tag || null;
+    let visibility = body.visibility || 'public';
+    let igReminder = body.ig_reminder === true || body.ig_reminder === 'true' ? 1 : 0;
+    let linkedListingIds = [];
 
-    const tags = body.tags ? (typeof body.tags === 'string' ? body.tags : JSON.stringify(body.tags)) : null;
-    const status = body.status || 'published';
-    const shareFeed = body.share_to_feed !== 'false' ? 1 : 0;
-    const shareProfile = body.share_to_profile !== 'false' ? 1 : 0;
-    const autoIg = body.auto_post_instagram === 'true' ? 1 : 0;
-
-    const result = db.prepare(`
-      INSERT INTO seller_reels (seller_id, video_url, thumbnail_url, caption, tags, audio_type,
-        share_to_feed, share_to_profile, auto_post_instagram, status, scheduled_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      req.seller.id, videoUrl, thumbnailUrl, caption, tags,
-      body.audio_type || 'original', shareFeed, shareProfile, autoIg,
-      status, body.scheduled_at || null
-    );
-    const reelId = result.lastInsertRowid;
-
-    // Tag listings
-    let taggedListings = [];
-    if (body.tagged_listing_ids) {
-      const ids = JSON.parse(body.tagged_listing_ids);
-      for (const lid of ids) {
-        try {
-          db.prepare('INSERT OR IGNORE INTO reel_product_tags (reel_id, listing_id) VALUES (?, ?)').run(reelId, lid);
-          const l = db.prepare('SELECT id as listing_id, title, price_paise FROM listings WHERE id = ?').get(lid);
-          if (l) taggedListings.push(l);
-        } catch (e) {}
+    if (req.files) {
+      if (req.files.video && req.files.video[0]) {
+        videoUrl = `/uploads/seller-reels/${req.files.video[0].filename}`;
+      }
+      if (req.files.thumbnail && req.files.thumbnail[0]) {
+        thumbnailUrl = `/uploads/seller-reels/${req.files.thumbnail[0].filename}`;
       }
     }
 
-    const parsedTags = tags ? JSON.parse(tags) : [];
+    if (!videoUrl) {
+      return res.status(400).json({ error: true, message: 'Video URL or file required', code: 'VALIDATION_ERROR' });
+    }
+
+    if (body.linked_listing_ids) {
+      if (Array.isArray(body.linked_listing_ids)) {
+        linkedListingIds = body.linked_listing_ids;
+      } else {
+        try {
+          linkedListingIds = JSON.parse(body.linked_listing_ids);
+        } catch (e) {
+          linkedListingIds = [parseInt(body.linked_listing_ids)];
+        }
+      }
+    }
+
+    const result = db.prepare(`
+      INSERT INTO reels (seller_id, title, caption, video_url, thumbnail_url, reel_type, seasonal_tag, visibility, share_to_instagram, ig_reminder)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      sellerId,
+      title,
+      caption,
+      videoUrl,
+      thumbnailUrl,
+      reelType,
+      seasonalTag,
+      visibility,
+      igReminder,
+      igReminder
+    );
+
+    const reelId = result.lastInsertRowid;
+
+    if (Array.isArray(linkedListingIds)) {
+      const stmt = db.prepare('INSERT OR IGNORE INTO reel_listing_links (reel_id, listing_id) VALUES (?, ?)');
+      linkedListingIds.forEach(lid => {
+        if (lid) {
+          stmt.run(reelId, parseInt(lid));
+        }
+      });
+    }
+
     return res.status(201).json({
       success: true,
       data: {
-        reel_id: reelId, video_url: videoUrl, thumbnail_url: thumbnailUrl,
-        caption, tags: parsedTags, status, tagged_listings: taggedListings,
-        created_at: new Date().toISOString()
+        id: reelId,
+        reel_id: reelId,
+        title,
+        visibility,
+        video_url: videoUrl,
+        thumbnail_url: thumbnailUrl
       }
     });
   } catch (err) {
     console.error('POST /api/seller/reels error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+app.get('/api/seller/reels', requireSeller, (req, res) => {
+  try {
+    const sellerId = req.user.user_id;
+
+    const reelsRows = db.prepare(`
+      SELECT * FROM reels WHERE seller_id = ? ORDER BY id DESC
+    `).all(sellerId);
+
+    const reels = reelsRows.map(r => {
+      const links = db.prepare(`
+        SELECT l.id, l.title
+        FROM reel_listing_links rll
+        JOIN listings l ON l.id = rll.listing_id
+        WHERE rll.reel_id = ?
+      `).all(r.id);
+
+      return {
+        id: r.id,
+        title: r.title,
+        thumbnail_url: r.thumbnail_url || null,
+        reel_type: r.reel_type || 'process',
+        visibility: r.visibility || 'public',
+        view_count: r.view_count || 0,
+        linked_listings: links
+      };
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        reels
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/seller/reels error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+app.delete('/api/seller/reels/:id', requireSeller, (req, res) => {
+  try {
+    const reelId = parseInt(req.params.id);
+    const sellerId = req.user.user_id;
+
+    const reel = db.prepare('SELECT * FROM reels WHERE id = ?').get(reelId);
+    if (!reel) {
+      return res.status(404).json({ error: true, message: 'Reel not found', code: 'NOT_FOUND' });
+    }
+    if (reel.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
+
+    db.prepare('DELETE FROM reels WHERE id = ?').run(reelId);
+
+    return res.json({
+      success: true,
+      data: {
+        deleted: true
+      }
+    });
+  } catch (err) {
+    console.error('DELETE /api/seller/reels/:id error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
 });
