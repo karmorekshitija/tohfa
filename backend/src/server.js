@@ -4312,53 +4312,158 @@ app.get('/api/seller/catalog', requireSeller, handleGetCatalog);
 app.get('/api/seller/listings', requireSeller, handleGetCatalog);
 
 // ============================================================
-// TASK 20: POST /api/seller/listings
+// TASK 13: POST /api/seller/listings
 // ============================================================
 app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
   try {
-    const { title, price_paise, stock_count, status = 'draft', photo_urls = [], cover_photo_index = 0, ...rest } = req.body;
-    if (!title || !price_paise || stock_count === undefined) {
-      return res.status(400).json({ error: true, message: 'title, price_paise, and stock_count are required', code: 'VALIDATION_ERROR' });
+    const sellerId = req.user.user_id;
+    const {
+      title,
+      description,
+      story,
+      base_price,
+      price_paise, // compatibility
+      listing_type = 'pre-made',
+      ships_in_days,
+      dispatch_sla_days,
+      daily_max_slots = null,
+      weekly_cap = null,
+      monthly_ceiling = null,
+      allow_prebooking = false,
+      prebooking_window = null,
+      min_order_qty = 1,
+      max_order_qty = null,
+      weight_g = null,
+      length_cm = null,
+      width_cm = null,
+      height_cm = null,
+      shipping_method = 'courier',
+      packaging_type = 'standard',
+      return_policy = 'no-returns',
+      is_eco_friendly = false,
+      festive_tags = [],
+      variants = [],
+      image_urls = [],
+      photo_urls = [], // compatibility
+      status = 'draft',
+      category = null,
+      tags = [],
+      badges = []
+    } = req.body;
+
+    const titleVal = title;
+    const basePriceVal = base_price !== undefined ? base_price : price_paise;
+    const shipsInDaysVal = ships_in_days !== undefined ? ships_in_days : 7;
+    const dispatchSlaDaysVal = dispatch_sla_days !== undefined ? dispatch_sla_days : 3;
+
+    if (!titleVal || basePriceVal === undefined) {
+      return res.status(400).json({ error: true, message: 'Title and base price are required', code: 'VALIDATION_ERROR' });
     }
 
     const publishedAt = status === 'active' ? new Date().toISOString() : null;
-    const tags = Array.isArray(rest.tags) ? JSON.stringify(rest.tags) : (rest.tags || null);
-    const badges = Array.isArray(rest.badges) ? JSON.stringify(rest.badges) : (rest.badges || null);
 
     const result = db.prepare(`
-      INSERT INTO listings (seller_id, title, primary_name, description, category, primary_medium, tags, badges,
-        price_paise, sku, stock_count, processing_time, gift_wrap_available, gift_wrap_price_paise,
-        handwritten_note, status, weight_grams, length_cm, width_cm, height_cm, shipping_profile_id, published_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO listings (
+        seller_id, title, description, story, base_price, listing_type,
+        ships_in_days, dispatch_sla_days, daily_max_slots, weekly_cap, monthly_ceiling,
+        allow_prebooking, prebooking_window, min_order_qty, max_order_qty, weight_g,
+        length_cm, width_cm, height_cm, shipping_method, packaging_type, return_policy,
+        is_eco_friendly, festive_tags, category, tags, badges, status, published_at,
+        stock_count
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
-      req.seller.id, title, rest.primary_name || null, rest.description || null,
-      rest.category || null, rest.primary_medium || null, tags, badges,
-      price_paise, rest.sku || null, stock_count,
-      rest.processing_time || null, rest.gift_wrap_available ? 1 : 0,
-      rest.gift_wrap_price_paise || 5000, rest.handwritten_note ? 1 : 0,
-      status, rest.weight_grams || null, rest.length_cm || null,
-      rest.width_cm || null, rest.height_cm || null,
-      rest.shipping_profile_id || null, publishedAt
+      sellerId,
+      titleVal,
+      description || null,
+      story || null,
+      basePriceVal,
+      listing_type,
+      shipsInDaysVal,
+      dispatchSlaDaysVal,
+      daily_max_slots,
+      weekly_cap,
+      monthly_ceiling,
+      allow_prebooking ? 1 : 0,
+      prebooking_window,
+      min_order_qty,
+      max_order_qty,
+      weight_g,
+      length_cm,
+      width_cm,
+      height_cm,
+      shipping_method,
+      packaging_type,
+      return_policy,
+      is_eco_friendly ? 1 : 0,
+      Array.isArray(festive_tags) ? JSON.stringify(festive_tags) : null,
+      category,
+      Array.isArray(tags) ? JSON.stringify(tags) : null,
+      Array.isArray(badges) ? JSON.stringify(badges) : null,
+      status,
+      publishedAt,
+      req.body.stock_count || 0
     );
+
     const listingId = result.lastInsertRowid;
 
-    // Insert photos
-    let coverUrl = null;
-    photo_urls.forEach((url, idx) => {
-      const isCover = idx === cover_photo_index ? 1 : 0;
-      if (isCover) coverUrl = url;
-      db.prepare('INSERT INTO listing_photos (listing_id, url, is_cover, sort_order) VALUES (?, ?, ?, ?)').run(listingId, url, isCover, idx);
-    });
+    // Insert variants
+    if (Array.isArray(variants)) {
+      const stmt = db.prepare(`
+        INSERT INTO listing_variants (listing_id, variant_name, price_paise, stock_count)
+        VALUES (?, ?, ?, ?)
+      `);
+      variants.forEach(v => {
+        const vPrice = v.price_paise !== undefined ? v.price_paise : (v.price_delta !== undefined ? basePriceVal + v.price_delta : null);
+        const vStock = v.stock_count !== undefined ? v.stock_count : (v.daily_capacity !== undefined ? v.daily_capacity : 0);
+        stmt.run(listingId, v.variant_name, vPrice, vStock);
+      });
+    }
 
-    // Compute listing_score
-    const photoCount = photo_urls.length;
-    const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
-    const score = computeListingScore(listing, photoCount);
-    db.prepare('UPDATE listings SET listing_score = ?, cover_photo_url = ? WHERE id = ?').run(score, coverUrl, listingId);
+    // Insert images
+    let finalImages = [];
+    if (Array.isArray(image_urls) && image_urls.length > 0) {
+      finalImages = image_urls;
+    } else if (Array.isArray(photo_urls)) {
+      finalImages = photo_urls.map((url, idx) => ({
+        url,
+        is_cover: idx === 0 ? 1 : 0,
+        sort_order: idx
+      }));
+    }
+
+    if (finalImages.length > 0) {
+      const imgStmt = db.prepare(`
+        INSERT INTO listing_images (listing_id, image_url, is_cover, sort_order)
+        VALUES (?, ?, ?, ?)
+      `);
+      finalImages.forEach(img => {
+        const url = typeof img === 'string' ? img : img.url;
+        const isCover = typeof img === 'object' && img.is_cover ? 1 : 0;
+        const sortOrder = typeof img === 'object' && img.sort_order !== undefined ? img.sort_order : 0;
+        imgStmt.run(listingId, url, isCover, sortOrder);
+      });
+
+      // Update cover_photo_url
+      const coverImg = finalImages.find(img => typeof img === 'object' && img.is_cover) || finalImages[0];
+      const coverUrl = coverImg ? (typeof coverImg === 'string' ? coverImg : coverImg.url) : null;
+      if (coverUrl) {
+        db.prepare('UPDATE listings SET cover_photo_url = ? WHERE id = ?').run(coverUrl, listingId);
+      }
+    }
+
+    const estimated_payout = basePriceVal - Math.floor(basePriceVal * 0.08);
 
     return res.status(201).json({
       success: true,
-      data: { listing_id: listingId, title, status, listing_score: score, published_at: publishedAt }
+      data: {
+        id: listingId,
+        listing_id: listingId, // compatibility
+        title: titleVal,
+        status,
+        created_at: new Date().toISOString(),
+        platform_fee_pct: 8,
+        estimated_payout
+      }
     });
   } catch (err) {
     console.error('POST /api/seller/listings error:', err);
