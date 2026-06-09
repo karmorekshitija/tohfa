@@ -5139,81 +5139,97 @@ app.post('/api/seller/orders/:id/tracking', requireSeller, (req, res) => {
 // ============================================================
 app.get('/api/seller/reviews', requireSeller, (req, res) => {
   try {
+    const sellerId = req.user.user_id;
     const { filter = 'all', sort = 'newest' } = req.query;
 
-    // All reviews for this seller's products
-    let where = 'p.seller_id = ?';
-    const params = [req.user.user_id];
-    if (filter === 'unreplied') { where += ' AND rr.id IS NULL'; }
-    if (filter === 'critical') { where += ' AND r.rating <= 2'; }
+    let whereClauses = ["r.seller_id = ?"];
+    let params = [sellerId];
 
-    const sortMap = { highest_rating: 'r.rating DESC', lowest_rating: 'r.rating ASC', newest: 'r.created_at DESC' };
-    const orderBy = sortMap[sort] || 'r.created_at DESC';
+    if (filter === '5_star') {
+      whereClauses.push("r.rating = 5");
+    } else if (filter === 'unreplied') {
+      whereClauses.push("r.reply_text IS NULL");
+    }
 
-    const rows = db.prepare(`
-      SELECT r.id as review_id, u.display_name || '@' || u.email as reviewer_handle,
-             p.name as listing_title, r.rating, r.body, r.created_at,
-             rr.reply_text, rr.created_at as reply_created_at
-      FROM reviews r
-      JOIN products p ON p.id = r.product_id
-      JOIN users u ON u.id = r.reviewer_id
-      LEFT JOIN review_replies rr ON rr.review_id = r.id
-      WHERE ${where} ORDER BY ${orderBy}
-    `).all(...params);
+    const whereStr = whereClauses.join(" AND ");
+
+    let orderBy = "r.created_at DESC";
+    if (sort === 'newest') {
+      orderBy = "r.created_at DESC";
+    } else if (sort === 'highest') {
+      orderBy = "r.rating DESC";
+    } else if (sort === 'lowest') {
+      orderBy = "r.rating ASC";
+    }
 
     const avgRow = db.prepare(`
       SELECT AVG(r.rating) as avg, COUNT(*) as total,
-             SUM(CASE WHEN rr.id IS NOT NULL THEN 1 ELSE 0 END) as replied
+             SUM(CASE WHEN r.reply_text IS NOT NULL THEN 1 ELSE 0 END) as replied
       FROM reviews r
-      JOIN products p ON p.id = r.product_id
-      LEFT JOIN review_replies rr ON rr.review_id = r.id
-      WHERE p.seller_id = ?
-    `).get(req.user.user_id);
+      WHERE r.seller_id = ?
+    `).get(sellerId);
 
-    const distRow = db.prepare(`
-      SELECT rating, COUNT(*) as c FROM reviews r
-      JOIN products p ON p.id = r.product_id
-      WHERE p.seller_id = ? GROUP BY rating
-    `).all(req.user.user_id);
+    const total = avgRow.total || 0;
+    const replied = avgRow.replied || 0;
+    const pendingReplies = total - replied;
+    const avgRating = avgRow.avg ? Math.round(avgRow.avg * 10) / 10 : 0;
+
+    const rows = db.prepare(`
+      SELECT r.id, r.listing_id, r.rating, r.comment_text, r.reply_text, r.created_at,
+             l.title as product_title, u.full_name as buyer_name, u.display_name as reviewer_handle
+      FROM reviews r
+      JOIN listings l ON l.id = r.listing_id
+      JOIN users u ON u.id = r.buyer_id
+      WHERE ${whereStr}
+      ORDER BY ${orderBy}
+    `).all(...params);
+
+    const reviews = rows.map(r => ({
+      id: r.id,
+      review_id: r.id, // compatibility
+      listing_id: r.listing_id,
+      product_title: r.product_title,
+      listing_title: r.product_title, // compatibility
+      buyer_name: r.buyer_name,
+      reviewer_handle: r.reviewer_handle || r.buyer_name, // compatibility
+      rating: r.rating,
+      review_text: r.comment_text,
+      body: r.comment_text, // compatibility
+      reply_text: r.reply_text,
+      reply: r.reply_text ? { reply_text: r.reply_text, created_at: new Date().toISOString() } : null, // compatibility
+      created_at: r.created_at,
+      verified_purchase: true,
+      helpful_count: 0,
+      has_photos: false
+    }));
+
     const distribution = { '5': 0, '4': 0, '3': 0, '2': 0, '1': 0 };
+    const distRow = db.prepare(`
+      SELECT rating, COUNT(*) as c FROM reviews
+      WHERE seller_id = ? GROUP BY rating
+    `).all(sellerId);
     distRow.forEach(d => { distribution[String(d.rating)] = d.c; });
 
     const topRated = db.prepare(`
-      SELECT p.id as listing_id, p.name as title, AVG(r.rating) as avg_rating
-      FROM reviews r JOIN products p ON p.id = r.product_id
-      WHERE p.seller_id = ? GROUP BY p.id ORDER BY avg_rating DESC LIMIT 5
-    `).all(req.user.user_id);
-
-    const pendingReplies = (avgRow.total || 0) - (avgRow.replied || 0);
-    const responseRate = avgRow.total > 0 ? Math.round((avgRow.replied / avgRow.total) * 100) : 100;
-
-    const reviews = rows.map(r => ({
-      review_id: r.review_id,
-      reviewer_handle: r.reviewer_handle,
-      listing_title: r.listing_title,
-      rating: r.rating,
-      body: r.body,
-      verified_purchase: true,
-      helpful_count: 0,
-      has_photos: false,
-      created_at: r.created_at,
-      reply: r.reply_text ? { reply_text: r.reply_text, created_at: r.reply_created_at } : null
-    }));
+      SELECT l.id as listing_id, l.title, AVG(r.rating) as avg_rating
+      FROM reviews r JOIN listings l ON l.id = r.listing_id
+      WHERE r.seller_id = ? GROUP BY l.id ORDER BY avg_rating DESC LIMIT 5
+    `).all(sellerId);
 
     return res.json({
       success: true,
       data: {
         summary: {
-          avg_rating: avgRow.avg ? Math.round(avgRow.avg * 10) / 10 : 0,
-          total_reviews: avgRow.total || 0,
-          seller_rank: req.seller.seller_rank || null,
-          pending_replies: pendingReplies,
-          response_rate_pct: responseRate,
+          avg_rating: avgRating,
+          total_reviews: total,
+          unreplied_count: pendingReplies,
+          pending_replies: pendingReplies, // compatibility
+          response_rate_pct: total > 0 ? Math.round((replied / total) * 100) : 100, // compatibility
           photo_review_pct: 0,
           verified_pct: 100,
           rating_distribution: distribution
         },
-        top_rated_collections: topRated,
+        top_rated_collections: topRated, // compatibility
         reviews
       }
     });
