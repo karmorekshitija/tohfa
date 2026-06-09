@@ -458,6 +458,35 @@ const migrateInventoryMaterials = () => {
 };
 migrateInventoryMaterials();
 
+// Task 06: reels table migration
+const migrateReels = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reels (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title         TEXT    NOT NULL,
+      caption       TEXT    DEFAULT NULL,
+      video_url     TEXT    NOT NULL,
+      thumbnail_url TEXT    DEFAULT NULL,
+      duration_secs INTEGER DEFAULT NULL,
+      share_to_instagram INTEGER DEFAULT 0,
+      created_at    TEXT    DEFAULT (datetime('now')),
+      updated_at    TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_reels_seller ON reels(seller_id);
+
+    CREATE TABLE IF NOT EXISTS reel_listing_links (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      reel_id    INTEGER NOT NULL REFERENCES reels(id) ON DELETE CASCADE,
+      listing_id INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+      created_at TEXT    DEFAULT (datetime('now')),
+      UNIQUE(reel_id, listing_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_rll_reel ON reel_listing_links(reel_id);
+  `);
+};
+migrateReels();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
