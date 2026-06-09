@@ -384,6 +384,22 @@ const migrateListingVariants = () => {
 };
 migrateListingVariants();
 
+// Task 03: listing_images table migration
+const migrateListingImages = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS listing_images (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      listing_id  INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+      image_url   TEXT    NOT NULL,
+      is_cover    INTEGER NOT NULL DEFAULT 0,   -- 1 = main cover photo
+      sort_order  INTEGER NOT NULL DEFAULT 0,
+      created_at  TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_images_listing_id ON listing_images(listing_id);
+  `);
+};
+migrateListingImages();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
