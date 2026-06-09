@@ -5245,23 +5245,43 @@ app.get('/api/seller/reviews', requireSeller, (req, res) => {
 app.post('/api/seller/reviews/:id/reply', requireSeller, (req, res) => {
   try {
     const reviewId = parseInt(req.params.id);
+    const sellerId = req.user.user_id;
     const { reply_text } = req.body;
+
     if (!reply_text || !reply_text.trim()) {
-      return res.status(400).json({ error: true, message: 'reply_text required', code: 'VALIDATION_ERROR' });
+      return res.status(400).json({ error: true, message: 'reply_text is required', code: 'VALIDATION_ERROR' });
     }
 
-    // Verify seller owns the product being reviewed
-    const review = db.prepare(`
-      SELECT r.id FROM reviews r
-      JOIN products p ON p.id = r.product_id
-      WHERE r.id = ? AND p.seller_id = ?
-    `).get(reviewId, req.user.user_id);
-    if (!review) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    const review = db.prepare('SELECT * FROM reviews WHERE id = ?').get(reviewId);
+    if (!review) {
+      return res.status(404).json({ error: true, message: 'Review not found', code: 'NOT_FOUND' });
+    }
 
-    db.prepare('INSERT OR REPLACE INTO review_replies (review_id, seller_id, reply_text, created_at, updated_at) VALUES (?, ?, ?, datetime(\'now\'), datetime(\'now\'))').run(reviewId, req.seller.id, reply_text.trim());
+    if (review.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
 
-    const reply = db.prepare('SELECT reply_text, created_at FROM review_replies WHERE review_id = ?').get(reviewId);
-    return res.status(201).json({ success: true, data: { review_id: reviewId, reply } });
+    if (review.reply_text !== null) {
+      return res.status(400).json({ error: true, message: 'Review already replied', code: 'VALIDATION_ERROR' });
+    }
+
+    const repliedAt = new Date().toISOString();
+    db.prepare(`
+      UPDATE reviews
+      SET reply_text = ?, replied_at = ?, updated_at = datetime('now')
+      WHERE id = ?
+    `).run(reply_text.trim(), repliedAt, reviewId);
+
+    return res.status(201).json({
+      success: true,
+      data: {
+        id: reviewId,
+        review_id: reviewId, // compatibility
+        reply_text: reply_text.trim(),
+        replied_at: repliedAt,
+        reply: { reply_text: reply_text.trim(), created_at: repliedAt } // compatibility
+      }
+    });
   } catch (err) {
     console.error('POST /api/seller/reviews/:id/reply error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
