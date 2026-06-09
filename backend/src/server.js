@@ -4171,43 +4171,145 @@ app.put('/api/seller/profile', requireSeller, (req, res) => {
 });
 
 // ============================================================
-// TASK 19: GET /api/seller/listings
+// TASK 12: GET /api/seller/catalog
 // ============================================================
-app.get('/api/seller/listings', requireSeller, (req, res) => {
+const handleGetCatalog = (req, res) => {
   try {
-    const { status = 'all', category = 'all', sort = 'newest', search = '', page = 1, limit = 20 } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const sellerId = req.user.user_id;
+    const { tab = 'all', sort = 'newest', page = 1, per_page = 20, search } = req.query;
 
-    let where = "seller_id = ? AND status != 'deleted'";
-    const params = [req.seller.id];
+    const limit = Math.min(Math.max(parseInt(per_page) || 20, 1), 100);
+    const offset = (Math.max(parseInt(page) || 1, 1) - 1) * limit;
 
-    if (status !== 'all') { where += ' AND status = ?'; params.push(status); }
-    if (category !== 'all') { where += ' AND category = ?'; params.push(category); }
-    if (search) { where += ' AND title LIKE ?'; params.push(`%${search}%`); }
+    // Get summary counts
+    const active_count = db.prepare("SELECT COUNT(*) as c FROM listings WHERE seller_id = ? AND status = 'active'").get(sellerId).c;
+    const paused_count = db.prepare("SELECT COUNT(*) as c FROM listings WHERE seller_id = ? AND status = 'paused'").get(sellerId).c;
+    const draft_count = db.prepare("SELECT COUNT(*) as c FROM listings WHERE seller_id = ? AND status = 'draft'").get(sellerId).c;
 
-    const sortMap = {
-      newest: 'created_at DESC', oldest: 'created_at ASC',
-      popularity: 'view_count DESC', price_asc: 'price_paise ASC', stock_asc: 'stock_count ASC'
-    };
-    const orderBy = sortMap[sort] || 'created_at DESC';
+    let whereClauses = ["seller_id = ? AND status != 'deleted'"];
+    let params = [sellerId];
 
-    const total = db.prepare(`SELECT COUNT(*) as c FROM listings WHERE ${where}`).get(...params).c;
-    const lowStockCount = db.prepare(`SELECT COUNT(*) as c FROM listings WHERE seller_id = ? AND status != 'deleted' AND stock_count <= 5`).get(req.seller.id).c;
+    if (search) {
+      whereClauses.push("title LIKE ?");
+      params.push(`%${search}%`);
+    }
 
-    const listings = db.prepare(`
-      SELECT id as listing_id, title, category, price_paise, stock_count, status, cover_photo_url, view_count, sale_count
-      FROM listings WHERE ${where} ORDER BY ${orderBy} LIMIT ? OFFSET ?
-    `).all(...params, parseInt(limit), offset);
+    if (tab && tab !== 'all') {
+      if (tab === 'active') {
+        whereClauses.push("status = 'active'");
+      } else if (tab === 'paused') {
+        whereClauses.push("status = 'paused'");
+      } else if (tab === 'drafts') {
+        whereClauses.push("status = 'draft'");
+      } else if (tab === 'custom') {
+        whereClauses.push("listing_type = 'custom'");
+      } else if (tab === 'pre-made') {
+        whereClauses.push("listing_type = 'pre-made'");
+      }
+    }
+
+    const whereStr = whereClauses.join(" AND ");
+
+    let orderBy = "created_at DESC";
+    if (sort === 'newest') {
+      orderBy = "created_at DESC";
+    } else if (sort === 'price_high') {
+      orderBy = "base_price DESC";
+    } else if (sort === 'best_selling') {
+      orderBy = "(SELECT COUNT(*) FROM orders o WHERE o.listing_id = listings.id) DESC";
+    } else if (sort === 'capacity_low') {
+      orderBy = "CAST((SELECT COUNT(*) FROM orders o WHERE o.listing_id = listings.id AND date(o.created_at) = date('now') AND o.status != 'cancelled') AS REAL) / COALESCE(listings.daily_max_slots, 1) ASC";
+    }
+
+    const total = db.prepare(`SELECT COUNT(*) as c FROM listings WHERE ${whereStr}`).get(...params).c;
+
+    const query = `
+      SELECT id, title, base_price, listing_type, status, ships_in_days, daily_max_slots, festive_tags, stock_count
+      FROM listings
+      WHERE ${whereStr}
+      ORDER BY ${orderBy}
+      LIMIT ? OFFSET ?
+    `;
+    const rows = db.prepare(query).all(...params, limit, offset);
+
+    const listings = rows.map(row => {
+      // slots_used_today
+      const slots_used_today = db.prepare(`
+        SELECT COUNT(*) as c FROM orders 
+        WHERE listing_id = ? AND date(created_at) = date('now') AND status != 'cancelled'
+      `).get(row.id).c;
+
+      // total_orders
+      const total_orders = db.prepare(`
+        SELECT COUNT(*) as c FROM orders WHERE listing_id = ?
+      `).get(row.id).c;
+
+      // cover_image_url
+      const coverImg = db.prepare(`
+        SELECT image_url FROM listing_images 
+        WHERE listing_id = ? AND is_cover = 1 LIMIT 1
+      `).get(row.id);
+      const cover_image_url = coverImg ? coverImg.image_url : null;
+
+      // is_full
+      const daily_max_slots = row.daily_max_slots;
+      const is_full = daily_max_slots !== null && daily_max_slots > 0 && slots_used_today >= daily_max_slots;
+
+      let festive_tags = [];
+      try {
+        if (row.festive_tags) festive_tags = JSON.parse(row.festive_tags);
+      } catch (e) {}
+      if (!Array.isArray(festive_tags)) festive_tags = [];
+
+      return {
+        id: row.id,
+        listing_id: row.id, // compatibility
+        title: row.title,
+        base_price: row.base_price,
+        price_paise: row.base_price, // compatibility
+        listing_type: row.listing_type,
+        status: row.status,
+        ships_in_days: row.ships_in_days,
+        daily_max_slots,
+        slots_used_today,
+        festive_tags,
+        cover_image_url,
+        cover_photo_url: cover_image_url, // compatibility
+        total_orders,
+        sale_count: total_orders, // compatibility
+        is_full,
+        stock_count: row.stock_count
+      };
+    });
+
+    const lowStockCount = db.prepare(`
+      SELECT COUNT(*) as c FROM listings 
+      WHERE seller_id = ? AND status != 'deleted' AND stock_count <= 5
+    `).get(sellerId).c;
 
     return res.json({
       success: true,
-      data: { total, low_stock_count: lowStockCount, page: parseInt(page), limit: parseInt(limit), listings }
+      data: {
+        summary: {
+          active_count,
+          paused_count,
+          draft_count
+        },
+        total,
+        low_stock_count: lowStockCount, // compatibility
+        page: parseInt(page),
+        limit: parseInt(limit),
+        listings
+      }
     });
   } catch (err) {
-    console.error('GET /api/seller/listings error:', err);
+    console.error('GET /api/seller/catalog error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
-});
+};
+
+app.get('/api/seller/catalog', requireSeller, handleGetCatalog);
+app.get('/api/seller/listings', requireSeller, handleGetCatalog);
 
 // ============================================================
 // TASK 20: POST /api/seller/listings
