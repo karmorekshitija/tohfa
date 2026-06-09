@@ -336,7 +336,7 @@
       </p>
     </div>
     <div class="flex gap-md">
-      <button class="px-lg py-sm border border-outline rounded-lg text-primary font-bold hover:bg-surface-container-high transition-transform active:scale-95">
+      <button id="bulk-edit-prices-btn" class="px-lg py-sm border border-outline rounded-lg text-primary font-bold hover:bg-surface-container-high transition-transform active:scale-95">
         Bulk Edit Prices
       </button>
       <button id="create-listing-btn" class="px-lg py-sm bg-primary text-on-primary rounded-lg font-bold flex items-center gap-xs hover:bg-primary/90 transition-transform active:scale-95">
@@ -456,6 +456,10 @@ function cardHTML(l) {
     const capUsed = Math.min(Math.round(capMax * 0.4), capMax);
     const capPct = Math.round((capUsed / capMax) * 100);
 
+    const isPaused = l.status === 'paused';
+    const pauseIcon = isPaused ? 'play_arrow' : 'pause';
+    const pauseTitle = isPaused ? 'Resume' : 'Pause';
+
     return `
     <article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative" data-listing-id="${l.listing_id}">
         <div class="aspect-[16/9] relative overflow-hidden bg-surface-container">
@@ -465,6 +469,9 @@ function cardHTML(l) {
             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 z-10">
                 <button class="edit-btn bg-white/90 hover:bg-white text-on-surface p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all" title="Edit" data-id="${l.listing_id}">
                     <span class="material-symbols-outlined text-base">edit</span>
+                </button>
+                <button class="pause-btn bg-white/90 hover:bg-white text-on-surface p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all" title="${pauseTitle}" data-id="${l.listing_id}" data-status="${l.status}">
+                    <span class="material-symbols-outlined text-base">${pauseIcon}</span>
                 </button>
                 <button class="delete-btn bg-error/95 hover:bg-error text-white p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all" title="Delete" data-id="${l.listing_id}" data-title="${l.title}">
                     <span class="material-symbols-outlined text-base">delete</span>
@@ -591,19 +598,44 @@ function attachCardListeners() {
     }
 
     document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            sessionStorage.setItem('draft_id', id);
+            window.location.href = '/seller/listing-photos.html';
+        });
+    });
+
+    document.querySelectorAll('.pause-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             e.stopPropagation();
-            const id    = btn.dataset.id;
+            const id = btn.dataset.id;
+            const status = btn.dataset.status;
             const token = sessionStorage.getItem('tohfa_access_token');
+            const isPaused = status === 'paused';
+            
             try {
-                const res = await fetch(`${API_BASE}/api/seller/listings/${id}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (!res.ok) throw new Error('Failed to fetch listing');
-                const resp = await res.json();
-                openEditModal(resp.data || resp);
+                let res;
+                if (isPaused) {
+                    // Resume it: PUT /api/seller/listings/:id with status = 'active'
+                    res = await fetch(`${API_BASE}/api/seller/listings/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ status: 'active' })
+                    });
+                } else {
+                    // Pause it: DELETE /api/seller/listings/${id}?action=pause
+                    res = await fetch(`${API_BASE}/api/seller/listings/${id}?action=pause`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                }
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to toggle status');
+                showToast(isPaused ? 'Listing resumed!' : 'Listing paused!', 'success');
+                loadListings(currentPage);
             } catch (err) {
-                showToast('Could not load listing details.', 'error');
+                showToast(err.message, 'error');
             }
         });
     });
@@ -637,12 +669,8 @@ async function deleteListing(id, title) {
 
 // ── Modal helpers ─────────────────────────────────────────────
 function openCreateModal() {
-    document.getElementById('listing-form').reset();
-    document.getElementById('edit-listing-id').value = '';
-    document.getElementById('modal-title').textContent = 'Create Listing';
-    document.getElementById('submit-label').textContent = 'Create Listing';
-    document.getElementById('form-error').classList.add('hidden');
-    document.getElementById('listing-modal').classList.remove('hidden');
+    sessionStorage.removeItem('draft_id');
+    window.location.href = '/seller/listing-photos.html';
 }
 
 function openEditModal(data) {
@@ -819,6 +847,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     loadListings(1);
+
+    const bulkEditBtn = document.getElementById('bulk-edit-prices-btn');
+    if (bulkEditBtn) {
+        bulkEditBtn.addEventListener('click', () => {
+            alert('Bulk Edit Prices feature is coming soon!');
+        });
+    }
 
     // ── View Store Action ──────────────────────────
     const viewStoreBtn = document.getElementById('view-store-btn');

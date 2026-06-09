@@ -196,10 +196,10 @@
   <span class="material-symbols-outlined text-[16px]" id="zai-toggle-icon">flutter_dash</span>
   ZAI Mode
 </button>
-<button class="px-6 py-2 border border-outline text-secondary rounded-lg font-medium hover:bg-secondary/5 transition-colors">
+<button id="log-purchase-btn" class="px-6 py-2 border border-outline text-secondary rounded-lg font-medium hover:bg-secondary/5 transition-colors">
                 Log Purchase
             </button>
-<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+<button id="add-material-header-btn" class="px-6 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">add</span> Add Material
             </button>
 </div>
@@ -214,7 +214,7 @@
 <div class="flex items-start justify-between">
 <div>
 <p class="text-on-surface-variant font-label-caps text-label-caps mb-1">Low Stock Items</p>
-<h3 class="font-data-price text-[32px] leading-tight text-on-surface">12</h3>
+<h3 id="low-stock-count-el" class="font-data-price text-[32px] leading-tight text-on-surface">00</h3>
 </div>
 <span class="material-symbols-outlined text-[#D4A017] text-3xl">warning</span>
 </div>
@@ -224,20 +224,20 @@
 <div class="flex items-start justify-between">
 <div>
 <p class="text-on-surface-variant font-label-caps text-label-caps mb-1">Out of Stock</p>
-<h3 class="font-data-price text-[32px] leading-tight text-error">04</h3>
+<h3 id="out-of-stock-count-el" class="font-data-price text-[32px] leading-tight text-error">00</h3>
 </div>
 <span class="material-symbols-outlined text-error text-3xl">error_outline</span>
 </div>
 </div>
 <!-- Card 3: Critical Material -->
-<div class="bg-surface-container p-lg rounded-xl shadow-sm relative overflow-hidden border border-primary/20">
+<div class="bg-surface-container p-lg rounded-xl shadow-sm relative overflow-hidden border border-primary/20" id="critical-material-card">
 <div class="absolute inset-0 opacity-10 pointer-events-none watermark-bg"></div>
 <div class="relative z-10">
 <p class="text-on-surface-variant font-label-caps text-label-caps mb-1">Critical Material</p>
-<div class="flex items-center gap-2 mt-2">
-<span class="font-title-serif text-primary">Resin:</span>
-<span class="font-data-price text-on-surface">1.2kg needed / 0.8kg on hand</span>
-<span class="text-xl">⚠️</span>
+<div id="critical-material-el" class="flex items-center gap-2 mt-2">
+<span class="font-title-serif text-primary">None:</span>
+<span class="font-data-price text-on-surface">No critical materials needed</span>
+<span class="text-xl">✨</span>
 </div>
 </div>
 </div>
@@ -264,76 +264,34 @@
 <th class="px-lg py-4 font-label-caps text-label-caps text-on-surface-variant">Status</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-outline-variant">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-lg py-4 font-title-serif text-on-surface">Cotton Cord (4mm)</td>
-<td class="px-lg py-4 text-right">
-<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0 cursor-edit" type="text" value="25.5"/>
-</td>
-<td class="px-lg py-4 text-on-surface-variant text-sm italic">Meters</td>
-<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">10.0</td>
-<td class="px-lg py-4">
-<span class="px-3 py-1 bg-secondary-container text-secondary font-label-caps text-[10px] rounded-full">OK</span>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-lg py-4 font-title-serif text-on-surface">Epoxy Resin A+B</td>
-<td class="px-lg py-4 text-right">
-<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0" type="text" value="0.8"/>
-</td>
-<td class="px-lg py-4 text-on-surface-variant text-sm italic">Kg</td>
-<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">2.0</td>
-<td class="px-lg py-4">
-<span class="px-3 py-1 bg-[#FFD580] text-[#7B5E00] font-label-caps text-[10px] rounded-full">LOW</span>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-lg py-4 font-title-serif text-on-surface">Brass Eyelets</td>
-<td class="px-lg py-4 text-right">
-<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0" type="text" value="0"/>
-</td>
-<td class="px-lg py-4 text-on-surface-variant text-sm italic">Pcs</td>
-<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">100</td>
-<td class="px-lg py-4">
-<span class="px-3 py-1 bg-error-container text-error font-label-caps text-[10px] rounded-full">OUT</span>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-lg py-4 font-title-serif text-on-surface">Linen Blend - Cream</td>
-<td class="px-lg py-4 text-right">
-<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0" type="text" value="12.0"/>
-</td>
-<td class="px-lg py-4 text-on-surface-variant text-sm italic">Yards</td>
-<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">5.0</td>
-<td class="px-lg py-4">
-<span class="px-3 py-1 bg-secondary-container text-secondary font-label-caps text-[10px] rounded-full">OK</span>
-</td>
-</tr>
+<tbody id="materials-tbody" class="divide-y divide-outline-variant">
+<!-- Loaded dynamically -->
 </tbody>
 </table>
 </div>
 <!-- Inline Add Form -->
 <div class="p-lg bg-surface-container-lowest border-t border-outline-variant">
-<form class="grid grid-cols-5 gap-md items-end">
+<form id="add-material-form" class="grid grid-cols-6 gap-md items-end">
 <div class="col-span-2">
 <label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">New Material Name</label>
-<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="e.g. Silk Thread" type="text"/>
+<input id="new-material-name" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="e.g. Silk Thread" type="text" required/>
 </div>
 <div>
 <label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">Initial Qty</label>
-<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="0.00" type="number"/>
+<input id="new-material-qty" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="0.00" type="number" step="any" required/>
+</div>
+<div>
+<label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">Min Threshold</label>
+<input id="new-material-min" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="0.00" type="number" step="any" value="5.0"/>
 </div>
 <div>
 <label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">Unit</label>
-<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary">
-<option>Kg</option>
-<option>Meters</option>
-<option>Pcs</option>
-<option>Grams</option>
+<select id="new-material-unit" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary">
+<option value="Kg">Kg</option>
+<option value="Meters">Meters</option>
+<option value="Pcs">Pcs</option>
+<option value="Grams">Grams</option>
+<option value="Yards">Yards</option>
 </select>
 </div>
 <button class="bg-primary text-on-primary h-10 rounded-lg flex items-center justify-center hover:opacity-90" type="submit">
@@ -348,54 +306,10 @@
 <!-- Auto-shopping list -->
 <div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
 <h2 class="font-headline-lg text-2xl italic text-primary mb-6">What to buy before next rush</h2>
-<ul class="space-y-4">
-<li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group">
-<div class="pt-1">
-<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
-</div>
-<div class="flex-grow">
-<div class="flex justify-between">
-<span class="font-title-serif text-on-surface">Epoxy Resin</span>
-<span class="font-data-price text-error">-1.2kg</span>
-</div>
-<div class="flex justify-between text-xs text-on-surface-variant mt-1">
-<span>Need: 2.0kg</span>
-<span>Stock: 0.8kg</span>
-</div>
-</div>
-</li>
-<li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group">
-<div class="pt-1">
-<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
-</div>
-<div class="flex-grow">
-<div class="flex justify-between">
-<span class="font-title-serif text-on-surface">Brass Eyelets</span>
-<span class="font-data-price text-error">-100pcs</span>
-</div>
-<div class="flex justify-between text-xs text-on-surface-variant mt-1">
-<span>Need: 100pcs</span>
-<span>Stock: 0pcs</span>
-</div>
-</div>
-</li>
-<li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group">
-<div class="pt-1">
-<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
-</div>
-<div class="flex-grow">
-<div class="flex justify-between">
-<span class="font-title-serif text-on-surface">Varnish Polish</span>
-<span class="font-data-price text-error">-500ml</span>
-</div>
-<div class="flex justify-between text-xs text-on-surface-variant mt-1">
-<span>Need: 500ml</span>
-<span>Stock: 0ml</span>
-</div>
-</div>
-</li>
+<ul id="reorder-list" class="space-y-4">
+<!-- Loaded dynamically -->
 </ul>
-<button class="w-full mt-6 py-3 border border-dashed border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors">
+<button id="gen-po-btn" class="w-full mt-6 py-3 border border-dashed border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors">
                         Generate PO to Suppliers
                     </button>
 </div>
@@ -405,37 +319,8 @@
 <span class="material-symbols-outlined text-secondary">local_shipping</span>
                         Primary Suppliers
                     </h2>
-<div class="space-y-6">
-<!-- Supplier 1 -->
-<div class="flex items-center justify-between">
-<div>
-<p class="font-title-serif text-on-surface">Artisan Chemical Co.</p>
-<p class="text-xs text-on-surface-variant font-data-price">+1 415-555-0123</p>
-</div>
-<div class="flex gap-2">
-<a class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">call</span>
-</a>
-<a class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity" href="#">
-<span class="material-symbols-outlined">chat</span>
-</a>
-</div>
-</div>
-<!-- Supplier 2 -->
-<div class="flex items-center justify-between">
-<div>
-<p class="font-title-serif text-on-surface">The Fiber Collective</p>
-<p class="text-xs text-on-surface-variant font-data-price">+44 20 7946 0958</p>
-</div>
-<div class="flex gap-2">
-<a class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">call</span>
-</a>
-<a class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity" href="#">
-<span class="material-symbols-outlined">chat</span>
-</a>
-</div>
-</div>
+<div id="suppliers-list" class="space-y-6">
+<!-- Loaded dynamically -->
 </div>
 </div>
 </div>
@@ -445,29 +330,69 @@
 <script>
     const API_BASE_URL = window.location.origin;
 
+    // Toast helper
+    function showToast(message, type = 'success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed top-20 right-6 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all duration-300`;
+        if (type === 'success') {
+            toast.style.backgroundColor = '#3D6B4F'; // Forest Green
+            toast.style.color = '#FFFFFF';
+            toast.style.border = '1px solid #255338';
+        } else {
+            toast.style.backgroundColor = '#BA1A1A'; // Terracotta Error Red
+            toast.style.color = '#FFFFFF';
+            toast.style.border = '1px solid #93000a';
+        }
+        toast.innerHTML = `
+            <span class="material-symbols-outlined text-lg">${type === 'success' ? 'check_circle' : 'error'}</span>
+            <span>${message}</span>
+        `;
+        toast.style.display = 'flex';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3500);
+    }
+
     // ZAI Mode UI Styling sync helper
     function updateZaiUI(enabled) {
         const toggleBtn = document.getElementById('zai-toggle-btn');
         if (toggleBtn) {
             const icon = document.getElementById('zai-toggle-icon');
             if (enabled) {
-                icon.style.fontVariationSettings = "'FILL' 1";
-                toggleBtn.classList.add('text-primary');
+                toggleBtn.classList.add('bg-tertiary', 'text-white');
+                toggleBtn.classList.remove('text-tertiary');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
             } else {
-                icon.style.fontVariationSettings = "'FILL' 0";
-                toggleBtn.classList.remove('text-primary');
+                toggleBtn.classList.remove('bg-tertiary', 'text-white');
+                toggleBtn.classList.add('text-tertiary');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
             }
         }
-    }
-
-    // Interactivity for stock items
-    document.querySelectorAll('.cursor-edit').forEach(input => {
-        input.addEventListener('change', (e) => {
-            const row = e.target.closest('tr');
-            e.target.classList.add('text-primary', 'font-bold');
-            setTimeout(() => e.target.classList.remove('text-primary', 'font-bold'), 1000);
+        
+        // Find all zai tips / cards on the page and show/hide them
+        const selectors = [
+            '.zai-tip-card',
+            '[class*="zai-tip"]',
+            '[id*="zai-tip"]',
+            'aside .bg-tertiary-container\\/10',
+            'section .bg-tertiary-fixed-dim\\/40',
+            'div .bg-on-tertiary-fixed\\/10'
+        ];
+        selectors.forEach(sel => {
+            try {
+                const els = document.querySelectorAll(sel);
+                els.forEach(el => {
+                    if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+                    el.style.display = enabled ? '' : 'none';
+                });
+            } catch (e) {}
         });
-    });
+    }
 
     // Hover effects for the critical material card
     const criticalCard = document.querySelector('.bg-surface-container');
@@ -481,8 +406,194 @@
         });
     }
 
+    let allMaterials = [];
+
+    function renderMaterials(materials) {
+        const tbody = document.getElementById('materials-tbody');
+        tbody.innerHTML = '';
+        if (materials.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-lg py-8 text-center text-on-surface-variant font-ui-serif italic">
+                        No materials in register. Add one below.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        materials.forEach(m => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-surface-container-low transition-colors group';
+            
+            let statusBadge = '';
+            if (m.status === 'out') {
+                statusBadge = `<span class="px-3 py-1 bg-error-container text-error font-label-caps text-[10px] rounded-full font-bold">OUT</span>`;
+            } else if (m.status === 'low') {
+                statusBadge = `<span class="px-3 py-1 bg-[#FFD580] text-[#7B5E00] font-label-caps text-[10px] rounded-full font-bold">LOW</span>`;
+            } else {
+                statusBadge = `<span class="px-3 py-1 bg-secondary-container text-secondary font-label-caps text-[10px] rounded-full font-bold">OK</span>`;
+            }
+
+            tr.innerHTML = `
+                <td class="px-lg py-4 font-title-serif text-on-surface">${m.material_name}</td>
+                <td class="px-lg py-4 text-right">
+                    <input class="w-20 bg-transparent border-b border-transparent hover:border-outline-variant/40 focus:border-primary focus:ring-0 text-right font-data-price text-on-surface p-0 cursor-edit" 
+                           type="number" step="any" value="${m.stock_qty}" data-id="${m.id}"/>
+                </td>
+                <td class="px-lg py-4 text-on-surface-variant text-sm italic">${m.unit}</td>
+                <td class="px-lg py-4 text-right font-data-price text-on-surface-variant">${m.min_threshold.toFixed(1)}</td>
+                <td class="px-lg py-4">${statusBadge}</td>
+            `;
+
+            // Bind inline change listener
+            const input = tr.querySelector('input');
+            input.addEventListener('change', async (e) => {
+                const newQty = parseFloat(e.target.value);
+                if (isNaN(newQty) || newQty < 0) {
+                    showToast('Invalid quantity value', 'error');
+                    e.target.value = m.stock_qty;
+                    return;
+                }
+                const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/seller/inventory/${m.id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ stock_qty: newQty })
+                    });
+                    const resp = await res.json();
+                    if (!res.ok) throw new Error(resp.message || 'Failed to update stock');
+                    showToast(`Updated ${m.material_name} stock to ${newQty} ${m.unit}`, 'success');
+                    loadInventory();
+                } catch (err) {
+                    showToast(err.message, 'error');
+                    e.target.value = m.stock_qty;
+                }
+            });
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderSummary(summary) {
+        document.getElementById('low-stock-count-el').textContent = String(summary.low_stock_count).padStart(2, '0');
+        document.getElementById('out-of-stock-count-el').textContent = String(summary.out_of_stock_count).padStart(2, '0');
+        
+        const critEl = document.getElementById('critical-material-el');
+        if (summary.critical_material) {
+            const crit = summary.critical_material;
+            critEl.innerHTML = `
+                <span class="font-title-serif text-primary">${crit.name}:</span>
+                <span class="font-data-price text-on-surface">${crit.needed.toFixed(1)}${crit.unit} needed / ${crit.on_hand.toFixed(1)}${crit.unit} on hand</span>
+                <span class="text-xl">⚠️</span>
+            `;
+        } else {
+            critEl.innerHTML = `
+                <span class="font-title-serif text-primary">All good:</span>
+                <span class="font-data-price text-on-surface">No critical materials needed</span>
+                <span class="text-xl">✨</span>
+            `;
+        }
+    }
+
+    function renderReorderList(list) {
+        const reorderContainer = document.getElementById('reorder-list');
+        reorderContainer.innerHTML = '';
+        if (list.length === 0) {
+            reorderContainer.innerHTML = `
+                <li class="text-sm font-ui-serif text-secondary/60 italic text-center py-4">
+                    Stock levels are sufficient.
+                </li>
+            `;
+            return;
+        }
+
+        list.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group';
+            li.innerHTML = `
+                <div class="pt-1">
+                    <input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex justify-between">
+                        <span class="font-title-serif text-on-surface">${item.material_name}</span>
+                        <span class="font-data-price text-error">-${item.deficit.toFixed(1)} ${item.unit}</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-on-surface-variant mt-1">
+                        <span>Need: ${item.needed.toFixed(1)} ${item.unit}</span>
+                        <span>Stock: ${item.current.toFixed(1)} ${item.unit}</span>
+                    </div>
+                </div>
+            `;
+            reorderContainer.appendChild(li);
+        });
+    }
+
+    function renderSuppliers(suppliers) {
+        const suppliersList = document.getElementById('suppliers-list');
+        suppliersList.innerHTML = '';
+        if (suppliers.length === 0) {
+            suppliersList.innerHTML = `
+                <div class="text-xs text-on-surface-variant italic py-2">
+                    No suppliers listed. Suppliers are linked when adding materials.
+                </div>
+            `;
+            return;
+        }
+
+        suppliers.forEach(s => {
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between';
+            div.innerHTML = `
+                <div>
+                    <p class="font-title-serif text-on-surface">${s.supplier_name}</p>
+                    <p class="text-xs text-on-surface-variant font-data-price">${s.supplier_phone || 'No phone'}</p>
+                </div>
+                <div class="flex gap-2">
+                    <a class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant text-on-surface-variant hover:text-primary transition-colors" href="tel:${s.supplier_phone || ''}">
+                        <span class="material-symbols-outlined">call</span>
+                    </a>
+                    <a class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity" href="sms:${s.supplier_phone || ''}">
+                        <span class="material-symbols-outlined">chat</span>
+                    </a>
+                </div>
+            `;
+            suppliersList.appendChild(div);
+        });
+    }
+
+    async function loadInventory() {
+        const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/inventory`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.status === 401 || res.status === 403) {
+                sessionStorage.clear();
+                window.location.href = '/auth/login.html';
+                return;
+            }
+            if (!res.ok) throw new Error('Failed to load inventory');
+            const resp = await res.json();
+            const data = resp.data || resp;
+
+            allMaterials = data.materials || [];
+            renderMaterials(allMaterials);
+            renderSummary(data.summary || { low_stock_count: 0, out_of_stock_count: 0, critical_material: null });
+            renderReorderList(data.reorder_list || []);
+            renderSuppliers(data.suppliers || []);
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
         if (!token) { window.location.href = '/auth/login.html'; return; }
 
         // Role verification
@@ -501,6 +612,9 @@
         // Init load ZAI Mode
         const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
         updateZaiUI(zaiEnabled);
+
+        // Load inventory data
+        await loadInventory();
 
         // ZAI toggle button click
         const toggleBtn = document.getElementById('zai-toggle-btn');
@@ -525,6 +639,96 @@
                     }
                 })
                 .catch(err => console.error("Error setting ZAI mode:", err));
+            });
+        }
+
+        // Add Material header button (scrolls to form)
+        const addHeaderBtn = document.getElementById('add-material-header-btn');
+        if (addHeaderBtn) {
+            addHeaderBtn.addEventListener('click', () => {
+                document.getElementById('add-material-form').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('new-material-name').focus();
+            });
+        }
+
+        // Log purchase button header
+        const logPurchaseBtn = document.getElementById('log-purchase-btn');
+        if (logPurchaseBtn) {
+            logPurchaseBtn.addEventListener('click', async () => {
+                if (allMaterials.length === 0) {
+                    showToast('No materials to purchase. Add a material first.', 'error');
+                    return;
+                }
+                const name = prompt(`Which material would you like to log a purchase for? Please enter the exact material name:\nAvailable:\n${allMaterials.map(m => m.material_name).join('\n')}`);
+                if (!name) return;
+                const match = allMaterials.find(m => m.material_name.toLowerCase() === name.trim().toLowerCase());
+                if (!match) {
+                    showToast(`Material "${name}" not found in register`, 'error');
+                    return;
+                }
+                const deltaStr = prompt(`Enter quantity of ${match.material_name} to add (e.g. 5.0):`);
+                if (deltaStr === null) return;
+                const delta = parseFloat(deltaStr);
+                if (isNaN(delta) || delta <= 0) {
+                    showToast('Invalid purchase quantity', 'error');
+                    return;
+                }
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/seller/inventory/${match.id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ delta })
+                    });
+                    const resp = await res.json();
+                    if (!res.ok) throw new Error(resp.message || 'Failed to log purchase');
+                    showToast(`Logged purchase of +${delta} ${match.unit} for ${match.material_name}`, 'success');
+                    loadInventory();
+                } catch (err) {
+                    showToast(err.message, 'error');
+                }
+            });
+        }
+
+        // Add material form submit
+        document.getElementById('add-material-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('new-material-name').value.trim();
+            const qty = parseFloat(document.getElementById('new-material-qty').value);
+            const min = parseFloat(document.getElementById('new-material-min').value || 0);
+            const unit = document.getElementById('new-material-unit').value;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/seller/inventory`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        material_name: name,
+                        stock_qty: qty,
+                        min_threshold: min,
+                        unit
+                    })
+                });
+                const resp = await res.json();
+                if (!res.ok) throw new Error(resp.message || 'Failed to add material');
+                showToast(`Successfully added ${name}`, 'success');
+                document.getElementById('add-material-form').reset();
+                loadInventory();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // Generate PO to suppliers
+        const genPoBtn = document.getElementById('gen-po-btn');
+        if (genPoBtn) {
+            genPoBtn.addEventListener('click', () => {
+                alert("Generate PO feature is under development. Orders will be auto-dispatched to suppliers shortly.");
             });
         }
 

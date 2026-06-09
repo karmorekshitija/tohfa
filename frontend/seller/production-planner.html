@@ -204,10 +204,10 @@
   <span class="material-symbols-outlined text-[16px]" id="zai-toggle-icon">flutter_dash</span>
   ZAI Mode
 </button>
-<button class="px-lg py-sm border border-outline-variant bg-white text-primary rounded-lg font-body-md hover:bg-surface-container-low transition-colors active:scale-98">
+<button id="set-away-date-btn" class="px-lg py-sm border border-outline-variant bg-white text-primary rounded-lg font-body-md hover:bg-surface-container-low transition-colors active:scale-98">
                     Set Away Date
                 </button>
-<button class="px-lg py-sm bg-surface-container text-on-secondary-container rounded-lg font-body-md border border-on-secondary-container/20 hover:bg-surface-container-highest transition-colors active:scale-98">
+<button id="set-festive-cutoff-btn" class="px-lg py-sm bg-surface-container text-on-secondary-container rounded-lg font-body-md border border-on-secondary-container/20 hover:bg-surface-container-highest transition-colors active:scale-98">
                     Set Festive Cutoff
                 </button>
 <div class="h-8 w-px bg-outline-variant/30 mx-sm"></div>
@@ -222,9 +222,9 @@
 <button class="px-md py-xs text-on-surface-variant font-body-md hover:text-primary transition-colors">Month</button>
 </div>
 <div class="flex items-center gap-md font-data-price text-on-surface">
-<button class="material-symbols-outlined text-outline">chevron_left</button>
-<span class="text-body-md">Oct 23 — Oct 29, 2023</span>
-<button class="material-symbols-outlined text-outline">chevron_right</button>
+<button id="prev-week" class="material-symbols-outlined text-outline">chevron_left</button>
+<span id="week-label" class="text-body-md"></span>
+<button id="next-week" class="material-symbols-outlined text-outline">chevron_right</button>
 </div>
 </div>
 <div class="flex items-center gap-md">
@@ -237,211 +237,26 @@
 <!-- 3-PANEL BODY -->
 <div class="flex-1 flex overflow-hidden">
 <!-- LEFT PANEL: PRODUCT CAPACITY (25% / 3 parts) -->
-<section class="w-1/4 border-r border-outline-variant/30 overflow-y-auto px-lg py-xl space-y-xl bg-surface/30">
+<section class="w-1/4 border-r border-outline-variant/30 overflow-y-auto px-lg py-xl bg-surface/30">
 <div class="space-y-md">
 <h2 class="font-label-caps text-on-surface-variant">Product Bandwidth</h2>
-<!-- Product Card -->
-<div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm space-y-md">
-<div class="flex justify-between items-start">
-<div>
-<h3 class="font-title-serif text-primary">Terracotta Vases</h3>
-<span class="text-[10px] font-label-caps px-2 py-0.5 bg-tertiary-container/20 text-tertiary rounded-full">CUSTOM</span>
-</div>
-<button class="material-symbols-outlined text-outline-variant">more_vert</button>
-</div>
-<div class="grid grid-cols-2 gap-sm">
-<div class="space-y-1">
-<label class="text-[10px] font-label-caps text-outline uppercase">Daily Slots</label>
-<input class="w-full bg-surface-container-low border-none rounded font-data-price text-center py-1" type="text" value="05"/>
-</div>
-<div class="space-y-1">
-<label class="text-[10px] font-label-caps text-outline uppercase">Weekly Cap</label>
-<input class="w-full bg-surface-container-low border-none rounded font-data-price text-center py-1" type="text" value="30"/>
-</div>
-</div>
-<div class="flex items-center justify-between pt-sm">
-<span class="text-xs font-body-md text-on-surface-variant">Allow Pre-booking</span>
-<div class="w-8 h-4 bg-outline-variant rounded-full relative">
-<span class="absolute left-1 top-0.5 w-3 h-3 bg-white rounded-full"></span>
-</div>
-</div>
-</div>
-<!-- Product Card 2 -->
-<div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm space-y-md">
-<div class="flex justify-between items-start">
-<div>
-<h3 class="font-title-serif text-primary">Linen Tote Bags</h3>
-<span class="text-[10px] font-label-caps px-2 py-0.5 bg-secondary-container/30 text-secondary rounded-full">PRE-MADE</span>
-</div>
-<button class="material-symbols-outlined text-outline-variant">more_vert</button>
-</div>
-<div class="grid grid-cols-2 gap-sm">
-<div class="space-y-1">
-<label class="text-[10px] font-label-caps text-outline uppercase">Daily Slots</label>
-<input class="w-full bg-surface-container-low border-none rounded font-data-price text-center py-1" type="text" value="12"/>
-</div>
-<div class="space-y-1">
-<label class="text-[10px] font-label-caps text-outline uppercase">Weekly Cap</label>
-<input class="w-full bg-surface-container-low border-none rounded font-data-price text-center py-1" type="text" value="60"/>
-</div>
-</div>
-<div class="flex items-center justify-between pt-sm">
-<span class="text-xs font-body-md text-on-surface-variant">Pause Production</span>
-<div class="w-8 h-4 bg-primary/20 rounded-full relative">
-<span class="absolute right-1 top-0.5 w-3 h-3 bg-primary rounded-full"></span>
-</div>
-</div>
+<div id="bandwidth-list" class="space-y-md">
+    <!-- Dynamic product bandwidth cards -->
 </div>
 </div>
 </section>
 <!-- CENTER PANEL: CAPACITY CALENDAR (50% / 6 parts) -->
 <section class="flex-1 bg-white overflow-y-auto px-lg py-xl">
-<div class="grid grid-cols-7 h-full gap-gutter">
-<!-- Day Column Generator -->
-<!-- MON -->
-<div class="flex flex-col gap-md">
-<div class="text-center pb-md border-b border-outline-variant/20">
-<span class="font-label-caps text-outline text-[10px]">MON</span>
-<p class="font-data-price text-on-surface">23</p>
-</div>
-<div class="flex-1 space-y-sm">
-<div class="bg-surface-bright border border-outline-variant/20 p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-outline-variant mb-1">VASES</p>
-<p class="font-data-price text-primary">2/5</p>
-</div>
-<div class="bg-surface-bright border border-outline-variant/20 p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-outline-variant mb-1">TOTES</p>
-<p class="font-data-price text-primary">4/12</p>
-</div>
-</div>
-</div>
-<!-- TUE (Dashed Cutoff Highlight) -->
-<div class="flex flex-col gap-md relative">
-<div class="absolute -inset-1 border-2 border-dashed border-surface-container-highest rounded-xl z-0 pointer-events-none"></div>
-<div class="text-center pb-md border-b border-outline-variant/20 z-10">
-<span class="font-label-caps text-on-secondary-container text-[10px]">TUE</span>
-<p class="font-data-price text-on-surface">24</p>
-</div>
-<div class="flex-1 space-y-sm z-10">
-<div class="bg-secondary-container/20 border border-secondary-container p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-on-secondary-container mb-1">VASES</p>
-<p class="font-data-price text-secondary font-bold">4/5</p>
-</div>
-<div class="bg-surface-bright border border-outline-variant/20 p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-outline-variant mb-1">TOTES</p>
-<p class="font-data-price text-primary">8/12</p>
-</div>
-<div class="mt-4 px-2 py-1 bg-surface-container rounded-sm border border-on-secondary-container/20">
-<p class="text-[9px] font-label-caps text-on-secondary-container">FESTIVE CUTOFF</p>
-</div>
-</div>
-</div>
-<!-- WED (Full) -->
-<div class="flex flex-col gap-md">
-<div class="text-center pb-md border-b border-outline-variant/20">
-<span class="font-label-caps text-outline text-[10px]">WED</span>
-<p class="font-data-price text-on-surface">25</p>
-</div>
-<div class="flex-1 space-y-sm">
-<div class="bg-primary text-white p-2 rounded-lg relative overflow-hidden">
-<p class="text-[10px] font-label-caps opacity-60 mb-1">VASES</p>
-<p class="font-data-price">5/5</p>
-<span class="absolute top-1 right-1 font-label-caps text-[8px] bg-white text-primary px-1 rounded-sm">FULL</span>
-</div>
-<div class="bg-secondary-container/20 border border-secondary-container p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-on-secondary-container mb-1">TOTES</p>
-<p class="font-data-price text-secondary">10/12</p>
-</div>
-</div>
-</div>
-<!-- THU -->
-<div class="flex flex-col gap-md">
-<div class="text-center pb-md border-b border-outline-variant/20">
-<span class="font-label-caps text-outline text-[10px]">THU</span>
-<p class="font-data-price text-on-surface">26</p>
-</div>
-<div class="flex-1 space-y-sm">
-<div class="bg-surface-bright border border-outline-variant/20 p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-outline-variant mb-1">VASES</p>
-<p class="font-data-price text-primary">0/5</p>
-</div>
-</div>
-</div>
-<!-- FRI -->
-<div class="flex flex-col gap-md">
-<div class="text-center pb-md border-b border-outline-variant/20">
-<span class="font-label-caps text-outline text-[10px]">FRI</span>
-<p class="font-data-price text-on-surface">27</p>
-</div>
-<div class="flex-1 space-y-sm">
-<div class="bg-surface-bright border border-outline-variant/20 p-2 rounded-lg">
-<p class="text-[10px] font-label-caps text-outline-variant mb-1">VASES</p>
-<p class="font-data-price text-primary">3/5</p>
-</div>
-<div class="bg-primary text-white p-2 rounded-lg relative overflow-hidden">
-<p class="text-[10px] font-label-caps opacity-60 mb-1">TOTES</p>
-<p class="font-data-price">12/12</p>
-<span class="absolute top-1 right-1 font-label-caps text-[8px] bg-white text-primary px-1 rounded-sm">FULL</span>
-</div>
-</div>
-</div>
-<!-- SAT -->
-<div class="flex flex-col gap-md opacity-50 bg-surface-container/10">
-<div class="text-center pb-md border-b border-outline-variant/20">
-<span class="font-label-caps text-outline text-[10px]">SAT</span>
-<p class="font-data-price text-on-surface">28</p>
-</div>
-</div>
-<!-- SUN -->
-<div class="flex flex-col gap-md opacity-50 bg-surface-container/10">
-<div class="text-center pb-md border-b border-outline-variant/20">
-<span class="font-label-caps text-outline text-[10px]">SUN</span>
-<p class="font-data-price text-on-surface">29</p>
-</div>
-</div>
+<div id="calendar-grid" class="grid grid-cols-7 h-full gap-gutter">
+    <!-- Dynamic MON-SUN calendar columns -->
 </div>
 </section>
 <!-- RIGHT PANEL: BATCH VIEW (25% / 3 parts) -->
 <section class="w-1/4 border-l border-outline-variant/30 overflow-y-auto px-lg py-xl bg-surface/30">
 <div class="space-y-xl">
 <h2 class="font-label-caps text-on-surface-variant">Daily Batches</h2>
-<div class="space-y-lg">
-<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
-<h3 class="font-title-serif text-on-surface">Tuesday, Oct 24</h3>
-<span class="font-data-price text-tertiary">07 Orders</span>
-</div>
-<!-- Batch Item -->
-<div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm ink-texture">
-<div class="flex justify-between mb-sm">
-<span class="font-label-caps text-xs text-primary">BATCH #824</span>
-<span class="font-data-price text-xs text-outline">~4.5 hrs</span>
-</div>
-<h4 class="font-title-serif text-on-surface mb-2">Hand-painted Keychains</h4>
-<div class="flex flex-wrap gap-xs mb-md">
-<span class="font-data-price text-[10px] px-2 py-0.5 bg-surface-container rounded">ID-8821</span>
-<span class="font-data-price text-[10px] px-2 py-0.5 bg-surface-container rounded">ID-8824</span>
-<span class="font-data-price text-[10px] px-2 py-0.5 bg-surface-container rounded">+5 more</span>
-</div>
-<button class="w-full py-sm border border-outline text-on-surface-variant font-body-md rounded-lg hover:bg-primary hover:text-white hover:border-primary transition-all active:scale-95 flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-[18px]">check_circle</span>
-                                Mark batch complete
-                            </button>
-</div>
-<!-- Batch Item 2 -->
-<div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm ink-texture opacity-60">
-<div class="flex justify-between mb-sm">
-<span class="font-label-caps text-xs text-primary">BATCH #825</span>
-<span class="font-data-price text-xs text-outline">~2.0 hrs</span>
-</div>
-<h4 class="font-title-serif text-on-surface mb-2">Engraved Ornaments</h4>
-<div class="flex flex-wrap gap-xs mb-md">
-<span class="font-data-price text-[10px] px-2 py-0.5 bg-surface-container rounded">ID-8901</span>
-</div>
-<button class="w-full py-sm border border-outline text-on-surface-variant font-body-md rounded-lg hover:bg-primary hover:text-white hover:border-primary transition-all active:scale-95 flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-[18px]">check_circle</span>
-                                Mark batch complete
-                            </button>
-</div>
+<div id="batches-list" class="space-y-lg">
+    <!-- Dynamic daily batches list -->
 </div>
 </div>
 <!-- Mascot Visual Element -->
@@ -455,6 +270,41 @@
 
 <script>
     const API_BASE_URL = window.location.origin;
+    let token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+    let currentWeekStart = getStartOfWeek(new Date());
+    let selectedDate = new Date();
+    let listings = [];
+    let orders = [];
+
+    function getStartOfWeek(d) {
+        const date = new Date(d);
+        const day = date.getDay();
+        const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(date.setDate(diff));
+    }
+
+    function isSameDay(d1Str, d2Date) {
+        if (!d1Str) return false;
+        const d1 = new Date(d1Str);
+        return d1.getFullYear() === d2Date.getFullYear() &&
+               d1.getMonth() === d2Date.getMonth() &&
+               d1.getDate() === d2Date.getDate();
+    }
+
+    function showToast(msg, type='success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+        }`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3500);
+    }
 
     // ZAI Mode UI Styling sync helper
     function updateZaiUI(enabled) {
@@ -462,42 +312,283 @@
         if (toggleBtn) {
             const icon = document.getElementById('zai-toggle-icon');
             if (enabled) {
-                icon.style.fontVariationSettings = "'FILL' 1";
+                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
                 toggleBtn.classList.add('text-primary');
             } else {
-                icon.style.fontVariationSettings = "'FILL' 0";
+                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
                 toggleBtn.classList.remove('text-primary');
             }
         }
     }
 
-    // Micro-interactions
-    const batchToggle = document.getElementById('batch-toggle');
-    if (batchToggle) {
-        batchToggle.addEventListener('click', () => {
-            const circle = batchToggle.querySelector('span');
-            if (circle.classList.contains('right-1')) {
-                circle.classList.replace('right-1', 'left-1');
-                batchToggle.classList.replace('bg-primary', 'bg-outline-variant');
-            } else {
-                circle.classList.replace('left-1', 'right-1');
-                batchToggle.classList.replace('bg-outline-variant', 'bg-primary');
+    async function loadData() {
+        if (!token) return;
+        try {
+            // Fetch catalog for left panel
+            const catRes = await fetch(`${API_BASE_URL}/api/seller/catalog`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (catRes.ok) {
+                const resp = await catRes.json();
+                listings = (resp.data?.listings || resp.listings || []).filter(l => l.status === 'active');
             }
+
+            // Fetch orders for calendar and batches
+            const ordRes = await fetch(`${API_BASE_URL}/api/seller/orders?per_page=100`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (ordRes.ok) {
+                const resp = await ordRes.json();
+                orders = resp.data?.orders || resp.orders || [];
+            }
+
+            renderBandwidth();
+            renderCalendar();
+            renderBatches();
+        } catch (err) {
+            console.error('Error loading production planner data:', err);
+            showToast('Failed to load planner data.', 'error');
+        }
+    }
+
+    async function updateBandwidth(listingId, fields) {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/listings/${listingId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(fields)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to update capacity');
+            showToast('Capacity limits updated!', 'success');
+            loadData();
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    function renderBandwidth() {
+        const list = document.getElementById('bandwidth-list');
+        list.innerHTML = '';
+        if (listings.length === 0) {
+            list.innerHTML = '<p class="text-xs text-on-surface-variant italic py-4">No active listings found.</p>';
+            return;
+        }
+
+        listings.forEach(l => {
+            const card = document.createElement('div');
+            card.className = 'bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm space-y-md';
+            
+            const isCustom = l.primary_medium ? 'CUSTOM' : 'PRE-MADE';
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-title-serif text-primary font-bold">${l.title}</h3>
+                        <span class="text-[10px] font-label-caps px-2 py-0.5 bg-secondary-container/30 text-secondary rounded-full">${isCustom}</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-sm">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-label-caps text-outline uppercase">Daily Slots</label>
+                        <input class="w-full bg-surface-container-low border-none rounded font-data-price text-center py-1 focus:ring-1 focus:ring-primary" type="number" min="0" value="${l.daily_max_slots || 0}" id="daily-${l.listing_id || l.id}"/>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-label-caps text-outline uppercase">Weekly Cap</label>
+                        <input class="w-full bg-surface-container-low border-none rounded font-data-price text-center py-1 focus:ring-1 focus:ring-primary" type="number" min="0" value="${l.weekly_cap || 0}" id="weekly-${l.listing_id || l.id}"/>
+                    </div>
+                </div>
+            `;
+
+            const dailyInput = card.querySelector(`#daily-${l.listing_id || l.id}`);
+            const weeklyInput = card.querySelector(`#weekly-${l.listing_id || l.id}`);
+
+            dailyInput.addEventListener('change', () => {
+                updateBandwidth(l.listing_id || l.id, { daily_max_slots: parseInt(dailyInput.value) || 0 });
+            });
+            weeklyInput.addEventListener('change', () => {
+                updateBandwidth(l.listing_id || l.id, { weekly_cap: parseInt(weeklyInput.value) || 0 });
+            });
+
+            list.appendChild(card);
         });
     }
 
-    // Hover effects for calendar rows
-    document.querySelectorAll('.calendar-day-item').forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            item.classList.add('scale-[1.02]', 'duration-200');
+    function renderCalendar() {
+        const grid = document.getElementById('calendar-grid');
+        grid.innerHTML = '';
+
+        // Render week header range label
+        const weekDates = [];
+        const dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(currentWeekStart);
+            d.setDate(currentWeekStart.getDate() + i);
+            weekDates.push(d);
+        }
+
+        const labelStart = weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const labelEnd = weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('week-label').textContent = `${labelStart} — ${labelEnd}`;
+
+        weekDates.forEach((date, index) => {
+            const dayName = dayNames[index];
+            const dayNum = date.getDate();
+            const isSelected = isSameDay(selectedDate.toISOString(), date);
+            const isToday = isSameDay(new Date().toISOString(), date);
+
+            const col = document.createElement('div');
+            col.className = `flex flex-col gap-md p-2 rounded-xl transition-all cursor-pointer ${
+                isSelected ? 'bg-secondary-container/10 border-2 border-primary' : 'hover:bg-surface-container-low'
+            } ${isToday ? 'relative ring-1 ring-primary/40' : ''}`;
+
+            col.innerHTML = `
+                <div class="text-center pb-md border-b border-outline-variant/20">
+                    <span class="font-label-caps text-outline text-[10px]">${dayName}</span>
+                    <p class="font-data-price text-on-surface font-bold text-lg">${dayNum}</p>
+                </div>
+                <div class="flex-grow space-y-sm" id="cal-slots-${index}">
+                    <!-- Slots will go here -->
+                </div>
+            `;
+
+            col.addEventListener('click', () => {
+                selectedDate = date;
+                renderCalendar();
+                renderBatches();
+            });
+
+            const slotsDiv = col.querySelector(`#cal-slots-${index}`);
+            
+            // Loop through active listings and compute slot filled counts
+            listings.forEach(l => {
+                const lid = l.listing_id || l.id;
+                const relevantOrders = orders.filter(o => 
+                    (o.listing_id === lid) && 
+                    !['cancelled', 'rto', 'delivered'].includes(o.status) &&
+                    isSameDay(o.deadline_at, date)
+                );
+
+                const filled = relevantOrders.length;
+                const cap = l.daily_max_slots || 0;
+                
+                const slotBox = document.createElement('div');
+                if (cap > 0 && filled >= cap) {
+                    slotBox.className = 'bg-primary text-white p-2 rounded-lg relative overflow-hidden text-xs';
+                    slotBox.innerHTML = `
+                        <p class="text-[9px] font-label-caps opacity-60 mb-0.5">${l.title.slice(0, 8).toUpperCase()}</p>
+                        <p class="font-data-price font-bold">${filled}/${cap}</p>
+                        <span class="absolute top-1 right-1 font-label-caps text-[7px] bg-white text-primary px-0.5 rounded-sm">FULL</span>
+                    `;
+                } else {
+                    slotBox.className = 'bg-surface-bright border border-outline-variant/20 p-2 rounded-lg text-xs';
+                    slotBox.innerHTML = `
+                        <p class="text-[9px] font-label-caps text-outline-variant mb-0.5">${l.title.slice(0, 8).toUpperCase()}</p>
+                        <p class="font-data-price text-primary font-medium">${filled}/${cap || '∞'}</p>
+                    `;
+                }
+                slotsDiv.appendChild(slotBox);
+            });
+
+            grid.appendChild(col);
         });
-        item.addEventListener('mouseleave', () => {
-            item.classList.remove('scale-[1.02]');
+    }
+
+    function renderBatches() {
+        const list = document.getElementById('batches-list');
+        list.innerHTML = '';
+
+        // Display current date header
+        const formattedDate = selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        
+        // Filter orders due on selected date
+        const dayOrders = orders.filter(o => 
+            !['cancelled', 'rto', 'delivered'].includes(o.status) &&
+            isSameDay(o.deadline_at, selectedDate)
+        );
+
+        const summaryHeader = document.createElement('div');
+        summaryHeader.className = 'flex items-center justify-between border-b border-outline-variant/30 pb-2 mb-4';
+        summaryHeader.innerHTML = `
+            <h3 class="font-title-serif text-on-surface font-bold text-md">${formattedDate}</h3>
+            <span class="font-data-price text-tertiary">${dayOrders.length} Orders</span>
+        `;
+        list.appendChild(summaryHeader);
+
+        if (dayOrders.length === 0) {
+            list.innerHTML += '<p class="text-xs text-on-surface-variant italic py-6 text-center">No production orders due on this day.</p>';
+            return;
+        }
+
+        // Group by product
+        const groups = {};
+        dayOrders.forEach(o => {
+            if (!groups[o.listing_id]) {
+                groups[o.listing_id] = {
+                    title: o.product_title || 'Craft Item',
+                    orders: []
+                };
+            }
+            groups[o.listing_id].orders.push(o);
         });
-    });
+
+        Object.keys(groups).forEach(listingId => {
+            const group = groups[listingId];
+            const card = document.createElement('div');
+            card.className = 'bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm ink-texture mb-4';
+            
+            const estHrs = (group.orders.length * 0.5).toFixed(1);
+            
+            card.innerHTML = `
+                <div class="flex justify-between mb-sm">
+                    <span class="font-label-caps text-xs text-primary font-bold">BATCH #${listingId}</span>
+                    <span class="font-data-price text-xs text-outline">~${estHrs} hrs</span>
+                </div>
+                <h4 class="font-title-serif text-on-surface mb-2 font-bold">${group.title}</h4>
+                <div class="flex flex-wrap gap-xs mb-md">
+                    ${group.orders.map(o => `
+                        <span class="font-data-price text-[10px] px-2 py-0.5 bg-surface-container rounded">${o.order_ref}</span>
+                    `).join('')}
+                </div>
+                <button class="w-full py-sm border border-outline text-on-surface-variant font-body-md rounded-lg hover:bg-primary hover:text-white hover:border-primary transition-all active:scale-95 flex items-center justify-center gap-2 font-bold text-xs" id="btn-complete-${listingId}">
+                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Mark batch complete
+                </button>
+            `;
+
+            const btn = card.querySelector(`#btn-complete-${listingId}`);
+            btn.addEventListener('click', async () => {
+                btn.disabled = true;
+                btn.textContent = 'Updating...';
+                try {
+                    // Update all orders in loop
+                    for (const o of group.orders) {
+                        await fetch(`${API_BASE_URL}/api/seller/orders/${o.id}/status`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ status: 'packed' })
+                        });
+                    }
+                    showToast('Batch marked as completed (packed)!', 'success');
+                    loadData();
+                } catch (err) {
+                    showToast('Failed to complete batch.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">check_circle</span> Mark batch complete`;
+                }
+            });
+
+            list.appendChild(card);
+        });
+    }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
         if (!token) { window.location.href = '/auth/login.html'; return; }
 
         // Role verification
@@ -543,6 +634,16 @@
             });
         }
 
+        // Week pagination chevrons
+        document.getElementById('prev-week').addEventListener('click', () => {
+            currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+            renderCalendar();
+        });
+        document.getElementById('next-week').addEventListener('click', () => {
+            currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+            renderCalendar();
+        });
+
         // View Store
         const viewStoreBtn = document.getElementById('view-store-btn');
         if (viewStoreBtn) {
@@ -570,13 +671,64 @@
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
-                const refresh = sessionStorage.getItem('tohfa_refresh_token');
+                const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
                 if (token && refresh) {
                     fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
                 }
                 sessionStorage.clear(); window.location.href = '/auth/login.html';
             });
         }
+
+        // Set Away Date click handler
+        const setAwayDateBtn = document.getElementById('set-away-date-btn');
+        if (setAwayDateBtn) {
+            setAwayDateBtn.addEventListener('click', async () => {
+                const awayDate = prompt("Enter away dates (e.g. 2026-06-15 to 2026-06-20):");
+                if (awayDate === null) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/seller/store-config`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ away_dates: awayDate.trim() })
+                    });
+                    const resp = await res.json();
+                    if (!res.ok) throw new Error(resp.message || "Failed to update away date");
+                    showToast("Away date updated successfully!", "success");
+                } catch (err) {
+                    showToast(err.message, "error");
+                }
+            });
+        }
+
+        // Set Festive Cutoff click handler
+        const setFestiveCutoffBtn = document.getElementById('set-festive-cutoff-btn');
+        if (setFestiveCutoffBtn) {
+            setFestiveCutoffBtn.addEventListener('click', async () => {
+                const festiveCutoff = prompt("Enter festive cutoff date (e.g. 2026-12-20):");
+                if (festiveCutoff === null) return;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/seller/store-config`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ festive_cutoff: festiveCutoff.trim() })
+                    });
+                    const resp = await res.json();
+                    if (!res.ok) throw new Error(resp.message || "Failed to update festive cutoff");
+                    showToast("Festive cutoff date updated successfully!", "success");
+                } catch (err) {
+                    showToast(err.message, "error");
+                }
+            });
+        }
+
+        // Initial Data Fetch
+        loadData();
     });
 </script>
 </body>

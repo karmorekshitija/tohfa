@@ -251,7 +251,7 @@
                     Your listing is live! ✦
                 </h1>
 <!-- Subline -->
-<p class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-sm font-medium">
+<p id="published-subline" class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-sm font-medium">
                     Midnight Jasmine Resin Study is now visible to buyers.
                 </p>
 <!-- Action Card Row (3 cards) -->
@@ -300,7 +300,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         if (!token) { window.location.href = '/auth/login.html'; return; }
 
         // Role verification
@@ -343,12 +343,20 @@
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
-                const refresh = sessionStorage.getItem('tohfa_refresh_token');
+                const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
                 if (token && refresh) {
                     fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
                 }
                 sessionStorage.clear(); window.location.href = '/auth/login.html';
             });
+        }
+
+        // Populate title and clear session storage draft
+        const pubTitle = sessionStorage.getItem('published_title');
+        if (pubTitle) {
+            document.getElementById('published-subline').textContent = `${pubTitle} is now visible to buyers.`;
+            sessionStorage.removeItem('draft_id');
+            sessionStorage.removeItem('published_title');
         }
     });
 </script>

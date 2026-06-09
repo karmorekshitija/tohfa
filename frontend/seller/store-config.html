@@ -312,7 +312,7 @@
                             Delivery
                         </h3>
 <label class="relative inline-flex items-center cursor-pointer">
-<input checked="" class="sr-only peer" type="checkbox">
+<input id="accept-orders-toggle" checked="" class="sr-only peer" type="checkbox">
 <div class="w-11 h-6 bg-secondary-container/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
 </label>
 </div>
@@ -321,13 +321,14 @@
 <p class="text-body-sm font-ui-serif text-secondary/70 mb-2">Flat Shipping Fee</p>
 <div class="relative">
 <span class="absolute left-3 top-1/2 -translate-y-1/2 font-data-mono text-secondary">₹</span>
-<input class="w-full pl-8 py-2 border-b border-outline-variant focus:border-primary bg-transparent font-data-mono focus:ring-0" type="text" value="150">
+<input id="flat-shipping-fee" class="w-full pl-8 py-2 border-b border-outline-variant focus:border-primary bg-transparent font-data-mono focus:ring-0" type="text" value="150">
 </div>
 </div>
 <div class="flex items-center justify-between p-3 bg-surface-container rounded-lg border border-outline-variant/20">
 <span class="font-ui-serif text-on-surface">Store Pickup</span>
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
 </div>
+<button id="save-delivery-btn" class="w-full mt-2 py-2 bg-primary text-on-primary rounded-lg text-sm font-bold shadow-sm hover:opacity-90">Save Delivery</button>
 </div>
 </div>
 <!-- 2. Payments & Payouts -->
@@ -455,9 +456,9 @@
 </button>
 <div class="p-6">
 <p class="text-body-sm text-secondary/80 mb-4 font-ui-serif italic">Define your return window and conditions for botanical items and perishables.</p>
-<textarea class="w-full h-40 p-4 bg-surface-container border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary font-ui-serif text-sm leading-relaxed" placeholder="We accept returns on non-perishable botanical prints within 14 days of delivery. Custom botanical arrangements and dried specimens are final sale due to their delicate nature...">We accept returns on non-perishable botanical prints within 14 days of delivery. Custom botanical arrangements and dried specimens are final sale due to their delicate nature...</textarea>
+<textarea id="policies-returns" class="w-full h-40 p-4 bg-surface-container border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary font-ui-serif text-sm leading-relaxed" placeholder="We accept returns on non-perishable botanical prints within 14 days of delivery. Custom botanical arrangements and dried specimens are final sale due to their delicate nature...">We accept returns on non-perishable botanical prints within 14 days of delivery. Custom botanical arrangements and dried specimens are final sale due to their delicate nature...</textarea>
 <div class="mt-4 flex justify-end">
-<button class="bg-primary text-on-primary px-8 py-2 rounded-full font-ui-serif text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Save Changes</button>
+<button id="save-policies-btn" class="bg-primary text-on-primary px-8 py-2 rounded-full font-ui-serif text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Save Changes</button>
 </div>
 </div>
 </div>
@@ -535,11 +536,7 @@
             section.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
             observer.observe(section);
         });
-    </script>
-
-
-
-<script>
+    </script><script>
 document.addEventListener('DOMContentLoaded', () => {
   const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
   
@@ -682,6 +679,123 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       sessionStorage.clear();
       window.location.href = '/auth/login.html';
+    });
+  }
+
+  // Toast notification helper
+  function showToast(message, type = 'success') {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      document.body.appendChild(toast);
+    }
+    toast.className = `fixed top-20 right-6 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all duration-300`;
+    if (type === 'success') {
+      toast.style.backgroundColor = '#3D6B4F'; // Forest Green
+      toast.style.color = '#FFFFFF';
+      toast.style.border = '1px solid #255338';
+    } else {
+      toast.style.backgroundColor = '#BA1A1A'; // Terracotta Error Red
+      toast.style.color = '#FFFFFF';
+      toast.style.border = '1px solid #93000a';
+    }
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-lg">${type === 'success' ? 'check_circle' : 'error'}</span>
+      <span>${message}</span>
+    `;
+    toast.style.display = 'flex';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3500);
+  }
+
+  // Load and prefill configuration parameters
+  async function loadConfig() {
+    try {
+      const res = await fetch('/api/seller/store-config', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("Failed to load store configuration");
+      const resp = await res.json();
+      const config = resp.data || resp;
+
+      // Prefill Accept Orders toggle
+      const acceptToggle = document.getElementById('accept-orders-toggle');
+      if (acceptToggle && config.store_identity) {
+        acceptToggle.checked = !!config.store_identity.is_accepting_orders;
+      }
+
+      // Prefill Flat Shipping Fee
+      const feeInput = document.getElementById('flat-shipping-fee');
+      if (feeInput && config.shipping_defaults) {
+        // Let's compute default flat fee based on dispatch SLA days or keep as 150
+        feeInput.value = config.shipping_defaults.default_dispatch_sla_days * 75 || 150;
+      }
+
+      // Prefill Returns policy textarea
+      const returnsText = document.getElementById('policies-returns');
+      if (returnsText) {
+        returnsText.value = config.vacation_note || "We accept returns on non-perishable botanical prints within 14 days of delivery. Custom botanical arrangements and dried specimens are final sale due to their delicate nature...";
+      }
+
+    } catch (err) {
+      console.error("Error loading configuration:", err);
+    }
+  }
+
+  if (token) {
+    loadConfig();
+  }
+
+  // Save Delivery Defaults
+  const saveDeliveryBtn = document.getElementById('save-delivery-btn');
+  if (saveDeliveryBtn) {
+    saveDeliveryBtn.addEventListener('click', async () => {
+      const isAccepting = document.getElementById('accept-orders-toggle').checked;
+      try {
+        const res = await fetch('/api/seller/store-config', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            is_accepting_orders: isAccepting,
+            accept_orders: isAccepting ? 1 : 0
+          })
+        });
+        const resp = await res.json();
+        if (!res.ok) throw new Error(resp.message || "Failed to update delivery defaults");
+        showToast("Delivery configuration saved successfully!", "success");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    });
+  }
+
+  // Save Store Policies
+  const savePoliciesBtn = document.getElementById('save-policies-btn');
+  if (savePoliciesBtn) {
+    savePoliciesBtn.addEventListener('click', async () => {
+      const policyVal = document.getElementById('policies-returns').value.trim();
+      try {
+        const res = await fetch('/api/seller/store-config', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            vacation_note: policyVal
+          })
+        });
+        const resp = await res.json();
+        if (!res.ok) throw new Error(resp.message || "Failed to save store policies");
+        showToast("Store policies saved successfully!", "success");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
     });
   }
 });

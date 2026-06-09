@@ -4632,12 +4632,13 @@ app.put('/api/seller/listings/:id', requireSeller, handleUpdateListing);
 // TASK 23: DELETE /api/seller/listings/:id (soft delete)
 // ============================================================
 // ============================================================
-// TASK 15: DELETE /api/seller/listings/:id (soft delete)
+// TASK 15: DELETE /api/seller/listings/:id (soft delete/pause)
 // ============================================================
 app.delete('/api/seller/listings/:id', requireSeller, (req, res) => {
   try {
     const listingId = parseInt(req.params.id);
     const sellerId = req.user.user_id;
+    const action = req.query.action;
 
     const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
     if (!listing) {
@@ -4648,14 +4649,15 @@ app.delete('/api/seller/listings/:id', requireSeller, (req, res) => {
       return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
     }
 
-    db.prepare("UPDATE listings SET status = 'deleted', updated_at = datetime('now') WHERE id = ?").run(listingId);
+    const targetStatus = action === 'pause' ? 'paused' : 'deleted';
+    db.prepare("UPDATE listings SET status = ?, updated_at = datetime('now') WHERE id = ?").run(targetStatus, listingId);
 
     return res.json({
       success: true,
       data: {
         id: listingId,
         listing_id: listingId, // compatibility
-        status: 'deleted'
+        status: targetStatus
       }
     });
   } catch (err) {
@@ -6001,7 +6003,10 @@ app.get('/api/seller/store-config', requireSeller, (req, res) => {
           default_shipping_method: config.default_shipping_method || 'courier',
           default_packaging_type: config.default_packaging_type || 'standard',
           default_dispatch_sla_days: config.estimated_dispatch_sla_days || 2
-        }
+        },
+        away_dates: config.away_dates || null,
+        festive_cutoff: config.festive_cutoff || null,
+        vacation_note: config.vacation_note || null
       }
     });
   } catch (err) {
@@ -6051,7 +6056,8 @@ const handleUpdateStoreConfig = (req, res) => {
 
     const directFields = [
       'tagline', 'artist_bio', 'whatsapp_business', 'city',
-      'bank_account_holder', 'bank_name', 'bank_account_number', 'gstin'
+      'bank_account_holder', 'bank_name', 'bank_account_number', 'gstin',
+      'away_dates', 'festive_cutoff', 'vacation_note'
     ];
     directFields.forEach(f => {
       if (body[f] !== undefined) {

@@ -604,6 +604,8 @@ const migrateStoreConfig = () => {
       notif_payout_inapp      INTEGER DEFAULT 1,
       default_shipping_method  TEXT    DEFAULT 'courier',
       default_packaging_type   TEXT    DEFAULT 'standard',
+      away_dates               TEXT    DEFAULT NULL,
+      festive_cutoff           TEXT    DEFAULT NULL,
       created_at        TEXT    DEFAULT (datetime('now')),
       updated_at        TEXT    DEFAULT (datetime('now'))
     );

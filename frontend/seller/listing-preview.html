@@ -202,8 +202,8 @@
     <h2 class="font-display-lg text-primary text-3xl font-serif">Craft New Listing</h2>
   </div>
   <div class="flex gap-4">
-    <button class="px-6 py-2 border border-error rounded-full text-sm font-bold text-error hover:bg-error/10 transition-colors">Discard Draft</button>
-    <button class="px-8 py-2 bg-forest text-white rounded-full font-bold shadow-lg hover:opacity-90 transition-opacity">Publish Entry</button>
+    <button id="header-discard-btn" class="px-6 py-2 border border-error rounded-full text-sm font-bold text-error hover:bg-error/10 transition-colors">Discard Draft</button>
+    <button id="header-publish-btn" class="px-8 py-2 bg-forest text-white rounded-full font-bold shadow-lg hover:opacity-90 transition-opacity">Publish Entry</button>
   </div>
 </header>
 <!-- (B) Stepper Header -->
@@ -265,20 +265,11 @@
 <!-- Gallery Side -->
 <div class="lg:w-1/2 space-y-4">
 <div class="aspect-[4/5] rounded-xl overflow-hidden border border-secondary/20 shadow-sm relative group bg-white">
-<img alt="Moonlight Jasmine Resin Study" class="w-full h-full object-cover" data-alt="A stunning, high-detail macro photograph of a Moonlight Jasmine flower preserved in a crystal-clear resin block. Delicate green fern leaves and petals are suspended in frozen motion. The lighting is soft and ethereal, mimicking moonlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB9FqWXf4Yls51MytDiozh-Z0V7lujx5wX1T9mHUwYOGyRnKAsPp-GcY8dXG_2-6vybydf0rn0mNk3zopqFVPBVpTGtRgugFJ2y1izdBznJU9WNw04M1IgIlzOrRt4YKYpwNN1YsTUytR9rI46-HFthia31M0Y0gw4hVfHp0BiQHPCbI9Rdug207W2wxvsk55IUg1H16AVrNxAVDUxDykrDepBK2timVOskL7u0dT0Lh2biHHPq0VcI-Et9gItV2OC44_0vT8RXWY"/>
+<img alt="Preview" id="preview-main-img" class="w-full h-full object-cover" src=""/>
 <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-data-mono uppercase tracking-widest text-primary border border-primary/10">Master View</div>
 </div>
-<div class="grid grid-cols-3 gap-4">
-<div class="aspect-square rounded-lg overflow-hidden border border-secondary/40 shadow-sm">
-<img alt="Detail view" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqNmOaDjwlUnyVldLLWWNdD4Ne1KOLt2i-9KH3X5rAUGNwOPkWXxbmgiPZHQ_6TJR-O-hO7-gM8i0LSLMrFlbrwDWVcRCQarTThN4j1yOr1bVRz_zygCcWPIIwRBjmTImODfvUBsRZRncF5JnZCuewZOSIwBg_Ev9ALUONjUtDHtgM5gL3h8tiTakLVCghZnPAkbb43bpo44HYkC6c1NONkPrigXkTOKoDDNWsBWR2ebmBgBw9T5tM5Hkb7cmbw1CHzzokFU_mbGk"/>
-</div>
-<div class="aspect-square rounded-lg overflow-hidden border border-secondary/20 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
-<img alt="Process view" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH29FEYGztUAzFY80F4NpvX101ilpk-4aMj9srNanivvsVGYhhhbSqFvB4KHkaTB_WYDUDwrHXUlO-3GA_Y462Kutn8nQSWMkwAY71VwVuC8ItkVVL8cGYeo_x1W8WspCLK85LGjhgVN6ulWFDWa_scpDU_BcixLQgfw3XC0V1G5EOw4tSiy_ptOXv7PZuVMvv6eHTDGsrVluZiyhrT-MD21AwRsXMN1YUIvWRYShhePrXMAQ7hBqGo14h_rVdz69_dLf20Y_lWwU"/>
-</div>
-<div class="aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center bg-white/40 gap-1 text-outline">
-<span class="material-symbols-outlined text-lg">add_photo_alternate</span>
-<span class="text-[10px] font-data-mono">ADD MORE</span>
-</div>
+<div class="grid grid-cols-3 gap-4" id="preview-thumb-grid">
+<!-- Thumbnails go here -->
 </div>
 </div>
 <!-- Product Info Side -->
@@ -286,39 +277,35 @@
 <div class="space-y-4">
 <div class="flex justify-between items-start">
 <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-tighter uppercase border border-primary/20">New Artisan Release</span>
-<span class="font-data-mono text-primary text-xs">SKU: TOFA-JAS-001</span>
+<span id="preview-sku" class="font-data-mono text-primary text-xs">SKU: </span>
 </div>
-<h2 class="font-headline-md text-headline-md text-on-surface leading-tight">Moonlight Jasmine Resin Study</h2>
-<p class="font-data-mono text-[28px] text-primary">₹ 2,450</p>
+<h2 id="preview-title" class="font-headline-md text-headline-md text-on-surface leading-tight"></h2>
+<p id="preview-price" class="font-data-mono text-[28px] text-primary">₹ 0</p>
 </div>
 <div class="p-6 bg-white/40 border border-secondary/10 rounded-xl relative overflow-hidden backdrop-blur-sm">
 <div class="absolute -top-10 -right-10 opacity-5">
 <span class="material-symbols-outlined text-[120px]">ink_pen</span>
 </div>
 <h4 class="font-label-caps text-label-caps mb-3 text-secondary">The Story</h4>
-<p class="font-ui-serif italic text-body-md text-on-surface-variant leading-relaxed">
-                                "Captured under the first full moon of the spring harvest, these jasmine blossoms were hand-pressed to preserve their ephemeral beauty. Each bubble within the resin is a captured moment of breath from the forest floor, ensuring this piece remains a living testament to nature's silent poetry."
-                            </p>
+<p id="preview-story" class="font-ui-serif italic text-body-md text-on-surface-variant leading-relaxed">
+</p>
 </div>
 <div class="space-y-6">
-<div class="flex flex-wrap gap-2">
-<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">#BOTANICAL</span>
-<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">#HANDMADE</span>
-<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">#RESINART</span>
+<div id="preview-tags-container" class="flex flex-wrap gap-2">
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="flex items-center gap-3 p-3 bg-white/60 border border-secondary/10 rounded-lg">
 <span class="material-symbols-outlined text-primary">local_shipping</span>
 <div>
 <p class="text-[10px] text-secondary font-bold uppercase">Shipping</p>
-<p class="text-xs font-body-md">3-5 days</p>
+<p id="preview-shipping-days" class="text-xs font-body-md"></p>
 </div>
 </div>
 <div class="flex items-center gap-3 p-3 bg-white/60 border border-secondary/10 rounded-lg">
 <span class="material-symbols-outlined text-primary">featured_seasonal_and_gifts</span>
 <div>
 <p class="text-[10px] text-secondary font-bold uppercase">Add-ons</p>
-<p class="text-xs font-body-md">Gift Wrapping</p>
+<p id="preview-addons" class="text-xs font-body-md"></p>
 </div>
 </div>
 </div>
@@ -332,29 +319,29 @@
 <h3 class="font-headline-sm text-[20px] text-primary">Ready to Publish?</h3>
 <div class="space-y-4">
 <div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="text-on-surface-variant font-medium">Images verified (3/3)</span>
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span id="chk-image-count" class="text-on-surface-variant font-medium">Images verified (0/3)</span>
 </div>
 <div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="text-on-surface-variant font-medium">Description complete</span>
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span id="chk-desc" class="text-on-surface-variant font-medium">Description complete</span>
 </div>
 <div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="text-on-surface-variant font-medium">Price set to ₹ 2,450</span>
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span id="chk-price" class="text-on-surface-variant font-medium">Price set</span>
 </div>
 <div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="text-on-surface-variant font-medium">Shipping profile linked</span>
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span id="chk-shipping" class="text-on-surface-variant font-medium">Shipping profile linked</span>
 </div>
 </div>
 <div class="pt-6 border-t border-secondary/10">
 <div class="flex justify-between items-center mb-2">
 <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Score</span>
-<span class="font-data-mono text-primary font-bold">92%</span>
+<span id="chk-score-val" class="font-data-mono text-primary font-bold">0%</span>
 </div>
 <div class="w-full bg-secondary-container/30 h-2 rounded-full overflow-hidden">
-<div class="bg-primary h-full rounded-full" style="width: 92%"></div>
+<div id="chk-score-bar" class="bg-primary h-full rounded-full" style="width: 0%"></div>
 </div>
 </div>
 </div>
@@ -380,15 +367,15 @@
 </div>
 <!-- (E) Actions Footer Bar -->
 <footer class="px-8 py-6 border-t border-secondary/10 flex justify-between items-center bg-surface-container-lowest shrink-0">
-<button class="flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
+<button id="back-btn" class="flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
 <span class="material-symbols-outlined">arrow_back</span>
 <span class="font-body-md">Back to Shipping</span>
 </button>
 <div class="flex gap-4">
-<button class="px-8 py-3 rounded-full border border-secondary text-secondary font-bold hover:bg-secondary/5 transition-colors">
+<button id="save-draft-btn" class="px-8 py-3 rounded-full border border-secondary text-secondary font-bold hover:bg-secondary/5 transition-colors">
                     Save as Draft
                 </button>
-<button class="px-10 py-3 rounded-full bg-primary text-on-primary font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all">
+<button id="footer-publish-btn" class="px-10 py-3 rounded-full bg-primary text-on-primary font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all">
 <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
 <span class="">Publish Listing</span>
 </button>
@@ -415,11 +402,13 @@
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const token = sessionStorage.getItem('access_token');
+  const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+  const draftId = sessionStorage.getItem('draft_id');
+  const API_BASE = window.location.origin;
   
   // 1. Auth check: if no token is found, redirect to login
   if (!token && (window.location.protocol.startsWith('http'))) {
-    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    window.location.href = '/auth/login.html?next=' + encodeURIComponent(window.location.pathname);
     return;
   }
   
@@ -551,6 +540,207 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = '/auth/login.html';
     });
   }
+
+  function showToast(msg, type='success') {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      document.body.appendChild(toast);
+    }
+    toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+      type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+    }`;
+    toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+    toast.style.display = 'flex';
+    setTimeout(() => toast.style.display = 'none', 3500);
+  }
+
+  // Load draft details
+  async function loadDraftDetails() {
+    if (!draftId) {
+      showToast('No active draft found. Please start from Step 1.', 'error');
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Failed to fetch draft details');
+      const resp = await res.json();
+      const listing = resp.data || resp;
+
+      // Populate elements
+      document.getElementById('preview-title').textContent = listing.title || 'Untitled Listing';
+      document.getElementById('preview-price').textContent = listing.price_paise ? `₹ ${(listing.price_paise / 100).toLocaleString()}` : '₹ 0';
+      document.getElementById('preview-story').textContent = listing.description || listing.story || 'No story provided.';
+      document.getElementById('preview-sku').textContent = `SKU: ${listing.sku || 'N/A'}`;
+
+      // Tags
+      const tagsContainer = document.getElementById('preview-tags-container');
+      tagsContainer.innerHTML = '';
+      if (listing.tags && listing.tags.length) {
+        listing.tags.forEach(tag => {
+          const cleanTag = tag.startsWith('#') ? tag : `#${tag}`;
+          tagsContainer.innerHTML += `<span class="px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary">${cleanTag.toUpperCase()}</span>`;
+        });
+      }
+
+      // Shipping & Add-ons
+      const shippingSlaText = listing.dispatch_sla_days ? `${listing.dispatch_sla_days} days` : '3-5 days';
+      document.getElementById('preview-shipping-days').textContent = shippingSlaText;
+      document.getElementById('preview-addons').textContent = listing.gift_wrap_available ? 'Gift Wrapping' : 'None';
+
+      // Photos
+      const mainImg = document.getElementById('preview-main-img');
+      const thumbGrid = document.getElementById('preview-thumb-grid');
+      thumbGrid.innerHTML = '';
+
+      if (listing.photos && listing.photos.length > 0) {
+        mainImg.src = listing.photos[0].url;
+        listing.photos.forEach((photo, idx) => {
+          const div = document.createElement('div');
+          div.className = `aspect-square rounded-lg overflow-hidden border border-secondary/20 hover:opacity-100 transition-opacity cursor-pointer ${idx === 0 ? 'border-secondary/60' : 'opacity-80'}`;
+          div.innerHTML = `<img alt="view" class="w-full h-full object-cover" src="${photo.url}" />`;
+          div.addEventListener('click', () => {
+            mainImg.src = photo.url;
+            document.querySelectorAll('#preview-thumb-grid > div').forEach(d => d.classList.add('opacity-80'));
+            div.classList.remove('opacity-80');
+          });
+          thumbGrid.appendChild(div);
+        });
+      } else {
+        mainImg.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBB9FqWXf4Yls51MytDiozh-Z0V7lujx5wX1T9mHUwYOGyRnKAsPp-GcY8dXG_2-6vybydf0rn0mNk3zopqFVPBVpTGtRgugFJ2y1izdBznJU9WNw04M1IgIlzOrRt4YKYpwNN1YsTUytR9rI46-HFthia31M0Y0gw4hVfHp0BiQHPCbI9Rdug207W2wxvsk55IUg1H16AVrNxAVDUxDykrDepBK2timVOskL7u0dT0Lh2biHHPq0VcI-Et9gItV2OC44_0vT8RXWY';
+      }
+
+      // Checklist and score calculation
+      let score = 0;
+      const chkImg = document.getElementById('chk-image-count');
+      const numPhotos = listing.photos ? listing.photos.length : 0;
+      chkImg.textContent = `Images verified (${numPhotos}/3)`;
+      if (numPhotos > 0) {
+        score += 25;
+        chkImg.previousElementSibling.textContent = 'check_circle';
+        chkImg.previousElementSibling.classList.add('text-primary');
+        chkImg.previousElementSibling.classList.remove('text-[20px]');
+      } else {
+        chkImg.previousElementSibling.textContent = 'cancel';
+        chkImg.previousElementSibling.classList.remove('text-primary');
+      }
+
+      const chkDesc = document.getElementById('chk-desc');
+      if (listing.description || listing.story) {
+        score += 25;
+        chkDesc.previousElementSibling.textContent = 'check_circle';
+        chkDesc.previousElementSibling.classList.add('text-primary');
+        chkDesc.previousElementSibling.classList.remove('text-[20px]');
+      } else {
+        chkDesc.previousElementSibling.textContent = 'cancel';
+        chkDesc.previousElementSibling.classList.remove('text-primary');
+      }
+
+      const chkPrice = document.getElementById('chk-price');
+      chkPrice.textContent = `Price set to ₹ ${(listing.price_paise / 100).toLocaleString()}`;
+      if (listing.price_paise > 0) {
+        score += 25;
+        chkPrice.previousElementSibling.textContent = 'check_circle';
+        chkPrice.previousElementSibling.classList.add('text-primary');
+        chkPrice.previousElementSibling.classList.remove('text-[20px]');
+      } else {
+        chkPrice.previousElementSibling.textContent = 'cancel';
+        chkPrice.previousElementSibling.classList.remove('text-primary');
+      }
+
+      const chkShip = document.getElementById('chk-shipping');
+      if (listing.shipping_method) {
+        score += 25;
+        chkShip.previousElementSibling.textContent = 'check_circle';
+        chkShip.previousElementSibling.classList.add('text-primary');
+        chkShip.previousElementSibling.classList.remove('text-[20px]');
+      } else {
+        chkShip.previousElementSibling.textContent = 'cancel';
+        chkShip.previousElementSibling.classList.remove('text-primary');
+      }
+
+      document.getElementById('chk-score-val').textContent = `${score}%`;
+      document.getElementById('chk-score-bar').style.width = `${score}%`;
+
+      // Save title in sessionStorage for success screen
+      sessionStorage.setItem('published_title', listing.title || 'Untitled Study');
+    } catch (err) {
+      console.error(err);
+      showToast('Error loading draft details.', 'error');
+    }
+  }
+
+  // Publish flow
+  async function publishListing() {
+    if (!draftId) {
+      showToast('No listing draft ID found.', 'error');
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: 'active' })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to publish listing');
+
+      showToast('Listing published successfully!', 'success');
+      setTimeout(() => {
+        window.location.href = '/seller/listing-publish.html';
+      }, 1000);
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  // Discard draft
+  async function discardDraft() {
+    if (!confirm('Are you sure you want to discard this draft? This action cannot be undone.')) return;
+    if (!draftId) {
+      window.location.href = '/seller/catalog.html';
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        sessionStorage.removeItem('draft_id');
+        showToast('Draft discarded successfully.', 'success');
+        setTimeout(() => {
+          window.location.href = '/seller/catalog.html';
+        }, 1000);
+      } else {
+        throw new Error('Failed to delete draft');
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  // Event Listeners
+  document.getElementById('header-publish-btn').addEventListener('click', publishListing);
+  document.getElementById('footer-publish-btn').addEventListener('click', publishListing);
+  document.getElementById('header-discard-btn').addEventListener('click', discardDraft);
+  document.getElementById('save-draft-btn').addEventListener('click', () => {
+    showToast('Draft saved successfully.', 'success');
+    setTimeout(() => {
+      window.location.href = '/seller/catalog.html';
+    }, 1000);
+  });
+  document.getElementById('back-btn').addEventListener('click', () => {
+    window.location.href = '/seller/listing-shipping.html';
+  });
+
+  loadDraftDetails();
 });
 </script>
 

@@ -301,10 +301,10 @@
 <div class="space-y-4">
 <label class="block">
 <span class="font-label-caps text-[10px] text-on-surface-variant mb-1 block">SELECT PROFILE</span>
-<select class="w-full bg-parchment/30 border border-sage/40 rounded-lg px-4 py-3 font-ui-serif focus:ring-0 appearance-none cursor-pointer">
-<option>Standard Botanical</option>
-<option>Express Sage</option>
-<option>Custom Hand-Delivery (Local)</option>
+<select id="domestic-profile-select" class="w-full bg-parchment/30 border border-sage/40 rounded-lg px-4 py-3 font-ui-serif focus:ring-0 appearance-none cursor-pointer">
+<option value="courier">Standard Botanical (Courier)</option>
+<option value="courier_express">Express Sage (Courier)</option>
+<option value="local">Custom Hand-Delivery (Local)</option>
 </select>
 </label>
 <div class="flex items-center gap-2 text-on-surface-variant text-sm italic">
@@ -338,11 +338,42 @@
 </div>
 </div>
 </section>
+
+<!-- Packaging, Return Policy & SLA -->
+<section>
+  <h3 class="font-headline-sm text-on-surface mb-6 flex items-center gap-3">
+    <span class="text-sage text-base italic">03</span> Shipping Preferences
+  </h3>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white/60 p-6 rounded-xl border border-sage/20 shadow-sm">
+    <div>
+      <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">PACKAGING TYPE</label>
+      <select id="packaging-type" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 text-sm focus:border-forest outline-none">
+        <option value="standard">Standard</option>
+        <option value="branded">Branded</option>
+        <option value="eco">Eco-Friendly</option>
+        <option value="fragile">Fragile Care</option>
+      </select>
+    </div>
+    <div>
+      <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">RETURN POLICY</label>
+      <select id="return-policy" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 text-sm focus:border-forest outline-none">
+        <option value="no-returns">No Returns</option>
+        <option value="7-day">7-Day Return</option>
+        <option value="15-day">15-Day Return</option>
+      </select>
+    </div>
+    <div>
+      <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">DISPATCH SLA (DAYS)</label>
+      <input id="dispatch-sla" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 text-sm focus:border-forest outline-none font-data-mono" type="number" value="1"/>
+    </div>
+  </div>
+</section>
+
 <!-- Dimensions & Weight -->
 <section>
 <div class="flex justify-between items-center mb-6">
 <h3 class="font-headline-sm text-on-surface flex items-center gap-3">
-<span class="text-sage text-base italic">03</span> Dimensions &amp; Weight
+<span class="text-sage text-base italic">04</span> Dimensions &amp; Weight
                             </h3>
 <span class="font-label-caps text-[10px] text-gold bg-gold/10 px-3 py-1 rounded">OPTIONAL</span>
 </div>
@@ -350,19 +381,19 @@
 <div class="grid grid-cols-4 gap-6">
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">LENGTH (CM)</label>
-<input class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg" placeholder="0.0" type="text"/>
+<input id="length-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg animate-none outline-none" placeholder="0.0" type="text"/>
 </div>
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">WIDTH (CM)</label>
-<input class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg" placeholder="0.0" type="text"/>
+<input id="width-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg animate-none outline-none" placeholder="0.0" type="text"/>
 </div>
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">HEIGHT (CM)</label>
-<input class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg" placeholder="0.0" type="text"/>
+<input id="height-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg animate-none outline-none" placeholder="0.0" type="text"/>
 </div>
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">WEIGHT (G)</label>
-<input class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg" placeholder="000" type="text"/>
+<input id="weight-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg animate-none outline-none" placeholder="000" type="text"/>
 </div>
 </div>
 </div>
@@ -382,7 +413,7 @@
 </div>
 <div>
 <p class="text-[10px] text-on-surface-variant font-label-caps">EST. DELIVERY</p>
-<p class="font-headline-sm text-lg text-on-surface">5–9 days</p>
+<p id="est-delivery-p" class="font-headline-sm text-lg text-on-surface">3–5 days</p>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -391,11 +422,11 @@
 </div>
 <div>
 <p class="text-[10px] text-on-surface-variant font-label-caps">DOMESTIC RATE</p>
-<p class="font-headline-sm text-lg text-on-surface">₹80 fixed</p>
+<p id="domestic-rate-p" class="font-headline-sm text-lg text-on-surface">₹80 fixed</p>
 </div>
 </div>
 <div class="pt-4 border-t border-sage/10">
-<p class="text-xs text-on-surface-variant leading-relaxed">Rates based on <span class="font-semibold text-forest">Standard Botanical</span> profile for India.</p>
+<p class="text-xs text-on-surface-variant leading-relaxed">Rates based on <span id="summary-profile-name" class="font-semibold text-forest">Standard Botanical</span> profile for India.</p>
 </div>
 </div>
 </div>
@@ -420,15 +451,15 @@
 </div>
 <!-- Footer Actions -->
 <footer class="border-t border-sage/20 px-12 py-6 bg-white flex justify-between items-center shrink-0 z-20">
-<button class="flex items-center gap-2 text-forest font-bold font-label-caps hover:gap-3 transition-all">
+<button id="back-step-btn" class="flex items-center gap-2 text-forest font-bold font-label-caps hover:gap-3 transition-all">
 <span class="material-symbols-outlined">arrow_back</span>
                     Back to Pricing
                 </button>
 <div class="flex gap-4">
-<button class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps hover:bg-parchment transition-colors">
+<button id="save-draft-btn" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps hover:bg-parchment transition-colors">
                         Save as Draft
                     </button>
-<button class="px-10 py-3 rounded-full bg-forest text-white font-label-caps shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+<button id="next-step-btn" class="px-10 py-3 rounded-full bg-forest text-white font-label-caps shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
                         Continue to Preview
                         <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </button>
@@ -444,18 +475,190 @@
 </div>
 </div>
 <script>
-        // Micro-interactions for inputs
-        const inputs = document.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.classList.add('scale-[1.01]');
-                input.parentElement.style.transition = 'transform 0.2s ease-out';
+    const API_BASE = window.location.origin;
+
+    function showToast(msg, type='success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+        }`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3500);
+    }
+
+    const domesticProfileSelect = document.getElementById('domestic-profile-select');
+    const packagingSelect = document.getElementById('packaging-type');
+    const returnPolicySelect = document.getElementById('return-policy');
+    const dispatchSlaInput = document.getElementById('dispatch-sla');
+
+    const lengthInput = document.getElementById('length-input');
+    const widthInput = document.getElementById('width-input');
+    const heightInput = document.getElementById('height-input');
+    const weightInput = document.getElementById('weight-input');
+
+    const estDeliveryP = document.getElementById('est-delivery-p');
+    const domesticRateP = document.getElementById('domestic-rate-p');
+    const summaryProfileName = document.getElementById('summary-profile-name');
+
+    // Update Shipping Summary Card
+    function updateShippingSummary() {
+        const profile = domesticProfileSelect.value;
+        if (profile === 'local') {
+            estDeliveryP.textContent = '1-2 days';
+            domesticRateP.textContent = '₹50 fixed';
+            summaryProfileName.textContent = 'Custom Hand-Delivery';
+        } else if (profile === 'courier_express') {
+            estDeliveryP.textContent = '2-3 days';
+            domesticRateP.textContent = '₹150 fixed';
+            summaryProfileName.textContent = 'Express Sage';
+        } else {
+            estDeliveryP.textContent = '3-5 days';
+            domesticRateP.textContent = '₹80 fixed';
+            summaryProfileName.textContent = 'Standard Botanical';
+        }
+    }
+
+    domesticProfileSelect.addEventListener('change', updateShippingSummary);
+
+    // Load Shipping Draft
+    async function loadShippingDraft() {
+        const draftId = sessionStorage.getItem('draft_id');
+        if (!draftId) return;
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-            input.addEventListener('blur', () => {
-                input.parentElement.classList.remove('scale-[1.01]');
+            if (res.ok) {
+                const resp = await res.json();
+                const listing = resp.data || resp;
+                
+                // Pre-fill fields
+                if (listing.shipping_method) {
+                    if (listing.shipping_method === 'local') {
+                        domesticProfileSelect.value = 'local';
+                    } else if (listing.shipping_method === 'courier' && listing.ships_in_days <= 3) {
+                        // Compatibility check for express
+                        domesticProfileSelect.value = 'courier_express';
+                    } else {
+                        domesticProfileSelect.value = 'courier';
+                    }
+                    updateShippingSummary();
+                }
+
+                if (listing.packaging_type) {
+                    packagingSelect.value = listing.packaging_type;
+                }
+                if (listing.return_policy) {
+                    returnPolicySelect.value = listing.return_policy;
+                }
+                if (listing.dispatch_sla_days) {
+                    dispatchSlaInput.value = listing.dispatch_sla_days;
+                }
+
+                lengthInput.value = listing.length_cm || '';
+                widthInput.value = listing.width_cm || '';
+                heightInput.value = listing.height_cm || '';
+                weightInput.value = listing.weight_g || listing.weight_grams || '';
+            }
+        } catch (err) {
+            console.error('Error loading shipping draft:', err);
+        }
+    }
+
+    // Save Shipping Draft
+    async function saveShipping(shouldRedirect) {
+        const domesticProfile = domesticProfileSelect.value;
+        
+        let shipping_method = 'courier';
+        let ships_in_days = 5; // standard
+        if (domesticProfile === 'local') {
+            shipping_method = 'local';
+            ships_in_days = 2;
+        } else if (domesticProfile === 'courier_express') {
+            shipping_method = 'courier';
+            ships_in_days = 3;
+        } else {
+            shipping_method = 'courier';
+            ships_in_days = 5;
+        }
+
+        const packaging_type = packagingSelect.value;
+        const return_policy = returnPolicySelect.value;
+        const dispatch_sla_days = parseInt(dispatchSlaInput.value) || 1;
+
+        const length_cm = parseFloat(lengthInput.value) || null;
+        const width_cm = parseFloat(widthInput.value) || null;
+        const height_cm = parseFloat(heightInput.value) || null;
+        const weight_g = parseInt(weightInput.value) || null;
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        const draftId = sessionStorage.getItem('draft_id');
+
+        if (!draftId) {
+            showToast('No listing draft ID found. Please go back to photos step.', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    shipping_method,
+                    ships_in_days,
+                    packaging_type,
+                    return_policy,
+                    dispatch_sla_days,
+                    length_cm,
+                    width_cm,
+                    height_cm,
+                    weight_g,
+                    weight_grams: weight_g,
+                    status: 'draft'
+                })
             });
-        });
-    </script>
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to save listing shipping details');
+
+            showToast('Shipping details saved successfully!', 'success');
+            if (shouldRedirect) {
+                window.location.href = '/seller/listing-preview.html';
+            }
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    document.getElementById('save-draft-btn').addEventListener('click', () => saveShipping(false));
+    document.getElementById('next-step-btn').addEventListener('click', () => saveShipping(true));
+
+    document.getElementById('back-step-btn').addEventListener('click', () => {
+        window.location.href = '/seller/listing-pricing-a.html';
+    });
+
+    window.addEventListener('DOMContentLoaded', loadShippingDraft);
+</script>
+
+<!-- Micro-interactions for buttons -->
+<script>
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+        btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+    });
+</script>
+</body></html>
 
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
 <script>

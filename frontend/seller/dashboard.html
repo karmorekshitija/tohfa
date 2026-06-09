@@ -306,7 +306,7 @@
               <p class="text-on-surface-variant text-body-md opacity-90">You have 34 active orders. Recommended cutoff: <span class="font-bold text-primary">Oct 15.</span></p>
             </div>
           </div>
-          <button class="px-lg py-sm bg-on-secondary-container text-on-primary rounded-lg font-label-caps text-[10px] hover:opacity-90 transition-all">
+          <button id="set-cutoff-btn" class="px-lg py-sm bg-on-secondary-container text-on-primary rounded-lg font-label-caps text-[10px] hover:opacity-90 transition-all">
             Set Cutoff Date
           </button>
         </div>
@@ -380,7 +380,7 @@
           <a href="/seller/orders.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
             <span class="material-symbols-outlined text-[16px]">add</span> Manage Orders
           </a>
-          <a href="/seller/catalog.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
+          <a href="/seller/listing-photos.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
             <span class="material-symbols-outlined text-[16px]">post_add</span> Add Product
           </a>
           <a href="/seller/upload-reel.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
@@ -725,6 +725,14 @@
                     }
                 })
                 .catch(err => console.error("Error updating ZAI Mode:", err));
+            });
+        }
+
+        // Set Cutoff Date button click listener
+        const cutoffBtn = document.getElementById('set-cutoff-btn');
+        if (cutoffBtn) {
+            cutoffBtn.addEventListener('click', () => {
+                alert('Set Cutoff Date feature is coming soon!');
             });
         }
 

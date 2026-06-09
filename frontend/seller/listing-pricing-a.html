@@ -267,7 +267,7 @@
 <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
 <span class="font-data-mono text-xl text-secondary/60">₹</span>
 </div>
-<input class="w-full bg-white border border-secondary/20 rounded-xl pl-10 pr-16 py-5 font-data-mono text-3xl text-primary focus:ring-primary focus:border-primary transition-all shadow-sm group-hover:shadow-md outline-none" type="text" value="2,450">
+<input id="price-input" class="w-full bg-white border border-secondary/20 rounded-xl pl-10 pr-16 py-5 font-data-mono text-3xl text-primary focus:ring-primary focus:border-primary transition-all shadow-sm group-hover:shadow-md outline-none" type="text" value=""/>
 <div class="absolute inset-y-0 right-5 flex items-center pointer-events-none">
 <span class="text-xs font-label-caps text-secondary bg-secondary/10 px-2 py-1 rounded">INR</span>
 </div>
@@ -279,17 +279,18 @@
 <label class="block font-label-caps text-secondary">Inventory Count</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary/40 text-lg">inventory</span>
-<input class="w-full bg-white border border-secondary/20 rounded-xl pl-12 pr-4 py-4 font-data-mono text-lg focus:ring-primary focus:border-primary transition-all shadow-sm outline-none" type="number" value="12">
+<input id="stock-input" class="w-full bg-white border border-secondary/20 rounded-xl pl-12 pr-4 py-4 font-data-mono text-lg focus:ring-primary focus:border-primary transition-all shadow-sm outline-none" type="number" value="1"/>
 </div>
 </div>
 <div class="space-y-3">
 <label class="block font-label-caps text-secondary">SKU / Reference</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary/40 text-lg">qr_code_2</span>
-<input class="w-full bg-white border border-secondary/20 rounded-xl pl-12 pr-4 py-4 font-data-mono text-lg focus:ring-primary focus:border-primary transition-all shadow-sm outline-none" placeholder="MJ-RS-001" type="text">
+<input id="sku-input" class="w-full bg-white border border-secondary/20 rounded-xl pl-12 pr-4 py-4 font-data-mono text-lg focus:ring-primary focus:border-primary transition-all shadow-sm outline-none" placeholder="MJ-RS-001" type="text"/>
 </div>
 </div>
 </div>
+
 <!-- Tax Settings Card -->
 <div class="p-6 bg-white/60 border border-secondary/10 rounded-2xl flex items-center justify-between shadow-sm backdrop-blur-sm">
 <div class="flex items-center gap-4">
@@ -301,23 +302,70 @@
 <p class="text-xs text-on-surface-variant">Retail price includes GST and regional duties.</p>
 </div>
 </div>
-<button class="w-14 h-7 bg-primary rounded-full relative p-1 transition-colors shadow-inner">
+<button id="tax-toggle-btn" class="w-14 h-7 bg-primary rounded-full relative p-1 transition-colors shadow-inner">
 <div class="w-5 h-5 bg-white rounded-full ml-auto shadow-md"></div>
 </button>
 </div>
+
+<!-- Artisan Variants & Limits -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+  <!-- Variants -->
+  <div class="space-y-4">
+    <div class="flex justify-between items-center">
+      <label class="block font-label-caps text-secondary">Artisan Variants</label>
+      <button id="add-variant-btn" type="button" class="text-xs text-primary font-bold hover:underline">+ Add Variant</button>
+    </div>
+    <div id="variants-list-container" class="space-y-3">
+      <!-- Dynamic Variant Rows -->
+    </div>
+  </div>
+  <!-- Limits & Prebooking -->
+  <div class="space-y-4">
+    <label class="block font-label-caps text-secondary">Production Limits & Prebooking</label>
+    <div class="space-y-4">
+      <div class="grid grid-cols-3 gap-2">
+        <div>
+          <label class="text-[9px] text-secondary font-bold uppercase">Daily Max</label>
+          <input id="daily-max-slots" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None"/>
+        </div>
+        <div>
+          <label class="text-[9px] text-secondary font-bold uppercase">Weekly Cap</label>
+          <input id="weekly-cap" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None"/>
+        </div>
+        <div>
+          <label class="text-[9px] text-secondary font-bold uppercase">Monthly Ceiling</label>
+          <input id="monthly-ceiling" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None"/>
+        </div>
+      </div>
+      <label class="flex items-center gap-2 cursor-pointer pt-2">
+        <input id="allow-prebooking" type="checkbox" class="w-4 h-4 rounded border-secondary/30 text-primary focus:ring-primary"/>
+        <span class="text-xs font-bold text-primary">Allow Prebooking</span>
+      </label>
+      <div id="prebooking-window-container" class="hidden space-y-1">
+        <label class="text-[9px] text-secondary font-bold uppercase block">Prebooking Window</label>
+        <select id="prebooking-window" class="w-full bg-white border border-secondary/20 rounded-lg p-2 text-xs focus:border-primary outline-none">
+          <option value="1_week">1 Week</option>
+          <option value="2_weeks">2 Weeks</option>
+          <option value="1_month">1 Month</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Add-on Options -->
-<div class="space-y-4">
+<div class="space-y-4 pt-4">
 <label class="block font-label-caps text-secondary">Add-on Options</label>
 <div class="flex flex-wrap gap-4">
 <label class="flex-1 min-w-[200px] flex items-center gap-4 bg-white/80 border-2 border-primary p-4 rounded-xl cursor-pointer shadow-sm">
-<input checked="" class="w-5 h-5 rounded border-secondary/30 text-primary focus:ring-primary" type="checkbox">
+<input id="gift-wrap-checkbox" checked class="w-5 h-5 rounded border-secondary/30 text-primary focus:ring-primary" type="checkbox"/>
 <div>
 <p class="text-sm font-bold text-primary">Gift Wrapping</p>
 <p class="text-xs font-data-mono text-secondary">+ ₹ 50</p>
 </div>
 </label>
 <label class="flex-1 min-w-[200px] flex items-center gap-4 bg-white/40 border border-secondary/20 p-4 rounded-xl cursor-pointer hover:bg-white/80 transition-all opacity-80">
-<input class="w-5 h-5 rounded border-secondary/30 text-primary focus:ring-primary" type="checkbox">
+<input id="handwritten-note-checkbox" class="w-5 h-5 rounded border-secondary/30 text-primary focus:ring-primary" type="checkbox"/>
 <div>
 <p class="text-sm font-bold text-primary">Handwritten Note</p>
 <p class="text-xs font-data-mono text-secondary italic">Included</p>
@@ -329,6 +377,28 @@
 </div>
 <!-- Sidebar Content (Narrower Right Column) -->
 <aside class="w-80 p-8 bg-secondary/5 flex flex-col gap-6 shrink-0 border-l border-secondary/10">
+<!-- Revenue Projection Card -->
+<div class="p-6 bg-white border border-secondary/20 rounded-2xl shadow-sm space-y-4">
+  <h3 class="font-headline-sm text-[20px] text-primary flex items-center gap-2">
+    <span class="material-symbols-outlined text-secondary text-xl">payments</span>
+    Revenue
+  </h3>
+  <div class="space-y-2 border-t border-secondary/10 pt-3">
+    <div class="flex justify-between text-xs text-on-surface-variant">
+      <span>Retail Price:</span>
+      <span id="proj-retail" class="font-data-mono font-bold">₹0.00</span>
+    </div>
+    <div class="flex justify-between text-xs text-on-surface-variant">
+      <span>Studio Platform Fee (8%):</span>
+      <span id="proj-fee" class="font-data-mono font-bold text-error">- ₹0.00</span>
+    </div>
+    <div class="flex justify-between text-sm font-bold text-primary border-t border-dashed border-secondary/20 pt-2">
+      <span>Est. Payout:</span>
+      <span id="proj-payout" class="font-data-mono text-gold">₹0.00</span>
+    </div>
+  </div>
+</div>
+
 <!-- Fulfillment Settings Card -->
 <div class="p-6 bg-white border border-secondary/20 rounded-2xl shadow-sm space-y-6">
 <h3 class="font-headline-sm text-[20px] text-primary flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-xl">local_shipping</span>Fulfillment</h3>
@@ -336,10 +406,10 @@
 <div class="space-y-2">
 <label class="text-[10px] font-bold text-secondary uppercase tracking-widest">Processing Time</label>
 <div class="relative">
-<select class="w-full bg-surface-container-low border border-secondary/10 rounded-lg px-3 py-2.5 text-sm focus:border-primary outline-none appearance-none">
-<option>1-2 business days</option>
-<option selected="">3-5 business days</option>
-<option>1-2 weeks</option>
+<select id="processing-time-select" class="w-full bg-surface-container-low border border-secondary/10 rounded-lg px-3 py-2.5 text-sm focus:border-primary outline-none appearance-none">
+<option value="1-2_days">1-2 business days</option>
+<option value="3-5_days" selected>3-5 business days</option>
+<option value="1-2_weeks">1-2 weeks</option>
 </select>
 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-sm">expand_more</span>
 </div>
@@ -347,9 +417,9 @@
 <div class="space-y-2">
 <label class="text-[10px] font-bold text-secondary uppercase tracking-widest">Shipping Profile</label>
 <div class="relative">
-<select class="w-full bg-surface-container-low border border-secondary/10 rounded-lg px-3 py-2.5 text-sm focus:border-primary outline-none appearance-none">
-<option>Standard Botanical</option>
-<option>Express Artisan</option>
+<select id="shipping-profile-select" class="w-full bg-surface-container-low border border-secondary/10 rounded-lg px-3 py-2.5 text-sm focus:border-primary outline-none appearance-none">
+<option value="1">Standard Botanical</option>
+<option value="2">Express Artisan</option>
 </select>
 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-sm">expand_more</span>
 </div>
@@ -379,15 +449,15 @@
 </div>
 <!-- Actions Footer Bar -->
 <footer class="px-8 py-6 border-t border-secondary/10 flex justify-between items-center bg-surface-container-lowest shrink-0">
-<button class="flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
+<button id="back-step-btn" class="flex items-center gap-2 text-primary font-bold hover:-translate-x-1 transition-transform">
 <span class="material-symbols-outlined">arrow_back</span>
 <span class="font-body-md">Back to Details</span>
 </button>
 <div class="flex gap-4">
-<button class="px-8 py-3 rounded-full border border-secondary text-secondary font-bold hover:bg-secondary/5 transition-colors">
+<button id="save-draft-btn" class="px-8 py-3 rounded-full border border-secondary text-secondary font-bold hover:bg-secondary/5 transition-colors">
                 Save as Draft
             </button>
-<button class="px-10 py-3 rounded-full bg-primary text-on-primary font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all">
+<button id="next-step-btn" class="px-10 py-3 rounded-full bg-primary text-on-primary font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all">
 <span class="">Continue to Shipping</span>
 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
 </button>
@@ -404,155 +474,272 @@
 </div>
 </main>
 <script>
-    // Micro-interactions
+    const API_BASE = window.location.origin;
+    let variantsList = [];
+
+    function showToast(msg, type='success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+        }`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3500);
+    }
+
+    // Live Payout update
+    const priceInput = document.getElementById('price-input');
+    const projRetail = document.getElementById('proj-retail');
+    const projFee = document.getElementById('proj-fee');
+    const projPayout = document.getElementById('proj-payout');
+
+    function updateProjection() {
+        const valStr = priceInput.value.replace(/,/g, '').trim();
+        const price = parseFloat(valStr) || 0;
+        const fee = price * 0.08;
+        const payout = price - fee;
+
+        projRetail.textContent = `₹${price.toFixed(2)}`;
+        projFee.textContent = `- ₹${fee.toFixed(2)}`;
+        projPayout.textContent = `₹${payout.toFixed(2)}`;
+    }
+
+    priceInput.addEventListener('input', updateProjection);
+
+    // Variants rows
+    const variantsContainer = document.getElementById('variants-list-container');
+    const addVariantBtn = document.getElementById('add-variant-btn');
+
+    function renderVariants() {
+        variantsContainer.innerHTML = '';
+        variantsList.forEach((v, idx) => {
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-12 gap-2 items-center bg-white/50 border border-secondary/15 p-2 rounded-lg';
+            div.innerHTML = `
+                <div class="col-span-6">
+                    <input class="w-full bg-white border border-secondary/20 rounded px-2 py-1 text-xs var-name-input outline-none" type="text" value="${v.variant_name || ''}" placeholder="Variant Name" data-idx="${idx}"/>
+                </div>
+                <div class="col-span-3">
+                    <input class="w-full bg-white border border-secondary/20 rounded px-2 py-1 text-xs font-data-mono var-delta-input outline-none" type="number" value="${v.price_delta !== undefined ? v.price_delta : 0}" placeholder="Delta (₹)" data-idx="${idx}"/>
+                </div>
+                <div class="col-span-2">
+                    <input class="w-full bg-white border border-secondary/20 rounded px-2 py-1 text-xs font-data-mono var-cap-input outline-none" type="number" value="${v.daily_capacity || ''}" placeholder="Cap" data-idx="${idx}"/>
+                </div>
+                <div class="col-span-1 text-right">
+                    <button type="button" class="text-error remove-var-btn cursor-pointer" data-idx="${idx}">&times;</button>
+                </div>
+            `;
+            variantsContainer.appendChild(div);
+        });
+
+        // Add input listeners
+        document.querySelectorAll('.var-name-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                variantsList[idx].variant_name = e.target.value;
+            });
+        });
+        document.querySelectorAll('.var-delta-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                variantsList[idx].price_delta = parseFloat(e.target.value) || 0;
+            });
+        });
+        document.querySelectorAll('.var-cap-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                variantsList[idx].daily_capacity = parseInt(e.target.value) || null;
+            });
+        });
+        document.querySelectorAll('.remove-var-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.dataset.idx);
+                variantsList.splice(idx, 1);
+                renderVariants();
+            });
+        });
+    }
+
+    addVariantBtn.addEventListener('click', () => {
+        variantsList.push({ variant_name: '', price_delta: 0, daily_capacity: null });
+        renderVariants();
+    });
+
+    // Prebooking checkbox visibility toggle
+    const prebookingCheckbox = document.getElementById('allow-prebooking');
+    const prebookingContainer = document.getElementById('prebooking-window-container');
+    prebookingCheckbox.addEventListener('change', () => {
+        if (prebookingCheckbox.checked) {
+            prebookingContainer.classList.remove('hidden');
+        } else {
+            prebookingContainer.classList.add('hidden');
+        }
+    });
+
+    // Load Pricing Draft
+    async function loadPricingDraft() {
+        const draftId = sessionStorage.getItem('draft_id');
+        if (!draftId) return;
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const resp = await res.json();
+                const listing = resp.data || resp;
+                
+                // Pre-fill inputs
+                if (listing.base_price) {
+                    priceInput.value = (listing.base_price / 100).toFixed(0);
+                    updateProjection();
+                }
+                document.getElementById('stock-input').value = listing.stock_count || 1;
+                document.getElementById('sku-input').value = listing.sku || '';
+
+                document.getElementById('daily-max-slots').value = listing.daily_max_slots || '';
+                document.getElementById('weekly-cap').value = listing.weekly_cap || '';
+                document.getElementById('monthly-ceiling').value = listing.monthly_ceiling || '';
+
+                if (listing.allow_prebooking) {
+                    prebookingCheckbox.checked = true;
+                    prebookingContainer.classList.remove('hidden');
+                    document.getElementById('prebooking-window').value = listing.prebooking_window || '1_week';
+                }
+
+                document.getElementById('gift-wrap-checkbox').checked = !!listing.gift_wrap_available;
+                document.getElementById('handwritten-note-checkbox').checked = !!listing.handwritten_note;
+
+                if (listing.processing_time) {
+                    document.getElementById('processing-time-select').value = listing.processing_time;
+                }
+                if (listing.shipping_profile_id) {
+                    document.getElementById('shipping-profile-select').value = listing.shipping_profile_id;
+                }
+
+                // Load variants
+                if (listing.variants && listing.variants.length > 0) {
+                    variantsList = listing.variants.map(v => ({
+                        variant_name: v.variant_name,
+                        price_delta: (v.price_delta || 0) / 100, // convert paise to rupees
+                        daily_capacity: v.daily_capacity
+                    }));
+                } else if (listing.listing_variants && listing.listing_variants.length > 0) {
+                    variantsList = listing.listing_variants.map(v => ({
+                        variant_name: v.variant_name,
+                        price_delta: (v.price_delta || 0) / 100,
+                        daily_capacity: v.daily_capacity
+                    }));
+                }
+                renderVariants();
+            }
+        } catch (err) {
+            console.error('Error loading pricing draft:', err);
+        }
+    }
+
+    // Save Pricing Draft
+    async function savePricing(shouldRedirect) {
+        const valStr = priceInput.value.replace(/,/g, '').trim();
+        const base_price_rupees = parseFloat(valStr);
+        if (isNaN(base_price_rupees) || base_price_rupees <= 0) {
+            showToast('Please enter a valid retail price.', 'error');
+            return;
+        }
+
+        const base_price = Math.round(base_price_rupees * 100); // convert to paise
+        const stock_count = parseInt(document.getElementById('stock-input').value) || 0;
+        const sku = document.getElementById('sku-input').value.trim();
+
+        const daily_max_slots = parseInt(document.getElementById('daily-max-slots').value) || null;
+        const weekly_cap = parseInt(document.getElementById('weekly-cap').value) || null;
+        const monthly_ceiling = parseInt(document.getElementById('monthly-ceiling').value) || null;
+
+        const allow_prebooking = prebookingCheckbox.checked ? 1 : 0;
+        const prebooking_window = allow_prebooking ? document.getElementById('prebooking-window').value : null;
+
+        const gift_wrap_available = document.getElementById('gift-wrap-checkbox').checked ? 1 : 0;
+        const gift_wrap_price_paise = gift_wrap_available ? 5000 : 0; // standard 50 INR
+        const handwritten_note = document.getElementById('handwritten-note-checkbox').checked ? 1 : 0;
+
+        const processing_time = document.getElementById('processing-time-select').value;
+        const shipping_profile_id = parseInt(document.getElementById('shipping-profile-select').value) || null;
+
+        // Map variants back to paise
+        const variants = variantsList.map(v => ({
+            variant_name: v.variant_name,
+            price_delta: Math.round((v.price_delta || 0) * 100), // convert to paise
+            daily_capacity: v.daily_capacity
+        }));
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        const draftId = sessionStorage.getItem('draft_id');
+
+        if (!draftId) {
+            showToast('No listing draft ID found. Please go back to photos step.', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    base_price,
+                    price_paise: base_price,
+                    stock_count,
+                    sku,
+                    daily_max_slots,
+                    weekly_cap,
+                    monthly_ceiling,
+                    allow_prebooking,
+                    prebooking_window,
+                    gift_wrap_available,
+                    gift_wrap_price_paise,
+                    handwritten_note,
+                    processing_time,
+                    shipping_profile_id,
+                    variants,
+                    status: 'draft'
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to save listing pricing');
+
+            showToast('Pricing saved successfully!', 'success');
+            if (shouldRedirect) {
+                window.location.href = '/seller/listing-shipping.html';
+            }
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    document.getElementById('save-draft-btn').addEventListener('click', () => savePricing(false));
+    document.getElementById('next-step-btn').addEventListener('click', () => savePricing(true));
+
+    document.getElementById('back-step-btn').addEventListener('click', () => {
+        window.location.href = '/seller/listing-details.html';
+    });
+
+    window.addEventListener('DOMContentLoaded', loadPricingDraft);
+</script>
+
+<!-- Micro-interaction scales -->
+<script>
     document.querySelectorAll('button').forEach(btn => {
         btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
         btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
     });
 </script>
-
-
-
-<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const token = sessionStorage.getItem('access_token');
-  
-  // 1. Auth check: if no token is found, redirect to login
-  if (!token && (window.location.protocol.startsWith('http'))) {
-    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
-    return;
-  }
-  
-  // 2. Handle ZAI Mode State & UI Sync
-  let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
-  updateZaiUI(zaiEnabled);
-  
-  if (token) {
-    fetch('/api/seller/dashboard', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data && data.success && data.data && data.data.seller) {
-        const dbEnabled = !!data.data.seller.zai_mode_enabled;
-        localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
-        updateZaiUI(dbEnabled);
-      }
-    })
-    .catch(err => console.error("Error syncing ZAI Mode:", err));
-  }
-  
-  // 3. Set up click listener on toggle button
-  const toggleBtn = document.getElementById('zai-toggle-btn');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      const isEnabled = toggleBtn.classList.contains('bg-tertiary');
-      const nextEnabled = !isEnabled;
-      
-      updateZaiUI(nextEnabled);
-      localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
-      
-      if (token) {
-        fetch('/api/seller/zai-mode', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ enabled: nextEnabled })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (!data || !data.success) {
-            console.error("Failed to update ZAI Mode in DB");
-          }
-        })
-        .catch(err => console.error("Error updating ZAI Mode:", err));
-      }
-    });
-  }
-  
-  function updateZaiUI(enabled) {
-    const btn = document.getElementById('zai-toggle-btn');
-    if (btn) {
-      if (enabled) {
-        btn.classList.add('bg-tertiary', 'text-white');
-        btn.classList.remove('text-tertiary');
-        const icon = btn.querySelector('.material-symbols-outlined');
-        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
-      } else {
-        btn.classList.remove('bg-tertiary', 'text-white');
-        btn.classList.add('text-tertiary');
-        const icon = btn.querySelector('.material-symbols-outlined');
-        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
-      }
-    }
-    
-    // Find all zai tips / cards on the page and show/hide them
-    const selectors = [
-      '.zai-tip-card',
-      '[class*="zai-tip"]',
-      '[id*="zai-tip"]',
-      'aside .bg-tertiary-container\/10',
-      'section .bg-tertiary-fixed-dim\/40',
-      'div .bg-on-tertiary-fixed\/10'
-    ];
-    selectors.forEach(sel => {
-      try {
-        const els = document.querySelectorAll(sel);
-        els.forEach(el => {
-          if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
-          el.style.display = enabled ? '' : 'none';
-        });
-      } catch (e) {}
-    });
-  }
-  
-  // 4. Handle View Store button relative link click or navigation
-  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
-  if (viewStoreBtn) {
-    viewStoreBtn.addEventListener('click', () => {
-      if (token) {
-        fetch('/api/seller/profile', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.success && data.data && data.data.store_slug) {
-            window.location.href = '/' + data.data.store_slug;
-          } else {
-            window.location.href = '/';
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          window.location.href = '/';
-        });
-      } else {
-        window.location.href = '/';
-      }
-    });
-  }
-
-  // Handle Logout button click
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
-      const accessToken = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
-      if (accessToken && refresh) {
-        fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
-          body: JSON.stringify({ refresh_token: refresh })
-        }).catch(() => {});
-      }
-      sessionStorage.clear();
-      window.location.href = '/auth/login.html';
-    });
-  }
-});
-</script>
-
 </body></html>

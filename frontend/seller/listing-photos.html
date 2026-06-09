@@ -279,7 +279,8 @@
 <div class="md:col-span-2">
 <div class="grid grid-cols-4 gap-4">
 <!-- Large Drag Zone -->
-<div class="col-span-2 row-span-2 aspect-square border-2 border-dashed border-sage/40 rounded-3xl flex flex-col items-center justify-center bg-sage/5 hover:bg-sage/10 transition-all group relative overflow-hidden">
+<div id="drag-drop-zone" class="col-span-2 row-span-2 aspect-square border-2 border-dashed border-sage/40 rounded-3xl flex flex-col items-center justify-center bg-sage/5 hover:bg-sage/10 transition-all group relative cursor-pointer overflow-hidden">
+<input type="file" id="photo-file-input" multiple accept="image/*" class="hidden"/>
 <div class="botanical-watermark absolute inset-0 opacity-[0.05]"></div>
 <span class="material-symbols-outlined text-4xl text-sage mb-3 group-hover:scale-110 transition-transform">cloud_upload</span>
 <span class="text-[11px] font-bold text-sage uppercase tracking-[0.2em] text-center px-8 leading-relaxed">Drag &amp; Drop <br/> Photos or Videos</span>
@@ -287,30 +288,30 @@
 <!-- Thumbnails -->
 <!-- Slot 1 (Filled - Cover) -->
 <div class="aspect-square bg-white border border-sage/30 rounded-2xl p-1 relative shadow-sm group">
-<img class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjznGttVIPlw2oHFQxenE48AiBUjmB83yBzKQw8ymedagmxyXm39M8ABY7eLVNcGeLhxsiIosBaMRMTredlK6jtsAqa9L-cdcRODV1g4d3Ui_z5btUj7gSOTJcQ1oSHjie1bV7NcPXfN8i_683SbdFV_kn_2qqucpiC8CJ35r3LiFK3tcNcSCdxEkjvJYc8WB-xi2fX-Ft1NyOj7Wghepds7jB6UUQzp3JvNmSvB5Si4SD7H66zpyhprSb1rj5LUplHW2CEuJ1NV4"/>
+<img id="preview-image-1" class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjznGttVIPlw2oHFQxenE48AiBUjmB83yBzKQw8ymedagmxyXm39M8ABY7eLVNcGeLhxsiIosBaMRMTredlK6jtsAqa9L-cdcRODV1g4d3Ui_z5btUj7gSOTJcQ1oSHjie1bV7NcPXfN8i_683SbdFV_kn_2qqucpiC8CJ35r3LiFK3tcNcSCdxEkjvJYc8WB-xi2fX-Ft1NyOj7Wghepds7jB6UUQzp3JvNmSvB5Si4SD7H66zpyhprSb1rj5LUplHW2CEuJ1NV4"/>
 <div class="absolute top-2 right-2 bg-primary text-white p-1 rounded-full shadow-md">
 <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">grade</span>
 </div>
 <span class="absolute bottom-2 left-2 text-[8px] bg-black/50 text-white px-2 py-0.5 rounded-full uppercase font-bold tracking-widest backdrop-blur-sm">cover ★</span>
 </div>
 <!-- Slot 2 (Empty) -->
-<div class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+<div id="slot-2" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
 <span class="material-symbols-outlined text-sage">image</span>
 </div>
 <!-- Slot 3 (Empty) -->
-<div class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+<div id="slot-3" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
 <span class="material-symbols-outlined text-sage">image</span>
 </div>
 <!-- Slot 4 (Empty) -->
-<div class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+<div id="slot-4" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
 <span class="material-symbols-outlined text-sage">image</span>
 </div>
 <!-- Slot 5 (Empty) -->
-<div class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+<div id="slot-5" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
 <span class="material-symbols-outlined text-sage">image</span>
 </div>
 <!-- Slot 6 (Empty) -->
-<div class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+<div id="slot-6" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
 <span class="material-symbols-outlined text-sage">image</span>
 </div>
 <!-- Add Reel Button -->
@@ -322,7 +323,7 @@
 <!-- Identification Field -->
 <div class="mt-12 flex flex-col gap-4">
 <label class="font-headline-sm text-sm text-primary">Primary Identification Name</label>
-<input class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-lg text-lg focus:ring-forest focus:border-forest outline-none transition-shadow" placeholder="e.g. 'Moonlight Jasmine Resin Study'" type="text"/>
+<input id="listing-title" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-lg text-lg focus:ring-forest focus:border-forest outline-none transition-shadow" placeholder="e.g. 'Moonlight Jasmine Resin Study'" type="text"/>
 <div class="flex justify-between">
 <span class="text-[11px] text-on-surface-variant/60 font-data-mono italic">Common Name + Artistic Medium</span>
 <span class="text-[11px] text-sage font-data-mono">24/80 characters</span>
@@ -334,10 +335,10 @@
 </div>
 <!-- (5) Footer Style - Full Modal -->
 <footer class="border-t border-sage/20 px-12 py-6 bg-white flex justify-between items-center shrink-0 z-20">
-<button class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">
+<button id="save-draft-btn" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">
             Save as Draft
         </button>
-<button class="px-10 py-3 rounded-full bg-forest text-white font-label-caps uppercase tracking-widest text-[11px] shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+<button id="next-step-btn" class="px-10 py-3 rounded-full bg-forest text-white font-label-caps uppercase tracking-widest text-[11px] shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
             Continue to Details
             <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </button>
@@ -352,10 +353,168 @@
 </div>
 </main>
 <script>
-    // Initial state setup
-    window.onload = () => {
-        // Ready for wizard interaction
+    const API_BASE = window.location.origin;
+    let selectedFiles = [];
+    let existingPhotos = [];
+
+    function showToast(msg, type='success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+        }`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3500);
     }
+
+    const fileInput = document.getElementById('photo-file-input');
+    const dragZone = document.getElementById('drag-drop-zone');
+
+    if (dragZone && fileInput) {
+        dragZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            selectedFiles = selectedFiles.concat(files);
+            renderPreviews();
+        });
+    }
+
+    function renderPreviews() {
+        const allUrls = [
+            ...existingPhotos.map(p => p.url),
+            ...selectedFiles.map(f => URL.createObjectURL(f))
+        ];
+
+        const coverImg = document.getElementById('preview-image-1');
+        if (coverImg && allUrls.length > 0) {
+            coverImg.src = allUrls[0];
+            coverImg.parentElement.style.opacity = '1';
+        }
+
+        for (let i = 2; i <= 6; i++) {
+            const slot = document.getElementById(`slot-${i}`);
+            if (slot) {
+                if (allUrls[i - 1]) {
+                    slot.innerHTML = `<img class="w-full h-full object-cover rounded-xl" src="${allUrls[i - 1]}"/>`;
+                    slot.style.opacity = '1';
+                } else {
+                    slot.innerHTML = `<span class="material-symbols-outlined text-sage">image</span>`;
+                    slot.style.opacity = '0.4';
+                }
+            }
+        }
+    }
+
+    async function loadDraft() {
+        const draftId = sessionStorage.getItem('draft_id');
+        if (!draftId) return;
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const resp = await res.json();
+                const listing = resp.data || resp;
+                if (listing.title) {
+                    document.getElementById('listing-title').value = listing.title;
+                }
+                existingPhotos = listing.photos || [];
+                renderPreviews();
+            }
+        } catch (err) {
+            console.error('Error loading draft listing:', err);
+        }
+    }
+
+    async function saveListingDraft(shouldRedirect) {
+        const title = document.getElementById('listing-title').value.trim();
+        if (!title) {
+            showToast('Please enter a listing title.', 'error');
+            return;
+        }
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        let draftId = sessionStorage.getItem('draft_id');
+        
+        try {
+            let res;
+            if (!draftId) {
+                // Create draft listing
+                res = await fetch(`${API_BASE}/api/seller/listings`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title,
+                        base_price: 0,
+                        status: 'draft'
+                    })
+                });
+            } else {
+                // Update draft listing title
+                res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title,
+                        status: 'draft'
+                    })
+                });
+            }
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to save draft listing');
+
+            const finalId = draftId || data.data.listing_id || data.data.id;
+            sessionStorage.setItem('draft_id', finalId);
+
+            // Upload any selected files
+            if (selectedFiles.length > 0) {
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const formData = new FormData();
+                    formData.append('file', selectedFiles[i]);
+                    formData.append('is_cover', (existingPhotos.length === 0 && i === 0) ? 'true' : 'false');
+                    formData.append('sort_order', String(existingPhotos.length + i));
+                    
+                    const uploadRes = await fetch(`${API_BASE}/api/seller/listings/${finalId}/photos`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: formData
+                    });
+                    if (!uploadRes.ok) {
+                        const errData = await uploadRes.json();
+                        throw new Error(errData.message || 'Photo upload failed');
+                    }
+                }
+                selectedFiles = []; // Clear uploaded files list
+            }
+
+            showToast('Draft saved successfully!', 'success');
+
+            if (shouldRedirect) {
+                window.location.href = '/seller/listing-details.html';
+            }
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    document.getElementById('save-draft-btn').addEventListener('click', () => saveListingDraft(false));
+    document.getElementById('next-step-btn').addEventListener('click', () => saveListingDraft(true));
+
+    window.addEventListener('DOMContentLoaded', loadDraft);
 </script>
 
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->

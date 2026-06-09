@@ -220,33 +220,17 @@
                 <h4 class="font-display-hero italic text-title-serif text-primary">Revenue Over Time</h4>
             </div>
             <div class="h-64 relative flex items-end justify-between border-l border-b border-sage/30 pb-2 pl-2">
-                <div class="absolute inset-x-2 bottom-4 h-full flex items-end justify-around space-x-2">
-                    <div class="w-full h-[30%] bg-primary/20 relative group">
-                        <div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
-                    </div>
-                    <div class="w-full h-[45%] bg-primary/20 relative group">
-                        <div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
-                    </div>
-                    <div class="w-full h-[35%] bg-primary/20 relative"></div>
-                    <div class="w-full h-[60%] bg-primary/20 relative group">
-                        <div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
-                    </div>
-                    <div class="w-full h-[80%] bg-primary/20 relative group">
-                        <div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm"></div>
-                    </div>
-                    <div class="w-full h-[75%] bg-primary/20 relative"></div>
+                <div id="revenue-chart-bars" class="absolute inset-x-2 bottom-4 h-full flex items-end justify-around space-x-2">
+                    <!-- Dynamic bars go here -->
                 </div>
                 <!-- Axis Labels -->
                 <div class="absolute -left-10 inset-y-0 flex flex-col justify-between text-[10px] font-data-price text-sage py-2">
-                    <span>₹10k</span>
-                    <span>₹5k</span>
+                    <span>Max</span>
+                    <span>Mid</span>
                     <span>0</span>
                 </div>
-                <div class="absolute -bottom-6 inset-x-0 flex justify-between text-[10px] font-data-price text-sage px-4">
-                    <span>WK 1</span>
-                    <span>WK 2</span>
-                    <span>WK 3</span>
-                    <span>WK 4</span>
+                <div id="chart-x-axis" class="absolute -bottom-6 inset-x-0 flex justify-between text-[10px] font-data-price text-sage px-4">
+                    <!-- Dynamic dates go here -->
                 </div>
             </div>
         </div>
@@ -256,43 +240,8 @@
             <div class="flex justify-between items-center mb-lg">
                 <h4 class="font-display-hero italic text-title-serif text-primary">Best-Selling Products</h4>
             </div>
-            <div class="space-y-md">
-                <div class="space-y-xs">
-                    <div class="flex justify-between text-body-md text-on-surface-variant px-1">
-                        <span>Linen Pressed Flower Kit</span>
-                        <span class="font-data-price">₹12.4k</span>
-                    </div>
-                    <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
-                        <div class="bg-primary h-full" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div class="space-y-xs">
-                    <div class="flex justify-between text-body-md text-on-surface-variant px-1">
-                        <span>Hand-bound Artisan Journal</span>
-                        <span class="font-data-price">₹9.2k</span>
-                    </div>
-                    <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
-                        <div class="bg-primary h-full" style="width: 65%"></div>
-                    </div>
-                </div>
-                <div class="space-y-xs">
-                    <div class="flex justify-between text-body-md text-on-surface-variant px-1">
-                        <span>Botanical Stamp Kit</span>
-                        <span class="font-data-price">₹6.1k</span>
-                    </div>
-                    <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
-                        <div class="bg-primary h-full" style="width: 45%"></div>
-                    </div>
-                </div>
-                <div class="space-y-xs">
-                    <div class="flex justify-between text-body-md text-on-surface-variant px-1">
-                        <span>Ceramic Incense Holder</span>
-                        <span class="font-data-price">₹4.8k</span>
-                    </div>
-                    <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
-                        <div class="bg-primary h-full" style="width: 35%"></div>
-                    </div>
-                </div>
+            <div class="space-y-md" id="best-sellers-list">
+                <!-- Dynamic best sellers list -->
             </div>
         </div>
     </section>
@@ -352,7 +301,7 @@
     }
 
     async function loadAnalytics() {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         if (!token) return;
 
         try {
@@ -386,6 +335,58 @@
                 banner.classList.add('hidden');
             }
 
+            // Draw Revenue Chart Bars
+            const barsContainer = document.getElementById('revenue-chart-bars');
+            barsContainer.innerHTML = '';
+            const xAxis = document.getElementById('chart-x-axis');
+            xAxis.innerHTML = '';
+
+            if (data.traffic && data.traffic.chart_data && data.traffic.chart_data.length > 0) {
+                const maxVisits = data.traffic.chart_data.reduce((max, pt) => Math.max(max, pt.visits), 1);
+                data.traffic.chart_data.forEach(pt => {
+                    const pct = Math.round((pt.visits / maxVisits) * 100);
+                    const bar = document.createElement('div');
+                    bar.className = 'w-full bg-primary/20 relative group transition-all hover:bg-primary/45 cursor-pointer';
+                    bar.style.height = `${pct}%`;
+                    bar.title = `${pt.date}: ${pt.visits} visits, ${pt.orders} orders`;
+                    bar.innerHTML = `<div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-primary shadow-sm group-hover:scale-125 transition-transform"></div>`;
+                    barsContainer.appendChild(bar);
+                });
+
+                // X Axis labels
+                const chartData = data.traffic.chart_data;
+                const first = chartData[0].date;
+                const last = chartData[chartData.length - 1].date;
+                const mid = chartData[Math.floor(chartData.length / 2)].date;
+                xAxis.innerHTML = `<span>${first}</span><span>${mid}</span><span>${last}</span>`;
+            } else {
+                barsContainer.innerHTML = '<p class="text-xs text-on-surface-variant italic py-10 w-full text-center">No traffic data.</p>';
+            }
+
+            // Populate Best Sellers List
+            const bsList = document.getElementById('best-sellers-list');
+            bsList.innerHTML = '';
+            if (data.best_sellers && data.best_sellers.length > 0) {
+                const maxRev = data.best_sellers[0].revenue_paise || 1;
+                data.best_sellers.forEach(item => {
+                    const pct = Math.round((item.revenue_paise / maxRev) * 100);
+                    const revText = formatPaise(item.revenue_paise);
+                    bsList.innerHTML += `
+                      <div class="space-y-xs">
+                          <div class="flex justify-between text-body-md text-on-surface-variant px-1">
+                              <span>${item.title}</span>
+                              <span class="font-data-price">${revText} (${item.sales_count} sales)</span>
+                          </div>
+                          <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+                              <div class="bg-primary h-full transition-all" style="width: ${pct}%"></div>
+                          </div>
+                      </div>
+                    `;
+                });
+            } else {
+                bsList.innerHTML = '<p class="text-xs text-on-surface-variant italic py-4 text-center">No sales recorded yet.</p>';
+            }
+
         } catch (err) {
             console.error('Error loading analytics:', err);
         }
@@ -407,7 +408,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         if (!token) { window.location.href = '/auth/login.html'; return; }
 
         // Role verification
@@ -496,12 +497,11 @@
 
         // Logout
         document.getElementById('logout-btn').addEventListener('click', () => {
-            const refresh = sessionStorage.getItem('tohfa_refresh_token');
+            const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
             if (token && refresh) {
                 fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
             }
             sessionStorage.clear(); window.location.href = '/auth/login.html';
-        });
     });
 </script>
 </body>

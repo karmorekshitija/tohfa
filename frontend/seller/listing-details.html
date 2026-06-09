@@ -478,24 +478,24 @@
 <div class="lg:col-span-8 space-y-8">
 <div>
 <label class="block font-display-lg text-primary text-xl mb-3">Listing Title</label>
-<input class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-display-lg text-lg focus:ring-forest focus:border-forest outline-none placeholder:italic" placeholder="e.g. Moonlight Jasmine Resin Study" type="text" value="Moonlight Jasmine Resin Study"/>
+<input id="listing-title" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-display-lg text-lg focus:ring-forest focus:border-forest outline-none placeholder:italic" placeholder="e.g. Moonlight Jasmine Resin Study" type="text" value=""/>
 <div class="flex justify-end mt-2">
-<span class="text-[11px] text-sage font-data-mono">24/80 characters</span>
+<span id="title-char-count" class="text-[11px] text-sage font-data-mono">0/80 characters</span>
 </div>
 </div>
 <div>
 <label class="block font-display-lg text-primary text-xl mb-4">Category Selection</label>
-<div class="flex flex-wrap gap-3">
-<button class="px-5 py-2 rounded-full border border-forest bg-forest text-white text-sm font-medium transition-colors">Pressed Flowers</button>
-<button class="px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Botanical Resin</button>
-<button class="px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Cyanotypes</button>
-<button class="px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Handmade Paper</button>
-<button class="px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Artisan Kits</button>
+<div id="category-container" class="flex flex-wrap gap-3">
+<button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Pressed Flowers</button>
+<button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Botanical Resin</button>
+<button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Cyanotypes</button>
+<button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Handmade Paper</button>
+<button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Artisan Kits</button>
 </div>
 </div>
 <div>
 <label class="block font-display-lg text-primary text-xl mb-3">The Story Behind the Piece</label>
-<textarea class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-md text-on-surface-variant focus:ring-forest focus:border-forest outline-none resize-none" placeholder="Describe the botanical inspiration, materials sourced, and the artisanal process..." rows="6"></textarea>
+<textarea id="listing-story" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-md text-on-surface-variant focus:ring-forest focus:border-forest outline-none resize-none" placeholder="Describe the botanical inspiration, materials sourced, and the artisanal process..." rows="6"></textarea>
 </div>
 </div>
 <!-- Right: Organization & Tags (4 cols) -->
@@ -506,23 +506,33 @@
 <div>
 <label class="block text-[10px] font-bold text-sage uppercase tracking-widest mb-2">Product Tags</label>
 <div class="relative">
-<input class="w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none" placeholder="Add tags..." type="text"/>
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-sage text-sm" data-icon="tag">tag</span>
+<input id="tag-input" class="w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none" placeholder="Add tags..." type="text"/>
+<span id="add-tag-icon" class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-sage text-sm cursor-pointer" data-icon="tag">tag</span>
 </div>
-<div class="mt-3 flex flex-wrap gap-2">
-<span class="text-[10px] bg-sage/10 text-sage px-2 py-1 rounded-md border border-sage/20 flex items-center gap-1">#botanical <span class="material-symbols-outlined text-[10px] cursor-pointer">close</span></span>
-<span class="text-[10px] bg-sage/10 text-sage px-2 py-1 rounded-md border border-sage/20 flex items-center gap-1">#handmade <span class="material-symbols-outlined text-[10px] cursor-pointer">close</span></span>
+<div id="tags-container" class="mt-3 flex flex-wrap gap-2">
 </div>
 </div>
 </div>
 </div>
-<div class="p-6 rounded-2xl border border-dashed border-sage/30 text-center">
+<div id="zai-card" class="p-6 rounded-2xl border border-dashed border-sage/30 text-center cursor-pointer hover:bg-sage/5 transition-all">
 <span class="material-symbols-outlined text-sage/40 text-4xl mb-2">auto_awesome</span>
 <p class="text-[11px] text-on-surface-variant italic">Use ZAI Mode to generate a narrative based on your photos.</p>
 </div>
 </div>
 </div>
 </div>
+</div>
+
+<footer class="border-t border-sage/20 px-12 py-6 bg-white flex justify-between items-center shrink-0 z-20">
+    <button id="save-draft-btn" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">
+        Save as Draft
+    </button>
+    <button id="next-step-btn" class="px-10 py-3 rounded-full bg-forest text-white font-label-caps uppercase tracking-widest text-[11px] shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+        Continue to Pricing
+        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+    </button>
+</footer>
+
 </div>
 <!-- Character Accent -->
 <div class="fixed bottom-0 right-10 z-[70] pointer-events-none transform translate-y-4">
@@ -537,19 +547,187 @@
 </div>
 </main>
 <script>
-        // Simple micro-interaction for drawer and buttons
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.getElementById('listing-drawer').classList.add('translate-y-full');
-            }
-        });
-        
-        // Initial state
-        window.onload = () => {
-            // Keep drawer open for visual impact as requested
-            // But let user close it
+    const API_BASE = window.location.origin;
+    let selectedCategory = '';
+    let tagsList = [];
+
+    function showToast(msg, type='success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
         }
-    </script>
+        toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+        }`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3500);
+    }
+
+    // Category selection logic
+    const categoryContainer = document.getElementById('category-container');
+    const catButtons = categoryContainer.querySelectorAll('.category-btn');
+    catButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            catButtons.forEach(b => {
+                b.className = 'category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors';
+            });
+            btn.className = 'category-btn px-5 py-2 rounded-full border border-forest bg-forest text-white text-sm font-medium transition-colors';
+            selectedCategory = btn.textContent.trim();
+        });
+    });
+
+    // Tags list logic
+    const tagInput = document.getElementById('tag-input');
+    const tagsContainer = document.getElementById('tags-container');
+
+    function renderTags() {
+        tagsContainer.innerHTML = '';
+        tagsList.forEach((tag, idx) => {
+            const span = document.createElement('span');
+            span.className = 'text-[10px] bg-sage/10 text-sage px-2 py-1 rounded-md border border-sage/20 flex items-center gap-1';
+            span.innerHTML = `#${tag} <span class="material-symbols-outlined text-[10px] cursor-pointer remove-tag-btn" data-idx="${idx}">close</span>`;
+            tagsContainer.appendChild(span);
+        });
+
+        document.querySelectorAll('.remove-tag-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.dataset.idx);
+                tagsList.splice(idx, 1);
+                renderTags();
+            });
+        });
+    }
+
+    function addTag() {
+        let val = tagInput.value.trim().replace(/^#/, '');
+        if (val && !tagsList.includes(val)) {
+            tagsList.push(val);
+            tagInput.value = '';
+            renderTags();
+        }
+    }
+
+    tagInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTag();
+        }
+    });
+    document.getElementById('add-tag-icon').addEventListener('click', addTag);
+
+    // Title characters count
+    const titleInput = document.getElementById('listing-title');
+    const charCountSpan = document.getElementById('title-char-count');
+    titleInput.addEventListener('input', () => {
+        const len = titleInput.value.length;
+        charCountSpan.textContent = `${len}/80 characters`;
+    });
+
+    // ZAI Mode narrative generation click handler
+    document.getElementById('zai-card').addEventListener('click', () => {
+        const title = titleInput.value.trim();
+        document.getElementById('listing-story').value = `This exquisite handcrafted piece${title ? ', ' + title : ''}, is created with carefully selected natural elements preserved in crystal clear resin. Sourced from local woodlands, the delicate structures reflect slow design principles. Perfectly captured to bring organic warmth and the quiet luxury of nature to your home space.`;
+        showToast('ZAI narrative generated based on title!', 'success');
+    });
+
+    // Load draft
+    async function loadDetailsDraft() {
+        const draftId = sessionStorage.getItem('draft_id');
+        if (!draftId) return;
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const resp = await res.json();
+                const listing = resp.data || resp;
+                titleInput.value = listing.title || '';
+                charCountSpan.textContent = `${titleInput.value.length}/80 characters`;
+                document.getElementById('listing-story').value = listing.story || listing.description || '';
+                
+                // Select Category
+                if (listing.category) {
+                    selectedCategory = listing.category;
+                    catButtons.forEach(btn => {
+                        if (btn.textContent.trim().toLowerCase() === selectedCategory.toLowerCase()) {
+                            btn.className = 'category-btn px-5 py-2 rounded-full border border-forest bg-forest text-white text-sm font-medium transition-colors';
+                        }
+                    });
+                }
+
+                // Tags
+                if (listing.tags) {
+                    tagsList = Array.isArray(listing.tags) ? listing.tags : JSON.parse(listing.tags || '[]');
+                    renderTags();
+                }
+            }
+        } catch (err) {
+            console.error('Error loading details draft:', err);
+        }
+    }
+
+    async function saveDetails(shouldRedirect) {
+        const title = titleInput.value.trim();
+        const story = document.getElementById('listing-story').value.trim();
+        
+        if (!title) {
+            showToast('Title is required.', 'error');
+            return;
+        }
+
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+        const draftId = sessionStorage.getItem('draft_id');
+
+        if (!draftId) {
+            showToast('No listing draft ID found. Please go back to photos step.', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    title,
+                    description: story,
+                    story: story,
+                    category: selectedCategory,
+                    tags: tagsList,
+                    status: 'draft'
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to save listing details');
+
+            showToast('Details saved as draft!', 'success');
+            if (shouldRedirect) {
+                window.location.href = '/seller/listing-pricing-a.html';
+            }
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    document.getElementById('save-draft-btn').addEventListener('click', () => saveDetails(false));
+    document.getElementById('next-step-btn').addEventListener('click', () => saveDetails(true));
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.getElementById('listing-drawer').classList.add('translate-y-full');
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', loadDetailsDraft);
+</script>
 
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
 <script>

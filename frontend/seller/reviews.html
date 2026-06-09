@@ -365,7 +365,7 @@
     }
 
     async function loadReviews() {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         if (!token) return;
 
         const loader = document.getElementById('reviews-loader');
@@ -514,7 +514,7 @@
     };
 
     window.submitReply = async function(reviewId) {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         const txt = document.getElementById(`reply-text-${reviewId}`).value.trim();
         if (!txt) { showToast('Reply text cannot be empty', 'error'); return; }
 
@@ -552,7 +552,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         if (!token) { window.location.href = '/auth/login.html'; return; }
 
         // Role verification
@@ -644,7 +644,7 @@
 
         // Logout
         document.getElementById('logout-btn').addEventListener('click', () => {
-            const refresh = sessionStorage.getItem('tohfa_refresh_token');
+            const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
             if (token && refresh) {
                 fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
             }

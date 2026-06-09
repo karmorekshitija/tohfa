@@ -236,67 +236,27 @@
 </div>
 </div>
 <!-- Filter Pills -->
-<div class="px-md pb-md flex gap-xs overflow-x-auto no-scrollbar">
-<button class="px-3 py-1 bg-primary text-white text-[10px] font-label-caps rounded-full whitespace-nowrap font-bold">All</button>
-<button class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-label-caps rounded-full whitespace-nowrap border border-outline-variant font-bold">Unread</button>
-<button class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-label-caps rounded-full whitespace-nowrap border border-outline-variant font-bold">Broadcast</button>
-<button class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-label-caps rounded-full whitespace-nowrap border border-outline-variant font-bold">Custom</button>
+<div class="px-md pb-md flex gap-xs overflow-x-auto no-scrollbar" id="threads-filter-tabs">
+<button class="px-3 py-1 bg-primary text-white text-[10px] font-label-caps rounded-full whitespace-nowrap font-bold" data-tab="all">All</button>
+<button class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-label-caps rounded-full whitespace-nowrap border border-outline-variant font-bold" data-tab="unread">Unread</button>
 </div>
 <!-- List Items -->
-<div class="flex-grow overflow-y-auto custom-scrollbar">
-<!-- Active Conversation -->
-<div class="p-md bg-parchment border-l-4 border-primary cursor-pointer relative transition-colors group">
-<div class="flex gap-md">
-<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-title-serif text-sm">ES</div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
-<span class="font-bold text-sm text-on-surface font-body-md">Eleanor Shellstrop</span>
-<span class="font-data-price text-[10px] text-outline">14:22</span>
-</div>
-<p class="text-xs text-on-surface-variant line-clamp-1 mt-0.5 font-medium">Will the custom engraving fit on the underside of the cedar box?</p>
-</div>
-</div>
-<div class="absolute right-3 bottom-3 w-2 h-2 bg-primary rounded-full"></div>
-</div>
-<!-- Other Conversations -->
-<div class="p-md hover:bg-surface-container-low cursor-pointer transition-colors border-l-4 border-transparent">
-<div class="flex gap-md">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline font-title-serif text-sm">JD</div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
-<span class="font-bold text-sm text-on-surface font-body-md">Julian Donne</span>
-<span class="font-data-price text-[10px] text-outline">YESTERDAY</span>
-</div>
-<p class="text-xs text-on-surface-variant line-clamp-1 mt-0.5">Thanks for the update on the indigo dye process!</p>
-</div>
-</div>
-</div>
-<div class="p-md hover:bg-surface-container-low cursor-pointer transition-colors border-l-4 border-transparent">
-<div class="flex gap-md">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline font-title-serif text-sm">MA</div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
-<span class="font-bold text-sm text-on-surface font-body-md">Marianne Abbott</span>
-<span class="font-data-price text-[10px] text-outline">OCT 12</span>
-</div>
-<p class="text-xs text-on-surface-variant line-clamp-1 mt-0.5">Is it possible to rush shipping for a wedding gift?</p>
-</div>
-</div>
-</div>
+<div id="threads-list" class="flex-grow overflow-y-auto custom-scrollbar">
+<!-- Loaded dynamically -->
 </div>
 </aside>
 <!-- COLUMN 2: CHAT THREAD (Flex-grow) -->
-<section class="flex-grow flex flex-col bg-background relative">
+<section id="chat-area" class="flex-grow flex flex-col bg-background relative hidden">
 <!-- Chat Header -->
 <header class="h-16 border-b border-outline-variant flex items-center justify-between px-lg bg-surface/80 backdrop-blur-sm z-10">
 <div class="flex items-center gap-md">
-<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-title-serif text-xs">ES</div>
+<div id="chat-header-avatar" class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-title-serif text-xs">ES</div>
 <div>
 <div class="flex items-center gap-sm">
-<h3 class="font-title-serif text-sm">Eleanor Shellstrop</h3>
-<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-label-caps text-[8px] rounded">VERIFIED BUYER</span>
+<h3 id="chat-header-name" class="font-title-serif text-sm">Eleanor Shellstrop</h3>
+<span id="chat-header-badge" class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-label-caps text-[8px] rounded">VERIFIED BUYER</span>
 </div>
-<p class="font-data-price text-[10px] text-primary">ORDER #TF-99021-X</p>
+<p id="chat-header-order-ref" class="font-data-price text-[10px] text-primary">ORDER #TF-99021-X</p>
 </div>
 </div>
 <div class="flex items-center gap-md text-outline">
@@ -310,37 +270,14 @@
 </div>
 </header>
 <!-- Messages Area -->
-<div class="flex-grow overflow-y-auto p-lg space-y-lg flex flex-col custom-scrollbar relative">
+<div id="chat-messages-container" class="flex-grow overflow-y-auto p-lg space-y-lg flex flex-col custom-scrollbar relative">
 <div class="botanical-watermark"></div>
-<div class="flex flex-col items-center py-md">
-<span class="px-4 py-1 bg-surface-container-highest/50 text-outline font-label-caps text-[9px] rounded-full font-bold">OCTOBER 14, 2023</span>
-</div>
-<!-- Buyer Message -->
-<div class="flex flex-col items-start max-w-[80%]">
-<div class="chat-bubble-left bg-surface-container-high p-md text-sm text-on-surface border border-outline-variant shadow-sm">
-                        Hello! I love the handcrafted journals. I was wondering if I could get the 'Midnight Botanist' cover but with the cream paper from the 'Sunlight Sketcher' edition?
-                    </div>
-<span class="font-data-price text-[10px] text-outline mt-1 ml-2">14:15</span>
-</div>
-<!-- Seller Message -->
-<div class="flex flex-col items-end self-end max-w-[80%]">
-<div class="chat-bubble-right bg-primary text-white p-md text-sm border border-primary shadow-md">
-                        Hi Eleanor! That’s a lovely combination. We can certainly do that for you. It would be a custom assembly, so it might add about 2 days to the shipping time. Would that work for you?
-                    </div>
-<span class="font-data-price text-[10px] text-outline mt-1 mr-2">14:18</span>
-</div>
-<!-- Buyer Message -->
-<div class="flex flex-col items-start max-w-[80%]">
-<div class="chat-bubble-left bg-surface-container-high p-md text-sm text-on-surface border border-outline-variant shadow-sm">
-                        That sounds perfect! Also, will the custom engraving fit on the underside of the cedar box?
-                    </div>
-<span class="font-data-price text-[10px] text-outline mt-1 ml-2">14:22</span>
-</div>
+<!-- Loaded dynamically -->
 </div>
 <!-- Footer/Input Area -->
 <div class="p-lg bg-surface border-t border-outline-variant space-y-md">
 <!-- Quick Reply Chips -->
-<div class="flex gap-xs overflow-x-auto no-scrollbar pb-xs">
+<div id="quick-replies-container" class="flex gap-xs overflow-x-auto no-scrollbar pb-xs">
 <button class="px-3 py-1.5 bg-white border border-outline-variant hover:border-primary text-[10px] font-label-caps text-on-surface rounded-lg transition-colors whitespace-nowrap font-bold">Order confirmed</button>
 <button class="px-3 py-1.5 bg-white border border-outline-variant hover:border-primary text-[10px] font-label-caps text-on-surface rounded-lg transition-colors whitespace-nowrap font-bold">Send photo?</button>
 <button class="px-3 py-1.5 bg-white border border-outline-variant hover:border-primary text-[10px] font-label-caps text-on-surface rounded-lg transition-colors whitespace-nowrap font-bold">Dispatched</button>
@@ -353,93 +290,56 @@
 <span class="material-symbols-outlined">attachment</span>
 </button>
 <div class="flex-grow relative">
-<textarea class="w-full py-3 px-4 bg-surface-container-low rounded-xl border border-outline-variant focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all resize-none" placeholder="Write a thoughtful reply..." rows="1"></textarea>
+<textarea id="chat-message-input" class="w-full py-3 px-4 bg-surface-container-low rounded-xl border border-outline-variant focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all resize-none" placeholder="Write a thoughtful reply..." rows="1"></textarea>
 </div>
-<button class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center shadow-md hover:opacity-90 active:scale-95 transition-all">
+<button id="chat-send-btn" class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center shadow-md hover:opacity-90 active:scale-95 transition-all">
 <span class="material-symbols-outlined">send</span>
 </button>
 </div>
 </div>
 </section>
+<!-- Empty State when no chat is active -->
+<section id="chat-empty-state" class="flex-grow flex flex-col items-center justify-center bg-background p-lg text-center space-y-md">
+<span class="material-symbols-outlined text-outline text-5xl">mail_outline</span>
+<h3 class="font-title-serif text-lg font-bold text-on-surface">Select a conversation</h3>
+<p class="text-xs text-on-surface-variant max-w-[280px]">Choose an inquiry from the left panel to read history and reply to buyer.</p>
+</section>
 <!-- COLUMN 3: ORDER CONTEXT (300px) -->
-<aside class="w-[300px] border-l border-outline-variant bg-surface-container-low p-lg overflow-y-auto custom-scrollbar space-y-xl">
-<!-- Buyer Profile -->
-<section class="text-center space-y-md">
-<div class="relative inline-block">
-<img alt="Buyer Profile" class="w-20 h-20 rounded-full mx-auto border-2 border-white shadow-sm" data-alt="A portrait of a woman with a warm, friendly expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ1RXu87ZEFOiWQLec5OvjMHu8KmNdDiOQbOyt40XpM2YFI-nOyqDntXWdzE91TftK5xpT1YF0OofPDJMYTVknaVMiWIjsczXnbi6_-zGDqHyt4-9Swsz9d6vsbXc0dBqRGXIh4TZt9CJy_qtvZGzUq8wPOkmt2qYvWWvVg98sEEgcYH9Z8qQWdK6MHJUfdy2zYqiPUD4o0d_nIFbbn-REigg2zNrhdGktBbdMsbQPT2HpU3V_XWHEK_34-ZShJyLeThZZ455fJvU"/>
-<div class="absolute bottom-0 right-0 w-5 h-5 bg-primary border-2 border-white rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined text-[10px] text-white">verified</span>
-</div>
-</div>
-<div>
-<h4 class="font-title-serif text-lg font-bold">Eleanor Shellstrop</h4>
-<p class="text-xs text-outline">Portland, Oregon, USA</p>
-</div>
-<div class="flex justify-center gap-xs">
-<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-[9px] rounded font-bold">VIP</span>
-<span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-[9px] rounded font-bold">REPEAT (5+)</span>
-</div>
-</section>
-<!-- Linked Order Card -->
-<section class="space-y-md">
-<h5 class="font-label-caps text-[10px] text-outline border-b border-outline-variant pb-1 font-bold">CURRENT ORDER</h5>
-<div class="bg-surface border border-outline-variant p-md rounded-xl shadow-sm space-y-md">
-<div class="flex gap-md">
-<img alt="Product" class="w-12 h-12 rounded-lg object-cover border border-outline-variant" data-alt="A leather journal on wooden table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByU5LZ3NNkjk1VWLwWNHQohqwTeCnif6AYwEGodnNfkMqS31xRdGCPUgUZIrJxsA2CUDdRvxAZkM1JsqQmT_bGEn1Jy5XLI9sddNj_kENu-YXSTUIszQlEz4xKmKJt9KYTdCM2p_7Rx5tNSn2cx0uKdZIj2kxf2ku7sfsT9JVfzRV8aTcDaqNap7Y4CkUxwGbzKr4m7hU5jkk-Har8AS46oqzVvp66oQr-yEuec_OSGsuthEjtGS1MShAyJyol6bp3FUvMxShLp9g"/>
-<div class="flex-grow">
-<h6 class="text-xs font-bold font-body-md leading-tight">Custom Cedar Journal Box - Midnight Ed.</h6>
-<p class="font-data-price text-[10px] text-primary">$184.00</p>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-md pt-md border-t border-outline-variant">
-<div>
-<p class="text-[9px] font-label-caps text-outline font-bold">STATUS</p>
-<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-label-caps text-[9px] rounded font-bold">PROCESSING</span>
-</div>
-<div>
-<p class="text-[9px] font-label-caps text-outline font-bold">DEADLINE</p>
-<p class="font-data-price text-[10px] text-on-surface">24 OCT 23</p>
-</div>
-<div>
-<p class="text-[9px] font-label-caps text-outline font-bold">PAYMENT</p>
-<span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-[9px] rounded font-bold">PAID</span>
-</div>
-</div>
-<a class="block text-center text-[10px] font-label-caps text-primary hover:underline pt-2 font-bold" href="#">View full order →</a>
-</div>
-</section>
-<!-- Past Orders -->
-<section class="space-y-md">
-<h5 class="font-label-caps text-[10px] text-outline border-b border-outline-variant pb-1 font-bold">ORDER HISTORY</h5>
-<div class="space-y-md">
-<div class="flex justify-between items-center group cursor-pointer">
-<div>
-<p class="text-xs font-bold text-on-surface">Linen Sketchbook (A5)</p>
-<p class="font-data-price text-[9px] text-outline">#TF-8812 - SEP 2023</p>
-</div>
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-<div class="flex justify-between items-center group cursor-pointer">
-<div>
-<p class="text-xs font-bold text-on-surface">Indigo Wash Set (3pc)</p>
-<p class="font-data-price text-[9px] text-outline">#TF-7651 - JUL 2023</p>
-</div>
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-<div class="flex justify-between items-center group cursor-pointer opacity-60">
-<div>
-<p class="text-xs font-bold text-on-surface">Artisan Tool Pouch</p>
-<p class="font-data-price text-[9px] text-outline">#TF-5502 - MAY 2023</p>
-</div>
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
-</div>
-</div>
-</section>
+<aside id="chat-context-sidebar" class="w-[300px] border-l border-outline-variant bg-surface-container-low p-lg overflow-y-auto custom-scrollbar space-y-xl hidden">
+<!-- Loaded dynamically -->
 </aside>
 </main>
 
 <script>
     const API_BASE_URL = window.location.origin;
+
+    // Toast helper
+    function showToast(message, type = 'success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed top-20 right-6 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all duration-300`;
+        if (type === 'success') {
+            toast.style.backgroundColor = '#3D6B4F'; // Forest Green
+            toast.style.color = '#FFFFFF';
+            toast.style.border = '1px solid #255338';
+        } else {
+            toast.style.backgroundColor = '#BA1A1A'; // Terracotta Error Red
+            toast.style.color = '#FFFFFF';
+            toast.style.border = '1px solid #93000a';
+        }
+        toast.innerHTML = `
+            <span class="material-symbols-outlined text-lg">${type === 'success' ? 'check_circle' : 'error'}</span>
+            <span>${message}</span>
+        `;
+        toast.style.display = 'flex';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3500);
+    }
 
     // ZAI Mode UI Styling sync helper
     function updateZaiUI(enabled) {
@@ -447,17 +347,38 @@
         if (toggleBtn) {
             const icon = document.getElementById('zai-toggle-icon');
             if (enabled) {
-                icon.style.fontVariationSettings = "'FILL' 1";
-                toggleBtn.classList.add('text-primary');
+                toggleBtn.classList.add('bg-tertiary', 'text-white');
+                toggleBtn.classList.remove('text-tertiary');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
             } else {
-                icon.style.fontVariationSettings = "'FILL' 0";
-                toggleBtn.classList.remove('text-primary');
+                toggleBtn.classList.remove('bg-tertiary', 'text-white');
+                toggleBtn.classList.add('text-tertiary');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
             }
         }
+        
+        // Find all zai tips / cards on the page and show/hide them
+        const selectors = [
+            '.zai-tip-card',
+            '[class*="zai-tip"]',
+            '[id*="zai-tip"]',
+            'aside .bg-tertiary-container\\/10',
+            'section .bg-tertiary-fixed-dim\\/40',
+            'div .bg-on-tertiary-fixed\\/10'
+        ];
+        selectors.forEach(sel => {
+            try {
+                const els = document.querySelectorAll(sel);
+                els.forEach(el => {
+                    if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
+                    el.style.display = enabled ? '' : 'none';
+                });
+            } catch (e) {}
+        });
     }
 
     // Micro-interaction for input auto-expand
-    const textarea = document.querySelector('textarea');
+    const textarea = document.getElementById('chat-message-input');
     if (textarea) {
         textarea.addEventListener('input', function() {
             this.style.height = 'auto';
@@ -471,20 +392,289 @@
         });
     }
 
-    // Hover effect for list items
-    document.querySelectorAll('aside .flex-grow > div').forEach(item => {
-        item.addEventListener('click', () => {
-            document.querySelectorAll('aside .flex-grow > div').forEach(i => {
-                i.classList.remove('bg-parchment', 'border-primary');
-                i.classList.add('border-transparent');
+    let currentThreadId = null;
+    let threads = [];
+
+    async function loadThreads(tab = 'all') {
+        const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/messages?tab=${tab}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-            item.classList.add('bg-parchment', 'border-primary');
-            item.classList.remove('border-transparent');
+            if (res.status === 401 || res.status === 403) {
+                sessionStorage.clear();
+                window.location.href = '/auth/login.html';
+                return;
+            }
+            if (!res.ok) throw new Error('Failed to load inquiries');
+            const resp = await res.json();
+            threads = resp.data ? resp.data.threads : [];
+            
+            renderThreadsList();
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    function renderThreadsList() {
+        const container = document.getElementById('threads-list');
+        container.innerHTML = '';
+        if (threads.length === 0) {
+            container.innerHTML = `<p class="text-xs text-on-surface-variant italic p-md text-center">No inquiries found.</p>`;
+            return;
+        }
+
+        threads.forEach(t => {
+            const div = document.createElement('div');
+            const isActive = t.thread_id === currentThreadId;
+            div.className = `p-md cursor-pointer relative transition-colors border-l-4 ${
+                isActive ? 'bg-parchment border-primary' : 'hover:bg-surface-container-low border-transparent'
+            }`;
+            
+            let timeStr = '';
+            if (t.last_msg_at) {
+                const date = new Date(t.last_msg_at);
+                const now = new Date();
+                if (date.toDateString() === now.toDateString()) {
+                    timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                } else {
+                    timeStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                }
+            }
+
+            const unreadDot = t.has_unread ? `<div class="absolute right-3 bottom-3 w-2 h-2 bg-primary rounded-full"></div>` : '';
+
+            div.innerHTML = `
+                <div class="flex gap-md">
+                    <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-title-serif text-sm">${t.buyer_initials || 'B'}</div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <span class="font-bold text-sm text-on-surface font-body-md">${t.buyer_name}</span>
+                            <span class="font-data-price text-[10px] text-outline">${timeStr}</span>
+                        </div>
+                        <p class="text-xs text-on-surface-variant line-clamp-1 mt-0.5 font-medium">${t.last_message || 'No messages'}</p>
+                    </div>
+                </div>
+                ${unreadDot}
+            `;
+
+            div.addEventListener('click', () => {
+                currentThreadId = t.thread_id;
+                renderThreadsList(); 
+                loadThreadDetails(t.thread_id);
+            });
+
+            container.appendChild(div);
         });
-    });
+    }
+
+    async function loadThreadDetails(threadId) {
+        const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/messages?thread_id=${threadId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error('Failed to load thread details');
+            const resp = await res.json();
+            const threadData = resp.data ? resp.data.active_thread : null;
+            if (!threadData) return;
+
+            document.getElementById('chat-empty-state').classList.add('hidden');
+            document.getElementById('chat-area').classList.remove('hidden');
+            document.getElementById('chat-context-sidebar').classList.remove('hidden');
+
+            const buyer = threadData.buyer;
+            document.getElementById('chat-header-name').textContent = buyer.name;
+            const parts = (buyer.name || '').split(' ');
+            const initials = parts.map(p => p[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('chat-header-avatar').textContent = initials || 'B';
+            document.getElementById('chat-header-order-ref').textContent = buyer.order_ref ? `ORDER #${buyer.order_ref}` : 'NO LINKED ORDER';
+
+            const messagesContainer = document.getElementById('chat-messages-container');
+            messagesContainer.innerHTML = '<div class="botanical-watermark"></div>';
+            
+            let lastDate = null;
+            threadData.messages.forEach(m => {
+                const date = new Date(m.created_at);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
+                if (dateStr !== lastDate) {
+                    lastDate = dateStr;
+                    const dateDivider = document.createElement('div');
+                    dateDivider.className = 'flex flex-col items-center py-md';
+                    dateDivider.innerHTML = `<span class="px-4 py-1 bg-surface-container-highest/50 text-outline font-label-caps text-[9px] rounded-full font-bold">${dateStr}</span>`;
+                    messagesContainer.appendChild(dateDivider);
+                }
+
+                const isSeller = m.sender_role === 'seller';
+                const div = document.createElement('div');
+                const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                if (isSeller) {
+                    div.className = 'flex flex-col items-end self-end max-w-[80%]';
+                    div.innerHTML = `
+                        <div class="chat-bubble-right bg-primary text-white p-md text-sm border border-primary shadow-md">
+                            ${m.body}
+                        </div>
+                        <span class="font-data-price text-[10px] text-outline mt-1 mr-2">${time}</span>
+                    `;
+                } else {
+                    div.className = 'flex flex-col items-start max-w-[80%]';
+                    div.innerHTML = `
+                        <div class="chat-bubble-left bg-surface-container-high p-md text-sm text-on-surface border border-outline-variant shadow-sm">
+                            ${m.body}
+                        </div>
+                        <span class="font-data-price text-[10px] text-outline mt-1 ml-2">${time}</span>
+                    `;
+                }
+                messagesContainer.appendChild(div);
+            });
+
+            setTimeout(() => {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 100);
+
+            renderSidebar(buyer);
+
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    function renderSidebar(buyer) {
+        const sidebar = document.getElementById('chat-context-sidebar');
+        sidebar.innerHTML = '';
+
+        const profileSec = document.createElement('section');
+        profileSec.className = 'text-center space-y-md';
+        
+        const avatarUrl = buyer.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(buyer.name)}&background=caecbb&color=255338`;
+        const locationStr = buyer.city ? buyer.city : 'Verified Customer';
+
+        profileSec.innerHTML = `
+            <div class="relative inline-block">
+                <img alt="Buyer Profile" class="w-20 h-20 rounded-full mx-auto border-2 border-white shadow-sm" src="${avatarUrl}"/>
+                <div class="absolute bottom-0 right-0 w-5 h-5 bg-primary border-2 border-white rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[10px] text-white">verified</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-title-serif text-lg font-bold">${buyer.name}</h4>
+                <p class="text-xs text-outline">${locationStr}</p>
+            </div>
+            <div class="flex justify-center gap-xs">
+                <span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-[9px] rounded font-bold">VIP</span>
+                <span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-[9px] rounded font-bold">CUSTOMER</span>
+            </div>
+        `;
+        sidebar.appendChild(profileSec);
+
+        if (buyer.current_order) {
+            const co = buyer.current_order;
+            const orderSec = document.createElement('section');
+            orderSec.className = 'space-y-md';
+            
+            const priceVal = (co.total_amount / 100).toFixed(2);
+            let statusBadge = `<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container font-label-caps text-[9px] rounded font-bold">${co.status.toUpperCase()}</span>`;
+            if (co.status === 'packed' || co.status === 'shipped' || co.status === 'delivered') {
+                statusBadge = `<span class="px-2 py-0.5 bg-primary-container text-on-primary-container font-label-caps text-[9px] rounded font-bold">${co.status.toUpperCase()}</span>`;
+            }
+
+            const deadline = co.deadline_at ? new Date(co.deadline_at).toLocaleDateString([], { day: 'numeric', month: 'short' }) : 'N/A';
+
+            orderSec.innerHTML = `
+                <h5 class="font-label-caps text-[10px] text-outline border-b border-outline-variant pb-1 font-bold">CURRENT ORDER</h5>
+                <div class="bg-surface border border-outline-variant p-md rounded-xl shadow-sm space-y-md">
+                    <div class="flex gap-md">
+                        <div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary font-bold text-xs">P</div>
+                        <div class="flex-grow">
+                            <h6 class="text-xs font-bold font-body-md leading-tight">${co.product_title}</h6>
+                            <p class="font-data-price text-[10px] text-primary">₹${priceVal}</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-md pt-md border-t border-outline-variant">
+                        <div>
+                            <p class="text-[9px] font-label-caps text-outline font-bold">STATUS</p>
+                            ${statusBadge}
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-label-caps text-outline font-bold">DEADLINE</p>
+                            <p class="font-data-price text-[10px] text-on-surface">${deadline}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-label-caps text-outline font-bold">PAYMENT</p>
+                            <span class="px-2 py-0.5 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-[9px] rounded font-bold">${co.payment_status.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <a class="block text-center text-[10px] font-label-caps text-primary hover:underline pt-2 font-bold" href="/seller/orders.html">View full order →</a>
+                </div>
+            `;
+            sidebar.appendChild(orderSec);
+        }
+
+        if (buyer.order_history && buyer.order_history.length > 0) {
+            const histSec = document.createElement('section');
+            histSec.className = 'space-y-md';
+            
+            let itemsHtml = '';
+            buyer.order_history.forEach(h => {
+                const date = new Date(h.date).toLocaleDateString([], { month: 'short', year: 'numeric' });
+                itemsHtml += `
+                    <div class="flex justify-between items-center group cursor-pointer" onclick="window.location.href='/seller/orders.html'">
+                        <div>
+                            <p class="text-xs font-bold text-on-surface">${h.title}</p>
+                            <p class="font-data-price text-[9px] text-outline">#${h.order_ref} - ${date}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+                    </div>
+                `;
+            });
+
+            histSec.innerHTML = `
+                <h5 class="font-label-caps text-[10px] text-outline border-b border-outline-variant pb-1 font-bold">ORDER HISTORY</h5>
+                <div class="space-y-md">
+                    ${itemsHtml}
+                </div>
+            `;
+            sidebar.appendChild(histSec);
+        }
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-message-input');
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+
+        const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
+        const btn = document.getElementById('chat-send-btn');
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/messages/${currentThreadId}/send`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ body: text })
+            });
+            const resp = await res.json();
+            if (!res.ok) throw new Error(resp.message || 'Failed to send message');
+            
+            input.value = '';
+            input.style.height = 'auto'; 
+            showToast('Message sent!', 'success');
+            
+            await loadThreadDetails(currentThreadId);
+            await loadThreads();
+        } catch (err) {
+            showToast(err.message, 'error');
+        } finally {
+            btn.disabled = false;
+        }
+    }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
+        const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
         if (!token) { window.location.href = '/auth/login.html'; return; }
 
         // Role verification
@@ -503,6 +693,9 @@
         // Init load ZAI Mode
         const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
         updateZaiUI(zaiEnabled);
+
+        // Load thread inbox list
+        await loadThreads();
 
         // ZAI toggle button click
         const toggleBtn = document.getElementById('zai-toggle-btn');
@@ -529,6 +722,51 @@
                 .catch(err => console.error("Error setting ZAI mode:", err));
             });
         }
+
+        // Quick replies clicks
+        document.querySelectorAll('#quick-replies-container button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.textContent.trim();
+                const input = document.getElementById('chat-message-input');
+                if (input) {
+                    input.value = text;
+                    input.focus();
+                    input.dispatchEvent(new Event('input'));
+                }
+            });
+        });
+
+        // Send button click
+        const sendBtn = document.getElementById('chat-send-btn');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', sendMessage);
+        }
+
+        // Textarea enter key
+        const inputField = document.getElementById('chat-message-input');
+        if (inputField) {
+            inputField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        // Filter tabs click
+        document.querySelectorAll('#threads-filter-tabs button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#threads-filter-tabs button').forEach(b => {
+                    b.classList.remove('bg-primary', 'text-white');
+                    b.classList.add('bg-surface-container', 'text-on-surface-variant', 'border', 'border-outline-variant');
+                });
+                btn.classList.add('bg-primary', 'text-white');
+                btn.classList.remove('bg-surface-container', 'text-on-surface-variant', 'border', 'border-outline-variant');
+                
+                const tab = btn.getAttribute('data-tab');
+                loadThreads(tab);
+            });
+        });
 
         // View Store
         const viewStoreBtn = document.getElementById('view-store-btn');
