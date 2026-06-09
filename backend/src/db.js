@@ -487,6 +487,37 @@ const migrateReels = () => {
 };
 migrateReels();
 
+// Task 07: reviews table migration
+const migrateReviews = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reviews (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id        INTEGER NOT NULL REFERENCES orders(id),
+      buyer_id        INTEGER NOT NULL REFERENCES users(id),
+      seller_id       INTEGER NOT NULL REFERENCES users(id),
+      listing_id      INTEGER NOT NULL REFERENCES listings(id),
+      rating          INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+      comment_text    TEXT    DEFAULT NULL,
+      reply_text      TEXT    DEFAULT NULL,   -- seller reply
+      replied_at      TEXT    DEFAULT NULL,
+      created_at      TEXT    DEFAULT (datetime('now')),
+      updated_at      TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_reviews_seller ON reviews(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_reviews_listing ON reviews(listing_id);
+
+    CREATE TABLE IF NOT EXISTS review_request_settings (
+      seller_id           INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+      enabled             INTEGER NOT NULL DEFAULT 1,   -- send automated requests
+      delay_days_after_del INTEGER NOT NULL DEFAULT 3,
+      custom_subject      TEXT    DEFAULT NULL,
+      custom_message      TEXT    DEFAULT NULL,
+      updated_at          TEXT    DEFAULT (datetime('now'))
+    );
+  `);
+};
+migrateReviews();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
