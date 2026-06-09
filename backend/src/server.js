@@ -4487,67 +4487,146 @@ app.get('/api/seller/listings/:id', requireSeller, (req, res) => {
 });
 
 // ============================================================
-// TASK 22: PUT /api/seller/listings/:id
+// TASK 14: PATCH /api/seller/listings/:id
 // ============================================================
-app.put('/api/seller/listings/:id', requireSeller, (req, res) => {
+const handleUpdateListing = (req, res) => {
   try {
     const listingId = parseInt(req.params.id);
+    const sellerId = req.user.user_id;
+
     const listing = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
-    if (!listing) return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
-    if (listing.seller_id !== req.seller.id) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    if (!listing) {
+      return res.status(404).json({ error: true, message: 'Listing not found', code: 'NOT_FOUND' });
+    }
+
+    if (listing.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
 
     const body = req.body;
-    const tags = body.tags !== undefined ? (Array.isArray(body.tags) ? JSON.stringify(body.tags) : body.tags) : undefined;
-    const badges = body.badges !== undefined ? (Array.isArray(body.badges) ? JSON.stringify(body.badges) : body.badges) : undefined;
-    const publishedAt = body.status === 'active' && !listing.published_at ? new Date().toISOString() : listing.published_at;
 
-    db.prepare(`
-      UPDATE listings SET
-        title = COALESCE(?, title),
-        primary_name = COALESCE(?, primary_name),
-        description = COALESCE(?, description),
-        category = COALESCE(?, category),
-        primary_medium = COALESCE(?, primary_medium),
-        tags = COALESCE(?, tags),
-        badges = COALESCE(?, badges),
-        price_paise = COALESCE(?, price_paise),
-        sku = COALESCE(?, sku),
-        stock_count = COALESCE(?, stock_count),
-        processing_time = COALESCE(?, processing_time),
-        gift_wrap_available = COALESCE(?, gift_wrap_available),
-        gift_wrap_price_paise = COALESCE(?, gift_wrap_price_paise),
-        handwritten_note = COALESCE(?, handwritten_note),
-        status = COALESCE(?, status),
-        weight_grams = COALESCE(?, weight_grams),
-        length_cm = COALESCE(?, length_cm),
-        width_cm = COALESCE(?, width_cm),
-        height_cm = COALESCE(?, height_cm),
-        shipping_profile_id = COALESCE(?, shipping_profile_id),
-        published_at = COALESCE(?, published_at),
-        updated_at = datetime('now')
-      WHERE id = ?
-    `).run(
-      body.title ?? null, body.primary_name ?? null, body.description ?? null,
-      body.category ?? null, body.primary_medium ?? null,
-      tags ?? null, badges ?? null,
-      body.price_paise ?? null, body.sku ?? null, body.stock_count ?? null,
-      body.processing_time ?? null,
-      body.gift_wrap_available !== undefined ? (body.gift_wrap_available ? 1 : 0) : null,
-      body.gift_wrap_price_paise ?? null,
-      body.handwritten_note !== undefined ? (body.handwritten_note ? 1 : 0) : null,
-      body.status ?? null,
-      body.weight_grams ?? null, body.length_cm ?? null,
-      body.width_cm ?? null, body.height_cm ?? null,
-      body.shipping_profile_id ?? null, publishedAt,
-      listingId
-    );
+    // Enforce base_price vs price_paise mapping
+    const basePriceVal = body.base_price !== undefined ? body.base_price : body.price_paise;
 
-    return res.json({ success: true, data: buildListingDetail(listingId) });
+    // Build updates array dynamically
+    const fieldsToUpdate = {};
+    const allowedFields = [
+      'title', 'description', 'story', 'listing_type', 'ships_in_days', 'dispatch_sla_days',
+      'daily_max_slots', 'weekly_cap', 'monthly_ceiling', 'prebooking_window', 'min_order_qty',
+      'max_order_qty', 'weight_g', 'length_cm', 'width_cm', 'height_cm', 'shipping_method',
+      'packaging_type', 'return_policy', 'status', 'category', 'stock_count'
+    ];
+
+    allowedFields.forEach(f => {
+      if (body[f] !== undefined) {
+        fieldsToUpdate[f] = body[f];
+      }
+    });
+
+    if (basePriceVal !== undefined) {
+      fieldsToUpdate['base_price'] = basePriceVal;
+    }
+
+    if (body.allow_prebooking !== undefined) {
+      fieldsToUpdate['allow_prebooking'] = body.allow_prebooking ? 1 : 0;
+    }
+
+    if (body.is_eco_friendly !== undefined) {
+      fieldsToUpdate['is_eco_friendly'] = body.is_eco_friendly ? 1 : 0;
+    }
+
+    if (body.festive_tags !== undefined) {
+      fieldsToUpdate['festive_tags'] = Array.isArray(body.festive_tags) ? JSON.stringify(body.festive_tags) : null;
+    }
+
+    if (body.tags !== undefined) {
+      fieldsToUpdate['tags'] = Array.isArray(body.tags) ? JSON.stringify(body.tags) : null;
+    }
+
+    if (body.badges !== undefined) {
+      fieldsToUpdate['badges'] = Array.isArray(body.badges) ? JSON.stringify(body.badges) : null;
+    }
+
+    if (body.status === 'active' && !listing.published_at) {
+      fieldsToUpdate['published_at'] = new Date().toISOString();
+    }
+
+    if (Object.keys(fieldsToUpdate).length > 0) {
+      const setClauses = Object.keys(fieldsToUpdate).map(k => `${k} = ?`).join(', ');
+      const values = Object.values(fieldsToUpdate);
+      db.prepare(`UPDATE listings SET ${setClauses}, updated_at = datetime('now') WHERE id = ?`).run(...values, listingId);
+    }
+
+    // Update variants if provided
+    if (body.variants !== undefined && Array.isArray(body.variants)) {
+      // Clear old variants first or update
+      db.prepare('DELETE FROM listing_variants WHERE listing_id = ?').run(listingId);
+      const stmt = db.prepare(`
+        INSERT INTO listing_variants (listing_id, variant_name, price_paise, stock_count)
+        VALUES (?, ?, ?, ?)
+      `);
+      body.variants.forEach(v => {
+        const currentPrice = basePriceVal !== undefined ? basePriceVal : listing.base_price;
+        const vPrice = v.price_paise !== undefined ? v.price_paise : (v.price_delta !== undefined ? currentPrice + v.price_delta : null);
+        const vStock = v.stock_count !== undefined ? v.stock_count : (v.daily_capacity !== undefined ? v.daily_capacity : 0);
+        stmt.run(listingId, v.variant_name, vPrice, vStock);
+      });
+    }
+
+    // Update images/photos if provided
+    let finalImages = [];
+    if (Array.isArray(body.image_urls) && body.image_urls.length > 0) {
+      finalImages = body.image_urls;
+    } else if (Array.isArray(body.photo_urls)) {
+      finalImages = body.photo_urls.map((url, idx) => ({
+        url,
+        is_cover: idx === 0 ? 1 : 0,
+        sort_order: idx
+      }));
+    }
+
+    if (finalImages.length > 0) {
+      db.prepare('DELETE FROM listing_images WHERE listing_id = ?').run(listingId);
+      const imgStmt = db.prepare(`
+        INSERT INTO listing_images (listing_id, image_url, is_cover, sort_order)
+        VALUES (?, ?, ?, ?)
+      `);
+      finalImages.forEach(img => {
+        const url = typeof img === 'string' ? img : img.url;
+        const isCover = typeof img === 'object' && img.is_cover ? 1 : 0;
+        const sortOrder = typeof img === 'object' && img.sort_order !== undefined ? img.sort_order : 0;
+        imgStmt.run(listingId, url, isCover, sortOrder);
+      });
+
+      // Update cover_photo_url on listing
+      const coverImg = finalImages.find(img => typeof img === 'object' && img.is_cover) || finalImages[0];
+      const coverUrl = coverImg ? (typeof coverImg === 'string' ? coverImg : coverImg.url) : null;
+      if (coverUrl) {
+        db.prepare('UPDATE listings SET cover_photo_url = ? WHERE id = ?').run(coverUrl, listingId);
+      }
+    }
+
+    const updated = db.prepare('SELECT * FROM listings WHERE id = ?').get(listingId);
+
+    return res.json({
+      success: true,
+      data: {
+        id: updated.id,
+        listing_id: updated.id, // compatibility
+        title: updated.title,
+        status: updated.status,
+        stock_count: updated.stock_count, // compatibility
+        updated_at: updated.updated_at
+      }
+    });
   } catch (err) {
-    console.error('PUT /api/seller/listings/:id error:', err);
+    console.error('Update listing error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
-});
+};
+
+app.patch('/api/seller/listings/:id', requireSeller, handleUpdateListing);
+app.put('/api/seller/listings/:id', requireSeller, handleUpdateListing);
 
 // ============================================================
 // TASK 23: DELETE /api/seller/listings/:id (soft delete)
