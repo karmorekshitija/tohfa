@@ -30,6 +30,7 @@ export default defineConfig({
     }
   },
   server: {
+    allowedHosts: ['quotes-webcams-captured-penetration.trycloudflare.com'],
     proxy: {
       '/api': {
         target: 'http://localhost:5000',

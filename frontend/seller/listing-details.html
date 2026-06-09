@@ -122,53 +122,79 @@
 <body class="bg-parchment text-on-surface font-body-md overflow-x-hidden">
 <!-- (A) SideNavBar -->
 <!-- Standardised Left Sidebar (Task 37) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-  <div class="px-4 mb-8 flex flex-col items-center">
-    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+<!-- Sidebar Navigation (96px Fixed, expands to 260px on hover) -->
+<aside class="group fixed left-0 top-0 h-screen w-24 hover:w-[260px] bg-surface-container-low border-r border-outline-variant/40 flex flex-col items-start p-5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+  <!-- Logo Section -->
+  <div class="mb-xl flex items-center justify-start px-4 w-full">
+    <div class="flex flex-col items-center flex-shrink-0 w-6">
+      <span class="font-headline-lg text-primary italic font-bold text-2xl">T</span>
+      <div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-[-4px]"></div>
+    </div>
+    <span class="text-primary font-headline-lg italic font-bold text-2xl ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">ohfa Studio</span>
   </div>
-  <nav class="flex-1 space-y-1">
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="02_tofa_seller_studio_-_home_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
+
+  <!-- Navigation Items -->
+  <nav class="flex-1 flex flex-col gap-md w-full">
+    <a href="/seller/dashboard.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-home" title="Home">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">home</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Home</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="14_tofa_seller_studio_-_catalog_unified_layout_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
+    <a href="/seller/catalog.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 bg-secondary-container text-primary" id="sidebar-catalog" title="Catalog">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-primary">Catalog</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="09_tofa_seller_studio_-_orders_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
+    <a href="/seller/orders.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-orders" title="Orders">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">shopping_cart</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Orders</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="07_tofa_seller_studio_-_analytics_enhanced_style_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
+    <a href="/seller/production-planner.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-capacity" title="Capacity">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">pending_actions</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Capacity</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
+    <a href="/seller/inventory.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-inventory" title="Inventory">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">package_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Inventory</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="04_tofa_seller_studio_-_store_config_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
+    <a href="/seller/analytics.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-analytics" title="Analytics">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">analytics</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Analytics</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
-      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
+    <a href="/seller/messages.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-messages" title="Messages">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">mail</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Messages</span>
     </a>
-    <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="11_tofa_seller_studio_-_profile__settings_code.html">
-      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
+    <a href="/seller/reviews.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reviews" title="Reviews">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">rate_review</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reviews</span>
+    </a>
+    <a href="/seller/upload-reel.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reels" title="Reels">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">movie</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reels</span>
+    </a>
+    <a href="/seller/store-config.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-config" title="Config">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">settings</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Config</span>
     </a>
   </nav>
-  <div class="px-2 mt-auto pt-6">
-    <button class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
-      View Store
+
+  <!-- Bottom Actions -->
+  <div class="mt-auto flex flex-col gap-md items-start w-full border-t border-outline-variant/20 pt-4">
+    <a href="/seller/profile.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-profile" title="Profile">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">person</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Profile</span>
+    </a>
+    <button id="view-store-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-primary hover:bg-primary-container/10 border border-primary/20" title="View Store">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">storefront</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">View Store</span>
+    </button>
+    <button id="logout-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-error hover:bg-error-container/20 mt-2" title="Logout">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-error">logout</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-error">Logout</span>
     </button>
   </div>
 </aside>
 <!-- Main Content Area -->
-<main class="min-h-screen relative ml-[130px]">
+<main class="min-h-screen relative ml-[96px]">
 <!-- Botanical Watermark Overlay -->
 <div class="absolute inset-0 botanical-watermark overflow-hidden">
 <span class="material-symbols-outlined absolute -bottom-20 -right-20 text-[300px] opacity-[0.03]">psychiatry</span>
@@ -388,7 +414,7 @@
 </div>
 </div>
 <!-- (E) Create Listing Bottom-Sheet (Drawer) -->
-<div class="fixed inset-0 bg-parchment z-[60] ml-[130px] flex flex-col overflow-hidden" id="listing-drawer">
+<div class="fixed inset-0 bg-parchment z-[60] ml-[96px] flex flex-col overflow-hidden" id="listing-drawer">
 <!-- Drawer Header & Handle -->
 <header class="h-[80px] bg-white border-b border-sage/20 px-12 flex justify-between items-center shrink-0 z-10">
 <h2 class="font-display-lg text-primary text-3xl">Craft New Listing</h2>

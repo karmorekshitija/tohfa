@@ -3,573 +3,706 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Orders | Seller Studio | Tohfa</title>
+    <title>TOFA Seller Studio | Order Queue</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Merriweather:wght@300;400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
-            darkMode:"class",
-            theme: { extend: {
-                "colors": {
-                    "surface-variant": "#e2e3df",
-                    "on-secondary-fixed-variant": "#324e29",
-                    "surface": "#f9faf5",
-                    "on-primary-container": "#b7e9c6",
-                    "primary-fixed": "#bceecb",
-                    "on-tertiary-fixed-variant": "#54387e",
-                    "surface-container": "#edeeea",
-                    "primary-container": "#3d6b4f",
-                    "on-tertiary-container": "#e8d6ff",
-                    "on-secondary": "#ffffff",
-                    "on-background": "#1a1c1a",
-                    "on-secondary-container": "#4d6a43",
-                    "tertiary": "#573b81",
-                    "secondary": "#49663f",
-                    "on-error-container": "#93000a",
-                    "inverse-on-surface": "#f0f1ed",
-                    "surface-container-high": "#e7e9e4",
-                    "surface-container-highest": "#e2e3df",
-                    "on-primary": "#ffffff",
-                    "tertiary-fixed": "#ecdcff",
-                    "tertiary-fixed-dim": "#d6baff",
-                    "outline-variant": "#c1c9c0",
-                    "inverse-primary": "#a0d2b0",
-                    "on-error": "#ffffff",
-                    "secondary-container": "#c8e9b8",
-                    "outline": "#717972",
-                    "inverse-surface": "#2e312e",
-                    "primary-fixed-dim": "#a0d2b0",
-                    "on-tertiary-fixed": "#270550",
-                    "surface-container-low": "#f3f4f0",
-                    "on-surface-variant": "#414942",
-                    "secondary-fixed": "#caecbb",
-                    "secondary-fixed-dim": "#afd0a0",
-                    "on-surface": "#1a1c1a",
-                    "error-container": "#ffdad6",
-                    "surface-bright": "#f9faf5",
-                    "surface-tint": "#3a684c",
-                    "surface-container-lowest": "#ffffff",
-                    "on-tertiary": "#ffffff",
-                    "surface-dim": "#d9dad6",
-                    "error": "#ba1a1a",
-                    "on-primary-fixed": "#002110",
-                    "on-secondary-fixed": "#062103",
-                    "background": "#f9faf5",
-                    "primary": "#255338",
-                    "tertiary-container": "#70539b",
-                    "on-primary-fixed-variant": "#214f36",
-                    "parchment": "#F7F3EC",
-                    "sage": "#8FAF82",
-                    "forest": "#3D6B4F",
-                    "gold": "#C8973A",
-                    "violet": "#8B5CF6",
-                    "custom-primary": "#255338"
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#211b11",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#e5d8c8",
+                        "surface-bright": "#fff8f3",
+                        "surface-container-low": "#fff2e1",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-secondary-container": "#4d6a43",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary-fixed": "#270550",
+                        "surface-container-high": "#f3e6d6",
+                        "inverse-surface": "#362f25",
+                        "tertiary-container": "#70539b",
+                        "surface-container": "#f9ecdc",
+                        "secondary-container": "#c8e9b8",
+                        "primary-container": "#3d6b4f",
+                        "surface-variant": "#ede1d1",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-surface": "#211b11",
+                        "on-primary-container": "#b7e9c6",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "background": "#ffffff",
+                        "on-secondary-fixed": "#062103",
+                        "surface-tint": "#3a684c",
+                        "surface-container-highest": "#ede1d1",
+                        "on-primary-fixed-variant": "#214f36",
+                        "outline": "#717972",
+                        "inverse-primary": "#a0d2b0",
+                        "tertiary-fixed": "#ecdcff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#fcefde",
+                        "surface": "#fff8f3",
+                        "error": "#ba1a1a",
+                        "primary": "#255338",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#414942",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "tertiary": "#573b81",
+                        "secondary": "#49663f",
+                        "outline-variant": "#c1c9c0",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "gold": "#D4AF37",
+                        "sage": "#8FAF82",
+                        "sage-soft": "#e9f0e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "margin-mobile": "20px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "title-serif": ["Merriweather"],
+                        "data-price": ["Space Mono"],
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["Cinzel"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
                 },
-                "spacing": { "margin-mobile":"20px","margin-desktop":"64px","container-max":"1280px" },
-                "fontFamily": { "headline-md":["Playfair Display","serif"],"headline-lg":["Playfair Display","serif"] }
-            }}
+            },
         }
     </script>
     <style>
-        body { font-family:'DM Sans',sans-serif; background-color:#F7F3EC; color:#1a1c1a; }
-        h1,h2,h3 { font-family:'Playfair Display',serif; }
-        .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
-        .no-scrollbar::-webkit-scrollbar { display:none; } .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-        @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
-        .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
-        .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center; }
-        tr.order-row:hover { background:#f4ede380; cursor:pointer; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            background-repeat: repeat;
+        }
+        .pressed-flower {
+            opacity: 0.08;
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
+        }
+        .order-row:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
         .fade-in { animation:fadeIn 0.25s ease forwards; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+        .skeleton { background: linear-gradient(90deg, #ede1d1 25%, #f3e6d6 50%, #ede1d1 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; }
+        @keyframes shimmer { 0%{background-position:-200px 0} 100%{background-position:200px 0} }
     </style>
 </head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300 bg-parchment" id="body-content">
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden botanical-overlay opacity-0 transition-opacity duration-300" id="body-content">
 
-<!-- Left Sidebar (130px) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-    <div class="px-4 mb-8 flex flex-col items-center">
-        <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-        <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
-    </div>
-    <nav class="flex-1 space-y-1">
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/orders.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
-            <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
-        </a>
-    </nav>
-    <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
-        <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
-            View Store
-        </button>
-        <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
-            Logout
-        </button>
-    </div>
-</aside>
-
-<!-- Toast -->
-<div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
-    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
-    <span id="toast-msg"></span>
+<!-- Pressed Flower Watermarks -->
+<div class="pressed-flower top-10 left-40 scale-150 rotate-12">
+    <span class="material-symbols-outlined text-[120px] text-sage">local_florist</span>
+</div>
+<div class="pressed-flower bottom-20 right-20 scale-125 -rotate-45">
+    <span class="material-symbols-outlined text-[150px] text-sage">eco</span>
 </div>
 
-<!-- ══ Order Detail Modal ════════════════════════════════════ -->
-<div id="order-detail-modal" class="hidden modal-overlay">
-    <div class="bg-surface rounded-xl shadow-2xl w-full max-w-xl mx-4 max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 sticky top-0 bg-surface z-10">
+<!-- Sidebar Navigation (96px Fixed, expands to 260px on hover) -->
+<aside class="group fixed left-0 top-0 h-screen w-24 hover:w-[260px] bg-surface-container-low border-r border-outline-variant/40 flex flex-col items-start p-5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+  <!-- Logo Section -->
+  <div class="mb-xl flex items-center justify-start px-4 w-full">
+    <div class="flex flex-col items-center flex-shrink-0 w-6">
+      <span class="font-headline-lg text-primary italic font-bold text-2xl">T</span>
+      <div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-[-4px]"></div>
+    </div>
+    <span class="text-primary font-headline-lg italic font-bold text-2xl ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">ohfa Studio</span>
+  </div>
+
+  <!-- Navigation Items -->
+  <nav class="flex-1 flex flex-col gap-md w-full">
+    <a href="/seller/dashboard.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-home" title="Home">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">home</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Home</span>
+    </a>
+    <a href="/seller/catalog.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-catalog" title="Catalog">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">inventory_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Catalog</span>
+    </a>
+    <a href="/seller/orders.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 bg-secondary-container text-primary" id="sidebar-orders" title="Orders">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-primary">Orders</span>
+    </a>
+    <a href="/seller/production-planner.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-capacity" title="Capacity">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">pending_actions</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Capacity</span>
+    </a>
+    <a href="/seller/inventory.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-inventory" title="Inventory">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">package_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Inventory</span>
+    </a>
+    <a href="/seller/analytics.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-analytics" title="Analytics">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">analytics</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Analytics</span>
+    </a>
+    <a href="/seller/messages.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-messages" title="Messages">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">mail</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Messages</span>
+    </a>
+    <a href="/seller/reviews.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reviews" title="Reviews">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">rate_review</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reviews</span>
+    </a>
+    <a href="/seller/upload-reel.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reels" title="Reels">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">movie</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reels</span>
+    </a>
+    <a href="/seller/store-config.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-config" title="Config">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">settings</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Config</span>
+    </a>
+  </nav>
+
+  <!-- Bottom Actions -->
+  <div class="mt-auto flex flex-col gap-md items-start w-full border-t border-outline-variant/20 pt-4">
+    <a href="/seller/profile.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-profile" title="Profile">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">person</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Profile</span>
+    </a>
+    <button id="view-store-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-primary hover:bg-primary-container/10 border border-primary/20" title="View Store">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">storefront</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">View Store</span>
+    </button>
+    <button id="logout-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-error hover:bg-error-container/20 mt-2" title="Logout">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-error">logout</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-error">Logout</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content Canvas -->
+<main class="ml-[96px] p-margin-desktop relative z-10">
+    <!-- Filter Bar & Header -->
+    <header class="flex flex-col gap-6 mb-xl">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-md">
             <div>
-                <h2 class="font-headline-md text-xl text-primary">Order Detail</h2>
-                <p id="modal-order-ref" class="text-xs text-on-surface-variant font-mono"></p>
+                <h1 class="font-headline-lg text-headline-lg italic text-primary">Order Queue</h1>
+                <p class="text-on-surface-variant opacity-70 font-body-md mt-1" id="orders-count-label">Loading orders...</p>
             </div>
-            <button id="close-order-modal" class="p-2 hover:bg-surface-container rounded-full">
+            <div class="flex gap-4 items-center flex-wrap">
+                <div class="relative group">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+                    <input id="search-input" class="pl-10 pr-4 py-2 bg-surface-bright border border-sage rounded-lg font-data-price focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all w-64" placeholder="Search orders..." type="text"/>
+                </div>
+                <select id="period-select" class="bg-surface-bright border border-sage rounded-lg px-4 py-2 font-data-price focus:ring-1 focus:ring-primary focus:border-primary outline-none text-sm cursor-pointer transition-all">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                    <option value="all">All Time</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Custom Tabs -->
+        <div class="flex items-center border-b border-outline-variant gap-8 overflow-x-auto no-scrollbar" id="status-tabs">
+            <button data-status="all" class="filter-btn pb-3 px-1 border-b-2 border-primary text-primary font-bold whitespace-nowrap">All</button>
+            <button data-status="pending" class="filter-btn pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Pending</button>
+            <button data-status="crafting" class="filter-btn pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Crafting</button>
+            <button data-status="shipped" class="filter-btn pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Shipped</button>
+            <button data-status="delivered" class="filter-btn pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Delivered</button>
+            <button data-status="cancelled" class="filter-btn pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap">Cancelled</button>
+        </div>
+    </header>
+
+    <!-- KPI Strip -->
+    <section id="kpi-strip" class="grid grid-cols-2 md:grid-cols-4 gap-md mb-xl hidden">
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Total Orders</p>
+            <p class="text-2xl font-bold font-display-hero text-primary mt-sm" id="kpi-total">—</p>
+        </div>
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Pending Action</p>
+            <p class="text-2xl font-bold font-display-hero text-primary mt-sm" id="kpi-pending">—</p>
+        </div>
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">On-Time Rate</p>
+            <p class="text-2xl font-bold font-display-hero text-primary mt-sm" id="kpi-ontime">—</p>
+        </div>
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Avg Dispatch</p>
+            <p class="text-2xl font-bold font-display-hero text-primary mt-sm" id="kpi-dispatch">—</p>
+        </div>
+    </section>
+
+    <!-- States -->
+    <div id="loading-state" class="py-xl flex flex-col items-center gap-md">
+        <div class="w-12 h-12 border-4 border-sage border-t-primary rounded-full animate-spin"></div>
+        <p class="text-on-surface-variant font-medium">Fetching active order queue...</p>
+    </div>
+
+    <div id="error-state" class="hidden py-xl bg-error-container border border-error/20 rounded-xl p-lg flex flex-col items-center text-center gap-md">
+        <span class="material-symbols-outlined text-error text-4xl">error</span>
+        <h3 class="text-lg font-bold font-headline-lg text-on-error-container">Unable to load orders</h3>
+        <p id="error-msg" class="text-sm text-on-error-container opacity-80"></p>
+        <button id="retry-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 transition-all font-body-md">Retry Fetching</button>
+    </div>
+
+    <div id="empty-state" class="hidden py-24 bg-white border border-sage-soft rounded-xl flex flex-col items-center text-center p-lg gap-md shadow-sm">
+        <span class="material-symbols-outlined text-sage text-5xl">shopping_bag</span>
+        <h3 class="text-xl font-bold font-headline-lg text-primary italic">No orders found</h3>
+        <p class="text-sm text-on-surface-variant max-w-sm">There are no orders matching the current filter and period criteria.</p>
+    </div>
+
+    <!-- Orders Table/Grid Wrap -->
+    <section id="orders-table-wrap" class="flex flex-col gap-4 hidden">
+        <!-- Table Header -->
+        <div class="grid grid-cols-12 px-6 py-2 font-label-caps text-on-surface-variant opacity-60 text-xs tracking-wider">
+            <div class="col-span-2">Order Date</div>
+            <div class="col-span-2">Order ID</div>
+            <div class="col-span-2">Buyer</div>
+            <div class="col-span-3">Product Title</div>
+            <div class="col-span-1 text-center">Amount</div>
+            <div class="col-span-2 text-center">Status</div>
+        </div>
+        <!-- Order Rows Container -->
+        <div id="orders-tbody" class="flex flex-col gap-3"></div>
+    </section>
+</main>
+
+<!-- Order Detail Slide-over -->
+<div class="fixed inset-0 z-[60] pointer-events-none" id="slideOver">
+    <div class="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 pointer-events-none" id="slideOverOverlay"></div>
+    <aside class="absolute right-0 top-0 h-screen w-[450px] bg-white shadow-2xl border-l border-sage-soft translate-x-full transition-transform duration-500 ease-in-out pointer-events-auto p-10 flex flex-col gap-8 overflow-y-auto" id="slideOverContent">
+        <div class="flex justify-between items-start">
+            <div>
+                <span class="font-label-caps text-gold text-xs">Detail View</span>
+                <h2 class="font-headline-lg text-primary text-2xl mt-1" id="modal-order-ref">Order #—</h2>
+            </div>
+            <button class="p-2 hover:bg-surface-variant rounded-full transition-colors" id="close-order-modal">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
-        <div id="order-detail-body" class="p-6 space-y-6">
-            <!-- populated dynamically -->
+
+        <div id="order-detail-body" class="space-y-6 flex-1">
+            <!-- Dynamically populated -->
         </div>
-    </div>
+    </aside>
 </div>
 
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20 ml-[130px]">
+<!-- Toast notifications -->
+<div id="toast" class="hidden">
+    <span class="material-symbols-outlined" id="toast-icon">check_circle</span>
+    <span id="toast-msg">Success</span>
+</div>
 
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-            <h1 class="font-headline-md text-3xl mb-1 text-primary">Seller Orders</h1>
-            <p class="text-sm text-on-surface-variant" id="orders-count-label">Loading orders…</p>
-        </div>
-        <!-- Period selector -->
-        <select id="period-select" class="bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest self-start sm:self-auto">
-            <option value="30d">Last 30 Days</option>
-            <option value="90d">Last 90 Days</option>
-        </select>
-    </div>
-
-    <!-- KPI strip -->
-    <div id="kpi-strip" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Total Orders</div>
-            <div id="kpi-total" class="text-2xl font-bold text-forest">—</div>
-        </div>
-        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Awaiting Action</div>
-            <div id="kpi-pending" class="text-2xl font-bold text-error">—</div>
-        </div>
-        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">On-Time Rate</div>
-            <div id="kpi-ontime" class="text-2xl font-bold text-forest">—</div>
-        </div>
-        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
-            <div class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Avg Dispatch</div>
-            <div id="kpi-dispatch" class="text-2xl font-bold text-forest">—</div>
-        </div>
-    </div>
-
-    <!-- Filters + search -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-6">
-        <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
-            <button class="filter-btn active-filter bg-forest text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap" data-status="all">All</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="pending">Pending</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="crafting">Crafting</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="shipped">Shipped</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="delivered">Delivered</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest" data-status="cancelled">Cancelled</button>
-        </nav>
-        <div class="flex-1 relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
-            <input id="search-input" type="text" placeholder="Search order ID or buyer…" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest"/>
-        </div>
-    </div>
-
-    <!-- Error state -->
-    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
-        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load orders.</p>
-        <button id="retry-btn" class="bg-forest text-white py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90">Try Again</button>
-    </div>
-
-    <!-- Loading skeleton -->
-    <div id="loading-state" class="space-y-3">
-        <div class="skeleton h-16 rounded-xl"></div>
-        <div class="skeleton h-16 rounded-xl"></div>
-        <div class="skeleton h-16 rounded-xl"></div>
-        <div class="skeleton h-16 rounded-xl"></div>
-    </div>
-
-    <!-- Empty state -->
-    <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-outline">shopping_bag</span>
-        <p class="text-on-surface-variant text-sm text-center">No orders found for this period.</p>
-    </div>
-
-    <!-- Orders table -->
-    <div id="orders-table-wrap" class="hidden overflow-x-auto bg-surface border border-outline-variant/20 rounded-xl shadow-sm">
-        <table class="w-full text-sm">
-            <thead class="bg-surface-container border-b border-outline-variant/30">
-                <tr>
-                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Order ID</th>
-                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden sm:table-cell">Item</th>
-                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden md:table-cell">Buyer</th>
-                    <th class="text-left py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold hidden lg:table-cell">Date</th>
-                    <th class="text-right py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Amount</th>
-                    <th class="text-center py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Status</th>
-                    <th class="text-center py-3 px-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="orders-tbody"></tbody>
-        </table>
-    </div>
-
-</main>
-
+<!-- Micro-interactions Script -->
 <script>
-const API_BASE = window.location.origin;
-let currentStatus = 'all';
-let currentPeriod = '30d';
-let searchQuery   = '';
-let searchTimer   = null;
+    const API_BASE_URL = window.location.origin;
+    let currentStatus = 'all';
+    let currentPeriod = '30d';
+    let searchQuery   = '';
+    let searchTimer   = null;
 
-function formatPaise(p) {
-    if (p == null) return '₹0';
-    return '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-
-function formatDate(dt) {
-    if (!dt) return '—';
-    return new Date(dt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-}
-
-function showToast(msg, type='success') {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-icon').textContent = type === 'success' ? 'check_circle' : 'error';
-    document.getElementById('toast-msg').textContent  = msg;
-    t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
-        type === 'success' ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim' : 'bg-error-container text-on-error-container'
-    }`;
-    t.classList.remove('hidden');
-    setTimeout(() => t.classList.add('hidden'), 3500);
-}
-
-function statusBadge(s) {
-    const m = {
-        pending:   'bg-secondary-container text-on-secondary-container',
-        crafting:  'bg-primary-fixed text-on-primary-container',
-        shipped:   'bg-tertiary-fixed text-on-tertiary-container',
-        delivered: 'bg-forest text-white',
-        cancelled: 'bg-error-container text-on-error-container'
-    };
-    const labels = { pending:'Pending', crafting:'Crafting', shipped:'Shipped', delivered:'Delivered', cancelled:'Cancelled' };
-    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter ${m[s] || 'bg-surface-container text-on-surface-variant'}">${labels[s] || s}</span>`;
-}
-
-// ── Load orders ───────────────────────────────────────────────
-async function loadOrders() {
-    const loading = document.getElementById('loading-state');
-    const error   = document.getElementById('error-state');
-    const empty   = document.getElementById('empty-state');
-    const table   = document.getElementById('orders-table-wrap');
-    const kpi     = document.getElementById('kpi-strip');
-
-    loading.classList.remove('hidden');
-    error.classList.add('hidden');
-    empty.classList.add('hidden');
-    table.classList.add('hidden');
-    kpi.classList.add('hidden');
-
-    const token  = sessionStorage.getItem('tohfa_access_token');
-    const params = new URLSearchParams({ status: currentStatus, period: currentPeriod, ...(searchQuery ? { search: searchQuery } : {}) });
-
-    try {
-        const res  = await fetch(`${API_BASE}/api/seller/orders?${params}`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const resp   = await res.json();
-        const data   = resp.data || resp;
-        const orders = data.orders || [];
-
-        document.getElementById('orders-count-label').textContent = `${data.total || 0} order${data.total !== 1 ? 's' : ''}`;
-
-        // KPIs
-        document.getElementById('kpi-total').textContent    = data.total ?? '—';
-        document.getElementById('kpi-pending').textContent  = data.pending_action_count ?? '—';
-        document.getElementById('kpi-ontime').textContent   = `${data.on_time_rate_pct ?? 100}%`;
-        document.getElementById('kpi-dispatch').textContent = data.avg_dispatch_days != null ? `${data.avg_dispatch_days}d` : '—';
-        kpi.classList.remove('hidden');
-
-        loading.classList.add('hidden');
-        document.getElementById('body-content').classList.remove('opacity-0');
-
-        if (orders.length === 0) { empty.classList.remove('hidden'); return; }
-
-        // Render rows
-        document.getElementById('orders-tbody').innerHTML = orders.map(o => `
-            <tr class="order-row border-b border-outline-variant/20 fade-in" data-id="${o.internal_id}">
-                <td class="py-3 px-4 font-mono text-xs text-on-surface-variant">${o.order_id || '—'}</td>
-                <td class="py-3 px-4 hidden sm:table-cell"><span class="font-medium text-sm truncate max-w-[140px] block text-primary">${o.item_title || '—'}</span></td>
-                <td class="py-3 px-4 hidden md:table-cell text-sm text-on-surface-variant">${o.buyer_name || '—'}</td>
-                <td class="py-3 px-4 hidden lg:table-cell text-xs text-on-surface-variant">${formatDate(o.order_date)}</td>
-                <td class="py-3 px-4 text-right font-semibold text-sm text-forest">${formatPaise(o.total_paise)}</td>
-                <td class="py-3 px-4 text-center">${statusBadge(o.fulfillment_status)}</td>
-                <td class="py-3 px-4 text-center">
-                    <button class="view-btn text-xs font-semibold text-forest hover:underline" data-id="${o.internal_id}">View</button>
-                </td>
-            </tr>
-        `).join('');
-
-        table.classList.remove('hidden');
-        attachTableListeners();
-
-    } catch (err) {
-        console.error('Load orders error:', err);
-        loading.classList.add('hidden');
-        document.getElementById('error-msg').textContent = err.message || 'Failed to load orders.';
-        error.classList.remove('hidden');
-        document.getElementById('body-content').classList.remove('opacity-0');
+    function formatPaise(p) {
+        if (p == null) return '₹0';
+        return '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
-}
 
-// ── View order detail ─────────────────────────────────────────
-async function openOrderDetail(internalId) {
-    const token = sessionStorage.getItem('tohfa_access_token');
-    const body  = document.getElementById('order-detail-body');
-    body.innerHTML = '<div class="skeleton h-40 rounded-xl"></div>';
-    document.getElementById('order-detail-modal').classList.remove('hidden');
-
-    try {
-        const res  = await fetch(`${API_BASE}/api/seller/orders/${internalId}`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const resp = await res.json();
-        const o    = resp.data || resp;
-
-        document.getElementById('modal-order-ref').textContent = o.order_id || '';
-
-        const events = (o.tracking_events || []).map(ev =>
-            `<div class="flex items-start gap-2 text-xs">
-                <span class="text-forest mt-0.5 font-bold uppercase tracking-wider">${ev.status}</span>
-                <span class="text-on-surface-variant">${formatDate(ev.occurred_at)}</span>
-             </div>`
-        ).join('');
-
-        body.innerHTML = `
-            <div class="space-y-1">
-                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Customer</p>
-                <p class="font-semibold">${o.buyer_name || '—'}</p>
-                <p class="text-sm text-on-surface-variant">${o.buyer_address || '—'}</p>
-            </div>
-            <div class="space-y-1">
-                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Item & Amount</p>
-                <p class="font-semibold text-primary">${o.item_title || '—'}</p>
-                <p class="text-forest font-bold">${formatPaise(o.total_paise)}</p>
-            </div>
-            <div class="space-y-1">
-                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Current Status</p>
-                ${statusBadge(o.fulfillment_status)}
-                ${o.tracking_number ? `<p class="text-xs text-on-surface-variant mt-1">Tracking: <span class="font-mono">${o.tracking_number}</span></p>` : ''}
-            </div>
-            ${events ? `<div class="space-y-2"><p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Tracking History</p>${events}</div>` : ''}
-
-            <!-- Update Status -->
-            <div class="border-t border-outline-variant/30 pt-4 space-y-3">
-                <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Update Fulfillment Status</p>
-                <div class="flex gap-2">
-                    <select id="status-select-${internalId}" class="flex-1 bg-surface border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest">
-                        <option value="crafting">Crafting</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="delivered">Delivered</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                    <button id="update-status-btn-${internalId}" class="bg-forest text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-all" data-id="${internalId}">
-                        Update
-                    </button>
-                </div>
-                <!-- Tracking number -->
-                <div class="flex gap-2">
-                    <input id="tracking-input-${internalId}" type="text" placeholder="Add tracking number…" class="flex-1 bg-surface border border-outline-variant rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest" value="${o.tracking_number || ''}"/>
-                    <button id="add-tracking-btn-${internalId}" class="border border-outline text-on-surface px-5 py-2 rounded-full text-sm font-semibold hover:bg-surface-container transition-all" data-id="${internalId}">
-                        Set
-                    </button>
-                </div>
-            </div>
-        `;
-
-        // Update status action
-        document.getElementById(`update-status-btn-${internalId}`).addEventListener('click', async () => {
-            const newStatus = document.getElementById(`status-select-${internalId}`).value;
-            const btn       = document.getElementById(`update-status-btn-${internalId}`);
-            btn.disabled    = true; btn.textContent = 'Saving…';
-            try {
-                const r = await fetch(`${API_BASE}/api/seller/orders/${internalId}/status`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ status: newStatus })
-                });
-                const d = await r.json();
-                if (!r.ok) throw new Error(d.message || 'Failed');
-                showToast(`Status updated to "${newStatus}"!`, 'success');
-                closeOrderModal();
-                loadOrders();
-            } catch (err) {
-                showToast(err.message, 'error');
-            } finally {
-                btn.disabled = false; btn.textContent = 'Update';
-            }
-        });
-
-        // Add tracking action
-        document.getElementById(`add-tracking-btn-${internalId}`).addEventListener('click', async () => {
-            const tn  = document.getElementById(`tracking-input-${internalId}`).value.trim();
-            const btn = document.getElementById(`add-tracking-btn-${internalId}`);
-            if (!tn) { showToast('Enter a tracking number', 'error'); return; }
-            btn.disabled = true; btn.textContent = 'Saving…';
-            try {
-                const r = await fetch(`${API_BASE}/api/seller/orders/${internalId}/tracking`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ tracking_number: tn })
-                });
-                const d = await r.json();
-                if (!r.ok) throw new Error(d.message || 'Failed');
-                showToast('Tracking number saved!', 'success');
-            } catch (err) {
-                showToast(err.message, 'error');
-            } finally {
-                btn.disabled = false; btn.textContent = 'Set';
-            }
-        });
-
-    } catch (err) {
-        body.innerHTML = `<p class="text-sm text-error">${err.message}</p>`;
+    function formatDate(dt) {
+        if (!dt) return '—';
+        return new Date(dt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
     }
-}
 
-function closeOrderModal() { document.getElementById('order-detail-modal').classList.add('hidden'); }
+    function showToast(msg, type='success') {
+        const t = document.getElementById('toast');
+        document.getElementById('toast-icon').textContent = type === 'success' ? 'check_circle' : 'error';
+        document.getElementById('toast-msg').textContent  = msg;
+        t.className = `fixed top-24 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-primary text-white border border-primary/20' : 'bg-error-container text-on-error-container border border-error/20'
+        }`;
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3500);
+    }
 
-// ── Attach table listeners ────────────────────────────────────
-function attachTableListeners() {
-    document.querySelectorAll('.view-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => { e.stopPropagation(); openOrderDetail(btn.dataset.id); });
-    });
-    document.querySelectorAll('.order-row').forEach(row => {
-        row.addEventListener('click', () => openOrderDetail(row.dataset.id));
-    });
-}
+    function statusBadge(s) {
+        const m = {
+            pending:   'bg-secondary-container text-on-secondary-container',
+            crafting:  'bg-primary-fixed text-on-primary-fixed-variant border border-primary-fixed-dim/40',
+            shipped:   'bg-tertiary-fixed text-on-tertiary-fixed-variant',
+            delivered: 'bg-primary text-on-primary',
+            cancelled: 'bg-error-container text-on-error-container'
+        };
+        const labels = { pending:'Pending', crafting:'Crafting', shipped:'Shipped', delivered:'Delivered', cancelled:'Cancelled' };
+        return `<span class="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${m[s] || 'bg-surface-variant text-on-surface-variant'}">${labels[s] || s}</span>`;
+    }
 
-// ── Filter tabs ───────────────────────────────────────────────
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => {
-            b.className = 'filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap text-on-surface-variant hover:text-forest';
-        });
-        btn.className = 'filter-btn active-filter bg-forest text-white px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap';
-        currentStatus = btn.dataset.status;
-        loadOrders();
-    });
-});
+    async function loadOrders() {
+        const loading = document.getElementById('loading-state');
+        const error   = document.getElementById('error-state');
+        const empty   = document.getElementById('empty-state');
+        const table   = document.getElementById('orders-table-wrap');
+        const kpi     = document.getElementById('kpi-strip');
 
-// ── Period selector ───────────────────────────────────────────
-document.getElementById('period-select').addEventListener('change', (e) => {
-    currentPeriod = e.target.value;
-    loadOrders();
-});
+        loading.classList.remove('hidden');
+        error.classList.add('hidden');
+        empty.classList.add('hidden');
+        table.classList.add('hidden');
+        kpi.classList.add('hidden');
 
-// ── Search ────────────────────────────────────────────────────
-document.getElementById('search-input').addEventListener('input', (e) => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => { searchQuery = e.target.value.trim(); loadOrders(); }, 400);
-});
+        const token  = sessionStorage.getItem('tohfa_access_token');
+        const params = new URLSearchParams({ status: currentStatus, period: currentPeriod, ...(searchQuery ? { search: searchQuery } : {}) });
 
-// ── Modal close ───────────────────────────────────────────────
-document.getElementById('close-order-modal').addEventListener('click', closeOrderModal);
-document.getElementById('order-detail-modal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeOrderModal(); });
+        try {
+            const res  = await fetch(`${API_BASE_URL}/api/seller/orders?${params}`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (res.status === 401 || res.status === 403) { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-// ── Retry ─────────────────────────────────────────────────────
-document.getElementById('retry-btn').addEventListener('click', loadOrders);
+            const resp   = await res.json();
+            const data   = resp.data || resp;
+            const orders = data.orders || [];
 
-// ── Init ──────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
-    const token = sessionStorage.getItem('tohfa_access_token');
-    if (!token) { window.location.href = '/auth/login.html'; return; }
+            document.getElementById('orders-count-label').textContent = `Curating ${data.total || 0} order${data.total !== 1 ? 's' : ''} for your store.`;
 
-    try {
-        const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
-        if (!pr.ok) throw new Error();
-        const pd = await pr.json();
-        const u  = pd.data || pd;
-        if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+            // KPIs
+            document.getElementById('kpi-total').textContent    = data.total ?? '—';
+            document.getElementById('kpi-pending').textContent  = data.pending_action_count ?? '—';
+            document.getElementById('kpi-ontime').textContent   = `${data.on_time_rate_pct ?? 100}%`;
+            document.getElementById('kpi-dispatch').textContent = data.avg_dispatch_days != null ? `${data.avg_dispatch_days}d` : '—';
+            kpi.classList.remove('hidden');
 
-        if (u.avatar_url) {
-            document.getElementById('sidebar-avatar').src = u.avatar_url;
+            loading.classList.add('hidden');
+            document.getElementById('body-content').classList.remove('opacity-0');
+
+            if (orders.length === 0) { empty.classList.remove('hidden'); return; }
+
+            // Render rows
+            document.getElementById('orders-tbody').innerHTML = orders.map(o => `
+                <div class="order-row grid grid-cols-12 px-6 py-5 bg-white border border-outline-variant/30 rounded-xl items-center shadow-sm relative group cursor-pointer fade-in" data-id="${o.internal_id}">
+                    <div class="col-span-2 font-data-price text-on-surface-variant">${formatDate(o.order_date)}</div>
+                    <div class="col-span-2 font-data-price text-primary">#${o.order_id || '—'}</div>
+                    <div class="col-span-2 flex flex-col">
+                        <span class="font-body-md font-bold text-on-surface">${o.buyer_name || '—'}</span>
+                    </div>
+                    <div class="col-span-3 flex flex-col">
+                        <span class="font-body-md truncate max-w-[200px] text-on-surface-variant font-medium">${o.item_title || '—'}</span>
+                    </div>
+                    <div class="col-span-1 text-center font-data-price text-primary font-bold">${formatPaise(o.total_paise)}</div>
+                    <div class="col-span-2 flex justify-center">
+                        ${statusBadge(o.fulfillment_status)}
+                    </div>
+                </div>
+            `).join('');
+
+            table.classList.remove('hidden');
+            attachTableListeners();
+
+        } catch (err) {
+            console.error('Load orders error:', err);
+            loading.classList.add('hidden');
+            document.getElementById('error-msg').textContent = err.message || 'Failed to load orders.';
+            error.classList.remove('hidden');
+            document.getElementById('body-content').classList.remove('opacity-0');
         }
-    } catch { sessionStorage.clear(); window.location.href = '/auth/login.html'; return; }
+    }
 
-    loadOrders();
+    async function openOrderDetail(internalId) {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const body  = document.getElementById('order-detail-body');
+        body.innerHTML = '<div class="skeleton h-40 rounded-xl"></div>';
+        
+        toggleSlideOver(true);
 
-    // ── View Store Action ──────────────────────────
-    const viewStoreBtn = document.getElementById('view-store-btn');
-    if (viewStoreBtn) {
-        viewStoreBtn.addEventListener('click', () => {
-            fetch(`${API_BASE}/api/seller/profile`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(res => res.json())
-            .then(data => {
-                const profileData = data.data || data;
-                if (profileData && profileData.handle) {
-                    window.location.href = `/store/${profileData.handle}`;
-                } else {
-                    window.location.href = '/';
+        try {
+            const res  = await fetch(`${API_BASE_URL}/api/seller/orders/${internalId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const resp = await res.json();
+            const o    = resp.data || resp;
+
+            document.getElementById('modal-order-ref').textContent = `Order #${o.order_id || '—'}`;
+
+            const events = (o.tracking_events || []).map(ev => `
+                <div class="relative pl-6">
+                    <span class="absolute -left-[9px] top-1 w-3.5 h-3.5 rounded-full bg-sage-soft border-2 border-white"></span>
+                    <p class="text-xs font-bold capitalize text-primary">${ev.status}</p>
+                    <p class="text-[10px] text-on-surface-variant">${formatDate(ev.occurred_at)}</p>
+                </div>
+            `).join('');
+
+            body.innerHTML = `
+                <!-- Customer info -->
+                <div class="flex flex-col gap-2 border-b border-outline-variant/30 pb-4">
+                    <p class="text-xs uppercase tracking-wider text-on-surface-variant font-label-caps opacity-70">Patron Info</p>
+                    <p class="font-bold text-on-surface text-base">${o.buyer_name || '—'}</p>
+                    <p class="text-sm text-on-surface-variant leading-relaxed">${o.buyer_address || '—'}</p>
+                </div>
+
+                <!-- Product details -->
+                <div class="flex flex-col gap-4 border-b border-outline-variant/30 pb-4">
+                    <p class="text-xs uppercase tracking-wider text-on-surface-variant font-label-caps opacity-70">Artisanship Order</p>
+                    <div class="flex gap-4 items-center">
+                        <div class="w-16 h-16 rounded-xl border border-sage-soft overflow-hidden shadow-sm flex-shrink-0">
+                            <img class="w-full h-full object-cover" src="${o.item_image || 'https://ui-avatars.com/api/?name=Product'}" alt="${o.item_title}"/>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-bold text-primary truncate text-sm">${o.item_title || '—'}</p>
+                            <p class="text-primary font-bold font-data-price mt-1">${formatPaise(o.total_paise)}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customization details if present -->
+                ${o.customization_details ? `
+                <div class="flex flex-col gap-2 border-b border-outline-variant/30 pb-4 bg-sage-soft/30 p-3 rounded-lg border border-sage-soft">
+                    <p class="text-xs uppercase tracking-wider text-secondary font-label-caps font-bold">Customization Details</p>
+                    <p class="text-sm text-on-surface-variant italic leading-relaxed">"${o.customization_details}"</p>
+                </div>
+                ` : ''}
+
+                <!-- Status block -->
+                <div class="flex flex-col gap-2">
+                    <p class="text-xs uppercase tracking-wider text-on-surface-variant font-label-caps opacity-70">Fulfillment Status</p>
+                    <div class="flex items-center gap-md">
+                        ${statusBadge(o.fulfillment_status)}
+                        ${o.tracking_number ? `<span class="text-xs font-data-price text-on-surface-variant">Tracking ID: <span class="font-bold select-all font-mono bg-surface p-1 rounded border border-outline-variant/30">${o.tracking_number}</span></span>` : ''}
+                    </div>
+                </div>
+
+                <!-- Update status forms -->
+                <div class="border-t border-outline-variant/30 pt-4 flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-label-caps text-on-surface-variant opacity-70">Transition Status</label>
+                        <div class="flex gap-2">
+                            <select id="status-select-${internalId}" class="flex-1 bg-surface-bright border border-sage rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
+                                <option value="crafting" ${o.fulfillment_status === 'crafting' ? 'selected' : ''}>Crafting</option>
+                                <option value="shipped" ${o.fulfillment_status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="delivered" ${o.fulfillment_status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="cancelled" ${o.fulfillment_status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                            <button id="update-status-btn-${internalId}" class="bg-primary text-on-primary font-bold px-5 py-2 rounded-lg text-sm hover:opacity-90 transition-all flex items-center justify-center" data-id="${internalId}">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-label-caps text-on-surface-variant opacity-70">Courier Tracking Reference</label>
+                        <div class="flex gap-2">
+                            <input id="tracking-input-${internalId}" type="text" placeholder="Add tracking number…" class="flex-1 bg-surface-bright border border-sage rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" value="${o.tracking_number || ''}"/>
+                            <button id="add-tracking-btn-${internalId}" class="border border-primary text-primary hover:bg-secondary-container/20 font-bold px-5 py-2 rounded-lg text-sm transition-all" data-id="${internalId}">
+                                Set
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event/Tracking history timeline -->
+                ${events ? `
+                <div class="flex flex-col gap-3 border-t border-outline-variant/30 pt-4">
+                    <p class="text-xs uppercase tracking-wider text-on-surface-variant font-label-caps opacity-70">Fulfillment Log</p>
+                    <div class="flex flex-col gap-4 pl-2 border-l border-sage">
+                        ${events}
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            // Update status handler
+            document.getElementById(`update-status-btn-${internalId}`).addEventListener('click', async () => {
+                const newStatus = document.getElementById(`status-select-${internalId}`).value;
+                const btn       = document.getElementById(`update-status-btn-${internalId}`);
+                btn.disabled    = true; btn.textContent = 'Saving…';
+                try {
+                    const r = await fetch(`${API_BASE_URL}/api/seller/orders/${internalId}/status`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ status: newStatus })
+                    });
+                    const d = await r.json();
+                    if (!r.ok) throw new Error(d.message || 'Failed to update order status.');
+                    showToast(`Order status updated to "${newStatus}"!`, 'success');
+                    toggleSlideOver(false);
+                    loadOrders();
+                } catch (err) {
+                    showToast(err.message, 'error');
+                } finally {
+                    btn.disabled = false; btn.textContent = 'Update';
                 }
-            })
-            .catch(err => {
-                console.error('Error fetching seller profile:', err);
-                window.location.href = '/';
+            });
+
+            // Set tracking handler
+            document.getElementById(`add-tracking-btn-${internalId}`).addEventListener('click', async () => {
+                const tn  = document.getElementById(`tracking-input-${internalId}`).value.trim();
+                const btn = document.getElementById(`add-tracking-btn-${internalId}`);
+                if (!tn) { showToast('Please enter a tracking number', 'error'); return; }
+                btn.disabled = true; btn.textContent = 'Saving…';
+                try {
+                    const r = await fetch(`${API_BASE_URL}/api/seller/orders/${internalId}/tracking`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ tracking_number: tn })
+                    });
+                    const d = await r.json();
+                    if (!r.ok) throw new Error(d.message || 'Failed to update tracking ID.');
+                    showToast('Courier tracking number recorded!', 'success');
+                    toggleSlideOver(false);
+                    loadOrders();
+                } catch (err) {
+                    showToast(err.message, 'error');
+                } finally {
+                    btn.disabled = false; btn.textContent = 'Set';
+                }
+            });
+
+        } catch (err) {
+            body.innerHTML = `<div class="p-lg bg-error-container text-on-error-container rounded-xl flex items-center gap-md border border-error/15 text-sm">
+                <span class="material-symbols-outlined">error</span>
+                <span>Error details: ${err.message}</span>
+            </div>`;
+        }
+    }
+
+    function toggleSlideOver(show) {
+        const slideOver = document.getElementById('slideOver');
+        const overlay = document.getElementById('slideOverOverlay');
+        const content = document.getElementById('slideOverContent');
+
+        if (show) {
+            slideOver.classList.remove('pointer-events-none');
+            overlay.classList.add('opacity-100');
+            overlay.classList.remove('pointer-events-none');
+            content.classList.remove('translate-x-full');
+        } else {
+            slideOver.classList.add('pointer-events-none');
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('pointer-events-none');
+            content.classList.add('translate-x-full');
+        }
+    }
+
+    function attachTableListeners() {
+        document.querySelectorAll('.order-row').forEach(row => {
+            row.addEventListener('click', () => openOrderDetail(row.dataset.id));
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) { window.location.href = '/auth/login.html'; return; }
+
+        // Auth Role check
+        try {
+            const pr = await fetch(`${API_BASE_URL}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (!pr.ok) throw new Error();
+            const pd = await pr.json();
+            const u  = pd.data || pd;
+            if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+        } catch { 
+            sessionStorage.clear(); 
+            window.location.href = '/auth/login.html'; 
+            return; 
+        }
+
+        loadOrders();
+
+        // Status Tabs selectors
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.className = 'filter-btn pb-3 px-1 border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap';
+                });
+                btn.className = 'filter-btn pb-3 px-1 border-b-2 border-primary text-primary font-bold whitespace-nowrap';
+                currentStatus = btn.dataset.status;
+                loadOrders();
             });
         });
-    }
 
-    // ── Logout ────────────────────────────────────────────────────
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        const refresh = sessionStorage.getItem('tohfa_refresh_token');
-        if (token && refresh) {
-            fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+        // Period filter dropdown
+        document.getElementById('period-select').addEventListener('change', (e) => {
+            currentPeriod = e.target.value;
+            loadOrders();
+        });
+
+        // Search text input
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => { searchQuery = e.target.value.trim(); loadOrders(); }, 400);
+        });
+
+        // Close detail drawer
+        document.getElementById('close-order-modal').addEventListener('click', () => toggleSlideOver(false));
+        document.getElementById('slideOverOverlay').addEventListener('click', () => toggleSlideOver(false));
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleSlideOver(false);
+        });
+
+        // Retry reload
+        document.getElementById('retry-btn').addEventListener('click', loadOrders);
+
+        // View Store redirection
+        const viewStoreBtn = document.getElementById('view-store-btn');
+        if (viewStoreBtn) {
+            viewStoreBtn.addEventListener('click', () => {
+                fetch(`${API_BASE_URL}/api/seller/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const profileData = data.data || data;
+                    if (profileData && profileData.handle) {
+                        window.location.href = `/store/${profileData.handle}`;
+                    } else {
+                        window.location.href = '/';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching seller profile:', err);
+                    window.location.href = '/';
+                });
+            });
         }
-        sessionStorage.clear(); window.location.href = '/auth/login.html';
+
+        // Logout action
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            const refresh = sessionStorage.getItem('tohfa_refresh_token');
+            if (token && refresh) {
+                fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+            }
+            sessionStorage.clear(); window.location.href = '/auth/login.html';
+        });
     });
-});
 </script>
 </body>
 </html>

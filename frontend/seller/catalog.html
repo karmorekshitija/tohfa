@@ -1,175 +1,220 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Listings Catalog | Seller Studio | Tohfa</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Cinzel:wght@400;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "surface-variant": "#e2e3df",
-                        "on-secondary-fixed-variant": "#324e29",
-                        "surface": "#f9faf5",
-                        "on-primary-container": "#b7e9c6",
-                        "primary-fixed": "#bceecb",
-                        "on-tertiary-fixed-variant": "#54387e",
-                        "surface-container": "#edeeea",
-                        "primary-container": "#3d6b4f",
-                        "on-tertiary-container": "#e8d6ff",
-                        "on-secondary": "#ffffff",
-                        "on-background": "#1a1c1a",
-                        "on-secondary-container": "#4d6a43",
-                        "tertiary": "#573b81",
-                        "secondary": "#49663f",
-                        "on-error-container": "#93000a",
-                        "inverse-on-surface": "#f0f1ed",
-                        "surface-container-high": "#e7e9e4",
-                        "surface-container-highest": "#e2e3df",
-                        "on-primary": "#ffffff",
-                        "tertiary-fixed": "#ecdcff",
-                        "tertiary-fixed-dim": "#d6baff",
-                        "outline-variant": "#c1c9c0",
-                        "inverse-primary": "#a0d2b0",
-                        "on-error": "#ffffff",
-                        "secondary-container": "#c8e9b8",
-                        "outline": "#717972",
-                        "inverse-surface": "#2e312e",
-                        "primary-fixed-dim": "#a0d2b0",
-                        "on-tertiary-fixed": "#270550",
-                        "surface-container-low": "#f3f4f0",
-                        "on-surface-variant": "#414942",
-                        "secondary-fixed": "#caecbb",
-                        "secondary-fixed-dim": "#afd0a0",
-                        "on-surface": "#1a1c1a",
-                        "error-container": "#ffdad6",
-                        "surface-bright": "#f9faf5",
-                        "surface-tint": "#3a684c",
-                        "surface-container-lowest": "#ffffff",
-                        "on-tertiary": "#ffffff",
-                        "surface-dim": "#d9dad6",
-                        "error": "#ba1a1a",
-                        "on-primary-fixed": "#002110",
-                        "on-secondary-fixed": "#062103",
-                        "background": "#f9faf5",
-                        "primary": "#255338",
-                        "tertiary-container": "#70539b",
-                        "on-primary-fixed-variant": "#214f36",
-                        "parchment": "#F7F3EC",
-                        "sage": "#8FAF82",
-                        "forest": "#3D6B4F",
-                        "gold": "#C8973A",
-                        "violet": "#8B5CF6",
-                        "custom-primary": "#255338"
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    spacing: {
-                        "margin-mobile": "20px",
-                        "gutter": "24px",
-                        "unit": "8px",
-                        "container-max": "1280px",
-                        "margin-desktop": "64px"
-                    },
-                    fontFamily: {
-                        "body-md": ["DM Sans"],
-                        "body-sm": ["DM Sans"],
-                        "data-mono": ["Space Mono"],
-                        "headline-md": ["Playfair Display"],
-                        "label-caps": ["Playfair Display"],
-                        "display-lg": ["Playfair Display"],
-                        "body-lg": ["DM Sans"],
-                        "headline-sm": ["Playfair Display"]
-                    },
-                    fontSize: {
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
-                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
-                    }
-                }
-            }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Artisan Studio - Catalog</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@400;700&amp;family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary-container": "#70539b",
+                "surface-tint": "#3a684c",
+                "surface-container-high": "#f3e6d6",
+                "on-secondary-container": "#4d6a43",
+                "background": "#fff8f3",
+                "secondary-container": "#c8e9b8",
+                "on-surface-variant": "#414942",
+                "on-surface": "#211b11",
+                "surface": "#fff8f3",
+                "primary-container": "#3d6b4f",
+                "on-secondary-fixed-variant": "#324e29",
+                "secondary": "#49663f",
+                "on-error-container": "#93000a",
+                "outline-variant": "#c1c9c0",
+                "on-tertiary": "#ffffff",
+                "surface-dim": "#e5d8c8",
+                "secondary-fixed": "#caecbb",
+                "inverse-on-surface": "#fcefde",
+                "on-primary-container": "#b7e9c6",
+                "on-primary": "#ffffff",
+                "secondary-fixed-dim": "#afd0a0",
+                "inverse-surface": "#362f25",
+                "primary-fixed-dim": "#a0d2b0",
+                "inverse-primary": "#a0d2b0",
+                "on-background": "#211b11",
+                "surface-container": "#f9ecdc",
+                "surface-bright": "#fff8f3",
+                "on-primary-fixed-variant": "#214f36",
+                "primary-fixed": "#bceecb",
+                "primary": "#255338",
+                "tertiary-fixed-dim": "#d6baff",
+                "on-primary-fixed": "#002110",
+                "surface-container-highest": "#ede1d1",
+                "on-secondary": "#ffffff",
+                "on-tertiary-container": "#e8d6ff",
+                "surface-container-low": "#fff2e1",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6",
+                "tertiary-fixed": "#ecdcff",
+                "surface-container-lowest": "#ffffff",
+                "outline": "#717972",
+                "on-tertiary-fixed-variant": "#54387e",
+                "tertiary": "#573b81",
+                "on-secondary-fixed": "#062103",
+                "on-tertiary-fixed": "#270550",
+                "on-error": "#ffffff",
+                "surface-variant": "#ede1d1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "xl": "40px",
+                "sm": "8px",
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "xs": "4px",
+                "gutter": "16px",
+                "unit": "4px",
+                "md": "16px",
+                "lg": "24px"
+        },
+        "fontFamily": {
+                "display-hero": ["Playfair Display"],
+                "headline-lg-mobile": ["Playfair Display"],
+                "headline-lg": ["Playfair Display"],
+                "body-md": ["DM Sans"],
+                "label-caps": ["Cinzel"],
+                "data-price": ["Space Mono"],
+                "title-serif": ["Merriweather"]
+        },
+        "fontSize": {
+                "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
         }
-    </script>
-    <style>
-        body { font-family: 'DM Sans', sans-serif; background-color: #F7F3EC; color: #1a1c1a; }
-        h1,h2,h3 { font-family: 'Playfair Display', serif; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      },
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 10 C50 10 70 30 70 50 C70 70 50 90 50 90 C50 90 30 70 30 50 C30 30 50 10 50 10 Z' fill='none' stroke='%2349663f' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+            background-size: 120px;
+        }
+        .header-glow {
+            background: radial-gradient(circle at top right, rgba(200, 233, 184, 0.2) 0%, transparent 60%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(58, 51, 40, 0.08);
+        }
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center; backdrop-filter: blur(4px); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
-        .skeleton { background: linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
+        .skeleton { background: linear-gradient(90deg,#f9ecdc 25%,#ede1d1 50%,#f9ecdc 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 12px; }
         @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
         .fade-in { animation: fadeIn 0.3s ease forwards; }
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:200; display:flex; align-items:center; justify-content:center; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300 bg-parchment" id="body-content">
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container">
 
-<!-- Left Sidebar (130px) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-    <div class="px-4 mb-8 flex flex-col items-center">
-        <img id="sidebar-avatar" alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-        <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">TOFA Studio</h1>
+<!-- Side Navigation Bar (96px Fixed, expands to 260px on hover) -->
+<aside class="group fixed left-0 top-0 h-screen w-24 hover:w-[260px] bg-surface-container-low border-r border-outline-variant/40 flex flex-col items-start p-5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+  <!-- Logo Section -->
+  <div class="mb-xl flex items-center justify-start px-4 w-full">
+    <div class="flex flex-col items-center flex-shrink-0 w-6">
+      <span class="font-headline-lg text-primary italic font-bold text-2xl">T</span>
+      <div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-[-4px]"></div>
     </div>
-    <nav class="flex-1 space-y-1">
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-primary font-bold border-r-4 border-primary transition-colors duration-200 bg-secondary-container/20" href="/seller/catalog.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="#">
-            <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
-        </a>
-        <a class="flex flex-col items-center py-4 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html">
-            <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
-        </a>
-    </nav>
-    <div class="px-2 mt-auto pt-6 flex flex-col gap-2">
-        <button id="view-store-btn" class="w-full py-2 bg-forest text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-primary transition-all shadow-sm">
-            View Store
-        </button>
-        <button id="logout-btn" class="w-full py-2 border border-outline text-on-surface rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:bg-surface-container transition-all">
-            Logout
-        </button>
-    </div>
+    <span class="text-primary font-headline-lg italic font-bold text-2xl ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">ohfa Studio</span>
+  </div>
+
+  <!-- Navigation Items -->
+  <nav class="flex-1 flex flex-col gap-md w-full">
+    <a href="/seller/dashboard.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-home" title="Home">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">home</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Home</span>
+    </a>
+    <a href="/seller/catalog.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 bg-secondary-container text-primary" id="sidebar-catalog" title="Catalog">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-primary">Catalog</span>
+    </a>
+    <a href="/seller/orders.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-orders" title="Orders">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">shopping_cart</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Orders</span>
+    </a>
+    <a href="/seller/production-planner.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-capacity" title="Capacity">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">pending_actions</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Capacity</span>
+    </a>
+    <a href="/seller/inventory.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-inventory" title="Inventory">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">package_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Inventory</span>
+    </a>
+    <a href="/seller/analytics.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-analytics" title="Analytics">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">analytics</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Analytics</span>
+    </a>
+    <a href="/seller/messages.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-messages" title="Messages">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">mail</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Messages</span>
+    </a>
+    <a href="/seller/reviews.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reviews" title="Reviews">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">rate_review</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reviews</span>
+    </a>
+    <a href="/seller/upload-reel.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reels" title="Reels">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">movie</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reels</span>
+    </a>
+    <a href="/seller/store-config.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-config" title="Config">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">settings</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Config</span>
+    </a>
+  </nav>
+
+  <!-- Bottom Actions -->
+  <div class="mt-auto flex flex-col gap-md items-start w-full border-t border-outline-variant/20 pt-4">
+    <a href="/seller/profile.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-profile" title="Profile">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">person</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Profile</span>
+    </a>
+    <button id="view-store-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-primary hover:bg-primary-container/10 border border-primary/20" title="View Store">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">storefront</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">View Store</span>
+    </button>
+    <button id="logout-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-error hover:bg-error-container/20 mt-2" title="Logout">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-error">logout</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-error">Logout</span>
+    </button>
+  </div>
 </aside>
+
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-[96px] z-40 bg-background/80 backdrop-blur-md flex justify-between items-center h-16 px-margin-desktop w-[calc(100%-96px)]">
+<div class="flex items-center gap-md">
+<span class="font-display-hero text-headline-lg text-primary italic">Tohfa</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input id="search-input" class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:border-primary w-64" placeholder="Search products..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary cursor-pointer">help</span>
+</div>
+</div>
+</header>
 
 <!-- Toast -->
 <div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all">
@@ -179,9 +224,9 @@
 
 <!-- ══ Create/Edit Listing Modal ════════════════════════════ -->
 <div id="listing-modal" class="hidden modal-overlay">
-    <div class="bg-surface rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+    <div class="bg-surface rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto border border-outline-variant/30">
         <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 sticky top-0 bg-surface z-10">
-            <h2 id="modal-title" class="font-headline-md text-xl text-primary">Create Listing</h2>
+            <h2 id="modal-title" class="font-display-hero text-xl text-primary font-bold">Create Listing</h2>
             <button id="close-modal-btn" class="p-2 hover:bg-surface-container rounded-full transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -191,21 +236,21 @@
 
             <!-- Step 1: Photos -->
             <div class="space-y-2">
-                <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Cover Photo File <span class="text-on-surface-variant/50">(optional)</span></label>
-                <input id="f-photo-file" type="file" accept="image/*" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-forest file:text-white hover:file:opacity-90 cursor-pointer"/>
-                <p class="text-xs text-on-surface-variant/60">Or use a URL below:</p>
-                <input id="f-cover-photo" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="https://..."/>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Cover Photo File <span class="text-on-surface-variant/50">(optional)</span></label>
+                <input id="f-photo-file" type="file" accept="image/*" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:opacity-90 cursor-pointer"/>
+                <p class="text-xs text-on-surface-variant/60 font-serif italic">Or use a URL below:</p>
+                <input id="f-cover-photo" type="text" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="https://..."/>
             </div>
 
             <!-- Step 2: Title & Category -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1 md:col-span-2">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Title *</label>
-                    <input id="f-title" type="text" required class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="Handcrafted Pottery Mug"/>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Title *</label>
+                    <input id="f-title" type="text" required class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Handcrafted Pottery Mug"/>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Category</label>
-                    <select id="f-category" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Category</label>
+                    <select id="f-category" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary appearance-none">
                         <option value="">— Select Category —</option>
                         <option value="textile-arts">Textile Arts</option>
                         <option value="jewellery">Jewellery</option>
@@ -218,8 +263,8 @@
                     </select>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Status</label>
-                    <select id="f-status" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Status</label>
+                    <select id="f-status" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary appearance-none">
                         <option value="draft">Draft</option>
                         <option value="active">Active (Published)</option>
                         <option value="paused">Paused</option>
@@ -229,38 +274,38 @@
 
             <!-- Step 3: Description -->
             <div class="space-y-1">
-                <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Description</label>
-                <textarea id="f-description" rows="3" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="Describe your handcrafted product..."></textarea>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Description</label>
+                <textarea id="f-description" rows="3" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Describe your handcrafted product..."></textarea>
             </div>
 
             <!-- Step 4: Pricing & Stock -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Price (₹) *</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Price (₹) *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-outline font-semibold">₹</span>
-                        <input id="f-price" type="number" min="1" step="0.01" required class="w-full bg-surface border border-outline-variant rounded-xl pl-8 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="499.00"/>
+                        <input id="f-price" type="number" min="1" step="0.01" required class="w-full bg-white border border-outline-variant rounded-xl pl-8 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="499.00"/>
                     </div>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Stock Count *</label>
-                    <input id="f-stock" type="number" min="0" required class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="10"/>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Stock Count *</label>
+                    <input id="f-stock" type="number" min="0" required class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="10"/>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">SKU <span class="text-on-surface-variant/50">(optional)</span></label>
-                    <input id="f-sku" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="MUG-001"/>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">SKU <span class="text-on-surface-variant/50">(optional)</span></label>
+                    <input id="f-sku" type="text" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="MUG-001"/>
                 </div>
             </div>
 
             <!-- Step 5: Shipping & Extras -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Processing Time</label>
-                    <input id="f-processing-time" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="3-5 business days"/>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Processing Lead Time</label>
+                    <input id="f-processing-time" type="text" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="3-5 business days"/>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Tags <span class="text-on-surface-variant/50">(comma separated)</span></label>
-                    <input id="f-tags" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest" placeholder="handmade, ceramic, gift"/>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant font-label-caps">Tags <span class="text-on-surface-variant/50">(comma separated)</span></label>
+                    <input id="f-tags" type="text" class="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="handmade, ceramic, gift"/>
                 </div>
             </div>
 
@@ -270,7 +315,7 @@
             <!-- Submit -->
             <div class="flex justify-end gap-3 pt-2">
                 <button type="button" id="cancel-modal-btn" class="py-2.5 px-6 rounded-full border border-outline text-sm font-semibold text-on-surface hover:bg-surface-container transition-colors">Cancel</button>
-                <button type="submit" id="submit-listing-btn" class="bg-forest text-white py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
+                <button type="submit" id="submit-listing-btn" class="bg-primary text-white py-2.5 px-10 rounded-full font-bold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
                     <span class="material-symbols-outlined text-sm">save</span>
                     <span id="submit-label">Create Listing</span>
                 </button>
@@ -279,72 +324,86 @@
     </div>
 </div>
 
-<!-- ══ Main Content ══════════════════════════════════════════ -->
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20 ml-[130px]">
-
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-            <h1 class="font-headline-md text-3xl mb-1 text-primary">Listings Catalog</h1>
-            <p class="text-sm text-on-surface-variant" id="listings-count-label">Loading your listings…</p>
-        </div>
-        <button id="create-listing-btn" class="bg-forest text-white py-2.5 px-6 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2 self-start sm:self-auto">
-            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">add_circle</span>
-            New Listing
-        </button>
+<!-- Main Content -->
+<main class="ml-[96px] pt-16 min-h-screen header-glow">
+<div class="max-w-[1440px] mx-auto px-margin-desktop py-xl">
+  <!-- Page Header -->
+  <section class="flex justify-between items-end mb-xl">
+    <div>
+      <h1 class="font-display-hero text-display-hero text-primary mb-xs">My Catalog</h1>
+      <p class="font-body-md text-on-surface-variant" id="listings-count-label">
+        Loading listings…
+      </p>
     </div>
-
-    <!-- Filters + Search bar -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-8">
-        <!-- Status tabs -->
-        <nav class="flex overflow-x-auto no-scrollbar border border-outline-variant/40 rounded-xl p-1 bg-surface-container gap-1">
-            <button class="filter-btn active-filter px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all" data-status="all">All</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-primary" data-status="active">Active</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-primary" data-status="draft">Draft</button>
-            <button class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-primary" data-status="paused">Paused</button>
-        </nav>
-        <!-- Search -->
-        <div class="flex-1 relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
-            <input id="search-input" type="text" placeholder="Search listings…" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest"/>
-        </div>
+    <div class="flex gap-md">
+      <button class="px-lg py-sm border border-outline rounded-lg text-primary font-bold hover:bg-surface-container-high transition-transform active:scale-95">
+        Bulk Edit Prices
+      </button>
+      <button id="create-listing-btn" class="px-lg py-sm bg-primary text-on-primary rounded-lg font-bold flex items-center gap-xs hover:bg-primary/90 transition-transform active:scale-95">
+        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">add</span>
+        Add Product
+      </button>
     </div>
+  </section>
 
-    <!-- Error state -->
-    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
-        <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load listings.</p>
-        <button id="retry-btn" class="bg-forest text-white py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+  <!-- Filter & Sort Row -->
+  <section class="flex justify-between items-center border-b border-outline-variant mb-xl pb-2">
+    <div class="flex gap-xl" id="filter-tabs-container">
+      <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="all">All</button>
+      <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="active">Active</button>
+      <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="paused">Paused</button>
+      <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="draft">Drafts</button>
     </div>
-
-    <!-- Loading skeleton -->
-    <div id="loading-state" class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="skeleton h-64 rounded-xl"></div>
-        <div class="skeleton h-64 rounded-xl"></div>
-        <div class="skeleton h-64 rounded-xl"></div>
-        <div class="skeleton h-64 rounded-xl"></div>
+    <div class="flex items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant">Sort By:</span>
+      <select class="bg-transparent border-none font-body-md text-primary focus:ring-0 cursor-pointer appearance-none pr-6">
+        <option>Newest</option>
+        <option>Best Selling</option>
+        <option>Price High–Low</option>
+        <option>Capacity Low–High</option>
+      </select>
     </div>
+  </section>
 
-    <!-- Empty state -->
-    <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-outline">storefront</span>
-        <p class="text-on-surface-variant font-body-md text-center">No listings found.<br/>Create your first listing to get started.</p>
-        <button id="empty-create-btn" class="bg-forest text-white py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Create Listing</button>
-    </div>
+  <!-- Error state -->
+  <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+      <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+      <p id="error-msg" class="text-on-surface-variant text-sm">Failed to load listings.</p>
+      <button id="retry-btn" class="bg-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+  </div>
 
-    <!-- Listings grid -->
-    <div id="listings-grid" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Populated dynamically -->
-    </div>
+  <!-- Loading skeleton -->
+  <div id="loading-state" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+      <div class="skeleton h-80"></div>
+      <div class="skeleton h-80"></div>
+      <div class="skeleton h-80"></div>
+  </div>
 
-    <!-- Pagination -->
-    <div id="pagination" class="hidden flex justify-center gap-3 mt-10">
-        <button id="prev-btn" class="px-6 py-2.5 border border-outline rounded-full text-sm font-semibold hover:bg-surface-container transition-colors disabled:opacity-40" disabled>← Prev</button>
-        <span id="page-label" class="px-6 py-2.5 text-sm text-on-surface-variant"></span>
-        <button id="next-btn" class="px-6 py-2.5 border border-outline rounded-full text-sm font-semibold hover:bg-surface-container transition-colors disabled:opacity-40">Next →</button>
-    </div>
+  <!-- Empty state -->
+  <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+      <span class="material-symbols-outlined text-5xl text-outline">storefront</span>
+      <p class="text-on-surface-variant font-body-md text-center">No listings found.<br/>Create your first listing to get started.</p>
+      <button id="empty-create-btn" class="bg-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md">Create Listing</button>
+  </div>
 
+  <!-- Product Grid -->
+  <div id="listings-grid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+    <!-- Dynamically Populated -->
+  </div>
+
+  <!-- Pagination -->
+  <div id="pagination" class="hidden flex justify-center gap-3 mt-10">
+      <button id="prev-btn" class="px-6 py-2 border border-outline rounded-full text-sm font-semibold hover:bg-surface-container transition-colors disabled:opacity-40" disabled>← Prev</button>
+      <span id="page-label" class="px-6 py-2 text-sm text-on-surface-variant self-center"></span>
+      <button id="next-btn" class="px-6 py-2 border border-outline rounded-full text-sm font-semibold hover:bg-surface-container transition-colors disabled:opacity-40">Next →</button>
+  </div>
+</div>
 </main>
+
+<!-- Floating Action Button for Support/Help -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-tertiary text-on-tertiary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined">auto_fix</span>
+</button>
 
 <script>
 const API_BASE = window.location.origin;
@@ -353,7 +412,7 @@ let currentStatus= 'all';
 let searchQuery  = '';
 let searchTimer  = null;
 let totalListings = 0;
-const PAGE_LIMIT = 20;
+const PAGE_LIMIT = 9;
 
 // ── Utilities ─────────────────────────────────────────────────
 function formatPaise(p) {
@@ -367,7 +426,7 @@ function showToast(msg, type = 'success') {
     document.getElementById('toast-msg').textContent  = msg;
     t.className = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all ${
         type === 'success'
-            ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim'
+            ? 'bg-secondary-container text-on-secondary-container border border-secondary-container/50'
             : 'bg-error-container text-on-error-container border border-error/30'
     }`;
     t.classList.remove('hidden');
@@ -375,46 +434,82 @@ function showToast(msg, type = 'success') {
 }
 
 function statusBadge(status, stock) {
-    if (stock === 0 && status === 'active') return '<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter text-error bg-error-container">Out of Stock</span>';
+    if (stock === 0 && status === 'active') return '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter text-error bg-error-container">Out of Stock</span>';
     const m = {
-        active: 'bg-forest text-white',
+        active: 'bg-primary-container text-on-primary-container',
         draft:  'bg-surface-container-high text-on-surface-variant',
         paused: 'bg-secondary-container text-on-secondary-container'
     };
     const l = { active:'Active', draft:'Draft', paused:'Paused' };
-    return `<span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter ${m[status] || 'bg-surface-container text-on-surface-variant'}">${l[status] || status}</span>`;
+    return `<span class="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter ${m[status] || 'bg-surface-container text-on-surface-variant'}">${l[status] || status}</span>`;
 }
 
 function cardHTML(l) {
     const img = l.cover_photo_url
-        ? `<img src="${l.cover_photo_url}" alt="${l.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>`
+        ? `<img src="${l.cover_photo_url}" alt="${l.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>`
         : `<div class="w-full h-full flex items-center justify-center bg-surface-container-high"><span class="material-symbols-outlined text-4xl text-outline">image</span></div>`;
+    
+    const isCustom = l.processing_time ? `<div class="absolute top-md left-md bg-tertiary-container text-white px-3 py-1 rounded-full font-label-caps text-[10px]">CUSTOM</div>` : '';
+    
+    // Capacity logic
+    const capMax = l.stock_count || 10;
+    const capUsed = Math.min(Math.round(capMax * 0.4), capMax);
+    const capPct = Math.round((capUsed / capMax) * 100);
+
     return `
-    <div class="group fade-in bg-surface border border-outline-variant/20 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-listing-id="${l.listing_id}">
-        <div class="aspect-[4/5] relative overflow-hidden bg-surface-container">
+    <article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl card-shadow overflow-hidden group relative" data-listing-id="${l.listing_id}">
+        <div class="aspect-[16/9] relative overflow-hidden bg-surface-container">
             ${img}
+            ${isCustom}
             <!-- Hover actions -->
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-2 gap-1">
-                <button class="edit-btn bg-white/90 p-1.5 rounded-full shadow-sm" title="Edit" data-id="${l.listing_id}">
-                    <span class="material-symbols-outlined text-sm text-on-surface">edit</span>
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 z-10">
+                <button class="edit-btn bg-white/90 hover:bg-white text-on-surface p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all" title="Edit" data-id="${l.listing_id}">
+                    <span class="material-symbols-outlined text-base">edit</span>
                 </button>
-                <button class="delete-btn bg-error/90 p-1.5 rounded-full shadow-sm" title="Delete" data-id="${l.listing_id}" data-title="${l.title}">
-                    <span class="material-symbols-outlined text-sm text-on-error">delete</span>
+                <button class="delete-btn bg-error/95 hover:bg-error text-white p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all" title="Delete" data-id="${l.listing_id}" data-title="${l.title}">
+                    <span class="material-symbols-outlined text-base">delete</span>
                 </button>
             </div>
         </div>
-        <div class="p-3">
-            <h3 class="font-semibold text-sm truncate mb-1 text-primary">${l.title}</h3>
-            <div class="flex justify-between items-center">
-                <span class="text-forest font-bold text-sm">${formatPaise(l.price_paise)}</span>
+        <div class="p-lg relative botanical-overlay">
+            <div class="flex justify-between items-start mb-sm">
+                <h3 class="font-display-hero text-title-serif text-on-surface truncate pr-2" style="max-width: 70%;">${l.title}</h3>
+                <span class="font-data-price text-primary text-[16px]">${formatPaise(l.price_paise)}</span>
+            </div>
+            
+            <div class="flex gap-xs mb-md flex-wrap">
                 ${statusBadge(l.status, l.stock_count)}
+                <span class="px-2 py-0.5 bg-surface-container-high text-primary-fixed-variant rounded-full text-[10px] font-label-caps">${l.category || 'Craft'}</span>
             </div>
-            <div class="flex justify-between items-center mt-1.5">
-                <span class="text-xs text-on-surface-variant">${l.stock_count} in stock</span>
-                <span class="text-xs text-on-surface-variant">${l.view_count || 0} views</span>
+
+            <div class="bg-surface-container-low px-sm py-1 rounded mb-md flex items-center gap-xs inline-block">
+                <span class="material-symbols-outlined text-[16px]">schedule</span>
+                <span class="font-body-md text-[13px]">⏱ ${l.processing_time || '1–2 days'}</span>
+            </div>
+
+            <div class="mt-xl">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-label-caps text-[10px] text-on-surface-variant">Daily Capacity</span>
+                    <span class="font-data-price text-[12px]">${capUsed} / ${capMax} per day</span>
+                </div>
+                <div class="h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary rounded-full transition-all duration-500" style="width: ${capPct}%;"></div>
+                </div>
             </div>
         </div>
-    </div>`;
+    </article>`;
+}
+
+function placeholderCreateCard() {
+    return `
+    <article id="grid-create-listing-btn" class="border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-xl group hover:border-primary transition-colors cursor-pointer min-h-[340px]">
+        <div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            <span class="material-symbols-outlined text-[32px]">add</span>
+        </div>
+        <span class="font-label-caps text-on-surface-variant group-hover:text-primary transition-colors">Create New Listing</span>
+        <p class="font-body-md text-[12px] text-outline text-center mt-sm">Templates available for rapid setup</p>
+    </article>
+    `;
 }
 
 // ── Load listings ─────────────────────────────────────────────
@@ -452,14 +547,20 @@ async function loadListings(page = 1) {
         totalListings = data.total || 0;
 
         document.getElementById('listings-count-label').textContent =
-            `${totalListings} listing${totalListings !== 1 ? 's' : ''} total`;
+            `${totalListings} active listing${totalListings !== 1 ? 's' : ''}`;
 
         load.classList.add('hidden');
 
-        if (listings.length === 0) {
+        if (listings.length === 0 && page === 1 && !searchQuery && currentStatus === 'all') {
             empty.classList.remove('hidden');
         } else {
-            grid.innerHTML = listings.map(cardHTML).join('');
+            let cardsHtml = '';
+            // If on the first page, prepend the Add Listing placeholder card
+            if (page === 1 && !searchQuery) {
+                cardsHtml += placeholderCreateCard();
+            }
+            cardsHtml += listings.map(cardHTML).join('');
+            grid.innerHTML = cardsHtml;
             grid.classList.remove('hidden');
             attachCardListeners();
         }
@@ -473,19 +574,22 @@ async function loadListings(page = 1) {
             pgn.classList.remove('hidden');
         }
 
-        document.getElementById('body-content').classList.remove('opacity-0');
-
     } catch (err) {
         console.error('Load listings error:', err);
         load.classList.add('hidden');
         document.getElementById('error-msg').textContent = err.message || 'Failed to load listings.';
         error.classList.remove('hidden');
-        document.getElementById('body-content').classList.remove('opacity-0');
     }
 }
 
 // ── Card action listeners ─────────────────────────────────────
 function attachCardListeners() {
+    // Add Listing grid placeholder
+    const gridCreate = document.getElementById('grid-create-listing-btn');
+    if (gridCreate) {
+        gridCreate.addEventListener('click', openCreateModal);
+    }
+
     document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             e.stopPropagation();
@@ -617,7 +721,7 @@ document.getElementById('listing-form').addEventListener('submit', async (e) => 
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Failed to save listing');
 
-        // Upload photo file if one is selected
+        // Upload photo file if selected
         const fileInput = document.getElementById('f-photo-file');
         const file = fileInput ? fileInput.files[0] : null;
         if (file) {
@@ -653,11 +757,11 @@ document.getElementById('listing-form').addEventListener('submit', async (e) => 
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => {
-            b.classList.remove('bg-forest', 'text-white', 'active-filter');
-            b.classList.add('text-on-surface-variant', 'hover:text-primary');
+            b.classList.remove('text-primary', 'border-b-2', 'border-primary');
+            b.classList.add('text-on-surface-variant');
         });
-        btn.classList.add('bg-forest', 'text-white', 'active-filter');
-        btn.classList.remove('text-on-surface-variant', 'hover:text-primary');
+        btn.classList.add('text-primary', 'border-b-2', 'border-primary');
+        btn.classList.remove('text-on-surface-variant');
         currentStatus = btn.dataset.status;
         currentPage   = 1;
         loadListings(1);
@@ -683,7 +787,7 @@ document.getElementById('next-btn').addEventListener('click', () => {
 });
 
 // ── Modal open/close ──────────────────────────────────────────
-document.getElementById('create-listing-btn').addEventListener('click', openCreateModal);
+document.querySelectorAll('#create-listing-btn').forEach(btn => btn.addEventListener('click', openCreateModal));
 document.getElementById('empty-create-btn').addEventListener('click', openCreateModal);
 document.getElementById('close-modal-btn').addEventListener('click', closeModal);
 document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
@@ -703,17 +807,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const pd = await pr.json();
         const u  = pd.data || pd;
         if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
-        
-        if (u.avatar_url) {
-            document.getElementById('sidebar-avatar').src = u.avatar_url;
-        }
     } catch {
         sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
     }
 
     // Highlight first filter tab
-    document.querySelector('.filter-btn[data-status="all"]').classList.add('bg-forest','text-white');
-    document.querySelector('.filter-btn[data-status="all"]').classList.remove('text-on-surface-variant');
+    const allTab = document.querySelector('.filter-btn[data-status="all"]');
+    if (allTab) {
+        allTab.classList.add('text-primary', 'border-b-2', 'border-primary');
+        allTab.classList.remove('text-on-surface-variant');
+    }
 
     loadListings(1);
 
@@ -734,7 +837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             })
             .catch(err => {
-                console.error('Error fetching seller profile:', err);
+                console.error(err);
                 window.location.href = '/';
             });
         });

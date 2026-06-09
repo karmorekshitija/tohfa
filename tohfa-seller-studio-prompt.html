@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tohfa — Part 4: Seller Studio Prompt File for Antigravity</title>
+<style>
+  body { font-family: monospace; background: #0e0e0e; color: #d4d4d4; padding: 2rem; line-height: 1.7; }
+  h1 { color: #a0d2b0; font-size: 1.4rem; border-bottom: 2px solid #3d6b4f; padding-bottom: 0.5rem; }
+  h2 { color: #c8973a; font-size: 1.1rem; margin-top: 2rem; }
+  .block { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 1.2rem; margin: 1rem 0; white-space: pre-wrap; }
+  .task { background: #111820; border: 1px solid #3d6b4f; border-radius: 6px; padding: 1.4rem; margin: 1.5rem 0; white-space: pre-wrap; }
+  .warning { color: #fcb4ba; }
+  .ok { color: #a0d2b0; }
+  .gold { color: #c8973a; }
+  .rule { background: #1c1c10; border: 1px solid #c8973a55; border-radius: 4px; padding: 1rem; margin: 0.5rem 0; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+SYSTEM RULE FOR ANTIGRAVITY — READ THIS FIRST:
+Always use non-interactive flags for ALL terminal commands
+(-y, --yes, --no-input, --force).
+Never pause for confirmation. Never wait for user input.
+This applies to every single command in this entire file.
+============================================================ -->
+
+<h1>TOHFA — PART 4: SELLER STUDIO</h1>
+<h2>Antigravity Prompt File — Built from Stitch frontend analysis</h2>
+
+<div class="block">
+================================================================
+GLOBAL SPECIFICATION — READ BEFORE ANY TASK
+================================================================
+App name:       Tohfa (Handcrafted Goods Marketplace — Web App)
+Backend:        Node.js + SQLite
+Auth:           JWT access tokens (15-min expiry) + refresh tokens
+                Refresh endpoint: POST /api/auth/refresh
+                Token storage: sessionStorage (frontend handles this)
+                All Seller Studio routes require role = 'seller' in JWT
+Payments:       Razorpay only
+Currency:       All amounts stored in paise (1 rupee = 100 paise)
+                Display as ₹ with 2 decimal places
+
+DESIGN SYSTEM (apply to ALL screens — Artisan Studio variant):
+  Primary forest green:        #3D6B4F  (buttons, active states, icons)
+  Primary deep:                #255338  (hover/pressed)
+  Primary container:           #3D6B4F
+  Surface ivory:               #FFF8F3  (cards, backgrounds)
+  Surface dim:                 #E5D8C8
+  Surface container:           #F9ECDC
+  Surface container high:      #F3E6D6
+  Sage border:                 #C1C9C0  (outline-variant)
+  Outline:                     #717972
+  Accent violet:               #573B81  (tertiary, links, focus)
+  Highlight gold:              #C8973A  (badges, prices)
+  Text default (on-surface):   #211B11
+  Text muted (on-surface-var): #414942
+  Text faint:                  #9A8F7A
+  Error terracotta:            #BA1A1A
+  Background:                  #FFF8F3
+
+TYPOGRAPHY:
+  Display/Hero:    Playfair Display (Light 300, Regular 400)
+  Serif Titles:    Merriweather (Bold 700) — product names, pull-quotes
+  Body/UI:         DM Sans (Regular 400, Medium 500)
+  Data/Prices:     Space Mono (Medium 500)
+  Accent Caps:     Cinzel (Bold 700, letter-spacing 0.1em) — nav headers, eyebrows
+
+SIDEBAR NAV STANDARD (all Seller Studio screens use a left sidebar, NOT a bottom tab bar):
+  Width:           64px collapsed / 220px expanded (desktop)
+  Background:      #FFF8F3 (surface-ivory)
+  Border-right:    1px solid #C1C9C0
+  Logo mark:       "T." or "T" in forest green at top
+  Nav icons:       Material Symbols Outlined, weight 300, 24px
+  Active state:    Background pill #3D6B4F, icon + label white
+  Inactive:        Icon #414942, label #414942
+  Nav items (in order):
+    home           — Dashboard
+    menu_book      — Catalog
+    shopping_bag   — Orders
+    calendar_today — Production Planner
+    inventory_2    — Inventory
+    analytics      — Analytics
+    chat_bubble    — Messages
+    star           — Reviews
+    movie_filter   — Reels
+    settings       — Settings / Store Config
+    account_circle — Profile
+
+TOP HEADER STANDARD (all Seller Studio screens):
+  Height:         64px
+  Background:     #FFFFFF
+  Border-bottom:  1px solid #C1C9C0
+  Left:           "Tofha ." wordmark — Playfair Display Italic, #3D6B4F, gold dot on 'i'
+  Right icons:    search, notifications (bell), help_outline, account_circle
+  account_circle: 28px, #3D6B4F; if avatar_url exists show circular img
+
+API BASE URL:     /api  (all routes prefixed with /api)
+Auth header:      Authorization: Bearer [access_token]
+Seller guard:     Every /api/seller/* route must verify JWT role === 'seller'
+                  Return 403 FORBIDDEN if role is buyer or admin
+
+ERROR RESPONSE FORMAT (same on every endpoint):
+{
+  "error": true,
+  "message": "Human readable message",
+  "code": "ERROR_CODE"
+}
+
+SUCCESS RESPONSE FORMAT:
+{
+  "success": true,
+  "data": { ... }
+}
+
+PLATFORM FEE:     8% of listing price (shown in Pricing step UI as "Studio Platform Fee (8%)")
+PAYOUT:           Listing price - 8% fee = seller payout per order
+================================================================
+</div>
+
+<div class="block">
+================================================================
+PART 4 — SELLER STUDIO
+Total tasks:     26
+DB migrations:   8
+API routes:      16
+UI wiring:       2
+Run after:       Part 3 (Auth) must be complete — seller JWT required
+================================================================
+[ ] Task 01: DB — listings table migration
+[ ] Task 02: DB — listing_variants table migration
+[ ] Task 03: DB — listing_images table migration
+[ ] Task 04: DB — orders table migration (seller view)
+[ ] Task 05: DB — inventory_materials table migration
+[ ] Task 06: DB — reels table migration
+[ ] Task 07: DB — reviews table migration
+[ ] Task 08: DB — store_config table migration
+[ ] Task 09: GET  /api/seller/dashboard           — Home dashboard data
+[ ] Task 10: GET  /api/seller/orders              — Orders queue list
+[ ] Task 11: PATCH /api/seller/orders/:id/status  — Update order status
+[ ] Task 12: GET  /api/seller/catalog             — Catalog listing manager
+[ ] Task 13: POST /api/seller/listings            — Create new listing (wizard steps 1–6)
+[ ] Task 14: PATCH /api/seller/listings/:id       — Update listing
+[ ] Task 15: DELETE /api/seller/listings/:id      — Delete / pause listing
+[ ] Task 16: GET  /api/seller/analytics           — Analytics dashboard data
+[ ] Task 17: GET  /api/seller/messages            — Messages inbox list
+[ ] Task 18: POST /api/seller/messages/:thread_id/send — Send message
+[ ] Task 19: GET  /api/seller/reviews             — Reviews list
+[ ] Task 20: POST /api/seller/reviews/:id/reply   — Post reply to review
+[ ] Task 21: POST /api/seller/reels               — Upload reel metadata
+[ ] Task 22: GET  /api/seller/inventory           — Inventory & materials list
+[ ] Task 23: PATCH /api/seller/inventory/:id      — Update material stock
+[ ] Task 24: GET  /api/seller/store-config        — Get store configuration
+[ ] Task 25: PATCH /api/seller/store-config       — Save store configuration
+[ ] Task 26: UI WIRE — Connect all 15 Seller Studio panels to their API routes
+================================================================
+</div>
+
+<!-- ============================================================  DB MIGRATIONS  ============================================================ -->
+
+<div class="task">
+================================================================
+TASK 01: DB MIGRATION — listings table
+TYPE: DB MIGRATION
+NEEDED BY: Tasks 12, 13, 14, 15
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS listings (
+    id                INTEGER  PRIMARY KEY AUTOINCREMENT,
+    seller_id         INTEGER  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title             TEXT     NOT NULL,
+    description       TEXT     DEFAULT NULL,
+    story             TEXT     DEFAULT NULL,
+    base_price        INTEGER  NOT NULL DEFAULT 0,   -- in paise
+    listing_type      TEXT     NOT NULL DEFAULT 'pre-made' CHECK(listing_type IN ('pre-made','custom')),
+    status            TEXT     NOT NULL DEFAULT 'draft' CHECK(status IN ('active','paused','draft')),
+    ships_in_days     INTEGER  NOT NULL DEFAULT 3,
+    dispatch_sla_days INTEGER  NOT NULL DEFAULT 1,
+    daily_max_slots   INTEGER  DEFAULT NULL,
+    weekly_cap        INTEGER  DEFAULT NULL,
+    monthly_ceiling   INTEGER  DEFAULT NULL,
+    allow_prebooking  INTEGER  DEFAULT 0,
+    min_order_qty     INTEGER  DEFAULT 1,
+    max_order_qty     INTEGER  DEFAULT NULL,
+    weight_g          INTEGER  DEFAULT NULL,
+    length_cm         REAL     DEFAULT NULL,
+    width_cm          REAL     DEFAULT NULL,
+    height_cm         REAL     DEFAULT NULL,
+    shipping_method   TEXT     DEFAULT 'courier' CHECK(shipping_method IN ('courier','local','pickup')),
+    packaging_type    TEXT     DEFAULT 'standard' CHECK(packaging_type IN ('standard','branded','eco','fragile')),
+    return_policy     TEXT     DEFAULT 'no-returns' CHECK(return_policy IN ('no-returns','7-day','15-day')),
+    is_eco_friendly   INTEGER  DEFAULT 0,
+    festive_tags      TEXT     DEFAULT NULL,   -- JSON array of strings e.g. '["Diwali","Wedding"]'
+    created_at        TEXT     DEFAULT (datetime('now')),
+    updated_at        TEXT     DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_listings_seller_id ON listings(seller_id);
+  CREATE INDEX IF NOT EXISTS idx_listings_status    ON listings(status);
+
+COMMIT: feat: add listings table migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 02: DB MIGRATION — listing_variants table
+TYPE: DB MIGRATION
+NEEDED BY: Task 13, 14 (Pricing & Stock step — Artisan Variants)
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS listing_variants (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    listing_id      INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    variant_name    TEXT    NOT NULL,
+    price_delta     INTEGER NOT NULL DEFAULT 0,   -- in paise, can be negative
+    daily_capacity  INTEGER DEFAULT NULL,
+    created_at      TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_lv_listing_id ON listing_variants(listing_id);
+
+COMMIT: feat: add listing_variants table migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 03: DB MIGRATION — listing_images table
+TYPE: DB MIGRATION
+NEEDED BY: Task 13, 14 (Photos step — hero + gallery + reels)
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS listing_images (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    listing_id  INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    url         TEXT    NOT NULL,
+    is_cover    INTEGER DEFAULT 0,
+    sort_order  INTEGER DEFAULT 0,
+    type        TEXT    DEFAULT 'photo' CHECK(type IN ('photo','process','reel_thumb')),
+    created_at  TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_li_listing_id ON listing_images(listing_id);
+
+COMMIT: feat: add listing_images table migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 04: DB MIGRATION — orders table (seller-facing view)
+TYPE: DB MIGRATION
+NEEDED BY: Tasks 10, 11, 09 (Dashboard urgent orders widget)
+================================================================
+
+NOTE: This is the central orders table for the platform.
+Buyer-side order creation (checkout) is Part 1.
+Seller Studio only reads and updates status.
+Create the full table here so the seller routes work independently.
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS orders (
+    id              INTEGER  PRIMARY KEY AUTOINCREMENT,
+    order_ref       TEXT     NOT NULL UNIQUE,   -- e.g. TF-0042
+    buyer_id        INTEGER  NOT NULL REFERENCES users(id),
+    seller_id       INTEGER  NOT NULL REFERENCES users(id),
+    listing_id      INTEGER  NOT NULL REFERENCES listings(id),
+    variant_id      INTEGER  DEFAULT NULL REFERENCES listing_variants(id),
+    quantity        INTEGER  NOT NULL DEFAULT 1,
+    unit_price      INTEGER  NOT NULL,   -- in paise, price at time of order
+    total_amount    INTEGER  NOT NULL,   -- in paise
+    platform_fee    INTEGER  NOT NULL,   -- 8% in paise
+    seller_payout   INTEGER  NOT NULL,   -- total_amount - platform_fee
+    order_type      TEXT     NOT NULL DEFAULT 'pre-made' CHECK(order_type IN ('pre-made','custom')),
+    status          TEXT     NOT NULL DEFAULT 'awaiting_payment'
+                             CHECK(status IN (
+                               'awaiting_payment','processing','in_production',
+                               'packed','dispatched','delivered','cancelled','rto'
+                             )),
+    payment_status  TEXT     NOT NULL DEFAULT 'unpaid' CHECK(payment_status IN ('unpaid','paid','refunded')),
+    customization   TEXT     DEFAULT NULL,   -- JSON blob of custom instructions
+    tracking_id     TEXT     DEFAULT NULL,
+    courier         TEXT     DEFAULT NULL,
+    deadline_at     TEXT     DEFAULT NULL,
+    dispatched_at   TEXT     DEFAULT NULL,
+    delivered_at    TEXT     DEFAULT NULL,
+    studio_notes    TEXT     DEFAULT NULL,   -- JSON array of note objects {ts, text}
+    created_at      TEXT     DEFAULT (datetime('now')),
+    updated_at      TEXT     DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_orders_seller_id  ON orders(seller_id);
+  CREATE INDEX IF NOT EXISTS idx_orders_buyer_id   ON orders(buyer_id);
+  CREATE INDEX IF NOT EXISTS idx_orders_status     ON orders(status);
+  CREATE INDEX IF NOT EXISTS idx_orders_order_ref  ON orders(order_ref);
+
+COMMIT: feat: add orders table migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 05: DB MIGRATION — inventory_materials table
+TYPE: DB MIGRATION
+NEEDED BY: Task 22, 23 (Inventory & Materials panel)
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS inventory_materials (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    material_name TEXT    NOT NULL,
+    stock_qty     REAL    NOT NULL DEFAULT 0,
+    unit          TEXT    NOT NULL DEFAULT 'pcs' CHECK(unit IN ('kg','meters','pcs','grams','ml','liters')),
+    min_threshold REAL    NOT NULL DEFAULT 0,
+    status        TEXT    NOT NULL DEFAULT 'ok' CHECK(status IN ('ok','low','out')),
+    supplier_name TEXT    DEFAULT NULL,
+    supplier_phone TEXT   DEFAULT NULL,
+    created_at    TEXT    DEFAULT (datetime('now')),
+    updated_at    TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_inv_seller_id ON inventory_materials(seller_id);
+
+COMMIT: feat: add inventory_materials table migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 06: DB MIGRATION — reels table
+TYPE: DB MIGRATION
+NEEDED BY: Task 21 (Upload Reel panel)
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS reels (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title         TEXT    NOT NULL,
+    caption       TEXT    DEFAULT NULL,
+    video_url     TEXT    NOT NULL,
+    thumbnail_url TEXT    DEFAULT NULL,
+    reel_type     TEXT    DEFAULT 'behind-the-scenes'
+                           CHECK(reel_type IN (
+                             'behind-the-scenes','product-showcase',
+                             'asmr-packing','tutorial','customer-reveal'
+                           )),
+    seasonal_tag  TEXT    DEFAULT NULL,
+    visibility    TEXT    DEFAULT 'public' CHECK(visibility IN ('public','store-only','draft')),
+    view_count    INTEGER DEFAULT 0,
+    ig_reminder   INTEGER DEFAULT 0,
+    created_at    TEXT    DEFAULT (datetime('now')),
+    updated_at    TEXT    DEFAULT (datetime('now'))
+  );
+  -- Junction table: which listings a reel is linked to
+  CREATE TABLE IF NOT EXISTS reel_listing_links (
+    reel_id    INTEGER NOT NULL REFERENCES reels(id) ON DELETE CASCADE,
+    listing_id INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    PRIMARY KEY (reel_id, listing_id)
+  );
+  CREATE INDEX IF NOT EXISTS idx_reels_seller_id ON reels(seller_id);
+
+COMMIT: feat: add reels table migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 07: DB MIGRATION — reviews table
+TYPE: DB MIGRATION
+NEEDED BY: Task 19, 20 (Reviews panel)
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS reviews (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id        INTEGER NOT NULL REFERENCES orders(id),
+    buyer_id        INTEGER NOT NULL REFERENCES users(id),
+    seller_id       INTEGER NOT NULL REFERENCES users(id),
+    listing_id      INTEGER NOT NULL REFERENCES listings(id),
+    rating          INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+    review_text     TEXT    DEFAULT NULL,
+    seller_reply    TEXT    DEFAULT NULL,
+    seller_replied_at TEXT  DEFAULT NULL,
+    helpful_count   INTEGER DEFAULT 0,
+    is_verified     INTEGER DEFAULT 1,
+    created_at      TEXT    DEFAULT (datetime('now')),
+    updated_at      TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_reviews_seller_id  ON reviews(seller_id);
+  CREATE INDEX IF NOT EXISTS idx_reviews_listing_id ON reviews(listing_id);
+  -- Auto-review request settings per seller
+  CREATE TABLE IF NOT EXISTS review_request_settings (
+    seller_id       INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    auto_enabled    INTEGER DEFAULT 1,
+    days_after_delivery INTEGER DEFAULT 2,
+    message_template TEXT   DEFAULT 'Hi [Name], your studio find has arrived! If it brings you joy, would you share a quick review? Your feedback helps my small studio thrive.',
+    updated_at      TEXT    DEFAULT (datetime('now'))
+  );
+
+COMMIT: feat: add reviews and review_request_settings tables migration
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 08: DB MIGRATION — store_config table
+TYPE: DB MIGRATION
+NEEDED BY: Tasks 24, 25 (Store Config panel — identity, payouts, GST, notifications, shipping defaults)
+================================================================
+
+MIGRATION SQL:
+  CREATE TABLE IF NOT EXISTS store_config (
+    seller_id             INTEGER  PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    shop_name             TEXT     DEFAULT NULL,
+    tagline               TEXT     DEFAULT NULL,
+    artist_bio            TEXT     DEFAULT NULL,
+    avatar_url            TEXT     DEFAULT NULL,
+    instagram_handle      TEXT     DEFAULT NULL,
+    whatsapp_business     TEXT     DEFAULT NULL,
+    city                  TEXT     DEFAULT NULL,
+    specializations       TEXT     DEFAULT NULL,   -- JSON array of strings
+    is_accepting_orders   INTEGER  DEFAULT 1,
+    bank_account_holder   TEXT     DEFAULT NULL,
+    bank_name             TEXT     DEFAULT NULL,
+    bank_account_number   TEXT     DEFAULT NULL,   -- store masked; update via secure flow
+    gstin                 TEXT     DEFAULT NULL,
+    gstin_verified        INTEGER  DEFAULT 0,
+    notif_new_order_email     INTEGER DEFAULT 1,
+    notif_new_order_wa        INTEGER DEFAULT 1,
+    notif_new_order_inapp     INTEGER DEFAULT 1,
+    notif_cancelled_email     INTEGER DEFAULT 1,
+    notif_cancelled_wa        INTEGER DEFAULT 0,
+    notif_cancelled_inapp     INTEGER DEFAULT 1,
+    notif_stock_warn_email    INTEGER DEFAULT 1,
+    notif_stock_warn_wa       INTEGER DEFAULT 0,
+    notif_stock_warn_inapp    INTEGER DEFAULT 1,
+    notif_payout_email        INTEGER DEFAULT 1,
+    notif_payout_wa           INTEGER DEFAULT 1,
+    notif_payout_inapp        INTEGER DEFAULT 1,
+    default_shipping_method   TEXT   DEFAULT 'courier',
+    default_packaging_type    TEXT   DEFAULT 'standard',
+    default_dispatch_sla_days INTEGER DEFAULT 1,
+    updated_at            TEXT     DEFAULT (datetime('now'))
+  );
+  -- Workspace gallery photos (store_config 1:many)
+  CREATE TABLE IF NOT EXISTS store_workspace_photos (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id  INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    url        TEXT    NOT NULL,
+    sort_order INTEGER DEFAULT 0,
+    created_at TEXT    DEFAULT (datetime('now'))
+  );
+  -- Payouts history (read-only, inserted by payment system)
+  CREATE TABLE IF NOT EXISTS payout_history (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id   INTEGER NOT NULL REFERENCES users(id),
+    amount      INTEGER NOT NULL,   -- in paise
+    status      TEXT    NOT NULL DEFAULT 'settled' CHECK(status IN ('pending','settled','failed')),
+    settled_at  TEXT    DEFAULT NULL,
+    created_at  TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_payout_seller ON payout_history(seller_id);
+
+COMMIT: feat: add store_config, store_workspace_photos, payout_history migrations
+================================================================
+</div>
+
+<!-- ============================================================  API ROUTES  ============================================================ -->
+
+<div class="task">
+================================================================
+TASK 09: GET /api/seller/dashboard
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_home_dashboard screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/dashboard
+  Auth required:  YES — Bearer token, role must be 'seller'
+  Rate limit:     60 requests per minute per seller
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "seller_name":       string,          -- from users.full_name
+      "greeting_date":     string,          -- ISO date string
+      "stats": {
+        "new_orders_today":      number,
+        "new_orders_delta":      number,    -- vs yesterday (signed integer)
+        "orders_due_today":      number,
+        "orders_overdue":        number,
+        "revenue_this_week":     number,    -- in paise
+        "revenue_week_pct":      number,    -- % change vs last week
+        "capacity_used_pct":     number     -- % of daily_max_slots filled today
+      },
+      "festive_alert": {
+        "name":           string | null,    -- e.g. "Diwali"
+        "days_until":     number | null,
+        "active_orders":  number,
+        "cutoff_date":    string | null     -- ISO date
+      } | null,
+      "urgent_orders": [                    -- up to 5, deadline soonest first
+        {
+          "id":           number,
+          "order_ref":    string,
+          "product":      string,
+          "buyer_name":   string,
+          "buyer_city":   string,
+          "deadline_at":  string,           -- ISO datetime
+          "status":       string
+        }
+      ],
+      "production_capacity": [             -- today's slots for each listing type
+        {
+          "label":       string,           -- e.g. "Hand-Painting Session"
+          "used":        number,
+          "total":       number
+        }
+      ],
+      "pending_actions": [                 -- max 5, most recent first
+        {
+          "id":          number,
+          "text":        string,
+          "age":         string,           -- human-readable: "2 hours ago", "Urgent"
+          "is_urgent":   boolean
+        }
+      ],
+      "featured_buyer": {                  -- most recent repeat buyer (5+ orders)
+        "name":           string,
+        "order_count":    number,
+        "latest_message": string | null
+      } | null
+    }
+  }
+
+BUSINESS LOGIC:
+  1. Validate JWT, confirm role = 'seller', extract seller_id
+  2. Pull all stats from orders table for this seller_id
+  3. Capacity: sum daily_max_slots across active listings, count today's orders
+  4. Festive alert: hardcode Diwali/Eid/Christmas windows for now; add config later
+  5. Pending actions: derive from unconfirmed orders, unread messages, low stock items
+  6. Featured buyer: buyer with most orders this seller; pull latest message from messages table if exists
+
+COMMIT: feat: GET /api/seller/dashboard
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 10: GET /api/seller/orders
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_orders_queue screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/orders
+  Auth required:  YES — role 'seller'
+  Rate limit:     60/min
+
+QUERY PARAMS:
+  status    — filter by status string (e.g. "dispatched") or "overdue"
+  tab       — "all" | "due_today" | "in_production" | "packed" | "dispatched" | "overdue"
+  sort      — "deadline_asc" (default) | "created_desc"
+  page      — integer, default 1
+  per_page  — integer, default 20, max 100
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "total_count": number,
+      "orders": [
+        {
+          "id":             number,
+          "order_ref":      string,
+          "buyer_name":     string,
+          "buyer_city":     string,
+          "is_repeat_buyer": boolean,
+          "product_title":  string,
+          "variant_name":   string | null,
+          "order_type":     "pre-made" | "custom",
+          "customization":  object | null,
+          "payment_status": "paid" | "unpaid",
+          "status":         string,
+          "deadline_at":    string | null,
+          "is_overdue":     boolean,
+          "tracking_id":    string | null,
+          "studio_notes":   array
+        }
+      ]
+    }
+  }
+
+BUSINESS LOGIC:
+  1. Filter orders by seller_id from JWT
+  2. "overdue" tab: deadline_at &lt; NOW() AND status NOT IN ('dispatched','delivered','cancelled','rto')
+  3. "due_today": deadline_at is today's date
+  4. JOIN with users for buyer_name; JOIN with listings for product_title
+  5. is_repeat_buyer: count orders this buyer has placed with this seller >= 2
+  6. Parse customization JSON before returning
+
+COMMIT: feat: GET /api/seller/orders
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 11: PATCH /api/seller/orders/:id/status
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_orders_queue — status action buttons + tracking + studio notes
+================================================================
+
+ENDPOINT:
+  Method + URL:   PATCH /api/seller/orders/:id/status
+  Auth required:  YES — role 'seller'
+  Rate limit:     120/min
+
+REQUEST body (JSON):
+  {
+    "status":       string,              -- required; one of the valid status values
+    "tracking_id":  string,              -- optional; required when status = 'dispatched'
+    "courier":      string,              -- optional; e.g. "Shiprocket", "Delhivery"
+    "studio_note":  string               -- optional; appended to studio_notes array with timestamp
+  }
+
+VALID STATUS TRANSITIONS:
+  awaiting_payment → processing
+  processing       → in_production
+  in_production    → packed
+  packed           → dispatched     (tracking_id required)
+  dispatched       → delivered
+  any non-terminal → cancelled
+  dispatched       → rto
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "id":           number,
+      "order_ref":    string,
+      "status":       string,
+      "tracking_id":  string | null,
+      "updated_at":   string
+    }
+  }
+
+RESPONSE (errors):
+  400: Invalid status transition — code: "INVALID_TRANSITION"
+  403: Order does not belong to this seller — code: "FORBIDDEN"
+  404: Order not found — code: "NOT_FOUND"
+
+BUSINESS LOGIC:
+  1. Verify order belongs to seller_id from JWT
+  2. Enforce valid transition matrix above
+  3. If status = 'dispatched' and no tracking_id → 400 VALIDATION_ERROR
+  4. If studio_note provided: append {ts: datetime('now'), text: note} to studio_notes JSON array
+  5. UPDATE orders, set dispatched_at / delivered_at timestamps on relevant transitions
+
+COMMIT: feat: PATCH /api/seller/orders/:id/status
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 12: GET /api/seller/catalog
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_catalog_manager_unified_layout screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/catalog
+  Auth required:  YES — role 'seller'
+  Rate limit:     60/min
+
+QUERY PARAMS:
+  tab       — "all" | "active" | "paused" | "drafts" | "custom" | "pre-made"
+  sort      — "newest" | "best_selling" | "price_high" | "capacity_low"
+  page      — integer, default 1
+  per_page  — integer, default 20
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "summary": {
+        "active_count":  number,
+        "paused_count":  number,
+        "draft_count":   number
+      },
+      "listings": [
+        {
+          "id":              number,
+          "title":           string,
+          "base_price":      number,      -- in paise
+          "listing_type":    string,
+          "status":          string,
+          "ships_in_days":   number,
+          "daily_max_slots": number | null,
+          "slots_used_today": number,
+          "festive_tags":    array,
+          "cover_image_url": string | null,
+          "total_orders":    number,
+          "is_full":         boolean      -- slots_used_today >= daily_max_slots
+        }
+      ]
+    }
+  }
+
+BUSINESS LOGIC:
+  1. Join listings with listing_images (is_cover = 1) for cover_image_url
+  2. slots_used_today: count orders for this listing created today with non-cancelled status
+  3. is_full: slots_used_today >= daily_max_slots (if daily_max_slots is set)
+  4. best_selling sort: order by total_orders DESC
+  5. capacity_low sort: order by (slots_used_today / daily_max_slots) ASC
+
+COMMIT: feat: GET /api/seller/catalog
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 13: POST /api/seller/listings
+TYPE: API ROUTE
+NEEDED BY: Listing Wizard — Steps 1 (Photos) → 2 (Details) → 3 (Pricing) → 4 (Shipping) → 5 (Preview) → 6 (Publish)
+           Screens: tofa_seller_studio_photos_step_1,
+                    tofa_seller_studio_listing_details_step_2,
+                    tofa_seller_studio_pricing_stock_step_3,
+                    tofa_seller_studio_shipping_step_4,
+                    tofa_seller_studio_preview_step_5,
+                    tofa_seller_studio_publish_step_6_celebration
+================================================================
+
+ENDPOINT:
+  Method + URL:   POST /api/seller/listings
+  Auth required:  YES — role 'seller'
+  Rate limit:     30/min
+
+REQUEST body (JSON):
+  {
+    "title":            string,     -- required (Step 2)
+    "description":      string,     -- optional
+    "story":            string,     -- optional — "The Story Behind the Piece"
+    "base_price":       number,     -- required, in paise (Step 3)
+    "listing_type":     string,     -- "pre-made" | "custom" (Step 3)
+    "ships_in_days":    number,     -- required (Step 4 / Step 2)
+    "dispatch_sla_days": number,    -- required (Step 4)
+    "daily_max_slots":  number,     -- optional (Step 3)
+    "weekly_cap":       number,     -- optional (Step 3)
+    "monthly_ceiling":  number,     -- optional (Step 3)
+    "allow_prebooking": boolean,    -- optional (Step 3)
+    "prebooking_window": string,    -- "1_week"|"2_weeks"|"1_month" (Step 3)
+    "min_order_qty":    number,     -- optional (Step 3)
+    "max_order_qty":    number,     -- optional (Step 3)
+    "weight_g":         number,     -- optional (Step 4)
+    "length_cm":        number,     -- optional (Step 4)
+    "width_cm":         number,     -- optional (Step 4)
+    "height_cm":        number,     -- optional (Step 4)
+    "shipping_method":  string,     -- "courier"|"local"|"pickup" (Step 4)
+    "packaging_type":   string,     -- "standard"|"branded"|"eco"|"fragile" (Step 4)
+    "return_policy":    string,     -- "no-returns"|"7-day"|"15-day" (Step 4)
+    "is_eco_friendly":  boolean,    -- (Step 4)
+    "festive_tags":     array,      -- e.g. ["Diwali","Wedding"] (Step 3)
+    "variants":         array,      -- [{variant_name, price_delta, daily_capacity}] (Step 3)
+    "image_urls":       array,      -- [{url, is_cover, sort_order, type}] (Step 1)
+    "status":           string      -- "draft" (save) | "active" (publish)
+  }
+
+RESPONSE (success — 201):
+  {
+    "success": true,
+    "data": {
+      "id":           number,
+      "title":        string,
+      "status":       string,
+      "created_at":   string,
+      "platform_fee_pct": 8,
+      "estimated_payout": number   -- base_price * 0.92 in paise
+    }
+  }
+
+NOTE: Image upload (the actual file bytes) is handled separately via a
+      pre-signed URL or multipart endpoint. This route receives URLs of
+      already-uploaded images. For now, accept any URL string and store it.
+      Wire actual file upload later.
+
+NOTE: Status 'active' is the Publish action (Step 6 celebration screen fires on 201 + status=active).
+      Status 'draft' is Save Draft (available on every step).
+
+BUSINESS LOGIC:
+  1. Validate required fields (title, base_price, ships_in_days, dispatch_sla_days)
+  2. INSERT into listings
+  3. If variants array provided: INSERT each into listing_variants
+  4. If image_urls array provided: INSERT each into listing_images (only one can be is_cover = 1)
+  5. estimated_payout = base_price - floor(base_price * 0.08)
+  6. Return 201
+
+COMMIT: feat: POST /api/seller/listings
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 14: PATCH /api/seller/listings/:id
+TYPE: API ROUTE
+NEEDED BY: Catalog manager — edit listing; Listing Wizard — save draft mid-flow
+================================================================
+
+ENDPOINT:
+  Method + URL:   PATCH /api/seller/listings/:id
+  Auth required:  YES — role 'seller'
+  Rate limit:     60/min
+
+REQUEST body (JSON):
+  Any subset of the fields accepted by POST /api/seller/listings.
+  Partial updates — only provided fields are updated.
+  Special:
+    "variants_replace": boolean   -- if true, DELETE existing variants and INSERT fresh array
+    "images_replace":   boolean   -- if true, DELETE existing images and INSERT fresh array
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "id":         number,
+      "title":      string,
+      "status":     string,
+      "updated_at": string
+    }
+  }
+
+RESPONSE (errors):
+  403: Listing belongs to different seller — code: "FORBIDDEN"
+  404: Listing not found — code: "NOT_FOUND"
+
+COMMIT: feat: PATCH /api/seller/listings/:id
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 15: DELETE /api/seller/listings/:id
+TYPE: API ROUTE
+NEEDED BY: Catalog manager — "more_vert" menu → Delete / Pause
+================================================================
+
+ENDPOINT:
+  Method + URL:   DELETE /api/seller/listings/:id
+  Auth required:  YES — role 'seller'
+  Rate limit:     30/min
+
+QUERY PARAMS:
+  action  — "delete" | "pause" (default: "delete")
+            "pause" sets status = 'paused' instead of hard delete
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": { "id": number, "action": "deleted" | "paused" }
+  }
+
+RESPONSE (errors):
+  400: Listing has active orders — cannot delete; suggest pause — code: "HAS_ACTIVE_ORDERS"
+  403: Not this seller's listing — code: "FORBIDDEN"
+  404: Not found — code: "NOT_FOUND"
+
+BUSINESS LOGIC:
+  1. If action = "delete": check for active (non-terminal) orders. If found → 400
+  2. If action = "pause": UPDATE listings SET status = 'paused'
+  3. If action = "delete": DELETE from listings (cascades to variants + images)
+
+COMMIT: feat: DELETE /api/seller/listings/:id
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 16: GET /api/seller/analytics
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_analytics_dashboard screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/analytics
+  Auth required:  YES — role 'seller'
+  Rate limit:     30/min
+
+QUERY PARAMS:
+  period  — "this_week" | "this_month" | "last_3_months" | "custom" (default: "this_week")
+  from    — ISO date string (required if period = "custom")
+  to      — ISO date string (required if period = "custom")
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "period_label":       string,
+      "total_revenue":      number,    -- in paise
+      "revenue_pct_change": number,
+      "total_orders":       number,
+      "custom_orders":      number,
+      "premade_orders":     number,
+      "avg_order_value":    number,    -- in paise
+      "avg_order_stable":   boolean,
+      "repeat_buyer_rate":  number,    -- decimal 0–1
+      "repeat_buyer_goal":  number,    -- always 0.30
+      "on_time_dispatch_pct": number,
+      "revenue_over_time": [          -- grouped by week or day depending on period
+        { "label": string, "value": number }
+      ],
+      "best_selling_products": [
+        {
+          "listing_id":    number,
+          "title":         string,
+          "total_revenue": number      -- in paise
+        }
+      ],
+      "orders_by_day": [              -- Mon–Sun
+        { "day": string, "count": number }
+      ],
+      "order_funnel": {
+        "total":     number,
+        "completed_pct":  number,
+        "rto_pct":        number,
+        "cancelled_pct":  number
+      },
+      "avg_production_days": number,
+      "stated_production_days": number,   -- avg ships_in_days across active listings
+      "insights": [                   -- max 3 AI-style insight strings
+        { "icon": string, "text": string }
+      ]
+    }
+  }
+
+BUSINESS LOGIC:
+  1. All calculations scoped to seller_id from JWT and date range
+  2. repeat_buyer_rate: buyers with 2+ orders / total unique buyers
+  3. on_time_dispatch: orders dispatched_at &lt;= deadline_at / total dispatched orders
+  4. insights: derive from data (e.g. peak day of week, seasonal performance comparisons)
+     — Generate up to 3 plain text insights based on the data. Do not call any external AI API.
+
+COMMIT: feat: GET /api/seller/analytics
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 17: GET /api/seller/messages
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_messages_inbox screen — thread list + active thread
+================================================================
+
+NOTE: Create a messages table if not already present from other parts.
+      This task creates it if absent.
+
+ADDITIONAL TABLE (create if not exists):
+  CREATE TABLE IF NOT EXISTS message_threads (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    seller_id   INTEGER NOT NULL REFERENCES users(id),
+    buyer_id    INTEGER NOT NULL REFERENCES users(id),
+    order_id    INTEGER DEFAULT NULL REFERENCES orders(id),
+    last_msg_at TEXT    DEFAULT (datetime('now')),
+    has_unread  INTEGER DEFAULT 0,
+    created_at  TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS messages (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    thread_id   INTEGER NOT NULL REFERENCES message_threads(id) ON DELETE CASCADE,
+    sender_id   INTEGER NOT NULL REFERENCES users(id),
+    body        TEXT    NOT NULL,
+    is_quick_reply INTEGER DEFAULT 0,   -- 1 if sent via quick reply button
+    created_at  TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_threads_seller ON message_threads(seller_id);
+  CREATE INDEX IF NOT EXISTS idx_msgs_thread    ON messages(thread_id);
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/messages
+  Auth required:  YES — role 'seller'
+
+QUERY PARAMS:
+  tab       — "all" | "unread" | "broadcast" | "custom"
+  thread_id — number (if provided, also return the full message history for that thread)
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "threads": [
+        {
+          "thread_id":     number,
+          "buyer_name":    string,
+          "buyer_initials": string,       -- first letters of first + last name
+          "last_message":  string,
+          "last_msg_at":   string,
+          "has_unread":    boolean,
+          "order_ref":     string | null
+        }
+      ],
+      "active_thread": {                  -- only present when thread_id param is given
+        "thread_id":  number,
+        "buyer": {
+          "name":         string,
+          "is_verified":  boolean,
+          "order_ref":    string | null,
+          "current_order": {
+            "product_title": string,
+            "total_amount":  number,
+            "status":        string,
+            "deadline_at":   string | null,
+            "payment_status": string
+          } | null,
+          "order_history": [
+            { "title": string, "order_ref": string, "date": string }
+          ]
+        },
+        "messages": [
+          {
+            "id":          number,
+            "sender_role": "seller" | "buyer",
+            "body":        string,
+            "created_at":  string
+          }
+        ]
+      } | null
+    }
+  }
+
+COMMIT: feat: GET /api/seller/messages + message_threads/messages tables
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 18: POST /api/seller/messages/:thread_id/send
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_messages_inbox — message input bar + quick reply buttons
+================================================================
+
+ENDPOINT:
+  Method + URL:   POST /api/seller/messages/:thread_id/send
+  Auth required:  YES — role 'seller'
+  Rate limit:     120/min
+
+REQUEST body (JSON):
+  {
+    "body":           string,      -- required
+    "is_quick_reply": boolean      -- optional, default false
+  }
+
+QUICK REPLY SHORTCUTS (frontend sends body text; backend stores normally):
+  "Order confirmed" | "Send photo?" | "Dispatched" | "Tracking ready" | "Delay notice"
+
+RESPONSE (success — 201):
+  {
+    "success": true,
+    "data": {
+      "id":         number,
+      "body":       string,
+      "created_at": string
+    }
+  }
+
+RESPONSE (errors):
+  403: Thread does not belong to this seller — code: "FORBIDDEN"
+  404: Thread not found — code: "NOT_FOUND"
+
+BUSINESS LOGIC:
+  1. Verify thread belongs to seller_id from JWT
+  2. INSERT into messages with sender_id = seller_id
+  3. UPDATE message_threads SET last_msg_at = NOW(), has_unread = 0
+
+COMMIT: feat: POST /api/seller/messages/:thread_id/send
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 19: GET /api/seller/reviews
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_reviews_aligned_sidebar screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/reviews
+  Auth required:  YES — role 'seller'
+  Rate limit:     60/min
+
+QUERY PARAMS:
+  tab       — "all" | "5_star" | "4_star" | "3_and_below" | "needs_reply"
+  page      — integer, default 1
+  per_page  — integer, default 20
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "summary": {
+        "average_rating":     number,
+        "total_count":        number,
+        "pending_requests":   number,   -- deliveries with no review yet and no request sent
+        "distribution": {
+          "5": number, "4": number, "3": number, "2": number, "1": number
+        }
+      },
+      "reviews": [
+        {
+          "id":             number,
+          "buyer_name":     string,
+          "buyer_initial":  string,
+          "product_title":  string,
+          "order_ref":      string,
+          "rating":         number,
+          "review_text":    string | null,
+          "seller_reply":   string | null,
+          "is_verified":    boolean,
+          "helpful_count":  number,
+          "created_at":     string
+        }
+      ],
+      "auto_request_settings": {
+        "auto_enabled":        boolean,
+        "days_after_delivery": number,
+        "message_template":    string
+      }
+    }
+  }
+
+COMMIT: feat: GET /api/seller/reviews
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 20: POST /api/seller/reviews/:id/reply
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_reviews_aligned_sidebar — "Reply to review" button
+           Also: PATCH /api/seller/reviews/auto-request — save auto-request settings
+================================================================
+
+ENDPOINT A:
+  Method + URL:   POST /api/seller/reviews/:id/reply
+  Auth required:  YES — role 'seller'
+
+REQUEST body (JSON):
+  {
+    "reply_text": string   -- required
+  }
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "id":               number,
+      "seller_reply":     string,
+      "seller_replied_at": string
+    }
+  }
+
+RESPONSE (errors):
+  403: Review not for this seller — code: "FORBIDDEN"
+  409: Reply already exists — code: "ALREADY_REPLIED"
+
+ENDPOINT B (also build in this task):
+  Method + URL:   PATCH /api/seller/reviews/auto-request
+  Auth required:  YES — role 'seller'
+
+REQUEST body (JSON):
+  {
+    "auto_enabled":        boolean,
+    "days_after_delivery": number,
+    "message_template":    string
+  }
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": { "updated": true }
+  }
+
+BUSINESS LOGIC (Endpoint A):
+  1. Verify review.seller_id = seller_id from JWT
+  2. If seller_reply already exists → 409
+  3. UPDATE reviews SET seller_reply, seller_replied_at
+
+BUSINESS LOGIC (Endpoint B):
+  UPSERT review_request_settings for this seller_id
+
+COMMIT: feat: POST /api/seller/reviews/:id/reply + PATCH auto-request settings
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 21: POST /api/seller/reels
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_upload_reel_gallery screen
+           Also: GET /api/seller/reels for the "Recent Makes" list
+================================================================
+
+ENDPOINT A — Upload reel:
+  Method + URL:   POST /api/seller/reels
+  Auth required:  YES — role 'seller'
+  Rate limit:     20/min
+
+REQUEST body (JSON):
+  {
+    "title":          string,      -- required
+    "caption":        string,      -- optional
+    "video_url":      string,      -- required (pre-uploaded URL)
+    "thumbnail_url":  string,      -- optional
+    "reel_type":      string,      -- required; one of the CHECK values
+    "seasonal_tag":   string,      -- optional
+    "visibility":     string,      -- "public"|"store-only"|"draft"
+    "ig_reminder":    boolean,     -- optional
+    "linked_listing_ids": array    -- optional, array of listing IDs to link
+  }
+
+RESPONSE (success — 201):
+  {
+    "success": true,
+    "data": { "id": number, "title": string, "visibility": string }
+  }
+
+ENDPOINT B — Get reels list:
+  Method + URL:   GET /api/seller/reels
+  Auth required:  YES — role 'seller'
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "reels": [
+        {
+          "id":            number,
+          "title":         string,
+          "thumbnail_url": string | null,
+          "reel_type":     string,
+          "visibility":    string,
+          "view_count":    number,
+          "linked_listings": [ { "id": number, "title": string } ]
+        }
+      ]
+    }
+  }
+
+ENDPOINT C — Delete reel:
+  Method + URL:   DELETE /api/seller/reels/:id
+  Auth required:  YES — role 'seller'
+  Response:       200 { "success": true, "data": { "deleted": true } }
+
+BUSINESS LOGIC (A):
+  1. INSERT into reels
+  2. If linked_listing_ids provided: INSERT into reel_listing_links for each
+  3. Return 201
+
+COMMIT: feat: POST/GET/DELETE /api/seller/reels
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 22: GET /api/seller/inventory
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_inventory_materials screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/inventory
+  Auth required:  YES — role 'seller'
+  Rate limit:     60/min
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "summary": {
+        "low_stock_count":  number,
+        "out_of_stock_count": number,
+        "critical_material": {
+          "name":        string | null,
+          "needed":      number,
+          "on_hand":     number,
+          "unit":        string
+        } | null
+      },
+      "materials": [
+        {
+          "id":             number,
+          "material_name":  string,
+          "stock_qty":      number,
+          "unit":           string,
+          "min_threshold":  number,
+          "status":         "ok" | "low" | "out"
+        }
+      ],
+      "reorder_list": [               -- materials below min_threshold
+        {
+          "material_name": string,
+          "deficit":       number,    -- how much is short
+          "needed":        number,
+          "current":       number,
+          "unit":          string
+        }
+      ],
+      "suppliers": [
+        {
+          "id":             number,
+          "supplier_name":  string,
+          "supplier_phone": string | null
+        }
+      ]
+    }
+  }
+
+BUSINESS LOGIC:
+  1. Pull all inventory_materials for this seller_id
+  2. Recompute status: if stock_qty &lt;= 0 → "out"; if stock_qty &lt;= min_threshold → "low"; else "ok"
+  3. critical_material: the out-of-stock item with the largest min_threshold value
+
+COMMIT: feat: GET /api/seller/inventory
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 23: PATCH /api/seller/inventory/:id
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_inventory_materials — add material, log purchase, edit stock
+           Also: POST /api/seller/inventory — add new material
+================================================================
+
+ENDPOINT A — Update stock:
+  Method + URL:   PATCH /api/seller/inventory/:id
+  Auth required:  YES — role 'seller'
+
+REQUEST body (JSON):
+  {
+    "stock_qty":      number,   -- optional, new absolute qty
+    "delta":          number,   -- optional, relative change (+ purchase, - usage)
+    "min_threshold":  number,   -- optional
+    "supplier_name":  string,   -- optional
+    "supplier_phone": string    -- optional
+  }
+  NOTE: Provide either stock_qty (absolute set) OR delta (relative), not both.
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "id":        number,
+      "stock_qty": number,
+      "status":    string
+    }
+  }
+
+ENDPOINT B — Add new material:
+  Method + URL:   POST /api/seller/inventory
+  Auth required:  YES — role 'seller'
+
+REQUEST body (JSON):
+  {
+    "material_name":  string,   -- required
+    "stock_qty":      number,   -- required
+    "unit":           string,   -- required
+    "min_threshold":  number,   -- optional, default 0
+    "supplier_name":  string,   -- optional
+    "supplier_phone": string    -- optional
+  }
+
+RESPONSE (success — 201):
+  {
+    "success": true,
+    "data": { "id": number, "material_name": string }
+  }
+
+BUSINESS LOGIC:
+  1. Verify material belongs to seller from JWT
+  2. Compute new stock_qty and recompute status field
+  3. For delta: new_qty = current + delta; if new_qty &lt; 0, set to 0
+
+COMMIT: feat: PATCH/POST /api/seller/inventory
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 24: GET /api/seller/store-config
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_store_configuration screen (all 6 sections)
+           Also: tofa_seller_studio_profile_settings screen
+================================================================
+
+ENDPOINT:
+  Method + URL:   GET /api/seller/store-config
+  Auth required:  YES — role 'seller'
+  Rate limit:     60/min
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": {
+      "store_identity": {
+        "shop_name":          string | null,
+        "tagline":            string | null,
+        "artist_bio":         string | null,
+        "avatar_url":         string | null,
+        "instagram_handle":   string | null,
+        "whatsapp_business":  string | null,
+        "city":               string | null,
+        "specializations":    array,
+        "is_accepting_orders": boolean,
+        "verification_badges": {
+          "identity_verified":  boolean,
+          "gst_registered":     boolean,
+          "orders_50_plus":     boolean,
+          "reviews_100_plus":   boolean
+        },
+        "workspace_photos":   [ { "id": number, "url": string } ]
+      },
+      "payment_payouts": {
+        "bank_account_holder": string | null,
+        "bank_name":           string | null,
+        "bank_account_masked": string | null,   -- e.g. "•••• •••• 5690"
+        "recent_payouts": [
+          { "date": string, "amount": number, "status": string }
+        ]
+      },
+      "gst_compliance": {
+        "gstin":           string | null,
+        "gstin_verified":  boolean,
+        "revenue_ytd":     number,       -- in paise
+        "threshold":       number        -- always 2000000 paise (₹20L)
+      },
+      "notifications": {
+        "new_order":   { "email": boolean, "whatsapp": boolean, "in_app": boolean },
+        "cancelled":   { "email": boolean, "whatsapp": boolean, "in_app": boolean },
+        "stock_warn":  { "email": boolean, "whatsapp": boolean, "in_app": boolean },
+        "payout":      { "email": boolean, "whatsapp": boolean, "in_app": boolean }
+      },
+      "shipping_defaults": {
+        "default_shipping_method":    string,
+        "default_packaging_type":     string,
+        "default_dispatch_sla_days":  number
+      }
+    }
+  }
+
+BUSINESS LOGIC:
+  1. LEFT JOIN store_config with store_workspace_photos and payout_history
+  2. Compute verification badges from counts:
+     - identity_verified: stored in store_config.gstin_verified or a dedicated field
+     - orders_50_plus: COUNT orders for this seller >= 50
+     - reviews_100_plus: COUNT reviews for this seller >= 100
+  3. bank_account_masked: show only last 4 digits with bullet prefix
+
+COMMIT: feat: GET /api/seller/store-config
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 25: PATCH /api/seller/store-config
+TYPE: API ROUTE
+NEEDED BY: tofa_seller_studio_store_configuration — "Save Changes" button (each section)
+           Also: tofa_seller_studio_profile_settings — "Save Profile" button
+================================================================
+
+ENDPOINT:
+  Method + URL:   PATCH /api/seller/store-config
+  Auth required:  YES — role 'seller'
+  Rate limit:     30/min
+
+REQUEST body (JSON) — partial update, send only the section being saved:
+  {
+    "shop_name":           string,
+    "tagline":             string,
+    "artist_bio":          string,
+    "avatar_url":          string,
+    "instagram_handle":    string,
+    "whatsapp_business":   string,
+    "city":                string,
+    "specializations":     array,
+    "is_accepting_orders": boolean,
+    "workspace_photos":    array,      -- [{url, sort_order}] — replaces all existing
+    "bank_account_holder": string,
+    "bank_name":           string,
+    "bank_account_number": string,     -- only update if explicitly provided
+    "gstin":               string,
+    "notif_new_order_email":    boolean,
+    "notif_new_order_wa":       boolean,
+    "notif_new_order_inapp":    boolean,
+    "notif_cancelled_email":    boolean,
+    "notif_cancelled_wa":       boolean,
+    "notif_cancelled_inapp":    boolean,
+    "notif_stock_warn_email":   boolean,
+    "notif_stock_warn_wa":      boolean,
+    "notif_stock_warn_inapp":   boolean,
+    "notif_payout_email":       boolean,
+    "notif_payout_wa":          boolean,
+    "notif_payout_inapp":       boolean,
+    "default_shipping_method":  string,
+    "default_packaging_type":   string,
+    "default_dispatch_sla_days": number
+  }
+
+RESPONSE (success — 200):
+  {
+    "success": true,
+    "data": { "updated": true, "updated_at": string }
+  }
+
+BUSINESS LOGIC:
+  1. UPSERT store_config for this seller_id (INSERT OR REPLACE / INSERT ... ON CONFLICT DO UPDATE)
+  2. If workspace_photos provided: DELETE existing rows, INSERT fresh
+  3. If gstin provided: set gstin_verified = 0 (requires re-verification)
+  4. Never echo back bank_account_number in full
+
+COMMIT: feat: PATCH /api/seller/store-config
+================================================================
+</div>
+
+<div class="task">
+================================================================
+TASK 26: UI WIRE — Connect all 15 Seller Studio panels to their API routes
+TYPE: UI WIRING
+NEEDED BY: All seller studio HTML files in stitch_tofa_artisan_design_system/
+================================================================
+
+PANELS AND THEIR WIRE-UPS:
+
+1. tofa_seller_studio_home_dashboard/code.html
+   → On load: GET /api/seller/dashboard
+   → Populate: seller name, stats cards, festive alert banner, urgent orders table,
+               production capacity rows, pending actions list, featured buyer card
+   → "Set Cutoff Date" button: opens modal, no API yet (placeholder alert)
+   → Quick action buttons (New Order / Add Product / Upload Reel): navigate to respective panels
+
+2. tofa_seller_studio_orders_queue/code.html
+   → On load: GET /api/seller/orders?tab=all
+   → Tab clicks: re-fetch with ?tab= param
+   → Status action buttons (QC Check →, Processing →, Production →):
+     PATCH /api/seller/orders/:id/status with next status
+   → "Generate Shiprocket Label" button: placeholder alert for now
+   → "Export CSV" button: GET /api/seller/orders?tab=all&format=csv (add this query to Task 10)
+   → Studio notes: append via PATCH with studio_note field
+   → Checkbox bulk select + "Mark as Packed/Dispatched": loop PATCH calls per selected order
+
+3. tofa_seller_studio_catalog_manager_unified_layout/code.html
+   → On load: GET /api/seller/catalog
+   → Tab/sort controls: re-fetch with query params
+   → "Add Product" button: navigate to listing wizard (photos step)
+   → "Bulk Edit Prices" button: placeholder alert for now
+   → Product card "more_vert" menu → Edit: navigate to listing wizard pre-filled
+   → Product card "more_vert" menu → Pause: DELETE /api/seller/listings/:id?action=pause
+   → Product card "more_vert" menu → Delete: DELETE /api/seller/listings/:id?action=delete
+
+4. tofa_seller_studio_photos_step_1_full_page_match/code.html
+   → Step 1 of wizard — image upload (file input)
+   → "Save Draft" button: POST /api/seller/listings with status="draft" and image_urls so far
+   → "Next: Details →" button: validate at least 1 image; store draft ID in sessionStorage; navigate step 2
+   → Live preview sidebar: update in real time as images added
+
+5. tofa_seller_studio_listing_details_step_2_header_match/code.html
+   → Step 2 — title, description, story text fields
+   → "Save Draft": PATCH /api/seller/listings/:draft_id
+   → "Next Step →": save and navigate to step 3
+
+6. tofa_seller_studio_pricing_stock_step_3_unified_layout/code.html
+   → Step 3 — base price, variants, production limits, prebooking, revenue projection
+   → Price input: live-update revenue projection (base * 0.92)
+   → "Add variant": dynamically add row
+   → "Preview Payout Schedule" button: placeholder alert for now
+   → "Save Draft" / "Next Step →": PATCH /api/seller/listings/:draft_id
+
+7. tofa_seller_studio_shipping_step_4_header_match/code.html
+   → Step 4 — shipping method, packaging, checklist, SLA, return policy, dimensions
+   → Packaging radio buttons: update buyer preview card in real time
+   → "Save Draft" / "Next Step →": PATCH /api/seller/listings/:draft_id
+
+8. tofa_seller_studio_preview_step_5_modal_style/code.html
+   → Step 5 — read-only preview of all fields
+   → "← Back": navigate to step 4
+   → "Looks good — Publish": PATCH /api/seller/listings/:draft_id with status="active"
+     On success (200): navigate to step 6 (celebration screen)
+
+9. tofa_seller_studio_publish_step_6_celebration/code.html
+   → Shown after successful publish
+   → "View in Catalog" link: navigate to catalog panel
+   → "Go to Dashboard" button: navigate to home dashboard
+   → "Share to Instagram" / "Upload a Reel": navigate to reel upload panel
+
+10. tofa_seller_studio_analytics_dashboard/code.html
+    → On load: GET /api/seller/analytics?period=this_week
+    → Period buttons (This Week / This Month / Last 3 Months / Custom Range):
+      re-fetch with ?period= param; Custom Range shows date picker inputs
+    → Chart: render revenue_over_time as SVG bar chart using the data array
+    → "Adjust Lead Time →" link: navigate to store config panel
+    → "See Feedback →" link: navigate to reviews panel
+
+11. tofa_seller_studio_reviews_aligned_sidebar/code.html
+    → On load: GET /api/seller/reviews?tab=all
+    → Tab clicks: re-fetch with ?tab= param
+    → "Send reminders" button: placeholder alert for now
+    → "Reply to review" → textarea submit: POST /api/seller/reviews/:id/reply
+    → Auto-request settings form save: PATCH /api/seller/reviews/auto-request
+
+12. tofa_seller_studio_upload_reel_gallery/code.html
+    → On load: GET /api/seller/reels (populate "Recent Makes" section)
+    → "Link to Product(s)" search: GET /api/seller/catalog to populate typeahead
+    → "Save as Draft": POST /api/seller/reels with visibility="draft"
+    → "Publish Reel": POST /api/seller/reels with visibility="public"
+    → Edit icon on recent reel: PUT placeholder (no edit endpoint yet — log to console)
+    → Delete icon: DELETE /api/seller/reels/:id
+
+13. tofa_seller_studio_pricing_stock_step_3 → also handles Production Planner link:
+    tofa_seller_studio_production_planner/code.html
+    → On load: GET /api/seller/catalog (for product bandwidth rows) + GET /api/seller/orders
+    → Week navigation (chevron_left / chevron_right): adjust date range, re-fetch orders
+    → "Set Away Date" / "Set Festive Cutoff" buttons: PATCH /api/seller/store-config
+      (add away_dates and festive_cutoff fields to store_config if not present; add migration)
+    → "Mark batch complete" button: bulk PATCH orders in batch to status="packed"
+
+14. tofa_seller_studio_inventory_materials/code.html
+    → On load: GET /api/seller/inventory
+    → "Add Material" form submit: POST /api/seller/inventory
+    → "Log Purchase" button: PATCH /api/seller/inventory/:id with delta
+    → "Generate PO to Suppliers" button: placeholder alert for now
+
+15. tofa_seller_studio_store_configuration/code.html
+    → On load: GET /api/seller/store-config
+    → Each section has its own "Save Changes" button: PATCH /api/seller/store-config
+      with only that section's fields
+    → tofa_seller_studio_profile_settings/code.html:
+      Same wiring — GET on load, "Save Profile" → PATCH /api/seller/store-config
+      with store_identity fields only
+
+GLOBAL WIRING RULES FOR ALL PANELS:
+  - Read access_token from sessionStorage on every API call
+  - On 401 response: clear sessionStorage, show session-ended screen
+  - On 403 role mismatch: redirect to home (buyer should not see seller studio)
+  - Show loading skeleton while fetching (not just a spinner — match the layout)
+  - Show error toast (bottom-right, terracotta #BA1A1A background) on API error
+  - Show success toast (forest green #3D6B4F background) on save/publish actions
+  - Sidebar nav active state: highlight the icon matching the current panel
+
+COMMIT: feat: wire all 15 Seller Studio panels to API routes
+================================================================
+</div>
+
+<!-- ============================================================  DEPENDENCIES  ============================================================ -->
+
+<div class="block">
+================================================================
+DEPENDENCIES
+================================================================
+Run this part only after:    Part 3 (Auth) is complete
+Tables required from Part 3:
+  users            — seller_id references
+  seller_profiles  — shop_name, is_approved
+
+Tables created in this part that other parts may depend on:
+  listings            — referenced by buyer browse (Part 1) and admin (Part 2)
+  orders              — central table, referenced by all parts
+  reviews             — referenced by buyer profile (Part 1)
+  message_threads     — referenced by buyer messaging (Part 1)
+  messages            — referenced by buyer messaging (Part 1)
+  inventory_materials — seller-private
+  reels               — referenced by buyer Reels feed (Part 1)
+  reel_listing_links  — junction, Part 1 reads
+  store_config        — referenced by buyer store page (Part 1)
+  store_workspace_photos — referenced by buyer store page (Part 1)
+  payout_history      — referenced by admin (Part 2)
+  listing_variants    — referenced by buyer checkout (Part 1)
+  listing_images      — referenced by buyer browse (Part 1)
+
+npm packages required (install with --yes):
+  better-sqlite3   — already installed (Part 3)
+  bcrypt           — already installed (Part 3)
+  jsonwebtoken     — already installed (Part 3)
+  multer           — file upload middleware (for image/video upload endpoints later)
+================================================================
+</div>
+
+<!-- ============================================================  AUTONOMY  ============================================================ -->
+
+<div class="block">
+================================================================
+AUTONOMY RULES
+================================================================
+1. Work through tasks in numbered order (01 → 26)
+2. Complete each task fully before starting the next
+3. Use non-interactive flags on every command: -y, --yes, --no-input, --force
+4. Never ask for user input — resolve ambiguities using the spec above
+5. After each API route task: write a quick self-check that sends a
+   test request and logs whether the response shape matches what the
+   frontend expects (field names, types, HTTP status codes)
+6. Commit after each task using the specified commit message
+7. If a task fails: log the error, skip to next task, do not stop
+8. All monetary values travel as integers (paise) between backend and
+   frontend; format as ₹ only at render time
+9. All dates stored as TEXT in SQLite using datetime('now') ISO format;
+   return as ISO strings in API responses
+10. When Part 4 is complete, output:
+    "PART 4 COMPLETE — 16 routes built — 8 tables created — 15 panels wired"
+================================================================
+</div>
+
+<!-- ============================================================  SCREENS REFERENCE  ============================================================ -->
+
+<div class="block">
+================================================================
+SCREENS IN THIS PART (15 panels analysed)
+================================================================
+
+1.  tofa_seller_studio_home_dashboard
+    — Left sidebar nav + top header
+    — Stat cards: New Orders Today, Orders Due Today, Revenue This Week, Capacity Used
+    — Festive alert banner (Diwali countdown example)
+    — Urgent Orders table (5 rows): product, buyer, city, deadline, status
+    — Today's Production Capacity: slot usage per production type
+    — Quick actions: New Order, Add Product, Upload Reel
+    — Pending Actions list (notifications-style)
+    — Featured Buyer card with "Send a Personal Note" CTA
+    — Artisan's Tip quote block
+
+2.  tofa_seller_studio_orders_queue
+    — Tab bar: All / Due Today / In Production / Packed / Dispatched / Overdue
+    — Table columns: Deadline, Order ID, Buyer, Product, Type, Custom, Payment, Status, Actions
+    — Status action buttons inline per row
+    — Overdue badge on deadline cell
+    — Bulk select checkboxes + bulk action bar
+    — Detail view slide-out: customization details, studio notes, tracking ID, Shiprocket label
+    — Export CSV button
+
+3.  tofa_seller_studio_catalog_manager_unified_layout
+    — Summary pills: 23 active · 3 paused · 2 drafts
+    — Tab: All / Active / Paused / Drafts / Customized / Pre-made
+    — Sort: Newest / Best Selling / Price High–Low / Capacity Low–High
+    — Product cards: cover image, title, price, type badge, ships_in_days, daily capacity bar,
+      festive tags, more_vert menu
+    — Capacity bar shows used/max slots — "FULL — PRE-BOOKING ONLY" state
+    — "Add Product" FAB + "Bulk Edit Prices" button
+
+4.  tofa_seller_studio_photos_step_1_full_page_match
+    — Listing Wizard step indicator (1–6)
+    — Drag-and-drop hero image upload zone
+    — Reorder gallery thumbnails (drag_handle)
+    — "Add Process Photos or Reels" section (optional)
+    — Live preview sidebar (right): updates as images added
+    — Back to Dashboard / Next: Details →
+
+5.  tofa_seller_studio_listing_details_step_2_header_match
+    — (Screen PNG is 28 bytes — placeholder only; build standard step 2 form)
+    — Fields: Title, Description (multi-line), Story Behind the Piece (multi-line)
+    — Listing type selector: Pre-made / Custom
+    — Ships in (days) stepper
+    — Save Draft / Next Step →
+
+6.  tofa_seller_studio_pricing_stock_step_3_unified_layout
+    — Base Listing Price (₹ input)
+    — Artisan Variants accordion (add variant: name, price delta, capacity)
+    — Production Limits: Daily Max Slots, Weekly Auto-Calc, Monthly Ceiling
+    — Allow Pre-booking toggle with window selector (1 Week / 2 Weeks / 1 Month)
+    — Min/Max order qty inputs
+    — Festive Cutoff toggle (event_busy icon)
+    — Link to Inventory toggle
+    — Revenue Projection card: Base Value → −8% fee → Estimated Payout
+    — 7-day availability mini-calendar (booked/open per day)
+    — Pro Tip callout
+
+7.  tofa_seller_studio_shipping_step_4_header_match
+    — Shipping Method radio: Courier (Shiprocket/Delhivery) / Local Delivery / Buyer Pickup
+    — Packaging Type: Standard / Custom Branded / Eco-Friendly / Fragile-Rated (radio)
+    — Packaging Checklist (draggable items, add/delete)
+    — Dispatch SLA (days after order) number input
+    — Return Policy: No returns / 7-day / 15-day (note: locked for custom items)
+    — Weight & Dimensions: weight_g, length, width, height
+    — Buyer View Preview card (live updates)
+    — Studio Tip quote block (ceramics packing tip)
+
+8.  tofa_seller_studio_preview_step_5_modal_style
+    — Step indicators (all previous steps checked)
+    — "Preview as buyer" URL display
+    — Product display: hero image, title, price, shipping info, story text
+    — Artisan attribution section
+    — "← Back" / "Looks good — Publish" buttons
+
+9.  tofa_seller_studio_publish_step_6_celebration
+    — Success state: "Your listing is live! ✦"
+    — Product name confirmation
+    — 3 CTAs: Share to Instagram / Upload a Reel / View in Catalog
+    — "Go to Dashboard" button
+
+10. tofa_seller_studio_analytics_dashboard
+    — Period selector: This Week / This Month / Last 3 Months / Custom Range (date picker)
+    — Stat cards: Total Revenue (+% badge), Total Orders (custom/pre-made split),
+      Avg Order Value, Repeat Buyer Rate (donut goal), On-time Dispatch %
+    — Revenue Over Time bar chart (weekly)
+    — Best-Selling Products ranked list (4 items)
+    — Orders by Day of Week bar chart (Mon–Sun)
+    — Cancellation / RTO funnel (donut: completed/RTO/cancelled)
+    — Two insight cards (timer icon, warning icon)
+    — AI insight card (auto_awesome icon) — seasonal comparison
+
+11. tofa_seller_studio_reviews_aligned_sidebar
+    — Overall Rating: large number + star display + "Based on N reviews"
+    — Rating Distribution bar chart (5★–1★)
+    — Pending Requests count + "Send reminders" button
+    — Tab: All Reviews / 5★ / 4★ / 3★ & Below / Needs Reply
+    — Review cards: buyer avatar initial, product name, order ref, date, star rating,
+      review text, verified badge, helpful count, seller reply (if exists)
+    — "Reply to review" button → inline textarea
+    — Auto-Request Settings panel (right): toggle, days input, template textarea, Save
+
+12. tofa_seller_studio_upload_reel_gallery
+    — Drag-and-drop video upload zone (MP4/MOV, max 100MB)
+    — Reel Title, Caption inputs
+    — "Link to Product(s)" typeahead multi-select
+    — Reel Type radio: Behind-the-Scenes / Product Showcase / ASMR Packing / Tutorial / Customer Reveal
+    — Seasonal Tag input
+    — Visibility: Public / Store-only / Draft
+    — "Remind me to post on Instagram" checkbox
+    — Recent Makes grid: thumbnail, title, view count, product tag, edit/delete icons
+    — Save as Draft / Publish Reel buttons
+
+13. tofa_seller_studio_production_planner
+    — Week/Month toggle + date navigation (chevron prev/next)
+    — "Set Away Date" / "Set Festive Cutoff" action buttons
+    — Product Bandwidth rows per active listing (CUSTOM / PRE-MADE badge):
+      Daily Slots, Weekly Cap, Allow Pre-booking toggles, Pause Production toggle
+    — Weekly calendar grid: each day shows per-product slot usage (e.g. VASES 4/5)
+      — FULL badge on maxed-out cells; FESTIVE CUTOFF marker on specific date
+    — Daily Batches section (bottom): batch cards with order IDs, estimated hours,
+      product name, "Mark batch complete" button
+
+14. tofa_seller_studio_inventory_materials
+    — Summary: Low Stock Items count, Out of Stock count, Critical Material alert
+    — Raw Materials table: Name, Stock, Unit, Min Threshold, Status badge (OK/LOW/OUT)
+    — Add Material inline form (bottom of table): name, qty, unit dropdown
+    — "What to buy before next rush" reorder list with deficit amounts
+    — "Generate PO to Suppliers" button
+    — Primary Suppliers list with call/chat icons
+
+15. tofa_seller_studio_store_configuration
+    — Left settings nav: Store Identity / Payment & Payouts / GST & Compliance /
+      Availability & Cutoffs / Notifications / Shipping Defaults / Form Customization
+    — Store Identity section: avatar upload, shop name, tagline, artist bio textarea,
+      accepting orders toggle, specializations tags (add new)
+    — Payment & Payouts: bank details (masked), edit button, recent payouts list
+    — GST & Compliance: GSTIN input with verified badge, 85% threshold revenue alert
+    — Notifications: 4-row × 3-column (Email / WhatsApp / In-App) toggle grid
+    — (Profile Settings panel: same store identity fields + verification badges +
+      workspace gallery photos grid + "Tell buyers how you started" story textarea)
+
+================================================================
+</div>
+
+</body>
+</html>

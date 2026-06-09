@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tohfa — Part 5: Frontend ↔ Backend Integration — Antigravity Prompt File</title>
+<style>
+  body { font-family: monospace; background: #0d0d0d; color: #e8e8e8; padding: 2rem; line-height: 1.7; max-width: 1200px; margin: 0 auto; }
+  h1 { color: #a0d2b0; font-size: 1.5rem; border-bottom: 3px solid #255338; padding-bottom: 0.6rem; }
+  h2 { color: #D4AF37; font-size: 1.15rem; margin-top: 2.5rem; }
+  pre { background: #1a1a1a; border: 1px solid #333; padding: 1.2rem; overflow-x: auto; white-space: pre-wrap; word-break: break-word; border-radius: 4px; }
+  .warn { color: #ff9a3c; font-weight: bold; }
+  .ok   { color: #a0d2b0; }
+  .gold { color: #D4AF37; }
+  .task-header { background: #1a2e1f; border-left: 5px solid #255338; padding: 0.6rem 1.2rem; margin: 2.5rem 0 0.5rem; border-radius: 0 4px 4px 0; }
+  .task-header h3 { color: #a0d2b0; margin: 0; font-size: 1rem; }
+  .rule-box { background: #111820; border: 1px solid #D4AF37; border-radius: 6px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li::before { content: "[ ] "; color: #555; }
+  .checklist li { padding: 2px 0; }
+  .section-divider { border: none; border-top: 1px dashed #333; margin: 2rem 0; }
+  .note { background: #1c1c10; border-left: 4px solid #D4AF37; padding: 0.6rem 1rem; margin: 0.5rem 0; border-radius: 0 4px 4px 0; }
+  .danger { background: #2e1010; border-left: 4px solid #ff4c4c; padding: 0.6rem 1rem; margin: 0.5rem 0; border-radius: 0 4px 4px 0; }
+  .fix { background: #1a1a2e; border-left: 4px solid #7b5ea7; padding: 0.6rem 1rem; margin: 0.5rem 0; border-radius: 0 4px 4px 0; }
+</style>
+</head>
+<body>
+
+<pre>
+&lt;!-- ============================================================
+SYSTEM RULE FOR ANTIGRAVITY — READ THIS FIRST:
+Always use non-interactive flags for ALL terminal commands
+(-y, --yes, --no-input, --force).
+Never pause for confirmation. Never wait for user input.
+This applies to every single command in this entire file.
+============================================================ --&gt;
+</pre>
+
+<h1>TOHFA — PART 5: FRONTEND ↔ BACKEND INTEGRATION</h1>
+<p>Antigravity prompt file · Run AFTER Parts 1, 2, 3, and 4 are complete.<br>
+<span class="warn">PURPOSE: Connect the existing frontend folder to the existing backend folder. Do NOT rewrite or replace screens. Wire up API calls, fix broken fetches, replace all hardcoded/mock data, and ensure auth tokens flow correctly end-to-end.</span></p>
+
+<div class="rule-box">
+<pre>
+================================================================
+PART 5 — FRONTEND ↔ BACKEND INTEGRATION
+Total tasks:      42
+Folder wiring:     1
+Auth integration: 6
+API wiring:       25
+File upload:       3
+Error handling:    4
+Environment:       2
+Final checks:      1
+Run after:        Parts 3 → 1 → 4 → 2 (all four must be complete)
+================================================================
+TABLE OF CONTENTS
+================================================================
+SETUP & FOLDER WIRING
+[ ] Task 01: Identify frontend and backend folder paths; set up proxy/env
+[ ] Task 02: Create .env and .env.example with all required variables
+
+AUTH INTEGRATION
+[ ] Task 03: Wire Buyer Signup form → POST /api/auth/register/buyer
+[ ] Task 04: Wire Seller Signup form → POST /api/auth/register/seller
+[ ] Task 05: Wire Login form → POST /api/auth/login
+[ ] Task 06: Wire Logout → POST /api/auth/logout
+[ ] Task 07: Wire token refresh interceptor → POST /api/auth/refresh
+[ ] Task 08: Wire Forgot Password → POST /api/auth/forgot-password
+             Wire Reset Password  → POST /api/auth/reset-password
+
+BUYER SCREENS — API WIRING
+[ ] Task 09: Home Feed screen → GET /api/home/feed
+[ ] Task 10: Category Browse screen → GET /api/categories
+             Category Products page → GET /api/categories/:slug/products
+[ ] Task 11: Product Search → GET /api/products/search
+             Product Detail → GET /api/products/:id
+[ ] Task 12: Cart screens → GET/POST/PATCH/DELETE /api/cart and /api/cart/items/:id
+[ ] Task 13: Address screens → GET/POST/PUT/DELETE /api/addresses and /api/addresses/:id
+[ ] Task 14: Orders screens → POST/GET /api/orders and /api/orders/:id
+             Cancel & Receipt → POST /api/orders/:id/cancel + GET /api/orders/:id/receipt
+[ ] Task 15: Payment flow → POST /api/payments/initiate + POST /api/payments/verify
+             Payment History → GET /api/payments/history
+[ ] Task 16: Wishlist screens → GET/POST/DELETE /api/wishlist and /api/wishlist/:productId
+[ ] Task 17: Reels Feed → GET /api/reels/feed
+             Reel Like/Save → POST /api/reels/:id/like + POST/DELETE /api/reels/:id/save
+             Reel Comments → GET/POST /api/reels/:id/comments
+             Saved Reels → GET /api/reels/saved
+[ ] Task 18: Buyer Profile screens → GET/PATCH /api/profile/me
+[ ] Task 19: Follow/Unfollow → POST/DELETE /api/follows/:userId
+             Followers/Following → GET /api/users/:id/followers + /following
+[ ] Task 20: Notifications → GET /api/notifications + PATCH /api/notifications/read-all
+[ ] Task 21: Post Review → POST /api/reviews
+
+SELLER STUDIO — API WIRING
+[ ] Task 22: Seller Dashboard → GET /api/seller/dashboard
+[ ] Task 23: Seller Profile screens → GET/PUT /api/seller/profile
+[ ] Task 24: Listings Catalog → GET /api/seller/listings
+             Listing Detail & Edit → GET/PUT /api/seller/listings/:id
+             Create Listing → POST /api/seller/listings
+             Delete Listing → DELETE /api/seller/listings/:id
+[ ] Task 25: Seller Orders → GET /api/seller/orders + /api/seller/orders/:id
+             Update Order Status → PUT /api/seller/orders/:id/status
+             Add Tracking → POST /api/seller/orders/:id/tracking
+[ ] Task 26: Seller Reviews → GET /api/seller/reviews
+             Reply to Review → POST /api/seller/reviews/:id/reply
+[ ] Task 27: Seller Analytics → GET /api/seller/analytics
+[ ] Task 28: Store Config → GET/PUT /api/seller/store-config
+[ ] Task 29: Payout History → GET /api/seller/payouts
+[ ] Task 30: ZAI Mode toggle → PUT /api/seller/zai-mode
+[ ] Task 31: Become a Seller CTA → POST /api/seller/become
+
+ADMIN PANEL — API WIRING
+[ ] Task 32: Admin Login → POST /api/admin/auth/login
+[ ] Task 33: Admin Sellers → GET/POST /api/admin/sellers + ban/unban endpoints
+[ ] Task 34: Admin Orders → GET/PATCH /api/admin/orders + flag-refund
+[ ] Task 35: Admin Categories → GET/POST/PATCH/DELETE /api/admin/categories
+[ ] Task 36: Admin Products → GET/PATCH /api/admin/products
+[ ] Task 37: Audit Logs → GET /api/admin/audit-logs
+[ ] Task 38: Payment Health → GET /api/admin/payment-health
+             Run Check → POST /api/admin/payment-health/run-check
+
+FILE UPLOAD WIRING
+[ ] Task 39: Wire avatar upload → POST /api/profile/me/avatar
+[ ] Task 40: Wire listing photos upload → POST /api/seller/listings/:id/photos
+[ ] Task 41: Wire reel video upload → POST /api/seller/reels
+
+ERROR HANDLING & LOADING STATES
+[ ] Task 42: Implement global error toast / snackbar for all failed API calls
+================================================================
+</pre>
+</div>
+
+<!-- ================================================================ -->
+
+<div class="rule-box">
+<pre>
+================================================================
+GLOBAL INTEGRATION SPECIFICATION — READ BEFORE ANY TASK
+================================================================
+App name:     Tohfa
+Backend:      Node.js + SQLite (better-sqlite3)
+Frontend:     React (Vite or CRA) — separate folder from backend
+Auth:         JWT access tokens (15-min expiry) + refresh tokens
+              access_token  → stored in sessionStorage as "tohfa_access_token"
+              refresh_token → stored in sessionStorage as "tohfa_refresh_token"
+
+API BASE URL: /api   (all routes prefixed with /api)
+Auth header:  Authorization: Bearer [access_token]
+
+TOKEN REFRESH RULE:
+  On every 401 response from any API call:
+    1. Attempt POST /api/auth/refresh with the refresh_token from sessionStorage
+    2. If refresh succeeds → update access_token in sessionStorage → retry the original request ONCE
+    3. If refresh fails → clear sessionStorage → redirect to /login
+  This must be implemented as an Axios/fetch interceptor (not per-screen).
+
+CURRENCY:
+  Backend stores all amounts in PAISE (integer).
+  Frontend must display as ₹ with 2 decimal places.
+  Utility function: formatPaise(paise) → "₹1,850.00"
+  This function must be placed in src/utils/currency.js and imported where needed.
+
+ERROR RESPONSE FORMAT (from backend):
+  { "error": true, "message": "...", "code": "ERROR_CODE" }
+
+SUCCESS RESPONSE FORMAT (from backend):
+  { "success": true, "data": { ... } }
+
+LOADING STATE RULE:
+  Every API call must have 3 states rendered in the UI:
+    1. Loading  — show skeleton or spinner
+    2. Success  — show the data
+    3. Error    — show inline error message + retry button where appropriate
+
+RAZORPAY INTEGRATION:
+  Payment flow is two-step:
+    Step 1: POST /api/payments/initiate → returns { razorpay_order_id, amount_paise, key_id }
+    Step 2: Open Razorpay checkout widget with those values
+    Step 3: On success callback → POST /api/payments/verify with razorpay_payment_id, razorpay_order_id, razorpay_signature
+  The Razorpay SDK script is loaded from: https://checkout.razorpay.com/v1/checkout.js
+  The RAZORPAY_KEY_ID is exposed to the frontend via the /api/payments/initiate response (never hardcode it).
+
+FILE UPLOADS:
+  All file uploads use multipart/form-data (FormData), NOT JSON.
+  Set Content-Type header to "multipart/form-data" (or let browser set it with FormData boundary).
+
+CORS:
+  Backend must allow requests from the frontend dev origin (e.g. http://localhost:5173 or http://localhost:3000).
+  In production, CORS origin must match the deployed frontend URL.
+
+PAGINATION:
+  All feed/list screens use cursor-based pagination:
+    Request:  ?cursor=[last_id]&limit=20
+    Response: { data: [...], next_cursor: "..." | null, has_more: boolean }
+  Implement infinite scroll or "Load more" button on: Home Feed, Category Products,
+  Reels Feed, Order History, Seller Orders, Seller Reviews, Admin logs.
+================================================================
+</pre>
+</div>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>SETUP & FOLDER WIRING</h2>
+
+<div class="task-header"><h3>TASK 01 — SETUP: Identify folders and configure dev proxy</h3></div>
+<pre>
+TYPE: SETUP
+NEEDED BY: All tasks
+
+STEP 1 — LOCATE THE TWO FOLDERS:
+  Run this command to understand the project structure:
+    find . -maxdepth 3 -name "package.json" ! -path "*/node_modules/*" | head -20
+  Identify:
+    FRONTEND_DIR = the folder containing the React app (has src/, index.html, vite.config.js or similar)
+    BACKEND_DIR  = the folder containing the Node.js server (has server.js or index.js, routes/)
+
+STEP 2 — CONFIGURE DEV PROXY (Vite):
+  In FRONTEND_DIR/vite.config.js (or vite.config.ts), add:
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',   ← match backend PORT from .env
+          changeOrigin: true,
+          secure: false
+        }
+      }
+    }
+  If the frontend uses Create React App (has react-scripts), add to FRONTEND_DIR/package.json:
+    "proxy": "http://localhost:5000"
+
+STEP 3 — INSTALL SHARED DEPENDENCIES:
+  In FRONTEND_DIR, run:
+    npm install axios --save -y
+  In BACKEND_DIR, run:
+    npm install cors dotenv --save -y
+
+STEP 4 — ENABLE CORS ON BACKEND:
+  In BACKEND_DIR/server.js (or index.js), ensure this appears BEFORE all route definitions:
+    const cors = require('cors');
+    app.use(cors({
+      origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
+      credentials: true
+    }));
+
+STEP 5 — VERIFY BACKEND IS REACHABLE:
+  Start the backend (npm start or node server.js) and confirm:
+    curl http://localhost:5000/api/auth/login returns a JSON response (not an HTML error page)
+  If the port is different, update both the proxy config and .env PORT accordingly.
+
+COMMIT: chore: wire frontend proxy to backend, enable CORS
+</pre>
+
+<div class="task-header"><h3>TASK 02 — SETUP: Create .env files</h3></div>
+<pre>
+TYPE: SETUP
+NEEDED BY: All tasks
+
+CREATE BACKEND_DIR/.env (if it does not already exist):
+  PORT=5000
+  FRONTEND_ORIGIN=http://localhost:5173
+  JWT_ACCESS_SECRET=replace_with_a_long_random_string_min_64_chars
+  JWT_REFRESH_SECRET=replace_with_another_long_random_string_min_64_chars
+  JWT_ACCESS_EXPIRY=15m
+  JWT_REFRESH_EXPIRY=30d
+  RAZORPAY_KEY_ID=rzp_test_XXXXXXXXXXXXXX
+  RAZORPAY_KEY_SECRET=XXXXXXXXXXXXXXXXXXXXXXXX
+  BCRYPT_COST=12
+  DATABASE_PATH=./tohfa.db
+
+CREATE BACKEND_DIR/.env.example (committed to git — no real secrets):
+  PORT=5000
+  FRONTEND_ORIGIN=http://localhost:5173
+  JWT_ACCESS_SECRET=your_jwt_access_secret_here
+  JWT_REFRESH_SECRET=your_jwt_refresh_secret_here
+  JWT_ACCESS_EXPIRY=15m
+  JWT_REFRESH_EXPIRY=30d
+  RAZORPAY_KEY_ID=rzp_test_your_key
+  RAZORPAY_KEY_SECRET=your_razorpay_secret
+  BCRYPT_COST=12
+  DATABASE_PATH=./tohfa.db
+
+CREATE FRONTEND_DIR/.env (if it does not already exist):
+  VITE_API_BASE_URL=/api
+
+ADD TO .gitignore (both folders):
+  .env
+  *.db
+  node_modules/
+
+COMMIT: chore: add .env files and .env.example
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>AUTH INTEGRATION</h2>
+
+<div class="task-header"><h3>TASK 03 — AUTH: Wire Buyer Signup form</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Buyer Signup (tohfa_buyer_signup_refined_desktop_panel)
+ENDPOINT: POST /api/auth/register/buyer
+
+FIND the buyer signup form component in the frontend folder.
+Look for a form with fields: Full Name, Email Address, Password.
+
+WIRE IT:
+  1. On form submit, call:
+       POST /api/auth/register/buyer
+       Body: { full_name, email, password }
+  2. On success (201):
+       - Store access_token in sessionStorage: sessionStorage.setItem('tohfa_access_token', data.access_token)
+       - Store refresh_token in sessionStorage: sessionStorage.setItem('tohfa_refresh_token', data.refresh_token)
+       - Store user object: sessionStorage.setItem('tohfa_user', JSON.stringify(data.user))
+       - Redirect to home screen (buyer dashboard / home feed)
+  3. On error 409 (EMAIL_EXISTS):
+       - Show inline error below the email field: "This email is already registered. Try logging in."
+  4. On error 400 (VALIDATION_ERROR):
+       - Show inline errors below the relevant fields.
+  5. Show loading spinner on the "Create account" button while the request is in flight.
+  6. Disable the submit button while loading.
+
+COMMIT: feat: wire buyer signup → POST /api/auth/register/buyer
+</pre>
+
+<div class="task-header"><h3>TASK 04 — AUTH: Wire Seller Signup form</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller Signup (tohfa_seller_signup_desktop) — 2-step form
+ENDPOINT: POST /api/auth/register/seller
+
+The seller signup is a 2-step form:
+  Step 1: Full Name, Email Address, Password
+  Step 2: Shop Name, Shop Bio, Ships In (days) stepper, Instagram Handle
+
+WIRE IT:
+  1. Collect all fields from both steps before submitting.
+  2. On final step submit, call:
+       POST /api/auth/register/seller
+       Body: {
+         full_name, email, password,
+         shop_name, shop_bio, ships_in_days, instagram_handle
+       }
+  3. On success (201):
+       - Store access_token, refresh_token, user object in sessionStorage
+         (same keys as Task 03: tohfa_access_token, tohfa_refresh_token, tohfa_user)
+       - Redirect to Seller Studio home (/seller/dashboard or /seller)
+  4. On error 409 (EMAIL_EXISTS): show inline error below email field.
+  5. Show loading spinner on "Create Shop" or "Submit" button while loading.
+  6. Disable all step-navigation buttons while loading.
+
+COMMIT: feat: wire seller signup → POST /api/auth/register/seller
+</pre>
+
+<div class="task-header"><h3>TASK 05 — AUTH: Wire Login form</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Login screen (shared for buyer and seller)
+ENDPOINT: POST /api/auth/login
+
+WIRE IT:
+  1. On form submit, call:
+       POST /api/auth/login
+       Body: { email, password }
+  2. On success:
+       - Store access_token, refresh_token, user object in sessionStorage
+       - Read user.role from the response:
+           role === "buyer"  → redirect to /home (buyer home feed)
+           role === "seller" → redirect to /seller/dashboard
+           role === "admin"  → redirect to /admin
+  3. On error 401 (INVALID_CREDENTIALS):
+       - Show inline error: "Incorrect email or password."
+  4. On error 403 (ACCOUNT_BANNED):
+       - Show inline error: "Your account has been suspended. Contact support."
+  5. Show loading spinner on "Log In" button while loading.
+
+COMMIT: feat: wire login → POST /api/auth/login with role-based redirect
+</pre>
+
+<div class="task-header"><h3>TASK 06 — AUTH: Wire Logout</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: All screens (logout button / modal)
+ENDPOINT: POST /api/auth/logout
+
+WIRE IT:
+  1. Find the logout button / modal confirm in the frontend.
+  2. On confirm:
+       - Call POST /api/auth/logout with Body: { refresh_token: sessionStorage.getItem('tohfa_refresh_token') }
+       - Regardless of response (even on network error), clear sessionStorage:
+           sessionStorage.removeItem('tohfa_access_token')
+           sessionStorage.removeItem('tohfa_refresh_token')
+           sessionStorage.removeItem('tohfa_user')
+       - Redirect to /login
+  3. Do NOT wait for the logout response before clearing storage and redirecting.
+
+COMMIT: feat: wire logout → POST /api/auth/logout + clear sessionStorage
+</pre>
+
+<div class="task-header"><h3>TASK 07 — AUTH: Implement global token refresh interceptor</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+FILE: Create FRONTEND_DIR/src/utils/apiClient.js
+
+CREATE the Axios instance + interceptor as the single HTTP client for the entire app.
+ALL other tasks must import this apiClient instead of using raw fetch or a separate axios instance.
+
+CODE:
+  import axios from 'axios';
+
+  const apiClient = axios.create({
+    baseURL: '/api',
+    headers: { 'Content-Type': 'application/json' }
+  });
+
+  // Attach access token to every request
+  apiClient.interceptors.request.use((config) => {
+    const token = sessionStorage.getItem('tohfa_access_token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  });
+
+  // Auto-refresh on 401
+  let isRefreshing = false;
+  let failedQueue = [];
+
+  const processQueue = (error, token = null) => {
+    failedQueue.forEach(prom => error ? prom.reject(error) : prom.resolve(token));
+    failedQueue = [];
+  };
+
+  apiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          }).then(token => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return apiClient(originalRequest);
+          });
+        }
+        originalRequest._retry = true;
+        isRefreshing = true;
+        const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
+        try {
+          const { data } = await axios.post('/api/auth/refresh', { refresh_token: refreshToken });
+          sessionStorage.setItem('tohfa_access_token', data.data.access_token);
+          processQueue(null, data.data.access_token);
+          originalRequest.headers.Authorization = `Bearer ${data.data.access_token}`;
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          processQueue(refreshError, null);
+          sessionStorage.clear();
+          window.location.href = '/login';
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  export default apiClient;
+
+ALSO CREATE FRONTEND_DIR/src/utils/currency.js:
+  export function formatPaise(paise) {
+    if (paise == null) return '₹0.00';
+    const rupees = paise / 100;
+    return '₹' + rupees.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+COMMIT: feat: add global apiClient with JWT refresh interceptor + formatPaise util
+</pre>
+
+<div class="task-header"><h3>TASK 08 — AUTH: Wire Forgot Password & Reset Password</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Forgot Password screen, Reset Password screen
+ENDPOINTS: POST /api/auth/forgot-password, POST /api/auth/reset-password
+
+FORGOT PASSWORD SCREEN:
+  1. On form submit with email, call:
+       POST /api/auth/forgot-password   Body: { email }
+  2. On success: show success message: "If this email is registered, you'll receive a reset link."
+     (Show the same message regardless of whether the email exists — security best practice.)
+  3. On error: show generic error toast.
+
+RESET PASSWORD SCREEN (user arrives via email link with a reset token in the URL):
+  1. Read the reset token from the URL: new URLSearchParams(window.location.search).get('token')
+  2. On form submit with new password + confirm password:
+       - Validate passwords match (frontend-only check first)
+       - Call POST /api/auth/reset-password   Body: { token, new_password }
+  3. On success: redirect to /login with a success message: "Password updated. Please log in."
+  4. On error 400 (INVALID_OR_EXPIRED_TOKEN): show inline error: "This reset link has expired. Request a new one."
+
+COMMIT: feat: wire forgot-password and reset-password screens
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>BUYER SCREENS — API WIRING</h2>
+
+<div class="task-header"><h3>TASK 09 — BUYER: Home Feed</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Home / Landing screen for buyers
+ENDPOINT: GET /api/home/feed
+
+WIRE IT:
+  1. On screen mount, call GET /api/home/feed  (auth required — attach Bearer token via apiClient)
+  2. The response returns: { featured_products, categories, trending_reels, ... }
+     Replace ALL hardcoded/mock product cards, category chips, and reel thumbnails with this response data.
+  3. Implement "Load more" or infinite scroll using cursor-based pagination:
+       On scroll near bottom: GET /api/home/feed?cursor=[next_cursor]
+       Append new results to the existing list.
+  4. Show skeleton loader while loading.
+  5. Show empty state if data is empty.
+
+COMMIT: feat: wire home feed → GET /api/home/feed
+</pre>
+
+<div class="task-header"><h3>TASK 10 — BUYER: Categories</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Browse by Craft / Categories screen; Category products page
+ENDPOINTS: GET /api/categories, GET /api/categories/:slug/products
+
+WIRE IT:
+  1. Categories list screen:
+       On mount → GET /api/categories
+       Replace hardcoded category chips/grid with response data.
+       Each category has: id, name, slug, icon_emoji, item_count.
+  2. Category products page (user taps a category):
+       On mount → GET /api/categories/:slug/products
+       Replace hardcoded product grid with response data.
+       Implement pagination: ?cursor=&limit=20
+
+COMMIT: feat: wire categories and category products screens
+</pre>
+
+<div class="task-header"><h3>TASK 11 — BUYER: Search & Product Detail</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Search screen, Product Detail screen
+ENDPOINTS: GET /api/products/search, GET /api/products/:id
+
+WIRE IT:
+  1. Search:
+       On search input change (debounce 300ms) → GET /api/products/search?q=[query]
+       Also support filters: &category=&min_price=&max_price=&sort= (pass these if the screen has filter UI)
+       Replace hardcoded search results with response data.
+       Show "No results found" state when data is empty.
+  2. Product Detail:
+       On mount → GET /api/products/:id  (read :id from URL params)
+       Replace ALL mock product fields (name, description, price_paise, images, seller info, reviews) with response.
+       Use formatPaise() to display price.
+       Show Add to Cart / Add to Wishlist buttons (wired in Tasks 12, 16).
+
+COMMIT: feat: wire product search and product detail screens
+</pre>
+
+<div class="task-header"><h3>TASK 12 — BUYER: Cart</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Cart screen, Cart item controls
+ENDPOINTS: GET /api/cart, POST /api/cart/items, PATCH /api/cart/items/:id, DELETE /api/cart/items/:id
+
+WIRE IT:
+  1. Cart screen mount → GET /api/cart  → replace all mock cart items with response.
+  2. "Add to Cart" button on Product Detail screen:
+       POST /api/cart/items  Body: { product_id, quantity: 1 }
+       On success: show toast "Added to cart" + update cart item count badge in nav.
+  3. Quantity stepper (+/-) on cart item:
+       PATCH /api/cart/items/:id  Body: { quantity: newQty }
+       If newQty reaches 0, call DELETE instead.
+  4. Remove button on cart item:
+       DELETE /api/cart/items/:id
+       Remove the item from the displayed list optimistically, revert on error.
+  5. Cart total: compute from cart items (price_paise × quantity), display with formatPaise().
+     Do NOT show a hardcoded total — derive it from the API response.
+
+COMMIT: feat: wire cart screens → GET/POST/PATCH/DELETE /api/cart
+</pre>
+
+<div class="task-header"><h3>TASK 13 — BUYER: Addresses</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Address list screen, Add/Edit Address form
+ENDPOINTS: GET /api/addresses, POST /api/addresses, PUT /api/addresses/:id, DELETE /api/addresses/:id
+
+WIRE IT:
+  1. Address list screen → GET /api/addresses  → replace mock addresses.
+  2. "Add New Address" form submit → POST /api/addresses  Body: { label, line1, line2, city, state, pincode, country, is_default }
+  3. "Edit Address" form submit → PUT /api/addresses/:id  Body: same fields
+  4. "Delete" button → DELETE /api/addresses/:id  → remove from list.
+  5. If user has no addresses, show empty state with "Add Address" CTA.
+
+COMMIT: feat: wire address management screens
+</pre>
+
+<div class="task-header"><h3>TASK 14 — BUYER: Orders</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Place Order flow, Order History, Order Detail, Order Receipt
+ENDPOINTS: POST /api/orders, GET /api/orders, GET /api/orders/:id, POST /api/orders/:id/cancel, GET /api/orders/:id/receipt
+
+WIRE IT:
+  1. Place Order (from cart checkout):
+       POST /api/orders  Body: { address_id, cart_items (from GET /api/cart), payment_method }
+       On success → redirect to payment flow (Task 15) or Order Confirmation screen.
+  2. Order History → GET /api/orders  → replace mock order list.
+       Show order status using canonical values: "Awaiting Payment" | "Processing" | "Shipped" | "Delivered" | "Cancelled"
+       Apply correct status badge colours (defined in design system).
+  3. Order Detail → GET /api/orders/:id (read :id from URL params) → replace mock order data.
+  4. Cancel Order button → POST /api/orders/:id/cancel
+       On success: update status to "Cancelled" in the UI.
+  5. Download Receipt → GET /api/orders/:id/receipt
+       Open the response (PDF or JSON) in a new tab, or trigger download.
+
+COMMIT: feat: wire order flow and order history/detail screens
+</pre>
+
+<div class="task-header"><h3>TASK 15 — BUYER: Payments (Razorpay)</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Payment / Checkout screen
+ENDPOINTS: POST /api/payments/initiate, POST /api/payments/verify, GET /api/payments/history
+
+WIRE IT:
+  1. Ensure Razorpay SDK is loaded in FRONTEND_DIR/index.html:
+       &lt;script src="https://checkout.razorpay.com/v1/checkout.js"&gt;&lt;/script&gt;
+
+  2. On "Pay Now" click:
+       Step A: POST /api/payments/initiate  Body: { order_id }
+               Response: { razorpay_order_id, amount_paise, key_id, currency: "INR" }
+       Step B: Open Razorpay widget:
+               const rzp = new window.Razorpay({
+                 key: data.key_id,
+                 amount: data.amount_paise,
+                 currency: "INR",
+                 order_id: data.razorpay_order_id,
+                 handler: async (response) => {
+                   // Step C: verify
+                   await apiClient.post('/api/payments/verify', {
+                     razorpay_payment_id: response.razorpay_payment_id,
+                     razorpay_order_id:   response.razorpay_order_id,
+                     razorpay_signature:  response.razorpay_signature
+                   });
+                   // On success: redirect to Order Confirmation screen
+                 },
+                 prefill: { name: user.full_name, email: user.email }
+               });
+               rzp.open();
+
+  3. Payment History screen → GET /api/payments/history
+       Replace mock payment history list with response data.
+       Use formatPaise() for all amounts.
+
+COMMIT: feat: wire Razorpay payment flow + payment history screen
+</pre>
+
+<div class="task-header"><h3>TASK 16 — BUYER: Wishlist</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Wishlist screen, Wishlist toggle on Product Detail
+ENDPOINTS: GET /api/wishlist, POST /api/wishlist/:productId, DELETE /api/wishlist/:productId
+
+WIRE IT:
+  1. Wishlist screen → GET /api/wishlist  → replace mock wishlist items.
+  2. Heart/wishlist icon on Product Detail and product cards:
+       If NOT wishlisted → POST /api/wishlist/:productId  → fill the heart icon.
+       If already wishlisted → DELETE /api/wishlist/:productId  → empty the heart icon.
+       Optimistic UI update: toggle the icon immediately, revert on error.
+  3. Check wishlist status: the GET /api/products/:id response includes a "is_wishlisted" boolean.
+     Use this to set the initial heart icon state on Product Detail screen.
+
+COMMIT: feat: wire wishlist toggle and wishlist screen
+</pre>
+
+<div class="task-header"><h3>TASK 17 — BUYER: Reels</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Reels Feed, Reel Detail, Saved Reels
+ENDPOINTS: GET /api/reels/feed, POST /api/reels/:id/like, GET/POST /api/reels/:id/comments,
+           POST/DELETE /api/reels/:id/save, GET /api/reels/saved
+
+WIRE IT:
+  1. Reels Feed screen → GET /api/reels/feed  → replace mock reels with response.
+     Implement infinite scroll using cursor pagination.
+  2. Like button → POST /api/reels/:id/like  (toggle — backend handles like/unlike logic)
+     Update like count and icon state optimistically.
+  3. Comments panel → GET /api/reels/:id/comments on open
+     Post comment → POST /api/reels/:id/comments  Body: { text }
+     Append new comment to the list on success.
+  4. Save reel → POST /api/reels/:id/save  / unsave → DELETE /api/reels/:id/save
+     Update bookmark icon state optimistically.
+  5. Saved Reels screen → GET /api/reels/saved  → replace mock saved reels.
+
+COMMIT: feat: wire reels feed, like, comments, and save functionality
+</pre>
+
+<div class="task-header"><h3>TASK 18 — BUYER: Profile</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Buyer Profile screen, Edit Profile form
+ENDPOINTS: GET /api/profile/me, PATCH /api/profile/me, POST /api/profile/me/avatar
+
+WIRE IT:
+  1. Profile screen → GET /api/profile/me  → replace ALL mock profile data (name, avatar, bio, stats).
+  2. Edit Profile form submit → PATCH /api/profile/me  Body: { full_name, bio, ... }
+     On success: update displayed profile data.
+  3. Avatar upload → see Task 39.
+
+COMMIT: feat: wire buyer profile screens
+</pre>
+
+<div class="task-header"><h3>TASK 19 — BUYER: Follows / Social</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Seller public profile, Followers/Following lists
+ENDPOINTS: POST /api/follows/:userId, DELETE /api/follows/:userId,
+           GET /api/users/:id/followers, GET /api/users/:id/following
+
+WIRE IT:
+  1. Follow button on seller profile:
+       If not following → POST /api/follows/:userId  → update button to "Following"
+       If following     → DELETE /api/follows/:userId → update button to "Follow"
+       Optimistic UI. The GET /api/products/:id response includes seller.is_followed boolean.
+  2. Followers tab → GET /api/users/:id/followers  → replace mock followers list.
+  3. Following tab → GET /api/users/:id/following  → replace mock following list.
+
+COMMIT: feat: wire follow/unfollow and followers/following screens
+</pre>
+
+<div class="task-header"><h3>TASK 20 — BUYER: Notifications</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Notifications screen / panel
+ENDPOINTS: GET /api/notifications, PATCH /api/notifications/read-all
+
+WIRE IT:
+  1. Notifications panel open → GET /api/notifications  → replace mock notifications.
+  2. "Mark all as read" button → PATCH /api/notifications/read-all
+     On success: update all notification items to read state (remove unread badge/dot).
+  3. Show unread count badge on the notification bell icon in nav bar.
+     Derive count from the notifications response: items where is_read === false.
+
+COMMIT: feat: wire notifications screen
+</pre>
+
+<div class="task-header"><h3>TASK 21 — BUYER: Reviews</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Post Review form (on Order Detail or Product Detail)
+ENDPOINT: POST /api/reviews
+
+WIRE IT:
+  1. Review form submit → POST /api/reviews
+     Body: { product_id, order_id, rating (1-5), text }
+  2. On success: show "Review submitted!" toast and hide the review form.
+  3. On error 409 (already reviewed): show "You've already reviewed this product."
+  4. Star rating input must pass a numeric value 1-5 (not a string).
+
+COMMIT: feat: wire post review → POST /api/reviews
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>SELLER STUDIO — API WIRING</h2>
+
+<div class="task-header"><h3>TASK 22 — SELLER: Dashboard</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller Studio Dashboard / Home
+ENDPOINT: GET /api/seller/dashboard
+
+WIRE IT:
+  1. On mount → GET /api/seller/dashboard  (auth required, role must be "seller")
+  2. Response contains KPIs: total_revenue_paise, orders_count, active_listings_count, avg_rating, recent_orders, top_products.
+  3. Replace ALL mock KPI values, charts, and tables with response data.
+  4. Use formatPaise() for all revenue/earnings figures.
+  5. If role !== "seller", redirect to /login.
+
+COMMIT: feat: wire seller dashboard → GET /api/seller/dashboard
+</pre>
+
+<div class="task-header"><h3>TASK 23 — SELLER: Profile</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller Profile / Shop Settings
+ENDPOINTS: GET /api/seller/profile, PUT /api/seller/profile
+
+WIRE IT:
+  1. On mount → GET /api/seller/profile  → replace mock shop data.
+  2. Form submit → PUT /api/seller/profile  Body: { display_name, bio, location, instagram_handle, ... }
+  3. On success: show "Profile updated" toast.
+
+COMMIT: feat: wire seller profile screens
+</pre>
+
+<div class="task-header"><h3>TASK 24 — SELLER: Listings / Catalog</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Listings list, Create listing wizard (5 steps), Edit listing, Delete listing
+ENDPOINTS: GET /api/seller/listings, POST /api/seller/listings, GET /api/seller/listings/:id,
+           PUT /api/seller/listings/:id, DELETE /api/seller/listings/:id
+
+WIRE IT:
+  1. Listings list → GET /api/seller/listings  → replace mock listings grid/table.
+     Apply status filter (all/active/draft/paused) from the existing filter UI.
+  2. Create listing wizard:
+       Collect all 5-step fields (title, category, description, price, stock, shipping, photos, tags, badges).
+       POST /api/seller/listings  Body: all collected fields (send price as price_paise: rupees * 100)
+       On success: redirect to listing detail or back to catalog.
+  3. Edit listing → PUT /api/seller/listings/:id  same body structure.
+  4. Delete → DELETE /api/seller/listings/:id  → remove from list, show undo toast.
+  5. Photo upload → see Task 40.
+
+IMPORTANT: price input shows ₹ (rupees). Convert to paise before sending:
+  price_paise = Math.round(parseFloat(priceInput) * 100)
+
+COMMIT: feat: wire seller listings (create, read, update, delete)
+</pre>
+
+<div class="task-header"><h3>TASK 25 — SELLER: Orders</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Seller Orders list, Order Detail, Update Status, Add Tracking
+ENDPOINTS: GET /api/seller/orders, GET /api/seller/orders/:id,
+           PUT /api/seller/orders/:id/status, POST /api/seller/orders/:id/tracking
+
+WIRE IT:
+  1. Orders list → GET /api/seller/orders  → replace mock orders.
+     Apply status filter from existing filter UI.
+  2. Order Detail → GET /api/seller/orders/:id  → replace mock order fields.
+  3. "Update Status" dropdown → PUT /api/seller/orders/:id/status  Body: { status }
+     Valid statuses: "Processing" | "Shipped" | "Delivered" | "Cancelled"
+  4. "Add Tracking" form → POST /api/seller/orders/:id/tracking
+     Body: { carrier, tracking_number, tracking_url }
+     On success: show tracking info in the order detail screen.
+
+COMMIT: feat: wire seller order management screens
+</pre>
+
+<div class="task-header"><h3>TASK 26 — SELLER: Reviews</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Seller Reviews list, Reply to review
+ENDPOINTS: GET /api/seller/reviews, POST /api/seller/reviews/:id/reply
+
+WIRE IT:
+  1. Reviews list → GET /api/seller/reviews  → replace mock reviews.
+  2. "Reply" form submit → POST /api/seller/reviews/:id/reply  Body: { reply_text }
+     On success: show the reply below the review, hide the reply form.
+
+COMMIT: feat: wire seller reviews screen
+</pre>
+
+<div class="task-header"><h3>TASK 27 — SELLER: Analytics</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller Analytics screen
+ENDPOINT: GET /api/seller/analytics
+
+WIRE IT:
+  1. On mount → GET /api/seller/analytics?period=30d  (default 30 days)
+     Period filter (7d/30d/90d/1y) → pass as ?period= query param.
+  2. Response contains: revenue_series (date+amount_paise), orders_series, top_products, traffic_sources.
+  3. Replace ALL mock chart data and KPI values with response data.
+  4. Use formatPaise() for all revenue values.
+  5. Charts: pass the data arrays directly to the existing chart components.
+
+COMMIT: feat: wire seller analytics screen
+</pre>
+
+<div class="task-header"><h3>TASK 28 — SELLER: Store Config</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller Store Config / Settings
+ENDPOINTS: GET /api/seller/store-config, PUT /api/seller/store-config
+
+WIRE IT:
+  1. On mount → GET /api/seller/store-config  → populate all config fields.
+  2. Save button → PUT /api/seller/store-config  Body: { is_accepting_orders, default_language, ... }
+  3. On success: show "Settings saved" toast.
+
+COMMIT: feat: wire store config screen
+</pre>
+
+<div class="task-header"><h3>TASK 29 — SELLER: Payout History</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller Payouts screen
+ENDPOINT: GET /api/seller/payouts
+
+WIRE IT:
+  1. On mount → GET /api/seller/payouts  → replace mock payout history.
+  2. Show payout status, amount (formatPaise()), date, and transaction ID.
+  3. Show pending payout balance from the response if present.
+
+COMMIT: feat: wire payout history screen
+</pre>
+
+<div class="task-header"><h3>TASK 30 — SELLER: ZAI Mode</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: ZAI Mode toggle (present on all Seller Studio screens in sidebar/header)
+ENDPOINT: PUT /api/seller/zai-mode
+
+WIRE IT:
+  1. Read initial zai_mode_enabled state from GET /api/seller/profile (done in Task 23).
+  2. On toggle switch change → PUT /api/seller/zai-mode  Body: { enabled: true/false }
+  3. On success: update toggle visual state.
+  4. ZAI Mode must be a shared state (context or global store) so all Seller Studio screens reflect it.
+
+COMMIT: feat: wire ZAI mode toggle across seller studio
+</pre>
+
+<div class="task-header"><h3>TASK 31 — SELLER: Become a Seller CTA</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: "Become a Seller" / Seller onboarding screen (accessible from buyer account)
+ENDPOINT: POST /api/seller/become
+
+WIRE IT:
+  1. Find the "Become a Seller" button in the buyer account or landing screens.
+  2. On click → POST /api/seller/become  (no body needed — uses the authenticated user)
+  3. On success: update user role in sessionStorage to "seller" + redirect to /seller/dashboard.
+  4. If already a seller (409): redirect directly to /seller/dashboard.
+
+COMMIT: feat: wire Become a Seller CTA → POST /api/seller/become
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>ADMIN PANEL — API WIRING</h2>
+
+<div class="task-header"><h3>TASK 32 — ADMIN: Login</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Admin Login screen (/admin/login)
+ENDPOINT: POST /api/admin/auth/login
+
+WIRE IT:
+  1. Admin login form submit → POST /api/admin/auth/login  Body: { username_or_email, password }
+  2. On success: store access_token in sessionStorage as "tohfa_admin_token"
+     Redirect to /admin (dashboard).
+  3. On error 401: show "Invalid admin credentials."
+  4. Admin routes must use "tohfa_admin_token" for their Authorization header — NOT "tohfa_access_token".
+     Create a separate adminApiClient in src/utils/adminApiClient.js that reads "tohfa_admin_token".
+
+COMMIT: feat: wire admin login + separate adminApiClient
+</pre>
+
+<div class="task-header"><h3>TASK 33 — ADMIN: Sellers</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Admin Sellers list, Seller Detail, Ban/Unban
+ENDPOINTS: GET /api/admin/sellers, GET /api/admin/sellers/:id,
+           POST /api/admin/sellers/:id/ban, POST /api/admin/sellers/:id/unban
+
+WIRE IT:
+  1. Sellers list → GET /api/admin/sellers  → replace mock sellers table.
+  2. Seller Detail → GET /api/admin/sellers/:seller_id
+  3. Ban button → POST /api/admin/sellers/:id/ban  Body: { reason }
+     On success: update seller status badge in the UI.
+  4. Unban button → POST /api/admin/sellers/:id/unban
+     On success: update seller status badge.
+
+COMMIT: feat: wire admin sellers screens
+</pre>
+
+<div class="task-header"><h3>TASK 34 — ADMIN: Orders</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Admin Orders list, Order Detail, Update Status, Flag Refund
+ENDPOINTS: GET /api/admin/orders, GET /api/admin/orders/:id,
+           PATCH /api/admin/orders/:id/status, POST /api/admin/orders/:id/flag-refund
+
+WIRE IT:
+  1. Orders list → GET /api/admin/orders  → replace mock orders table.
+  2. Order Detail → GET /api/admin/orders/:id
+  3. Update Status → PATCH /api/admin/orders/:id/status  Body: { status }
+  4. Flag Refund → POST /api/admin/orders/:id/flag-refund  Body: { reason }
+     On success: show "Flagged for refund" badge on the order.
+
+COMMIT: feat: wire admin orders screens
+</pre>
+
+<div class="task-header"><h3>TASK 35 — ADMIN: Categories</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Admin Categories screen
+ENDPOINTS: GET /api/admin/categories, POST /api/admin/categories,
+           PATCH /api/admin/categories/:id, DELETE /api/admin/categories/:id
+
+WIRE IT:
+  1. Categories table → GET /api/admin/categories  → replace mock rows.
+  2. "Add Category" form submit → POST /api/admin/categories
+  3. Edit category → PATCH /api/admin/categories/:id
+  4. Delete category → DELETE /api/admin/categories/:id
+     On success: remove from table.
+
+COMMIT: feat: wire admin categories CRUD screen
+</pre>
+
+<div class="task-header"><h3>TASK 36 — ADMIN: Products</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Admin Products screen
+ENDPOINTS: GET /api/admin/products, PATCH /api/admin/products/:id/sponsored
+
+WIRE IT:
+  1. Products table → GET /api/admin/products  → replace mock rows.
+  2. Sponsored toggle → PATCH /api/admin/products/:id/sponsored  Body: { is_sponsored: true/false }
+     On success: update the "Sponsored" badge in the row.
+
+COMMIT: feat: wire admin products screen + sponsored toggle
+</pre>
+
+<div class="task-header"><h3>TASK 37 — ADMIN: Audit Logs</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Admin Audit Logs screen
+ENDPOINT: GET /api/admin/audit-logs
+
+WIRE IT:
+  1. On mount → GET /api/admin/audit-logs  → replace mock audit entries.
+  2. Support filter by event_type from the existing filter UI (?event_type=admin.seller.banned)
+  3. Implement pagination (cursor-based or page-based, match what the backend returns).
+
+COMMIT: feat: wire admin audit logs screen
+</pre>
+
+<div class="task-header"><h3>TASK 38 — ADMIN: Payment Health</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Admin Payment Health screen
+ENDPOINTS: GET /api/admin/payment-health, POST /api/admin/payment-health/run-check
+
+WIRE IT:
+  1. On mount → GET /api/admin/payment-health  → replace mock payment health data.
+  2. "Run Check" button → POST /api/admin/payment-health/run-check
+     On success: refresh the data with a new GET /api/admin/payment-health call.
+  3. Show timestamps formatted as human-readable local time.
+
+COMMIT: feat: wire admin payment health screen
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>FILE UPLOAD WIRING</h2>
+
+<div class="task-header"><h3>TASK 39 — UPLOAD: Avatar (Buyer & Seller)</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREENS: Buyer Profile Edit, Seller Profile
+ENDPOINT: POST /api/profile/me/avatar
+
+WIRE IT:
+  1. Find the avatar upload input (camera icon or "Change Photo" button).
+  2. On file selection:
+       const formData = new FormData();
+       formData.append('avatar', file);
+       const response = await apiClient.post('/api/profile/me/avatar', formData, {
+         headers: { 'Content-Type': 'multipart/form-data' }
+       });
+  3. On success: update the displayed avatar image to response.data.avatar_url immediately.
+     Do NOT wait for a page reload.
+  4. Validate file type client-side (allow only image/jpeg, image/png, image/webp).
+  5. Validate file size client-side (max 5MB).
+  6. Show upload progress if the existing UI has a progress indicator.
+
+COMMIT: feat: wire avatar upload for buyer and seller profiles
+</pre>
+
+<div class="task-header"><h3>TASK 40 — UPLOAD: Listing Photos</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller — Create/Edit Listing (photo upload step)
+ENDPOINT: POST /api/seller/listings/:id/photos
+
+WIRE IT:
+  1. After listing is created (POST /api/seller/listings returns the new listing id),
+     upload each photo one at a time:
+       const formData = new FormData();
+       formData.append('photo', file);
+       formData.append('is_cover', index === 0 ? '1' : '0');   // first photo is cover
+       await apiClient.post(`/api/seller/listings/${listingId}/photos`, formData, {
+         headers: { 'Content-Type': 'multipart/form-data' }
+       });
+  2. Show a per-photo upload progress bar or spinner.
+  3. Allowed types: image/jpeg, image/png, image/webp. Max size: 10MB per file.
+  4. Max photos per listing: 10. Disable the upload input after 10 photos.
+
+COMMIT: feat: wire listing photo upload
+</pre>
+
+<div class="task-header"><h3>TASK 41 — UPLOAD: Seller Reel Video</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+SCREEN: Seller — Upload Reel screen
+ENDPOINT: POST /api/seller/reels  (also POST /api/reels on buyer side)
+
+WIRE IT:
+  1. Find the reel upload form.
+  2. On submit:
+       const formData = new FormData();
+       formData.append('video', videoFile);
+       formData.append('caption', captionText);
+       formData.append('product_ids', JSON.stringify(taggedProductIds));
+       await apiClient.post('/api/seller/reels', formData, {
+         headers: { 'Content-Type': 'multipart/form-data' },
+         onUploadProgress: (e) => { /* update progress bar: e.loaded / e.total */ }
+       });
+  3. Show upload progress bar (this can be a large file).
+  4. Allowed types: video/mp4, video/quicktime. Max size: 100MB.
+  5. On success: redirect to the reel detail or back to the reels list.
+
+COMMIT: feat: wire reel video upload for sellers
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+<h2>ERROR HANDLING & LOADING STATES</h2>
+
+<div class="task-header"><h3>TASK 42 — ERROR HANDLING: Global error toast + loading states</h3></div>
+<pre>
+TYPE: FRONTEND WIRING
+FILE: Create FRONTEND_DIR/src/components/Toast.jsx  (or use existing toast component if present)
+
+GLOBAL ERROR TOAST:
+  1. Create (or wire up existing) a toast/snackbar component.
+  2. In apiClient.js (from Task 07), add a response interceptor that shows a toast
+     for any non-401 error that isn't already handled inline:
+       if (error.response?.status >= 500) {
+         showToast('Something went wrong. Please try again.', 'error');
+       }
+       // 400, 403, 404, 409 are handled inline per screen — do NOT show a generic toast for those.
+  3. Also show a success toast when relevant (after successful actions like "Order placed", "Profile updated", etc.)
+
+LOADING STATES AUDIT:
+  Go through every screen that calls an API and verify all three states exist:
+    ✓ Loading state  — skeleton loader or spinner visible while request is in flight
+    ✓ Success state  — actual data shown (no more hardcoded mock text)
+    ✓ Error state    — error message + "Try again" button if the data is critical
+
+  Screens that MUST have all 3 states:
+    - Home Feed
+    - Category Products
+    - Product Detail
+    - Cart
+    - Order History
+    - Order Detail
+    - Seller Dashboard
+    - Seller Listings
+    - Seller Orders
+    - Admin Sellers table
+    - Admin Orders table
+    - Audit Logs
+
+PROTECTED ROUTES:
+  Ensure the following route guards exist:
+    /home, /cart, /orders, /profile, /wishlist → require access_token in sessionStorage
+      (if missing → redirect to /login)
+    /seller/* → require access_token AND user.role === "seller"
+      (if missing or wrong role → redirect to /login)
+    /admin/*  → require tohfa_admin_token in sessionStorage
+      (if missing → redirect to /admin/login)
+  Implement this as a ProtectedRoute wrapper component in src/components/ProtectedRoute.jsx.
+
+COMMIT: feat: add global error toast, loading state audit, and route guards
+</pre>
+
+<!-- ================================================================ -->
+<hr class="section-divider">
+
+<div class="rule-box">
+<pre>
+================================================================
+FINAL VERIFICATION CHECKLIST
+Run through this after all 42 tasks are complete.
+================================================================
+
+AUTH FLOW:
+  [ ] Buyer can sign up → tokens stored → redirected to home
+  [ ] Seller can sign up → tokens stored → redirected to seller dashboard
+  [ ] Login works for buyer, seller, and admin
+  [ ] Logout clears sessionStorage and redirects
+  [ ] Expired access token → refresh interceptor kicks in → original request retried
+  [ ] Expired refresh token → redirected to /login
+
+BUYER SCREENS:
+  [ ] Home Feed shows real products from DB (not hardcoded)
+  [ ] Category page shows real products
+  [ ] Search returns real results
+  [ ] Product Detail shows real data; price uses ₹ format (not paise integer)
+  [ ] Add to Cart works; cart badge updates
+  [ ] Cart shows correct items and total
+  [ ] Checkout → Razorpay opens → payment verify → order confirmation
+  [ ] Orders list shows real orders with correct status strings
+  [ ] Wishlist toggles update correctly
+  [ ] Reels feed scrolls and loads real reels
+  [ ] Profile shows real user data
+
+SELLER STUDIO:
+  [ ] Dashboard KPIs load from API
+  [ ] Listings list shows real listings
+  [ ] Create listing wizard posts all 5 steps correctly
+  [ ] Photos upload after listing creation
+  [ ] Orders list shows only this seller's orders
+  [ ] Status update triggers DB change
+
+ADMIN PANEL:
+  [ ] Admin login uses separate token key (tohfa_admin_token)
+  [ ] Admin routes 403 if role !== admin
+  [ ] Sellers table loads; ban/unban works
+  [ ] Audit log records admin actions
+
+CURRENCY:
+  [ ] No raw paise integers visible on any screen
+  [ ] formatPaise() used everywhere money is displayed
+
+NO HARDCODED DATA:
+  [ ] No mock/placeholder arrays left in any screen component
+  [ ] No "Lorem ipsum" product names or prices
+  [ ] No hardcoded user names or emails
+
+NETWORK:
+  [ ] Frontend dev proxy correctly forwards /api/* to backend
+  [ ] No CORS errors in browser console
+  [ ] No 404 on /api routes
+================================================================
+</pre>
+</div>
+
+</body>
+</html>

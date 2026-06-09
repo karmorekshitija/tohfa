@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Artisan Studio - Inventory &amp; Materials</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .watermark-bg {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-blend-mode: multiply;
+        }
+        .ink-texture {
+            mask-image: linear-gradient(to bottom, black, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+        }
+        .pressed-flower {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.06;
+            pointer-events: none;
+            right: 0;
+            bottom: 0;
+            width: 300px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "background": "#fff8f3",
+                        "surface-container-high": "#f3e6d6",
+                        "on-primary": "#ffffff",
+                        "secondary": "#49663f",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "inverse-surface": "#362f25",
+                        "on-surface": "#211b11",
+                        "secondary-container": "#c8e9b8",
+                        "on-surface-variant": "#414942",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-secondary-fixed": "#062103",
+                        "on-background": "#211b11",
+                        "surface-variant": "#ede1d1",
+                        "on-tertiary-fixed": "#270550",
+                        "outline": "#717972",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c1c9c0",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "tertiary": "#573b81",
+                        "inverse-on-surface": "#fcefde",
+                        "primary": "#255338",
+                        "surface-dim": "#e5d8c8",
+                        "tertiary-container": "#70539b",
+                        "on-secondary-container": "#4d6a43",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#f9ecdc",
+                        "inverse-primary": "#a0d2b0",
+                        "on-primary-fixed": "#002110",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-bright": "#fff8f3",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#214f36",
+                        "primary-container": "#3d6b4f",
+                        "surface-tint": "#3a684c",
+                        "surface-container-highest": "#ede1d1",
+                        "primary-fixed": "#bceecb",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#fff2e1",
+                        "surface": "#fff8f3",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-secondary-fixed-variant": "#324e29"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "margin-desktop": "64px",
+                        "md": "16px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "title-serif": ["Merriweather"],
+                        "label-caps": ["Cinzel"],
+                        "display-hero": ["Playfair Display"],
+                        "data-price": ["Space Mono"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg": ["Playfair Display"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+
+<!-- Sidebar Navigation (96px Fixed, expands to 260px on hover) -->
+<aside class="group fixed left-0 top-0 h-screen w-24 hover:w-[260px] bg-surface-container-low border-r border-outline-variant/40 flex flex-col items-start p-5 z-50 transition-all duration-300 ease-in-out shadow-sm">
+  <!-- Logo Section -->
+  <div class="mb-xl flex items-center justify-start px-4 w-full">
+    <div class="flex flex-col items-center flex-shrink-0 w-6">
+      <span class="font-headline-lg text-primary italic font-bold text-2xl">T</span>
+      <div class="w-1.5 h-1.5 rounded-full bg-tertiary mt-[-4px]"></div>
+    </div>
+    <span class="text-primary font-headline-lg italic font-bold text-2xl ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">ohfa Studio</span>
+  </div>
+
+  <!-- Navigation Items -->
+  <nav class="flex-1 flex flex-col gap-md w-full">
+    <a href="/seller/dashboard.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-home" title="Home">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">home</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Home</span>
+    </a>
+    <a href="/seller/catalog.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-catalog" title="Catalog">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">inventory_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Catalog</span>
+    </a>
+    <a href="/seller/orders.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-orders" title="Orders">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">shopping_cart</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Orders</span>
+    </a>
+    <a href="/seller/production-planner.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-capacity" title="Capacity">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">pending_actions</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Capacity</span>
+    </a>
+    <a href="/seller/inventory.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 bg-secondary-container text-primary" id="sidebar-inventory" title="Inventory">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">package_2</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-primary">Inventory</span>
+    </a>
+    <a href="/seller/analytics.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-analytics" title="Analytics">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">analytics</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Analytics</span>
+    </a>
+    <a href="/seller/messages.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-messages" title="Messages">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">mail</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Messages</span>
+    </a>
+    <a href="/seller/reviews.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reviews" title="Reviews">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">rate_review</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reviews</span>
+    </a>
+    <a href="/seller/upload-reel.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-reels" title="Reels">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">movie</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Reels</span>
+    </a>
+    <a href="/seller/store-config.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-config" title="Config">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">settings</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Config</span>
+    </a>
+  </nav>
+
+  <!-- Bottom Actions -->
+  <div class="mt-auto flex flex-col gap-md items-start w-full border-t border-outline-variant/20 pt-4">
+    <a href="/seller/profile.html" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-on-surface-variant hover:bg-surface-variant/50" id="sidebar-profile" title="Profile">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">person</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">Profile</span>
+    </a>
+    <button id="view-store-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-primary hover:bg-primary-container/10 border border-primary/20" title="View Store">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl">storefront</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap">View Store</span>
+    </button>
+    <button id="logout-btn" class="w-full flex items-center justify-start px-4 py-[10px] rounded-xl transition-all duration-200 text-error hover:bg-error-container/20 mt-2" title="Logout">
+      <span class="material-symbols-outlined flex-shrink-0 text-2xl text-error">logout</span>
+      <span class="text-sm font-medium ml-4 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-[150px] transition-all duration-300 ease-in-out whitespace-nowrap text-error">Logout</span>
+    </button>
+  </div>
+</aside>
+
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-[96px] w-[calc(100%-96px)] h-20 flex justify-between items-center px-margin-desktop bg-surface-bright z-40 border-b border-outline-variant/30">
+<h1 class="font-headline-lg text-headline-lg text-primary">Inventory &amp; Materials</h1>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-tertiary/30 text-tertiary text-[12px] font-bold hover:bg-tertiary/10 transition-all shadow-sm" id="zai-toggle-btn">
+  <span class="material-symbols-outlined text-[16px]" id="zai-toggle-icon">flutter_dash</span>
+  ZAI Mode
+</button>
+<button class="px-6 py-2 border border-outline text-secondary rounded-lg font-medium hover:bg-secondary/5 transition-colors">
+                Log Purchase
+            </button>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Material
+            </button>
+</div>
+</header>
+
+<!-- Main Content Canvas -->
+<main class="ml-[96px] pt-24 pb-12 px-margin-desktop">
+<!-- Summary Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl shadow-sm relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">Low Stock Items</p>
+<h3 class="font-data-price text-[32px] leading-tight text-on-surface">12</h3>
+</div>
+<span class="material-symbols-outlined text-[#D4A017] text-3xl">warning</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl shadow-sm relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">Out of Stock</p>
+<h3 class="font-data-price text-[32px] leading-tight text-error">04</h3>
+</div>
+<span class="material-symbols-outlined text-error text-3xl">error_outline</span>
+</div>
+</div>
+<!-- Card 3: Critical Material -->
+<div class="bg-surface-container p-lg rounded-xl shadow-sm relative overflow-hidden border border-primary/20">
+<div class="absolute inset-0 opacity-10 pointer-events-none watermark-bg"></div>
+<div class="relative z-10">
+<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">Critical Material</p>
+<div class="flex items-center gap-2 mt-2">
+<span class="font-title-serif text-primary">Resin:</span>
+<span class="font-data-price text-on-surface">1.2kg needed / 0.8kg on hand</span>
+<span class="text-xl">⚠️</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Two Column Layout -->
+<div class="grid grid-cols-12 gap-xl">
+<!-- Left Column: Table & Form -->
+<div class="col-span-12 lg:col-span-8 space-y-lg">
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden relative min-h-[500px]">
+<!-- Pressed Flower Watermark -->
+<img class="pressed-flower grayscale" data-alt="A delicate, vintage botanical illustration of a pressed flower, rendered in soft charcoal and sepia tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZYvzmTJ-iAB3KB9yCsFStbIuKsX0mYs6_fgfgEXArsqrWvYbRl2cMY4a-F3PVqE8aBkdXbXpsNko972-YhhUJUPT03RVjKT4p8j9vlbJgCMI0HzsB1pdRFL5aYwKwASK7nmDEjzTMWpqiPFF-rKCznDpIk5hRMt1gWLOnjEodopFFvId4UrBnrnRbkYvrbbtSHANf-G3XCBtui2fdt2u_ZgCVrH2Cn0h4hmWiVuVuxU5WP3N4-5fVGj9n1924nKaXfEqGEczwwNM"/>
+<div class="p-lg border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h2 class="font-title-serif text-title-serif">Raw Materials Register</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">filter_list</span>
+</div>
+<div class="overflow-x-auto relative z-10">
+<table class="w-full text-left">
+<thead class="bg-surface-container-lowest border-b border-outline-variant">
+<tr>
+<th class="px-lg py-4 font-label-caps text-label-caps text-on-surface-variant">Material Name</th>
+<th class="px-lg py-4 font-label-caps text-label-caps text-on-surface-variant text-right">Stock</th>
+<th class="px-lg py-4 font-label-caps text-label-caps text-on-surface-variant">Unit</th>
+<th class="px-lg py-4 font-label-caps text-label-caps text-on-surface-variant text-right">Min</th>
+<th class="px-lg py-4 font-label-caps text-label-caps text-on-surface-variant">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4 font-title-serif text-on-surface">Cotton Cord (4mm)</td>
+<td class="px-lg py-4 text-right">
+<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0 cursor-edit" type="text" value="25.5"/>
+</td>
+<td class="px-lg py-4 text-on-surface-variant text-sm italic">Meters</td>
+<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">10.0</td>
+<td class="px-lg py-4">
+<span class="px-3 py-1 bg-secondary-container text-secondary font-label-caps text-[10px] rounded-full">OK</span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4 font-title-serif text-on-surface">Epoxy Resin A+B</td>
+<td class="px-lg py-4 text-right">
+<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0" type="text" value="0.8"/>
+</td>
+<td class="px-lg py-4 text-on-surface-variant text-sm italic">Kg</td>
+<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">2.0</td>
+<td class="px-lg py-4">
+<span class="px-3 py-1 bg-[#FFD580] text-[#7B5E00] font-label-caps text-[10px] rounded-full">LOW</span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4 font-title-serif text-on-surface">Brass Eyelets</td>
+<td class="px-lg py-4 text-right">
+<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0" type="text" value="0"/>
+</td>
+<td class="px-lg py-4 text-on-surface-variant text-sm italic">Pcs</td>
+<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">100</td>
+<td class="px-lg py-4">
+<span class="px-3 py-1 bg-error-container text-error font-label-caps text-[10px] rounded-full">OUT</span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-4 font-title-serif text-on-surface">Linen Blend - Cream</td>
+<td class="px-lg py-4 text-right">
+<input class="w-16 bg-transparent border-none focus:ring-0 text-right font-data-price text-on-surface p-0" type="text" value="12.0"/>
+</td>
+<td class="px-lg py-4 text-on-surface-variant text-sm italic">Yards</td>
+<td class="px-lg py-4 text-right font-data-price text-on-surface-variant">5.0</td>
+<td class="px-lg py-4">
+<span class="px-3 py-1 bg-secondary-container text-secondary font-label-caps text-[10px] rounded-full">OK</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Inline Add Form -->
+<div class="p-lg bg-surface-container-lowest border-t border-outline-variant">
+<form class="grid grid-cols-5 gap-md items-end">
+<div class="col-span-2">
+<label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">New Material Name</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="e.g. Silk Thread" type="text"/>
+</div>
+<div>
+<label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">Initial Qty</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="0.00" type="number"/>
+</div>
+<div>
+<label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">Unit</label>
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-primary focus:border-primary">
+<option>Kg</option>
+<option>Meters</option>
+<option>Pcs</option>
+<option>Grams</option>
+</select>
+</div>
+<button class="bg-primary text-on-primary h-10 rounded-lg flex items-center justify-center hover:opacity-90" type="submit">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+</form>
+</div>
+</div>
+</div>
+<!-- Right Column: Shopping List & Suppliers -->
+<div class="col-span-12 lg:col-span-4 space-y-lg">
+<!-- Auto-shopping list -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h2 class="font-headline-lg text-2xl italic text-primary mb-6">What to buy before next rush</h2>
+<ul class="space-y-4">
+<li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group">
+<div class="pt-1">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<span class="font-title-serif text-on-surface">Epoxy Resin</span>
+<span class="font-data-price text-error">-1.2kg</span>
+</div>
+<div class="flex justify-between text-xs text-on-surface-variant mt-1">
+<span>Need: 2.0kg</span>
+<span>Stock: 0.8kg</span>
+</div>
+</div>
+</li>
+<li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group">
+<div class="pt-1">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<span class="font-title-serif text-on-surface">Brass Eyelets</span>
+<span class="font-data-price text-error">-100pcs</span>
+</div>
+<div class="flex justify-between text-xs text-on-surface-variant mt-1">
+<span>Need: 100pcs</span>
+<span>Stock: 0pcs</span>
+</div>
+</div>
+</li>
+<li class="flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-colors group">
+<div class="pt-1">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between">
+<span class="font-title-serif text-on-surface">Varnish Polish</span>
+<span class="font-data-price text-error">-500ml</span>
+</div>
+<div class="flex justify-between text-xs text-on-surface-variant mt-1">
+<span>Need: 500ml</span>
+<span>Stock: 0ml</span>
+</div>
+</div>
+</li>
+</ul>
+<button class="w-full mt-6 py-3 border border-dashed border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors">
+                        Generate PO to Suppliers
+                    </button>
+</div>
+<!-- Suppliers Section -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg">
+<h2 class="font-title-serif text-title-serif mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">local_shipping</span>
+                        Primary Suppliers
+                    </h2>
+<div class="space-y-6">
+<!-- Supplier 1 -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-title-serif text-on-surface">Artisan Chemical Co.</p>
+<p class="text-xs text-on-surface-variant font-data-price">+1 415-555-0123</p>
+</div>
+<div class="flex gap-2">
+<a class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">call</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">chat</span>
+</a>
+</div>
+</div>
+<!-- Supplier 2 -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-title-serif text-on-surface">The Fiber Collective</p>
+<p class="text-xs text-on-surface-variant font-data-price">+44 20 7946 0958</p>
+</div>
+<div class="flex gap-2">
+<a class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">call</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined">chat</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<script>
+    const API_BASE_URL = window.location.origin;
+
+    // ZAI Mode UI Styling sync helper
+    function updateZaiUI(enabled) {
+        const toggleBtn = document.getElementById('zai-toggle-btn');
+        if (toggleBtn) {
+            const icon = document.getElementById('zai-toggle-icon');
+            if (enabled) {
+                icon.style.fontVariationSettings = "'FILL' 1";
+                toggleBtn.classList.add('text-primary');
+            } else {
+                icon.style.fontVariationSettings = "'FILL' 0";
+                toggleBtn.classList.remove('text-primary');
+            }
+        }
+    }
+
+    // Interactivity for stock items
+    document.querySelectorAll('.cursor-edit').forEach(input => {
+        input.addEventListener('change', (e) => {
+            const row = e.target.closest('tr');
+            e.target.classList.add('text-primary', 'font-bold');
+            setTimeout(() => e.target.classList.remove('text-primary', 'font-bold'), 1000);
+        });
+    });
+
+    // Hover effects for the critical material card
+    const criticalCard = document.querySelector('.bg-surface-container');
+    if (criticalCard) {
+        criticalCard.addEventListener('mousemove', (e) => {
+            const rect = criticalCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            criticalCard.style.setProperty('--mouse-x', `${x}px`);
+            criticalCard.style.setProperty('--mouse-y', `${y}px`);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) { window.location.href = '/auth/login.html'; return; }
+
+        // Role verification
+        try {
+            const pr = await fetch(`${API_BASE_URL}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (!pr.ok) throw new Error();
+            const pd = await pr.json();
+            const u = pd.data || pd;
+            if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+        } catch {
+            sessionStorage.clear();
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        // Init load ZAI Mode
+        const zaiEnabled = localStorage.getItem('zai_mode') === 'true';
+        updateZaiUI(zaiEnabled);
+
+        // ZAI toggle button click
+        const toggleBtn = document.getElementById('zai-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const nextEnabled = !(localStorage.getItem('zai_mode') === 'true');
+                localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
+                
+                // Sync with backend
+                fetch(`${API_BASE_URL}/api/seller/zai-mode`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ enabled: nextEnabled })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.success) {
+                        updateZaiUI(nextEnabled);
+                    }
+                })
+                .catch(err => console.error("Error setting ZAI mode:", err));
+            });
+        }
+
+        // View Store
+        const viewStoreBtn = document.getElementById('view-store-btn');
+        if (viewStoreBtn) {
+            viewStoreBtn.addEventListener('click', () => {
+                fetch(`${API_BASE_URL}/api/seller/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const profileData = data.data || data;
+                    if (profileData && profileData.handle) {
+                        window.location.href = `/store/${profileData.handle}`;
+                    } else {
+                        window.location.href = '/';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching seller profile:', err);
+                    window.location.href = '/';
+                });
+            });
+        }
+
+        // Logout
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                const refresh = sessionStorage.getItem('tohfa_refresh_token');
+                if (token && refresh) {
+                    fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
+                }
+                sessionStorage.clear(); window.location.href = '/auth/login.html';
+            });
+        }
+    });
+</script>
+</body>
+</html>

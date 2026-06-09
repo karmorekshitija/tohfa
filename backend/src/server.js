@@ -1507,7 +1507,11 @@ app.delete('/api/addresses/:id', rateLimit(60), authenticateToken, (req, res) =>
       });
     }
     
-    db.prepare('DELETE FROM addresses WHERE id = ?').run(id);
+    const deleteTransaction = db.transaction(() => {
+      db.prepare('UPDATE orders SET address_id = NULL WHERE address_id = ?').run(id);
+      db.prepare('DELETE FROM addresses WHERE id = ?').run(id);
+    });
+    deleteTransaction();
     
     return res.status(200).json({
       success: true
