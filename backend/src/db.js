@@ -518,6 +518,51 @@ const migrateReviews = () => {
 };
 migrateReviews();
 
+// Task 08: store_config, store_workspace_photos, payout_history migrations
+const migrateStoreConfig = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS store_config (
+      seller_id         INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+      accept_orders     INTEGER NOT NULL DEFAULT 1,
+      vacation_mode     INTEGER NOT NULL DEFAULT 0,
+      vacation_note     TEXT    DEFAULT NULL,
+      estimated_dispatch_sla_days INTEGER NOT NULL DEFAULT 2,
+      packaging_fee_paise INTEGER NOT NULL DEFAULT 0,
+      wrap_fee_paise      INTEGER NOT NULL DEFAULT 0,
+      zai_mode_enabled  INTEGER NOT NULL DEFAULT 0,
+      banner_url        TEXT    DEFAULT NULL,
+      about_headline    TEXT    DEFAULT NULL,
+      artisan_story     TEXT    DEFAULT NULL,
+      current_balance_paise INTEGER NOT NULL DEFAULT 0,   -- updated on payouts or completed sales
+      created_at        TEXT    DEFAULT (datetime('now')),
+      updated_at        TEXT    DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS store_workspace_photos (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      photo_url   TEXT    NOT NULL,
+      caption     TEXT    DEFAULT NULL,
+      sort_order  INTEGER NOT NULL DEFAULT 0,
+      created_at  TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_swp_seller ON store_workspace_photos(seller_id);
+
+    CREATE TABLE IF NOT EXISTS payout_history (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      txn_ref         TEXT    NOT NULL UNIQUE,   -- e.g. TXN-10042
+      amount_paise    INTEGER NOT NULL,
+      status          TEXT    NOT NULL DEFAULT 'processing' CHECK(status IN ('processing','completed','failed')),
+      payout_method   TEXT    NOT NULL DEFAULT 'bank_transfer',
+      created_at      TEXT    DEFAULT (datetime('now')),
+      updated_at      TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_payouts_seller ON payout_history(seller_id);
+  `);
+};
+migrateStoreConfig();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
