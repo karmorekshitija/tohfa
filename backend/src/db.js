@@ -365,6 +365,25 @@ const migrateListings = () => {
 };
 migrateListings();
 
+// Task 02: listing_variants table migration
+const migrateListingVariants = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS listing_variants (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      listing_id    INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+      variant_name  TEXT    NOT NULL,   -- e.g. "Crimson Red", "Medium 10x10"
+      price_paise   INTEGER DEFAULT NULL,   -- if NULL, inherits listing.base_price
+      stock_count   INTEGER NOT NULL DEFAULT 0,
+      sku           TEXT    DEFAULT NULL,
+      material_cost INTEGER DEFAULT 0,   -- in paise
+      created_at    TEXT    DEFAULT (datetime('now')),
+      updated_at    TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_variants_listing_id ON listing_variants(listing_id);
+  `);
+};
+migrateListingVariants();
+
 // ============================================================
 // PART 2: ADMIN PANEL MIGRATIONS
 // ============================================================
