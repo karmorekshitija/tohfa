@@ -145,7 +145,7 @@
     </a>
     <!-- Category (Discover) -->
     <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span class="material-symbols-outlined text-[20px]">category</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
@@ -162,7 +162,7 @@
   
   <!-- Right side items -->
   <div class="flex items-center justify-end flex-1 gap-lg">
-    <a href="/buyer/categories.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
+    <a href="/buyer/search.html?focus=true" id="header-search-btn" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
       <span class="material-symbols-outlined">search</span>
     </a>
     <a href="/buyer/saved-makes.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
@@ -199,10 +199,11 @@
                 </p>
 <!-- Search Field -->
 <div class="mt-xl w-full max-w-2xl relative">
-<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none z-10">
 <span class="material-symbols-outlined text-outline">search</span>
 </div>
-<input class="w-full h-16 pl-16 pr-6 rounded-full bg-surface-container-lowest border-2 border-outline-variant focus:border-primary focus:ring-0 text-body-md font-body-md transition-all shadow-sm" placeholder="Search handcrafted treasures..." type="text">
+<input id="hero-search-input" class="w-full h-16 pl-16 pr-6 rounded-full bg-surface-container-lowest border-2 border-outline-variant focus:border-primary focus:ring-0 text-body-md font-body-md transition-all shadow-sm cursor-pointer" placeholder="Search handcrafted treasures..." type="text" autocomplete="off" readonly>
+<div class="absolute inset-0 rounded-full cursor-pointer" onclick="window.location.href='/buyer/search.html?focus=true'" aria-label="Open search"></div>
 </div>
 </div>
 <!-- Texture Overlay (Simulated Wax Tape) -->

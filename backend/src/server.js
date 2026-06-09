@@ -912,11 +912,13 @@ app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateTok
 });
 
 // TASK 18: GET /api/products/search
-app.get('/api/products/search', rateLimit(60), (req, res) => {
+app.get('/api/products/search', rateLimit(60), optionalAuthenticateToken, (req, res) => {
   const q = req.query.q;
   const cursor = req.query.cursor;
-  const limit = parseInt(req.query.limit) || 20;
-  
+  const offset = parseInt(req.query.offset) || 0;
+  const limit = Math.min(parseInt(req.query.limit) || 20, 50);
+  const sort = req.query.sort || 'newest';
+
   if (!q || typeof q !== 'string' || q.trim() === '') {
     return res.status(400).json({
       error: true,
@@ -924,19 +926,44 @@ app.get('/api/products/search', rateLimit(60), (req, res) => {
       code: "VALIDATION_ERROR"
     });
   }
-  
+
   try {
-    let queryParts = ["p.status = 'active'", "(p.name LIKE ? OR p.description LIKE ?)"];
-    let queryParams = [`%${q}%`, `%${q}%`];
-    
-    if (cursor) {
+    const userId = req.user ? req.user.user_id : null;
+
+    // Build sort clause — cursor pagination only works with 'newest' (ORDER BY p.id DESC)
+    const sortMap = {
+      newest:     'p.id DESC',
+      price_asc:  'p.price_paise ASC',
+      price_desc: 'p.price_paise DESC',
+      top_rated:  'p.avg_rating DESC, p.id DESC'
+    };
+    const orderBy = sortMap[sort] || 'p.id DESC';
+    const useCursorPagination = sort === 'newest';
+
+    let queryParts = [
+      "p.status = 'active'",
+      "(p.name LIKE ? OR p.description LIKE ? OR c.name LIKE ? OR COALESCE(c.display_name, c.name) LIKE ? OR sp.shop_name LIKE ? OR u.full_name LIKE ?)"
+    ];
+    let queryParams = [];
+    if (userId) {
+      queryParams.push(userId);
+    }
+    queryParams.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
+
+    // Cursor pagination (newest sort only)
+    if (useCursorPagination && cursor) {
       queryParts.push("p.id < ?");
       queryParams.push(parseInt(cursor));
     }
-    
+
+    let wishlistSelect = userId
+      ? `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`
+      : `, 0 AS is_wishlisted`;
+
     let sql = `
-      SELECT 
-        p.id, p.name, p.price_paise, p.ships_in_days, p.avg_rating, p.seller_id,
+      SELECT
+        p.id, p.name, p.price_paise, p.ships_in_days, p.ready_to_ship, p.avg_rating, p.seller_id
+        ${wishlistSelect},
         COALESCE(
           (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
           (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
@@ -945,32 +972,108 @@ app.get('/api/products/search', rateLimit(60), (req, res) => {
       FROM products p
       JOIN users u ON p.seller_id = u.id
       LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      LEFT JOIN categories c ON p.category_id = c.id
       WHERE ${queryParts.join(' AND ')}
-      ORDER BY p.id DESC
+      ORDER BY ${orderBy}
       LIMIT ?
     `;
-    
-    queryParams.push(limit + 1);
-    
+
+    if (useCursorPagination) {
+      queryParams.push(limit + 1);
+    } else {
+      // Offset pagination for non-newest sorts
+      sql += ' OFFSET ?';
+      queryParams.push(limit + 1, offset);
+    }
+
     const products = db.prepare(sql).all(...queryParams);
     const hasMore = products.length > limit;
     if (hasMore) {
       products.pop();
     }
-    
-    const nextCursor = hasMore && products.length > 0 ? String(products[products.length - 1].id) : null;
-    
+
+    products.forEach(p => {
+      p.is_wishlisted = !!p.is_wishlisted;
+      p.ready_to_ship = !!p.ready_to_ship;
+    });
+
+    const nextCursor = (useCursorPagination && hasMore && products.length > 0)
+      ? String(products[products.length - 1].id)
+      : null;
+    const nextOffset = (!useCursorPagination && hasMore) ? offset + limit : null;
+
     return res.status(200).json({
       success: true,
       data: {
         query: q,
+        sort,
         products,
         next_cursor: nextCursor,
+        next_offset: nextOffset,
         has_more: hasMore
       }
     });
   } catch (err) {
     console.error('Error searching products:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// GET /api/products/search-suggestions
+app.get('/api/products/search-suggestions', rateLimit(120), (req, res) => {
+  const q = req.query.q;
+  if (!q || typeof q !== 'string' || q.trim() === '') {
+    return res.status(200).json({
+      success: true,
+      data: {
+        suggestions: [],
+        sellers: [],
+        categories: []
+      }
+    });
+  }
+  
+  try {
+    // 1. Suggestions: distinct product names matching the query
+    const suggestions = db.prepare(`
+      SELECT DISTINCT name FROM products 
+      WHERE status = 'active' AND (name LIKE ? OR description LIKE ?)
+      LIMIT 7
+    `).all(`%${q}%`, `%${q}%`).map(row => row.name);
+    
+    // 2. Sellers: matching seller name or shop name
+    const sellers = db.prepare(`
+      SELECT u.id, COALESCE(sp.shop_name, u.full_name) AS shop_name, u.avatar_url,
+        ROUND(COALESCE((SELECT AVG(p.avg_rating) FROM products p WHERE p.seller_id = u.id AND p.status = 'active'), 4.5), 1) AS rating
+      FROM users u
+      LEFT JOIN seller_profiles sp ON u.id = sp.user_id
+      WHERE u.role = 'seller' AND u.is_active = 1 AND u.is_banned = 0
+        AND (u.full_name LIKE ? OR sp.shop_name LIKE ?)
+      LIMIT 5
+    `).all(`%${q}%`, `%${q}%`);
+    
+    // 3. Categories: matching category name or display name
+    const categories = db.prepare(`
+      SELECT id, name, COALESCE(display_name, name) AS display_name, slug, COALESCE(emoji_icon, icon_emoji, '🏷️') AS emoji
+      FROM categories
+      WHERE (name LIKE ? OR COALESCE(display_name, name) LIKE ? OR slug LIKE ?)
+      LIMIT 5
+    `).all(`%${q}%`, `%${q}%`, `%${q}%`);
+    
+    return res.status(200).json({
+      success: true,
+      data: {
+        suggestions,
+        sellers,
+        categories
+      }
+    });
+  } catch (err) {
+    console.error('Error in search suggestions:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",
@@ -1523,6 +1626,185 @@ app.delete('/api/addresses/:id', rateLimit(60), authenticateToken, (req, res) =>
       message: "Internal server error",
       code: "INTERNAL_SERVER_ERROR"
     });
+  }
+});
+
+// ============================================================
+// OCCASIONS FEATURE ENDPOINTS
+// ============================================================
+
+// OCCASIONS: GET /api/occasions — list all occasions for the authenticated buyer
+app.get('/api/occasions', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  try {
+    const occasions = db.prepare(`
+      SELECT id, title, occasion_type, date, reminder_days, notes, created_at
+      FROM occasions
+      WHERE user_id = ?
+      ORDER BY date ASC
+    `).all(userId);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        occasions,
+        total: occasions.length
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching occasions:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// OCCASIONS: GET /api/occasions/upcoming — occasions with reminders due soon
+app.get('/api/occasions/upcoming', rateLimit(60), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const windowDays = parseInt(req.query.days) || 30;
+  try {
+    const occasions = db.prepare(`
+      SELECT id, title, occasion_type, date, reminder_days, notes
+      FROM occasions
+      WHERE user_id = ?
+      ORDER BY date ASC
+    `).all(userId);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const upcoming = occasions.filter(occ => {
+      const occDate = new Date(occ.date);
+      const thisYear = today.getFullYear();
+      // Build "next occurrence" date using this year or next year
+      const nextOcc = new Date(thisYear, occDate.getMonth(), occDate.getDate());
+      if (nextOcc < today) {
+        nextOcc.setFullYear(thisYear + 1);
+      }
+      const daysUntil = Math.round((nextOcc - today) / (1000 * 60 * 60 * 24));
+      occ.days_until = daysUntil;
+      occ.next_date = nextOcc.toISOString().split('T')[0];
+      return daysUntil <= windowDays;
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: { upcoming }
+    });
+  } catch (err) {
+    console.error('Error fetching upcoming occasions:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// OCCASIONS: POST /api/occasions — create a new occasion
+app.post('/api/occasions', rateLimit(30), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { title, occasion_type, date, reminder_days, notes } = req.body;
+
+  if (!title || typeof title !== 'string' || title.trim() === '') {
+    return res.status(400).json({ error: true, message: 'title is required', code: 'VALIDATION_ERROR' });
+  }
+  if (!date || typeof date !== 'string' || date.trim() === '') {
+    return res.status(400).json({ error: true, message: 'date is required (YYYY-MM-DD)', code: 'VALIDATION_ERROR' });
+  }
+  const validTypes = ['birthday', 'anniversary', 'wedding', 'festival', 'just_because', 'other'];
+  const finalType = validTypes.includes(occasion_type) ? occasion_type : 'other';
+  const finalReminderDays = Number.isInteger(reminder_days) ? reminder_days : 7;
+  const finalNotes = notes && typeof notes === 'string' ? notes.trim() : null;
+
+  try {
+    const info = db.prepare(`
+      INSERT INTO occasions (user_id, title, occasion_type, date, reminder_days, notes)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(userId, title.trim(), finalType, date.trim(), finalReminderDays, finalNotes);
+
+    return res.status(201).json({
+      success: true,
+      data: {
+        id: info.lastInsertRowid,
+        title: title.trim(),
+        occasion_type: finalType,
+        date: date.trim(),
+        reminder_days: finalReminderDays,
+        notes: finalNotes
+      }
+    });
+  } catch (err) {
+    console.error('Error creating occasion:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// OCCASIONS: PUT /api/occasions/:id — update an occasion
+app.put('/api/occasions/:id', rateLimit(30), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+  const { title, occasion_type, date, reminder_days, notes } = req.body;
+
+  if (!title || typeof title !== 'string' || title.trim() === '') {
+    return res.status(400).json({ error: true, message: 'title is required', code: 'VALIDATION_ERROR' });
+  }
+  if (!date || typeof date !== 'string' || date.trim() === '') {
+    return res.status(400).json({ error: true, message: 'date is required (YYYY-MM-DD)', code: 'VALIDATION_ERROR' });
+  }
+
+  try {
+    const existing = db.prepare('SELECT user_id FROM occasions WHERE id = ?').get(id);
+    if (!existing) {
+      return res.status(404).json({ error: true, message: 'Occasion not found', code: 'OCCASION_NOT_FOUND' });
+    }
+    if (existing.user_id !== userId) {
+      return res.status(403).json({ error: true, message: 'Not your occasion', code: 'FORBIDDEN' });
+    }
+
+    const validTypes = ['birthday', 'anniversary', 'wedding', 'festival', 'just_because', 'other'];
+    const finalType = validTypes.includes(occasion_type) ? occasion_type : 'other';
+    const finalReminderDays = Number.isInteger(reminder_days) ? reminder_days : 7;
+    const finalNotes = notes && typeof notes === 'string' ? notes.trim() : null;
+
+    db.prepare(`
+      UPDATE occasions
+      SET title = ?, occasion_type = ?, date = ?, reminder_days = ?, notes = ?, updated_at = datetime('now')
+      WHERE id = ?
+    `).run(title.trim(), finalType, date.trim(), finalReminderDays, finalNotes, id);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: parseInt(id),
+        title: title.trim(),
+        occasion_type: finalType,
+        date: date.trim(),
+        reminder_days: finalReminderDays,
+        notes: finalNotes
+      }
+    });
+  } catch (err) {
+    console.error('Error updating occasion:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// OCCASIONS: DELETE /api/occasions/:id — delete an occasion
+app.delete('/api/occasions/:id', rateLimit(30), authenticateToken, (req, res) => {
+  const userId = req.user.user_id;
+  const { id } = req.params;
+
+  try {
+    const existing = db.prepare('SELECT user_id FROM occasions WHERE id = ?').get(id);
+    if (!existing) {
+      return res.status(404).json({ error: true, message: 'Occasion not found', code: 'OCCASION_NOT_FOUND' });
+    }
+    if (existing.user_id !== userId) {
+      return res.status(403).json({ error: true, message: 'Not your occasion', code: 'FORBIDDEN' });
+    }
+
+    db.prepare('DELETE FROM occasions WHERE id = ?').run(id);
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Error deleting occasion:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
 });
 

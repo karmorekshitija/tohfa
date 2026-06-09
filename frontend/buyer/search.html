@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Tohfa | Search Handcrafted Goods</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=DM+Sans:wght@400;500;700&family=Cinzel:wght@700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#3a684c",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "primary": "#255338",
+                        "surface-dim": "#e5d8c8",
+                        "on-secondary-fixed": "#062103",
+                        "surface-variant": "#ede1d1",
+                        "on-surface": "#211b11",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-tertiary-fixed": "#270550",
+                        "secondary-container": "#c8e9b8",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface": "#fff8f3",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-container-low": "#fff2e1",
+                        "background": "#fff8f3",
+                        "primary-container": "#3d6b4f",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#70539b",
+                        "inverse-primary": "#a0d2b0",
+                        "secondary": "#49663f",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "tertiary": "#573b81",
+                        "outline-variant": "#c1c9c0",
+                        "on-error-container": "#93000a",
+                        "outline": "#717972",
+                        "on-tertiary-container": "#e8d6ff",
+                        "inverse-surface": "#362f25",
+                        "surface-container-highest": "#ede1d1",
+                        "surface-container": "#f9ecdc",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-surface-variant": "#414942",
+                        "on-secondary-container": "#4d6a43",
+                        "inverse-on-surface": "#fcefde",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container-high": "#f3e6d6",
+                        "surface-bright": "#fff8f3",
+                        "on-background": "#211b11",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#214f36",
+                        "on-primary-fixed": "#002110",
+                        "gold": "#D4AF37",
+                        "sage": "#717972",
+                        "ivory": "#FCFAF5",
+                        "ink": "#3A3328"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xs": "4px",
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "40px"
+                    },
+                    fontFamily: {
+                        "label-caps": ["Cinzel"],
+                        "data-price": ["Space Mono"],
+                        "title-serif": ["Merriweather"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg": ["Playfair Display"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .artisan-texture-top {
+            background-image: radial-gradient(circle at 20% 20%, rgba(113, 121, 114, 0.06) 0%, transparent 40%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .artisan-texture-bottom {
+            background-image: radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 40%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 10px 10px 10px 0;
+            border-style: solid;
+            border-color: transparent #FCFAF5 transparent transparent;
+        }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 11px 11px 11px 0;
+            border-style: solid;
+            border-color: transparent #717972 transparent transparent;
+        }
+        .wax-tape {
+            background-color: #E5D8C8;
+            opacity: 0.06;
+            transform: rotate(-12deg);
+        }
+        .leaf-sprig {
+            opacity: 0.06;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest min-h-screen relative overflow-x-hidden text-ink font-body-md antialiased">
+    <!-- Subtle Textures -->
+    <div class="fixed top-[-20px] left-[-20px] w-48 h-12 wax-tape z-0 pointer-events-none"></div>
+    <div class="fixed bottom-margin-desktop right-margin-desktop w-64 h-64 leaf-sprig z-0 pointer-events-none">
+        <span class="material-symbols-outlined text-[160px] text-primary select-none">eco</span>
+    </div>
+    <div class="artisan-texture-top"></div>
+    <div class="artisan-texture-bottom"></div>
+
+    <!-- Top Navigation Bar (same as home page, with search input embedded) -->
+    <header class="w-full sticky top-0 z-50 bg-[#FAF7F0] border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+        <!-- Brand Logo -->
+        <div class="flex items-center flex-1">
+            <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/buyer/home.html">
+                Tohfa<span class="text-[#D4AF37]">.</span>
+            </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+            <!-- Home -->
+            <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">home</span>
+                <span>Home</span>
+            </a>
+            <!-- Category -->
+            <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">category</span>
+                <span>Category</span>
+            </a>
+            <!-- Reels -->
+            <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">movie</span>
+                <span>Reels</span>
+            </a>
+            <!-- Profile -->
+            <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Right side: Search input + icons -->
+        <div class="flex items-center justify-end flex-1 gap-sm">
+            <!-- Embedded Search Bar -->
+            <div class="relative flex items-center">
+                <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <span class="material-symbols-outlined text-[#717972] text-[20px]">search</span>
+                </div>
+                <input id="search-input" autofocus type="text" autocomplete="off"
+                    placeholder="Search gifts, sellers, occasions…"
+                    class="w-[260px] bg-white border border-[#C1C9C0] focus:border-[#3d6b4f] rounded-full py-2 pl-10 pr-9 text-[14px] font-['DM_Sans'] text-[#3A3328] placeholder-[#717972]/70 focus:outline-none focus:ring-0 transition-all shadow-sm"/>
+                <button id="clear-search-btn" class="absolute inset-y-0 right-3 flex items-center text-[#717972] hover:text-[#3A3328] transition-colors hidden">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+            <!-- Wishlist -->
+            <a href="/buyer/saved-makes.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+            </a>
+            <!-- Cart -->
+            <a href="/buyer/cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+                <span class="material-symbols-outlined">shopping_cart</span>
+            </a>
+            <!-- Notifications -->
+            <a href="/buyer/notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+                <span class="material-symbols-outlined">notifications</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="pt-8 max-w-7xl mx-auto px-margin-desktop relative z-10 pb-24">
+        
+        <!-- ==================== STATE 1: IDLE VIEW ==================== -->
+        <div id="idle-view" class="space-y-xl">
+            <!-- Mascot Greeting Block -->
+            <section class="flex items-center justify-center gap-xl my-lg">
+                <div class="relative w-[180px] h-[180px] flex-shrink-0">
+                    <img alt="Tohfa Mascot Greeting" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJVV7FEfzFX7LwbZrrkNgV6I6zLMOzX5bFMbcMv408ZPuULNaGpwbjgThA0iKWnNG7PWZ5hYneG87SxT15GRi9md3SK1lK5d30zwHkYmlZWx3WFaC1YqgG8eCLlx5TeJ7A7Ce0yjppuoImBNpTKRMpTWGmiDB2C4u6TzXEra_7uDwitq_0ZR_yQjNhqu4aHfdfD3tpVcIbWJ7cB8WTBb4f0Is8-7qO4jFpmtrLLNDfBqlJTOY_GxUJkQOtswWTIOEfdFUhvmUonBY"/>
+                </div>
+                <div class="speech-bubble relative bg-ivory border border-sage p-lg rounded-xl max-w-md">
+                    <h1 class="font-title-serif italic text-[22px] text-ink mb-2 leading-tight">
+                        What would you like to gift today? ✦
+                    </h1>
+                    <p class="font-body-md text-[14px] text-on-surface-variant">
+                        Search by product name, category, description, or seller.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Trending Searches -->
+            <section>
+                <h2 class="font-label-caps text-[11px] text-gold tracking-widest mb-md uppercase">Trending Now 🔥</h2>
+                <div class="flex flex-wrap gap-sm">
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">handmade candles</button>
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">ceramics</button>
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">wildflower jewelry</button>
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">leather journal</button>
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">botanical wraps</button>
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">woodworking</button>
+                    <button class="trending-chip px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all duration-200">custom portrait</button>
+                </div>
+            </section>
+
+            <!-- Shop by Occasion -->
+            <section>
+                <h2 class="font-label-caps text-[11px] text-gold tracking-widest mb-md uppercase">Shop by Occasion</h2>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-md">
+                    <div class="occasion-card h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all duration-300" data-occasion="gift">
+                        <span class="material-symbols-outlined text-primary-container mb-2 text-[26px]" style="font-variation-settings: 'FILL' 0;">cake</span>
+                        <span class="font-label-caps text-[12px] text-ink group-hover:text-primary transition-colors">BIRTHDAY</span>
+                    </div>
+                    <div class="occasion-card h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all duration-300" data-occasion="anniversary">
+                        <span class="material-symbols-outlined text-primary-container mb-2 text-[26px]" style="font-variation-settings: 'FILL' 0;">favorite</span>
+                        <span class="font-label-caps text-[12px] text-ink group-hover:text-primary transition-colors">ANNIVERSARY</span>
+                    </div>
+                    <div class="occasion-card h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all duration-300" data-occasion="wedding">
+                        <span class="material-symbols-outlined text-primary-container mb-2 text-[26px]" style="font-variation-settings: 'FILL' 0;">celebration</span>
+                        <span class="font-label-caps text-[12px] text-ink group-hover:text-primary transition-colors">WEDDING</span>
+                    </div>
+                    <div class="occasion-card h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all duration-300" data-occasion="festival">
+                        <span class="material-symbols-outlined text-primary-container mb-2 text-[26px]" style="font-variation-settings: 'FILL' 0;">festival</span>
+                        <span class="font-label-caps text-[12px] text-ink group-hover:text-primary transition-colors">FESTIVAL</span>
+                    </div>
+                    <div class="occasion-card h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all duration-300" data-occasion="handmade">
+                        <span class="material-symbols-outlined text-primary-container mb-2 text-[26px]" style="font-variation-settings: 'FILL' 0;">volunteer_activism</span>
+                        <span class="font-label-caps text-[12px] text-ink group-hover:text-primary transition-colors">JUST BECAUSE</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Searches -->
+            <section class="max-w-2xl" id="recent-searches-section">
+                <div class="flex items-center justify-between mb-md">
+                    <h2 class="font-label-caps text-[11px] text-gold tracking-widest uppercase">Recent Searches</h2>
+                    <button id="clear-recents-btn" class="font-body-md text-[13px] text-tertiary-container hover:underline transition-all">Clear all</button>
+                </div>
+                <div id="recent-searches-list" class="bg-white rounded-xl border border-outline-variant/30 divide-y divide-outline-variant/30 overflow-hidden">
+                    <!-- Recent searches injected here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== STATE 2: TYPING/SUGGESTIONS VIEW ==================== -->
+        <div id="typing-view" class="space-y-xl max-w-2xl mx-auto hidden">
+            <!-- Autocomplete Suggestions List -->
+            <section>
+                <div id="suggestions-list" class="flex flex-col">
+                    <!-- Dynamic suggestions rows injected here -->
+                </div>
+            </section>
+
+            <!-- Matching Sellers Row -->
+            <section id="matching-sellers-section" class="hidden">
+                <h3 class="font-label-caps text-label-caps text-gold mb-md uppercase tracking-widest">Sellers</h3>
+                <div id="matching-sellers-list" class="flex overflow-x-auto pb-2 gap-sm scrollbar-hide">
+                    <!-- Dynamic seller chips injected here -->
+                </div>
+            </section>
+
+            <!-- Matching Categories Row -->
+            <section id="matching-categories-section" class="hidden">
+                <h3 class="font-label-caps text-label-caps text-gold mb-md uppercase tracking-widest">Categories</h3>
+                <div id="matching-categories-list" class="flex overflow-x-auto pb-2 gap-sm scrollbar-hide">
+                    <!-- Dynamic category pills injected here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== STATE 3: SEARCH RESULTS / NO RESULTS VIEW ==================== -->
+        <div id="results-view" class="space-y-lg hidden">
+            <!-- Search Result Stats and Sorting -->
+            <div id="results-header" class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-outline-variant/30 pb-md mb-xl gap-sm">
+                <div>
+                    <h2 class="font-headline-lg text-primary" id="results-title">Search Results</h2>
+                    <p class="font-body-md text-on-surface-variant" id="results-count">Finding treasures...</p>
+                </div>
+                <div class="flex items-center gap-sm self-end">
+                    <span class="text-xs text-outline font-label-caps whitespace-nowrap">Sort:</span>
+                    <select id="sort-select" class="px-md py-sm rounded-lg bg-surface text-on-surface-variant font-body-md text-sm border border-outline-variant/20 focus:ring-0 focus:outline-none cursor-pointer">
+                        <option value="newest">Newest</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="top_rated">Top Rated</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loader -->
+            <div id="results-loader" class="flex flex-col items-center justify-center py-20">
+                <div class="relative w-12 h-12">
+                    <div class="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                <p class="mt-md text-primary font-body-md italic animate-pulse">Gathering handcrafted treasures...</p>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg hidden">
+                <!-- Dynamic cards injected here -->
+            </div>
+
+            <!-- pagination loader / end message -->
+            <div id="pagination-sentinel" class="h-10"></div>
+
+            <!-- Empty / No Results State View -->
+            <div id="no-results-view" class="space-y-xl text-center hidden pt-10">
+                <div class="max-w-md mx-auto space-y-md">
+                    <h3 class="font-headline-lg text-[26px] text-ink leading-tight italic">Hmm, nothing found for that ✦</h3>
+                    <p class="font-body-md text-on-surface-variant text-[15px] leading-relaxed">
+                        Try different words or explore by category. Our makers are constantly updating their studio collections.
+                    </p>
+                    <a class="inline-block bg-primary text-white font-body-md px-xl py-3 rounded-full hover:bg-primary-container active:scale-98 transition-all shadow-md mt-sm" href="/buyer/categories.html">
+                        Browse all categories
+                    </a>
+                </div>
+
+                <!-- Related Treasures section -->
+                <div class="pt-16 border-t border-outline-variant/20 text-left">
+                    <h4 class="font-headline-lg text-[22px] text-primary italic text-center mb-10">Related treasures you might love</h4>
+                    <div id="related-treasures-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg">
+                        <!-- Recommended items injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Global Toast Component Placeholders -->
+    <div id="toast-root" class="fixed bottom-6 right-6 z-50"></div>
+
+    <script type="module">
+        import apiClient from '/src/utils/apiClient.js';
+        import { formatPaise } from '/src/utils/currency.js';
+
+        // State variables
+        let searchInput = document.getElementById('search-input');
+        let clearSearchBtn = document.getElementById('clear-search-btn');
+        let idleView = document.getElementById('idle-view');
+        let typingView = document.getElementById('typing-view');
+        let resultsView = document.getElementById('results-view');
+        let resultsGrid = document.getElementById('results-grid');
+        let resultsLoader = document.getElementById('results-loader');
+        let noResultsView = document.getElementById('no-results-view');
+        
+        let typingTimeout = null;
+        let lastQuery = '';
+        let searchResults = [];
+        let cursor = null;
+        let nextOffset = 0;
+        let hasMore = false;
+        let isLoadingMore = false;
+
+        // Init page
+        function init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('q');
+            const focusParam = urlParams.get('focus');
+
+            // Wire event listeners
+            searchInput.addEventListener('input', handleTyping);
+            searchInput.addEventListener('keydown', handleKeydown);
+            clearSearchBtn.addEventListener('click', clearSearch);
+            document.getElementById('clear-recents-btn').addEventListener('click', clearRecentSearches);
+            document.getElementById('sort-select').addEventListener('change', () => {
+                if (lastQuery) {
+                    executeSearch(lastQuery, true);
+                }
+            });
+
+            // Wire occasion clicks
+            document.querySelectorAll('.occasion-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const tag = card.getAttribute('data-occasion');
+                    searchInput.value = tag;
+                    executeSearch(tag);
+                });
+            });
+
+            // Wire trending chips clicks
+            document.querySelectorAll('.trending-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const text = chip.innerText;
+                    searchInput.value = text;
+                    executeSearch(text);
+                });
+            });
+
+            // Handle URL Parameters
+            if (queryParam) {
+                searchInput.value = queryParam;
+                executeSearch(queryParam);
+            } else {
+                renderRecentSearches();
+                if (focusParam === 'true') {
+                    searchInput.focus();
+                }
+            }
+
+            // Setup Infinite Scroll
+            window.addEventListener('scroll', handleScroll);
+        }
+
+        // States navigation logic
+        function showState(stateName) {
+            if (stateName === 'idle') {
+                idleView.classList.remove('hidden');
+                typingView.classList.add('hidden');
+                resultsView.classList.add('hidden');
+                clearSearchBtn.classList.add('hidden');
+                renderRecentSearches();
+            } else if (stateName === 'typing') {
+                idleView.classList.add('hidden');
+                typingView.classList.remove('hidden');
+                resultsView.classList.add('hidden');
+                clearSearchBtn.classList.remove('hidden');
+            } else if (stateName === 'results') {
+                idleView.classList.add('hidden');
+                typingView.classList.add('hidden');
+                resultsView.classList.remove('hidden');
+                clearSearchBtn.classList.remove('hidden');
+            }
+        }
+
+        // Typing logic (autocomplete logic)
+        function handleTyping() {
+            const val = searchInput.value.trim();
+            if (val === '') {
+                showState('idle');
+                return;
+            }
+
+            showState('typing');
+
+            // Debounce suggestion calls
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(async () => {
+                try {
+                    const res = await apiClient.get('/products/search-suggestions', { params: { q: val } });
+                    if (res.data && res.data.success) {
+                        renderSuggestions(res.data.data, val);
+                    }
+                } catch (err) {
+                    console.error("Suggestions error:", err);
+                }
+            }, 300);
+        }
+
+        function handleKeydown(e) {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) {
+                    executeSearch(query);
+                }
+            }
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            showState('idle');
+            searchInput.focus();
+        }
+
+        // Render Suggestions
+        function renderSuggestions(data, query) {
+            const { suggestions, sellers, categories } = data;
+            const suggestionsList = document.getElementById('suggestions-list');
+
+            // Render text suggestions
+            if (suggestions.length === 0 && sellers.length === 0 && categories.length === 0) {
+                suggestionsList.innerHTML = `
+                    <div class="h-[52px] flex items-center px-2 text-on-surface-variant italic text-sm">
+                        No matches found... press Enter to search anyway.
+                    </div>
+                `;
+                document.getElementById('matching-sellers-section').classList.add('hidden');
+                document.getElementById('matching-categories-section').classList.add('hidden');
+                return;
+            }
+
+            // Suggestions markup
+            suggestionsList.innerHTML = suggestions.map(s => {
+                const highlighted = highlightMatch(s, query);
+                return `
+                    <div class="suggestion-row h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group" data-suggestion="${s}">
+                        <div class="flex items-center gap-md">
+                            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+                            <p class="text-body-md text-on-surface">${highlighted}</p>
+                        </div>
+                        <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Click suggestions
+            suggestionsList.querySelectorAll('.suggestion-row').forEach(row => {
+                row.addEventListener('click', () => {
+                    const txt = row.getAttribute('data-suggestion');
+                    searchInput.value = txt;
+                    executeSearch(txt);
+                });
+            });
+
+            // Render Sellers
+            const sellersSection = document.getElementById('matching-sellers-section');
+            const sellersList = document.getElementById('matching-sellers-list');
+            if (sellers.length > 0) {
+                sellersSection.classList.remove('hidden');
+                sellersList.innerHTML = sellers.map(s => {
+                    const avatar = s.avatar_url ? `<img src="${s.avatar_url}" alt="${s.shop_name}" class="w-[28px] h-[28px] rounded-full object-cover"/>` : `<div class="w-[28px] h-[28px] rounded-full bg-primary-container flex items-center justify-center text-[10px] text-white font-bold uppercase">${s.shop_name.substring(0,2)}</div>`;
+                    return `
+                        <div class="seller-chip flex-shrink-0 flex items-center gap-sm bg-surface px-3 py-1.5 rounded-full border border-outline-variant shadow-sm hover:border-primary transition-all cursor-pointer" data-query="${s.shop_name}">
+                            ${avatar}
+                            <span class="text-body-md font-medium text-ink">${s.shop_name}</span>
+                            <span class="font-data-price text-data-price text-gold">${s.rating} ★</span>
+                        </div>
+                    `;
+                }).join('');
+
+                sellersList.querySelectorAll('.seller-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        const seller = chip.getAttribute('data-query');
+                        searchInput.value = seller;
+                        executeSearch(seller);
+                    });
+                });
+            } else {
+                sellersSection.classList.add('hidden');
+            }
+
+            // Render Categories
+            const categoriesSection = document.getElementById('matching-categories-section');
+            const categoriesList = document.getElementById('matching-categories-list');
+            if (categories.length > 0) {
+                categoriesSection.classList.remove('hidden');
+                categoriesList.innerHTML = categories.map(c => `
+                    <a class="flex-shrink-0 bg-primary px-4 py-2 rounded-full text-white font-body-md text-[12px] uppercase tracking-wide hover:bg-primary-container transition-colors shadow-sm cursor-pointer" href="/buyer/category.html?slug=${c.slug}">
+                        <span class="mr-1">${c.emoji}</span> ${c.display_name}
+                    </a>
+                `).join('');
+            } else {
+                categoriesSection.classList.add('hidden');
+            }
+        }
+
+        // Highlight matching query
+        function highlightMatch(text, query) {
+            const index = text.toLowerCase().indexOf(query.toLowerCase());
+            if (index >= 0) {
+                const before = text.substring(0, index);
+                const match = text.substring(index, index + query.length);
+                const after = text.substring(index + query.length);
+                return `${before}<span class="font-bold text-primary-container">${match}</span>${after}`;
+            }
+            return text;
+        }
+
+        // Save and Load Recent Searches
+        function saveRecentSearch(query) {
+            let recents = JSON.parse(localStorage.getItem('tohfa_recent_searches') || '[]');
+            recents = recents.filter(r => r.toLowerCase() !== query.toLowerCase());
+            recents.unshift(query);
+            if (recents.length > 5) {
+                recents.pop();
+            }
+            localStorage.setItem('tohfa_recent_searches', JSON.stringify(recents));
+        }
+
+        function renderRecentSearches() {
+            const recents = JSON.parse(localStorage.getItem('tohfa_recent_searches') || '[]');
+            const recentsSection = document.getElementById('recent-searches-section');
+            const recentsList = document.getElementById('recent-searches-list');
+
+            if (recents.length === 0) {
+                recentsSection.classList.add('hidden');
+                return;
+            }
+
+            recentsSection.classList.remove('hidden');
+            recentsList.innerHTML = recents.map(r => `
+                <div class="recent-row flex items-center justify-between py-md px-4 group hover:bg-surface transition-colors cursor-pointer" data-query="${r}">
+                    <div class="flex items-center gap-md">
+                        <span class="material-symbols-outlined text-outline group-hover:text-primary-container">history</span>
+                        <span class="font-body-md text-on-surface">${r}</span>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <button class="remove-recent-btn text-outline hover:text-error transition-colors p-1" data-query="${r}">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </button>
+                        <span class="material-symbols-outlined text-outline group-hover:text-primary-container transform -rotate-45">arrow_forward</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Click recent query to search
+            recentsList.querySelectorAll('.recent-row').forEach(row => {
+                row.addEventListener('click', (e) => {
+                    // Check if clicked remove button
+                    if (e.target.closest('.remove-recent-btn')) {
+                        return;
+                    }
+                    const q = row.getAttribute('data-query');
+                    searchInput.value = q;
+                    executeSearch(q);
+                });
+            });
+
+            // Click remove button to delete recent
+            recentsList.querySelectorAll('.remove-recent-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const q = btn.getAttribute('data-query');
+                    let recents = JSON.parse(localStorage.getItem('tohfa_recent_searches') || '[]');
+                    recents = recents.filter(r => r !== q);
+                    localStorage.setItem('tohfa_recent_searches', JSON.stringify(recents));
+                    renderRecentSearches();
+                });
+            });
+        }
+
+        function clearRecentSearches() {
+            localStorage.removeItem('tohfa_recent_searches');
+            renderRecentSearches();
+        }
+
+        // SEARCH EXECUTION LOGIC
+        async function executeSearch(query, isNewSearch = true) {
+            if (!query || query.trim() === '') return;
+            query = query.trim();
+            lastQuery = query;
+
+            saveRecentSearch(query);
+            showState('results');
+            
+            // Set header values
+            document.getElementById('results-title').innerText = `Search Results for "${query}"`;
+            document.getElementById('results-count').innerText = `Gathering handcrafted items...`;
+
+            if (isNewSearch) {
+                cursor = null;
+                nextOffset = 0;
+                resultsGrid.innerHTML = '';
+            }
+
+            // Show loading
+            resultsLoader.classList.remove('hidden');
+            resultsGrid.classList.add('hidden');
+            noResultsView.classList.add('hidden');
+
+            const sort = document.getElementById('sort-select').value;
+
+            try {
+                const params = { q: query, sort, limit: 12 };
+                if (sort === 'newest' && cursor) {
+                    params.cursor = cursor;
+                } else if (sort !== 'newest' && nextOffset > 0) {
+                    params.offset = nextOffset;
+                }
+
+                const res = await apiClient.get('/products/search', { params });
+                
+                resultsLoader.classList.add('hidden');
+                
+                if (res.data && res.data.success) {
+                    const products = res.data.data.products || [];
+                    hasMore = res.data.data.has_more || false;
+                    cursor = res.data.data.next_cursor || null;
+                    nextOffset = res.data.data.next_offset || 0;
+
+                    if (isNewSearch) {
+                        searchResults = products;
+                    } else {
+                        searchResults.push(...products);
+                    }
+
+                    if (searchResults.length === 0) {
+                        // Empty State (No Results)
+                        resultsGrid.classList.add('hidden');
+                        noResultsView.classList.remove('hidden');
+                        document.getElementById('results-count').innerText = `0 items found`;
+                        await fetchRelatedTreasures();
+                    } else {
+                        // Display Results
+                        resultsGrid.classList.remove('hidden');
+                        noResultsView.classList.add('hidden');
+                        document.getElementById('results-count').innerText = `${searchResults.length}${hasMore ? '+' : ''} handcrafted item${searchResults.length === 1 ? '' : 's'} found`;
+                        renderProductGrid(searchResults);
+                    }
+                }
+            } catch (err) {
+                console.error("Search API Error:", err);
+                resultsLoader.classList.add('hidden');
+                resultsGrid.classList.add('hidden');
+                document.getElementById('results-count').innerText = `Error loading results`;
+                resultsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-20 text-error">
+                        <span class="material-symbols-outlined text-[32px] mb-sm">error</span>
+                        <p class="font-semibold text-sm">Failed to retrieve search results</p>
+                        <button onclick="executeSearch('${query}')" class="mt-md px-md py-sm bg-primary text-white rounded-lg text-sm font-bold active:scale-95 transition-all">Retry</button>
+                    </div>
+                `;
+                resultsGrid.classList.remove('hidden');
+            }
+        }
+
+        // Render matching products
+        function renderProductGrid(products) {
+            resultsGrid.innerHTML = products.map(p => {
+                const img = p.image_url || 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
+                const price = `₹${(p.price_paise / 100).toLocaleString('en-IN')}`;
+                
+                const shipsBadge = p.ready_to_ship ? 'Ready to Ship' : (p.ships_in_days ? `Ships in ${p.ships_in_days} days` : 'Custom Order');
+                const shipsClass = p.ready_to_ship ? 'bg-secondary-fixed/30 text-on-secondary-fixed-variant' : 'bg-tertiary-fixed/30 text-on-tertiary-fixed-variant';
+                
+                const isWishlisted = !!p.is_wishlisted;
+                const heartFill = isWishlisted ? 1 : 0;
+
+                return `
+                    <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative" data-product-id="${p.id}">
+                        <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF] cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">
+                            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${img}" alt="${p.name}">
+                            <button class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity toggle-wishlist-btn hover:scale-110 active:scale-95" data-id="${p.id}" data-wishlisted="${isWishlisted}">
+                                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' ${heartFill};">favorite</span>
+                            </button>
+                        </div>
+                        <div class="p-md flex flex-col flex-grow justify-between">
+                            <div>
+                                <p class="font-data-price text-[10px] ${shipsClass} px-sm py-[2px] rounded-full inline-block mb-xs">${shipsBadge}</p>
+                                <h3 class="font-title-serif text-title-serif text-primary line-clamp-2 cursor-pointer hover:underline" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h3>
+                                <p class="text-xs text-outline mt-1">By ${p.seller_name || 'Artisan'}</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-md pt-sm border-t border-outline-variant/20">
+                                <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">${price}</p>
+                                <button class="p-sm bg-primary-container text-white rounded-lg hover:bg-primary transition-colors add-to-cart-btn active:scale-95" data-id="${p.id}">
+                                    <span class="material-symbols-outlined text-md">add_shopping_cart</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Bind click handlers
+            resultsGrid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    await handleAddToCart(id);
+                });
+            });
+
+            resultsGrid.querySelectorAll('.toggle-wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    const wishlisted = btn.getAttribute('data-wishlisted') === 'true';
+                    await handleToggleWishlist(id, wishlisted, btn);
+                });
+            });
+        }
+
+        // Render Related/Recommended items
+        async function fetchRelatedTreasures() {
+            const grid = document.getElementById('related-treasures-grid');
+            grid.innerHTML = `
+                <div class="col-span-full flex flex-col items-center justify-center py-10">
+                    <span class="material-symbols-outlined animate-spin text-[32px] text-primary">sync</span>
+                    <p class="text-outline text-sm italic mt-sm">Finding related treasures you might love...</p>
+                </div>
+            `;
+
+            try {
+                const res = await apiClient.get('/home/feed');
+                if (res.data && res.data.success) {
+                    const products = res.data.data.featured_products || [];
+                    if (products.length === 0) {
+                        grid.innerHTML = `<p class="col-span-full text-center text-outline text-sm">No recommended items found.</p>`;
+                        return;
+                    }
+
+                    const items = products.slice(0, 8); // Display up to 8
+                    grid.innerHTML = items.map(p => {
+                        const img = p.image_url || 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
+                        const price = `₹${(p.price_paise / 100).toLocaleString('en-IN')}`;
+                        
+                        return `
+                            <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all duration-300 flex flex-col h-full cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">
+                                <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF] mb-sm">
+                                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${img}" alt="${p.name}">
+                                </div>
+                                <div class="p-xs flex flex-col flex-grow justify-between text-left">
+                                    <div>
+                                        <h4 class="font-title-serif text-title-serif text-primary text-[15px] line-clamp-2">${p.name}</h4>
+                                        <p class="text-xs text-outline mt-0.5">By ${p.seller_name || 'Artisan'}</p>
+                                    </div>
+                                    <div class="flex items-center justify-between mt-sm pt-xs border-t border-outline-variant/10">
+                                        <p class="font-data-price text-sm text-secondary-fixed-variant font-bold">${price}</p>
+                                        <span class="material-symbols-outlined text-outline text-md">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                console.error("Failed to load related feeds:", err);
+                grid.innerHTML = `<p class="col-span-full text-center text-error text-sm">Could not retrieve recommended items.</p>`;
+            }
+        }
+
+        // Cart and Wishlist operations
+        async function handleAddToCart(productId) {
+            const token = sessionStorage.getItem('tohfa_access_token');
+            if (!token) {
+                window.location.href = '/auth/login.html';
+                return;
+            }
+
+            try {
+                const res = await apiClient.post('/cart/items', { product_id: Number(productId), quantity: 1 });
+                if (res.data && res.data.success) {
+                    showToast("Added to basket!", "success");
+                }
+            } catch (err) {
+                console.error("Cart error:", err);
+            }
+        }
+
+        async function handleToggleWishlist(productId, isWishlisted, btn) {
+            const token = sessionStorage.getItem('tohfa_access_token');
+            if (!token) {
+                window.location.href = '/auth/login.html';
+                return;
+            }
+
+            try {
+                if (isWishlisted) {
+                    const res = await apiClient.delete(`/wishlist/${productId}`);
+                    if (res.data && res.data.success) {
+                        btn.setAttribute('data-wishlisted', 'false');
+                        btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 0";
+                        showToast("Removed from favorites", "success");
+                    }
+                } else {
+                    const res = await apiClient.post(`/wishlist/${productId}`);
+                    if (res.data && res.data.success) {
+                        btn.setAttribute('data-wishlisted', 'true');
+                        btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 1";
+                        showToast("Saved to favorites", "success");
+                    }
+                }
+            } catch (err) {
+                console.error("Wishlist error:", err);
+            }
+        }
+
+        // Toast Helper
+        function showToast(message, type = 'success') {
+            const root = document.getElementById('toast-root');
+            const toast = document.createElement('div');
+            toast.className = `flex items-center gap-sm px-lg py-md rounded-xl border text-sm font-semibold shadow-lg transition-all transform translate-y-4 opacity-0 duration-300 bg-white border-outline-variant/60 text-primary-container`;
+            
+            const icon = type === 'success' ? 'check_circle' : 'error';
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-primary">${icon}</span>
+                <span>${message}</span>
+            `;
+            root.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+            
+            // Auto dismiss
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Scroll helper for infinite loading
+        async function handleScroll() {
+            if (!hasMore || isLoadingMore) return;
+
+            const sentinel = document.getElementById('pagination-sentinel');
+            if (!sentinel) return;
+
+            const rect = sentinel.getBoundingClientRect();
+            const isNearBottom = rect.top <= window.innerHeight + 100;
+
+            if (isNearBottom && lastQuery) {
+                isLoadingMore = true;
+                const prevGridHtml = resultsGrid.innerHTML;
+                
+                // Show tiny loader indicator at bottom
+                const spinner = document.createElement('div');
+                spinner.id = 'infinite-scroll-loader';
+                spinner.className = 'w-full flex justify-center py-4 col-span-full';
+                spinner.innerHTML = `
+                    <div class="relative w-8 h-8">
+                        <div class="absolute inset-0 border-2 border-primary/10 rounded-full"></div>
+                        <div class="absolute inset-0 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                `;
+                resultsGrid.appendChild(spinner);
+
+                try {
+                    const sort = document.getElementById('sort-select').value;
+                    const params = { q: lastQuery, sort, limit: 12 };
+                    if (sort === 'newest' && cursor) {
+                        params.cursor = cursor;
+                    } else if (sort !== 'newest' && nextOffset > 0) {
+                        params.offset = nextOffset;
+                    }
+                    const res = await apiClient.get('/products/search', { params });
+                    
+                    spinner.remove();
+
+                    if (res.data && res.data.success) {
+                        const newProducts = res.data.data.products || [];
+                        hasMore = res.data.data.has_more || false;
+                        cursor = res.data.data.next_cursor || null;
+                        nextOffset = res.data.data.next_offset || 0;
+
+                        if (newProducts.length > 0) {
+                            searchResults.push(...newProducts);
+                            // Append new items
+                            renderProductGrid(searchResults);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Infinite scroll error:", err);
+                    spinner.remove();
+                } finally {
+                    isLoadingMore = false;
+                }
+            }
+        }
+
+        // Run
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

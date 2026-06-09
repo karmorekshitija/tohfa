@@ -831,5 +831,25 @@ const migrateSellerBans = () => {
 };
 migrateSellerBans();
 
+// Occasions Feature: Migration for occasions table
+const migrateOccasions = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS occasions (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title         TEXT NOT NULL,
+      occasion_type TEXT NOT NULL DEFAULT 'other' CHECK(occasion_type IN ('birthday','anniversary','wedding','festival','just_because','other')),
+      date          TEXT NOT NULL,
+      reminder_days INTEGER DEFAULT 7,
+      notes         TEXT DEFAULT NULL,
+      created_at    TEXT DEFAULT (datetime('now')),
+      updated_at    TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_occasions_user ON occasions(user_id);
+    CREATE INDEX IF NOT EXISTS idx_occasions_date  ON occasions(date);
+  `);
+};
+migrateOccasions();
+
 module.exports = db;
 

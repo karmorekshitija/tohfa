@@ -510,11 +510,11 @@
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const token = sessionStorage.getItem('access_token');
+  const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
   
   // 1. Auth check: if no token is found, redirect to login
   if (!token && (window.location.protocol.startsWith('http'))) {
-    window.location.href = '/auth/login?next=' + encodeURIComponent(window.location.pathname);
+    window.location.href = '/auth/login.html?next=' + encodeURIComponent(window.location.pathname);
     return;
   }
   

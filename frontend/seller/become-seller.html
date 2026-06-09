@@ -358,9 +358,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ctaButtons.forEach(btn => {
         if (!btn) return;
         btn.addEventListener('click', () => {
-            const token = sessionStorage.getItem('access_token');
+            const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
             if (!token) {
-                window.location.href = '/auth/login?next=/become-seller';
+                window.location.href = '/auth/login.html?next=/become-seller';
             } else {
                 // User is logged in, post to become seller
                 const displayName = prompt("Enter your shop display name:");

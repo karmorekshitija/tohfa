@@ -241,6 +241,11 @@
       <p class="font-title-serif text-on-surface">Addresses</p>
       <p id="hub-addresses-count" class="text-xs text-outline mt-xs">0 saved locations</p>
     </a>
+    <a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="/buyer/occasions.html">
+      <span class="material-symbols-outlined text-[#725476] mb-md" data-icon="celebration">celebration</span>
+      <p class="font-title-serif text-on-surface">Occasions</p>
+      <p id="hub-occasions-count" class="text-xs text-outline mt-xs">0 occasions saved</p>
+    </a>
     <a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="/buyer/notifications.html">
       <span class="material-symbols-outlined text-secondary mb-md" data-icon="notifications">notifications</span>
       <p class="font-title-serif text-on-surface">Notifications</p>
@@ -375,6 +380,18 @@
                 document.getElementById('shipping-line2').innerText = defaultAddr.line1 + (defaultAddr.line2 ? `, ${defaultAddr.line2}` : '');
                 document.getElementById('shipping-country').innerText = `${defaultAddr.city}, ${defaultAddr.state} ${defaultAddr.pincode}`;
             }
+
+            // Fetch occasions count
+            try {
+                const occRes = await apiClient.get('/occasions');
+                if (occRes.data && occRes.data.success) {
+                    const count = occRes.data.data.total || 0;
+                    const occEl = document.getElementById('hub-occasions-count');
+                    if (occEl) {
+                        occEl.innerText = count === 1 ? '1 occasion saved' : `${count} occasions saved`;
+                    }
+                }
+            } catch (e) { /* silently ignore */ }
         } catch (err) {
             console.error('Failed to load profile/address details:', err);
         }
