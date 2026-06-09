@@ -4652,85 +4652,177 @@ app.get('/api/seller/orders/:id', requireSeller, (req, res) => {
 });
 
 // ============================================================
-// TASK 28: PUT /api/seller/orders/:id/status
+// TASK 11: PATCH /api/seller/orders/:id/status
 // ============================================================
-app.put('/api/seller/orders/:id/status', requireSeller, (req, res) => {
+const handleOrderStatusUpdate = (req, res) => {
   try {
     const orderId = parseInt(req.params.id);
-    const { status, dispatch_note, tracking_number } = req.body;
+    const sellerId = req.user.user_id;
+    // Map tracking_number -> tracking_id for backward compatibility with older PUT body
+    const statusVal = req.body.status;
+    const trackingIdVal = req.body.tracking_id || req.body.tracking_number;
+    const courierVal = req.body.courier;
+    const studioNoteVal = req.body.studio_note || req.body.dispatch_note;
 
-    const validStatuses = ['crafting', 'shipped', 'delivered', 'cancelled'];
-    if (!status || !validStatuses.includes(status)) {
-      return res.status(400).json({ error: true, message: 'Invalid status', code: 'VALIDATION_ERROR' });
+    if (!statusVal) {
+      return res.status(400).json({ error: true, message: 'Status is required', code: 'VALIDATION_ERROR' });
     }
 
-    // Verify seller owns this order
-    const orderCheck = db.prepare(`
-      SELECT DISTINCT o.id FROM orders o
-      JOIN order_items oi ON oi.order_id = o.id
-      JOIN products p ON p.id = oi.product_id
-      WHERE o.id = ? AND p.seller_id = ?
-    `).get(orderId, req.user.user_id);
-    if (!orderCheck) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
-
-    // Upsert seller_order_meta
-    const existing = db.prepare('SELECT id FROM seller_order_meta WHERE order_id = ?').get(orderId);
-    const dispatchedAt = status === 'shipped' ? new Date().toISOString() : undefined;
-    if (existing) {
-      db.prepare(`UPDATE seller_order_meta SET fulfillment_status = ?, tracking_number = COALESCE(?, tracking_number),
-        dispatch_note = COALESCE(?, dispatch_note), dispatched_at = COALESCE(?, dispatched_at), updated_at = datetime('now') WHERE order_id = ?`
-      ).run(status, tracking_number || null, dispatch_note || null, dispatchedAt || null, orderId);
-    } else {
-      db.prepare(`INSERT INTO seller_order_meta (order_id, seller_id, fulfillment_status, tracking_number, dispatch_note, dispatched_at)
-        VALUES (?, ?, ?, ?, ?, ?)`
-      ).run(orderId, req.seller.id, status, tracking_number || null, dispatch_note || null, dispatchedAt || null);
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
+    if (!order) {
+      return res.status(404).json({ error: true, message: 'Order not found', code: 'NOT_FOUND' });
     }
 
-    // Insert tracking event
-    db.prepare('INSERT INTO order_tracking_events (order_id, seller_id, status) VALUES (?, ?, ?)').run(orderId, req.seller.id, status);
+    if (order.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
 
-    const events = db.prepare('SELECT status, occurred_at FROM order_tracking_events WHERE order_id = ? ORDER BY occurred_at ASC').all(orderId);
-    const meta = db.prepare('SELECT fulfillment_status, tracking_number FROM seller_order_meta WHERE order_id = ?').get(orderId);
-    const order = db.prepare('SELECT order_ref FROM orders WHERE id = ?').get(orderId);
+    // Convert old status values to new statuses for backward compatibility if any
+    let targetStatus = statusVal;
+    if (targetStatus === 'crafting') targetStatus = 'in_production';
+    if (targetStatus === 'shipped') targetStatus = 'dispatched';
+
+    // Enforce transition matrix
+    const current = order.status;
+    const target = targetStatus;
+    const nonTerminal = ['awaiting_payment', 'processing', 'in_production', 'packed', 'dispatched'];
+
+    let isValid = false;
+    if (current === target) {
+      isValid = true;
+    } else if (target === 'cancelled' && nonTerminal.includes(current)) {
+      isValid = true;
+    } else if (current === 'awaiting_payment' && target === 'processing') {
+      isValid = true;
+    } else if (current === 'processing' && target === 'in_production') {
+      isValid = true;
+    } else if (current === 'in_production' && target === 'packed') {
+      isValid = true;
+    } else if (current === 'packed' && target === 'dispatched') {
+      isValid = true;
+    } else if (current === 'dispatched' && target === 'delivered') {
+      isValid = true;
+    } else if (current === 'dispatched' && target === 'rto') {
+      isValid = true;
+    }
+
+    if (!isValid) {
+      return res.status(400).json({ error: true, message: `Invalid status transition from ${current} to ${target}`, code: 'INVALID_TRANSITION' });
+    }
+
+    // If target is dispatched and tracking_id not provided
+    if (target === 'dispatched' && !trackingIdVal && !order.tracking_id) {
+      return res.status(400).json({ error: true, message: 'Tracking ID is required when status is dispatched', code: 'VALIDATION_ERROR' });
+    }
+
+    // Studio notes logic
+    let studioNotes = [];
+    try {
+      if (order.studio_notes) studioNotes = JSON.parse(order.studio_notes);
+    } catch (e) {}
+    if (!Array.isArray(studioNotes)) studioNotes = [];
+
+    if (studioNoteVal) {
+      studioNotes.push({
+        ts: new Date().toISOString(),
+        text: studioNoteVal
+      });
+    }
+
+    // Set timestamps based on transitions
+    let dispatchedAt = order.dispatched_at;
+    if (target === 'dispatched' && !order.dispatched_at) {
+      dispatchedAt = new Date().toISOString();
+    }
+
+    let deliveredAt = order.delivered_at;
+    if (target === 'delivered' && !order.delivered_at) {
+      deliveredAt = new Date().toISOString();
+    }
+
+    db.prepare(`
+      UPDATE orders
+      SET status = ?,
+          tracking_id = COALESCE(?, tracking_id),
+          courier = COALESCE(?, courier),
+          dispatched_at = ?,
+          delivered_at = ?,
+          studio_notes = ?,
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).run(target, trackingIdVal || null, courierVal || null, dispatchedAt, deliveredAt, JSON.stringify(studioNotes), orderId);
+
+    const updatedOrder = db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
 
     return res.json({
       success: true,
-      data: { order_id: order.order_ref, fulfillment_status: meta.fulfillment_status, tracking_number: meta.tracking_number, tracking_events: events }
+      data: {
+        id: updatedOrder.id,
+        order_id: updatedOrder.order_ref, // compatibility
+        order_ref: updatedOrder.order_ref,
+        status: updatedOrder.status,
+        fulfillment_status: updatedOrder.status, // compatibility
+        tracking_number: updatedOrder.tracking_id, // compatibility
+        tracking_id: updatedOrder.tracking_id,
+        updated_at: updatedOrder.updated_at
+      }
     });
   } catch (err) {
-    console.error('PUT /api/seller/orders/:id/status error:', err);
+    console.error('Order status update error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
-});
+};
 
-// ============================================================
-// TASK 29: POST /api/seller/orders/:id/tracking
-// ============================================================
+app.patch('/api/seller/orders/:id/status', requireSeller, handleOrderStatusUpdate);
+app.put('/api/seller/orders/:id/status', requireSeller, handleOrderStatusUpdate);
+
+// Compatibility POST /api/seller/orders/:id/tracking
 app.post('/api/seller/orders/:id/tracking', requireSeller, (req, res) => {
   try {
     const orderId = parseInt(req.params.id);
-    const { tracking_number, tracking_prefix, dispatch_note } = req.body;
+    const sellerId = req.user.user_id;
+    const { tracking_number, courier, dispatch_note } = req.body;
 
-    const orderCheck = db.prepare(`
-      SELECT DISTINCT o.id, o.order_ref FROM orders o
-      JOIN order_items oi ON oi.order_id = o.id
-      JOIN products p ON p.id = oi.product_id
-      WHERE o.id = ? AND p.seller_id = ?
-    `).get(orderId, req.user.user_id);
-    if (!orderCheck) return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
-
-    const existing = db.prepare('SELECT id FROM seller_order_meta WHERE order_id = ?').get(orderId);
-    if (existing) {
-      db.prepare(`UPDATE seller_order_meta SET tracking_number = COALESCE(?, tracking_number),
-        tracking_prefix = COALESCE(?, tracking_prefix), dispatch_note = COALESCE(?, dispatch_note),
-        updated_at = datetime('now') WHERE order_id = ?`
-      ).run(tracking_number || null, tracking_prefix || null, dispatch_note || null, orderId);
-    } else {
-      db.prepare('INSERT INTO seller_order_meta (order_id, seller_id, tracking_number, tracking_prefix, dispatch_note) VALUES (?, ?, ?, ?, ?)')
-        .run(orderId, req.seller.id, tracking_number || null, tracking_prefix || null, dispatch_note || null);
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
+    if (!order) {
+      return res.status(404).json({ error: true, message: 'Order not found', code: 'NOT_FOUND' });
     }
 
-    return res.json({ success: true, data: { order_id: orderCheck.order_ref, tracking_number: tracking_number || null } });
+    if (order.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
+
+    let studioNotes = [];
+    try {
+      if (order.studio_notes) studioNotes = JSON.parse(order.studio_notes);
+    } catch (e) {}
+    if (!Array.isArray(studioNotes)) studioNotes = [];
+
+    if (dispatch_note) {
+      studioNotes.push({
+        ts: new Date().toISOString(),
+        text: dispatch_note
+      });
+    }
+
+    db.prepare(`
+      UPDATE orders
+      SET tracking_id = COALESCE(?, tracking_id),
+          courier = COALESCE(?, courier),
+          studio_notes = ?,
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).run(tracking_number || null, courier || null, JSON.stringify(studioNotes), orderId);
+
+    const updated = db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
+
+    return res.json({
+      success: true,
+      data: {
+        order_id: updated.order_ref,
+        tracking_number: updated.tracking_id
+      }
+    });
   } catch (err) {
     console.error('POST /api/seller/orders/:id/tracking error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
