@@ -4466,64 +4466,141 @@ app.post('/api/seller/reels', rateLimit(10), requireSeller, uploadSellerReel.fie
 // ============================================================
 // TASK 26: GET /api/seller/orders
 // ============================================================
+// ============================================================
+// TASK 10: GET /api/seller/orders
+// ============================================================
 app.get('/api/seller/orders', requireSeller, (req, res) => {
   try {
-    const { status = 'all', search = '', period = '30d', page = 1, limit = 20 } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
-    const days = period === '90d' ? 90 : 30;
-    const fromDate = new Date(Date.now() - days * 86400000).toISOString();
+    const sellerId = req.user.user_id;
+    const { status, tab = 'all', sort = 'deadline_asc', page = 1, per_page = 20, format } = req.query;
 
-    let where = "p.seller_id = ? AND o.created_at >= ?";
-    const params = [req.user.user_id, fromDate];
-    if (status !== 'all') { where += ' AND COALESCE(som.fulfillment_status, \'pending\') = ?'; params.push(status); }
-    if (search) { where += ' AND (o.order_ref LIKE ? OR u.full_name LIKE ?)'; params.push(`%${search}%`, `%${search}%`); }
+    const limit = Math.min(Math.max(parseInt(per_page) || 20, 1), 100);
+    const offset = (Math.max(parseInt(page) || 1, 1) - 1) * limit;
 
-    const totalRow = db.prepare(`
-      SELECT COUNT(DISTINCT o.id) as c FROM orders o
-      JOIN order_items oi ON oi.order_id = o.id
-      JOIN products p ON p.id = oi.product_id
-      JOIN users u ON u.id = o.buyer_id
-      LEFT JOIN seller_order_meta som ON som.order_id = o.id
-      WHERE ${where}
-    `).get(...params);
+    let whereClauses = ["o.seller_id = ?"];
+    let params = [sellerId];
 
-    const pendingActionCount = db.prepare(`
-      SELECT COUNT(DISTINCT o.id) as c FROM orders o
-      JOIN order_items oi ON oi.order_id = o.id
-      JOIN products p ON p.id = oi.product_id
-      LEFT JOIN seller_order_meta som ON som.order_id = o.id
-      WHERE p.seller_id = ? AND COALESCE(som.fulfillment_status, 'pending') = 'pending'
-    `).get(req.user.user_id).c;
+    // Status filter
+    if (status) {
+      if (status === 'overdue') {
+        whereClauses.push("date(o.deadline_at) < date('now') AND o.status NOT IN ('dispatched','delivered','cancelled','rto')");
+      } else {
+        whereClauses.push("o.status = ?");
+        params.push(status);
+      }
+    }
 
-    const rows = db.prepare(`
-      SELECT DISTINCT o.id as internal_id, o.order_ref as order_id,
-             oi.product_name as item_title, u.full_name as buyer_name,
-             u.display_name as buyer_handle,
-             a.line1 || ', ' || a.city || ', ' || a.state || ' ' || a.pincode as buyer_address,
-             o.created_at as order_date, o.total_paise,
-             COALESCE(som.fulfillment_status, 'pending') as fulfillment_status,
-             som.tracking_number
+    // Tab filter
+    if (tab && tab !== 'all') {
+      if (tab === 'due_today') {
+        whereClauses.push("date(o.deadline_at) = date('now') AND o.status NOT IN ('cancelled', 'rto', 'delivered')");
+      } else if (tab === 'overdue') {
+        whereClauses.push("date(o.deadline_at) < date('now') AND o.status NOT IN ('dispatched','delivered','cancelled','rto')");
+      } else {
+        whereClauses.push("o.status = ?");
+        params.push(tab);
+      }
+    }
+
+    const whereStr = whereClauses.join(" AND ");
+
+    // Sorting
+    let orderBy = "o.deadline_at ASC";
+    if (sort === 'created_desc') {
+      orderBy = "o.created_at DESC";
+    }
+
+    // Count query
+    const countQuery = `
+      SELECT COUNT(*) as c 
       FROM orders o
-      JOIN order_items oi ON oi.order_id = o.id
-      JOIN products p ON p.id = oi.product_id
+      WHERE ${whereStr}
+    `;
+    const totalCount = db.prepare(countQuery).get(...params).c;
+
+    // Fetch orders query
+    let fetchQuery = `
+      SELECT o.id, o.order_ref, o.buyer_id, o.listing_id, o.variant_id,
+             o.order_type, o.customization, o.payment_status, o.status,
+             o.deadline_at, o.tracking_id, o.studio_notes, o.created_at,
+             u.full_name as buyer_name,
+             COALESCE((SELECT city FROM addresses WHERE user_id = o.buyer_id LIMIT 1), u.location, 'India') as buyer_city,
+             l.title as product_title,
+             v.variant_name
+      FROM orders o
       JOIN users u ON u.id = o.buyer_id
-      LEFT JOIN addresses a ON a.id = o.address_id
-      LEFT JOIN seller_order_meta som ON som.order_id = o.id
-      WHERE ${where}
-      ORDER BY o.created_at DESC LIMIT ? OFFSET ?
-    `).all(...params, parseInt(limit), offset);
+      JOIN listings l ON l.id = o.listing_id
+      LEFT JOIN listing_variants v ON v.id = o.variant_id
+      WHERE ${whereStr}
+      ORDER BY ${orderBy}
+    `;
+
+    let rows;
+    if (format === 'csv') {
+      rows = db.prepare(fetchQuery).all(...params);
+      let csv = 'ID,Order Ref,Buyer,City,Product,Variant,Type,Status,Payment,Deadline\n';
+      rows.forEach(r => {
+        csv += `"${r.id}","${r.order_ref}","${r.buyer_name}","${r.buyer_city}","${r.product_title}","${r.variant_name || ''}","${r.order_type}","${r.status}","${r.payment_status}","${r.deadline_at || ''}"\n`;
+      });
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="orders.csv"');
+      return res.send(csv);
+    } else {
+      fetchQuery += ` LIMIT ? OFFSET ?`;
+      rows = db.prepare(fetchQuery).all(...params, limit, offset);
+    }
 
     const orders = rows.map(row => {
-      const events = db.prepare('SELECT status, occurred_at FROM order_tracking_events WHERE order_id = ? ORDER BY occurred_at ASC').all(row.internal_id);
-      return { ...row, tracking_events: events };
+      // is_repeat_buyer: count orders this buyer has placed with this seller >= 2
+      const repeatRow = db.prepare(`
+        SELECT COUNT(*) as c FROM orders 
+        WHERE buyer_id = ? AND seller_id = ?
+      `).get(row.buyer_id, sellerId);
+      const is_repeat_buyer = (repeatRow ? repeatRow.c : 0) >= 2;
+
+      // is_overdue check
+      let is_overdue = false;
+      if (row.deadline_at && !['dispatched', 'delivered', 'cancelled', 'rto'].includes(row.status)) {
+        is_overdue = new Date(row.deadline_at) < new Date();
+      }
+
+      let customization = null;
+      try {
+        if (row.customization) customization = JSON.parse(row.customization);
+      } catch (e) {
+        customization = row.customization;
+      }
+
+      let studio_notes = [];
+      try {
+        if (row.studio_notes) studio_notes = JSON.parse(row.studio_notes);
+      } catch (e) {}
+      if (!Array.isArray(studio_notes)) studio_notes = [];
+
+      return {
+        id: row.id,
+        order_ref: row.order_ref,
+        buyer_name: row.buyer_name,
+        buyer_city: row.buyer_city,
+        is_repeat_buyer,
+        product_title: row.product_title,
+        variant_name: row.variant_name,
+        order_type: row.order_type,
+        customization,
+        payment_status: row.payment_status,
+        status: row.status,
+        deadline_at: row.deadline_at,
+        is_overdue,
+        tracking_id: row.tracking_id,
+        studio_notes
+      };
     });
 
     return res.json({
       success: true,
       data: {
-        total: totalRow.c, pending_action_count: pendingActionCount,
-        avg_dispatch_days: 0, dispatch_change_pct: 0,
-        on_time_rate_pct: 100, on_time_change_pct: 0,
+        total_count: totalCount,
+        total: totalCount, // compatibility
         orders
       }
     });
