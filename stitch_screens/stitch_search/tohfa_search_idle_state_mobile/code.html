@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tofha Search — Idle State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,700&amp;family=Playfair+Display:ital,wght@0,400;1,400&amp;family=DM+Sans:wght@400;500&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@500&amp;family=Lora:ital,wght@1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#3a684c",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#bceecb",
+                      "primary": "#255338",
+                      "surface-dim": "#e5d8c8",
+                      "on-secondary-fixed": "#062103",
+                      "surface-variant": "#ede1d1",
+                      "on-surface": "#211b11",
+                      "tertiary-fixed": "#ecdcff",
+                      "on-tertiary-fixed": "#270550",
+                      "secondary-container": "#c8e9b8",
+                      "on-tertiary-fixed-variant": "#54387e",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "surface": "#fff8f3",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "surface-container-low": "#fff2e1",
+                      "background": "#fff8f3",
+                      "primary-container": "#3d6b4f",
+                      "error": "#ba1a1a",
+                      "tertiary-container": "#70539b",
+                      "inverse-primary": "#a0d2b0",
+                      "secondary": "#49663f",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed": "#caecbb",
+                      "tertiary": "#573b81",
+                      "outline-variant": "#c1c9c0",
+                      "on-error-container": "#93000a",
+                      "outline": "#717972",
+                      "on-tertiary-container": "#e8d6ff",
+                      "inverse-surface": "#362f25",
+                      "surface-container-highest": "#ede1d1",
+                      "surface-container": "#f9ecdc",
+                      "tertiary-fixed-dim": "#d6baff",
+                      "on-surface-variant": "#414942",
+                      "on-secondary-container": "#4d6a43",
+                      "inverse-on-surface": "#fcefde",
+                      "on-secondary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#b7e9c6",
+                      "surface-container-high": "#f3e6d6",
+                      "surface-bright": "#fff8f3",
+                      "on-background": "#211b11",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#214f36",
+                      "on-primary-fixed": "#002110",
+                      "sage": "#717972",
+                      "sage-soft": "#c1c9c0",
+                      "gold": "#A6894D",
+                      "ivory": "#FCFAF5",
+                      "forest": "#255338"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "margin-desktop": "64px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "margin-mobile": "20px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "xl": "40px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Cinzel"],
+                      "data-price": ["Space Mono"],
+                      "title-serif": ["Merriweather"],
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "display-hero": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "headline-lg": ["Playfair Display"],
+                      "lora": ["Lora"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .fade-right-mask {
+            mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        }
+        .texture-corner {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 20 5 30 15 T 50 10' fill='none' stroke='%23717972' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E");
+            opacity: 0.06;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen font-body-md text-on-surface relative overflow-x-hidden">
+<!-- Atmospheric Textures -->
+<div class="fixed top-0 left-0 w-32 h-32 texture-corner pointer-events-none"></div>
+<div class="fixed bottom-0 right-0 w-48 h-48 texture-corner pointer-events-none rotate-180"></div>
+<!-- Search Top Bar (56px) -->
+<header class="sticky top-0 z-50 bg-white border-b border-outline-variant h-[56px] flex items-center px-4 gap-3">
+<div class="flex-1 h-[44px] bg-ivory border border-outline-variant rounded-full flex items-center px-4 group transition-all duration-200 focus-within:border-primary">
+<span class="material-symbols-outlined text-outline mr-2 text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-outline-variant placeholder:font-light" placeholder="Search handcrafted gifts..." type="text"/>
+</div>
+<button class="text-[13px] font-body-md text-forest font-medium active:opacity-60 transition-opacity">Cancel</button>
+</header>
+<main class="pb-10 max-w-md mx-auto">
+<!-- Mascot Greeting Block -->
+<section class="mt-8 flex flex-col items-center px-4">
+<div class="relative w-[140px] h-[140px] mb-4">
+<img alt="Tofha Mascot" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJVV7FEfzFX7LwbZrrkNgV6I6zLMOzX5bFMbcMv408ZPuULNaGpwbjgThA0iKWnNG7PWZ5hYneG87SxT15GRi9md3SK1lK5d30zwHkYmlZWx3WFaC1YqgG8eCLlx5TeJ7A7Ce0yjppuoImBNpTKRMpTWGmiDB2C4u6TzXEra_7uDwitq_0ZR_yQjNhqu4aHfdfD3tpVcIbWJ7cB8WTBb4f0Is8-7qO4jFpmtrLLNDfBqlJTOY_GxUJkQOtswWTIOEfdFUhvmUonBY"/>
+</div>
+<div class="w-full bg-ivory border border-outline-variant rounded-2xl p-6 text-center relative shadow-sm">
+<!-- Speech Bubble Tail -->
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-ivory border-t border-l border-outline-variant rotate-45"></div>
+<h2 class="font-lora italic text-[19px] text-on-surface mb-2 tracking-tight">
+                    What would you like to gift today? ✦
+                </h2>
+<p class="text-[12px] font-body-md text-on-surface-variant opacity-80">
+                    Search by product, occasion, seller, or mood.
+                </p>
+</div>
+</section>
+<!-- Trending Searches -->
+<section class="mt-10">
+<div class="px-4 mb-4">
+<span class="font-label-caps text-[10px] text-gold uppercase tracking-widest flex items-center gap-1">
+                    Trending Now <span class="text-[12px]">🔥</span>
+</span>
+</div>
+<div class="relative overflow-hidden">
+<div class="flex gap-2 overflow-x-auto hide-scrollbar px-4 fade-right-mask pb-2">
+<div class="flex-shrink-0 h-[34px] px-5 flex items-center justify-center bg-ivory border border-outline-variant rounded-full text-[13px] text-on-surface active:bg-surface-container transition-colors">Ceramic Vases</div>
+<div class="flex-shrink-0 h-[34px] px-5 flex items-center justify-center bg-ivory border border-outline-variant rounded-full text-[13px] text-on-surface active:bg-surface-container transition-colors">Silk Scarves</div>
+<div class="flex-shrink-0 h-[34px] px-5 flex items-center justify-center bg-ivory border border-outline-variant rounded-full text-[13px] text-on-surface active:bg-surface-container transition-colors">Leather Journals</div>
+<div class="flex-shrink-0 h-[34px] px-5 flex items-center justify-center bg-ivory border border-outline-variant rounded-full text-[13px] text-on-surface active:bg-surface-container transition-colors">Botanical Art</div>
+<div class="flex-shrink-0 h-[34px] px-5 flex items-center justify-center bg-ivory border border-outline-variant rounded-full text-[13px] text-on-surface active:bg-surface-container transition-colors">Hand-poured Candles</div>
+</div>
+</div>
+</section>
+<!-- Shop By Occasion -->
+<section class="mt-10">
+<div class="px-4 mb-4">
+<span class="font-label-caps text-[10px] text-gold uppercase tracking-widest">Shop by Occasion</span>
+</div>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar px-4 pb-4">
+<div class="flex-shrink-0 w-[90px] h-[90px] bg-ivory border border-outline-variant rounded-xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="text-2xl">💍</span>
+<span class="text-[11px] font-body-md font-medium text-on-surface">Wedding</span>
+</div>
+<div class="flex-shrink-0 w-[90px] h-[90px] bg-ivory border border-outline-variant rounded-xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="text-2xl">🎂</span>
+<span class="text-[11px] font-body-md font-medium text-on-surface">Birthday</span>
+</div>
+<div class="flex-shrink-0 w-[90px] h-[90px] bg-ivory border border-outline-variant rounded-xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="text-2xl">🏠</span>
+<span class="text-[11px] font-body-md font-medium text-on-surface">Housewarming</span>
+</div>
+<div class="flex-shrink-0 w-[90px] h-[90px] bg-ivory border border-outline-variant rounded-xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="text-2xl">🎓</span>
+<span class="text-[11px] font-body-md font-medium text-on-surface">Graduation</span>
+</div>
+<div class="flex-shrink-0 w-[90px] h-[90px] bg-ivory border border-outline-variant rounded-xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="text-2xl">🧸</span>
+<span class="text-[11px] font-body-md font-medium text-on-surface">New Baby</span>
+</div>
+</div>
+</section>
+<!-- Recent Searches -->
+<section class="mt-8 border-t border-outline-variant pt-6">
+<div class="px-4 flex justify-between items-center mb-2">
+<span class="font-label-caps text-[10px] text-gold uppercase tracking-widest">Recent Searches</span>
+<button class="text-[11px] font-body-md text-tertiary font-medium">Clear all</button>
+</div>
+<div class="flex flex-col">
+<div class="h-[48px] px-4 flex items-center justify-between group active:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline-variant text-[18px]" data-icon="schedule">schedule</span>
+<span class="text-[14px] text-on-surface">Minimalist lino cut prints</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[18px]" data-icon="north_east">north_east</span>
+</div>
+<div class="h-[1px] w-full bg-outline-variant/30 ml-10"></div>
+<div class="h-[48px] px-4 flex items-center justify-between group active:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline-variant text-[18px]" data-icon="schedule">schedule</span>
+<span class="text-[14px] text-on-surface">Engraved wooden coasters</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[18px]" data-icon="north_east">north_east</span>
+</div>
+<div class="h-[1px] w-full bg-outline-variant/30 ml-10"></div>
+<div class="h-[48px] px-4 flex items-center justify-between group active:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline-variant text-[18px]" data-icon="schedule">schedule</span>
+<span class="text-[14px] text-on-surface">Sustainable linen tote</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[18px]" data-icon="north_east">north_east</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Margin for aesthetic balance without Nav Bar -->
+<div class="h-12"></div>
+<script>
+        // Micro-interaction for search input focus
+        const searchInput = document.querySelector('input');
+        const header = document.querySelector('header');
+        
+        searchInput.addEventListener('focus', () => {
+            header.classList.add('shadow-md');
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            header.classList.remove('shadow-md');
+        });
+
+        // Smooth scroll for chip container
+        const scrollContainer = document.querySelectorAll('.overflow-x-auto');
+        scrollContainer.forEach(container => {
+            container.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                container.scrollLeft += evt.deltaY;
+            });
+        });
+    </script>
+</body></html>

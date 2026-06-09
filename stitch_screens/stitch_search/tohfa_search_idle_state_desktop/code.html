@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa | Search Artisan Gifts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Merriweather:wght@400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@400;700&amp;family=Lora:ital,wght@1,400;1,500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100..900&amp;family=DM+Sans:wght@100..900&amp;family=Merriweather:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#3a684c",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "primary": "#255338",
+                        "surface-dim": "#e5d8c8",
+                        "on-secondary-fixed": "#062103",
+                        "surface-variant": "#ede1d1",
+                        "on-surface": "#211b11",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-tertiary-fixed": "#270550",
+                        "secondary-container": "#c8e9b8",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface": "#fff8f3",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-container-low": "#fff2e1",
+                        "background": "#fff8f3",
+                        "primary-container": "#3d6b4f",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#70539b",
+                        "inverse-primary": "#a0d2b0",
+                        "secondary": "#49663f",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "tertiary": "#573b81",
+                        "outline-variant": "#c1c9c0",
+                        "on-error-container": "#93000a",
+                        "outline": "#717972",
+                        "on-tertiary-container": "#e8d6ff",
+                        "inverse-surface": "#362f25",
+                        "surface-container-highest": "#ede1d1",
+                        "surface-container": "#f9ecdc",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-surface-variant": "#414942",
+                        "on-secondary-container": "#4d6a43",
+                        "inverse-on-surface": "#fcefde",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container-high": "#f3e6d6",
+                        "surface-bright": "#fff8f3",
+                        "on-background": "#211b11",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#214f36",
+                        "on-primary-fixed": "#002110",
+                        "gold": "#D4AF37",
+                        "sage": "#717972",
+                        "ivory": "#FCFAF5",
+                        "ink": "#3A3328"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Cinzel"],
+                        "data-price": ["Space Mono"],
+                        "title-serif": ["Merriweather"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg": ["Playfair Display"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .artisan-texture-top {
+            background-image: radial-gradient(circle at 20% 20%, rgba(113, 121, 114, 0.06) 0%, transparent 40%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .artisan-texture-bottom {
+            background-image: radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 40%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 10px 10px 10px 0;
+            border-style: solid;
+            border-color: transparent #FCFAF5 transparent transparent;
+        }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 11px 11px 11px 0;
+            border-style: solid;
+            border-color: transparent #717972 transparent transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #717972;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest min-h-screen relative overflow-x-hidden">
+<!-- Texture Overlays -->
+<div class="artisan-texture-top"></div>
+<div class="artisan-texture-bottom"></div>
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 w-full h-[72px] bg-white border-b border-outline-variant flex items-center justify-between px-margin-desktop shadow-sm">
+<!-- Logo -->
+<div class="flex items-center gap-xs">
+<span class="font-display-hero text-[26px] italic text-primary-container">Tofha</span>
+<div class="w-[6px] h-[6px] bg-gold rounded-full mt-2"></div>
+</div>
+<!-- Search Container -->
+<div class="flex-1 max-w-[500px] mx-xl group">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline select-none" data-icon="search">search</span>
+<input autofocus="" class="w-full h-[48px] pl-12 pr-4 bg-ivory border border-outline-variant rounded-full font-body-md text-on-surface focus:outline-none focus:border-primary-container transition-all placeholder:text-on-surface-variant/60" placeholder="Search gifts, sellers, occasions…" type="text"/>
+</div>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md">
+<button class="relative hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-primary-container" data-icon="notifications">notifications</span>
+<div class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full border border-white"></div>
+</button>
+<button class="hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-primary-container" data-icon="favorite">favorite</span>
+</button>
+<button class="relative hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-primary-container" data-icon="shopping_basket">shopping_basket</span>
+<div class="absolute -top-1 -right-1 bg-gold text-[10px] font-bold text-white w-4 h-4 flex items-center justify-center rounded-full">2</div>
+</button>
+</div>
+<button class="font-body-md text-[14px] font-medium text-primary-container hover:underline underline-offset-4">Cancel</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="relative z-10 max-w-7xl mx-auto px-margin-desktop py-xl">
+<!-- Mascot Greeting Block -->
+<section class="flex items-center justify-center gap-xl mb-xl">
+<div class="relative w-[180px] h-[180px] flex-shrink-0">
+<img alt="Tofha Mascot Greeting" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJVV7FEfzFX7LwbZrrkNgV6I6zLMOzX5bFMbcMv408ZPuULNaGpwbjgThA0iKWnNG7PWZ5hYneG87SxT15GRi9md3SK1lK5d30zwHkYmlZWx3WFaC1YqgG8eCLlx5TeJ7A7Ce0yjppuoImBNpTKRMpTWGmiDB2C4u6TzXEra_7uDwitq_0ZR_yQjNhqu4aHfdfD3tpVcIbWJ7cB8WTBb4f0Is8-7qO4jFpmtrLLNDfBqlJTOY_GxUJkQOtswWTIOEfdFUhvmUonBY"/>
+</div>
+<div class="speech-bubble relative bg-ivory border border-sage p-lg rounded-xl max-w-md">
+<h1 class="font-title-serif italic text-[22px] text-ink mb-2 leading-tight">
+                    What would you like to gift today? ✦
+                </h1>
+<p class="font-body-md text-[14px] text-on-surface-variant">
+                    Search by product, occasion, seller, or mood.
+                </p>
+</div>
+</section>
+<!-- Trending Searches -->
+<section class="mb-xl">
+<h2 class="font-label-caps text-[11px] text-gold tracking-widest mb-md uppercase">Trending Now 🔥</h2>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Birthday gifts</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Anniversary</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Handmade candles</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Pottery kits</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Silk scarves</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Engraved jewelry</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Sustainable kitchen</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Custom portraits</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Aura crystals</button>
+<button class="px-md py-xs bg-ivory border border-outline-variant rounded-full font-body-md text-[14px] text-on-surface hover:border-primary-container hover:bg-white transition-all">Eco-friendly wraps</button>
+</div>
+</section>
+<!-- Shop by Occasion -->
+<section class="mb-xl">
+<h2 class="font-label-caps text-[11px] text-gold tracking-widest mb-md uppercase">Shop by Occasion</h2>
+<div class="grid grid-cols-5 gap-md">
+<div class="h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary-container mb-2" data-icon="cake">cake</span>
+<span class="font-label-caps text-[12px] text-ink">BIRTHDAY</span>
+</div>
+<div class="h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary-container mb-2" data-icon="favorite">favorite</span>
+<span class="font-label-caps text-[12px] text-ink">ANNIVERSARY</span>
+</div>
+<div class="h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary-container mb-2" data-icon="celebration">celebration</span>
+<span class="font-label-caps text-[12px] text-ink">WEDDING</span>
+</div>
+<div class="h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary-container mb-2" data-icon="festival">festival</span>
+<span class="font-label-caps text-[12px] text-ink">FESTIVAL</span>
+</div>
+<div class="h-[100px] bg-ivory border border-outline-variant rounded-lg flex flex-col items-center justify-center group hover:bg-white hover:border-primary-container cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary-container mb-2" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="font-label-caps text-[12px] text-ink">JUST BECAUSE</span>
+</div>
+</div>
+</section>
+<!-- Recent Searches -->
+<section class="max-w-2xl">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-label-caps text-[11px] text-gold tracking-widest uppercase">Recent Searches</h2>
+<button class="font-body-md text-[13px] text-tertiary-container hover:underline">Clear all</button>
+</div>
+<div class="bg-white rounded-xl overflow-hidden">
+<div class="flex items-center justify-between py-md border-b border-outline-variant group hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container" data-icon="history">history</span>
+<span class="font-body-md text-on-surface">Vintage leather journal</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transform -rotate-45" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between py-md border-b border-outline-variant group hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container" data-icon="history">history</span>
+<span class="font-body-md text-on-surface">Hand-painted ceramics</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transform -rotate-45" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between py-md border-b border-outline-variant group hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container" data-icon="history">history</span>
+<span class="font-body-md text-on-surface">Dried flower arrangements</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transform -rotate-45" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between py-md border-b border-outline-variant group hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container" data-icon="history">history</span>
+<span class="font-body-md text-on-surface">Artisan woodworking</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transform -rotate-45" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between py-md group hover:bg-surface transition-colors cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container" data-icon="history">history</span>
+<span class="font-body-md text-on-surface">Personalized bronze pens</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transform -rotate-45" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple search input focus effect
+        const searchInput = document.querySelector('input');
+        const searchContainer = searchInput.parentElement.parentElement;
+
+        searchInput.addEventListener('focus', () => {
+            searchContainer.classList.add('scale-[1.01]');
+        });
+
+        searchInput.addEventListener('blur', () => {
+            searchContainer.classList.remove('scale-[1.01]');
+        });
+
+        // Hover animation for chips
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'translateY(-1px)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

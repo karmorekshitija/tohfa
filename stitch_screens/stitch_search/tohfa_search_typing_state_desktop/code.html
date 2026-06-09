@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tofha | Search</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Merriweather:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;1,700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100..900&amp;family=DM+Sans:wght@100..900&amp;family=Merriweather:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#3a684c",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "primary": "#255338",
+                        "surface-dim": "#e5d8c8",
+                        "on-secondary-fixed": "#062103",
+                        "surface-variant": "#ede1d1",
+                        "on-surface": "#211b11",
+                        "tertiary-fixed": "#ecdcff",
+                        "on-tertiary-fixed": "#270550",
+                        "secondary-container": "#c8e9b8",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "surface": "#fff8f3",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "surface-container-low": "#fff2e1",
+                        "background": "#fff8f3",
+                        "primary-container": "#3d6b4f",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#70539b",
+                        "inverse-primary": "#a0d2b0",
+                        "secondary": "#49663f",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "tertiary": "#573b81",
+                        "outline-variant": "#c1c9c0",
+                        "on-error-container": "#93000a",
+                        "outline": "#717972",
+                        "on-tertiary-container": "#e8d6ff",
+                        "inverse-surface": "#362f25",
+                        "surface-container-highest": "#ede1d1",
+                        "surface-container": "#f9ecdc",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-surface-variant": "#414942",
+                        "on-secondary-container": "#4d6a43",
+                        "inverse-on-surface": "#fcefde",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#b7e9c6",
+                        "surface-container-high": "#f3e6d6",
+                        "surface-bright": "#fff8f3",
+                        "on-background": "#211b11",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#214f36",
+                        "on-primary-fixed": "#002110",
+                        "sage": "#717972",
+                        "sage-soft": "#e0e5e0",
+                        "ink": "#211b11",
+                        "violet": "#7B5EA7",
+                        "gold": "#A68911"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Cinzel"],
+                        "data-price": ["Space Mono"],
+                        "title-serif": ["Merriweather"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ink-texture {
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .wax-tape {
+            background-color: #E5D8C8;
+            opacity: 0.06;
+            transform: rotate(-12deg);
+        }
+        .leaf-sprig {
+            opacity: 0.06;
+        }
+    </style>
+</head>
+<body class="bg-white text-ink font-body-md antialiased min-h-screen relative overflow-x-hidden">
+<!-- Subtle Textures -->
+<div class="fixed top-[-20px] left-[-20px] w-48 h-12 wax-tape z-0 pointer-events-none"></div>
+<div class="fixed bottom-margin-desktop right-margin-desktop w-64 h-64 leaf-sprig z-0 pointer-events-none">
+<span class="material-symbols-outlined text-[160px] text-primary select-none">eco</span>
+</div>
+<!-- Top Navigation Bar (Search Active State) -->
+<header class="fixed top-0 left-0 w-full h-[72px] bg-white border-b border-outline-variant z-50 flex items-center justify-between px-margin-desktop">
+<div class="flex items-center gap-xl w-full max-w-7xl mx-auto">
+<!-- Wordmark -->
+<div class="flex-shrink-0">
+<span class="font-display-hero text-headline-lg italic text-primary">Tofha<span class="text-gold">.</span></span>
+</div>
+<!-- Active Search Bar -->
+<div class="flex-grow flex items-center justify-center">
+<div class="relative w-[500px]">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input autofocus="" class="w-full bg-white border-2 border-violet rounded-full py-2.5 pl-12 pr-12 text-[15px] font-body-md text-ink placeholder-on-surface-variant focus:outline-none focus:ring-0" type="text" value="han"/>
+<button class="absolute inset-y-0 right-4 flex items-center text-outline hover:text-ink transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Cancel Link -->
+<div class="flex-shrink-0">
+<a class="text-primary hover:text-primary-container font-medium transition-colors" href="#">Cancel</a>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-[72px] max-w-2xl mx-auto px-margin-mobile md:px-0 relative z-10">
+<!-- Suggestions Section -->
+<section class="mt-lg">
+<div class="flex flex-col">
+<!-- Row 1 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>dmade candles</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+<!-- Row 2 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>dmade jewellery</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+<!-- Row 3 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>d-loomed throws</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+<!-- Row 4 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>dcrafted leather</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+<!-- Row 5 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>g-woven bags</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+<!-- Row 6 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>d-painted silk</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+<!-- Row 7 -->
+<div class="h-[52px] flex items-center justify-between border-b border-outline-variant hover:bg-surface-container-low transition-colors px-2 cursor-pointer group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">search</span>
+<p class="text-body-md"><span class="font-bold text-primary-container">han</span>d-poured soaps</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">north_east</span>
+</div>
+</div>
+</section>
+<!-- Matching Sellers Section -->
+<section class="mt-xl">
+<h3 class="font-label-caps text-label-caps text-gold mb-md uppercase tracking-widest">Sellers</h3>
+<div class="flex overflow-x-auto pb-4 gap-sm scrollbar-hide">
+<!-- Seller Chip 1 -->
+<div class="flex-shrink-0 flex items-center gap-sm bg-surface px-3 py-1.5 rounded-full border border-outline-variant shadow-sm hover:border-primary transition-all cursor-pointer">
+<img alt="Seller Avatar" class="w-[28px] h-[28px] rounded-full object-cover" data-alt="A professional close-up portrait of a female artisan with a warm, welcoming expression. The lighting is soft and natural, suggesting a brightly lit studio environment. The aesthetic is clean and high-end, aligned with a premium handmade brand identity, using a palette of soft ivories and earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLtjgl_6d1G3zozwOlNmm0erX55KCaVTW_S9DB1bwE90KeC2OHksOWMyexD5yE8_kbwU8gAVG70ZS7jRBfXR-gwGrZCMzgOpEYy39jcAPd6PD0BtuzlpvGquAHifvAuq9H__BIKrYWChm1UoV1YcCMaR6xdHuKC63a138ame_0_BLMInDJJnSAld04T_Rtpfjw-iPOzagDcOAd6EmQbZw8EXMCg3PtpXTYa5bgHpm6zMnLSPmFCUDZaSznuLZ_MTwQVrCUE9lVNKU"/>
+<span class="text-body-md font-medium text-ink">Hanna's Kiln</span>
+<span class="font-data-price text-data-price text-gold">4.8 ★</span>
+</div>
+<!-- Seller Chip 2 -->
+<div class="flex-shrink-0 flex items-center gap-sm bg-surface px-3 py-1.5 rounded-full border border-outline-variant shadow-sm hover:border-primary transition-all cursor-pointer">
+<div class="w-[28px] h-[28px] rounded-full bg-primary-container flex items-center justify-center text-[10px] text-white font-bold uppercase">HA</div>
+<span class="text-body-md font-medium text-ink">Han Crafts</span>
+<span class="font-data-price text-data-price text-gold">4.9 ★</span>
+</div>
+<!-- Seller Chip 3 -->
+<div class="flex-shrink-0 flex items-center gap-sm bg-surface px-3 py-1.5 rounded-full border border-outline-variant shadow-sm hover:border-primary transition-all cursor-pointer">
+<img alt="Seller Avatar" class="w-[28px] h-[28px] rounded-full object-cover" data-alt="A candid profile shot of a male woodworker in his workshop, illuminated by warm, golden-hour sunlight filtering through a window. The style is cinematic and intimate, showcasing the textures of raw timber and artisanal tools in the background. The color palette is rich with deep greens and warm ambers, reflecting a soulful studio brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg06AwWbShq4_LhtbBFhP-Dwn-huk41b5j2NMJU0UGKmwQnDvpnW1rwexY7aSUXBPzRd6zKfb1VtlTccUX_CYwbliaio5953rQ07Rug6fsbVOtxdXCYuZpwixbrk9pc58jwOWswrjJR5WGXdZOMBqjCgb7edoQR834FarQRmx7ffEWTIUkH_PKOHOowi-OLg6CC4XBHaZlLGOJbgMmeM1IWbF4kH9NIMZJ1lpHlyW1-rn9KZXwx0LSkQI2_7I2cfgcKQyZy5UcZCE"/>
+<span class="text-body-md font-medium text-ink">The Hand Weaver</span>
+<span class="font-data-price text-data-price text-gold">4.7 ★</span>
+</div>
+</div>
+</section>
+<!-- Matching Categories Section -->
+<section class="mt-xl pb-margin-desktop">
+<h3 class="font-label-caps text-label-caps text-gold mb-md uppercase tracking-widest">Categories</h3>
+<div class="flex overflow-x-auto pb-4 gap-sm scrollbar-hide">
+<a class="flex-shrink-0 bg-primary px-4 py-2 rounded-full text-white font-body-md text-[12px] uppercase tracking-wide hover:bg-primary-container transition-colors shadow-sm" href="#">
+                    Handmade Ceramics
+                </a>
+<a class="flex-shrink-0 bg-primary px-4 py-2 rounded-full text-white font-body-md text-[12px] uppercase tracking-wide hover:bg-primary-container transition-colors shadow-sm" href="#">
+                    Hand-Loomed Rugs
+                </a>
+<a class="flex-shrink-0 bg-primary px-4 py-2 rounded-full text-white font-body-md text-[12px] uppercase tracking-wide hover:bg-primary-container transition-colors shadow-sm" href="#">
+                    Hand-Blown Glass
+                </a>
+</div>
+</section>
+</main>
+<!-- Invisible Bottom Spacer to prevent cutting off -->
+<div class="h-24"></div>
+<script>
+        // Simple micro-interaction for the search input focus
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.focus();
+        
+        // Horizontal scroll with mouse wheel for category/seller rows
+        const scrollContainers = document.querySelectorAll('.overflow-x-auto');
+        scrollContainers.forEach(container => {
+            container.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                container.scrollLeft += evt.deltaY;
+            });
+        });
+    </script>
+</body></html>
