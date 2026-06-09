@@ -5258,6 +5258,55 @@ app.get('/api/seller/messages', requireSeller, (req, res) => {
 });
 
 // ============================================================
+// TASK 18: POST /api/seller/messages/:thread_id/send
+// ============================================================
+app.post('/api/seller/messages/:thread_id/send', rateLimit(120), requireSeller, (req, res) => {
+  try {
+    const threadId = parseInt(req.params.thread_id);
+    const sellerId = req.user.user_id;
+    const { body, is_quick_reply = false } = req.body;
+
+    if (!body || !body.trim()) {
+      return res.status(400).json({ error: true, message: 'Message body required', code: 'VALIDATION_ERROR' });
+    }
+
+    const thread = db.prepare('SELECT * FROM message_threads WHERE id = ?').get(threadId);
+    if (!thread) {
+      return res.status(404).json({ error: true, message: 'Thread not found', code: 'NOT_FOUND' });
+    }
+    if (thread.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
+    }
+
+    const createdAt = new Date().toISOString();
+    const result = db.prepare(`
+      INSERT INTO messages (thread_id, sender_id, body, is_quick_reply, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(threadId, sellerId, body.trim(), is_quick_reply ? 1 : 0, createdAt);
+
+    const msgId = result.lastInsertRowid;
+
+    db.prepare(`
+      UPDATE message_threads
+      SET last_msg_at = ?, has_unread = 0
+      WHERE id = ?
+    `).run(createdAt, threadId);
+
+    return res.status(201).json({
+      success: true,
+      data: {
+        id: msgId,
+        body: body.trim(),
+        created_at: createdAt
+      }
+    });
+  } catch (err) {
+    console.error('POST /api/seller/messages/:thread_id/send error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// ============================================================
 // TASK 30: GET /api/seller/reviews
 // ============================================================
 app.get('/api/seller/reviews', requireSeller, (req, res) => {
