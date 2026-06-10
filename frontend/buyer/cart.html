@@ -452,7 +452,7 @@
                         onclick="window.location.href='product.html?id=${ci.product_id}'">
                         ${ci.name}
                     </h3>
-                    <p class="text-xs text-on-surface-variant mt-xs">${ci.seller_name}</p>
+                    <p class="text-xs text-on-surface-variant mt-xs hover:underline cursor-pointer" onclick="window.location.href='/buyer/seller-profile.html?id=${ci.seller_id}'">${ci.seller_name}</p>
                     <p class="font-data-price text-[13px] text-gold-custom mt-xs font-semibold">${formatPaise(ci.price_paise)}</p>
                 </div>
                 <div class="flex flex-col items-end gap-sm">
@@ -842,13 +842,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);

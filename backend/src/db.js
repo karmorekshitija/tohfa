@@ -952,5 +952,272 @@ const migrateOrderTrackingEvents = () => {
 };
 migrateOrderTrackingEvents();
 
+// Customize Feature: Migration for conversations, templates, responses, offers, and messages
+const migrateCustomize = () => {
+  // Create tables
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS conversations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL REFERENCES users(id),
+      buyer_id INTEGER NOT NULL REFERENCES users(id),
+      listing_id INTEGER NOT NULL REFERENCES listings(id),
+      status TEXT NOT NULL DEFAULT 'intake_in_progress',
+      intake_complete INTEGER NOT NULL DEFAULT 0,
+      intake_summary TEXT DEFAULT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS intake_question_templates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_type_tag TEXT NOT NULL,
+      question_text TEXT NOT NULL,
+      answer_type TEXT NOT NULL CHECK(answer_type IN ('free_text','photo_upload','single_choice','number','date_picker','long_text')),
+      options TEXT DEFAULT NULL,
+      is_tohfa_default INTEGER NOT NULL DEFAULT 1,
+      seller_id INTEGER DEFAULT NULL REFERENCES users(id) ON DELETE CASCADE,
+      display_order INTEGER NOT NULL DEFAULT 0,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS intake_responses (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      conversation_id INTEGER NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+      question_id INTEGER NOT NULL REFERENCES intake_question_templates(id),
+      question_text TEXT NOT NULL,
+      answer_type TEXT NOT NULL,
+      answer_value TEXT,
+      answered_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS custom_offers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      conversation_id INTEGER NOT NULL REFERENCES conversations(id),
+      seller_id INTEGER NOT NULL REFERENCES users(id),
+      buyer_id INTEGER NOT NULL REFERENCES users(id),
+      price INTEGER NOT NULL CHECK(price > 0),
+      delivery_date TEXT NOT NULL,
+      seller_notes TEXT DEFAULT NULL,
+      status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','accepted','declined','expired')),
+      expires_at TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS conversation_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      conversation_id INTEGER NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+      sender_id INTEGER NOT NULL REFERENCES users(id),
+      sender_role TEXT CHECK(sender_role IN ('buyer','seller','bot')),
+      message_type TEXT CHECK(message_type IN ('text','photo','system')),
+      content TEXT,
+      image_url TEXT DEFAULT NULL,
+      sent_at TEXT DEFAULT (datetime('now')),
+      is_read INTEGER DEFAULT 0
+    );
+  `);
+
+  // Handle altering conversations gracefully if it ever existed before
+  try {
+    db.exec("ALTER TABLE conversations ADD COLUMN intake_complete INTEGER NOT NULL DEFAULT 0;");
+  } catch (e) {}
+  try {
+    db.exec("ALTER TABLE conversations ADD COLUMN intake_summary TEXT DEFAULT NULL;");
+  } catch (e) {}
+
+  // Seed default templates if they don't exist yet
+  const defaultCount = db.prepare("SELECT COUNT(*) as count FROM intake_question_templates WHERE is_tohfa_default = 1").get().count;
+  if (defaultCount === 0) {
+    const insert = db.prepare(`
+      INSERT INTO intake_question_templates 
+      (product_type_tag, question_text, answer_type, options, is_tohfa_default, seller_id, display_order, is_active)
+      VALUES (?, ?, ?, ?, 1, NULL, ?, 1)
+    `);
+
+    const seedQuestions = [
+      // resin_art
+      {
+        product_type_tag: 'resin_art',
+        question_text: 'What name or text should be engraved or included?',
+        answer_type: 'free_text',
+        options: null,
+        display_order: 1
+      },
+      {
+        product_type_tag: 'resin_art',
+        question_text: 'Pick a colour scheme',
+        answer_type: 'single_choice',
+        options: JSON.stringify(["Ocean Teal","Rose Gold","Jet Black","Forest Green","Sunset Orange","Custom (describe below)"]),
+        display_order: 2
+      },
+      {
+        product_type_tag: 'resin_art',
+        question_text: 'Upload a reference photo or inspiration image (optional)',
+        answer_type: 'photo_upload',
+        options: null,
+        display_order: 3
+      },
+      {
+        product_type_tag: 'resin_art',
+        question_text: 'Would you like a lotus engraving?',
+        answer_type: 'single_choice',
+        options: JSON.stringify(["Yes","No"]),
+        display_order: 4
+      },
+      {
+        product_type_tag: 'resin_art',
+        question_text: 'When do you need this by?',
+        answer_type: 'date_picker',
+        options: null,
+        display_order: 5
+      },
+      {
+        product_type_tag: 'resin_art',
+        question_text: 'Any other details for the seller?',
+        answer_type: 'long_text',
+        options: null,
+        display_order: 6
+      },
+
+      // photo_gifts
+      {
+        product_type_tag: 'photo_gifts',
+        question_text: 'Who is this gift for?',
+        answer_type: 'free_text',
+        options: null,
+        display_order: 1
+      },
+      {
+        product_type_tag: 'photo_gifts',
+        question_text: 'What is the occasion?',
+        answer_type: 'single_choice',
+        options: JSON.stringify(["Birthday","Anniversary","Wedding","Graduation","Just Because","Other"]),
+        display_order: 2
+      },
+      {
+        product_type_tag: 'photo_gifts',
+        question_text: 'Upload your photo(s)',
+        answer_type: 'photo_upload',
+        options: null,
+        display_order: 3
+      },
+      {
+        product_type_tag: 'photo_gifts',
+        question_text: 'What text or message should appear on the gift?',
+        answer_type: 'free_text',
+        options: null,
+        display_order: 4
+      },
+      {
+        product_type_tag: 'photo_gifts',
+        question_text: 'When do you need this by?',
+        answer_type: 'date_picker',
+        options: null,
+        display_order: 5
+      },
+      {
+        product_type_tag: 'photo_gifts',
+        question_text: 'Any other details for the seller?',
+        answer_type: 'long_text',
+        options: null,
+        display_order: 6
+      },
+
+      // jewellery
+      {
+        product_type_tag: 'jewellery',
+        question_text: 'What name or initials should be included?',
+        answer_type: 'free_text',
+        options: null,
+        display_order: 1
+      },
+      {
+        product_type_tag: 'jewellery',
+        question_text: 'Select a metal/finish',
+        answer_type: 'single_choice',
+        options: JSON.stringify(["Gold-plated","Silver","Rose Gold","Oxidised Silver","Brass"]),
+        display_order: 2
+      },
+      {
+        product_type_tag: 'jewellery',
+        question_text: 'Upload an inspiration image (optional)',
+        answer_type: 'photo_upload',
+        options: null,
+        display_order: 3
+      },
+      {
+        product_type_tag: 'jewellery',
+        question_text: 'What size do you need? (e.g. ring size, chain length)',
+        answer_type: 'free_text',
+        options: null,
+        display_order: 4
+      },
+      {
+        product_type_tag: 'jewellery',
+        question_text: 'When do you need this by?',
+        answer_type: 'date_picker',
+        options: null,
+        display_order: 5
+      },
+      {
+        product_type_tag: 'jewellery',
+        question_text: 'Any other details for the seller?',
+        answer_type: 'long_text',
+        options: null,
+        display_order: 6
+      },
+
+      // generic tags: 'frames', 'neon_signs', 'hampers', 'tote_bags'
+      ...['frames', 'neon_signs', 'hampers', 'tote_bags'].flatMap(tag => [
+        {
+          product_type_tag: tag,
+          question_text: 'What name or text should be included?',
+          answer_type: 'free_text',
+          options: null,
+          display_order: 1
+        },
+        {
+          product_type_tag: tag,
+          question_text: 'When do you need this by?',
+          answer_type: 'date_picker',
+          options: null,
+          display_order: 2
+        },
+        {
+          product_type_tag: tag,
+          question_text: 'Any other details for the seller?',
+          answer_type: 'long_text',
+          options: null,
+          display_order: 3
+        }
+      ])
+    ];
+
+    const insertTransaction = db.transaction((questions) => {
+      for (const q of questions) {
+        insert.run(q.product_type_tag, q.question_text, q.answer_type, q.options, q.display_order);
+      }
+    });
+
+    insertTransaction(seedQuestions);
+    console.log('Successfully seeded default intake question templates.');
+  }
+
+  // Count total rows in intake_question_templates
+  const totalCount = db.prepare("SELECT COUNT(*) as count FROM intake_question_templates").get().count;
+  console.log(`Total rows in intake_question_templates: ${totalCount}`);
+};
+
+migrateCustomize();
+
+try {
+  db.exec("ALTER TABLE listings ADD COLUMN customization_config TEXT DEFAULT NULL;");
+} catch (e) {}
+
+try {
+  db.exec("ALTER TABLE listings ADD COLUMN product_tag TEXT DEFAULT NULL;");
+} catch (e) {}
+
 module.exports = db;
 

@@ -281,13 +281,29 @@
   </div>
   
   <!-- Footer / Input Form -->
-  <div class="p-md border-t border-outline-variant bg-[#FCFAF5] rounded-b-[20px]">
-    <div class="flex items-start gap-sm">
-      <div id="user-avatar-circle" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs flex-shrink-0 overflow-hidden border border-outline-variant">
+  <div class="border-t border-outline-variant bg-[#FCFAF5] rounded-b-[20px]">
+    <!-- Emoji Quick Reactions Row -->
+    <div class="px-md pt-sm pb-xs flex items-center gap-xs overflow-x-auto" id="emoji-reactions-row" style="scrollbar-width:none;">
+      <span class="text-xs text-outline mr-xs font-medium whitespace-nowrap">React:</span>
+      <button onclick="appendEmoji('❤️')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Heart">❤️</button>
+      <button onclick="appendEmoji('🌿')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Nature">🌿</button>
+      <button onclick="appendEmoji('✨')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Sparkles">✨</button>
+      <button onclick="appendEmoji('🙌')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Clap">🙌</button>
+      <button onclick="appendEmoji('😍')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Love">😍</button>
+      <button onclick="appendEmoji('🔥')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Fire">🔥</button>
+      <button onclick="appendEmoji('🫶')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Love hands">🫶</button>
+      <button onclick="appendEmoji('🎨')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Art">🎨</button>
+      <button onclick="appendEmoji('🌸')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Flower">🌸</button>
+      <button onclick="appendEmoji('👌')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Chef's kiss">👌</button>
+      <button onclick="appendEmoji('💚')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="Green heart">💚</button>
+      <button onclick="appendEmoji('🤍')" class="text-xl hover:scale-125 active:scale-110 transition-transform cursor-pointer select-none" title="White heart">🤍</button>
+    </div>
+    <div class="px-md pb-md flex items-start gap-sm">
+      <div id="user-avatar-circle" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs flex-shrink-0 overflow-hidden border border-outline-variant mt-1">
         <span id="user-avatar-letter">U</span>
       </div>
       <div class="flex-grow flex flex-col gap-xs">
-        <textarea id="comment-input" rows="2" placeholder="Add a comment..." class="w-full bg-[#fbf2e8] rounded-xl border border-outline-variant/30 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary resize-none placeholder:text-outline/70" maxlength="300"></textarea>
+        <textarea id="comment-input" rows="2" placeholder="Add a comment... or tap an emoji above 👆" class="w-full bg-[#fbf2e8] rounded-xl border border-outline-variant/30 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary resize-none placeholder:text-outline/70" maxlength="300"></textarea>
         <div class="flex items-center justify-between mt-1">
           <span id="char-counter" class="text-xs text-outline font-sans">0/300</span>
           <button id="send-comment-btn" class="bg-primary hover:bg-[#1a3a27] text-white px-lg py-1.5 rounded-full text-xs font-bold flex items-center gap-xs shadow-md transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
@@ -478,8 +494,8 @@
 
     // Initialize Page
     async function initPage() {
-      // Initialize Top Category Drawer
-      initCategoryDrawer();
+      // Initialize Top Category Drawer (non-blocking)
+      try { initCategoryDrawer(); } catch(e) { console.warn('CategoryDrawer unavailable', e); }
 
       // Update current user initials/avatar in comment section
       updateCurrentUserAvatar();
@@ -498,52 +514,37 @@
     async function fetchFeed(targetReelId = null) {
       if (isLoadingFeed) return;
       isLoadingFeed = true;
+
+      // Always start with mock reels, then try to prepend real ones
+      reelsList = [...MOCK_REELS];
+
       try {
         const res = await apiClient.get('/reels/feed');
         if (res.data && res.data.success) {
-          reelsList = res.data.data.reels || [];
+          const apiReels = res.data.data.reels || [];
+          if (apiReels.length > 0) {
+            reelsList = [...apiReels, ...MOCK_REELS];
+          }
           nextCursor = res.data.data.next_cursor;
           hasMore = res.data.data.has_more;
-        } else {
-          reelsList = [];
         }
       } catch (err) {
-        console.error("Failed to load reels feed:", err);
-        reelsList = [];
+        console.warn("Reels API unavailable, using mock reels:", err.message);
       }
 
-      if (reelsList.length === 0) {
-        reelsList = [...MOCK_REELS];
-      }
+      currentIndex = 0;
 
-      if (reelsList.length > 0) {
-        currentIndex = 0;
-        
-        if (targetReelId) {
-          const targetIndex = reelsList.findIndex(r => r.id == targetReelId);
-          if (targetIndex !== -1) {
-            currentIndex = targetIndex;
-          } else {
-            // If the target reel is not in the first page of the feed, fetch it individually
-            try {
-              const singleRes = await apiClient.get(`/reels/${targetReelId}`);
-              if (singleRes.data && singleRes.data.success) {
-                const singleReel = singleRes.data.data;
-                reelsList.unshift(singleReel); // Prepend to reels list
-                currentIndex = 0;
-              }
-            } catch (singleErr) {
-              console.error("Failed to fetch target reel by ID:", singleErr);
-            }
-          }
+      if (targetReelId) {
+        const targetIndex = reelsList.findIndex(r => r.id == targetReelId);
+        if (targetIndex !== -1) {
+          currentIndex = targetIndex;
         }
-
-        noReelsPlaceholder.classList.add('hidden');
-        videoEl.classList.remove('hidden');
-        renderActiveReel();
-      } else {
-        showEmptyPlaceholder();
       }
+
+      noReelsPlaceholder.classList.add('hidden');
+      videoEl.classList.remove('hidden');
+      renderActiveReel();
+
       isLoadingFeed = false;
     }
 
@@ -665,12 +666,16 @@
     function updateLikeUI(isLiked, count) {
       likeCountEl.textContent = formatCount(count || 0);
       if (isLiked) {
-        likeBtn.classList.remove('text-primary');
-        likeBtn.classList.add('text-red-500');
+        // Use inline style so Tailwind purge doesn't remove the red color
+        likeIcon.style.color = '#ef4444';
+        likeBtn.style.color = '#ef4444';
         likeIcon.style.fontVariationSettings = "'FILL' 1";
+        // Bounce animation
+        likeBtn.style.transform = 'scale(1.3)';
+        setTimeout(() => { likeBtn.style.transform = 'scale(1)'; }, 200);
       } else {
-        likeBtn.classList.remove('text-red-500');
-        likeBtn.classList.add('text-primary');
+        likeIcon.style.color = '';
+        likeBtn.style.color = '#255338';
         likeIcon.style.fontVariationSettings = "'FILL' 0";
       }
     }
@@ -687,6 +692,26 @@
         saveIcon.style.fontVariationSettings = "'FILL' 0";
       }
     }
+
+    // Emoji helper — appends emoji to comment textarea and updates counter
+    window.appendEmoji = function(emoji) {
+      const input = document.getElementById('comment-input');
+      if (!input) return;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const current = input.value;
+      input.value = current.substring(0, start) + emoji + current.substring(end);
+      // Move cursor after emoji
+      const newPos = start + emoji.length;
+      input.setSelectionRange(newPos, newPos);
+      input.focus();
+      // Trigger counter & send button
+      const len = input.value.length;
+      const counter = document.getElementById('char-counter');
+      const sendBtn = document.getElementById('send-comment-btn');
+      if (counter) counter.textContent = `${len}/300`;
+      if (sendBtn) sendBtn.disabled = (len === 0 || len > 300);
+    };
 
     // Event setup
     function setupEvents() {
@@ -1012,13 +1037,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);

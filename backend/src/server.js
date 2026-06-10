@@ -4698,7 +4698,10 @@ function buildListingDetail(listingId) {
     photos,
     cover_photo_url: l.cover_photo_url,
     published_at: l.published_at,
-    created_at: l.created_at
+    created_at: l.created_at,
+    isCustomisable: l.listing_type === 'custom',
+    customization_config: l.customization_config ? JSON.parse(l.customization_config) : null,
+    product_tag: l.product_tag || null
   };
 }
 
@@ -5249,7 +5252,10 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
       status = 'draft',
       category = null,
       tags = [],
-      badges = []
+      badges = [],
+      isCustomisable,
+      customization_config,
+      product_tag = null
     } = req.body;
 
     const titleVal = title;
@@ -5262,6 +5268,8 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
     }
 
     const publishedAt = status === 'active' ? new Date().toISOString() : null;
+    const finalListingType = (isCustomisable === true || isCustomisable === 'true') ? 'custom' : 'pre-made';
+    const customConfigStr = customization_config ? (typeof customization_config === 'string' ? customization_config : JSON.stringify(customization_config)) : null;
 
     const result = db.prepare(`
       INSERT INTO listings (
@@ -5270,15 +5278,15 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
         allow_prebooking, prebooking_window, min_order_qty, max_order_qty, weight_g,
         length_cm, width_cm, height_cm, shipping_method, packaging_type, return_policy,
         is_eco_friendly, festive_tags, category, tags, badges, status, published_at,
-        stock_count
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        stock_count, customization_config, product_tag
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       sellerId,
       titleVal,
       description || null,
       story || null,
       basePriceVal,
-      listing_type,
+      finalListingType,
       shipsInDaysVal,
       dispatchSlaDaysVal,
       daily_max_slots,
@@ -5302,7 +5310,9 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
       Array.isArray(badges) ? JSON.stringify(badges) : null,
       status,
       publishedAt,
-      req.body.stock_count || 0
+      req.body.stock_count || 0,
+      customConfigStr,
+      product_tag || null
     );
 
     const listingId = result.lastInsertRowid;
@@ -5415,7 +5425,7 @@ const handleUpdateListing = (req, res) => {
       'title', 'description', 'story', 'listing_type', 'ships_in_days', 'dispatch_sla_days',
       'daily_max_slots', 'weekly_cap', 'monthly_ceiling', 'prebooking_window', 'min_order_qty',
       'max_order_qty', 'weight_g', 'length_cm', 'width_cm', 'height_cm', 'shipping_method',
-      'packaging_type', 'return_policy', 'status', 'category', 'stock_count'
+      'packaging_type', 'return_policy', 'status', 'category', 'stock_count', 'product_tag'
     ];
 
     allowedFields.forEach(f => {
@@ -5434,6 +5444,14 @@ const handleUpdateListing = (req, res) => {
 
     if (body.is_eco_friendly !== undefined) {
       fieldsToUpdate['is_eco_friendly'] = body.is_eco_friendly ? 1 : 0;
+    }
+
+    if (body.isCustomisable !== undefined) {
+      fieldsToUpdate['listing_type'] = (body.isCustomisable === true || body.isCustomisable === 'true') ? 'custom' : 'pre-made';
+    }
+
+    if (body.customization_config !== undefined) {
+      fieldsToUpdate['customization_config'] = body.customization_config ? (typeof body.customization_config === 'string' ? body.customization_config : JSON.stringify(body.customization_config)) : null;
     }
 
     if (body.festive_tags !== undefined) {
@@ -8822,7 +8840,8 @@ app.get(['/api/customizations/:listing_id', '/customizations/:listing_id'], (req
       seller_bio,
       gallery_images,
       reviews,
-      questions_preview
+      questions_preview,
+      customization_config: listing.customization_config ? JSON.parse(listing.customization_config) : null
     };
 
     return res.status(200).json(detail);

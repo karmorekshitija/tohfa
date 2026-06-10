@@ -847,7 +847,7 @@
                         <div class="p-md flex flex-col flex-grow justify-between">
                             <div>
                                 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2 cursor-pointer hover:underline" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h3>
-                                <p class="text-xs text-outline mt-1">By ${p.seller_name || 'Artisan'}</p>
+                                <p class="text-xs text-outline mt-1 hover:underline cursor-pointer" onclick="event.stopPropagation(); window.location.href='/buyer/seller-profile.html?id=${p.seller_id}'">By ${p.seller_name || 'Artisan'}</p>
                             </div>
                             <div class="flex items-center justify-between mt-md pt-sm border-t border-outline-variant/20">
                                 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">${price}</p>
@@ -911,7 +911,7 @@
                                 <div class="p-xs flex flex-col flex-grow justify-between text-left">
                                     <div>
                                         <h4 class="font-title-serif text-title-serif text-primary text-[15px] line-clamp-2">${p.name}</h4>
-                                        <p class="text-xs text-outline mt-0.5">By ${p.seller_name || 'Artisan'}</p>
+                                        <p class="text-xs text-outline mt-0.5 hover:underline cursor-pointer" onclick="event.stopPropagation(); window.location.href='/buyer/seller-profile.html?id=${p.seller_id}'">By ${p.seller_name || 'Artisan'}</p>
                                     </div>
                                     <div class="flex items-center justify-between mt-sm pt-xs border-t border-outline-variant/10">
                                         <p class="font-data-price text-sm text-secondary-fixed-variant font-bold">${price}</p>
@@ -1097,13 +1097,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);

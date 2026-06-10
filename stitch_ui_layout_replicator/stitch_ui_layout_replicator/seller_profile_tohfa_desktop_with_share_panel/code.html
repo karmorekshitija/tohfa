@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sakshi Dubey | Tohfa Artisanal Collective</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-display-lg { font-family: 'EB Garamond', serif; }
+        .font-headline-md { font-family: 'EB Garamond', serif; }
+        .font-headline-sm { font-family: 'EB Garamond', serif; }
+        .font-body-lg { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-body-md { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label-md { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label-sm { font-family: 'Hanken Grotesk', sans-serif; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .shadow-ambient {
+            box-shadow: 0 4px 20px -2px rgba(107, 92, 76, 0.08);
+        }
+
+        /* Custom scrollbar for better aesthetic */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #fcf9f8; }
+        ::-webkit-scrollbar-thumb { background: #d7c3b0; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#c8c6c2",
+                        "on-tertiary-fixed": "#1b1c19",
+                        "on-tertiary-fixed-variant": "#474744",
+                        "secondary-fixed-dim": "#d7c3b0",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#434843",
+                        "surface-container": "#f0eded",
+                        "background": "#fcf9f8",
+                        "secondary-container": "#f4dfcb",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#364c3c",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#b4cdb8",
+                        "surface-dim": "#dcd9d9",
+                        "on-background": "#1b1c1c",
+                        "on-secondary-fixed-variant": "#524436",
+                        "on-secondary-fixed": "#241a0e",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e4e2e1",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-surface": "#1b1c1c",
+                        "primary-container": "#1b3022",
+                        "outline": "#737973",
+                        "secondary-fixed": "#f4dfcb",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#303030",
+                        "primary-fixed-dim": "#b4cdb8",
+                        "tertiary-fixed": "#e4e2dd",
+                        "tertiary-container": "#2b2c29",
+                        "secondary": "#6b5c4c",
+                        "outline-variant": "#c3c8c1",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary": "#171815",
+                        "on-tertiary-container": "#94938f",
+                        "on-error": "#ffffff",
+                        "surface": "#fcf9f8",
+                        "surface-tint": "#4d6453",
+                        "on-primary-fixed": "#0b2013",
+                        "on-primary-container": "#819986",
+                        "primary-fixed": "#d0e9d4",
+                        "on-secondary-container": "#716252",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e4e2e1",
+                        "primary": "#061b0e",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "stack-md": "24px",
+                        "stack-lg": "48px",
+                        "gutter": "24px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["EB Garamond"],
+                        "headline-md": ["EB Garamond"],
+                        "headline-sm": ["EB Garamond"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="bg-background border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto fixed top-0 left-0 right-0 z-50">
+<div class="flex items-center gap-12">
+<span class="font-display-lg text-display-lg text-primary">Tohfa</span>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shop</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Discover</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Artisans</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Story</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-64 ml-2 placeholder:text-on-surface-variant/50" placeholder="Search handcrafted treasures..." type="text"/>
+</div>
+<button class="relative hover:opacity-80 transition-all p-1">
+<span class="material-symbols-outlined text-on-surface">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-background"></span>
+</button>
+<button class="hover:opacity-80 transition-all p-1">
+<span class="material-symbols-outlined text-on-surface">shopping_bag</span>
+</button>
+<button class="hover:opacity-80 transition-all p-1">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+</button>
+</div>
+</nav>
+<main class="mt-24 max-w-container-max mx-auto px-margin-desktop pb-stack-lg">
+<!-- Hero Profile Section -->
+<section class="bg-surface-container-low rounded-xl p-10 flex flex-col md:flex-row gap-12 items-start shadow-ambient"><div class="flex flex-row items-center justify-between w-full gap-8">
+<div class="flex items-center gap-8">
+<div class="relative shrink-0">
+<div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
+<img alt="Sakshi Dubey" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkR7HiV-bTijsgz1K_6ssScBePC9z-pWdWrUqT_xGLUNyqB1JvXQUl9fEzUroMPZWUUAYtk-fQB3VCmE2JwxHQHBNevUjeQHNRKcZyYAJzbZX-nyuPqoF3JfnhDmhrLB8FG7dIUClp_HE-PJ3zd9Dq2cv6Bzw68GAGDzfB5gZ06k7aAeCG0j19eBNnidPeX6Ivv3tqs3yigUdmX7bgaZYpHuITCe7_eQypQsSjJV8Aimakl3BvTilq9RvVb0918Rytw5-iTywkPF4"/>
+</div>
+<div class="absolute bottom-1 right-1 bg-white p-0.5 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[16px]" style='font-variation-settings: "FILL" 1;'>verified</span>
+</div>
+</div>
+<div class="space-y-2">
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary">Sakshi Dubey</h1>
+<p class="font-body-md text-secondary text-sm">@sakshi_dubey3819</p>
+</div>
+<p class="max-w-xs font-body-md text-on-surface-variant leading-tight text-sm line-clamp-2">
+        Curating hand-painted ceramics and bespoke stationery for the intentional home.
+      </p>
+</div>
+</div>
+<div class="flex items-center gap-8 px-8 border-x border-outline-variant/30">
+<div class="flex flex-col items-center">
+<span class="text-xl font-headline-sm text-primary">4.8</span>
+<span class="text-[10px] font-label-md text-secondary uppercase tracking-wider">Rating</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-headline-sm text-primary">124</span>
+<span class="text-[10px] font-label-md text-secondary uppercase tracking-wider">Reviews</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-headline-sm text-primary">8.2k</span>
+<span class="text-[10px] font-label-md text-secondary uppercase tracking-wider">Followers</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 shrink-0">
+<button class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-outline-variant hover:bg-surface-container-high transition-all font-label-md text-sm">
+<span class="material-symbols-outlined text-[18px]">share</span>
+      Share
+    </button>
+<button class="flex items-center justify-center gap-2 px-6 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all font-label-md text-sm shadow-md">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+      Follow
+    </button>
+</div>
+</div></section>
+<!-- Stats & Credibility Bar -->
+<!-- Credibility Badges -->
+<div class="mt-8 flex flex-wrap items-center justify-center gap-12 py-4 bg-surface-container-lowest border-y border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style='font-variation-settings: "FILL" 1;'>military_tech</span>
+<span class="font-label-md text-on-surface-variant">Top Seller</span>
+</div>
+<div class="w-px h-4 bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style='font-variation-settings: "FILL" 1;'>package_2</span>
+<span class="font-label-md text-on-surface-variant">500+ Sold</span>
+</div>
+<div class="w-px h-4 bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style='font-variation-settings: "FILL" 1;'>rocket_launch</span>
+<span class="font-label-md text-on-surface-variant">90% Resp. Rate</span>
+</div>
+</div>
+<!-- Tab Navigation -->
+<div class="mt-stack-lg border-b border-outline-variant flex gap-12 overflow-x-auto scrollbar-hide">
+<button class="pb-4 border-b-2 font-label-md whitespace-nowrap border-transparent text-on-surface-variant">Catalog</button><button class="pb-4 border-b-2 border-transparent font-label-md text-on-surface-variant hover:text-primary transition-all whitespace-nowrap">Customised</button>
+<button class="pb-4 border-b-2 border-transparent font-label-md text-on-surface-variant hover:text-primary transition-all whitespace-nowrap">Reels</button>
+<button class="pb-4 border-b-2 border-transparent font-label-md text-on-surface-variant hover:text-primary transition-all whitespace-nowrap">Reviews</button>
+<button class="pb-4 border-b-2 border-transparent font-label-md text-on-surface-variant hover:text-primary transition-all whitespace-nowrap">About</button>
+</div>
+<!-- Promo Banner -->
+<!-- Product Grid -->
+<section class="mt-stack-md grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<div class="group bg-white rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-ambient transition-all duration-300" style="transform: translateY(0px);">
+<div class="relative aspect-square overflow-hidden">
+<img alt="Wildflower Mug" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-end, close-up photograph of a handcrafted ceramic mug featuring delicate hand-painted wildflower motifs in muted sage and cream. The mug has a soft, organic texture and is placed on a rustic wooden table with gentle morning sunlight creating warm shadows. The background is a soft-focus artisanal kitchen. The image conveys a sense of high-quality craftsmanship, warmth, and bespoke luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrcSNRi2Gqw-zmym1Mm94M4oxvW_RfnSshj7I_FCgq6si7N9O9OymntK0COUfi6ZldgdmCbxgBGYmWMeFjdWt7eLb86Vgrh_JSSoj_q650UE-28GIeOsRn2WwOKjwXm2How7yLxZW_jiL2K0mWEEl-QxK_Kj5QXo8qWvIjjQOJNn9A-JnX1Lhdgi4RT2lOnl3M0G-IUYty_QRlfYCtaunrY-WzvDa14XRStg7XMbJWduhzBE-kExE1x0c0m6BHA56RjX-R3x4Ic5Q"/>
+<button class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-all shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-4 left-4 bg-surface-container-lowest text-primary px-3 py-1 rounded shadow-sm">
+<span class="font-label-sm uppercase">New</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-[20px] text-primary">Wildflower Mug</h3>
+<p class="font-label-md text-primary">₹899</p>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md line-clamp-2">Hand-painted with love, perfect for your morning brew rituals.</p>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-md flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                        ADD TO CART
+                    </button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group bg-white rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-ambient transition-all duration-300" style="transform: translateY(0px);">
+<div class="relative aspect-square overflow-hidden">
+<img alt="Studio Journal" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An elegant stack of bespoke handcrafted notebooks and journals in forest green, earthy tan, and charcoal grey. The journals feature textured linen covers and premium hand-stitched bindings. One journal is slightly open to reveal high-quality deckle-edged paper. They are arranged artfully on a minimalist studio desk with a vintage fountain pen. The mood is creative, intellectual, and sophisticated, emphasizing slow living and provenance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuVRXZKiLI3VMBlHbI6yzqt1gtJsFgsxTuWQHy0Z0xKxznUPKGWYEVKXThT99Ek3F9rpbSjYPJQRF0myGqAFpxhujujJx1BXtATJsfNHZ08PfaTJEBQ2mLzVB-kCC1dgZ3O4fcmsb4zhoi3znAthOrXmQiadSWyW0_DQrvGNUvB3nd_YewFA37BkbxWBYA-77DbbdqRDO55bezE0o4Cxompx7LABgeOE5l_859jAZL99mj7s2UXqo9GsA_NIVCeHkDfnrqJeg8MaY"/>
+<button class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-all shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded shadow-sm">
+<span class="font-label-sm uppercase">Best</span>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-[20px] text-primary">Studio Journal</h3>
+<p class="font-label-md text-primary">₹450</p>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md line-clamp-2">Linen-wrapped journals with premium archival paper.</p>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-md flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                        ADD TO CART
+                    </button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group bg-white rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-ambient transition-all duration-300" style="transform: translateY(0px);">
+<div class="relative aspect-square overflow-hidden">
+<img alt="Sage Vase" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sculptural, minimalist ceramic vase in a soft sage green glaze. The vase has a matte finish and elegant organic curves. It is styled with a single dried branch and stands against a clean, warm cream-colored wall. The lighting is soft and directional, highlighting the tactile texture of the clay. The aesthetic is warm minimalism and quiet luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkm5GhwfOpbXYGONItr6a6UMKHjNAMDmBUL_uoQMDNSggryTCiaIx_V7BNr4RJTnMNewgd1WkvplYKWiPF8ZGH1IqTNg7hdKDBH0q1Q2E2nebMlxbbmdehVbl2rPUUZSUL6oncVKudcarBA7PZ-v_3JPyidc9TDPhYsGhTxeF1zksGPjHz9zcoeKqcsGGmw_3_YPK4wRwaxqgTGkSJfvRSpQg0Uk14zOXESkkiQmLi5-pkpoM1y0-B53OomBbsfr0RRYp-rFRCQ78"/>
+<button class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-all shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-[20px] text-primary">Sage Serenity Vase</h3>
+<p class="font-label-md text-primary">₹1,250</p>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md line-clamp-2">A sculptural piece for your minimalist mantel.</p>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-md flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                        ADD TO CART
+                    </button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group bg-white rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-ambient transition-all duration-300">
+<div class="relative aspect-square overflow-hidden">
+<img alt="Incense Burner" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern and artisanal ceramic incense burner in charcoal black and beige. The piece is designed with a sleek, low profile and features a textured, speckled finish. Wisps of white smoke rise gracefully from an lit incense stick. It sits on a polished dark wood tray. The scene is shot in a moody, low-light environment that feels peaceful and meditative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNYnhokKXpt4wagIMJGd9Vh50rhRHe0IkSgjBbL8zdeybUbR41cTQ7Ju1qlsie2X3dESprSsI_OE1qdaacs_AYNRLgqyDHHo6hDqS5Xz4niwgq9MRyFOTErqhwRZ4HZDJQyhg_yzumpRyFnPE20lJ_Oyu_mhCIjm5DdMQpiH1F5YkedHK9WTaea-i0qIGI63LZb-wIYeSxk4CGJri-1_HdJG4Qczn4pcOTQtgYwjfM60Ivh-lN5xUcEcZmtYAMcZAXHAtap81v9eA"/>
+<button class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-all shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-[20px] text-primary">Zen Stone Burner</h3>
+<p class="font-label-md text-primary">₹650</p>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md line-clamp-2">Elevate your ritual space with this hand-thrown piece.</p>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-md flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                        ADD TO CART
+                    </button>
+</div>
+</div>
+</section>
+<!-- Load More -->
+<div class="mt-stack-lg flex justify-center">
+<button class="px-12 py-3 rounded-full border font-label-md hover:bg-primary hover:text-on-primary transition-all border-transparent text-on-surface-variant">
+                Load More Creations
+            </button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container w-full px-margin-desktop py-stack-lg flex flex-col items-center gap-stack-md mt-stack-lg">
+<div class="w-full max-w-container-max flex flex-col md:flex-row justify-between items-start gap-12 mb-8">
+<div class="max-w-xs space-y-4">
+<span class="font-headline-sm text-headline-sm text-primary">Tohfa</span>
+<p class="font-body-md text-on-surface-variant">
+                    Connecting discerning collectors with the world's finest artisans. We believe in intentional living and the beauty of handcrafted goods.
+                </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-16">
+<div class="space-y-4">
+<h4 class="font-label-md text-primary uppercase">Collective</h4>
+<ul class="space-y-2 font-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">Our Story</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Artisan Spotlights</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Journals</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-primary uppercase">Support</h4>
+<ul class="space-y-2 font-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">Shipping &amp; Returns</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-primary uppercase">Legal</h4>
+<ul class="space-y-2 font-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="w-full max-w-container-max pt-8 border-t border-outline-variant flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="font-label-sm text-on-surface-variant">© 2024 Tohfa Artisanal Collective. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">face_nod</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">camera</span></a>
+</div>
+</div>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        // Simple hover effect for product cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Tab selection visual state logic
+        const tabs = document.querySelectorAll('.mt-stack-lg button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('border-primary', 'text-primary');
+                    t.classList.add('border-transparent', 'text-on-surface-variant');
+                });
+                tab.classList.add('border-primary', 'text-primary');
+                tab.classList.remove('border-transparent', 'text-on-surface-variant');
+            });
+        });
+    </script>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" id="share-modal">
+<div class="bg-white rounded-xl p-8 w-full max-w-md shadow-lg relative mx-4">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+        Share this Studio <span class="text-primary">✨</span>
+</h2>
+<button class="text-on-surface-variant hover:text-primary transition-all" onclick="document.getElementById('share-modal').remove()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="bg-secondary-container/30 rounded-lg p-4 flex items-center gap-4 mb-6 border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white">
+<img alt="Sakshi Dubey" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkR7HiV-bTijsgz1K_6ssScBePC9z-pWdWrUqT_xGLUNyqB1JvXQUl9fEzUroMPZWUUAYtk-fQB3VCmE2JwxHQHBNevUjeQHNRKcZyYAJzbZX-nyuPqoF3JfnhDmhrLB8FG7dIUClp_HE-PJ3zd9Dq2cv6Bzw68GAGDzfB5gZ06k7aAeCG0j19eBNnidPeX6Ivv3tqs3yigUdmX7bgaZYpHuITCe7_eQypQsSjJV8Aimakl3BvTilq9RvVb0918Rytw5-iTywkPF4"/>
+</div>
+<div>
+<h3 class="font-label-md text-primary">Sakshi Dubey</h3>
+<div class="flex items-center gap-1 text-sm text-secondary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.8 (124 reviews)</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-8">
+<button class="flex items-center justify-center gap-2 px-3 py-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-all text-[10px] font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">link</span> COPY LINK
+      </button>
+<button class="flex items-center justify-center gap-2 px-3 py-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-all text-[10px] font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">chat</span> WHATSAPP
+      </button>
+<button class="flex items-center justify-center gap-2 px-3 py-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-all text-[10px] font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">photo_camera</span> INSTAGRAM
+      </button>
+<button class="flex items-center justify-center gap-2 px-3 py-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-all text-[10px] font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">mail</span> EMAIL
+      </button>
+<button class="flex items-center justify-center gap-2 px-3 py-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-all text-[10px] font-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">close</span> TWITTER/X
+      </button>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-[10px] text-secondary uppercase tracking-wider">Direct Studio Link</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-sm focus:ring-0" readonly="" type="text" value="tohfa.studio/sakshi-dubey"/>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-sm hover:bg-primary-container transition-all shadow-sm">Copy</button>
+</div>
+</div>
+</div>
+</div></body></html>

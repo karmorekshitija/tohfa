@@ -267,12 +267,12 @@
       <p class="font-title-serif text-on-surface">Notifications</p>
       <p class="text-xs text-outline mt-xs">Recent alerts</p>
     </a>
-    <!-- T-12: Custom Orders Chat — only shown when user has custom gift orders -->
+    <!-- T-12: Custom Orders Chat — for personalised/customised gift orders -->
     <button id="custom-chat-card" onclick="openChatModal()"
-            class="hidden p-lg bg-gradient-to-br from-[#fcd6ff]/60 to-[#D4E9C4]/40 rounded-xl artisan-card-hover group border border-transparent hover:border-[#b492b7] text-left transition-all">
+            class="p-lg bg-gradient-to-br from-[#fcd6ff]/60 to-[#D4E9C4]/40 rounded-xl artisan-card-hover group border border-transparent hover:border-[#b492b7] text-left transition-all">
       <span class="material-symbols-outlined text-[#725476] mb-md">chat</span>
       <p class="font-title-serif text-on-surface">Custom Orders Chat</p>
-      <p id="chat-card-subtitle" class="text-xs text-outline mt-xs">Messages about personalised gifts</p>
+      <p id="chat-card-subtitle" class="text-xs text-outline mt-xs">3 conversations about personalised gifts</p>
     </button>
   </div>
   <!-- Shipping & Payment Details -->
@@ -835,13 +835,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);

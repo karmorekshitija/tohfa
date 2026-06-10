@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About Sakshi Dubey | Tohfa Artisanal Collective</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-headline-md { font-family: 'EB Garamond', serif; }
+        .font-display-lg { font-family: 'EB Garamond', serif; }
+        .font-headline-sm { font-family: 'EB Garamond', serif; }
+        .font-body-md { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-body-lg { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label-md { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label-sm { font-family: 'Hanken Grotesk', sans-serif; }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        
+        .glass-card {
+            background: rgba(252, 249, 248, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(195, 200, 193, 0.3);
+        }
+
+        .image-reveal-hover {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .image-reveal-hover:hover {
+            transform: scale(1.02);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#474744",
+                        "on-primary-fixed": "#0b2013",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae7e7",
+                        "primary-container": "#1b3022",
+                        "tertiary": "#171815",
+                        "background": "#fcf9f8",
+                        "primary": "#061b0e",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c3c8c1",
+                        "on-secondary-fixed-variant": "#524436",
+                        "on-tertiary-fixed": "#1b1c19",
+                        "primary-fixed-dim": "#b4cdb8",
+                        "on-surface-variant": "#434843",
+                        "on-background": "#1b1c1c",
+                        "tertiary-fixed-dim": "#c8c6c2",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-low": "#f6f3f2",
+                        "on-secondary-container": "#716252",
+                        "tertiary-container": "#2b2c29",
+                        "inverse-surface": "#303030",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary": "#ffffff",
+                        "surface": "#fcf9f8",
+                        "secondary-fixed-dim": "#d7c3b0",
+                        "secondary-fixed": "#f4dfcb",
+                        "on-secondary-fixed": "#241a0e",
+                        "surface-container-highest": "#e4e2e1",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#4d6453",
+                        "on-tertiary-container": "#94938f",
+                        "secondary": "#6b5c4c",
+                        "tertiary-fixed": "#e4e2dd",
+                        "secondary-container": "#f4dfcb",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#b4cdb8",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e4e2e1",
+                        "outline": "#737973",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#364c3c",
+                        "on-primary-container": "#819986",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d0e9d4",
+                        "on-surface": "#1b1c1c",
+                        "surface-container": "#f0eded"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-lg": "48px",
+                        "margin-mobile": "20px",
+                        "stack-md": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["hankenGrotesk"],
+                        "label-md": ["hankenGrotesk"],
+                        "headline-md": ["ebGaramond"],
+                        "display-lg": ["ebGaramond"],
+                        "display-lg-mobile": ["ebGaramond"],
+                        "body-md": ["hankenGrotesk"],
+                        "body-lg": ["hankenGrotesk"],
+                        "headline-sm": ["ebGaramond"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="bg-background dark:bg-background border-b border-outline-variant dark:border-outline sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-12">
+<a class="font-display-lg text-display-lg text-primary dark:text-primary-fixed" href="#">Tohfa</a>
+<div class="hidden md:flex gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Shop</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Discover</a>
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1" href="#">Artisans</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Story</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md font-body-md focus:ring-1 focus:ring-primary w-64 transition-all duration-300" placeholder="Search for craft..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">shopping_bag</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Sakshi Dubey's profile picture" class="w-full h-full object-cover" data-alt="A professional and warm headshot of a female artisan in her thirties, smiling gently. She is wearing a simple linen garment, and the background is a softly blurred workshop space with warm, natural sunlight filtering through. The lighting is soft and flattering, emphasizing a mood of authentic craftsmanship and approachable luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgQrA6h5-N77qFCEtLUWf1NdJPvq4ArmUzn4kX3aSINtjdOsS8PC9MEx7lFPrI_pHGEyZO2FSuACZXNF51-mFwYG0_ichoYjlK9pDM7DkUECYBC8fArSltgsIxqdQ7OaLZ-LdFU9tD0Y_93uKp7ppq97O2A-0dLTg5Omsp-45iL1bfLvF5GWYWftQmDUNuAlx9kQbtQhg2L7Y11KmGKzjw2dPcwQQQhaHgLs_ckVIE-VCYKaNkwtxM4qLeWbfljcbe8A58HMmLSTQ"/>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-margin-desktop py-stack-lg">
+<!-- Artisan Profile Header -->
+<section class="mb-stack-lg animate-fade-in">
+<div class="flex flex-col md:flex-row items-center md:items-end gap-stack-md border-b border-outline-variant pb-8">
+<div class="relative">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg overflow-hidden">
+<img alt="Sakshi Dubey" class="w-full h-full object-cover" data-alt="A close-up portrait of a skilled potter with clay-stained hands resting near her face. Her expression is focused yet serene, set against a background of rustic wooden shelves filled with unfinished ceramic vessels. The lighting is warm and directional, highlighting the tactile texture of the clay and the artist's skin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq2-0DvtE8zSlhWx3pcBe5H1BPZn33Vsh5mob0OE0_nSaceufZRxQm4PoO8rlyYztcVZLx7L24v5AfbYTWFJAeHHIkFFERYpmFKJc-CVO-41bYBCH5mZjQkYbWUu2qqZbBT4nATH-A4czv0Xq2zgcPVCMOJ2wpC0OPq_CW4dAYSRjz18k58p87oWV3kkmniFV2r0nVtaVMbOFMrv7XmN1qmKbfUrYML8Ln1IxpN8deJb-jIXsJBv1FRO_z-oeFvSuqQXNYYNwHNFs"/>
+</div>
+<div class="absolute bottom-2 right-2 bg-primary text-on-primary rounded-full p-1 border-2 border-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h1 class="font-display-lg text-display-lg mb-1">Sakshi Dubey</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4 italic">Contemporary Ceramicist &amp; Visual Storyteller</p>
+<!-- Profile Stats Horizontal -->
+<div class="flex flex-wrap justify-center md:justify-start gap-8">
+<div class="text-center md:text-left">
+<span class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Followers</span>
+<span class="font-headline-sm text-headline-sm">1.2k</span>
+</div>
+<div class="text-center md:text-left">
+<span class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Rating</span>
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm">4.9</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="text-center md:text-left">
+<span class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Crafts</span>
+<span class="font-headline-sm text-headline-sm">42</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4 mb-4">
+<button class="px-8 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:opacity-90 transition-all shadow-md">Follow Artisan</button>
+<button class="p-3 border border-outline font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+<!-- Profile Tabs -->
+<div class="flex justify-center md:justify-start gap-12 mt-6">
+<a class="font-label-md text-label-md text-on-surface-variant py-2 border-b-2 border-transparent hover:text-primary" href="#">Portfolio</a>
+<a class="font-label-md text-label-md text-on-surface-variant py-2 border-b-2 border-transparent hover:text-primary" href="#">Reviews</a>
+<a class="font-label-md text-label-md text-primary py-2 border-b-2 border-primary" href="#">About</a>
+<a class="font-label-md text-label-md text-on-surface-variant py-2 border-b-2 border-transparent hover:text-primary" href="#">Contact</a>
+</div>
+</section>
+<!-- Our Story Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center mb-stack-lg">
+<div class="lg:col-span-7 space-y-stack-sm pr-8">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Our Story: The Soul of Soil</h2>
+<div class="font-headline-md text-body-lg text-on-surface leading-relaxed space-y-6">
+<p>My journey with clay began in the quiet corners of my grandmother's garden in Varanasi. I remember the way the earth felt between my fingers—cool, pliable, and brimming with potential. What started as childhood play evolved into a lifelong devotion to the ancient art of pottery.</p>
+<p>At the heart of Tohfa, my studio is a sanctuary where time slows down. Each piece is hand-thrown on a traditional kick-wheel, a process that demands presence and patience. I believe that an object made by hand carries a fragment of the maker's spirit, a warmth that machine-made items can never replicate.</p>
+<p>Inspired by the raw textures of nature and the poetic simplicity of botanical forms, my work seeks to bridge the gap between utility and art. Every glaze is mixed from scratch using natural minerals, ensuring that every bowl, vase, or platter is a unique expression of the earth it came from.</p>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="rounded-xl overflow-hidden shadow-2xl rotate-3 image-reveal-hover">
+<img alt="Working on pottery wheel" class="w-full h-[500px] object-cover" data-alt="A focused close-up of a potter's hands shaping a tall, elegant vase on a rotating wooden kick-wheel. Wet, dark clay is spinning, with droplets of water catching the light. The background is a moody, sun-drenched studio with dust motes dancing in the light, creating a poetic and artisanal atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZSiIxM_fwrP2N6U8uJ9-nw6ghJdpKYWV5MnXRwath16GnepMDCr0fn5WAMozoUmmiZOXZGzvxc80akE4m-tQVBjcviqUM1bacIj7VAiROFJIR428yagswM56VFgbUJVEQ6FDaYRiJwy9tnWQMMDPeTP2GLh6juJr60EEbgGtGosshMNN8BgPljNIuqpHDh7HyfyU5qNTw3D0ceXYNqtzLw5l-3LT8CWtXimAwVG-m5XIGYGBVb7MKDlQQdnzK5jrbk7ZXDW8Zp0s"/>
+</div>
+<div class="absolute -bottom-10 -left-10 w-64 h-64 rounded-xl overflow-hidden shadow-xl -rotate-6 hidden lg:block border-8 border-white image-reveal-hover">
+<img alt="Botanical Illustration" class="w-full h-full object-cover" data-alt="An intricate botanical ink illustration of a wild fern, drawn on aged, textured paper. Beside the drawing lie professional watercolor brushes and a small ceramic jar of ink. The aesthetic is academic yet artistic, reflecting a deep study of nature. The lighting is soft and warm, typical of a cozy afternoon in an artist's study." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZVjNIZjEwzExHLfkbfZKQT7g7cElVaejlKj8doFooG6X1ewg_UtKFM7e1kw74I59j0nia-tDUuS0vyoxEwLbPHAYdu2sDG6BBWocxTCP9k8nbL5VdrbJAAubCgEdfEDZR6b9VpZeFSLcm_7uOF7TyrJLiJ5n9K-dTQG-0g5pcPMFRslhGOCDMIEsW5CwzjnhRj3sHsZPMeEvMj5zA6inS32alSm4UNYkkL6VhekPF2TkW3lDCtjRLBzMZmN9VkW2IJJHoqDoNCUk"/>
+</div>
+</div>
+</section>
+<!-- The Process Grid -->
+<section class="py-stack-lg">
+<h3 class="font-headline-md text-headline-md mb-stack-md text-center">The Creative Cycle</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-low p-8 rounded-xl flex flex-col items-center text-center group hover:bg-surface-container transition-colors duration-300">
+<div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-6">
+<span class="material-symbols-outlined text-3xl">gesture</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-3">Conceptualization</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Every design starts as a sketch in my journal, inspired by the organic silhouettes of the Himalayan foothills.</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-xl flex flex-col items-center text-center group hover:bg-surface-container transition-colors duration-300">
+<div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-6">
+<span class="material-symbols-outlined text-3xl">waves</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-3">Hand-Throwing</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">The clay is centered and shaped on the wheel, a meditative process where the form emerges through tactile dialogue.</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-xl flex flex-col items-center text-center group hover:bg-surface-container transition-colors duration-300">
+<div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-6">
+<span class="material-symbols-outlined text-3xl">local_fire_department</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm mb-3">Kiln Firing</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Twice-fired at high temperatures to ensure durability, our pieces are vitrified and made to last generations.</p>
+</div>
+</div>
+</section>
+<!-- Sustainable Practices Section -->
+<section class="bg-primary-container text-on-primary-container rounded-2xl p-stack-lg mt-stack-lg overflow-hidden relative">
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
+<div>
+<h2 class="font-display-lg text-display-lg mb-6 text-on-primary-container">Rooted in Responsibility</h2>
+<p class="font-body-lg text-body-lg mb-8 opacity-90">We believe that beautiful things shouldn't cost the earth. Our commitment to sustainability isn't a trend; it's the foundation of our craft.</p>
+<div class="space-y-6">
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-3xl text-primary-fixed">eco</span>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase tracking-widest mb-1">Plastic-Free Packaging</h4>
+<p class="font-body-md text-body-md opacity-80">All our ceramics are wrapped in honeycomb paper and shipped in recycled cardboard boxes with water-activated tape.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-3xl text-primary-fixed">water_drop</span>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase tracking-widest mb-1">Water Reclamation</h4>
+<p class="font-body-md text-body-md opacity-80">Our studio utilizes a multi-stage filtration system to recycle 90% of the water used in the throwing and cleaning process.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-3xl text-primary-fixed">public</span>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase tracking-widest mb-1">Local Sourcing</h4>
+<p class="font-body-md text-body-md opacity-80">We source our stoneware and porcelain clays from regional pits to minimize transportation emissions and support local geologies.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative h-[400px] rounded-xl overflow-hidden shadow-2xl">
+<img alt="Eco-friendly packaging" class="w-full h-full object-cover" data-alt="A beautifully arranged stack of ceramic bowls wrapped in brown honeycomb textured paper, tied with a simple jute string. The setting is bright and clean, with a sprig of dried lavender resting on top. The image emphasizes a minimalist, eco-conscious aesthetic with soft, natural lighting and earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqdJQJXB7MjgtfiM1oV25FoZ9XIti_0IMxs9pgjWM7sA3td1VLUSMdHOYefBkq1jVIVw78ODkg0AoqdQFPQiTY7N-hiTzB6aQfiK4LgQR2YXOWIPkdF625vnuBrFMTWdShi8xgiA1GRVmFSvrbxKBRIuRUERqmYJwBDmk1ho0PzLr-vJWbQ9Sdl6RAAFR56HJMRUfKBzIh4CDziiG1aoH7L-2sF3AFWgIM8VesuH2D0f6VCVGI4UIf_kTdSsIEnxuzjWEQ-slRnwk"/>
+</div>
+</div>
+<!-- Decorative Background Element -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary opacity-20 rounded-full blur-3xl"></div>
+</section>
+<!-- Newsletter / CTA -->
+<section class="mt-stack-lg py-stack-lg text-center bg-surface-container-low rounded-2xl">
+<h3 class="font-headline-md text-headline-md mb-4">Join the Collective</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto mb-8">Sign up for our monthly newsletter 'The Tactile Life' to get early access to new collections and stories from the studio.</p>
+<form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto px-6">
+<input class="flex-1 rounded-lg border-outline bg-white px-4 py-3 focus:ring-primary focus:border-primary" placeholder="your@email.com" type="email"/>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-all" type="submit">Subscribe</button>
+</form>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-container w-full px-margin-desktop py-stack-lg flex flex-col items-center gap-stack-md mt-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-4 w-full max-w-container-max gap-gutter mb-stack-md">
+<div class="flex flex-col gap-4">
+<a class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed" href="#">Tohfa</a>
+<p class="font-body-md text-body-md text-on-surface-variant">Connecting conscious consumers with the world's finest artisans. Crafted with intention, delivered with soul.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-label-md text-label-md uppercase tracking-widest text-on-surface">Explore</h5>
+<nav class="flex flex-col gap-2">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Collections</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Master Artisans</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Craft Workshops</a>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-label-md text-label-md uppercase tracking-widest text-on-surface">Community</h5>
+<nav class="flex flex-col gap-2">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Journal</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Affiliates</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Ethics</a>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-label-md text-label-md uppercase tracking-widest text-on-surface">Connect</h5>
+<div class="flex gap-4">
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary" href="#">public</a>
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary" href="#">mail</a>
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary" href="#">favorite</a>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant w-full max-w-container-max pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<span class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Tohfa Artisanal Collective. All rights reserved.</span>
+<div class="flex gap-8">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary hover:underline" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary hover:underline" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary hover:underline" href="#">Shipping &amp; Returns</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary hover:underline" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple scroll reveal interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+                observer.observe(section);
+            });
+        });
+    </script>
+</body></html>

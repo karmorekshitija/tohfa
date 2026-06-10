@@ -466,6 +466,27 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 <!-- Left: Core Info (8 cols) -->
 <div class="lg:col-span-8 space-y-8">
+<!-- Product Type Toggle -->
+<div class="bg-white border border-sage/30 rounded-2xl p-6">
+  <label class="block font-display-lg text-primary text-xl mb-4">Product Type</label>
+  <div class="flex gap-4">
+    <label class="flex-1 flex items-center gap-3 p-4 border border-sage/30 rounded-xl cursor-pointer hover:bg-sage/5 transition-all" id="label-premade">
+      <input type="radio" name="product_type" id="type-premade" value="pre-made" checked class="text-forest focus:ring-forest">
+      <div>
+        <span class="block font-bold text-primary text-sm">Pre-made / Ready Stock</span>
+        <span class="block text-xs text-on-surface-variant">Standard item ready to ship directly from stock</span>
+      </div>
+    </label>
+    <label class="flex-1 flex items-center gap-3 p-4 border border-sage/30 rounded-xl cursor-pointer hover:bg-sage/5 transition-all" id="label-custom">
+      <input type="radio" name="product_type" id="type-customisable" value="custom" class="text-forest focus:ring-forest">
+      <div>
+        <span class="block font-bold text-primary text-sm">Customisable / Made-to-Order</span>
+        <span class="block text-xs text-on-surface-variant">Accept custom names, colors, photos, or special instructions</span>
+      </div>
+    </label>
+  </div>
+</div>
+
 <div>
 <label class="block font-display-lg text-primary text-xl mb-3">Listing Title</label>
 <input id="listing-title" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-display-lg text-lg focus:ring-forest focus:border-forest outline-none placeholder:italic" placeholder="e.g. Moonlight Jasmine Resin Study" type="text" value=""/>
@@ -487,6 +508,79 @@
 <label class="block font-display-lg text-primary text-xl mb-3">The Story Behind the Piece</label>
 <textarea id="listing-story" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-md text-on-surface-variant focus:ring-forest focus:border-forest outline-none resize-none" placeholder="Describe the botanical inspiration, materials sourced, and the artisanal process..." rows="6"></textarea>
 </div>
+
+<!-- Customisation Configuration Panel (shown only when Customisable is selected) -->
+<div id="customisation-panel" class="hidden space-y-6 bg-white border border-sage/30 rounded-2xl p-6 transition-all duration-300">
+  <h3 class="font-display-lg text-primary text-xl border-b border-sage/20 pb-2">Customisation Options</h3>
+
+  <!-- 1. Text Personalisation -->
+  <div class="border-b border-sage/10 pb-4">
+    <label class="flex items-center gap-2 cursor-pointer mb-2">
+      <input type="checkbox" id="allow-text-personalisation" class="rounded border-sage text-forest focus:ring-forest">
+      <span class="text-sm font-bold text-primary">Allow Text Personalisation</span>
+    </label>
+    <div id="text-personalisation-details" class="hidden pl-6 mt-3 space-y-3">
+      <div>
+        <label class="block text-xs text-on-surface-variant font-medium mb-1">Text Field Label / Instructions</label>
+        <input type="text" id="text-personalisation-label" class="w-full bg-parchment border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" placeholder="e.g. Enter name to engrave">
+      </div>
+      <div>
+        <label class="block text-xs text-on-surface-variant font-medium mb-1">Max Character Limit</label>
+        <input type="number" id="text-personalisation-limit" class="w-48 bg-parchment border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" value="20" min="1">
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Color Choices -->
+  <div class="border-b border-sage/10 pb-4">
+    <label class="flex items-center gap-2 cursor-pointer mb-2">
+      <input type="checkbox" id="allow-color-choices" class="rounded border-sage text-forest focus:ring-forest">
+      <span class="text-sm font-bold text-primary">Offer Color Choices</span>
+    </label>
+    <div id="color-choices-details" class="hidden pl-6 mt-3 space-y-3">
+      <label class="block text-xs text-on-surface-variant font-medium mb-1">Colors (Comma separated list)</label>
+      <input type="text" id="color-choices-input" class="w-full bg-parchment border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" placeholder="e.g. Red, Blue, Gold, Ocean Teal">
+    </div>
+  </div>
+
+  <!-- 3. Image Upload -->
+  <div class="border-b border-sage/10 pb-4">
+    <label class="flex items-center gap-2 cursor-pointer mb-2">
+      <input type="checkbox" id="allow-image-upload" class="rounded border-sage text-forest focus:ring-forest">
+      <span class="text-sm font-bold text-primary">Allow Image Upload</span>
+    </label>
+    <div id="image-upload-details" class="hidden pl-6 mt-3 space-y-3">
+      <label class="block text-xs text-on-surface-variant font-medium mb-1">Seller Instructions / Notes for Image Upload</label>
+      <textarea id="image-upload-notes" class="w-full bg-parchment border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none resize-none" rows="2" placeholder="e.g. Upload a high-resolution portrait with clear lighting..."></textarea>
+    </div>
+  </div>
+
+  <!-- 4. Additional Notes Toggle -->
+  <div class="border-b border-sage/10 pb-4">
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="allow-additional-notes" class="rounded border-sage text-forest focus:ring-forest">
+      <span class="text-sm font-bold text-primary">Allow Special Instructions/Additional Notes</span>
+    </label>
+  </div>
+
+  <!-- 5. Customisation Pricing field (extra fee in ₹) -->
+  <div>
+    <label class="block text-sm font-bold text-primary mb-1">Customisation Fee (₹)</label>
+    <div class="flex items-center gap-2">
+      <span class="text-lg font-bold text-primary">₹</span>
+      <input type="number" id="customisation-fee" class="w-48 bg-parchment border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" placeholder="e.g. 150" min="0" value="0">
+    </div>
+    <span class="text-xs text-on-surface-variant block mt-1">This fee will be added on top of the listing's base price when customization is requested.</span>
+  </div>
+</div>
+
+<!-- Read-only Preview Summary -->
+<div id="customisation-preview-card" class="hidden bg-surface-container border border-sage/30 rounded-2xl p-6">
+  <h4 class="font-display-lg text-primary text-lg mb-3">Customisation Preview Summary</h4>
+  <div class="space-y-2 text-sm text-on-surface-variant" id="preview-summary-content">
+  </div>
+</div>
+
 </div>
 <!-- Right: Organization & Tags (4 cols) -->
 <div class="lg:col-span-4 space-y-8">
@@ -502,6 +596,20 @@
 <div id="tags-container" class="mt-3 flex flex-wrap gap-2">
 </div>
 </div>
+
+<!-- Product Badge / Visibility Tag -->
+<div>
+  <label class="block text-[10px] font-bold text-sage uppercase tracking-widest mb-2">Product Badge</label>
+  <select id="product-badge-select" class="w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none">
+    <option value="">None</option>
+    <option value="Best Seller">⭐ Best Seller</option>
+    <option value="Sponsored">✦ Sponsored</option>
+    <option value="__custom__">Custom text...</option>
+  </select>
+  <input id="product-badge-custom" type="text" class="hidden mt-2 w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none" placeholder="e.g. New Arrival, Limited Edition..." maxlength="30">
+  <p class="text-[10px] text-on-surface-variant mt-1">Badge shown on buyer-facing product cards.</p>
+</div>
+
 </div>
 </div>
 <div id="zai-card" class="p-6 rounded-2xl border border-dashed border-sage/30 text-center cursor-pointer hover:bg-sage/5 transition-all">
@@ -623,6 +731,112 @@
         showToast('ZAI narrative generated based on title!', 'success');
     });
 
+    // Customisation Suite logic
+    function updateCustomisationPreview() {
+        const isCustom = document.getElementById('type-customisable').checked;
+        const previewCard = document.getElementById('customisation-preview-card');
+        if (!isCustom) {
+            previewCard.classList.add('hidden');
+            return;
+        }
+        previewCard.classList.remove('hidden');
+
+        const allowText = document.getElementById('allow-text-personalisation').checked;
+        const textLabel = document.getElementById('text-personalisation-label').value.trim();
+        const textLimit = document.getElementById('text-personalisation-limit').value;
+
+        const allowColor = document.getElementById('allow-color-choices').checked;
+        const colors = document.getElementById('color-choices-input').value.trim();
+
+        const allowImage = document.getElementById('allow-image-upload').checked;
+        const imageNotes = document.getElementById('image-upload-notes').value.trim();
+
+        const allowNotes = document.getElementById('allow-additional-notes').checked;
+        const fee = document.getElementById('customisation-fee').value || 0;
+
+        let html = '';
+        if (allowText) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Text Personalisation: <strong>"${textLabel || 'Personalisation Text'}"</strong> (Max ${textLimit} chars)</div>`;
+        }
+        if (allowColor) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Color Choices: <strong>"${colors || 'Any color'}"</strong></div>`;
+        }
+        if (allowImage) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Image Upload: <strong>Enabled</strong> ("${imageNotes || 'Seller Instructions'}")</div>`;
+        }
+        if (allowNotes) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Additional Special Notes: <strong>Allowed</strong></div>`;
+        }
+        html += `<div class="mt-2 pt-2 border-t border-sage/20 text-primary font-bold">Extra Fee: ₹${fee}</div>`;
+
+        if (!allowText && !allowColor && !allowImage && !allowNotes) {
+            html = '<div class="text-rose-500 italic">No customisation options configured yet. Set some options above.</div>';
+        }
+
+        document.getElementById('preview-summary-content').innerHTML = html;
+    }
+
+    function initCustomisationSuite() {
+        const radioPremade = document.getElementById('type-premade');
+        const radioCustom = document.getElementById('type-customisable');
+        const panel = document.getElementById('customisation-panel');
+        const labelPremade = document.getElementById('label-premade');
+        const labelCustom = document.getElementById('label-custom');
+
+        function togglePanel() {
+            if (radioCustom.checked) {
+                panel.classList.remove('hidden');
+                labelCustom.classList.add('border-forest', 'bg-sage/5');
+                labelPremade.classList.remove('border-forest', 'bg-sage/5');
+            } else {
+                panel.classList.add('hidden');
+                labelPremade.classList.add('border-forest', 'bg-sage/5');
+                labelCustom.classList.remove('border-forest', 'bg-sage/5');
+            }
+            updateCustomisationPreview();
+        }
+
+        radioPremade.addEventListener('change', togglePanel);
+        radioCustom.addEventListener('change', togglePanel);
+
+        // Sub-sections toggles
+        const allowTextCheckbox = document.getElementById('allow-text-personalisation');
+        const textDetails = document.getElementById('text-personalisation-details');
+        allowTextCheckbox.addEventListener('change', () => {
+            if (allowTextCheckbox.checked) textDetails.classList.remove('hidden');
+            else textDetails.classList.add('hidden');
+            updateCustomisationPreview();
+        });
+
+        const allowColorCheckbox = document.getElementById('allow-color-choices');
+        const colorDetails = document.getElementById('color-choices-details');
+        allowColorCheckbox.addEventListener('change', () => {
+            if (allowColorCheckbox.checked) colorDetails.classList.remove('hidden');
+            else colorDetails.classList.add('hidden');
+            updateCustomisationPreview();
+        });
+
+        const allowImageCheckbox = document.getElementById('allow-image-upload');
+        const imageDetails = document.getElementById('image-upload-details');
+        allowImageCheckbox.addEventListener('change', () => {
+            if (allowImageCheckbox.checked) imageDetails.classList.remove('hidden');
+            else imageDetails.classList.add('hidden');
+            updateCustomisationPreview();
+        });
+
+        const allowNotesCheckbox = document.getElementById('allow-additional-notes');
+        allowNotesCheckbox.addEventListener('change', updateCustomisationPreview);
+
+        document.getElementById('text-personalisation-label').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('text-personalisation-limit').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('color-choices-input').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('image-upload-notes').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('customisation-fee').addEventListener('input', updateCustomisationPreview);
+
+        // Initial trigger
+        togglePanel();
+    }
+
     // Load draft
     async function loadDetailsDraft() {
         const draftId = sessionStorage.getItem('draft_id');
@@ -655,6 +869,63 @@
                     tagsList = Array.isArray(listing.tags) ? listing.tags : JSON.parse(listing.tags || '[]');
                     renderTags();
                 }
+
+                // Product Badge
+                const badge = listing.product_tag || '';
+                const badgeSelect = document.getElementById('product-badge-select');
+                const badgeCustom = document.getElementById('product-badge-custom');
+                if (badge === '' || badge === 'Best Seller' || badge === 'Sponsored') {
+                    badgeSelect.value = badge;
+                    badgeCustom.classList.add('hidden');
+                } else if (badge) {
+                    badgeSelect.value = '__custom__';
+                    badgeCustom.classList.remove('hidden');
+                    badgeCustom.value = badge;
+                }
+
+                // Pre-fill Product Type & Customisation Options
+                const isCust = listing.isCustomisable || listing.listing_type === 'custom';
+                if (isCust) {
+                    document.getElementById('type-customisable').checked = true;
+                } else {
+                    document.getElementById('type-premade').checked = true;
+                }
+
+                const config = listing.customization_config || {};
+                
+                document.getElementById('allow-text-personalisation').checked = !!config.allow_text;
+                document.getElementById('text-personalisation-label').value = config.text_label || '';
+                document.getElementById('text-personalisation-limit').value = config.text_limit || 20;
+
+                document.getElementById('allow-color-choices').checked = !!config.allow_color;
+                document.getElementById('color-choices-input').value = Array.isArray(config.colors) ? config.colors.join(', ') : (config.colors || '');
+
+                document.getElementById('allow-image-upload').checked = !!config.allow_image;
+                document.getElementById('image-upload-notes').value = config.image_notes || '';
+
+                document.getElementById('allow-additional-notes').checked = !!config.allow_notes;
+                document.getElementById('customisation-fee').value = config.extra_fee_rupees || 0;
+
+                // Sync UI visibility
+                const radioCustom = document.getElementById('type-customisable');
+                const radioPremade = document.getElementById('type-premade');
+                const panel = document.getElementById('customisation-panel');
+                const labelPremade = document.getElementById('label-premade');
+                const labelCustom = document.getElementById('label-custom');
+
+                if (isCust) {
+                    panel.classList.remove('hidden');
+                    labelCustom.classList.add('border-forest', 'bg-sage/5');
+                    labelPremade.classList.remove('border-forest', 'bg-sage/5');
+                    if (config.allow_text) document.getElementById('text-personalisation-details').classList.remove('hidden');
+                    if (config.allow_color) document.getElementById('color-choices-details').classList.remove('hidden');
+                    if (config.allow_image) document.getElementById('image-upload-details').classList.remove('hidden');
+                } else {
+                    panel.classList.add('hidden');
+                    labelPremade.classList.add('border-forest', 'bg-sage/5');
+                    labelCustom.classList.remove('border-forest', 'bg-sage/5');
+                }
+                updateCustomisationPreview();
             }
         } catch (err) {
             console.error('Error loading details draft:', err);
@@ -664,11 +935,27 @@
     async function saveDetails(shouldRedirect) {
         const title = titleInput.value.trim();
         const story = document.getElementById('listing-story').value.trim();
-        
+
         if (!title) {
             showToast('Title is required.', 'error');
+            titleInput.focus();
+            titleInput.classList.add('border-red-400');
+            setTimeout(() => titleInput.classList.remove('border-red-400'), 2500);
             return;
         }
+
+        if (!selectedCategory) {
+            showToast('Please select a category before continuing.', 'error');
+            document.getElementById('category-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        // Resolve product badge value
+        const badgeSelect = document.getElementById('product-badge-select');
+        const badgeCustom = document.getElementById('product-badge-custom');
+        let product_tag = badgeSelect.value === '__custom__'
+            ? (badgeCustom.value.trim() || null)
+            : (badgeSelect.value || null);
 
         const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
         const draftId = sessionStorage.getItem('draft_id');
@@ -677,6 +964,19 @@
             showToast('No listing draft ID found. Please go back to photos step.', 'error');
             return;
         }
+
+        const isCustomisable = document.getElementById('type-customisable').checked;
+        const customization_config = {
+            allow_text: document.getElementById('allow-text-personalisation').checked,
+            text_label: document.getElementById('text-personalisation-label').value.trim(),
+            text_limit: parseInt(document.getElementById('text-personalisation-limit').value, 10) || 0,
+            allow_color: document.getElementById('allow-color-choices').checked,
+            colors: document.getElementById('color-choices-input').value.split(',').map(c => c.trim()).filter(Boolean),
+            allow_image: document.getElementById('allow-image-upload').checked,
+            image_notes: document.getElementById('image-upload-notes').value.trim(),
+            allow_notes: document.getElementById('allow-additional-notes').checked,
+            extra_fee_rupees: parseFloat(document.getElementById('customisation-fee').value) || 0
+        };
 
         try {
             const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
@@ -691,7 +991,10 @@
                     story: story,
                     category: selectedCategory,
                     tags: tagsList,
-                    status: 'draft'
+                    status: 'draft',
+                    isCustomisable,
+                    customization_config,
+                    product_tag
                 })
             });
 
@@ -711,12 +1014,28 @@
     document.getElementById('next-step-btn').addEventListener('click', () => saveDetails(true));
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
+            if (e.key === 'Escape') {
             document.getElementById('listing-drawer').classList.add('translate-y-full');
         }
     });
 
-    window.addEventListener('DOMContentLoaded', loadDetailsDraft);
+    window.addEventListener('DOMContentLoaded', () => {
+        // Badge dropdown: show/hide custom input
+        const badgeSelectEl = document.getElementById('product-badge-select');
+        const badgeCustomEl = document.getElementById('product-badge-custom');
+        badgeSelectEl.addEventListener('change', () => {
+            if (badgeSelectEl.value === '__custom__') {
+                badgeCustomEl.classList.remove('hidden');
+                badgeCustomEl.focus();
+            } else {
+                badgeCustomEl.classList.add('hidden');
+                badgeCustomEl.value = '';
+            }
+        });
+
+        initCustomisationSuite();
+        loadDetailsDraft();
+    });
 </script>
 
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->

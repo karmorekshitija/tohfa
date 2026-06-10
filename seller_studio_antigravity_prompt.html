@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seller Studio — Antigravity Agent Prompt File</title>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --surface2: #1a1e28;
+      --border: #252b38;
+      --border-light: #2f3848;
+      --accent: #7c5cbf;
+      --accent-glow: #5b3fa0;
+      --accent-soft: #1e1830;
+      --green: #2ea84a;
+      --green-soft: #0f2018;
+      --warn: #c49a1a;
+      --warn-soft: #251e07;
+      --red: #c0392b;
+      --red-soft: #200c0a;
+      --blue: #2176c4;
+      --blue-soft: #091828;
+      --text: #dde4f0;
+      --muted: #6b7589;
+      --mono: 'Courier New', monospace;
+      --sans: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.65;
+      padding: 36px 28px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 10px;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .file-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: #b49de8;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #f0f4ff;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 5px;
+      max-width: 580px;
+    }
+
+    /* stat pills */
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .stat-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .stat-pill .val {
+      font-size: 18px;
+      font-weight: 700;
+      color: #b49de8;
+      line-height: 1.2;
+    }
+
+    .stat-pill .lbl {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 2px;
+    }
+
+    /* ── GLOBAL RULES BOX ── */
+    .global-rules {
+      background: var(--warn-soft);
+      border: 1px solid #6b520e;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 28px 0;
+    }
+
+    .global-rules h2 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #d4a820;
+      margin-bottom: 12px;
+    }
+
+    .global-rules ol {
+      padding-left: 18px;
+      color: #b08a18;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .global-rules strong { color: #f0c840; }
+
+    /* ── EXECUTION FLOW DIAGRAM ── */
+    .flow-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 36px;
+    }
+
+    .flow-box h2 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 7px 13px;
+      font-size: 11.5px;
+      color: #aab4cc;
+      white-space: nowrap;
+    }
+
+    .flow-step.commit {
+      border-color: var(--accent);
+      color: #b49de8;
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 0 6px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-wrap {
+      margin-bottom: 36px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-header::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+    }
+
+    .section-header.analytics::before  { background: #7c5cbf; }
+    .section-header.core::before       { background: #2ea84a; }
+    .section-header.infra::before      { background: #c0392b; }
+
+    .section-icon { font-size: 20px; }
+
+    .section-meta { flex: 1; }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f0f4ff;
+    }
+
+    .section-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .section-count {
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+      white-space: nowrap;
+    }
+
+    /* ── TASK CARD ── */
+    .task {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+
+    .task:hover { border-color: var(--border-light); }
+
+    .task-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .task-id {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 3px 8px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .task-meta { flex: 1; }
+
+    .task-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #eef2ff;
+      margin-bottom: 6px;
+    }
+
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+    }
+
+    .tag.ui      { background: #0e2240; border-color: #1e4a8a; color: #79b4ff; }
+    .tag.logic   { background: #1e1030; border-color: #5b3fa0; color: #c4a8ff; }
+    .tag.data    { background: #200c0a; border-color: #842015; color: #ff9b8a; }
+    .tag.new     { background: #0f2018; border-color: #2a7a40; color: #5dca7e; }
+    .tag.routing { background: #0a1e30; border-color: #1a5a8a; color: #5abeff; }
+    .tag.fix     { background: #20150a; border-color: #8a4a10; color: #ffb870; }
+
+    /* complexity badge */
+    .complexity {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+    .complexity.high   { background: var(--red-soft);  border: 1px solid #7a2520; color: #ff8a80; }
+    .complexity.medium { background: var(--warn-soft); border: 1px solid #7a5010; color: #ffcc60; }
+    .complexity.low    { background: var(--green-soft);border: 1px solid #1a6030; color: #60e880; }
+
+    /* ── TASK BODY ── */
+    .task-body { padding: 16px 18px; }
+
+    .label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .prompt-block {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 14px 16px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #9de8a8;
+      line-height: 1.7;
+    }
+
+    /* inline sub-steps inside prompt block */
+    .prompt-block .step-head {
+      color: #c4a8ff;
+      font-weight: bold;
+    }
+
+    .callout {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    .callout.warn  { background: var(--warn-soft);  border: 1px solid #6b520e; color: #c8a020; }
+    .callout.info  { background: var(--blue-soft);  border: 1px solid #1a4870; color: #5ab0f0; }
+    .callout.alert { background: var(--red-soft);   border: 1px solid #7a2520; color: #ff8a80; }
+    .callout.ok    { background: var(--green-soft); border: 1px solid #1a6030; color: #50d870; }
+
+    .callout .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .callout strong { color: inherit; }
+
+    /* agent strategy box */
+    .agent-box {
+      background: var(--surface2);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #8898bb;
+    }
+
+    .agent-box .agent-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #b49de8;
+      margin-bottom: 6px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 52px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ HEADER ══════════════════════ -->
+<header>
+  <div class="top-row">
+    <div>
+      <div class="file-badge">ANTIGRAVITY PROMPT FILE · SELLER STUDIO · v1.0</div>
+      <h1>Seller Studio — Agent Task Manifest</h1>
+      <p class="subtitle">Structured prompt file for sequential sub-agent execution. Each task is self-contained. Do not skip tasks or reorder them. Commit at every marked checkpoint.</p>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat-pill"><div class="val">8</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat-pill"><div class="val">3</div><div class="lbl">Sections</div></div>
+    <div class="stat-pill"><div class="val">3</div><div class="lbl">Commit Points</div></div>
+    <div class="stat-pill"><div class="val">2</div><div class="lbl">High Priority</div></div>
+  </div>
+</header>
+
+<!-- ══════════════════════ GLOBAL RULES ══════════════════════ -->
+<div class="global-rules">
+  <h2>⚠ Antigravity Execution Rules — Read Before Starting</h2>
+  <ol>
+    <li>Execute tasks <strong>in strict order: S-01 → S-08</strong>. Each task may depend on the previous.</li>
+    <li>Use <strong>sub-agents in parallel</strong> only when a task explicitly says so — otherwise run single-agent to avoid conflicts.</li>
+    <li>After each task, <strong>hot-reload and visually verify</strong> the change before marking it done.</li>
+    <li>Tasks in Section 3 (Infrastructure & UI) must be done <strong>last</strong> — they touch global styles and routing. Doing them first will break everything else.</li>
+    <li>If a task touches the backend or data layer, <strong>do not mock data as a permanent fix</strong> — mocks are only acceptable as temporary scaffolding.</li>
+    <li><strong>Search the codebase first</strong> on every task. Never assume file names or import paths.</li>
+    <li>Mark each task done in your working notes as you go. <strong>Do not batch-report completion</strong> — confirm each one individually.</li>
+  </ol>
+</div>
+
+<!-- ══════════════════════ EXECUTION FLOW ══════════════════════ -->
+<div class="flow-box">
+  <h2>Execution Flow</h2>
+  <div class="flow">
+    <div class="flow-step">S-01 Live Graphs</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-02 Data Precision</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-03 Expand Metrics</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-04 Export Report</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step commit">● COMMIT</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-05 Customisation Suite</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-06 Upload Validation</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step commit">● COMMIT</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-07 Home Connection</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">S-08 Design Uniformity</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step commit">● FINAL COMMIT</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!--  SECTION 1: Analytics & Reporting         -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section-wrap">
+  <div class="section-header analytics">
+    <span class="section-icon">📊</span>
+    <div class="section-meta">
+      <div class="section-title">Analytics &amp; Reporting</div>
+      <div class="section-desc">Fix graphs, data accuracy, metrics range, and export functionality</div>
+    </div>
+    <span class="section-count">4 tasks · S-01 to S-04</span>
+  </div>
+
+  <!-- S-01 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-01</span>
+      <div class="task-meta">
+        <div class="task-title">Replace Static Photo Placeholders with Live Dynamic Graphs</div>
+        <div class="tags">
+          <span class="tag ui">UI</span>
+          <span class="tag data">Data</span>
+          <span class="tag fix">Fix</span>
+        </div>
+      </div>
+      <span class="complexity high">High</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">Find the analytics/dashboard section of the Seller Studio.
+Locate every place where a static image or photo placeholder is being used in place of a graph or chart.
+
+For each placeholder, replace it with a fully functional dynamic chart using the charting library already in the project (Recharts, Chart.js, or similar — search package.json to confirm which one).
+
+The graphs to implement:
+  1. Revenue Over Time → Line chart (X-axis: dates, Y-axis: revenue in ₹)
+  2. Orders Per Day → Bar chart (X-axis: dates, Y-axis: order count)
+  3. Top Products → Horizontal bar chart (product names vs units sold)
+  4. Conversion Rate → Area chart or gauge (percentage over time)
+
+For now, use realistic mock data arrays (not random numbers — use plausible static values like a real shop would show).
+Each chart must:
+  - Be responsive (resize with container width)
+  - Have axis labels and a legend
+  - Have a title above it
+  - Use colors consistent with the Seller Studio palette</div>
+      <div class="callout warn">
+        <span class="icon">⚠</span>
+        <div>Check <strong>package.json</strong> first for which charting library is installed before writing any chart code. If none is installed, install Recharts — it plays well with React.</div>
+      </div>
+      <div class="agent-box">
+        <div class="agent-label">Sub-Agent Strategy</div>
+        Each chart can be built by a separate sub-agent in parallel — assign one sub-agent per chart component, then a final agent assembles them into the analytics page.
+      </div>
+    </div>
+  </div>
+
+  <!-- S-02 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-02</span>
+      <div class="task-meta">
+        <div class="task-title">Fix Analytics Data — Remove Random Values, Use Computed Metrics</div>
+        <div class="tags">
+          <span class="tag data">Data</span>
+          <span class="tag logic">Logic</span>
+          <span class="tag fix">Fix</span>
+        </div>
+      </div>
+      <span class="complexity high">High</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">Search the analytics data layer (state management, API calls, or data-fetching logic) for any use of Math.random(), random number generators, or hardcoded nonsensical values.
+
+Remove all randomised data generation entirely.
+
+Replace with one of the following (in priority order):
+  Option A — If a backend/API exists: Wire the analytics components to fetch real order, product, and revenue data from the existing API endpoints. Identify those endpoints by searching for existing API calls in the codebase.
+  Option B — If no backend exists yet: Replace random values with a realistic static dataset that is computed correctly (e.g. total revenue = sum of all order values, not a random number). The data should be self-consistent — numbers should add up and make logical sense.
+
+Specifically fix:
+  - The metric stuck at or displaying "9.9" — identify what it represents and compute it correctly
+  - Any percentage values that exceed 100% or go negative
+  - Any revenue values that do not match order totals
+
+After fixing, verify each displayed metric is derived from a defined, traceable data source.</div>
+      <div class="callout alert">
+        <span class="icon">🚨</span>
+        <div><strong>Do not leave any Math.random() calls in the analytics path.</strong> Search for them explicitly with a global codebase search and remove every instance in analytics-related files.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S-03 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-03</span>
+      <div class="task-meta">
+        <div class="task-title">Expand Analytics Tab — Comprehensive Metrics Overhaul</div>
+        <div class="tags">
+          <span class="tag ui">UI</span>
+          <span class="tag data">Data</span>
+          <span class="tag new">New Feature</span>
+        </div>
+      </div>
+      <span class="complexity medium">Medium</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">The analytics tab currently shows a very limited set of metrics (stuck at showing only ~9.9 and a few numbers).
+Overhaul the entire analytics tab to display the following comprehensive metric sections:
+
+── SECTION A: Summary KPI Cards (top row) ──
+  • Total Revenue (₹)
+  • Total Orders
+  • Average Order Value (₹)
+  • Store Visitors (unique)
+  • Conversion Rate (%)
+  • Returns / Cancellations
+
+── SECTION B: Time-Range Filter ──
+  Add a filter bar with options: Today | This Week | This Month | Last 3 Months | Custom Range
+  The charts from S-01 should update based on the selected time range.
+
+── SECTION C: Product Performance Table ──
+  A sortable table with columns: Product Name | Units Sold | Revenue | Stock Left | Rating
+  Use mock data for now with at least 5 product rows.
+
+── SECTION D: Customer Insights ──
+  • Repeat vs New Buyers (donut chart)
+  • Top buyer locations (simple list or bar chart)
+
+── SECTION E: Customised Orders vs Pre-made Orders ──
+  • Side-by-side count and revenue comparison (two stat cards or a split bar chart)
+
+Layout rules:
+  - KPI cards in a responsive grid (3 per row on desktop, 2 on tablet, 1 on mobile)
+  - Each section has a clear heading
+  - Consistent card/panel styling throughout</div>
+      <div class="callout info">
+        <span class="icon">ℹ</span>
+        <div>Build Section A and Section B first. Get them rendering before adding the table and charts. Use mock data throughout this task — S-02 handles data accuracy separately.</div>
+      </div>
+      <div class="agent-box">
+        <div class="agent-label">Sub-Agent Strategy</div>
+        Assign one sub-agent per section (A through E). They can scaffold simultaneously. A final agent reviews layout consistency and merges them into the analytics page.
+      </div>
+    </div>
+  </div>
+
+  <!-- S-04 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-04</span>
+      <div class="task-meta">
+        <div class="task-title">Fix Broken "Export Report" Functionality</div>
+        <div class="tags">
+          <span class="tag logic">Logic</span>
+          <span class="tag fix">Fix</span>
+        </div>
+      </div>
+      <span class="complexity medium">Medium</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">Find the "Export Report" button in the analytics panel.
+Identify why it is broken — check for: missing click handler, broken API call, failed file generation, or missing dependency.
+
+Fix it to correctly export the analytics data. Implement in this priority order:
+
+  Option A — CSV Export (simplest, implement first):
+    Collect all visible analytics data (KPI values, product table rows, time range).
+    Convert to CSV format.
+    Trigger a browser file download named: seller_report_[YYYY-MM-DD].csv
+
+  Option B — PDF Export (implement after CSV works):
+    Use a library already in the project, or install jsPDF if not present.
+    Generate a simple PDF with:
+      • Store name and export date as header
+      • KPI summary table
+      • Product performance table
+    Trigger download named: seller_report_[YYYY-MM-DD].pdf
+
+The Export button should:
+  - Show a loading state while generating the file
+  - Confirm success with a small toast/snackbar: "Report downloaded"
+  - Handle errors gracefully (show an error message, not a silent failure)</div>
+      <div class="callout warn">
+        <span class="icon">⚠</span>
+        <div><strong>COMMIT POINT</strong> — After S-04 is complete and tested, commit with message: <code style="color:#f0c840">"feat: analytics section complete — graphs, metrics, data fix, export"</code></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!--  SECTION 2: Core Studio Functions         -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section-wrap">
+  <div class="section-header core">
+    <span class="section-icon">⚙️</span>
+    <div class="section-meta">
+      <div class="section-title">Core Studio Functions</div>
+      <div class="section-desc">Customisation tools and product upload flow integrity</div>
+    </div>
+    <span class="section-count">2 tasks · S-05 to S-06</span>
+  </div>
+
+  <!-- S-05 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-05</span>
+      <div class="task-meta">
+        <div class="task-title">Implement Missing Customisation Suite in Catalog / Add Products</div>
+        <div class="tags">
+          <span class="tag new">New Feature</span>
+          <span class="tag ui">UI</span>
+          <span class="tag logic">Logic</span>
+        </div>
+      </div>
+      <span class="complexity high">High</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">Find the "Add Product" or "Catalog" flow in the Seller Studio.
+The customisation/personalisation options for products are currently missing.
+
+Implement a Customisation Suite section within the Add Product form. It should contain:
+
+── PART 1: Product Type Toggle ──
+  A toggle or radio selection at the top of the form:
+    ○ Pre-made (ready to ship, fixed product)
+    ● Customisable (buyer can personalise before ordering)
+
+── PART 2: Customisation Options (visible only when "Customisable" is selected) ──
+  Allow the seller to define what buyers can customise. Add fields for:
+
+  1. Text Personalisation
+     • Toggle: "Allow custom text?" (yes/no)
+     • If yes: input for label (e.g. "Name to engrave"), max character limit
+
+  2. Colour / Variant Options
+     • Toggle: "Offer colour choices?" (yes/no)
+     • If yes: a tag-input to add colour options (e.g. Red, Blue, Gold)
+
+  3. Custom Image Upload (by buyer)
+     • Toggle: "Allow buyer to upload an image?" (yes/no)
+     • If yes: show a note field the seller can use to instruct the buyer (e.g. "Upload a clear face photo")
+
+  4. Additional Notes Field
+     • Toggle: "Allow buyer to add special instructions?" (yes/no)
+
+── PART 3: Customisation Pricing ──
+  • Input: "Extra charge for customisation (₹)" — optional flat fee added to base price
+
+── PART 4: Preview Summary ──
+  Below the form, show a live read-only summary of what the buyer will see:
+    "Buyers can personalise: [custom text ✓] [colour choice ✓] [image upload ✗]"
+
+All toggles must show/hide their sub-fields with smooth conditional rendering.
+Save all customisation config as part of the product data object on form submission.</div>
+      <div class="callout info">
+        <span class="icon">ℹ</span>
+        <div>The "Customisable" product type flag is critical — this same flag is used by the Buyer Studio's Chat with Buyers feature (T-12 in the Buyer manifest). Make sure the flag key name is consistent across both studios (e.g. <code>isCustomisable: true</code>).</div>
+      </div>
+      <div class="agent-box">
+        <div class="agent-label">Sub-Agent Strategy</div>
+        Sub-agent 1: Build Part 1 + Part 2 (form fields and toggles). Sub-agent 2: Build Part 3 + Part 4 (pricing and preview). Final agent: wire both into the Add Product form and test the full flow.
+      </div>
+    </div>
+  </div>
+
+  <!-- S-06 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-06</span>
+      <div class="task-meta">
+        <div class="task-title">Verify Product Upload Flow + Integrate with New Backend Logic</div>
+        <div class="tags">
+          <span class="tag logic">Logic</span>
+          <span class="tag data">Data</span>
+        </div>
+      </div>
+      <span class="complexity medium">Medium</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">The core product upload flow is reported as working. This task is a verification and integration pass — do not rebuild what works.
+
+Step 1 — Verify the existing flow end-to-end:
+  • Open the Add Product form and fill all fields (name, price, images, category, description).
+  • Submit the form.
+  • Confirm the product appears correctly in the seller's catalog/product list.
+  • Check that no console errors appear during the flow.
+  • Check that image uploads persist (are not lost on refresh).
+
+Step 2 — Integrate new fields from S-05:
+  • Ensure the customisation config added in S-05 is included in the product submission payload.
+  • Verify it saves and re-loads correctly (i.e. editing an existing customisable product shows the correct toggles pre-filled).
+
+Step 3 — Integrate new tags from the Buyer Studio (Task T-07 in buyer manifest):
+  • The product form should allow the seller to assign a tag: "Best Seller", "Sponsored", or custom text.
+  • Add a Tag field to the Add Product form if it does not already exist.
+  • Ensure the tag saves with the product and is visible on the buyer-facing product card.
+
+Step 4 — Validation check:
+  • Confirm required fields show an error if left empty on submit (product name, price, at least one image, category).
+  • Price must reject non-numeric input.</div>
+      <div class="callout warn">
+        <span class="icon">⚠</span>
+        <div><strong>COMMIT POINT</strong> — After S-06 passes all verifications, commit with message: <code style="color:#f0c840">"feat: core studio — customisation suite and product upload validated"</code></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  SECTION 3: Infrastructure & UI Overhaul          -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="section-wrap">
+  <div class="section-header infra">
+    <span class="section-icon">🎨</span>
+    <div class="section-meta">
+      <div class="section-title">Infrastructure &amp; UI Overhaul</div>
+      <div class="section-desc">Routing, visual consistency, and global layout repair — do this LAST</div>
+    </div>
+    <span class="section-count">2 tasks · S-07 to S-08</span>
+  </div>
+
+  <!-- S-07 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-07</span>
+      <div class="task-meta">
+        <div class="task-title">Fix Seller Studio → Home Page Routing Connection</div>
+        <div class="tags">
+          <span class="tag routing">Routing</span>
+          <span class="tag logic">Logic</span>
+          <span class="tag fix">Fix</span>
+        </div>
+      </div>
+      <span class="complexity medium">Medium</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">The Seller Studio is currently not correctly connected to the main homepage/platform.
+
+Step 1 — Diagnose the routing issue:
+  Search the router config (React Router, Next.js pages, or equivalent).
+  Identify where the Seller Studio route is defined and where it should link back to the home page.
+  Check if the seller session (auth context / role) is being correctly passed when navigating between the Studio and the home page.
+
+Step 2 — Fix the broken connection:
+  Ensure that when a logged-in seller navigates from the home page into the Seller Studio, the session is maintained (they do not get logged out or lose their seller context).
+  Ensure that from inside the Seller Studio, clicking "Home", "Back", or the logo navigates correctly to the main home page — not to a 404 or a blank screen.
+
+Step 3 — Verify seller sessions are authentic:
+  When a seller lands on the home page via the Studio link, they should see seller-specific UI elements (e.g. "Join the Studio" should be visible to them, the Seller Studio entry point should be accessible).
+  If role context is being lost on navigation, fix the auth/context persistence so the seller role survives routing changes.
+
+Step 4 — Test the full loop:
+  Home Page → Enter Seller Studio → work inside Studio → click Home → back on Home Page as seller.
+  This loop must work without any login prompts, broken routes, or role resets.</div>
+      <div class="callout alert">
+        <span class="icon">🚨</span>
+        <div><strong>Do this before S-08.</strong> Routing must be stable before touching global styles — a routing fix can alter which components mount, which would invalidate any style work done beforehand.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S-08 -->
+  <div class="task">
+    <div class="task-header">
+      <span class="task-id">S-08</span>
+      <div class="task-meta">
+        <div class="task-title">Design Uniformity — Taskbar Colors, Layout Repair, UI Standardisation</div>
+        <div class="tags">
+          <span class="tag ui">UI</span>
+          <span class="tag fix">Fix</span>
+        </div>
+      </div>
+      <span class="complexity medium">Medium</span>
+    </div>
+    <div class="task-body">
+      <div class="label">Prompt for Antigravity</div>
+      <div class="prompt-block">This is the final polish pass. Do a full visual audit of the Seller Studio against the live platform's design standard.
+
+── STEP 1: Taskbar / Navbar Color Standardisation ──
+  Find all taskbar and navbar components in the Seller Studio.
+  Compare their background color, text color, icon color, and border/shadow to the live platform.
+  Standardise them to match exactly — use the same CSS variables or Tailwind classes as the live platform uses.
+  Check both the top taskbar and any side navigation panels.
+
+── STEP 2: Fragmented Layout Repair ──
+  Do a page-by-page visual check of:
+    • Dashboard / Home tab
+    • Analytics tab (just rebuilt in S-01 to S-04)
+    • Catalog / Products tab
+    • Add Product form (just built in S-05 to S-06)
+    • Profile / Settings tab (if present)
+
+  For each page, fix:
+    • Inconsistent padding or margin (sections bleeding into each other or too much gap)
+    • Misaligned cards or panels
+    • Text that overflows containers
+    • Buttons that are different sizes across pages
+    • Any broken grid or flex layout that collapses incorrectly on narrower screens
+
+── STEP 3: Typography Consistency ──
+  Ensure heading sizes (h1, h2, h3), body font, and label fonts are consistent across all pages.
+  Remove any inline font-size values that don't follow the type scale.
+
+── STEP 4: Component Spot-Check ──
+  Verify these UI elements look identical across all pages:
+    • Primary button (color, border-radius, hover state)
+    • Input field (border, focus ring, placeholder color)
+    • Card / panel container (background, shadow, border-radius)
+    • Tag/badge (shape, font size, color system)
+
+── STEP 5: Mobile Responsiveness Quick Check ──
+  Open each page at 375px width (mobile viewport).
+  Fix any layout that breaks, overflows, or becomes unusable at mobile size.</div>
+      <div class="callout ok">
+        <span class="icon">✅</span>
+        <div><strong>FINAL COMMIT</strong> — After S-08 is complete and the full visual pass is done, commit everything with message: <code style="color:#50d870">"feat: seller studio complete — analytics, core functions, routing, UI uniformity"</code></div>
+      </div>
+      <div class="agent-box">
+        <div class="agent-label">Sub-Agent Strategy</div>
+        Assign one sub-agent per page for the layout audit (Step 2). They can work in parallel on different pages. A final agent does the cross-page consistency check (Steps 3 and 4) after all individual page fixes are done.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <span>TOFA Seller Studio · Antigravity Prompt Manifest · Generated for Kshitija</span>
+  <span>8 tasks · 3 sections · 3 commit points</span>
+</footer>
+
+</body>
+</html>

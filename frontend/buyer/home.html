@@ -529,7 +529,7 @@
                                 <span class="font-data-price text-data-price text-[#B8860B] font-bold text-lg">${formattedPrice}</span>
                             </div>
                             <h4 class="font-title-serif text-title-serif font-bold text-on-surface mb-xs line-clamp-1">${product.name}</h4>
-                            <span class="font-body-md text-xs text-on-surface-variant">By ${product.seller_name}</span>
+                            <span class="font-body-md text-xs text-on-surface-variant hover:underline cursor-pointer" onclick="event.stopPropagation(); window.location.href='/buyer/seller-profile.html?id=${product.seller_id}'">By ${product.seller_name}</span>
                         </div>
                     </div>
                     <div class="px-md pb-md">
@@ -740,7 +740,7 @@
                             <span class="font-data-price text-data-price text-[#B8860B] font-bold text-lg">${formattedPrice}</span>
                         </div>
                         <h4 class="font-title-serif text-title-serif font-bold text-on-surface mb-xs line-clamp-1">${product.name}</h4>
-                        <span class="font-body-md text-xs text-on-surface-variant">By ${product.seller_name}</span>
+                        <span class="font-body-md text-xs text-on-surface-variant hover:underline cursor-pointer" onclick="event.stopPropagation(); window.location.href='/buyer/seller-profile.html?id=${product.seller_id}'">By ${product.seller_name}</span>
                     </div>
                 </div>
                 <div class="px-md pb-md">
@@ -791,13 +791,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);

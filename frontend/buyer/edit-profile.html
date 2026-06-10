@@ -604,12 +604,7 @@
                     ? `<img src="${avatarUrl}" alt="Profile" class="w-10 h-10 rounded-full border border-[#C1C9C0] object-cover cursor-pointer" onclick="window.location.href='/buyer/profile.html'"/>`
                     : `<a href="/buyer/profile.html" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm">${initial}</a>`;
 
-                authContainer.innerHTML = `
-                    <div class="flex items-center gap-md">
-                        ${avatarHtml}
-                        <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                    </div>`;
-                document.getElementById('logout-btn')?.addEventListener('click', logout);
+                authContainer.innerHTML = '';
             } catch (_) {}
         } else {
             authContainer.innerHTML = `

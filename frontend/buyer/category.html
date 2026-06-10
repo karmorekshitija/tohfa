@@ -564,18 +564,24 @@
             const imageUrl = p.image_url || 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
             const price = `₹${(p.price_paise / 100).toLocaleString('en-IN')}`;
 
-            const tagType = p.id % 3 === 0 ? 'sponsored' : (p.id % 3 === 1 ? 'bestseller' : '');
+            const tagType = p.product_tag || '';
             let ribbonHtml = '';
-            if (tagType === 'sponsored') {
+            if (tagType === 'Sponsored') {
               ribbonHtml = `
                 <div class="ribbon-wrapper">
                   <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
                 </div>
               `;
-            } else if (tagType === 'bestseller') {
+            } else if (tagType === 'Best Seller') {
               ribbonHtml = `
                 <div class="ribbon-wrapper">
                   <div class="ribbon-tag ribbon-bestseller">Best Seller</div>
+                </div>
+              `;
+            } else if (tagType) {
+              ribbonHtml = `
+                <div class="ribbon-wrapper">
+                  <div class="ribbon-tag ribbon-bestseller" style="background:#573b81">${tagType}</div>
                 </div>
               `;
             }
@@ -729,13 +735,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);

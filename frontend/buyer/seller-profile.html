@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Tohfa | Artisan Studio Profile</title>
+    <meta name="description" content="Explore artisan creations, custom works, reels, reviews, and stories."/>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Google Fonts: EB Garamond & Hanken Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#061b0e",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#1b3022",
+                        "on-primary-container": "#819986",
+                        "inverse-primary": "#b4cdb8",
+                        "secondary": "#6b5c4c",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#f4dfcb",
+                        "on-secondary-container": "#716252",
+                        "tertiary": "#171815",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#2b2c29",
+                        "on-tertiary-container": "#94938f",
+                        "background": "#fcf9f8",
+                        "on-background": "#1b1c1c",
+                        "surface": "#fcf9f8",
+                        "on-surface": "#1b1c1c",
+                        "surface-variant": "#e4e2e1",
+                        "on-surface-variant": "#434843",
+                        "outline": "#737973",
+                        "outline-variant": "#c3c8c1",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#d0e9d4",
+                        "primary-fixed-dim": "#b4cdb8",
+                        "on-primary-fixed": "#0b2013",
+                        "on-primary-fixed-variant": "#364c3c",
+                        "secondary-fixed": "#f4dfcb",
+                        "secondary-fixed-dim": "#d7c3b0",
+                        "on-secondary-fixed": "#241a0e",
+                        "on-secondary-fixed-variant": "#524436",
+                        "tertiary-fixed": "#e4e2dd",
+                        "tertiary-fixed-dim": "#c8c6c2",
+                        "on-tertiary-fixed": "#1b1c19",
+                        "on-tertiary-fixed-variant": "#474744",
+                        "surface-bright": "#fcf9f8",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container": "#f0eded",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-highest": "#e4e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "stack-sm": "12px",
+                        "stack-md": "24px",
+                        "stack-lg": "48px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["EB Garamond", "serif"],
+                        "headline-md": ["EB Garamond", "serif"],
+                        "headline-sm": ["EB Garamond", "serif"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "label-md": ["Hanken Grotesk", "sans-serif"],
+                        "label-sm": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .font-display-lg { font-family: 'EB Garamond', serif; }
+        .font-headline-md { font-family: 'EB Garamond', serif; }
+        .font-headline-sm { font-family: 'EB Garamond', serif; }
+        .font-body-lg { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-body-md { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label-md { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label-sm { font-family: 'Hanken Grotesk', sans-serif; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-ambient {
+            box-shadow: 0 4px 20px -2px rgba(107, 92, 76, 0.08);
+        }
+        .glass-card {
+            background: rgba(252, 249, 248, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(195, 200, 193, 0.3);
+        }
+        .image-reveal-hover {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .image-reveal-hover:hover {
+            transform: scale(1.02);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #fcf9f8; }
+        ::-webkit-scrollbar-thumb { background: #d7c3b0; border-radius: 10px; }
+        
+        /* Modal fade-in and slide animations */
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#FFFFFF] text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col">
+
+    <!-- TopNavBar (Unified with buyer template) -->
+    <header class="w-full sticky top-0 z-50 bg-[#FAF7F0] border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
+        <div class="flex items-center flex-1">
+            <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/buyer/home.html">
+                Tohfa<span class="text-[#D4AF37]">.</span>
+            </a>
+        </div>
+        
+        <nav class="hidden md:flex items-center justify-center gap-8 h-full">
+            <a href="/buyer/home.html" class="flex items-center gap-1 text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">home</span>
+                <span>Home</span>
+            </a>
+            <a href="/buyer/categories.html" class="flex items-center gap-1 text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">category</span>
+                <span>Category</span>
+            </a>
+            <a href="/buyer/reels.html" class="flex items-center gap-1 text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">movie</span>
+                <span>Reels</span>
+            </a>
+            <a href="/buyer/profile.html" class="flex items-center gap-1 text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+        
+        <div class="flex items-center justify-end flex-1 gap-4">
+            <a href="/buyer/categories.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center">
+                <span class="material-symbols-outlined">search</span>
+            </a>
+            <a href="/buyer/saved-makes.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                <span id="nav-wishlist-badge" class="absolute -top-1 -right-1 bg-[#255338] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+            </a>
+            <a href="/buyer/cart.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-[#255338] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+            </a>
+            <a href="/buyer/notifications.html" class="text-[#255338] p-2 hover:bg-[#C1C9C0]/20 rounded-full active:scale-95 duration-200 transition-all flex items-center justify-center relative">
+                <span class="material-symbols-outlined">notifications</span>
+                <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-[#255338] rounded-full hidden"></span>
+            </a>
+        
+            <div id="auth-buttons-container" class="flex items-center gap-4 ml-4"></div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop py-8">
+        
+        <!-- Cover Photo / Banner -->
+        <div class="w-full h-48 md:h-64 rounded-xl overflow-hidden relative shadow-sm mb-8 bg-gradient-to-r from-secondary-container to-primary-container flex items-center justify-center">
+            <img id="seller-cover" class="w-full h-full object-cover hidden" src="" alt="Artisan Banner">
+            <!-- Cozy fallback decor if no cover image -->
+            <div id="cover-fallback" class="absolute inset-0 bg-cover bg-center opacity-35" style="background-image: url('https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=1470&auto=format&fit=crop');"></div>
+            <div id="cover-overlay" class="absolute inset-0 bg-[#061b0e]/15"></div>
+            <span class="material-symbols-outlined text-white text-6xl opacity-20 absolute select-none">filter_vintage</span>
+        </div>
+
+        <!-- Profile Hero Section -->
+        <section class="bg-surface-container-low rounded-xl p-6 md:p-10 flex flex-col lg:flex-row gap-8 items-center lg:items-start justify-between shadow-ambient relative z-10 -mt-20 mx-4 border border-outline-variant/30">
+            <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+                <!-- Avatar image / Initial placeholder -->
+                <div class="relative shrink-0">
+                    <div id="seller-avatar" class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-[#3D6B4F] flex items-center justify-center text-white text-4xl font-display-lg select-none">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    <div class="absolute bottom-1 right-1 bg-white p-0.5 rounded-full border border-outline-variant">
+                        <span class="material-symbols-outlined text-primary text-[18px] fill-icon">verified</span>
+                    </div>
+                </div>
+                <!-- Profile details -->
+                <div class="space-y-2">
+                    <div>
+                        <h1 id="seller-name" class="font-headline-sm text-2xl md:text-3xl text-primary font-bold">Artisan Shop</h1>
+                        <p id="seller-handle" class="font-body-md text-secondary text-sm">@handle</p>
+                    </div>
+                    <p id="seller-city" class="text-xs text-on-surface-variant font-label-md uppercase tracking-wider flex items-center justify-center md:justify-start gap-1">
+                        <span class="material-symbols-outlined text-sm">location_on</span>
+                        <span>Location</span>
+                    </p>
+                    <p id="seller-bio" class="max-w-md font-body-md text-on-surface-variant leading-relaxed text-sm">
+                        Loading bio...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile Stats Box -->
+            <div class="flex items-center justify-center gap-8 py-4 px-6 md:px-8 border-y md:border-y-0 md:border-x border-outline-variant/30 w-full lg:w-auto my-4 lg:my-0">
+                <div class="flex flex-col items-center">
+                    <span id="stat-rating" class="text-xl md:text-2xl font-headline-sm text-primary font-bold">0.0</span>
+                    <span class="text-[10px] font-label-md text-secondary uppercase tracking-wider">Rating</span>
+                </div>
+                <div class="w-px h-8 bg-outline-variant/30"></div>
+                <div class="flex flex-col items-center">
+                    <span id="stat-reviews" class="text-xl md:text-2xl font-headline-sm text-primary font-bold">0</span>
+                    <span class="text-[10px] font-label-md text-secondary uppercase tracking-wider">Reviews</span>
+                </div>
+                <div class="w-px h-8 bg-outline-variant/30"></div>
+                <div class="flex flex-col items-center">
+                    <span id="stat-followers" class="text-xl md:text-2xl font-headline-sm text-primary font-bold">0</span>
+                    <span class="text-[10px] font-label-md text-secondary uppercase tracking-wider">Followers</span>
+                </div>
+            </div>
+
+            <!-- Profile Actions -->
+            <div class="flex flex-row lg:flex-col gap-3 shrink-0 w-full lg:w-auto justify-center">
+                <button onclick="openShareModal()" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-outline hover:bg-surface-container-high transition-all font-label-md text-sm text-on-surface cursor-pointer active:scale-95 duration-200">
+                    <span class="material-symbols-outlined text-[18px]">share</span>
+                    <span>Share</span>
+                </button>
+                <button id="follow-btn" onclick="toggleFollow()" class="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-on-primary hover:opacity-90 transition-all font-label-md text-sm shadow-md cursor-pointer active:scale-95 duration-200">
+                    <span class="material-symbols-outlined text-[18px]" id="follow-icon">person_add</span>
+                    <span id="follow-text">Follow</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Stats Credibility Badges -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-6 md:gap-12 py-4 bg-surface-container-lowest border-y border-outline-variant/30">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary fill-icon">military_tech</span>
+                <span class="font-label-md text-xs md:text-sm text-on-surface-variant">Top Seller</span>
+            </div>
+            <div class="w-px h-4 bg-outline-variant/40 hidden md:block"></div>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary fill-icon">package_2</span>
+                <span class="font-label-md text-xs md:text-sm text-on-surface-variant">Verified Crafts</span>
+            </div>
+            <div class="w-px h-4 bg-outline-variant/40 hidden md:block"></div>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary fill-icon">rocket_launch</span>
+                <span class="font-label-md text-xs md:text-sm text-on-surface-variant">Fast Shipments</span>
+            </div>
+        </div>
+
+        <!-- Tabbed Navigation Bar -->
+        <div class="mt-12 border-b border-outline-variant flex gap-8 md:gap-12 overflow-x-auto scrollbar-hide select-none">
+            <button id="tab-catalog" onclick="switchTab('catalog')" class="pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-primary text-primary">Catalog</button>
+            <button id="tab-customised" onclick="switchTab('customised')" class="pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-transparent text-on-surface-variant hover:text-primary">Customised</button>
+            <button id="tab-reels" onclick="switchTab('reels')" class="pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-transparent text-on-surface-variant hover:text-primary">Reels</button>
+            <button id="tab-reviews" onclick="switchTab('reviews')" class="pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-transparent text-on-surface-variant hover:text-primary">Reviews</button>
+            <button id="tab-about" onclick="switchTab('about')" class="pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-transparent text-on-surface-variant hover:text-primary">About</button>
+        </div>
+
+        <!-- Loader Spinner -->
+        <div id="tab-loader" class="py-16 flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined animate-spin text-primary text-4xl">sync</span>
+            <span class="font-label-md text-xs text-outline">Loading artisan shop...</span>
+        </div>
+
+        <!-- Panels Container -->
+        <div class="mt-8 relative min-h-[300px]">
+
+            <!-- 1. Catalog Tab Panel -->
+            <div id="panel-catalog" class="tab-panel animate-fade-in hidden">
+                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-gutter">
+                    <!-- Loaded dynamically -->
+                </div>
+                <div id="catalog-empty" class="py-16 text-center text-on-surface-variant font-label-md hidden">
+                    No catalog products available.
+                </div>
+            </div>
+
+            <!-- 2. Customised Tab Panel -->
+            <div id="panel-customised" class="tab-panel animate-fade-in hidden">
+                <div id="custom-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-gutter">
+                    <!-- Loaded dynamically -->
+                </div>
+                <div id="custom-empty" class="py-16 text-center text-on-surface-variant font-label-md hidden">
+                    No custom services listed by this seller.
+                </div>
+            </div>
+
+            <!-- 3. Reels Tab Panel -->
+            <div id="panel-reels" class="tab-panel animate-fade-in hidden">
+                <div id="reels-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-gutter">
+                    <!-- Loaded dynamically -->
+                </div>
+                <div id="reels-empty" class="py-16 text-center text-on-surface-variant font-label-md hidden">
+                    No reels shared by this artisan yet.
+                </div>
+            </div>
+
+            <!-- 4. Reviews Tab Panel -->
+            <div id="panel-reviews" class="tab-panel animate-fade-in hidden">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
+                    <!-- Left: Star Stats Breakdown -->
+                    <aside class="md:col-span-4 sticky top-28 space-y-4">
+                        <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant shadow-sm">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div id="review-avg" class="text-5xl font-headline-md text-primary font-bold">0.0</div>
+                                <div>
+                                    <div class="flex text-primary" id="review-stars-avg">
+                                        <!-- Loaded dynamically -->
+                                    </div>
+                                    <div id="review-total-lbl" class="font-label-sm text-on-surface-variant">0 reviews</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Star Progress Bars -->
+                            <div id="ratings-bars-list" class="space-y-3 mb-6">
+                                <!-- Loaded dynamically -->
+                            </div>
+                            
+                            <!-- Review Filter Search -->
+                            <div class="pt-6 border-t border-outline-variant">
+                                <label class="font-label-md text-primary text-xs mb-2 block uppercase tracking-wider" for="review-search">Search reviews</label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                                    <input class="w-full pl-9 pr-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md focus:ring-1 focus:ring-primary focus:border-primary text-sm" id="review-search" placeholder="Search buyer notes..." type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Right: Reviews List -->
+                    <section class="md:col-span-8 space-y-gutter">
+                        <div id="reviews-list-container" class="space-y-6">
+                            <!-- Loaded dynamically -->
+                        </div>
+                        <div id="reviews-empty" class="py-16 text-center text-on-surface-variant font-label-md hidden">
+                            No reviews found matching the search.
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- 5. About Tab Panel -->
+            <div id="panel-about" class="tab-panel animate-fade-in hidden">
+                <!-- Our Story Row -->
+                <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center mb-12">
+                    <div class="lg:col-span-7 space-y-4 pr-0 lg:pr-8">
+                        <h2 class="font-headline-md text-3xl text-primary mb-6" id="about-headline">Our Story: Crafted with Intention</h2>
+                        <div class="font-body-lg text-on-surface leading-relaxed space-y-4" id="about-story-text">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 relative mt-6 lg:mt-0">
+                        <div class="rounded-xl overflow-hidden shadow-2xl rotate-3 image-reveal-hover">
+                            <img id="about-story-img" class="w-full h-80 lg:h-[450px] object-cover rounded-xl" src="https://images.unsplash.com/photo-1565192647048-f997ded879f0?q=80&w=600&auto=format&fit=crop" alt="Working on potter's wheel">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Workspace Visuals Bento Grid -->
+                <section class="py-8 border-t border-outline-variant/20 mb-8" id="about-workspace-section">
+                    <h3 class="font-headline-md text-2xl mb-6 text-center">Inside the Studio</h3>
+                    <div id="workspace-bento" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </section>
+
+                <!-- Creative Cycle -->
+                <section class="py-8 border-t border-outline-variant/20">
+                    <h3 class="font-headline-md text-2xl mb-8 text-center">The Creative Cycle</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center group hover:bg-surface-container transition-colors duration-300">
+                            <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-4">
+                                <span class="material-symbols-outlined text-3xl">gesture</span>
+                            </div>
+                            <h4 class="font-headline-sm text-lg mb-2">Conceptualization</h4>
+                            <p class="font-body-md text-sm text-on-surface-variant">Every design starts as a sketch in the artisan's journal, inspired by raw organic elements.</p>
+                        </div>
+                        <div class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center group hover:bg-surface-container transition-colors duration-300">
+                            <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-4">
+                                <span class="material-symbols-outlined text-3xl">waves</span>
+                            </div>
+                            <h4 class="font-headline-sm text-lg mb-2">Hand-Crafting</h4>
+                            <p class="font-body-md text-sm text-on-surface-variant">Centered and shaped by hand, a slow process where raw components transform through touch.</p>
+                        </div>
+                        <div class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center group hover:bg-surface-container transition-colors duration-300">
+                            <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-4">
+                                <span class="material-symbols-outlined text-3xl">local_fire_department</span>
+                            </div>
+                            <h4 class="font-headline-sm text-lg mb-2">Firing & Finish</h4>
+                            <p class="font-body-md text-sm text-on-surface-variant">Vitrified at high temperatures in regional kilns, creating a durable heirloom that lasts generations.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sustainability Row -->
+                <section class="bg-primary-container text-on-primary-container rounded-xl p-8 mt-12 overflow-hidden relative">
+                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-6">
+                            <h2 class="font-display-lg text-3xl text-white">Rooted in Responsibility</h2>
+                            <p class="font-body-lg text-sm opacity-90">We believe that beautiful things shouldn't cost the earth. Our commitment to sustainability isn't a trend; it's the core of our craft.</p>
+                            <div class="space-y-4 text-white">
+                                <div class="flex gap-3 items-start">
+                                    <span class="material-symbols-outlined text-2xl text-primary-fixed">eco</span>
+                                    <div>
+                                        <h4 class="font-label-md text-sm font-bold uppercase tracking-widest mb-0.5">Plastic-Free Packaging</h4>
+                                        <p class="font-body-md text-xs opacity-80">Wrapped in honeycomb paper and shipped in recycled boxes with water-activated tape.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 items-start">
+                                    <span class="material-symbols-outlined text-2xl text-primary-fixed">water_drop</span>
+                                    <div>
+                                        <h4 class="font-label-md text-sm font-bold uppercase tracking-widest mb-0.5">Water Reclamation</h4>
+                                        <p class="font-body-md text-xs opacity-80">We recycle up to 90% of water in our workshops using localized filtration tanks.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 items-start">
+                                    <span class="material-symbols-outlined text-2xl text-primary-fixed">public</span>
+                                    <div>
+                                        <h4 class="font-label-md text-sm font-bold uppercase tracking-widest mb-0.5">Ethical Sourcing</h4>
+                                        <p class="font-body-md text-xs opacity-80">We source raw clay and earth minerals locally to support regional geologies and reduce emissions.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative h-[250px] md:h-[350px] rounded-xl overflow-hidden shadow-2xl">
+                            <img class="w-full h-full object-cover rounded-xl" src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600" alt="Eco wrapping">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Standardised Footer -->
+    <footer class="w-full mt-12 border-t border-outline-variant/30 bg-white">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 px-margin-desktop py-12 max-w-[1440px] mx-auto relative">
+            <div class="md:col-span-6">
+                <h2 class="font-headline-lg text-2xl italic text-primary mb-4">Tohfa<span>.</span></h2>
+                <p class="font-body-md text-sm text-on-surface-variant max-w-sm mb-6">
+                    Cultivating a community of makers and dreamers. Our studio curates the finest handmade goods from across the globe, prioritizing sustainability and craftsmanship.
+                </p>
+                <div class="flex gap-4">
+                    <a class="w-9 h-9 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+                        <span class="material-symbols-outlined text-sm">public</span>
+                    </a>
+                    <a class="w-9 h-9 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+                        <span class="material-symbols-outlined text-sm">share</span>
+                    </a>
+                    <a class="w-9 h-9 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+                        <span class="material-symbols-outlined text-sm">mail</span>
+                    </a>
+                </div>
+            </div>
+            <div class="md:col-span-3">
+                <h4 class="font-label-caps text-xs text-primary mb-4 uppercase tracking-wider">Collective</h4>
+                <ul class="flex flex-col gap-2 text-sm text-on-surface-variant">
+                    <li><a class="hover:text-primary transition-colors" href="/buyer/our-story.html">Our Story</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Artisans</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="/buyer/reels.html">Reels Feed</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-3">
+                <h4 class="font-label-caps text-xs text-primary mb-4 uppercase tracking-wider">Support</h4>
+                <ul class="flex flex-col gap-2 text-sm text-on-surface-variant">
+                    <li><a class="hover:text-primary transition-colors" href="#">Shipping & Returns</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-outline-variant/10 py-4 px-margin-desktop max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-outline text-xs">
+            <p>© 2026 Tohfa Artisan Studio. Handcrafted with intention.</p>
+            <div class="flex gap-4">
+                <a class="hover:text-primary" href="#">Privacy Policy</a>
+                <a class="hover:text-primary" href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ── Share Modal Overlay ── -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden" id="share-modal" onclick="closeShareModal(event)">
+        <div class="bg-white rounded-xl p-8 w-full max-w-md shadow-lg relative mx-4 animate-fade-in" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-headline-sm text-xl text-primary flex items-center gap-2">
+                    Share this Studio <span class="text-primary">✨</span>
+                </h2>
+                <button class="text-on-surface-variant hover:text-primary transition-all cursor-pointer" onclick="closeShareModal(null)">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="bg-secondary-container/30 rounded-lg p-4 flex items-center gap-4 mb-6 border border-outline-variant/30">
+                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white" id="share-modal-avatar">
+                    <!-- Dynamic -->
+                </div>
+                <div>
+                    <h3 class="font-label-md text-primary font-bold" id="share-modal-name">Artisan Shop</h3>
+                    <div class="flex items-center gap-1 text-xs text-secondary">
+                        <span class="material-symbols-outlined text-[14px] fill-icon">star</span>
+                        <span id="share-modal-rating">0.0 (0 reviews)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="font-label-md text-[10px] text-secondary uppercase tracking-wider">Direct Studio Link</label>
+                    <div class="flex gap-2">
+                        <input class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-sm focus:ring-0 outline-none" id="share-link-input" readonly type="text" value=""/>
+                        <button onclick="copyShareLink()" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-sm hover:bg-primary-container transition-all shadow-sm cursor-pointer active:scale-95 duration-200">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Customisation Chatbot Modal/Drawer ── -->
+    <div id="intake-chat-modal" class="fixed inset-0 z-[100] flex justify-end bg-black/40 backdrop-blur-sm hidden" onclick="closeIntakeChat(event)">
+        <!-- Slide-out Pane -->
+        <div class="w-full max-w-md bg-background h-full shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-out" id="intake-chat-pane" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="px-6 py-5 bg-primary text-on-primary flex items-center justify-between shadow-sm flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-2xl text-white">auto_awesome</span>
+                    <div>
+                        <h3 class="font-headline-sm text-base text-white font-bold" id="intake-title">Customise Creation</h3>
+                        <p class="text-[11px] text-primary-fixed-dim font-body-md" id="intake-subtitle">Bespoke Request Chat</p>
+                    </div>
+                </div>
+                <button onclick="closeIntakeChat(null)" class="text-on-primary hover:opacity-80 transition-opacity cursor-pointer">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <!-- Chat Messages Scroll Area -->
+            <div class="flex-grow overflow-y-auto p-6 space-y-4 font-body-md bg-surface-container-lowest" id="intake-messages">
+                <!-- Chat bubbles will be appended dynamically -->
+            </div>
+
+            <!-- Pinned Input Area -->
+            <div class="p-6 border-t border-outline-variant/30 bg-surface-container-low flex-shrink-0" id="intake-input-container">
+                <!-- Injected dynamically based on question type -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Logic Module -->
+    <script type="module">
+        import apiClient from '/src/utils/apiClient.js';
+        import { logout } from '/src/utils/auth.js';
+
+        let sellerId = null;
+        let sellerProfile = null;
+        let activeTab = 'catalog';
+        let isLoggedIn = false;
+        let isWishlistUpdating = {};
+
+        // Extract Seller ID from Query Param
+        const urlParams = new URLSearchParams(window.location.search);
+        sellerId = Number(urlParams.get('id'));
+
+        // Initialize Page
+        async function initPage() {
+            if (!sellerId || isNaN(sellerId)) {
+                window.Toast?.show("Invalid artisan studio ID", "error");
+                setTimeout(() => window.location.href = '/buyer/home.html', 1500);
+                return;
+            }
+
+            document.getElementById('share-link-input').value = window.location.href;
+
+            await checkAuthState();
+            await loadSellerProfile();
+            await updateCartBadge();
+            await updateWishlistBadge();
+            
+            // Default load catalog
+            await switchTab('catalog');
+        }
+
+        async function checkAuthState() {
+            const token = sessionStorage.getItem('tohfa_access_token');
+            const authContainer = document.getElementById('auth-buttons-container');
+            
+            if (token) {
+                isLoggedIn = true;
+                try {
+                    let avatarUrl = null;
+                    let initial = 'A';
+                    const res = await apiClient.get('/profile/me');
+                    if (res.data && res.data.success) {
+                        avatarUrl = res.data.data.avatar_url;
+                        if (res.data.data.full_name) {
+                            initial = res.data.data.full_name.charAt(0).toUpperCase();
+                        }
+                        sessionStorage.setItem('tohfa_user_initials', initial);
+                    }
+                    
+                    if (authContainer) {
+                        if (avatarUrl) {
+                            authContainer.innerHTML = `<img src="${avatarUrl}" alt="Profile" class="w-10 h-10 rounded-full border border-[#C1C9C0] object-cover cursor-pointer hover:opacity-85 duration-200" onclick="window.location.href='profile.html'"/>`;
+                        } else {
+                            authContainer.innerHTML = `
+                                <a href="/buyer/profile.html" class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer hover:bg-opacity-90 duration-200">
+                                    ${initial}
+                                </a>
+                            `;
+                        }
+                    }
+                } catch(e) {
+                    console.error("Failed to parse token:", e);
+                    logout();
+                }
+            } else {
+                isLoggedIn = false;
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <a href="/auth/login.html" class="text-primary hover:underline text-sm font-semibold font-label-md uppercase tracking-wider">Login</a>
+                            <a href="/auth/signup-buyer.html" class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-all font-label-md uppercase tracking-wider">Register</a>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        async function loadSellerProfile() {
+            try {
+                const res = await apiClient.get(`/sellers/${sellerId}`);
+                if (res.data && res.data.success) {
+                    sellerProfile = res.data.data;
+                    updateProfileUI(sellerProfile);
+                }
+            } catch (err) {
+                console.error("Failed to load seller profile info:", err);
+                window.Toast?.show("Artisan profile not found", "error");
+            }
+        }
+
+        function updateProfileUI(profile) {
+            document.title = `${profile.shop_name} | Tohfa Artisanal Collective`;
+            document.getElementById('seller-name').innerText = profile.shop_name;
+            document.getElementById('seller-handle').innerText = `@${profile.handle}`;
+            document.getElementById('seller-city').innerText = profile.location || 'Indian Artisan Studio';
+            document.getElementById('seller-bio').innerText = profile.bio || 'Curating beautiful handcrafted creations with intention.';
+            
+            // Set Stats
+            document.getElementById('stat-rating').innerText = profile.avg_rating > 0 ? profile.avg_rating.toFixed(1) : '0.0';
+            document.getElementById('stat-reviews').innerText = profile.review_count;
+            document.getElementById('stat-followers').innerText = formatCount(profile.followers_count);
+
+            // Set Avatar
+            const avatarEl = document.getElementById('seller-avatar');
+            if (profile.avatar_url) {
+                avatarEl.innerHTML = `<img src="${profile.avatar_url}" alt="${profile.shop_name}" class="w-full h-full object-cover rounded-full"/>`;
+                avatarEl.classList.remove('bg-[#3D6B4F]', 'text-white');
+            } else {
+                avatarEl.innerText = (profile.shop_name || 'A').charAt(0).toUpperCase();
+            }
+
+            // Set Cover Banner
+            const coverImg = document.getElementById('seller-cover');
+            const coverFallback = document.getElementById('cover-fallback');
+            if (profile.cover_photo_url) {
+                coverImg.src = profile.cover_photo_url;
+                coverImg.classList.remove('hidden');
+                coverFallback.classList.add('hidden');
+            } else {
+                coverImg.classList.add('hidden');
+                coverFallback.classList.remove('hidden');
+            }
+
+            // Set Follow status
+            updateFollowButtonState(profile.is_following);
+
+            // About Story Setup
+            const headlineEl = document.getElementById('about-headline');
+            if (headlineEl) headlineEl.innerText = profile.about_headline || `Our Story: ${profile.shop_name}`;
+            
+            const storyEl = document.getElementById('about-story-text');
+            if (storyEl) {
+                const story = profile.artisan_story || profile.bio;
+                storyEl.innerHTML = story 
+                    ? story.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('')
+                    : `<p>Welcome to ${profile.shop_name}. Our studio focuses on traditional handmade techniques, crafting unique treasures for slow and intentional living. Each creation is shaped with detail, care, and organic mineral mixtures.</p>`;
+            }
+
+            // Bento Workspace Images Setup
+            const bento = document.getElementById('workspace-bento');
+            if (bento) {
+                bento.innerHTML = '';
+                const photos = profile.workspace_photos || [];
+                
+                // Fallbacks if no workspace photos exist
+                const defaultPhotos = [
+                    { photo_url: 'https://images.unsplash.com/photo-1576016770956-debb63d900bb?w=500', caption: 'Centering clay' },
+                    { photo_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500', caption: 'Artisan studio tools' },
+                    { photo_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=500', caption: 'Eco wrapping paper' }
+                ];
+                
+                const list = photos.length > 0 ? photos : defaultPhotos;
+                
+                list.slice(0, 3).forEach((item, index) => {
+                    const cell = document.createElement('div');
+                    cell.className = `rounded-xl overflow-hidden shadow-sm aspect-square relative group border border-outline-variant/30 ${
+                        index === 0 ? 'col-span-2 md:col-span-1 md:aspect-[4/5]' : 'aspect-square'
+                    }`;
+                    cell.innerHTML = `
+                        <img src="${item.photo_url}" alt="${item.caption || 'Workspace photo'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        ${item.caption ? `
+                            <div class="absolute inset-x-0 bottom-0 bg-black/60 p-3 text-white text-[10px] font-label-md uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                ${item.caption}
+                            </div>
+                        ` : ''}
+                    `;
+                    bento.appendChild(cell);
+                });
+            }
+        }
+
+        function updateFollowButtonState(isFollowing) {
+            const btn = document.getElementById('follow-btn');
+            const icon = document.getElementById('follow-icon');
+            const text = document.getElementById('follow-text');
+            
+            if (isFollowing) {
+                btn.className = "flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-all font-label-md text-sm cursor-pointer active:scale-95 duration-200";
+                icon.innerText = "person_check";
+                text.innerText = "Following";
+            } else {
+                btn.className = "flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-on-primary hover:opacity-90 transition-all font-label-md text-sm shadow-md cursor-pointer active:scale-95 duration-200";
+                icon.innerText = "person_add";
+                text.innerText = "Follow";
+            }
+        }
+
+        // Switch Active Tab
+        window.switchTab = async function(tabName) {
+            activeTab = tabName;
+            
+            // Visual Active States
+            const tabs = ['catalog', 'customised', 'reels', 'reviews', 'about'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) {
+                    if (t === tabName) {
+                        el.className = "pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-primary text-primary font-bold";
+                    } else {
+                        el.className = "pb-4 border-b-2 font-label-md text-sm whitespace-nowrap transition-all border-transparent text-on-surface-variant hover:text-primary";
+                    }
+                }
+                
+                const panel = document.getElementById(`panel-${t}`);
+                if (panel) panel.classList.add('hidden');
+            });
+
+            // Show Spinner
+            const loader = document.getElementById('tab-loader');
+            loader.classList.remove('hidden');
+
+            try {
+                if (tabName === 'catalog') {
+                    await loadCatalog();
+                } else if (tabName === 'customised') {
+                    await loadCustomisations();
+                } else if (tabName === 'reels') {
+                    await loadReels();
+                } else if (tabName === 'reviews') {
+                    await loadReviews();
+                } else if (tabName === 'about') {
+                    // Static display, info loaded in profile call
+                }
+                
+                // Show Current Panel
+                const panel = document.getElementById(`panel-${tabName}`);
+                if (panel) panel.classList.remove('hidden');
+            } catch (err) {
+                console.error(`Error loading tab ${tabName}:`, err);
+            } finally {
+                loader.classList.add('hidden');
+            }
+        };
+
+        // 1. Catalog Products Loader
+        async function loadCatalog() {
+            const grid = document.getElementById('catalog-grid');
+            const empty = document.getElementById('catalog-empty');
+            grid.innerHTML = '';
+            
+            const res = await apiClient.get(`/sellers/${sellerId}/products`);
+            if (res.data && res.data.success) {
+                const products = res.data.data.products || [];
+                if (products.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                empty.classList.add('hidden');
+                
+                products.forEach(p => {
+                    const priceFormatted = `₹${(p.price_paise / 100).toLocaleString('en-IN')}`;
+                    const card = document.createElement('div');
+                    card.className = "group bg-white rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-ambient transition-all duration-300 flex flex-col justify-between";
+                    
+                    const isSoldOut = p.status === 'sold_out' || p.stock_qty === 0;
+
+                    card.innerHTML = `
+                        <div class="cursor-pointer" onclick="window.location.href='/buyer/product.html?id=${p.id}'">
+                            <div class="relative aspect-square overflow-hidden bg-surface-container-lowest flex items-center justify-center p-2">
+                                <img src="${p.image_url || 'https://placehold.co/300x300/f6f3f2/061b0e?text=Creation'}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"/>
+                                <button onclick="toggleWishlist(event, ${p.id})" class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-all shadow-sm flex items-center justify-center cursor-pointer">
+                                    <span class="material-symbols-outlined text-[20px] ${p.is_wishlisted ? 'fill-icon text-red-500' : 'text-secondary'}" id="wishlist-icon-${p.id}">favorite</span>
+                                </button>
+                                ${isSoldOut ? `
+                                    <div class="absolute bottom-4 left-4 bg-red-100 text-red-700 px-3 py-1 rounded shadow-sm text-[10px] font-label-sm uppercase tracking-wider">
+                                        Sold Out
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h3 class="font-headline-sm text-lg text-primary font-bold line-clamp-1">${p.name}</h3>
+                                    <p class="font-label-md text-primary font-bold whitespace-nowrap ml-2">${priceFormatted}</p>
+                                </div>
+                                <p class="text-xs text-on-surface-variant font-body-md line-clamp-2">${p.description || 'Artisan creation.'}</p>
+                            </div>
+                        </div>
+                        <div class="px-5 pb-5">
+                            <button onclick="addToCart(event, ${p.id})" class="w-full py-2.5 bg-primary text-on-primary rounded-lg font-label-md text-xs flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 duration-200 cursor-pointer shadow-sm uppercase tracking-wider ${isSoldOut ? 'opacity-50 pointer-events-none' : ''}">
+                                <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // 2. Customised Services Loader
+        async function loadCustomisations() {
+            const grid = document.getElementById('custom-grid');
+            const empty = document.getElementById('custom-empty');
+            grid.innerHTML = '';
+            
+            const res = await apiClient.get(`/sellers/${sellerId}/customizations`);
+            if (res.data && res.data.success) {
+                const list = res.data.data.customizations || [];
+                if (list.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                empty.classList.add('hidden');
+                
+                list.forEach(c => {
+                    const priceFormatted = `₹${c.base_price.toLocaleString('en-IN')}`;
+                    const card = document.createElement('div');
+                    card.className = "group bg-white rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-ambient transition-all duration-300 flex flex-col justify-between";
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="relative aspect-square overflow-hidden bg-surface-container-lowest flex items-center justify-center p-2">
+                                <img src="${c.cover_image_url || 'https://placehold.co/300x300/f6f3f2/061b0e?text=Custom'}" alt="${c.product_name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"/>
+                                <div class="absolute bottom-4 left-4 bg-primary-container/90 text-on-primary-container backdrop-blur-sm px-3 py-1 rounded shadow-sm text-[10px] font-label-sm uppercase tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">auto_awesome</span>
+                                    <span>Bespoke</span>
+                                </div>
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <div class="flex justify-between items-baseline">
+                                    <h3 class="font-headline-sm text-lg text-primary font-bold line-clamp-1">${c.product_name}</h3>
+                                    <p class="font-label-md text-primary font-bold whitespace-nowrap ml-2">${priceFormatted}</p>
+                                </div>
+                                <div class="flex items-center gap-1 text-[11px] text-on-surface-variant font-label-sm">
+                                    <span class="material-symbols-outlined text-sm">schedule</span>
+                                    <span>Lead time: ${c.lead_time_days} days</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-5 pb-5">
+                            <button onclick="startCustomisation(${c.listing_id}, '${c.product_type_tag}', '${c.product_name.replace(/'/g, "\\'")}')" class="w-full py-2.5 bg-primary-container text-white hover:bg-opacity-95 rounded-lg font-label-md text-xs flex items-center justify-center gap-2 active:scale-95 duration-200 cursor-pointer shadow-sm uppercase tracking-wider">
+                                <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+                                <span>Request Customisation</span>
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // 3. Reels Loader
+        async function loadReels() {
+            const grid = document.getElementById('reels-grid');
+            const empty = document.getElementById('reels-empty');
+            grid.innerHTML = '';
+            
+            const res = await apiClient.get(`/sellers/${sellerId}/reels`);
+            if (res.data && res.data.success) {
+                const reels = res.data.data.reels || [];
+                if (reels.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                empty.classList.add('hidden');
+                
+                reels.forEach(r => {
+                    const card = document.createElement('div');
+                    card.className = "group relative aspect-[9/16] bg-tertiary rounded-xl overflow-hidden cursor-pointer shadow-sm border border-outline-variant/20";
+                    card.onclick = () => window.location.href = `/buyer/reels.html?id=${r.id}`;
+                    
+                    card.innerHTML = `
+                        <img src="${r.thumbnail_url || 'https://placehold.co/360x640/2b2c29/ffffff?text=Reel'}" alt="${r.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-4 text-white">
+                            <h4 class="font-headline-sm text-sm text-white font-bold mb-1 line-clamp-1">${r.title || 'Artisan Reel'}</h4>
+                            <div class="flex items-center gap-3 text-[10px] opacity-90 font-label-sm">
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs fill-icon text-white">favorite</span>
+                                    <span>${formatCount(r.like_count)}</span>
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs fill-icon text-white">visibility</span>
+                                    <span>${formatCount(r.view_count)}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="bg-white/20 backdrop-blur-md p-3 rounded-full text-white shadow-lg border border-white/30">
+                                <span class="material-symbols-outlined text-3xl fill-icon">play_arrow</span>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        // 4. Reviews Loader (With Searching)
+        async function loadReviews(searchVal = '') {
+            const list = document.getElementById('reviews-list-container');
+            const empty = document.getElementById('reviews-empty');
+            list.innerHTML = '';
+            
+            const res = await apiClient.get(`/sellers/${sellerId}/reviews?search=${encodeURIComponent(searchVal)}`);
+            if (res.data && res.data.success) {
+                const data = res.data.data;
+                const reviews = data.reviews || [];
+                const stats = data.stats || {};
+                
+                // Set overall average & count
+                document.getElementById('review-avg').innerText = stats.avg_rating > 0 ? stats.avg_rating.toFixed(2) : '0.0';
+                document.getElementById('review-total-lbl').innerText = `${stats.total_reviews} total reviews`;
+                
+                // Star Average visual stars
+                const starAvgContainer = document.getElementById('review-stars-avg');
+                starAvgContainer.innerHTML = '';
+                const fullStars = Math.floor(stats.avg_rating);
+                const hasHalf = stats.avg_rating % 1 >= 0.5;
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= fullStars) {
+                        starAvgContainer.innerHTML += `<span class="material-symbols-outlined fill-icon text-base">star</span>`;
+                    } else if (i === fullStars + 1 && hasHalf) {
+                        starAvgContainer.innerHTML += `<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 0.7">star_half</span>`;
+                    } else {
+                        starAvgContainer.innerHTML += `<span class="material-symbols-outlined text-base">star</span>`;
+                    }
+                }
+
+                // Progress bars list
+                const barsContainer = document.getElementById('ratings-bars-list');
+                barsContainer.innerHTML = '';
+                for (let s = 5; s >= 1; s--) {
+                    const pct = stats.breakdown_percentage[s] || 0;
+                    const count = stats.breakdown[s] || 0;
+                    barsContainer.innerHTML += `
+                        <div class="flex items-center gap-3">
+                            <span class="font-label-sm w-12 text-xs">${s} star</span>
+                            <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+                            </div>
+                            <span class="font-label-sm w-8 text-right text-xs text-on-surface-variant">${pct}%</span>
+                        </div>
+                    `;
+                }
+
+                if (reviews.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                empty.classList.add('hidden');
+
+                reviews.forEach(r => {
+                    const card = document.createElement('article');
+                    card.className = "bg-surface-bright p-6 md:p-8 rounded-xl border border-outline-variant hover:shadow-md transition-shadow duration-300 animate-fade-in";
+                    
+                    let ratingStars = '';
+                    for (let s = 1; s <= 5; s++) {
+                        ratingStars += `<span class="material-symbols-outlined ${s <= r.rating ? 'fill-icon' : ''} text-sm">star</span>`;
+                    }
+                    
+                    const dateFormatted = new Date(r.created_at).toLocaleDateString('en-IN', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex items-center justify-center font-bold text-sm shrink-0 border border-outline-variant/30">
+                                    ${r.buyer_avatar_url 
+                                        ? `<img src="${r.buyer_avatar_url}" alt="${r.buyer_name}" class="w-full h-full object-cover"/>`
+                                        : (r.buyer_name || 'A').charAt(0).toUpperCase()
+                                    }
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-sm text-sm text-primary font-bold">${r.buyer_name}</h3>
+                                    <p class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider">${dateFormatted}</p>
+                                </div>
+                            </div>
+                            <div class="flex text-primary">
+                                ${ratingStars}
+                            </div>
+                        </div>
+                        <blockquote class="italic font-headline-sm text-base text-on-surface mb-6 leading-relaxed">
+                            "${r.review_text}"
+                        </blockquote>
+                        
+                        <!-- Product Info Card -->
+                        <div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/30 mb-6 cursor-pointer" onclick="window.location.href='/buyer/product.html?id=${r.product.id}'">
+                            <div class="w-14 h-14 rounded overflow-hidden shrink-0 border border-outline-variant/20">
+                                <img src="${r.product.image_url || 'https://placehold.co/100x100/f6f3f2/061b0e?text=Product'}" alt="${r.product.name}" class="w-full h-full object-cover"/>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-0.5">Purchased item</p>
+                                <p class="font-label-md text-sm text-primary font-bold line-clamp-1">${r.product.name}</p>
+                            </div>
+                        </div>
+
+                        <!-- Seller Reply (If exists) -->
+                        ${r.reply_text ? `
+                            <div class="mt-6 p-4 bg-secondary-container/20 rounded-lg border-l-4 border-primary">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="material-symbols-outlined text-primary text-sm">reply</span>
+                                    <span class="font-label-md text-xs text-primary font-bold">${sellerProfile.shop_name}'s Response</span>
+                                </div>
+                                <p class="text-xs text-on-surface-variant font-body-md italic leading-relaxed">"${r.reply_text}"</p>
+                            </div>
+                        ` : ''}
+                    `;
+                    list.appendChild(card);
+                });
+            }
+        }
+
+        // Setup reviews search listener
+        let searchTimeout;
+        document.getElementById('review-search').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                loadReviews(e.target.value);
+            }, 350);
+        });
+
+        // ── Follow/Unfollow ──
+        window.toggleFollow = async function() {
+            if (!isLoggedIn) {
+                window.Toast?.show("Please log in to follow artisans", "error");
+                setTimeout(() => window.location.href = `/auth/login.html?redirect=${encodeURIComponent(window.location.href)}`, 1500);
+                return;
+            }
+            if (!sellerProfile) return;
+
+            const isFollowing = sellerProfile.is_following;
+            try {
+                if (isFollowing) {
+                    const res = await apiClient.delete(`/follows/${sellerId}`);
+                    if (res.data && res.data.success) {
+                        sellerProfile.is_following = false;
+                        sellerProfile.followers_count = Math.max(0, sellerProfile.followers_count - 1);
+                        window.Toast?.show(`Unfollowed ${sellerProfile.shop_name}`, "success");
+                    }
+                } else {
+                    const res = await apiClient.post(`/follows/${sellerId}`);
+                    if (res.data && res.data.success) {
+                        sellerProfile.is_following = true;
+                        sellerProfile.followers_count += 1;
+                        window.Toast?.show(`Following ${sellerProfile.shop_name}`, "success");
+                    }
+                }
+                updateProfileUI(sellerProfile);
+            } catch (err) {
+                console.error("Failed to toggle follow status:", err);
+            }
+        };
+
+        // ── Cart & Wishlist Add Actions ──
+        window.addToCart = async function(e, productId) {
+            e.stopPropagation();
+            if (!isLoggedIn) {
+                window.Toast?.show("Please log in to purchase items", "error");
+                setTimeout(() => window.location.href = `/auth/login.html?redirect=${encodeURIComponent(window.location.href)}`, 1500);
+                return;
+            }
+
+            try {
+                const response = await apiClient.post('/cart/items', {
+                    product_id: Number(productId),
+                    quantity: 1
+                });
+                if (response.data && response.data.success) {
+                    window.Toast?.show("Added to cart successfully!", "success");
+                    await updateCartBadge();
+                }
+            } catch (err) {
+                console.error("Failed to add to cart:", err);
+            }
+        };
+
+        window.toggleWishlist = async function(e, productId) {
+            e.stopPropagation();
+            if (!isLoggedIn) {
+                window.Toast?.show("Please log in to add to wishlist", "error");
+                setTimeout(() => window.location.href = `/auth/login.html?redirect=${encodeURIComponent(window.location.href)}`, 1500);
+                return;
+            }
+
+            if (isWishlistUpdating[productId]) return;
+            isWishlistUpdating[productId] = true;
+
+            const iconEl = document.getElementById(`wishlist-icon-${productId}`);
+            const wasWishlisted = iconEl.classList.contains('fill-icon');
+
+            try {
+                if (wasWishlisted) {
+                    const res = await apiClient.delete(`/wishlist/${productId}`);
+                    if (res.data && res.data.success) {
+                        iconEl.classList.remove('fill-icon', 'text-red-500');
+                        iconEl.classList.add('text-secondary');
+                        window.Toast?.show("Removed from wishlist!", "success");
+                    }
+                } else {
+                    const res = await apiClient.post(`/wishlist/${productId}`);
+                    if (res.data && res.data.success) {
+                        iconEl.classList.add('fill-icon', 'text-red-500');
+                        iconEl.classList.remove('text-secondary');
+                        window.Toast?.show("Added to wishlist!", "success");
+                    }
+                }
+                await updateWishlistBadge();
+            } catch (err) {
+                console.error("Failed to toggle wishlist item:", err);
+            } finally {
+                isWishlistUpdating[productId] = false;
+            }
+        };
+
+        async function updateCartBadge() {
+            try {
+                const res = await apiClient.get('/cart');
+                if (res.data && res.data.success) {
+                    const count = res.data.data.item_count;
+                    const navBadge = document.getElementById('nav-cart-badge');
+                    if (navBadge) {
+                        if (count > 0) {
+                            navBadge.innerText = count;
+                            navBadge.classList.remove('hidden');
+                        } else {
+                            navBadge.classList.add('hidden');
+                        }
+                    }
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        async function updateWishlistBadge() {
+            try {
+                const res = await apiClient.get('/wishlist');
+                if (res.data && res.data.success) {
+                    const items = res.data.data.items || res.data.data || [];
+                    const count = items.length;
+                    const badge = document.getElementById('nav-wishlist-badge');
+                    if (badge) {
+                        if (count > 0) {
+                            badge.innerText = count;
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                    }
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        // ── Customisation Intake Chatbot logic ──
+        let currentConversationId = null;
+        let currentQuestion = null;
+
+        window.startCustomisation = async function(listingId, productTypeTag, listingTitle) {
+            if (!isLoggedIn) {
+                window.Toast?.show("Please log in to request customization", "error");
+                setTimeout(() => {
+                    window.location.href = `/auth/login.html?redirect=${encodeURIComponent(window.location.href)}`;
+                }, 1500);
+                return;
+            }
+
+            try {
+                const response = await apiClient.post('/conversations', {
+                    listing_id: Number(listingId),
+                    product_type_tag: productTypeTag
+                });
+                
+                if (response.data) {
+                    currentConversationId = response.data.conversation_id;
+                    
+                    // Setup Chat Pane Title & welcome
+                    document.getElementById('intake-title').innerText = `Customise ${listingTitle}`;
+                    document.getElementById('intake-messages').innerHTML = `
+                        <!-- Bot Welcome -->
+                        <div class="flex gap-3 animate-fade-in">
+                            <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                            </div>
+                            <div class="bg-surface-container-low border border-outline-variant/30 px-4 py-3 rounded-2xl rounded-tl-none max-w-[85%] text-xs text-on-surface leading-relaxed shadow-sm">
+                                Hello! Let's customise your bespoke request for <strong>${listingTitle}</strong>. I'll ask you a few questions to gather details for the artisan.
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Open Modal / Pane
+                    const modal = document.getElementById('intake-chat-modal');
+                    const pane = document.getElementById('intake-chat-pane');
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        pane.classList.remove('translate-x-full');
+                    }, 10);
+
+                    // Load next question
+                    await loadNextIntakeQuestion();
+                }
+            } catch (err) {
+                console.error("Failed to start customization flow:", err);
+            }
+        };
+
+        async function loadNextIntakeQuestion() {
+            try {
+                const response = await apiClient.get(`/conversations/${currentConversationId}/next-question`);
+                const data = response.data;
+                
+                if (data.done) {
+                    renderIntakeComplete();
+                    return;
+                }
+                
+                currentQuestion = data.question;
+                renderBotQuestion(currentQuestion);
+            } catch (err) {
+                console.error("Failed to fetch next question:", err);
+                window.Toast?.show("Failed to load question. Please try again.", "error");
+            }
+        }
+
+        function renderBotQuestion(question) {
+            const chatArea = document.getElementById('intake-messages');
+            
+            const msg = document.createElement('div');
+            msg.className = 'flex gap-3 animate-fade-in';
+            msg.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                </div>
+                <div class="bg-surface-container-low border border-outline-variant/30 px-4 py-3 rounded-2xl rounded-tl-none max-w-[85%] text-xs text-on-surface leading-relaxed shadow-sm">
+                    ${question.question_text}
+                </div>
+            `;
+            chatArea.appendChild(msg);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            
+            // Render input based on answer_type
+            const inputContainer = document.getElementById('intake-input-container');
+            inputContainer.innerHTML = '';
+            
+            const inputWrapper = document.createElement('div');
+            inputWrapper.className = 'space-y-3';
+            
+            if (question.answer_type === 'free_text') {
+                inputWrapper.innerHTML = `
+                    <input type="text" id="intake-ans" class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2.5 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="Type your answer..."/>
+                    <button onclick="submitIntakeAnswer()" class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md text-xs hover:bg-primary-container transition-all active:scale-[0.98] cursor-pointer shadow-sm uppercase tracking-wider font-bold">
+                        Submit Answer
+                    </button>
+                `;
+            } else if (question.answer_type === 'long_text') {
+                inputWrapper.innerHTML = `
+                    <textarea id="intake-ans" rows="3" class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2.5 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none resize-none" placeholder="Type detailed specifications..."></textarea>
+                    <button onclick="submitIntakeAnswer()" class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md text-xs hover:bg-primary-container transition-all active:scale-[0.98] cursor-pointer shadow-sm uppercase tracking-wider font-bold">
+                        Submit Answer
+                    </button>
+                `;
+            } else if (question.answer_type === 'single_choice') {
+                const options = question.options || [];
+                let optionsHtml = options.map(opt => `
+                    <button onclick="submitChoiceAnswer('${opt.replace(/'/g, "\\'")}')" class="w-full text-left px-4 py-2.5 border border-outline-variant hover:border-primary hover:bg-primary/5 rounded-lg text-xs text-on-surface transition-all active:scale-[0.98] font-body-md cursor-pointer">
+                        ${opt}
+                    </button>
+                `).join('');
+                
+                inputWrapper.innerHTML = `
+                    <div class="space-y-2 max-h-48 overflow-y-auto no-scrollbar pr-1">
+                        ${optionsHtml}
+                    </div>
+                `;
+            } else if (question.answer_type === 'date_picker') {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const yyyy = tomorrow.getFullYear();
+                const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+                const dd = String(tomorrow.getDate()).padStart(2, '0');
+                const tomorrowStr = `${yyyy}-${mm}-${dd}`;
+                
+                inputWrapper.innerHTML = `
+                    <input type="date" id="intake-ans" min="${tomorrowStr}" class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2.5 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none"/>
+                    <button onclick="submitIntakeAnswer()" class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md text-xs hover:bg-primary-container transition-all active:scale-[0.98] cursor-pointer shadow-sm uppercase tracking-wider font-bold">
+                        Submit Answer
+                    </button>
+                `;
+            } else if (question.answer_type === 'photo_upload') {
+                inputWrapper.innerHTML = `
+                    <div class="border-2 border-dashed border-outline-variant/60 rounded-lg p-4 text-center cursor-pointer hover:border-primary transition-all relative bg-white" onclick="document.getElementById('intake-file').click()">
+                        <span class="material-symbols-outlined text-on-surface-variant text-2xl mb-1">upload_file</span>
+                        <p class="text-xs text-on-surface-variant font-label-md" id="file-label">Click to upload reference photo</p>
+                        <p class="text-[10px] text-outline mt-0.5">JPEG, PNG up to 5MB</p>
+                        <input type="file" id="intake-file" accept="image/*" class="hidden" onchange="handleFileSelected(this)"/>
+                    </div>
+                    <button onclick="submitPhotoAnswer()" class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md text-xs hover:bg-primary-container transition-all active:scale-[0.98] hidden cursor-pointer shadow-sm uppercase tracking-wider font-bold" id="photo-submit-btn">
+                        Upload & Submit
+                    </button>
+                `;
+            }
+            
+            inputContainer.appendChild(inputWrapper);
+            
+            // Auto-focus input if exists
+            const inputAns = document.getElementById('intake-ans');
+            if (inputAns) inputAns.focus();
+        }
+
+        window.handleFileSelected = function(input) {
+            const btn = document.getElementById('photo-submit-btn');
+            const label = document.getElementById('file-label');
+            if (input.files && input.files[0]) {
+                label.innerText = `Selected: ${input.files[0].name}`;
+                label.classList.add('text-primary', 'font-bold');
+                btn.classList.remove('hidden');
+            } else {
+                label.innerText = "Click to upload reference photo";
+                label.classList.remove('text-primary', 'font-bold');
+                btn.classList.add('hidden');
+            }
+        };
+
+        window.submitChoiceAnswer = async function(choice) {
+            renderUserMessage(choice);
+            await sendAnswerToAPI(choice);
+        };
+
+        window.submitIntakeAnswer = async function() {
+            const input = document.getElementById('intake-ans');
+            if (!input) return;
+            const val = input.value.trim();
+            if (!val) {
+                window.Toast?.show("Please enter an answer", "error");
+                return;
+            }
+            
+            renderUserMessage(val);
+            await sendAnswerToAPI(val);
+        };
+
+        window.submitPhotoAnswer = async function() {
+            const input = document.getElementById('intake-file');
+            if (!input || !input.files[0]) {
+                window.Toast?.show("Please select a photo to upload", "error");
+                return;
+            }
+            
+            const file = input.files[0];
+            renderUserMessage(`Uploaded image: ${file.name}`);
+            
+            const formData = new FormData();
+            formData.append('question_id', currentQuestion.id);
+            formData.append('photo', file);
+            
+            try {
+                document.getElementById('intake-input-container').innerHTML = `
+                    <div class="flex items-center justify-center py-4 text-xs text-on-surface-variant font-label-md">
+                        <span class="material-symbols-outlined animate-spin mr-2">sync</span>
+                        Uploading image...
+                    </div>
+                `;
+                
+                await apiClient.post(`/conversations/${currentConversationId}/answer`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                await loadNextIntakeQuestion();
+            } catch (err) {
+                console.error("Failed to submit photo answer:", err);
+            }
+        };
+
+        function renderUserMessage(text) {
+            const chatArea = document.getElementById('intake-messages');
+            const msg = document.createElement('div');
+            msg.className = 'flex gap-3 justify-end animate-fade-in';
+            msg.innerHTML = `
+                <div class="bg-primary text-on-primary px-4 py-3 rounded-2xl rounded-tr-none max-w-[85%] text-xs leading-relaxed shadow-sm">
+                    ${text}
+                </div>
+                <div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center shrink-0 text-white font-bold text-xs" id="user-avatar-intake">
+                    U
+                </div>
+            `;
+            chatArea.appendChild(msg);
+            
+            // Set user initials or avatar if available
+            const avatarImg = document.querySelector('#auth-buttons-container img');
+            const userAvatarIntake = msg.querySelector('#user-avatar-intake');
+            if (avatarImg && userAvatarIntake) {
+                userAvatarIntake.innerHTML = `<img src="${avatarImg.src}" class="w-full h-full object-cover rounded-full"/>`;
+            } else {
+                userAvatarIntake.innerText = sessionStorage.getItem('tohfa_user_initials') || 'U';
+            }
+            
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        async function sendAnswerToAPI(value) {
+            try {
+                document.getElementById('intake-input-container').innerHTML = `
+                    <div class="flex items-center justify-center py-4 text-xs text-on-surface-variant font-label-md">
+                        <span class="material-symbols-outlined animate-spin mr-2">sync</span>
+                        Saving answer...
+                    </div>
+                `;
+                
+                await apiClient.post(`/conversations/${currentConversationId}/answer`, {
+                    question_id: currentQuestion.id,
+                    answer_value: value
+                });
+                
+                await loadNextIntakeQuestion();
+            } catch (err) {
+                console.error("Failed to submit answer:", err);
+            }
+        }
+
+        function renderIntakeComplete() {
+            const chatArea = document.getElementById('intake-messages');
+            
+            const msg = document.createElement('div');
+            msg.className = 'flex gap-3 animate-fade-in';
+            msg.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-sm">celebration</span>
+                </div>
+                <div class="bg-primary-container/20 border border-primary/20 px-4 py-3 rounded-2xl rounded-tl-none max-w-[85%] text-xs text-primary font-bold leading-relaxed shadow-sm">
+                    All details submitted! Your customisation request is complete. The artisan will review your answers and generate a customized price offer shortly.
+                </div>
+            `;
+            chatArea.appendChild(msg);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            
+            const inputContainer = document.getElementById('intake-input-container');
+            inputContainer.innerHTML = `
+                <div class="space-y-2">
+                    <button onclick="window.location.href='/buyer/profile.html'" class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-md text-xs hover:bg-primary-container transition-all active:scale-[0.98] cursor-pointer font-bold shadow-sm uppercase tracking-wider">
+                        Go to Custom Orders Chat
+                    </button>
+                    <button onclick="closeIntakeChat(null)" class="w-full border border-outline-variant text-on-surface-variant py-2 rounded-lg font-label-md text-xs hover:bg-surface-container transition-all active:scale-[0.98] cursor-pointer">
+                        Keep Browsing Studio
+                    </button>
+                </div>
+            `;
+        }
+
+        window.closeIntakeChat = function(e) {
+            if (e && e.target !== document.getElementById('intake-chat-modal')) return;
+            const modal = document.getElementById('intake-chat-modal');
+            const pane = document.getElementById('intake-chat-pane');
+            pane.classList.add('translate-x-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        };
+
+        // ── Share Modal Logic ──
+        window.openShareModal = function() {
+            if (!sellerProfile) return;
+            
+            // Set Share Modal Info
+            document.getElementById('share-modal-name').innerText = sellerProfile.shop_name;
+            document.getElementById('share-modal-rating').innerText = `${sellerProfile.avg_rating > 0 ? sellerProfile.avg_rating.toFixed(1) : '0.0'} (${sellerProfile.review_count} reviews)`;
+            
+            const shareAvatar = document.getElementById('share-modal-avatar');
+            if (sellerProfile.avatar_url) {
+                shareAvatar.innerHTML = `<img src="${sellerProfile.avatar_url}" alt="${sellerProfile.shop_name}" class="w-full h-full object-cover"/>`;
+            } else {
+                shareAvatar.innerHTML = `
+                    <div class="w-full h-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold select-none text-xl">
+                        ${(sellerProfile.shop_name || 'A').charAt(0).toUpperCase()}
+                    </div>
+                `;
+            }
+
+            document.getElementById('share-modal').classList.remove('hidden');
+        };
+
+        window.closeShareModal = function(e) {
+            if (e && e.target !== document.getElementById('share-modal')) return;
+            document.getElementById('share-modal').classList.add('hidden');
+        };
+
+        window.copyShareLink = function() {
+            const input = document.getElementById('share-link-input');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(input.value);
+            
+            window.Toast?.show("Link copied to clipboard!", "success");
+        };
+
+        // Format helpers
+        function formatCount(num) {
+            if (!num) return '0';
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+            }
+            return num;
+        }
+
+        // Initialize Page
+        initPage();
+
+    </script>
+</body>
+</html>

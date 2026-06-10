@@ -165,28 +165,13 @@
     <main class="max-w-[1440px] mx-auto px-margin-desktop py-12">
         <!-- 1. BREADCRUMBS & BACK NAV -->
         <div class="flex items-center justify-between mb-8">
-            <nav class="hidden md:flex items-center justify-center gap-xl h-full">
-    <!-- Home -->
-    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">home</span>
-      <span>Home</span>
-    </a>
-    <!-- Category -->
-    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">category</span>
-      <span>Category</span>
-    </a>
-    <!-- Reels -->
-    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">movie</span>
-      <span>Reels</span>
-    </a>
-    <!-- Profile -->
-    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">person</span>
-      <span>Profile</span>
-    </a>
-  </nav>
+            <div class="flex items-center gap-2 text-xs text-outline font-label-caps uppercase tracking-wider">
+                <a href="/buyer/home.html" class="hover:text-primary transition-colors">Home</a>
+                <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                <a id="breadcrumb-category" href="#" class="hover:text-primary transition-colors">Category</a>
+                <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                <span id="breadcrumb-product" class="text-primary font-bold">Product</span>
+            </div>
             <button onclick="window.history.back()" class="flex items-center gap-xs text-secondary hover:text-primary transition-colors text-sm font-semibold group focus:outline-none">
                 <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
                 <span>Back</span>
@@ -221,13 +206,13 @@
                     </div>
                 </div>
 
-                <div class="border-t border-b border-outline-variant/20 py-md flex items-center gap-md">
+                <a id="seller-profile-link" href="#" class="border-t border-b border-outline-variant/20 py-md flex items-center gap-md hover:opacity-85 transition-opacity duration-200">
                     <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm" id="seller-avatar">S</div>
                     <div>
                         <p class="text-xs text-outline uppercase tracking-wider font-label-caps">Shaped By</p>
                         <p class="font-title-serif text-primary text-base font-semibold" id="product-seller">Seller Name</p>
                     </div>
-                </div>
+                </a>
 
                 <div class="space-y-sm">
                     <h4 class="font-label-caps text-outline text-xs tracking-wider uppercase">Description</h4>
@@ -421,13 +406,7 @@
                 }
 
                 if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div class="flex items-center gap-md">
-                            ${avatarHtml}
-                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                        </div>
-                    `;
-                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                    authContainer.innerHTML = '';
                 }
             } catch(e) {
                 console.error("Failed to parse token:", e);
@@ -464,7 +443,19 @@
                     document.getElementById('product-description').innerText = product.description || 'No description available.';
                     document.getElementById('product-price').innerText = formatPaise(product.price_paise);
                     document.getElementById('product-seller').innerText = product.seller?.seller_name || 'Artisan';
-                    document.getElementById('seller-avatar').innerText = (product.seller?.seller_name || 'A').charAt(0).toUpperCase();
+                    
+                    const avatarEl = document.getElementById('seller-avatar');
+                    if (product.seller?.avatar_url) {
+                        avatarEl.innerHTML = `<img src="${product.seller.avatar_url}" alt="Seller Avatar" class="w-full h-full object-cover rounded-full"/>`;
+                        avatarEl.classList.remove('bg-primary/20', 'text-primary');
+                    } else {
+                        avatarEl.innerText = (product.seller?.seller_name || 'A').charAt(0).toUpperCase();
+                    }
+
+                    const sellerLink = document.getElementById('seller-profile-link');
+                    if (sellerLink && product.seller?.id) {
+                        sellerLink.href = `/buyer/seller-profile.html?id=${product.seller.id}`;
+                    }
 
                     // Ships badge
                     const shipsBadge = document.getElementById('product-ships-badge');

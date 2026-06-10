@@ -281,6 +281,16 @@
 </p>
 </div>
 <div class="space-y-6">
+<!-- Customisation Options Preview -->
+<div id="preview-customisation-box" class="hidden p-6 bg-[#3D6B4F]/5 border border-[#3D6B4F]/20 rounded-xl space-y-4">
+  <div class="flex items-center gap-2 text-primary font-bold text-sm">
+    <span class="material-symbols-outlined text-lg">auto_awesome</span>
+    <span>Customisation Settings</span>
+  </div>
+  <div id="preview-customisation-details" class="space-y-3 text-sm text-on-surface-variant">
+  </div>
+</div>
+
 <div id="preview-tags-container" class="flex flex-wrap gap-2">
 </div>
 <div class="grid grid-cols-2 gap-4">
@@ -654,6 +664,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
       document.getElementById('chk-score-val').textContent = `${score}%`;
       document.getElementById('chk-score-bar').style.width = `${score}%`;
+
+      // Customisation Settings
+      const isCustomisable = listing.isCustomisable || listing.listing_type === 'custom';
+      const custBox = document.getElementById('preview-customisation-box');
+      if (isCustomisable) {
+        custBox.classList.remove('hidden');
+        
+        let config = listing.customization_config;
+        if (typeof config === 'string') {
+          try {
+            config = JSON.parse(config);
+          } catch (e) {
+            config = {};
+          }
+        }
+        config = config || {};
+
+        let detailsHtml = '';
+        if (config.allow_text) {
+          detailsHtml += `
+            <div class="flex flex-col gap-1">
+              <span class="font-bold text-xs uppercase tracking-wider text-secondary">Text Personalisation</span>
+              <span class="text-xs text-on-surface">Instructions: ${config.text_label || 'Enter text'}</span>
+              <span class="text-xs text-on-surface-variant">Limit: ${config.text_limit || 20} characters</span>
+            </div>
+          `;
+        }
+        if (config.allow_color) {
+          const colorList = Array.isArray(config.colors) ? config.colors : [];
+          detailsHtml += `
+            <div class="flex flex-col gap-1 mt-2">
+              <span class="font-bold text-xs uppercase tracking-wider text-secondary">Color Choices Offered</span>
+              <span class="text-xs text-on-surface">${colorList.join(', ') || 'Any Color'}</span>
+            </div>
+          `;
+        }
+        if (config.allow_image) {
+          detailsHtml += `
+            <div class="flex flex-col gap-1 mt-2">
+              <span class="font-bold text-xs uppercase tracking-wider text-secondary">Image Upload Allowed</span>
+              <span class="text-xs text-on-surface-variant">${config.image_notes || 'No specific instructions'}</span>
+            </div>
+          `;
+        }
+        if (config.allow_notes) {
+          detailsHtml += `
+            <div class="flex flex-col gap-1 mt-2">
+              <span class="font-bold text-xs uppercase tracking-wider text-secondary">Special Instructions Notes</span>
+              <span class="text-xs text-on-surface-variant">Buyers can provide custom notes.</span>
+            </div>
+          `;
+        }
+        if (config.extra_fee_rupees > 0) {
+          detailsHtml += `
+            <div class="mt-2 pt-2 border-t border-[#3D6B4F]/20 text-primary font-bold text-xs">
+              Customisation Fee: ₹${config.extra_fee_rupees}
+            </div>
+          `;
+        } else {
+          detailsHtml += `
+            <div class="mt-2 pt-2 border-t border-[#3D6B4F]/20 text-primary font-bold text-xs">
+              Customisation Fee: Free
+            </div>
+          `;
+        }
+
+        if (!detailsHtml || (!config.allow_text && !config.allow_color && !config.allow_image && !config.allow_notes)) {
+          detailsHtml = '<div class="text-xs italic text-on-surface-variant">Customisable listing (options not set).</div>';
+        }
+
+        document.getElementById('preview-customisation-details').innerHTML = detailsHtml;
+      } else {
+        custBox.classList.add('hidden');
+      }
 
       // Save title in sessionStorage for success screen
       sessionStorage.setItem('published_title', listing.title || 'Untitled Study');
