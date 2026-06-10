@@ -334,7 +334,7 @@
 </ul>
 </div>
 <!-- Hand-drawn style decorative card -->
-<div class="relative p-lg bg-tertiary-fixed rounded-xl overflow-hidden shadow-sm artisan-card-hover cursor-pointer">
+<div id="join-studio-card" class="relative p-lg bg-tertiary-fixed rounded-xl overflow-hidden shadow-sm artisan-card-hover cursor-pointer">
 <div class="relative z-10">
 <p class="font-display-hero text-xl text-on-tertiary-fixed">Join the Studio</p>
 <p class="text-sm text-on-tertiary-fixed-variant mt-xs">Become a certified Tohfa Artisan and share your craft with the world.</p>
@@ -436,6 +436,13 @@
         const addressesCountEl = document.getElementById('hub-addresses-count');
         if (addressesCountEl) {
             addressesCountEl.innerText = `${profile.address_count || 0} saved locations`;
+        }
+
+        const joinCard = document.getElementById('join-studio-card');
+        if (joinCard) {
+            if (profile.role !== 'seller') {
+                joinCard.remove();
+            }
         }
     }
 
