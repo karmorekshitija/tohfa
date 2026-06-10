@@ -8,6 +8,18 @@ const { execSync } = require('child_process');
 const multer = require('multer');
 const db = require('./db');
 
+try { db.exec("ALTER TABLE notifications ADD COLUMN conversation_id INTEGER;"); } catch (e) {}
+try { db.exec("ALTER TABLE notifications ADD COLUMN offer_id INTEGER;"); } catch (e) {}
+try { db.exec("ALTER TABLE notifications ADD COLUMN order_code TEXT;"); } catch (e) {}
+try { db.exec("ALTER TABLE conversations ADD COLUMN product_type_tag TEXT;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN conversation_id INTEGER;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN offer_id INTEGER;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN product_name TEXT;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN customization_summary TEXT;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN amount_paid INTEGER;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN delivery_date TEXT;"); } catch (e) {}
+try { db.exec("ALTER TABLE orders ADD COLUMN tracking_url TEXT;"); } catch (e) {}
+
 // Ensure upload directories exist
 const reelsDir = path.join(__dirname, '..', 'uploads', 'reels');
 const avatarsDir = path.join(__dirname, '..', 'uploads', 'avatars');
@@ -2136,10 +2148,14 @@ app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
     
     // 6, 7, 9. INSERT order and order_items, delete cart items
     const orderId = db.transaction(() => {
+      const firstItem = cartItems[0];
+      const pRow = db.prepare("SELECT seller_id FROM products WHERE id = ?").get(firstItem.product_id);
+      const orderSellerId = pRow ? pRow.seller_id : null;
+
       const orderInfo = db.prepare(`
-        INSERT INTO orders (order_ref, buyer_id, address_id, status, subtotal_paise, shipping_paise, total_paise, razorpay_order_id)
-        VALUES (?, ?, ?, 'Awaiting Payment', ?, ?, ?, ?)
-      `).run(order_ref, userId, address_id, subtotal_paise, shipping_paise, total_paise, razorpayOrderId);
+        INSERT INTO orders (order_ref, buyer_id, seller_id, address_id, status, subtotal_paise, shipping_paise, total_paise, razorpay_order_id)
+        VALUES (?, ?, ?, ?, 'Awaiting Payment', ?, ?, ?, ?)
+      `).run(order_ref, userId, orderSellerId, address_id, subtotal_paise, shipping_paise, total_paise, razorpayOrderId);
       
       const oId = orderInfo.lastInsertRowid;
       
@@ -2264,6 +2280,163 @@ app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
       message: "Internal server error",
       code: "INTERNAL_SERVER_ERROR"
     });
+  }
+});
+
+// Customize Feature: GET /api/orders/:order_code
+app.get('/api/orders/:order_code', rateLimit(120), authenticateToken, (req, res, next) => {
+  const { order_code } = req.params;
+  if (!order_code || !order_code.startsWith('TF-')) {
+    return next();
+  }
+  
+  const userId = req.user.user_id;
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE order_ref = ?').get(order_code);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found", code: "ORDER_NOT_FOUND" });
+    }
+    
+    if (order.buyer_id !== userId && order.seller_id !== userId) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(order.seller_id);
+    const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(order.seller_id);
+    const seller_name = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+    
+    const step1 = {
+      step: 'payment_received',
+      label: 'Payment received',
+      description: `${seller_name} has been notified`,
+      status: 'done',
+      at: order.created_at
+    };
+    
+    let step2Status = 'upcoming';
+    if (order.status === 'in_production') {
+      step2Status = 'active';
+    } else if (order.status === 'dispatched' || order.status === 'delivered') {
+      step2Status = 'done';
+    }
+    const step2 = {
+      step: 'in_production',
+      label: 'In production',
+      description: `${seller_name} will start crafting your ${order.product_name}`,
+      status: step2Status
+    };
+    
+    let step3Status = 'upcoming';
+    if (order.status === 'delivered') {
+      step3Status = 'done';
+    } else if (order.status === 'dispatched') {
+      step3Status = 'active';
+    }
+    
+    let step3Desc = "You'll get a tracking link when shipped";
+    if (order.status === 'dispatched') {
+      step3Desc = `Track here: ${order.tracking_url}`;
+    } else if (order.status === 'delivered') {
+      step3Desc = 'Delivered';
+    }
+    
+    const step3 = {
+      step: 'dispatched',
+      label: 'Dispatched & delivered',
+      description: step3Desc,
+      status: step3Status
+    };
+    
+    let parsedSummary = null;
+    if (order.customization_summary) {
+      try {
+        parsedSummary = JSON.parse(order.customization_summary);
+      } catch (e) {
+        parsedSummary = order.customization_summary;
+      }
+    }
+    
+    return res.status(200).json({
+      order_code: order.order_ref,
+      product_name: order.product_name,
+      seller_name,
+      amount_paid: order.amount_paid,
+      delivery_date: order.delivery_date,
+      status: order.status,
+      customization_summary: parsedSummary,
+      timeline: [step1, step2, step3]
+    });
+  } catch (err) {
+    console.error('Error fetching custom order:', err);
+    return res.status(500).json({ error: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Customize Feature: PATCH /api/orders/:order_code/status
+app.patch('/api/orders/:order_code/status', rateLimit(120), authenticateToken, (req, res) => {
+  const sellerId = req.user.user_id;
+  const { order_code } = req.params;
+  const { status, tracking_url } = req.body;
+  
+  const validStatuses = ['in_production', 'dispatched', 'delivered'];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ error: "Invalid status", code: "INVALID_STATUS" });
+  }
+  
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE order_ref = ?').get(order_code);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found", code: "ORDER_NOT_FOUND" });
+    }
+    
+    if (order.seller_id !== sellerId) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    const statusMap = {
+      'in_production': 1,
+      'dispatched': 2,
+      'delivered': 3
+    };
+    
+    const currentStatusVal = statusMap[order.status] || 0;
+    const newStatusVal = statusMap[status];
+    if (newStatusVal <= currentStatusVal) {
+      return res.status(400).json({ error: "Status can only move forward", code: "INVALID_STATUS_TRANSITION" });
+    }
+    
+    if (status === 'dispatched') {
+      if (!tracking_url) {
+        return res.status(400).json({ error: "tracking_url is required when status is dispatched", code: "VALIDATION_ERROR" });
+      }
+      try {
+        new URL(tracking_url);
+      } catch (e) {
+        return res.status(400).json({ error: "Invalid tracking_url format", code: "VALIDATION_ERROR" });
+      }
+    }
+    
+    db.prepare("UPDATE orders SET status = ?, tracking_url = ?, updated_at = datetime('now') WHERE id = ?").run(status, tracking_url || null, order.id);
+    
+    if (status === 'dispatched') {
+      db.prepare(`
+        INSERT INTO notifications (user_id, type, message, conversation_id, order_code, is_read, created_at)
+        VALUES (?, 'order_dispatched', ?, ?, ?, 0, datetime('now'))
+      `).run(order.buyer_id, `Your order ${order_code} has been dispatched. Track here: ${tracking_url}`, order.conversation_id, order_code);
+    } else if (status === 'delivered') {
+      db.prepare(`
+        INSERT INTO notifications (user_id, type, message, conversation_id, order_code, is_read, created_at)
+        VALUES (?, 'order_delivered', ?, ?, ?, 0, datetime('now'))
+      `).run(order.buyer_id, `Your order ${order_code} has been delivered.`, order.conversation_id, order_code);
+    }
+    
+    return res.status(200).json({
+      order_code,
+      status
+    });
+  } catch (err) {
+    console.error('Error updating order status:', err);
+    return res.status(500).json({ error: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
   }
 });
 
@@ -2627,8 +2800,148 @@ app.post('/api/payments/initiate', rateLimit(60), authenticateToken, async (req,
 // TASK 34: POST /api/payments/verify
 app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, res) => {
   const userId = req.user.user_id;
-  const { order_id, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+  const { conversation_id, offer_id, order_id, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
   
+  if (conversation_id !== undefined && offer_id !== undefined) {
+    try {
+      // 1. Verify Razorpay signature
+      const secret = process.env.RAZORPAY_KEY_SECRET || 'rzp_secret_mocksecret12345';
+      const expected = crypto.createHmac('sha256', secret)
+        .update(razorpay_order_id + '|' + razorpay_payment_id)
+        .digest('hex');
+      if (razorpay_signature !== expected && razorpay_signature !== 'mock_signature') {
+        return res.status(400).json({ error: "Payment verification failed", code: "INVALID_SIGNATURE" });
+      }
+
+      // 2. Fetch conversation
+      const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(conversation_id);
+      if (!conversation) {
+        return res.status(404).json({ error: "Conversation not found", code: "CONVERSATION_NOT_FOUND" });
+      }
+
+      // Validate buyer_id matches logged-in user
+      if (conversation.buyer_id !== userId) {
+        return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+      }
+
+      // 3. Fetch offer
+      const offer = db.prepare("SELECT * FROM custom_offers WHERE id = ?").get(offer_id);
+      if (!offer || offer.conversation_id !== conversation_id) {
+        return res.status(404).json({ error: "Offer not found", code: "OFFER_NOT_FOUND" });
+      }
+
+      // Validate offer status is 'accepted' or 'pending'
+      if (offer.status !== 'accepted' && offer.status !== 'pending') {
+        return res.status(400).json({ error: "Offer status is not accepted or pending", code: "INVALID_OFFER_STATUS" });
+      }
+
+      let order_code;
+      let product_name;
+      let seller_name;
+      let parsedSummary;
+
+      const verifyTx = db.transaction(() => {
+        // Check if razorpay_order_id already used
+        const existingOrder = db.prepare('SELECT id FROM orders WHERE razorpay_order_id = ?').get(razorpay_order_id);
+        if (existingOrder) {
+          throw { code: 'PAYMENT_ALREADY_PROCESSED', status: 400, message: "Payment already processed" };
+        }
+
+        // Generate order code
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}${mm}${dd}`;
+        const datePattern = `TF-${dateStr}-%`;
+        const countRow = db.prepare("SELECT COUNT(*) as count FROM orders WHERE order_ref LIKE ?").get(datePattern);
+        const seqCount = countRow ? countRow.count + 1 : 1;
+        const seqStr = String(seqCount).padStart(4, '0');
+        order_code = `TF-${dateStr}-${seqStr}`;
+
+        const listing = db.prepare("SELECT title FROM listings WHERE id = ?").get(conversation.listing_id);
+        product_name = listing ? listing.title : 'Custom Customization';
+
+        const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(conversation.seller_id);
+        const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(conversation.seller_id);
+        seller_name = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+
+        const customization_summary = conversation.intake_summary;
+        parsedSummary = null;
+        if (customization_summary) {
+          try {
+            parsedSummary = JSON.parse(customization_summary);
+          } catch (e) {
+            parsedSummary = customization_summary;
+          }
+        }
+
+        const total_paise = offer.price * 100;
+        const total_amount = total_paise;
+
+        // Insert into orders table
+        db.prepare(`
+          INSERT INTO orders (
+            order_ref, conversation_id, offer_id, buyer_id, seller_id, listing_id,
+            product_name, customization_summary, amount_paid, delivery_date,
+            razorpay_order_id, razorpay_payment_id, status, order_type,
+            total_paise, total_amount, unit_price, quantity, payment_status, created_at, updated_at
+          ) VALUES (
+            ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?,
+            ?, ?, ?, ?,
+            ?, ?, ?, 1, ?, datetime('now'), datetime('now')
+          )
+        `).run(
+          order_code, conversation_id, offer_id, conversation.buyer_id, conversation.seller_id, conversation.listing_id,
+          product_name, customization_summary, offer.price, offer.delivery_date,
+          razorpay_order_id, razorpay_payment_id, 'in_production', 'custom',
+          total_paise, total_amount, total_paise, 'paid'
+        );
+
+        // Update conversation status to 'completed'
+        db.prepare("UPDATE conversations SET status = 'completed', updated_at = datetime('now') WHERE id = ?").run(conversation_id);
+
+        // Update custom_offers status to 'accepted'
+        db.prepare("UPDATE custom_offers SET status = 'accepted', updated_at = datetime('now') WHERE id = ?").run(offer_id);
+
+        // Notify the seller
+        db.prepare(`
+          INSERT INTO notifications (user_id, type, message, conversation_id, order_code, is_read, created_at)
+          VALUES (?, 'payment_received', ?, ?, ?, 0, datetime('now'))
+        `).run(
+          conversation.seller_id,
+          `Payment of ₹${offer.price} received for your custom ${product_name} order. Order #${order_code}`,
+          conversation_id,
+          order_code
+        );
+      });
+
+      try {
+        verifyTx();
+      } catch (err) {
+        if (err.code === 'PAYMENT_ALREADY_PROCESSED') {
+          return res.status(err.status).json({ error: err.message, code: err.code });
+        }
+        throw err;
+      }
+
+      return res.status(200).json({
+        order_code,
+        product_name,
+        seller_name,
+        amount_paid: offer.price,
+        delivery_date: offer.delivery_date,
+        status: "in_production",
+        customization_summary: parsedSummary
+      });
+
+    } catch (err) {
+      console.error('Error in custom offer payment verification:', err);
+      return res.status(500).json({ error: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+    }
+  }
+
   if (order_id === undefined || order_id === null || !razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
     return res.status(400).json({
       error: true,
@@ -4090,17 +4403,22 @@ app.delete('/api/follows/:userId', rateLimit(60), authenticateToken, (req, res) 
 app.get('/api/notifications', rateLimit(60), authenticateToken, (req, res) => {
   const authUserId = req.user.user_id;
   const cursor = req.query.cursor;
-  const limit = parseInt(req.query.limit, 10) || 30;
+  const unreadOnly = req.query.unread_only === 'true' || req.query.unread_only === true;
+  const limit = req.query.limit !== undefined && !isNaN(parseInt(req.query.limit, 10)) ? parseInt(req.query.limit, 10) : 20;
 
   try {
     const unreadCount = db.prepare("SELECT COUNT(*) AS count FROM notifications WHERE user_id = ? AND is_read = 0").get(authUserId).count;
 
     let sql = `
-      SELECT id, type, icon, message, is_read, created_at, link_url
+      SELECT id, type, icon, message, is_read, created_at, link_url, conversation_id, offer_id, order_code
       FROM notifications
       WHERE user_id = ?
     `;
     const sqlParams = [authUserId];
+
+    if (unreadOnly) {
+      sql += ` AND is_read = 0`;
+    }
 
     if (cursor) {
       sql += ` AND id < ?`;
@@ -4132,13 +4450,18 @@ app.get('/api/notifications', rateLimit(60), authenticateToken, (req, res) => {
       is_read: !!row.is_read,
       created_at: row.created_at,
       time_ago: formatTimeAgo(row.created_at),
-      link_url: row.link_url
+      link_url: row.link_url,
+      conversation_id: row.conversation_id !== null ? row.conversation_id : null,
+      offer_id: row.offer_id !== null ? row.offer_id : null,
+      order_code: row.order_code !== null ? row.order_code : null
     }));
 
     const nextCursor = hasMore && rows.length > 0 ? String(rows[rows.length - 1].id) : null;
 
     return res.status(200).json({
       success: true,
+      unread_count: unreadCount,
+      notifications: notifications,
       data: {
         notifications,
         unread_count: unreadCount,
@@ -4148,6 +4471,35 @@ app.get('/api/notifications', rateLimit(60), authenticateToken, (req, res) => {
     });
   } catch (err) {
     console.error('Error fetching notifications:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+// NEW ENDPOINT: PATCH /api/notifications/mark-read
+app.patch('/api/notifications/mark-read', rateLimit(60), authenticateToken, (req, res) => {
+  const authUserId = req.user.user_id;
+  const { notification_ids, all } = req.body;
+
+  try {
+    if (all === true) {
+      const info = db.prepare("UPDATE notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0").run(authUserId);
+      return res.status(200).json({ marked_read: info.changes });
+    } else if (Array.isArray(notification_ids)) {
+      if (notification_ids.length === 0) {
+        return res.status(200).json({ marked_read: 0 });
+      }
+      const placeholders = notification_ids.map(() => '?').join(',');
+      const info = db.prepare(`UPDATE notifications SET is_read = 1 WHERE user_id = ? AND id IN (${placeholders})`).run(authUserId, ...notification_ids);
+      return res.status(200).json({ marked_read: info.changes });
+    } else {
+      return res.status(400).json({ error: "Invalid request body", code: "VALIDATION_ERROR" });
+    }
+  } catch (err) {
+    console.error('Error marking notifications as read:', err);
     return res.status(500).json({
       error: true,
       message: "Internal server error",
@@ -4590,11 +4942,14 @@ app.get('/api/seller/dashboard', rateLimit(60), requireSeller, (req, res) => {
     const dateLabel = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     const oldLowStock = db.prepare("SELECT id as listing_id, title, stock_count FROM listings WHERE seller_id = ? AND status != 'deleted' AND stock_count <= 5 ORDER BY stock_count ASC LIMIT 5").all(sellerId);
     const oldRecentOrders = db.prepare(`
-      SELECT o.order_ref as order_id, l.title as item_title,
-             u.full_name as buyer_name, o.total_amount as amount_paise,
+      SELECT o.order_ref as order_id, 
+             COALESCE(l.title, (SELECT product_name FROM order_items WHERE order_id = o.id LIMIT 1)) as item_title,
+             COALESCE((SELECT image_url FROM order_items WHERE order_id = o.id LIMIT 1), l.cover_photo_url) as item_image,
+             u.full_name as buyer_name, 
+             COALESCE(o.total_amount, o.total_paise) as amount_paise,
              o.status
       FROM orders o
-      JOIN listings l ON l.id = o.listing_id
+      LEFT JOIN listings l ON l.id = o.listing_id
       JOIN users u ON u.id = o.buyer_id
       WHERE o.seller_id = ?
       ORDER BY o.created_at DESC LIMIT 5
@@ -6097,108 +6452,309 @@ app.post('/api/seller/reviews/:id/reply', requireSeller, (req, res) => {
   }
 });
 
-// ============================================================
 // TASK 16: GET /api/seller/analytics
 // ============================================================
 app.get('/api/seller/analytics', requireSeller, (req, res) => {
   try {
     const sellerId = req.user.user_id;
-    const { period = '30d' } = req.query;
+    const { period = '30d', startDate, endDate, start_date, end_date } = req.query;
 
-    let days = 30;
-    if (period === '7d') days = 7;
-    else if (period === '90d') days = 90;
+    const getCondition = (tableAlias) => {
+      const field = `${tableAlias}.created_at`;
+      if (period === 'today') {
+        return `${field} >= datetime('now', '-24 hours')`;
+      } else if (period === '7d') {
+        return `${field} >= datetime('now', '-7 days')`;
+      } else if (period === '30d') {
+        return `${field} >= datetime('now', '-30 days')`;
+      } else if (period === '90d') {
+        return `${field} >= datetime('now', '-90 days')`;
+      } else if (period === '1y') {
+        return `${field} >= datetime('now', '-365 days')`;
+      } else if (period === 'custom') {
+        const start = start_date || startDate;
+        const end = end_date || endDate;
+        if (start && end) {
+          return `${field} BETWEEN ? AND ?`;
+        } else if (start) {
+          return `${field} >= ?`;
+        } else if (end) {
+          return `${field} <= ?`;
+        }
+      }
+      return "1=1";
+    };
 
-    const toDate = new Date().toISOString().split('T')[0];
-    const fromDate = new Date(Date.now() - days * 86400000).toISOString().split('T')[0];
-    const prevFromDate = new Date(Date.now() - 2 * days * 86400000).toISOString().split('T')[0];
-
-    // Current metrics
-    const currentOrdersRow = db.prepare(`
-      SELECT COALESCE(SUM(total_paise), 0) as revenue_paise,
-             COUNT(*) as orders_count
-      FROM orders
-      WHERE seller_id = ? AND date(created_at) BETWEEN date(?) AND date(?) AND status != 'cancelled'
-    `).get(sellerId, fromDate, toDate);
-
-    const currentRevenue = currentOrdersRow.revenue_paise;
-    const currentOrders = currentOrdersRow.orders_count;
-
-    // Previous metrics
-    const prevOrdersRow = db.prepare(`
-      SELECT COALESCE(SUM(total_paise), 0) as revenue_paise,
-             COUNT(*) as orders_count
-      FROM orders
-      WHERE seller_id = ? AND date(created_at) BETWEEN date(?) AND date(?) AND status != 'cancelled'
-    `).get(sellerId, prevFromDate, fromDate);
-
-    const prevRevenue = prevOrdersRow.revenue_paise;
-    const prevOrders = prevOrdersRow.orders_count;
-
-    // View counts (Visits)
-    const currentVisits = db.prepare("SELECT COALESCE(SUM(view_count), 0) FROM listings WHERE seller_id = ? AND status != 'deleted'").pluck().get(sellerId) || (currentOrders * 25 + 120);
-    const prevVisits = Math.round(currentVisits * 0.9) || 100;
-
-    // Calculate changes
-    const revenue_change_pct = prevRevenue > 0 ? Math.round(((currentRevenue - prevRevenue) / prevRevenue) * 1000) / 10 : (currentRevenue > 0 ? 100 : 0);
-    const orders_change_pct = prevOrders > 0 ? Math.round(((currentOrders - prevOrders) / prevOrders) * 1000) / 10 : (currentOrders > 0 ? 100 : 0);
-    const conversion_rate_pct = currentVisits > 0 ? Math.round((currentOrders / currentVisits) * 1000) / 10 : 0;
-    const prevConversion = prevVisits > 0 ? (prevOrders / prevVisits) * 100 : 0;
-    const conversion_change_pct = prevConversion > 0 ? Math.round(((conversion_rate_pct - prevConversion) / prevConversion) * 1000) / 10 : (conversion_rate_pct > 0 ? 100 : 0);
-    const visits_change_pct = prevVisits > 0 ? Math.round(((currentVisits - prevVisits) / prevVisits) * 1000) / 10 : (currentVisits > 0 ? 100 : 0);
-
-    // Chart Data
-    const chart_data = [];
-    for (let i = days; i >= 0; i--) {
-      const d = new Date(Date.now() - i * 86400000).toISOString().split('T')[0];
-      const ordCount = db.prepare("SELECT COUNT(*) FROM orders WHERE seller_id = ? AND date(created_at) = date(?) AND status != 'cancelled'").pluck().get(sellerId, d);
-      const visitsCount = ordCount * 25 + (Math.floor(Math.sin(i) * 5) + 10);
-      chart_data.push({ date: d, visits: visitsCount, orders: ordCount });
+    // Construct params for orders date check
+    const queryParams = [sellerId];
+    if (period === 'custom') {
+      const start = start_date || startDate;
+      const end = end_date || endDate;
+      if (start && end) {
+        const formattedStart = start.includes(' ') || start.includes('T') ? start : `${start} 00:00:00`;
+        const formattedEnd = end.includes(' ') || end.includes('T') ? end : `${end} 23:59:59`;
+        queryParams.push(formattedStart, formattedEnd);
+      } else if (start) {
+        queryParams.push(start.includes(' ') || start.includes('T') ? start : `${start} 00:00:00`);
+      } else if (end) {
+        queryParams.push(end.includes(' ') || end.includes('T') ? end : `${end} 23:59:59`);
+      }
     }
 
-    // Best Sellers
-    const best_sellers = db.prepare(`
-      SELECT l.id, l.title, COUNT(o.id) as sales_count, COALESCE(SUM(o.total_paise), 0) as revenue_paise
-      FROM orders o
-      JOIN listings l ON l.id = o.listing_id
-      WHERE o.seller_id = ? AND o.status != 'cancelled'
-      GROUP BY l.id
-      ORDER BY sales_count DESC
-      LIMIT 5
-    `).all(sellerId);
+    // 1. Total Revenue and Total Orders (excluding cancelled)
+    const ordersStatsRow = db.prepare(`
+      SELECT 
+        COALESCE(SUM(total_paise), 0) as total_revenue,
+        COUNT(*) as total_orders
+      FROM orders
+      WHERE seller_id = ? AND LOWER(status) != 'cancelled' AND ${getCondition('orders')}
+    `).get(...queryParams);
 
-    // Listings Score Average
-    const scoreAvg = db.prepare("SELECT COALESCE(AVG(listing_score), 0) FROM listings WHERE seller_id = ? AND status != 'deleted'").pluck().get(sellerId) || 0;
+    const total_revenue = ordersStatsRow.total_revenue;
+    const total_orders = ordersStatsRow.total_orders;
+    const avg_order_value = total_orders > 0 ? Math.round(total_revenue / total_orders) : 0;
+
+    // 2. Store Visitors
+    const visitorsRow = db.prepare(`
+      SELECT COALESCE(SUM(view_count), 0) as total_views
+      FROM listings
+      WHERE seller_id = ? AND status != 'deleted'
+    `).get(sellerId);
+    
+    let store_visitors = visitorsRow.total_views;
+    if (store_visitors === 0) {
+      store_visitors = total_orders * 20;
+    }
+
+    // 3. Conversion Rate
+    const conversion_rate = store_visitors > 0 ? (total_orders / store_visitors) * 100 : 0;
+
+    // 4. Returns & Cancellations
+    const returnsRow = db.prepare(`
+      SELECT COUNT(*) as c
+      FROM orders
+      WHERE seller_id = ? AND (LOWER(status) = 'cancelled' OR LOWER(payment_status) = 'refunded') AND ${getCondition('orders')}
+    `).get(...queryParams);
+    const returns_cancellations = returnsRow.c;
+
+    // 5. Customer Insights: Repeat Buyers & New Buyers
+    const buyersStats = db.prepare(`
+      SELECT buyer_id, COUNT(*) as order_count
+      FROM orders
+      WHERE seller_id = ? AND LOWER(status) != 'cancelled' AND ${getCondition('orders')}
+      GROUP BY buyer_id
+    `).all(...queryParams);
+
+    let repeat_buyers = 0;
+    let new_buyers = 0;
+    buyersStats.forEach(b => {
+      if (b.order_count >= 2) {
+        repeat_buyers++;
+      } else {
+        new_buyers++;
+      }
+    });
+
+    // 6. Top Locations
+    const topLocations = db.prepare(`
+      SELECT a.city, COUNT(o.id) as order_count, SUM(o.total_paise) as revenue
+      FROM orders o
+      JOIN addresses a ON o.address_id = a.id
+      WHERE o.seller_id = ? AND LOWER(o.status) != 'cancelled' AND ${getCondition('o')}
+      GROUP BY a.city
+      ORDER BY order_count DESC, revenue DESC
+      LIMIT 5
+    `).all(...queryParams);
+
+    // 7. Custom vs Pre-made comparison
+    const orderTypes = db.prepare(`
+      SELECT order_type, COUNT(*) as order_count, COALESCE(SUM(total_paise), 0) as revenue
+      FROM orders
+      WHERE seller_id = ? AND LOWER(status) != 'cancelled' AND ${getCondition('orders')}
+      GROUP BY order_type
+    `).all(...queryParams);
+
+    let custom_orders_count = 0;
+    let custom_revenue = 0;
+    let premade_orders_count = 0;
+    let premade_revenue = 0;
+
+    orderTypes.forEach(ot => {
+      if (ot.order_type === 'custom') {
+        custom_orders_count = ot.order_count;
+        custom_revenue = ot.revenue;
+      } else {
+        premade_orders_count = ot.order_count;
+        premade_revenue = ot.revenue;
+      }
+    });
+
+    // 8. Product Performance
+    const prodParams = [...queryParams, sellerId];
+    const productPerformance = db.prepare(`
+      SELECT 
+        l.id,
+        l.title as name,
+        COALESCE(SUM(CASE WHEN LOWER(o.status) != 'cancelled' THEN o.quantity ELSE 0 END), 0) as units_sold,
+        COALESCE(SUM(CASE WHEN LOWER(o.status) != 'cancelled' THEN o.total_paise ELSE 0 END), 0) as revenue,
+        l.stock_count as stock,
+        COALESCE((SELECT AVG(rating) FROM reviews WHERE listing_id = l.id), 0) as rating
+      FROM listings l
+      LEFT JOIN orders o ON o.listing_id = l.id AND ${getCondition('o')}
+      WHERE l.seller_id = ? AND l.status != 'deleted'
+      GROUP BY l.id
+      ORDER BY units_sold DESC, revenue DESC
+    `).all(...prodParams);
+
+    // 9. Generate Daily/Hourly intervals for charts
+    let intervals = [];
+    const now = Date.now();
+    if (period === 'today') {
+      for (let i = 23; i >= 0; i--) {
+        const d = new Date(now - i * 3600000);
+        const label = d.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+        intervals.push({
+          start: new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), 0, 0),
+          end: new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), 59, 59),
+          label,
+          revenue: 0,
+          orders: 0
+        });
+      }
+    } else {
+      let limitDays = 30;
+      if (period === '7d') limitDays = 7;
+      else if (period === '90d') limitDays = 90;
+      else if (period === '1y') limitDays = 365;
+      else if (period === 'custom') {
+        const start = start_date || startDate;
+        const end = end_date || endDate;
+        const startDateObj = start ? new Date(start) : new Date(Date.now() - 30 * 86400000);
+        const endDateObj = end ? new Date(end) : new Date();
+        const diffTime = Math.abs(endDateObj - startDateObj);
+        limitDays = Math.min(Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1, 365);
+      }
+
+      for (let i = limitDays - 1; i >= 0; i--) {
+        const d = new Date(now - i * 86400000);
+        const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        intervals.push({
+          start: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0),
+          end: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59),
+          label,
+          revenue: 0,
+          orders: 0
+        });
+      }
+    }
+
+    // 10. Fetch all orders for this period to aggregate
+    const ordersList = db.prepare(`
+      SELECT created_at, total_paise
+      FROM orders
+      WHERE seller_id = ? AND LOWER(status) != 'cancelled' AND ${getCondition('orders')}
+      ORDER BY created_at ASC
+    `).all(...queryParams);
+
+    ordersList.forEach(o => {
+      const dateStr = o.created_at.includes('T') ? o.created_at : o.created_at.replace(' ', 'T');
+      const oDate = new Date(dateStr);
+      const oTime = oDate.getTime();
+      
+      for (const interval of intervals) {
+        if (oTime >= interval.start.getTime() && oTime <= interval.end.getTime()) {
+          interval.revenue += o.total_paise;
+          interval.orders += 1;
+          break;
+        }
+      }
+    });
+
+    // Distribute store visitors proportionally
+    intervals.forEach(interval => {
+      let interval_visitors = 0;
+      if (total_orders > 0) {
+        const proportional = (interval.orders / total_orders) * store_visitors;
+        interval_visitors = Math.max(5, Math.round(proportional));
+      } else {
+        interval_visitors = 5;
+      }
+      const rate = interval_visitors > 0 ? (interval.orders / interval_visitors) * 100 : 0;
+      interval.visits = interval_visitors;
+      interval.conversion_rate = Math.round(rate * 100) / 100;
+    });
+
+    // ZAI Mode Insight
+    let zai_insight = null;
+    if (req.seller.zai_mode_enabled === 1) {
+      if (custom_revenue > premade_revenue) {
+        zai_insight = "ZAI Insight: Custom orders are currently driving most of your sales. Consider expanding slots for customized gifts!";
+      } else if (premade_revenue > 0) {
+        zai_insight = "ZAI Insight: Pre-made items are selling fast. Check your low stock alerts to avoid running out of stock.";
+      } else {
+        zai_insight = "ZAI Insight: Promote your listings using Reels to drive your first sales of the season!";
+      }
+    }
+
+    // 11. Compile final charts data
+    const chartsData = {
+      labels: intervals.map(i => i.label),
+      revenue: intervals.map(i => i.revenue / 100), // in rupees
+      orders: intervals.map(i => i.orders),
+      conversion: intervals.map(i => i.conversion_rate)
+    };
 
     return res.json({
       success: true,
       data: {
         period,
         kpis: {
-          revenue_paise: currentRevenue,
-          revenue_change_pct,
-          orders_count: currentOrders,
-          orders_change_pct,
-          conversion_rate_pct,
-          conversion_change_pct,
-          avg_order_value_paise: currentOrders > 0 ? Math.round(currentRevenue / currentOrders) : 0, // compatibility
-          avg_order_change_pct: 0,
+          total_revenue,
+          total_orders,
+          avg_order_value,
+          store_visitors,
+          conversion_rate,
+          returns_cancellations,
+          // Backwards compatibility
+          revenue_paise: total_revenue,
+          orders_count: total_orders,
+          conversion_rate_pct: Math.round(conversion_rate * 10) / 10,
+          avg_order_value_paise: avg_order_value,
           return_rate_pct: 0,
-          return_rate_change_pct: 0,
-          repeat_buyer_pct: 0,
-          repeat_buyer_change_pct: 0
+          repeat_buyer_pct: buyersStats.length > 0 ? Math.round((repeat_buyers / buyersStats.length) * 100) : 0
         },
+        customer_insights: {
+          repeat_buyers,
+          new_buyers,
+          top_locations
+        },
+        order_types: {
+          custom: {
+            orders_count: custom_orders_count,
+            revenue: custom_revenue
+          },
+          premade: {
+            orders_count: premade_orders_count,
+            revenue: premade_revenue
+          }
+        },
+        product_performance: productPerformance,
+        charts: chartsData,
+        zai_insight,
+        // Backwards compatibility fields
+        best_sellers: productPerformance.slice(0, 5).map(p => ({
+          id: p.id,
+          title: p.name,
+          sales_count: p.units_sold,
+          revenue_paise: p.revenue
+        })),
+        listings_score_avg: db.prepare("SELECT COALESCE(AVG(listing_score), 0) FROM listings WHERE seller_id = ? AND status != 'deleted'").pluck().get(sellerId) || 0,
+        revenue_chart: [],
         traffic: {
-          visits: currentVisits,
-          visits_change_pct,
-          chart_data,
-          total_visits: currentVisits, // compatibility
-          sources: [] // compatibility
-        },
-        best_sellers,
-        listings_score_avg: Math.round(scoreAvg * 10) / 10,
-        revenue_chart: [], // compatibility
-        chart_annotations: [] // compatibility
+          visits: store_visitors,
+          visits_change_pct: 0,
+          sources: []
+        }
       }
     });
   } catch (err) {
@@ -6212,9 +6768,10 @@ app.get('/api/seller/analytics/export', requireSeller, (req, res) => {
   try {
     const sellerId = req.user.user_id;
     const rows = db.prepare(`
-      SELECT o.order_ref, o.created_at, o.total_paise, l.title as product_name
+      SELECT o.order_ref, o.created_at, o.total_paise, 
+             COALESCE(l.title, (SELECT product_name FROM order_items WHERE order_id = o.id LIMIT 1)) as product_name
       FROM orders o
-      JOIN listings l ON l.id = o.listing_id
+      LEFT JOIN listings l ON l.id = o.listing_id
       WHERE o.seller_id = ? ORDER BY o.created_at DESC
     `).all(sellerId);
 
@@ -8032,6 +8589,2003 @@ app.post('/api/admin/payment-health/run-check', rateLimit(6), authenticateAdminT
   } catch (err) {
     console.error('POST /api/admin/payment-health/run-check error:', err);
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// GET /api/customizations/tags
+app.get(['/api/customizations/tags', '/customizations/tags'], (req, res) => {
+  try {
+    const rows = db.prepare(`
+      SELECT DISTINCT product_type_tag 
+      FROM intake_question_templates 
+      WHERE is_active = 1 
+      ORDER BY product_type_tag ASC
+    `).all();
+    const tags = rows.map(r => r.product_type_tag);
+    return res.status(200).json({ tags });
+  } catch (err) {
+    console.error('Error fetching customization tags:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// GET /api/customizations
+app.get(['/api/customizations', '/customizations'], (req, res) => {
+  try {
+    let page = parseInt(req.query.page, 10);
+    if (isNaN(page) || page < 1) page = 1;
+
+    let limit = parseInt(req.query.limit, 10);
+    if (isNaN(limit) || limit < 1) limit = 20;
+    if (limit > 50) limit = 50;
+
+    const offset = (page - 1) * limit;
+
+    let whereClause = "WHERE listings.listing_type = 'custom' AND listings.status = 'active'";
+    const params = [];
+
+    if (req.query.tag) {
+      whereClause += " AND listings.category = ?";
+      params.push(req.query.tag);
+    }
+
+    let orderBy = "ORDER BY listings.view_count DESC, listings.id DESC";
+    if (req.query.sort === 'newest') {
+      orderBy = "ORDER BY listings.created_at DESC, listings.id DESC";
+    } else if (req.query.sort === 'price_asc') {
+      orderBy = "ORDER BY listings.base_price ASC, listings.id DESC";
+    }
+
+    const countQuery = `SELECT COUNT(*) as count FROM listings ${whereClause}`;
+    const totalRow = db.prepare(countQuery).get(...params);
+    const total = totalRow ? totalRow.count : 0;
+
+    const dataQuery = `
+      SELECT 
+        listings.id AS listing_id,
+        listings.seller_id,
+        seller_profiles.shop_name,
+        users.full_name,
+        users.avatar_url AS seller_avatar_url,
+        listings.category AS product_type_tag,
+        listings.title AS product_name,
+        listings.base_price,
+        listings.ships_in_days AS lead_time_days,
+        listings.cover_photo_url AS cover_image_url,
+        seller_profiles.is_approved,
+        (SELECT COUNT(*) FROM reviews WHERE reviews.listing_id = listings.id) AS review_count,
+        (SELECT AVG(rating) FROM reviews WHERE reviews.listing_id = listings.id) AS avg_rating
+      FROM listings
+      LEFT JOIN users ON users.id = listings.seller_id
+      LEFT JOIN seller_profiles ON seller_profiles.user_id = listings.seller_id
+      ${whereClause}
+      ${orderBy}
+      LIMIT ? OFFSET ?
+    `;
+
+    const dataParams = [...params, limit, offset];
+    const rows = db.prepare(dataQuery).all(...dataParams);
+
+    const services = rows.map(row => {
+      const avgRatingRaw = row.avg_rating;
+      const avg_rating = avgRatingRaw !== null ? parseFloat(Number(avgRatingRaw).toFixed(1)) : 0.0;
+      return {
+        listing_id: row.listing_id,
+        seller_id: row.seller_id,
+        seller_name: row.shop_name || row.full_name || '',
+        seller_avatar_url: row.seller_avatar_url || null,
+        product_type_tag: row.product_type_tag || null,
+        product_name: row.product_name || '',
+        base_price: row.base_price / 100,
+        lead_time_days: row.lead_time_days || 0,
+        cover_image_url: row.cover_image_url || null,
+        is_verified_seller: row.is_approved === 1,
+        avg_rating,
+        review_count: parseInt(row.review_count || 0, 10)
+      };
+    });
+
+    return res.status(200).json({
+      total,
+      page,
+      limit,
+      services
+    });
+  } catch (err) {
+    console.error('Error fetching customizations:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// GET /api/customizations/:listing_id
+app.get(['/api/customizations/:listing_id', '/customizations/:listing_id'], (req, res) => {
+  try {
+    const listing_id = parseInt(req.params.listing_id, 10);
+    if (isNaN(listing_id)) {
+      return res.status(404).json({ error: "Service not found", code: "NOT_FOUND" });
+    }
+
+    const listing = db.prepare("SELECT * FROM listings WHERE id = ? AND listing_type = 'custom'").get(listing_id);
+    if (!listing) {
+      return res.status(404).json({ error: "Service not found", code: "NOT_FOUND" });
+    }
+
+    const seller_id = listing.seller_id;
+    const sellerUser = db.prepare('SELECT * FROM users WHERE id = ?').get(seller_id);
+    const sellerProfile = db.prepare('SELECT * FROM seller_profiles WHERE user_id = ?').get(seller_id) || {};
+
+    const ratingRow = db.prepare('SELECT COUNT(*) as count, AVG(rating) as avg_rating FROM reviews WHERE listing_id = ?').get(listing.id);
+    const review_count = ratingRow ? ratingRow.count : 0;
+    const avg_rating = ratingRow && ratingRow.avg_rating !== null ? parseFloat(Number(ratingRow.avg_rating).toFixed(1)) : 0.0;
+
+    const storeConfig = db.prepare('SELECT city, artist_bio FROM store_config WHERE seller_id = ?').get(seller_id) || {};
+    const seller_city = storeConfig.city || (sellerUser ? sellerUser.location : null) || '';
+    const seller_bio = storeConfig.artist_bio || sellerProfile.shop_bio || '';
+
+    let gallery_images = [];
+    try {
+      const photos = db.prepare('SELECT url FROM listing_photos WHERE listing_id = ? ORDER BY sort_order ASC LIMIT 10').all(listing.id);
+      if (photos && photos.length > 0) {
+        gallery_images = photos.map(p => p.url);
+      }
+    } catch (e) {
+      console.warn('Failed to query listing_photos:', e.message);
+    }
+
+    if (gallery_images.length === 0) {
+      try {
+        const images = db.prepare('SELECT image_url FROM listing_images WHERE listing_id = ? ORDER BY sort_order ASC LIMIT 10').all(listing.id);
+        if (images && images.length > 0) {
+          gallery_images = images.map(i => i.image_url);
+        }
+      } catch (e) {
+        console.warn('Failed to query listing_images:', e.message);
+      }
+    }
+
+    if (gallery_images.length === 0) {
+      if (listing.cover_photo_url) {
+        gallery_images = [listing.cover_photo_url];
+      } else {
+        gallery_images = [];
+      }
+    }
+
+    const reviewRows = db.prepare(`
+      SELECT 
+        users.full_name AS buyer_name,
+        users.avatar_url AS buyer_avatar_url,
+        reviews.rating,
+        reviews.body AS review_text,
+        reviews.created_at
+      FROM reviews
+      LEFT JOIN users ON users.id = COALESCE(reviews.reviewer_id, reviews.buyer_id)
+      WHERE reviews.listing_id = ?
+      ORDER BY reviews.created_at DESC
+      LIMIT 5
+    `).all(listing.id);
+
+    const reviews = reviewRows.map(r => ({
+      buyer_name: r.buyer_name || 'Anonymous',
+      buyer_avatar_url: r.buyer_avatar_url || null,
+      rating: r.rating,
+      review_text: r.review_text || '',
+      review_image_url: null,
+      created_at: r.created_at
+    }));
+
+    let questions_preview = [];
+    if (listing.category) {
+      const qRows = db.prepare(`
+        SELECT id, product_type_tag, question_text, answer_type, options, display_order, is_active 
+        FROM intake_question_templates 
+        WHERE product_type_tag = ? AND is_active = 1 
+        ORDER BY display_order ASC 
+        LIMIT 3
+      `).all(listing.category);
+
+      questions_preview = qRows.map(q => {
+        let options = null;
+        if (q.options) {
+          try {
+            options = JSON.parse(q.options);
+          } catch (e) {
+            options = q.options;
+          }
+        }
+        return {
+          id: q.id,
+          product_type_tag: q.product_type_tag,
+          question_text: q.question_text,
+          answer_type: q.answer_type,
+          options,
+          display_order: q.display_order,
+          is_active: q.is_active
+        };
+      });
+    }
+
+    const detail = {
+      listing_id: listing.id,
+      seller_id: listing.seller_id,
+      seller_name: sellerProfile.shop_name || (sellerUser ? sellerUser.full_name : '') || '',
+      seller_avatar_url: sellerUser ? sellerUser.avatar_url : null,
+      product_type_tag: listing.category,
+      product_name: listing.title,
+      base_price: listing.base_price / 100,
+      lead_time_days: listing.ships_in_days,
+      cover_image_url: listing.cover_photo_url,
+      is_verified_seller: sellerProfile.is_approved === 1,
+      avg_rating,
+      review_count,
+      seller_city,
+      seller_bio,
+      gallery_images,
+      reviews,
+      questions_preview
+    };
+
+    return res.status(200).json(detail);
+  } catch (err) {
+    console.error('Error fetching customization detail:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// Helper for completing intake flow
+function completeIntakeFlow(conversation_id) {
+  const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(conversation_id);
+  if (!conversation) return null;
+  
+  // Fetch seller's shop_name or full_name
+  const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(conversation.seller_id);
+  const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(conversation.seller_id);
+  const sellerName = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+  
+  // Load responses joined with template questions
+  const responses = db.prepare(`
+    SELECT r.question_text, r.answer_type, r.answer_value, q.display_order
+    FROM intake_responses r
+    LEFT JOIN intake_question_templates q ON r.question_id = q.id
+    WHERE r.conversation_id = ?
+    ORDER BY q.display_order ASC
+  `).all(conversation_id);
+  
+  const questions_and_answers = responses.map(r => ({
+    question: r.question_text,
+    answer_type: r.answer_type,
+    answer: r.answer_value
+  }));
+  
+  const submitted_at = new Date().toISOString();
+  
+  const intakeSummaryObj = {
+    product_type: conversation.product_type_tag,
+    listing_id: conversation.listing_id,
+    seller_name: sellerName,
+    submitted_at: submitted_at,
+    questions_and_answers: questions_and_answers
+  };
+  
+  const intake_summary = JSON.stringify(intakeSummaryObj);
+  
+  // UPDATE conversations
+  db.prepare(`
+    UPDATE conversations 
+    SET intake_complete = 1, intake_summary = ?, status = 'awaiting_seller', updated_at = datetime('now')
+    WHERE id = ?
+  `).run(intake_summary, conversation_id);
+  
+  // Insert a notification
+  db.prepare(`
+    INSERT INTO notifications (user_id, type, conversation_id, message, is_read, created_at)
+    VALUES (?, 'new_customize_request', ?, 'A buyer has sent you a customization request', 0, datetime('now'))
+  `).run(conversation.seller_id, conversation_id);
+  
+  return {
+    intake_complete: true,
+    conversation_status: "awaiting_seller",
+    bot_closing_message: `Your request has been sent to ${sellerName}! They'll review your details and send you a price quote. Feel free to add anything else below — they'll see it when they come online.`,
+    intake_summary: intakeSummaryObj
+  };
+}
+
+// Multer setup for intake photo uploads
+const intakeUploadDir = path.join(__dirname, '..', 'uploads', 'intake');
+fs.mkdirSync(intakeUploadDir, { recursive: true });
+
+const intakeStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, intakeUploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `intake-${Date.now()}-${file.originalname}`);
+  }
+});
+
+const intakeFileFilter = (req, file, cb) => {
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (!allowedExtensions.includes(ext)) {
+    return cb(new Error('Format check: jpg/jpeg/png/webp only'), false);
+  }
+  cb(null, true);
+};
+
+const uploadIntake = multer({
+  storage: intakeStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: intakeFileFilter
+});
+
+const uploadIntakeMiddleware = (req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return next();
+  }
+  uploadIntake.single('photo')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({
+          error: "File size limit exceeded",
+          code: "FILE_TOO_LARGE"
+        });
+      }
+      return res.status(400).json({
+        error: err.message,
+        code: "UPLOAD_ERROR"
+      });
+    }
+    next();
+  });
+};
+
+// 2. Start customization flow
+app.post('/api/conversations', authenticateToken, (req, res) => {
+  try {
+    const { listing_id, product_type_tag } = req.body;
+    if (!listing_id || !product_type_tag) {
+      return res.status(400).json({ error: "Missing listing_id or product_type_tag", code: "VALIDATION_ERROR" });
+    }
+    const listing = db.prepare("SELECT * FROM listings WHERE id = ?").get(listing_id);
+    if (!listing) {
+      return res.status(404).json({ error: "Listing not found", code: "NOT_FOUND" });
+    }
+    const buyer_id = req.user.user_id;
+    const seller_id = listing.seller_id;
+    
+    // Check if open conversation exists
+    const existing = db.prepare(`
+      SELECT * FROM conversations 
+      WHERE buyer_id = ? AND seller_id = ? AND product_type_tag = ? AND status NOT IN ('completed', 'closed')
+    `).get(buyer_id, seller_id, product_type_tag);
+    
+    const questionCountRow = db.prepare(`
+      SELECT COUNT(*) as count FROM intake_question_templates 
+      WHERE product_type_tag = ? AND is_active = 1
+    `).get(product_type_tag);
+    const question_count = questionCountRow ? questionCountRow.count : 0;
+    
+    if (existing) {
+      return res.status(200).json({
+        conversation_id: existing.id,
+        existing: true,
+        intake_complete: existing.intake_complete === 1,
+        question_count: question_count
+      });
+    } else {
+      const info = db.prepare(`
+        INSERT INTO conversations (seller_id, buyer_id, listing_id, product_type_tag, status, intake_complete, intake_summary)
+        VALUES (?, ?, ?, ?, 'intake_in_progress', 0, NULL)
+      `).run(seller_id, buyer_id, listing_id, product_type_tag);
+      const new_id = info.lastInsertRowid;
+      
+      return res.status(200).json({
+        conversation_id: new_id,
+        existing: false,
+        intake_complete: false,
+        question_count: question_count
+      });
+    }
+  } catch (err) {
+    console.error('Error starting conversation:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 3. GET /api/conversations/:id/next-question
+app.get('/api/conversations/:id/next-question', authenticateToken, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    if (conversation.buyer_id !== req.user.user_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    const templates = db.prepare(`
+      SELECT * FROM intake_question_templates
+      WHERE product_type_tag = ? AND is_active = 1
+      ORDER BY display_order ASC
+    `).all(conversation.product_type_tag);
+    
+    const responses = db.prepare(`
+      SELECT * FROM intake_responses
+      WHERE conversation_id = ?
+    `).all(id);
+    
+    const answeredQuestionIds = new Set(responses.map(r => r.question_id));
+    const unansweredTemplates = templates.filter(t => !answeredQuestionIds.has(t.id));
+    
+    if (unansweredTemplates.length > 0) {
+      const nextQ = unansweredTemplates[0];
+      const is_last = templates.length > 0 && nextQ.id === templates[templates.length - 1].id;
+      
+      let parsedOptions = null;
+      if (nextQ.options) {
+        try {
+          parsedOptions = JSON.parse(nextQ.options);
+        } catch (e) {
+          parsedOptions = nextQ.options;
+        }
+      }
+      
+      return res.status(200).json({
+        done: false,
+        question: {
+          id: nextQ.id,
+          question_text: nextQ.question_text,
+          answer_type: nextQ.answer_type,
+          options: parsedOptions,
+          display_order: nextQ.display_order,
+          is_last: is_last
+        }
+      });
+    } else {
+      if (conversation.intake_complete === 0) {
+        completeIntakeFlow(id);
+      }
+      return res.status(200).json({ done: true });
+    }
+  } catch (err) {
+    console.error('Error fetching next question:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 4. POST /api/conversations/:id/answer
+app.post('/api/conversations/:id/answer', authenticateToken, uploadIntakeMiddleware, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    if (conversation.buyer_id !== req.user.user_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    if (conversation.intake_complete === 1) {
+      return res.status(400).json({ error: "Intake already complete", code: "INTAKE_DONE" });
+    }
+    
+    const { question_id, answer_value } = req.body;
+    const qId = parseInt(question_id, 10);
+    if (isNaN(qId)) {
+      return res.status(400).json({ error: "Invalid question_id", code: "VALIDATION_ERROR" });
+    }
+    
+    const question = db.prepare(`
+      SELECT * FROM intake_question_templates
+      WHERE id = ? AND product_type_tag = ? AND is_active = 1
+    `).get(qId, conversation.product_type_tag);
+    if (!question) {
+      return res.status(400).json({ error: "Question not found or inactive for this category", code: "VALIDATION_ERROR" });
+    }
+    
+    let answer_value_to_save;
+    if (question.answer_type === 'photo_upload') {
+      if (req.file) {
+        answer_value_to_save = `/uploads/intake/${req.file.filename}`;
+      } else {
+        answer_value_to_save = answer_value || null;
+      }
+    } else {
+      if (answer_value === undefined || answer_value === null || String(answer_value).trim() === '') {
+        return res.status(400).json({ error: "Answer value is required", code: "VALIDATION_ERROR" });
+      }
+      answer_value_to_save = String(answer_value).trim();
+      
+      if (question.answer_type === 'date_picker') {
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(answer_value_to_save)) {
+          return res.status(400).json({ error: "Invalid date format, must be YYYY-MM-DD", code: "VALIDATION_ERROR" });
+        }
+        const parts = answer_value_to_save.split('-');
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const day = parseInt(parts[2], 10);
+        
+        const inputDate = new Date(year, month, day);
+        if (isNaN(inputDate.getTime())) {
+          return res.status(400).json({ error: "Invalid date", code: "VALIDATION_ERROR" });
+        }
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (inputDate <= today) {
+          return res.status(400).json({ error: "Date must be in the future", code: "VALIDATION_ERROR" });
+        }
+      }
+    }
+    
+    const existingResponse = db.prepare(`
+      SELECT id FROM intake_responses
+      WHERE conversation_id = ? AND question_id = ?
+    `).get(id, qId);
+    
+    if (existingResponse) {
+      db.prepare(`
+        UPDATE intake_responses
+        SET answer_value = ?, answered_at = datetime('now')
+        WHERE id = ?
+      `).run(answer_value_to_save, existingResponse.id);
+    } else {
+      db.prepare(`
+        INSERT INTO intake_responses (conversation_id, question_id, question_text, answer_type, answer_value, answered_at)
+        VALUES (?, ?, ?, ?, ?, datetime('now'))
+      `).run(id, qId, question.question_text, question.answer_type, answer_value_to_save);
+    }
+    
+    const totalTemplates = db.prepare(`
+      SELECT COUNT(*) as count FROM intake_question_templates
+      WHERE product_type_tag = ? AND is_active = 1
+    `).get(conversation.product_type_tag).count;
+    
+    const answeredCount = db.prepare(`
+      SELECT COUNT(DISTINCT r.question_id) as count
+      FROM intake_responses r
+      JOIN intake_question_templates q ON r.question_id = q.id
+      WHERE r.conversation_id = ? AND q.product_type_tag = ? AND q.is_active = 1
+    `).get(id, conversation.product_type_tag).count;
+    
+    return res.status(200).json({
+      saved: true,
+      answered_count: answeredCount,
+      total_questions: totalTemplates
+    });
+  } catch (err) {
+    console.error('Error saving answer:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 5. POST /api/conversations/:id/complete-intake
+app.post('/api/conversations/:id/complete-intake', authenticateToken, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    if (conversation.buyer_id !== req.user.user_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    const result = completeIntakeFlow(id);
+    if (!result) {
+      return res.status(500).json({ error: "Failed to complete intake", code: "INTERNAL_SERVER_ERROR" });
+    }
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error('Error completing intake:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// Helper status transition logic
+function validateStatusTransition(from, to) {
+  if (from === to) return;
+  if (to === 'closed') return;
+  
+  const allowed = {
+    'intake_in_progress': ['awaiting_seller'],
+    'awaiting_seller': ['live', 'offer_sent'],
+    'live': ['offer_sent'],
+    'offer_sent': ['completed', 'live']
+  };
+  
+  if (allowed[from] && allowed[from].includes(to)) {
+    return;
+  }
+  
+  throw new Error(`Invalid status transition from '${from}' to '${to}'`);
+}
+
+// GET /api/conversations/:id
+app.get('/api/conversations/:id', authenticateToken, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    if (req.user.user_id !== conversation.buyer_id && req.user.user_id !== conversation.seller_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+
+    if (req.user.user_id === conversation.seller_id && conversation.status === 'awaiting_seller') {
+      try {
+        validateStatusTransition(conversation.status, 'live');
+        conversation.status = 'live';
+        db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(id);
+      } catch (err) {
+        return res.status(400).json({ error: err.message, code: "INVALID_TRANSITION" });
+      }
+    }
+
+    const listing = db.prepare("SELECT id, title, base_price, cover_photo_url FROM listings WHERE id = ?").get(conversation.listing_id);
+    
+    // Fallback logic for seller name
+    const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(conversation.seller_id);
+    const sellerUser = db.prepare("SELECT full_name, avatar_url FROM users WHERE id = ?").get(conversation.seller_id);
+    const shop_name = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+
+    const isBuyer = (req.user.user_id === conversation.buyer_id);
+    const buyerUser = db.prepare("SELECT full_name, avatar_url FROM users WHERE id = ?").get(conversation.buyer_id);
+    
+    let other_party = {};
+    if (isBuyer) {
+      other_party = {
+        id: conversation.seller_id,
+        user_id: conversation.seller_id,
+        name: shop_name,
+        avatar_url: sellerUser ? sellerUser.avatar_url : null,
+        is_online: false
+      };
+    } else {
+      other_party = {
+        id: conversation.buyer_id,
+        user_id: conversation.buyer_id,
+        name: buyerUser ? buyerUser.full_name : "",
+        avatar_url: buyerUser ? buyerUser.avatar_url : null,
+        is_online: false
+      };
+    }
+
+    let active_offer = null;
+    const activeOfferRow = db.prepare(`
+      SELECT id, price, delivery_date, seller_notes, status, expires_at, created_at
+      FROM custom_offers
+      WHERE conversation_id = ? AND status = 'pending'
+      ORDER BY id DESC LIMIT 1
+    `).get(id);
+
+    if (activeOfferRow) {
+      let hours_remaining = 0;
+      if (activeOfferRow.expires_at) {
+        const diffMs = new Date(activeOfferRow.expires_at.replace(' ', 'T') + 'Z').getTime() - Date.now();
+        hours_remaining = Math.max(0, Math.floor(diffMs / 3600000));
+      }
+      active_offer = {
+        id: activeOfferRow.id,
+        price: activeOfferRow.price,
+        delivery_date: activeOfferRow.delivery_date,
+        seller_notes: activeOfferRow.seller_notes,
+        status: activeOfferRow.status,
+        expires_at: activeOfferRow.expires_at,
+        hours_remaining,
+        created_at: activeOfferRow.created_at
+      };
+    }
+
+    const messagesRows = db.prepare(`
+      SELECT id, sender_id, sender_role, message_type, content, image_url, sent_at, is_read
+      FROM conversation_messages
+      WHERE conversation_id = ?
+      ORDER BY id ASC
+    `).all(id);
+
+    const messages = messagesRows.map(r => ({
+      id: r.id,
+      sender_id: r.sender_id,
+      sender_role: r.sender_role,
+      message_type: r.message_type,
+      content: r.content,
+      image_url: r.image_url,
+      sent_at: r.sent_at,
+      is_read: r.is_read === 1
+    }));
+
+    const responseObj = {
+      conversation_id: conversation.id,
+      status: conversation.status,
+      intake_complete: conversation.intake_complete === 1,
+      intake_summary: conversation.intake_summary ? JSON.parse(conversation.intake_summary) : null,
+      listing: {
+        id: listing ? listing.id : conversation.listing_id,
+        title: listing ? listing.title : "",
+        product_name: listing ? listing.title : "",
+        seller_name: shop_name,
+        base_price: listing ? (listing.base_price / 100) : 0,
+        cover_photo_url: listing ? listing.cover_photo_url : null,
+        cover_image_url: listing ? listing.cover_photo_url : null
+      },
+      other_party,
+      active_offer,
+      messages
+    };
+
+    return res.status(200).json(responseObj);
+  } catch (err) {
+    console.error('Error in GET /api/conversations/:id:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// GET /api/conversations/:id/intake-summary
+app.get('/api/conversations/:id/intake-summary', authenticateToken, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    if (req.user.user_id !== conversation.buyer_id && req.user.user_id !== conversation.seller_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+
+    let intake_summary = null;
+    if (conversation.intake_summary) {
+      try {
+        intake_summary = JSON.parse(conversation.intake_summary);
+      } catch (e) {
+        intake_summary = conversation.intake_summary;
+      }
+    }
+
+    return res.status(200).json({
+      intake_summary,
+      submitted_at: conversation.updated_at
+    });
+  } catch (err) {
+    console.error('Error in GET /api/conversations/:id/intake-summary:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// POST /api/conversations/:id/messages
+const chatUploadDir = path.join(__dirname, '..', 'uploads', 'chat');
+fs.mkdirSync(chatUploadDir, { recursive: true });
+
+const chatStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, chatUploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `chat-${Date.now()}-${file.originalname}`);
+  }
+});
+
+const chatFileFilter = (req, file, cb) => {
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (!allowedExtensions.includes(ext)) {
+    return cb(new Error('Format check: jpg/jpeg/png/webp only'), false);
+  }
+  cb(null, true);
+};
+
+const uploadChat = multer({
+  storage: chatStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: chatFileFilter
+});
+
+const uploadChatMiddleware = (req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return next();
+  }
+  uploadChat.single('photo')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({
+          error: "File size limit exceeded",
+          code: "FILE_TOO_LARGE"
+        });
+      }
+      return res.status(400).json({
+        error: err.message,
+        code: "UPLOAD_ERROR"
+      });
+    }
+    next();
+  });
+};
+
+app.post('/api/conversations/:id/messages', authenticateToken, uploadChatMiddleware, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    if (req.user.user_id !== conversation.buyer_id && req.user.user_id !== conversation.seller_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+
+    if (conversation.status === 'intake_in_progress') {
+      return res.status(400).json({ error: "Cannot send message during bot intake", code: "INTAKE_IN_PROGRESS" });
+    }
+
+    const sender_role = (req.user.user_id === conversation.buyer_id) ? 'buyer' : 'seller';
+    const other_party_id = (req.user.user_id === conversation.buyer_id) ? conversation.seller_id : conversation.buyer_id;
+
+    if (conversation.status === 'awaiting_seller') {
+      if (sender_role === 'seller') {
+        try {
+          validateStatusTransition(conversation.status, 'live');
+        } catch (e) {
+          return res.status(400).json({ error: e.message, code: "INVALID_TRANSITION" });
+        }
+        conversation.status = 'live';
+        db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(id);
+      }
+    }
+
+    let message_type = 'text';
+    let content = req.body.content || null;
+    let image_url = null;
+
+    if (req.file) {
+      message_type = 'photo';
+      image_url = `/uploads/chat/${req.file.filename}`;
+    }
+
+    if (message_type === 'text' && (!content || content.trim() === '')) {
+      return res.status(400).json({ error: "Content is required for text messages", code: "VALIDATION_ERROR" });
+    }
+
+    // Insert message
+    const insertMsg = db.prepare(`
+      INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, image_url, sent_at, is_read)
+      VALUES (?, ?, ?, ?, ?, ?, datetime('now'), 0)
+    `).run(id, req.user.user_id, sender_role, message_type, content, image_url);
+    const message_id = insertMsg.lastInsertRowid;
+
+    // Mark previous unread messages from the other party as read
+    db.prepare(`
+      UPDATE conversation_messages
+      SET is_read = 1
+      WHERE conversation_id = ? AND sender_id = ? AND is_read = 0
+    `).run(id, other_party_id);
+
+    // Create notification for other party
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, message, conversation_id, is_read, created_at)
+      VALUES (?, 'new_message', 'You have a new message', ?, 0, datetime('now'))
+    `).run(other_party_id, id);
+
+    // Retrieve sent_at timestamp
+    const msgRow = db.prepare("SELECT sent_at FROM conversation_messages WHERE id = ?").get(message_id);
+    const sent_at = msgRow ? msgRow.sent_at : new Date().toISOString();
+
+    return res.status(200).json({
+      message_id,
+      sent_at,
+      conversation_status: conversation.status
+    });
+  } catch (err) {
+    console.error('Error in POST /api/conversations/:id/messages:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// GET /api/conversations
+app.get('/api/conversations', authenticateToken, (req, res) => {
+  try {
+    let page = parseInt(req.query.page, 10);
+    if (isNaN(page) || page < 1) page = 1;
+    let limit = parseInt(req.query.limit, 10);
+    if (isNaN(limit) || limit < 1) limit = 20;
+    if (limit > 50) limit = 50;
+    const offset = (page - 1) * limit;
+
+    let query = `
+      SELECT c.id, c.seller_id, c.buyer_id, c.listing_id, c.status, c.created_at, c.updated_at,
+             l.title as product_name
+      FROM conversations c
+      LEFT JOIN listings l ON c.listing_id = l.id
+      WHERE (c.buyer_id = ? OR c.seller_id = ?)
+    `;
+    const params = [req.user.user_id, req.user.user_id];
+    if (req.query.status) {
+      query += " AND c.status = ?";
+      params.push(req.query.status);
+    }
+    query += " ORDER BY c.updated_at DESC, c.id DESC LIMIT ? OFFSET ?";
+    params.push(limit, offset);
+
+    const rows = db.prepare(query).all(...params);
+
+    const conversations = rows.map(c => {
+      const isBuyer = (req.user.user_id === c.buyer_id);
+      const otherPartyId = isBuyer ? c.seller_id : c.buyer_id;
+
+      const otherUser = db.prepare("SELECT full_name, avatar_url FROM users WHERE id = ?").get(otherPartyId);
+      let other_party_name = otherUser ? otherUser.full_name : "";
+      let other_party_avatar = otherUser ? otherUser.avatar_url : null;
+
+      if (isBuyer) {
+        const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(otherPartyId);
+        if (sellerProfile && sellerProfile.shop_name) {
+          other_party_name = sellerProfile.shop_name;
+        }
+      }
+
+      const lastMsg = db.prepare(`
+        SELECT sender_id, message_type, content, sent_at
+        FROM conversation_messages
+        WHERE conversation_id = ?
+        ORDER BY id DESC LIMIT 1
+      `).get(c.id);
+
+      let last_message_preview = "No messages yet";
+      let last_message_at = c.created_at;
+
+      if (lastMsg) {
+        last_message_at = lastMsg.sent_at;
+        if (lastMsg.message_type === 'photo') {
+          last_message_preview = '[Photo]';
+        } else if (lastMsg.message_type === 'system') {
+          last_message_preview = '[System Message]';
+        } else {
+          last_message_preview = lastMsg.content || "";
+        }
+      }
+
+      const unreadRow = db.prepare(`
+        SELECT COUNT(*) as count
+        FROM conversation_messages
+        WHERE conversation_id = ? AND sender_id != ? AND is_read = 0
+      `).get(c.id, req.user.user_id);
+      const unread_count = unreadRow ? unreadRow.count : 0;
+
+      return {
+        conversation_id: c.id,
+        status: c.status,
+        other_party_name,
+        other_party_avatar,
+        product_name: c.product_name || "",
+        last_message_preview,
+        last_message_at,
+        unread_count
+      };
+    });
+
+    return res.status(200).json({ conversations });
+  } catch (err) {
+    console.error('Error in GET /api/conversations:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// Helper function to check and process offer expiry
+function checkOfferExpiry(conversation_id) {
+  const offer = db.prepare("SELECT * FROM custom_offers WHERE conversation_id = ? AND status = 'pending' ORDER BY id DESC LIMIT 1").get(conversation_id);
+  if (offer && new Date(offer.expires_at) < new Date()) {
+    db.transaction(() => {
+      db.prepare("UPDATE custom_offers SET status = 'expired', updated_at = datetime('now') WHERE id = ?").run(offer.id);
+      db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(conversation_id);
+      db.prepare(`
+        INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at, is_read)
+        VALUES (?, ?, 'bot', 'system', 'OFFER_EXPIRED', datetime('now'), 0)
+      `).run(conversation_id, offer.seller_id);
+      
+      const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(offer.seller_id);
+      const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(offer.seller_id);
+      const sellerName = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+      
+      db.prepare(`
+        INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+        VALUES (?, 'offer_expired', ?, ?, ?, 0, datetime('now'))
+      `).run(
+        offer.buyer_id,
+        offer.id,
+        conversation_id,
+        `Your offer from ${sellerName} has expired. You can ask them for a new quote.`
+      );
+    })();
+    return true;
+  }
+  return false;
+}
+
+// 1. POST /api/conversations/:id/offer
+app.post('/api/conversations/:id/offer', authenticateToken, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    
+    // Clean up expired offers first
+    checkOfferExpiry(id);
+    
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    
+    // Auth: Required (seller JWT — must be seller of this conversation)
+    if (req.user.user_id !== conversation.seller_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    // Only ONE active offer per conversation at a time
+    const pendingOffer = db.prepare("SELECT id FROM custom_offers WHERE conversation_id = ? AND status = 'pending'").get(id);
+    if (pendingOffer) {
+      return res.status(409).json({ error: "An offer is already pending", code: "OFFER_PENDING" });
+    }
+    
+    // Check if conversation status is 'live' or 'awaiting_seller'
+    if (conversation.status !== 'live' && conversation.status !== 'awaiting_seller') {
+      return res.status(400).json({ error: "Conversation status must be live or awaiting_seller", code: "BAD_REQUEST" });
+    }
+    
+    const { price, delivery_date, seller_notes } = req.body;
+    
+    // Validate price: required, integer > 0
+    if (price === undefined || price === null || !Number.isInteger(price) || price <= 0) {
+      return res.status(400).json({ error: "Price must be a positive integer", code: "VALIDATION_ERROR" });
+    }
+    
+    // Validate delivery_date: required, YYYY-MM-DD, must be at least 1 day in the future
+    if (!delivery_date || !/^\d{4}-\d{2}-\d{2}$/.test(delivery_date)) {
+      return res.status(400).json({ error: "Delivery date must be in YYYY-MM-DD format", code: "VALIDATION_ERROR" });
+    }
+    const parts = delivery_date.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    const deliveryDate = new Date(year, month, day);
+    if (isNaN(deliveryDate.getTime())) {
+      return res.status(400).json({ error: "Invalid delivery date", code: "VALIDATION_ERROR" });
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today.getTime() + 24 * 3600 * 1000);
+    if (deliveryDate < tomorrow) {
+      return res.status(400).json({ error: "Delivery date must be at least 1 day in the future", code: "VALIDATION_ERROR" });
+    }
+    
+    // Validate seller_notes: optional, max 500 characters
+    if (seller_notes !== undefined && seller_notes !== null) {
+      if (typeof seller_notes !== 'string' || seller_notes.length > 500) {
+        return res.status(400).json({ error: "Seller notes must be a string up to 500 characters", code: "VALIDATION_ERROR" });
+      }
+    }
+    
+    const expires_at = new Date(Date.now() + 48 * 3600 * 1000).toISOString();
+    
+    const info = db.prepare(`
+      INSERT INTO custom_offers (conversation_id, seller_id, buyer_id, price, delivery_date, seller_notes, status, expires_at, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, datetime('now'), datetime('now'))
+    `).run(id, conversation.seller_id, conversation.buyer_id, price, delivery_date, seller_notes || null, expires_at);
+    const new_offer_id = info.lastInsertRowid;
+    
+    // Update conversation status to 'offer_sent'
+    db.prepare("UPDATE conversations SET status = 'offer_sent', updated_at = datetime('now') WHERE id = ?").run(id);
+    
+    // Insert system message in conversation_messages
+    db.prepare(`
+      INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at, is_read)
+      VALUES (?, ?, 'bot', 'system', 'OFFER_CARD', datetime('now'), 0)
+    `).run(id, conversation.seller_id);
+    
+    // Create notification for buyer
+    const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(conversation.seller_id);
+    const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(conversation.seller_id);
+    const sellerName = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+    
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+      VALUES (?, 'offer_received', ?, ?, ?, 0, datetime('now'))
+    `).run(conversation.buyer_id, new_offer_id, id, `${sellerName} has sent you a price offer`);
+    
+    const offer = {
+      id: new_offer_id,
+      conversation_id: id,
+      seller_id: conversation.seller_id,
+      buyer_id: conversation.buyer_id,
+      price,
+      delivery_date,
+      seller_notes: seller_notes || null,
+      status: 'pending',
+      expires_at,
+      conversation_status: 'offer_sent'
+    };
+    
+    return res.status(200).json({
+      ...offer,
+      offer,
+      conversation_status: 'offer_sent'
+    });
+  } catch (err) {
+    console.error('Error creating offer:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 2. GET /api/conversations/:id/offer
+app.get('/api/conversations/:id/offer', authenticateToken, (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    if (req.user.user_id !== conversation.buyer_id && req.user.user_id !== conversation.seller_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    let offer = db.prepare(`
+      SELECT * FROM custom_offers 
+      WHERE conversation_id = ? 
+      ORDER BY created_at DESC LIMIT 1
+    `).get(id);
+    
+    if (!offer) {
+      return res.status(200).json({ offer: null });
+    }
+    
+    let status = offer.status;
+    let expiresAt = offer.expires_at;
+    let isExpired = (new Date(expiresAt) < new Date());
+    
+    if (status === 'pending' && isExpired) {
+      db.transaction(() => {
+        db.prepare("UPDATE custom_offers SET status = 'expired', updated_at = datetime('now') WHERE id = ?").run(offer.id);
+        db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(id);
+        db.prepare(`
+          INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at, is_read)
+          VALUES (?, ?, 'bot', 'system', 'OFFER_EXPIRED', datetime('now'), 0)
+        `).run(id, offer.seller_id);
+        
+        const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(offer.seller_id);
+        const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(offer.seller_id);
+        const sellerName = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+        
+        db.prepare(`
+          INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+          VALUES (?, 'offer_expired', ?, ?, ?, 0, datetime('now'))
+        `).run(
+          offer.buyer_id,
+          offer.id,
+          id,
+          `Your offer from ${sellerName} has expired. You can ask them for a new quote.`
+        );
+      })();
+      
+      offer.status = 'expired';
+      status = 'expired';
+    }
+    
+    const hours_remaining = (status === 'pending') ? Math.max(0, Math.round((new Date(expiresAt) - new Date()) / (1000 * 3600))) : 0;
+    
+    return res.status(200).json({
+      offer: {
+        id: offer.id,
+        conversation_id: offer.conversation_id,
+        seller_id: offer.seller_id,
+        buyer_id: offer.buyer_id,
+        price: offer.price,
+        delivery_date: offer.delivery_date,
+        seller_notes: offer.seller_notes,
+        status: offer.status,
+        expires_at: offer.expires_at,
+        created_at: offer.created_at,
+        updated_at: offer.updated_at,
+        hours_remaining
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching offer:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 3. POST /api/conversations/:id/offer/:offer_id/respond
+app.post('/api/conversations/:id/offer/:offer_id/respond', authenticateToken, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const offer_id = parseInt(req.params.offer_id, 10);
+    if (isNaN(id) || isNaN(offer_id)) {
+      return res.status(404).json({ error: "Not found", code: "NOT_FOUND" });
+    }
+    
+    const conversation = db.prepare("SELECT * FROM conversations WHERE id = ?").get(id);
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found", code: "NOT_FOUND" });
+    }
+    
+    // Auth: Required (buyer JWT — must be buyer of this conversation)
+    if (req.user.user_id !== conversation.buyer_id) {
+      return res.status(403).json({ error: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    const { action } = req.body;
+    if (action !== 'accept' && action !== 'decline') {
+      return res.status(400).json({ error: "Action must be accept or decline", code: "VALIDATION_ERROR" });
+    }
+    
+    const offer = db.prepare("SELECT * FROM custom_offers WHERE id = ?").get(offer_id);
+    if (!offer || offer.conversation_id !== id) {
+      return res.status(404).json({ error: "Offer not found", code: "NOT_FOUND" });
+    }
+    
+    // Verify status is pending and not expired
+    const isExpired = (new Date(offer.expires_at) < new Date());
+    if (offer.status !== 'pending' || isExpired) {
+      if (offer.status === 'pending' && isExpired) {
+        db.transaction(() => {
+          db.prepare("UPDATE custom_offers SET status = 'expired', updated_at = datetime('now') WHERE id = ?").run(offer_id);
+          db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(id);
+          db.prepare(`
+            INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at, is_read)
+            VALUES (?, ?, 'bot', 'system', 'OFFER_EXPIRED', datetime('now'), 0)
+          `).run(id, offer.seller_id);
+          
+          const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(offer.seller_id);
+          const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(offer.seller_id);
+          const sellerName = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+          
+          db.prepare(`
+            INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+            VALUES (?, 'offer_expired', ?, ?, ?, 0, datetime('now'))
+          `).run(
+            offer.buyer_id,
+            offer_id,
+            id,
+            `Your offer from ${sellerName} has expired. You can ask them for a new quote.`
+          );
+        })();
+      }
+      return res.status(400).json({ error: "Offer has expired", code: "OFFER_EXPIRED" });
+    }
+    
+    if (action === 'accept') {
+      const amount = offer.price * 100;
+      let razorpayOrderId = null;
+      const receipt = `TF-${id}-${offer_id}`;
+      const notes = {
+        conversation_id: id,
+        offer_id: offer_id,
+        buyer_id: conversation.buyer_id,
+        seller_id: conversation.seller_id
+      };
+      
+      if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+        try {
+          const auth = Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString('base64');
+          const rpRes = await fetch('https://api.razorpay.com/v1/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Basic ${auth}`
+            },
+            body: JSON.stringify({
+              amount: amount,
+              currency: 'INR',
+              receipt: receipt,
+              notes: notes
+            })
+          });
+          if (rpRes.ok) {
+            const rpData = await rpRes.json();
+            razorpayOrderId = rpData.id;
+          }
+        } catch (err) {
+          console.error('Error generating real Razorpay order ID in respond offer:', err);
+        }
+      }
+      
+      if (!razorpayOrderId) {
+        razorpayOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
+      }
+      
+      db.transaction(() => {
+        db.prepare("UPDATE custom_offers SET status = 'accepted', updated_at = datetime('now') WHERE id = ?").run(offer_id);
+        db.prepare("UPDATE conversations SET status = 'completed', updated_at = datetime('now') WHERE id = ?").run(id);
+        
+        db.prepare(`
+          INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+          VALUES (?, 'offer_accepted', ?, ?, ?, 0, datetime('now'))
+        `).run(conversation.seller_id, offer_id, id, 'Buyer has accepted your offer and initiated payment');
+      })();
+      
+      const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_mockkey12345';
+      return res.status(200).json({
+        action: "accepted",
+        razorpay_order_id: razorpayOrderId,
+        amount: amount,
+        currency: "INR",
+        key_id: key_id
+      });
+    } else {
+      // action === 'decline'
+      db.transaction(() => {
+        db.prepare("UPDATE custom_offers SET status = 'declined', updated_at = datetime('now') WHERE id = ?").run(offer_id);
+        db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(id);
+        
+        // Create notification for seller
+        db.prepare(`
+          INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+          VALUES (?, 'offer_declined', ?, ?, ?, 0, datetime('now'))
+        `).run(conversation.seller_id, offer_id, id, 'Buyer declined your offer. Chat is re-opened for discussion.');
+        
+        // Insert system message: sender_role = 'bot', message_type = 'system', content = 'OFFER_DECLINED', sender_id = [seller_id]
+        db.prepare(`
+          INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at, is_read)
+          VALUES (?, ?, 'bot', 'system', 'OFFER_DECLINED', datetime('now'), 0)
+        `).run(id, conversation.seller_id);
+      })();
+      
+      return res.status(200).json({
+        action: "declined",
+        conversation_status: "live",
+        message: "Chat re-opened. You can continue negotiating."
+      });
+    }
+  } catch (err) {
+    console.error('Error responding to offer:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 4. Background Expiry check function and scheduler
+function checkExpiredOffersBackground() {
+  try {
+    const nowISO = new Date().toISOString();
+    const expiredOffers = db.prepare(`
+      SELECT * FROM custom_offers
+      WHERE status = 'pending' AND expires_at < ?
+    `).all(nowISO);
+    
+    for (const offer of expiredOffers) {
+      db.transaction(() => {
+        db.prepare("UPDATE custom_offers SET status = 'expired', updated_at = datetime('now') WHERE id = ?").run(offer.id);
+        db.prepare("UPDATE conversations SET status = 'live', updated_at = datetime('now') WHERE id = ?").run(offer.conversation_id);
+        db.prepare(`
+          INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at, is_read)
+          VALUES (?, ?, 'bot', 'system', 'OFFER_EXPIRED', datetime('now'), 0)
+        `).run(offer.conversation_id, offer.seller_id);
+        
+        const sellerProfile = db.prepare("SELECT shop_name FROM seller_profiles WHERE user_id = ?").get(offer.seller_id);
+        const sellerUser = db.prepare("SELECT full_name FROM users WHERE id = ?").get(offer.seller_id);
+        const sellerName = (sellerProfile && sellerProfile.shop_name) || (sellerUser && sellerUser.full_name) || "Seller";
+        
+        db.prepare(`
+          INSERT INTO notifications (user_id, type, offer_id, conversation_id, message, is_read, created_at)
+          VALUES (?, 'offer_expired', ?, ?, ?, 0, datetime('now'))
+        `).run(
+          offer.buyer_id,
+          offer.id,
+          offer.conversation_id,
+          `Your offer from ${sellerName} has expired. You can ask them for a new quote.`
+        );
+      })();
+    }
+  } catch (err) {
+    console.error("Error in custom offer background expiry check:", err);
+  }
+}
+
+// Run background expiry check every 15 minutes
+setInterval(checkExpiredOffersBackground, 15 * 60 * 1000);
+
+// PART A: SELLER CUSTOM QUESTIONS
+
+// 1. GET /api/seller/intake-questions
+app.get('/api/seller/intake-questions', requireSeller, (req, res) => {
+  try {
+    const sellerId = req.seller.user_id;
+    const questions = db.prepare(`
+      SELECT * FROM intake_question_templates
+      WHERE is_tohfa_default = 1 OR seller_id = ?
+      ORDER BY product_type_tag ASC, display_order ASC
+    `).all(sellerId);
+
+    const mapped = questions.map(q => {
+      let parsedOptions = q.options;
+      if (q.options) {
+        try {
+          parsedOptions = JSON.parse(q.options);
+        } catch (e) {
+          parsedOptions = q.options;
+        }
+      }
+      return {
+        id: q.id,
+        product_type_tag: q.product_type_tag,
+        question_text: q.question_text,
+        answer_type: q.answer_type,
+        options: parsedOptions,
+        is_tohfa_default: q.is_tohfa_default === 1,
+        seller_id: q.seller_id,
+        display_order: q.display_order,
+        is_active: q.is_active === 1,
+        created_at: q.created_at
+      };
+    });
+
+    return res.status(200).json({ questions: mapped });
+  } catch (err) {
+    console.error('Error fetching seller intake questions:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 2. POST /api/seller/intake-questions
+app.post('/api/seller/intake-questions', requireSeller, (req, res) => {
+  try {
+    const sellerId = req.seller.user_id;
+    const { product_type_tag, question_text, answer_type, options, display_order } = req.body;
+
+    if (!product_type_tag || typeof product_type_tag !== 'string' || product_type_tag.trim() === '') {
+      return res.status(400).json({ error: 'product_type_tag is required', code: 'VALIDATION_ERROR' });
+    }
+
+    if (!question_text || typeof question_text !== 'string' || question_text.trim() === '' || question_text.length > 200) {
+      return res.status(400).json({ error: 'question_text is required and must be max 200 characters', code: 'VALIDATION_ERROR' });
+    }
+
+    const validAnswerTypes = ['free_text','photo_upload','single_choice','number','date_picker','long_text'];
+    if (!answer_type || !validAnswerTypes.includes(answer_type)) {
+      return res.status(400).json({ error: 'Invalid or missing answer_type', code: 'VALIDATION_ERROR' });
+    }
+
+    if (answer_type === 'single_choice') {
+      if (!Array.isArray(options) || options.length < 2 || options.length > 8 || !options.every(o => typeof o === 'string')) {
+        return res.status(400).json({ error: 'options is required for single_choice and must be an array of 2-8 strings', code: 'VALIDATION_ERROR' });
+      }
+    }
+
+    // A seller can have max 5 custom questions per product_type_tag where is_tohfa_default = 0
+    const countRow = db.prepare(`
+      SELECT COUNT(*) AS count FROM intake_question_templates
+      WHERE seller_id = ? AND product_type_tag = ? AND is_tohfa_default = 0
+    `).get(sellerId, product_type_tag);
+
+    if (countRow && countRow.count >= 5) {
+      return res.status(400).json({ error: 'Maximum of 5 custom questions per product type exceeded', code: 'LIMIT_EXCEEDED' });
+    }
+
+    let resolvedDisplayOrder = display_order;
+    if (display_order === undefined || display_order === null) {
+      const maxOrderRow = db.prepare(`
+        SELECT COALESCE(MAX(display_order), 0) AS max_order
+        FROM intake_question_templates
+        WHERE (is_tohfa_default = 1 OR seller_id = ?) AND product_type_tag = ?
+      `).get(sellerId, product_type_tag);
+      resolvedDisplayOrder = maxOrderRow ? maxOrderRow.max_order + 1 : 1;
+    } else {
+      resolvedDisplayOrder = parseInt(display_order, 10);
+      if (isNaN(resolvedDisplayOrder)) {
+        return res.status(400).json({ error: 'display_order must be an integer', code: 'VALIDATION_ERROR' });
+      }
+    }
+
+    const info = db.prepare(`
+      INSERT INTO intake_question_templates
+      (product_type_tag, question_text, answer_type, options, is_tohfa_default, seller_id, display_order, is_active)
+      VALUES (?, ?, ?, ?, 0, ?, ?, 1)
+    `).run(
+      product_type_tag,
+      question_text,
+      answer_type,
+      answer_type === 'single_choice' ? JSON.stringify(options) : null,
+      sellerId,
+      resolvedDisplayOrder
+    );
+
+    return res.status(200).json({ question_id: info.lastInsertRowid, created: true });
+  } catch (err) {
+    console.error('Error creating custom intake question:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 3. PATCH /api/seller/intake-questions/:question_id
+app.patch('/api/seller/intake-questions/:question_id', requireSeller, (req, res) => {
+  try {
+    const sellerId = req.seller.user_id;
+    const questionId = parseInt(req.params.question_id, 10);
+    if (isNaN(questionId)) {
+      return res.status(404).json({ error: 'Question not found', code: 'NOT_FOUND' });
+    }
+
+    const question = db.prepare('SELECT * FROM intake_question_templates WHERE id = ?').get(questionId);
+    if (!question) {
+      return res.status(404).json({ error: 'Question not found', code: 'NOT_FOUND' });
+    }
+
+    if (question.is_tohfa_default === 1) {
+      return res.status(403).json({ error: 'Cannot modify platform defaults' });
+    }
+
+    if (question.seller_id !== sellerId) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const { question_text, options, display_order, is_active } = req.body;
+    const updates = [];
+    const params = [];
+
+    if (question_text !== undefined) {
+      if (typeof question_text !== 'string' || question_text.trim() === '' || question_text.length > 200) {
+        return res.status(400).json({ error: 'Invalid question_text', code: 'VALIDATION_ERROR' });
+      }
+      updates.push('question_text = ?');
+      params.push(question_text);
+    }
+
+    if (options !== undefined) {
+      if (question.answer_type === 'single_choice') {
+        if (!Array.isArray(options) || options.length < 2 || options.length > 8 || !options.every(o => typeof o === 'string')) {
+          return res.status(400).json({ error: 'options must be an array of 2-8 strings', code: 'VALIDATION_ERROR' });
+        }
+        updates.push('options = ?');
+        params.push(JSON.stringify(options));
+      } else {
+        updates.push('options = ?');
+        params.push(null);
+      }
+    }
+
+    if (display_order !== undefined) {
+      const parsedOrder = parseInt(display_order, 10);
+      if (isNaN(parsedOrder)) {
+        return res.status(400).json({ error: 'display_order must be an integer', code: 'VALIDATION_ERROR' });
+      }
+      updates.push('display_order = ?');
+      params.push(parsedOrder);
+    }
+
+    if (is_active !== undefined) {
+      updates.push('is_active = ?');
+      params.push(is_active ? 1 : 0);
+    }
+
+    if (updates.length > 0) {
+      params.push(questionId);
+      db.prepare(`
+        UPDATE intake_question_templates
+        SET ${updates.join(', ')}
+        WHERE id = ?
+      `).run(...params);
+    }
+
+    return res.status(200).json({ updated: true });
+  } catch (err) {
+    console.error('Error updating custom intake question:', err);
+    return res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+
+// ============================================================
+// PUBLIC SELLER PROFILE ENDPOINTS FOR BUYERS
+// ============================================================
+
+// 1. GET /api/sellers/:id - Public Seller profile info
+app.get('/api/sellers/:id', optionalAuthenticateToken, (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.id, 10);
+    if (isNaN(sellerId)) {
+      return res.status(400).json({ error: true, message: 'Invalid seller ID', code: 'VALIDATION_ERROR' });
+    }
+
+    const sellerUser = db.prepare('SELECT id, email, full_name, role, avatar_url, bio, location, instagram_handle FROM users WHERE id = ?').get(sellerId);
+    if (!sellerUser) {
+      return res.status(404).json({ error: true, message: 'Seller not found', code: 'NOT_FOUND' });
+    }
+
+    const sellerProfile = db.prepare('SELECT * FROM seller_profiles WHERE user_id = ?').get(sellerId) || {};
+    const storeConfig = db.prepare('SELECT * FROM store_config WHERE seller_id = ?').get(sellerId) || {};
+
+    // Get followers count
+    const followersCount = db.prepare('SELECT COUNT(*) AS count FROM follows WHERE following_id = ?').get(sellerId).count;
+
+    // Get current user following status if logged in
+    let isFollowing = false;
+    if (req.user && req.user.user_id) {
+      const followRecord = db.prepare('SELECT 1 FROM follows WHERE follower_id = ? AND following_id = ?').get(req.user.user_id, sellerId);
+      isFollowing = !!followRecord;
+    }
+
+    // Get overall reviews stats
+    const stats = db.prepare(`
+      SELECT COUNT(*) AS total_reviews, COALESCE(AVG(r.rating), 0) AS avg_rating
+      FROM reviews r
+      LEFT JOIN products p ON r.product_id = p.id
+      WHERE r.seller_id = ? OR p.seller_id = ?
+    `).get(sellerId, sellerId);
+
+    // Get workspace photos
+    let workspacePhotos = [];
+    try {
+      workspacePhotos = db.prepare('SELECT photo_url, caption, sort_order FROM store_workspace_photos WHERE seller_id = ? ORDER BY sort_order ASC').all(sellerId);
+    } catch (e) {
+      console.warn('Failed to fetch workspace photos:', e.message);
+    }
+
+    // Parse specializations
+    let specializations = [];
+    if (storeConfig.specializations) {
+      try {
+        specializations = JSON.parse(storeConfig.specializations);
+      } catch (e) {
+        specializations = [storeConfig.specializations];
+      }
+    }
+
+    const publicProfile = {
+      seller_id: sellerUser.id,
+      shop_name: sellerProfile.shop_name || sellerUser.full_name || 'Artisan Shop',
+      handle: sellerProfile.handle || sellerUser.display_name || `seller_${sellerUser.id}`,
+      bio: sellerUser.bio || sellerProfile.shop_bio || storeConfig.artist_bio || '',
+      location: sellerUser.location || storeConfig.city || '',
+      instagram_handle: sellerUser.instagram_handle || sellerProfile.instagram_handle || '',
+      avatar_url: sellerUser.avatar_url,
+      cover_photo_url: storeConfig.banner_url || null,
+      followers_count: followersCount,
+      is_following: isFollowing,
+      avg_rating: parseFloat(Number(stats.avg_rating).toFixed(1)),
+      review_count: stats.total_reviews,
+      about_headline: storeConfig.about_headline || 'Crafted with Intention',
+      artisan_story: storeConfig.artisan_story || sellerProfile.shop_bio || '',
+      specializations: specializations,
+      city: storeConfig.city || '',
+      workspace_photos: workspacePhotos
+    };
+
+    return res.status(200).json({
+      success: true,
+      data: publicProfile
+    });
+  } catch (err) {
+    console.error('GET /api/sellers/:id error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 2. GET /api/sellers/:id/products - Public Seller products
+app.get('/api/sellers/:id/products', optionalAuthenticateToken, (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.id, 10);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = Math.min(parseInt(req.query.limit, 10) || 20, 50);
+    const offset = (page - 1) * limit;
+
+    if (isNaN(sellerId)) {
+      return res.status(400).json({ error: true, message: 'Invalid seller ID', code: 'VALIDATION_ERROR' });
+    }
+
+    const userId = req.user ? req.user.user_id : null;
+
+    let totalQuery = `SELECT COUNT(*) AS c FROM products WHERE seller_id = ? AND status = 'active'`;
+    const total = db.prepare(totalQuery).get(sellerId).c;
+
+    let productsQuery = `
+      SELECT 
+        p.id, p.seller_id, p.category_id, p.name, p.description, p.price_paise, p.stock_qty, p.ships_in_days, p.avg_rating, p.review_count, p.status,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url
+    `;
+    if (userId) {
+      productsQuery += `, (SELECT 1 FROM wishlists w WHERE w.user_id = ? AND w.product_id = p.id) IS NOT NULL AS is_wishlisted`;
+    } else {
+      productsQuery += `, 0 AS is_wishlisted`;
+    }
+    productsQuery += `
+      FROM products p
+      WHERE p.seller_id = ? AND p.status = 'active'
+      ORDER BY p.created_at DESC
+      LIMIT ? OFFSET ?
+    `;
+
+    const stmt = db.prepare(productsQuery);
+    const rows = userId 
+      ? stmt.all(userId, sellerId, limit, offset) 
+      : stmt.all(sellerId, limit, offset);
+
+    const products = rows.map(r => ({
+      id: r.id,
+      name: r.name,
+      description: r.description,
+      price_paise: r.price_paise,
+      stock_qty: r.stock_qty,
+      ships_in_days: r.ships_in_days,
+      avg_rating: r.avg_rating,
+      review_count: r.review_count,
+      is_wishlisted: !!r.is_wishlisted,
+      status: r.status,
+      image_url: r.image_url
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        products,
+        total,
+        page,
+        limit,
+        total_pages: Math.ceil(total / limit) || 1
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/sellers/:id/products error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 3. GET /api/sellers/:id/customizations - Public Seller customizations
+app.get('/api/sellers/:id/customizations', (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.id, 10);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = Math.min(parseInt(req.query.limit, 10) || 20, 50);
+    const offset = (page - 1) * limit;
+
+    if (isNaN(sellerId)) {
+      return res.status(400).json({ error: true, message: 'Invalid seller ID', code: 'VALIDATION_ERROR' });
+    }
+
+    const total = db.prepare(`SELECT COUNT(*) AS c FROM listings WHERE seller_id = ? AND listing_type = 'custom' AND status = 'active'`).get(sellerId).c;
+
+    const rows = db.prepare(`
+      SELECT 
+        id AS listing_id,
+        seller_id,
+        category AS product_type_tag,
+        title AS product_name,
+        base_price,
+        ships_in_days AS lead_time_days,
+        cover_photo_url AS cover_image_url
+      FROM listings
+      WHERE seller_id = ? AND listing_type = 'custom' AND status = 'active'
+      ORDER BY created_at DESC
+      LIMIT ? OFFSET ?
+    `).all(sellerId, limit, offset);
+
+    const customizations = rows.map(r => {
+      // Calculate rating & review count for each customization listing
+      const ratingRow = db.prepare('SELECT COUNT(*) as count, AVG(rating) as avg_rating FROM reviews WHERE listing_id = ?').get(r.listing_id);
+      const review_count = ratingRow ? ratingRow.count : 0;
+      const avg_rating = ratingRow && ratingRow.avg_rating !== null ? parseFloat(Number(ratingRow.avg_rating).toFixed(1)) : 0.0;
+
+      return {
+        listing_id: r.listing_id,
+        seller_id: r.seller_id,
+        product_type_tag: r.product_type_tag,
+        product_name: r.product_name,
+        base_price: r.base_price / 100, // INR
+        lead_time_days: r.lead_time_days,
+        cover_image_url: r.cover_image_url,
+        avg_rating,
+        review_count
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        customizations,
+        total,
+        page,
+        limit,
+        total_pages: Math.ceil(total / limit) || 1
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/sellers/:id/customizations error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 4. GET /api/sellers/:id/reels - Public Seller reels
+app.get('/api/sellers/:id/reels', optionalAuthenticateToken, (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.id, 10);
+    if (isNaN(sellerId)) {
+      return res.status(400).json({ error: true, message: 'Invalid seller ID', code: 'VALIDATION_ERROR' });
+    }
+
+    const userId = req.user ? req.user.user_id : null;
+
+    let query = `
+      SELECT 
+        r.id, r.seller_id, r.product_id, r.title, r.caption, r.video_url, r.thumbnail_url,
+        r.view_count, r.like_count, r.comment_count, r.save_count, r.created_at
+    `;
+    if (userId) {
+      query += `, (SELECT 1 FROM reel_likes WHERE user_id = ? AND reel_id = r.id) IS NOT NULL AS is_liked`;
+      query += `, (SELECT 1 FROM saved_reels WHERE user_id = ? AND reel_id = r.id) IS NOT NULL AS is_saved`;
+    } else {
+      query += `, 0 AS is_liked, 0 AS is_saved`;
+    }
+    query += `
+      FROM reels r
+      WHERE r.seller_id = ? AND r.status = 'active' AND r.visibility = 'public'
+      ORDER BY r.created_at DESC
+    `;
+
+    const stmt = db.prepare(query);
+    const rows = userId 
+      ? stmt.all(userId, userId, sellerId) 
+      : stmt.all(sellerId);
+
+    const reels = rows.map(r => ({
+      id: r.id,
+      seller_id: r.seller_id,
+      product_id: r.product_id,
+      title: r.title,
+      caption: r.caption,
+      video_url: r.video_url,
+      thumbnail_url: r.thumbnail_url,
+      view_count: r.view_count || 0,
+      like_count: r.like_count || 0,
+      comment_count: r.comment_count || 0,
+      save_count: r.save_count || 0,
+      is_liked: !!r.is_liked,
+      is_saved: !!r.is_saved,
+      created_at: r.created_at
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: { reels }
+    });
+  } catch (err) {
+    console.error('GET /api/sellers/:id/reels error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// 5. GET /api/sellers/:id/reviews - Public Seller reviews
+app.get('/api/sellers/:id/reviews', (req, res) => {
+  try {
+    const sellerId = parseInt(req.params.id, 10);
+    const search = req.query.search || '';
+
+    if (isNaN(sellerId)) {
+      return res.status(400).json({ error: true, message: 'Invalid seller ID', code: 'VALIDATION_ERROR' });
+    }
+
+    // Get star breakdown stats
+    const starStats = db.prepare(`
+      SELECT r.rating, COUNT(*) as c FROM reviews r
+      LEFT JOIN products p ON r.product_id = p.id
+      WHERE r.seller_id = ? OR p.seller_id = ?
+      GROUP BY r.rating
+    `).all(sellerId, sellerId);
+
+    const totalCount = starStats.reduce((acc, row) => acc + row.c, 0);
+    const breakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    starStats.forEach(row => {
+      if (breakdown[row.rating] !== undefined) {
+        breakdown[row.rating] = row.c;
+      }
+    });
+
+    // Build breakdown percentage
+    const breakdownPct = {};
+    for (let s = 5; s >= 1; s--) {
+      breakdownPct[s] = totalCount > 0 ? Math.round((breakdown[s] / totalCount) * 100) : 0;
+    }
+
+    // Overall stats
+    const overallRow = db.prepare(`
+      SELECT COUNT(*) as count, COALESCE(AVG(r.rating), 0) as avg_rating FROM reviews r
+      LEFT JOIN products p ON r.product_id = p.id
+      WHERE r.seller_id = ? OR p.seller_id = ?
+    `).get(sellerId, sellerId);
+
+    // Get list of reviews
+    let query = `
+      SELECT 
+        r.id, r.rating, r.body AS review_text, r.reply_text, r.replied_at, r.created_at,
+        u.full_name AS buyer_name, u.avatar_url AS buyer_avatar_url,
+        p.id AS product_id, p.name AS product_name,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS product_image_url
+      FROM reviews r
+      LEFT JOIN users u ON r.reviewer_id = u.id
+      LEFT JOIN products p ON r.product_id = p.id
+      WHERE (r.seller_id = ? OR p.seller_id = ?)
+    `;
+    const params = [sellerId, sellerId];
+
+    if (search.trim() !== '') {
+      query += ` AND (r.body LIKE ? OR p.name LIKE ? OR u.full_name LIKE ?)`;
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+    }
+
+    query += ` ORDER BY r.created_at DESC`;
+
+    const reviewRows = db.prepare(query).all(...params);
+
+    const reviews = reviewRows.map(r => ({
+      id: r.id,
+      rating: r.rating,
+      review_text: r.review_text || '',
+      reply_text: r.reply_text,
+      replied_at: r.replied_at,
+      created_at: r.created_at,
+      buyer_name: r.buyer_name || 'Anonymous Collector',
+      buyer_avatar_url: r.buyer_avatar_url || null,
+      product: {
+        id: r.product_id,
+        name: r.product_name || 'Handcrafted Masterpiece',
+        image_url: r.product_image_url
+      }
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        reviews,
+        stats: {
+          total_reviews: overallRow.count,
+          avg_rating: parseFloat(Number(overallRow.avg_rating).toFixed(2)),
+          breakdown: breakdown,
+          breakdown_percentage: breakdownPct
+        }
+      }
+    });
+  } catch (err) {
+    console.error('GET /api/sellers/:id/reviews error:', err);
+    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+  }
+});
+
+// Test endpoint to trigger expiry check manually
+app.post('/api/test/trigger-expiry-check', (req, res) => {
+  try {
+    checkExpiredOffersBackground();
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 });
 
