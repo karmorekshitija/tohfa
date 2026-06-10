@@ -129,9 +129,9 @@
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
-    <!-- Category (Discover) -->
+    <!-- Category -->
     <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">search</span>
+      <span class="material-symbols-outlined text-[20px]">category</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
@@ -164,6 +164,8 @@
       <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
       <span id="nav-notif-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
     </a>
+  
+    <div id="auth-buttons-container" class="flex items-center gap-md ml-4"></div>
   </div>
 </header>
 
@@ -219,6 +221,7 @@
 
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
+    import { logout } from '/src/utils/auth.js';
 
     let paymentsList = [];
     let nextCursor = null;
@@ -494,6 +497,67 @@
     window.loadMore = loadMore;
 
     window.addEventListener('DOMContentLoaded', initPayments);
+
+    let isLoggedIn = false;
+    async function checkAuthState() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const authContainer = document.getElementById('auth-buttons-container');
+        
+        if (token) {
+            isLoggedIn = true;
+            try {
+                let avatarUrl = null;
+                let initial = 'A';
+                try {
+                    const res = await apiClient.get('/profile/me');
+                    if (res.data && res.data.success) {
+                        avatarUrl = res.data.data.avatar_url;
+                        if (res.data.data.full_name) {
+                            initial = res.data.data.full_name.charAt(0).toUpperCase();
+                        }
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch profile avatar:", err);
+                }
+                
+                let avatarHtml = '';
+                if (avatarUrl) {
+                    avatarHtml = `<img src="${avatarUrl}" alt="Profile" class="w-10 h-10 rounded-full border border-[#C1C9C0] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
+                } else {
+                    avatarHtml = `
+                        <a href="/buyer/profile.html" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+                            ${initial}
+                        </a>
+                    `;
+                }
+
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <div class="flex items-center gap-md">
+                            ${avatarHtml}
+                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
+                        </div>
+                    `;
+                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                }
+            } catch(e) {
+                console.error("Failed to parse token:", e);
+                logout();
+            }
+        } else {
+            isLoggedIn = false;
+            if (authContainer) {
+                authContainer.innerHTML = `
+                    <div class="flex items-center gap-md">
+                        <a href="/auth/login.html" class="text-[#255338] hover:underline text-sm font-semibold">Login</a>
+                        <a href="/auth/signup-buyer.html" class="bg-[#255338] text-white px-md py-sm rounded-lg text-sm font-semibold hover:opacity-90 transition-all">Register</a>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    checkAuthState();
 </script>
 </body>
 </html>

@@ -122,9 +122,9 @@
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
-    <!-- Category (Discover) -->
-    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#255338] border-b-2 border-[#255338] h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
-      <span class="material-symbols-outlined text-[20px]">search</span>
+    <!-- Category -->
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">category</span>
       <span>Category</span>
     </a>
     <!-- Reels -->
@@ -157,19 +157,36 @@
       <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
       <span id="nav-notif-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
     </a>
+  
+    <div id="auth-buttons-container" class="flex items-center gap-md ml-4"></div>
   </div>
 </header>
 
     <main class="max-w-[1440px] mx-auto px-margin-desktop py-12">
         <!-- 1. BREADCRUMBS & BACK NAV -->
         <div class="flex items-center justify-between mb-8">
-            <nav class="flex items-center gap-xs font-body-md text-xs text-outline tracking-wider uppercase">
-                <a href="home.html" class="hover:text-primary transition-colors">Home</a>
-                <span class="material-symbols-outlined text-sm">chevron_right</span>
-                <a id="breadcrumb-category" href="#" class="hover:text-primary transition-colors">Category</a>
-                <span class="material-symbols-outlined text-sm">chevron_right</span>
-                <span id="breadcrumb-product" class="text-primary font-semibold truncate max-w-[200px]">Product</span>
-            </nav>
+            <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category -->
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">category</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
             <button onclick="window.history.back()" class="flex items-center gap-xs text-secondary hover:text-primary transition-colors text-sm font-semibold group focus:outline-none">
                 <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
                 <span>Back</span>
@@ -299,24 +316,28 @@
     </main>
 
     <!-- BottomNavBar -->
-    <nav class="standard-tab-bar" style="position: fixed; bottom: 0; left: 0; right: 0; background: #FFFFFF; height: 64px; border-top: 1px solid #C1C9C0; display: flex; align-items: center; justify-content: space-around; z-index: 50; padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box;">
-        <a href="home.html" class="tab-item" id="tab-home" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #605e57; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-            <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">home</span>
-            <span>Home</span>
-        </a>
-        <a href="categories.html" class="tab-item" id="tab-search" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #605e57; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-            <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">search</span>
-            <span>Search</span>
-        </a>
-        <a href="reels.html" class="tab-item" id="tab-reels" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #605e57; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-            <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">smart_display</span>
-            <span>Reels</span>
-        </a>
-        <a href="profile.html" class="tab-item" id="tab-profile" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 12px; text-decoration: none; color: #605e57; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;">
-            <span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 0, 'wght' 300; transition: all 0.2s;">account_circle</span>
-            <span>Profile</span>
-        </a>
-    </nav>
+    <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <!-- Home -->
+    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <!-- Category -->
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">category</span>
+      <span>Category</span>
+    </a>
+    <!-- Reels -->
+    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <!-- Profile -->
+    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
 
     <!-- Footer -->
     <footer class="bg-inverse-surface text-inverse-on-surface pt-16 pb-20">
@@ -367,63 +388,64 @@
         let matchedOrderId = null;
         let selectedRating = 0;
 
-        async function checkAuthState() {
-            const token = sessionStorage.getItem('tohfa_access_token');
-            const authContainer = document.getElementById('auth-buttons-container');
-            
-            if (token) {
-                isLoggedIn = true;
+            let isLoggedIn = false;
+    async function checkAuthState() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const authContainer = document.getElementById('auth-buttons-container');
+        
+        if (token) {
+            isLoggedIn = true;
+            try {
+                let avatarUrl = null;
+                let initial = 'A';
                 try {
-                    let avatarUrl = null;
-                    let initial = 'A';
-                    try {
-                        const res = await apiClient.get('/profile/me');
-                        if (res.data && res.data.success) {
-                            avatarUrl = res.data.data.avatar_url;
-                            if (res.data.data.full_name) {
-                                initial = res.data.data.full_name.charAt(0).toUpperCase();
-                            }
+                    const res = await apiClient.get('/profile/me');
+                    if (res.data && res.data.success) {
+                        avatarUrl = res.data.data.avatar_url;
+                        if (res.data.data.full_name) {
+                            initial = res.data.data.full_name.charAt(0).toUpperCase();
                         }
-                    } catch (err) {
-                        console.error("Failed to fetch profile avatar:", err);
                     }
-                    
-                    let avatarHtml = '';
-                    if (avatarUrl) {
-                        avatarHtml = `<img src="${avatarUrl}" alt="Profile" class="w-10 h-10 rounded-full border border-[#C1C9C0] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
-                    } else {
-                        avatarHtml = `
-                            <a href="/buyer/profile.html" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
-                                ${initial}
-                            </a>
-                        `;
-                    }
-
-                    if (authContainer) {
-                        authContainer.innerHTML = `
-                            <div class="flex items-center gap-md">
-                                ${avatarHtml}
-                                <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
-                            </div>
-                        `;
-                        document.getElementById('logout-btn')?.addEventListener('click', logout);
-                    }
-                } catch(e) {
-                    console.error("Failed to parse token:", e);
-                    logout();
+                } catch (err) {
+                    console.error("Failed to fetch profile avatar:", err);
                 }
-            } else {
-                isLoggedIn = false;
+                
+                let avatarHtml = '';
+                if (avatarUrl) {
+                    avatarHtml = `<img src="${avatarUrl}" alt="Profile" class="w-10 h-10 rounded-full border border-[#C1C9C0] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
+                } else {
+                    avatarHtml = `
+                        <a href="/buyer/profile.html" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+                            ${initial}
+                        </a>
+                    `;
+                }
+
                 if (authContainer) {
                     authContainer.innerHTML = `
                         <div class="flex items-center gap-md">
-                            <a href="/auth/login.html" class="text-[#255338] hover:underline text-sm font-semibold">Login</a>
-                            <a href="/auth/signup-buyer.html" class="bg-[#255338] text-white px-md py-sm rounded-lg text-sm font-semibold hover:opacity-90 transition-all">Register</a>
+                            ${avatarHtml}
+                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
                         </div>
                     `;
+                    document.getElementById('logout-btn')?.addEventListener('click', logout);
                 }
+            } catch(e) {
+                console.error("Failed to parse token:", e);
+                logout();
+            }
+        } else {
+            isLoggedIn = false;
+            if (authContainer) {
+                authContainer.innerHTML = `
+                    <div class="flex items-center gap-md">
+                        <a href="/auth/login.html" class="text-[#255338] hover:underline text-sm font-semibold">Login</a>
+                        <a href="/auth/signup-buyer.html" class="bg-[#255338] text-white px-md py-sm rounded-lg text-sm font-semibold hover:opacity-90 transition-all">Register</a>
+                    </div>
+                `;
             }
         }
+    }
 
         async function loadProduct() {
             if (!productId) {

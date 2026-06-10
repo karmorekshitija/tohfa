@@ -199,7 +199,7 @@
       <span class="material-symbols-outlined text-[20px]">home</span>
       <span>Home</span>
     </a>
-    <!-- Category (Discover) -->
+    <!-- Category -->
     <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px] font-normal">
       <span class="material-symbols-outlined text-[20px]">category</span>
       <span>Category</span>
@@ -234,6 +234,8 @@
       <span id="nav-notifications-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
       <span id="nav-notif-badge" class="absolute -top-1.5 -right-1.5 w-2 h-2 bg-gold-custom rounded-full hidden"></span>
     </a>
+  
+    <div id="auth-buttons-container" class="flex items-center gap-md ml-4"></div>
   </div>
 </header>
 <main class="relative overflow-hidden">
@@ -309,13 +311,34 @@
 <button class="bg-primary text-on-primary px-xl py-md rounded-lg font-body-md hover:opacity-90 transition-all active:scale-98">
                             Explore Collection
                         </button>
-<button class="border border-outline px-xl py-md rounded-lg font-body-md text-primary hover:bg-surface-variant transition-all active:scale-98">
+<button onclick="window.location.href='/buyer/our-story.html'" class="border border-outline px-xl py-md rounded-lg font-body-md text-primary hover:bg-surface-variant transition-all active:scale-98">
                             Our Story
                         </button>
 </div>
 </div>
 </div>
 </section>
+
+<!-- Sponsored Section -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
+    <div class="bg-[#FAF7F0] rounded-xl border border-outline-variant p-6 md:p-8">
+        <div class="flex justify-between items-end mb-lg">
+            <div>
+                <h3 class="font-headline-lg text-headline-lg text-primary flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[#D4AF37]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span>Sponsored</span>
+                </h3>
+                <p class="font-body-md text-on-surface-variant">Featured treasures from our creative community</p>
+            </div>
+        </div>
+        
+        <!-- Sponsored Product Grid -->
+        <div id="sponsored-product-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-lg relative">
+            <!-- Dynamic sponsored product cards will load here -->
+        </div>
+    </div>
+</section>
+
 <!-- For You (Endless Scroll Feed) -->
 <section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
     <div class="flex justify-between items-end mb-xl">
@@ -448,6 +471,7 @@
 
 <script type="module">
     import apiClient from '../src/utils/apiClient.js';
+    import { logout } from '/src/utils/auth.js';
 
     let page = 1;
     let loading = false;
@@ -469,7 +493,10 @@
             hasMore = has_more;
             page++;
 
-            products.forEach(product => {
+            // Filter out products that have product.type === 'sponsored'
+            const filteredProducts = products.filter(product => product.type !== 'sponsored');
+
+            filteredProducts.forEach(product => {
                 const card = document.createElement('div');
                 card.className = "group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer opacity-0 translate-y-10";
                 card.onclick = () => window.location.href = `/buyer/product.html?id=${product.id}`;
@@ -580,13 +607,13 @@
             img.src = slide.imageUrl || slide.image_url;
             img.alt = slide.altText || slide.alt_text || 'Artisan Craft';
             // Smooth fade classes
-            img.className = \`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out \${index === 0 ? 'opacity-100' : 'opacity-0'}\`;
-            img.id = \`hero-slide-\${index}\`;
+            img.className = `absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
+            img.id = `hero-slide-${index}`;
             wrapper.appendChild(img);
 
             // Dot Indicator
             const dot = document.createElement('button');
-            dot.className = \`w-2 h-2 rounded-full transition-all duration-300 \${index === 0 ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}\`;
+            dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}`;
             dot.onclick = () => goToSlide(index);
             dotsContainer.appendChild(dot);
         });
@@ -596,7 +623,7 @@
         if (slides.length === 0) return;
 
         // Hide current
-        document.getElementById(\`hero-slide-\${currentSlide}\`).classList.replace('opacity-100', 'opacity-0');
+        document.getElementById(`hero-slide-${currentSlide}`).classList.replace('opacity-100', 'opacity-0');
         dotsContainer.children[currentSlide].classList.replace('bg-white', 'bg-white/50');
         dotsContainer.children[currentSlide].classList.remove('scale-125');
 
@@ -606,7 +633,7 @@
         if (currentSlide >= slides.length) currentSlide = 0;
 
         // Show new
-        document.getElementById(\`hero-slide-\${currentSlide}\`).classList.replace('opacity-0', 'opacity-100');
+        document.getElementById(`hero-slide-${currentSlide}`).classList.replace('opacity-0', 'opacity-100');
         dotsContainer.children[currentSlide].classList.replace('bg-white/50', 'bg-white');
         dotsContainer.children[currentSlide].classList.add('scale-125');
 
@@ -634,8 +661,162 @@
     prevBtn.addEventListener('click', prevSlide);
     nextBtn.addEventListener('click', nextSlide);
 
+    const FALLBACK_SPONSORED = [
+        {
+            id: "mock-sp-1",
+            name: "Handcrafted Ceramic Bowls (Set of 2)",
+            seller_name: "Earth & Clay Studio",
+            price_paise: 185000,
+            image_url: "https://images.unsplash.com/photo-1576016770956-debb63d900bb?w=500&auto=format&fit=crop&q=60",
+            type: "sponsored"
+        },
+        {
+            id: "mock-sp-2",
+            name: "Handmade Linen Journal",
+            seller_name: "The Paper Loom",
+            price_paise: 95000,
+            image_url: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=60",
+            type: "sponsored"
+        },
+        {
+            id: "mock-sp-3",
+            name: "Solid Brass Incense Holder",
+            seller_name: "Aura Metals",
+            price_paise: 120000,
+            image_url: "https://images.unsplash.com/photo-1602872030219-c16779798575?w=500&auto=format&fit=crop&q=60",
+            type: "sponsored"
+        },
+        {
+            id: "mock-sp-4",
+            name: "Minimalist Stoneware Vase",
+            seller_name: "Nordic Craft Co.",
+            price_paise: 240000,
+            image_url: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=500&auto=format&fit=crop&q=60",
+            type: "sponsored"
+        }
+    ];
+
+    async function loadSponsoredProducts() {
+        const sponsoredGrid = document.getElementById('sponsored-product-grid');
+        if (!sponsoredGrid) return;
+
+        let sponsoredProducts = [];
+        try {
+            const response = await apiClient.get('/products/feed?page=1&limit=24');
+            if (response.data && response.data.success && response.data.data && response.data.data.products) {
+                const products = response.data.data.products;
+                sponsoredProducts = products.filter(p => p.type === 'sponsored');
+            }
+        } catch (error) {
+            console.error('Failed to load sponsored products from API:', error);
+        }
+
+        if (sponsoredProducts.length === 0) {
+            sponsoredProducts = FALLBACK_SPONSORED;
+        }
+
+        sponsoredGrid.innerHTML = '';
+        sponsoredProducts.forEach(product => {
+            const card = document.createElement('div');
+            card.className = "group bg-white rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer";
+            card.onclick = () => window.location.href = `/buyer/product.html?id=${product.id}`;
+
+            const ribbonHtml = `
+                <div class="ribbon-wrapper">
+                    <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
+                </div>
+            `;
+
+            const formattedPrice = `₹${(product.price_paise / 100).toLocaleString('en-IN')}`;
+
+            card.innerHTML = `
+                <div>
+                    <div class="aspect-square rounded-t-xl overflow-hidden p-3 relative">
+                        ${ribbonHtml}
+                        <img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="${product.image_url}" alt="${product.name}">
+                    </div>
+                    <div class="p-md flex flex-col">
+                        <div class="flex justify-between items-baseline mb-sm">
+                            <span class="font-data-price text-data-price text-[#B8860B] font-bold text-lg">${formattedPrice}</span>
+                        </div>
+                        <h4 class="font-title-serif text-title-serif font-bold text-on-surface mb-xs line-clamp-1">${product.name}</h4>
+                        <span class="font-body-md text-xs text-on-surface-variant">By ${product.seller_name}</span>
+                    </div>
+                </div>
+                <div class="px-md pb-md">
+                    <button class="w-full bg-[#255338] text-white py-2 rounded-lg font-body-md text-sm hover:bg-opacity-90 transition-all active:scale-95 duration-200">
+                        Find It Here
+                    </button>
+                </div>
+            `;
+            sponsoredGrid.appendChild(card);
+        });
+    }
+
     // Initialize
     loadHeroSlides();
+    loadSponsoredProducts();
+
+    let isLoggedIn = false;
+    async function checkAuthState() {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const authContainer = document.getElementById('auth-buttons-container');
+        
+        if (token) {
+            isLoggedIn = true;
+            try {
+                let avatarUrl = null;
+                let initial = 'A';
+                try {
+                    const res = await apiClient.get('/profile/me');
+                    if (res.data && res.data.success) {
+                        avatarUrl = res.data.data.avatar_url;
+                        if (res.data.data.full_name) {
+                            initial = res.data.data.full_name.charAt(0).toUpperCase();
+                        }
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch profile avatar:", err);
+                }
+                
+                let avatarHtml = '';
+                if (avatarUrl) {
+                    avatarHtml = `<img src="${avatarUrl}" alt="Profile" class="w-10 h-10 rounded-full border border-[#C1C9C0] object-cover cursor-pointer" onclick="window.location.href='profile.html'"/>`;
+                } else {
+                    avatarHtml = `
+                        <a href="/buyer/profile.html" class="w-10 h-10 rounded-full bg-[#3D6B4F] flex items-center justify-center text-white font-bold border border-[#C1C9C0] text-sm overflow-hidden flex-shrink-0 cursor-pointer">
+                            ${initial}
+                        </a>
+                    `;
+                }
+
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <div class="flex items-center gap-md">
+                            ${avatarHtml}
+                            <button id="logout-btn" class="text-[#255338] hover:text-red-700 transition-colors text-xs font-semibold uppercase tracking-wider">Logout</button>
+                        </div>
+                    `;
+                    document.getElementById('logout-btn')?.addEventListener('click', logout);
+                }
+            } catch(e) {
+                console.error("Failed to parse token:", e);
+                logout();
+            }
+        } else {
+            isLoggedIn = false;
+            if (authContainer) {
+                authContainer.innerHTML = `
+                    <div class="flex items-center gap-md">
+                        <a href="/auth/login.html" class="text-[#255338] hover:underline text-sm font-semibold">Login</a>
+                        <a href="/auth/signup-buyer.html" class="bg-[#255338] text-white px-md py-sm rounded-lg text-sm font-semibold hover:opacity-90 transition-all">Register</a>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    checkAuthState();
 </script>
 </body>
 </html>
