@@ -106,6 +106,50 @@
             background-image: repeating-linear-gradient(45deg, #255338 0, #255338 1px, transparent 0, transparent 50%);
             background-size: 10px 10px;
         }
+
+        /* Diagonal Corner Ribbon Styles */
+        .ribbon-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .ribbon-tag {
+            position: absolute;
+            top: 22px;
+            left: -32px;
+            width: 160px;
+            transform: rotate(-45deg);
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            line-height: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+        .ribbon-tag::before, .ribbon-tag::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            border-top: 3px solid rgba(0,0,0,0.4);
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+        }
+        .ribbon-tag::before { left: 0; }
+        .ribbon-tag::after { right: 0; }
+
+        .ribbon-sponsored {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .ribbon-bestseller {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
     </style>
 </head>
 <body class="bg-[#FFFFFF] text-on-background min-h-screen font-body-md overflow-x-hidden">
@@ -218,13 +262,13 @@
 <!-- Card 1 -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-bestseller">Best Seller</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A close-up photograph of a hand-thrown ceramic vase with a speckled oatmeal glaze, sitting on a rustic wooden studio table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALC6UYYOUWjs3W4VkD8uWjcppHVpQhleCxmEGF6UAFY8zCGq3M9x6zGcZb7ATlZPZWyZLbSbkv6C58GzEpFbGJJF7JEwus4RG0AzgYM1uMpb92qU1vu8i14hzLiI8fu0O8r26llYaiEO1t5Q9kPxeoUw1n4rvUdAC5wtPtJiaCY0kStW5phf-aTpMsoEorrV1be7nbHSSBZTPskASzrBSMxaqLYGItxSzojxseeJL8bn5hlwwz74rh9mHDKiSU_JfgVPudS3_BDcE">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 3 days</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Speckled Moon Bowl</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$48.00</p>
@@ -237,13 +281,13 @@
 <!-- Card 2 -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-sponsored">Sponsored</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A minimalist overhead shot of two hand-crafted ceramic espresso cups with a matte forest green dip glaze." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVOngRd-DVK72EyammumZPlK3sZdreV15xeleG5jZxygwSOJ09GzEOyVEuHGwUtHyHCjfb5iNmcXFEHLNU7dEdOrvZrIJ_SKc4RWteMPfH4UQt1iQ8fDsEpRhg7R0UA4jLfpudhLGVyoicGdIvGeezmZSBt5ehdb7pd2A6sr4tAHk8UyPCdXKv-zBNShdIwAEt7czXe-trxM6QSdALpWd-4QnZTcoprR1gR0j9mbqGZFAmnUcUnX5kvHlmhlV2oFJryqm0PKX-pbg">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ready to Ship</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Forest Dip Espresso Set</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$32.00</p>
@@ -256,13 +300,13 @@
 <!-- Card 3 -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-bestseller">Best Seller</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A tall, elegant ceramic carafe with an irregular, hand-pinched rim and a pale sage green wash glaze." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfTUELyuKQTKXZ8luOpxbP9ZxSrvRQDToCQ0N18Chw5sTUg82THIln8Ywpy6ROctrBVZxm4zFsYwHOuhtAI92ZCIAbpe4eqUYATYVv7s9zWjEG9SfkJyQSQdzQBsrnhvLPPvDNP_-gMX3s304PZA5qDh3Joi58lbJcAkG31FdyaiEJhovOjCwL0xUY1mFiuqNY1vjkip3sOainPZ_dkH3YAFlh143DRgVjCKL1NQONSkN_iExDgNpXIkfSJ-VXTND2mi3OdvzYZrs">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 5 days</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Sage Ribbed Carafe</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$85.00</p>
@@ -275,13 +319,13 @@
 <!-- Card 4 -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-sponsored">Sponsored</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A series of small, shallow ceramic ring dishes in varying earthy tones like terracotta, ivory, and soft violet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnYwodC8O5OBIoHWDoOMQ_wndi6zN0wBAKqxarh1XKgMAwXhMz0eCaH5Wkv8xfSozcufOwFAreoGEys_Za0DK4CVqLAXxxQj2tFv-SxeEi3WaPLuHQNmvN_r_nTcljqc3Wdam1xn2LaMHwxF_rVy9UPcLza3R17VZXHodaznYkCDfp2J_pZ-GlA0qAOUsvFbwDA3jkJkx7vU1RFPUk_sgAmCNoVe9lWC9izWoIbkDhT3DxWPNVqGj9RPcExPbmQn9G0B9rZPcagxs">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary hover:fill-1">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Custom Order</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Petal Ring Dish</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$24.00</p>
@@ -291,17 +335,16 @@
 </div>
 </div>
 </div>
-<!-- Repeat some cards for a fuller grid appearance -->
 <!-- Card 5 (Clone of 1) -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-bestseller">Best Seller</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALC6UYYOUWjs3W4VkD8uWjcppHVpQhleCxmEGF6UAFY8zCGq3M9x6zGcZb7ATlZPZWyZLbSbkv6C58GzEpFbGJJF7JEwus4RG0AzgYM1uMpb92qU1vu8i14hzLiI8fu0O8r26llYaiEO1t5Q9kPxeoUw1n4rvUdAC5wtPtJiaCY0kStW5phf-aTpMsoEorrV1be7nbHSSBZTPskASzrBSMxaqLYGItxSzojxseeJL8bn5hlwwz74rh9mHDKiSU_JfgVPudS3_BDcE">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 3 days</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Speckled Moon Bowl</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$48.00</p>
@@ -314,13 +357,13 @@
 <!-- Card 6 (Clone of 2) -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-sponsored">Sponsored</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVOngRd-DVK72EyammumZPlK3sZdreV15xeleG5jZxygwSOJ09GzEOyVEuHGwUtHyHCjfb5iNmcXFEHLNU7dEdOrvZrIJ_SKc4RWteMPfH4UQt1iQ8fDsEpRhg7R0UA4jLfpudhLGVyoicGdIvGeezmZSBt5ehdb7pd2A6sr4tAHk8UyPCdXKv-zBNShdIwAEt7czXe-trxM6QSdALpWd-4QnZTcoprR1gR0j9mbqGZFAmnUcUnX5kvHlmhlV2oFJryqm0PKX-pbg">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ready to Ship</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Forest Dip Espresso Set</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$32.00</p>
@@ -333,13 +376,13 @@
 <!-- Card 7 (Clone of 3) -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-bestseller">Best Seller</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfTUELyuKQTKXZ8luOpxbP9ZxSrvRQDToCQ0N18Chw5sTUg82THIln8Ywpy6ROctrBVZxm4zFsYwHOuhtAI92ZCIAbpe4eqUYATYVv7s9zWjEG9SfkJyQSQdzQBsrnhvLPPvDNP_-gMX3s304PZA5qDh3Joi58lbJcAkG31FdyaiEJhovOjCwL0xUY1mFiuqNY1vjkip3sOainPZ_dkH3YAFlh143DRgVjCKL1NQONSkN_iExDgNpXIkfSJ-VXTND2mi3OdvzYZrs">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-tertiary-fixed-variant bg-tertiary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Ships in 5 days</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Sage Ribbed Carafe</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$85.00</p>
@@ -352,13 +395,13 @@
 <!-- Card 8 (Clone of 4) -->
 <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all">
 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF]">
+<div class="ribbon-wrapper"><div class="ribbon-tag ribbon-sponsored">Sponsored</div></div>
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnYwodC8O5OBIoHWDoOMQ_wndi6zN0wBAKqxarh1XKgMAwXhMz0eCaH5Wkv8xfSozcufOwFAreoGEys_Za0DK4CVqLAXxxQj2tFv-SxeEi3WaPLuHQNmvN_r_nTcljqc3Wdam1xn2LaMHwxF_rVy9UPcLza3R17VZXHodaznYkCDfp2J_pZ-GlA0qAOUsvFbwDA3jkJkx7vU1RFPUk_sgAmCNoVe9lWC9izWoIbkDhT3DxWPNVqGj9RPcExPbmQn9G0B9rZPcagxs">
 <div class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary">favorite</span>
 </div>
 </div>
 <div class="p-md">
-<p class="font-data-price text-[10px] text-on-secondary-fixed-variant bg-secondary-fixed/30 px-sm py-[2px] rounded-full inline-block mb-xs">Custom Order</p>
 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2">Petal Ring Dish</h3>
 <div class="flex items-center justify-between mt-md">
 <p class="font-data-price text-lg text-secondary-fixed-variant font-bold">$24.00</p>
@@ -520,12 +563,27 @@
           grid.innerHTML = products.map(p => {
             const imageUrl = p.image_url || 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
             const price = `₹${(p.price_paise / 100).toLocaleString('en-IN')}`;
-            const shipsBadge = p.ready_to_ship ? 'Ready to Ship' : (p.ships_in_days ? `Ships in ${p.ships_in_days} days` : 'Custom Order');
-            const shipsClass = p.ready_to_ship ? 'bg-secondary-fixed/30 text-on-secondary-fixed-variant' : 'bg-tertiary-fixed/30 text-on-tertiary-fixed-variant';
+
+            const tagType = p.id % 3 === 0 ? 'sponsored' : (p.id % 3 === 1 ? 'bestseller' : '');
+            let ribbonHtml = '';
+            if (tagType === 'sponsored') {
+              ribbonHtml = `
+                <div class="ribbon-wrapper">
+                  <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
+                </div>
+              `;
+            } else if (tagType === 'bestseller') {
+              ribbonHtml = `
+                <div class="ribbon-wrapper">
+                  <div class="ribbon-tag ribbon-bestseller">Best Seller</div>
+                </div>
+              `;
+            }
 
             return `
               <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all flex flex-col h-full">
                 <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF] cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">
+                  ${ribbonHtml}
                   <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${imageUrl}" alt="${p.name}">
                   <button class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity toggle-wishlist-btn hover:scale-110 active:scale-95" data-id="${p.id}" data-wishlisted="${p.is_wishlisted}">
                     <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' ${p.is_wishlisted ? 1 : 0};">favorite</span>
@@ -533,7 +591,6 @@
                 </div>
                 <div class="p-md flex flex-col flex-grow justify-between">
                   <div>
-                    <p class="font-data-price text-[10px] ${shipsClass} px-sm py-[2px] rounded-full inline-block mb-xs">${shipsBadge}</p>
                     <h3 class="font-title-serif text-title-serif text-primary line-clamp-2 cursor-pointer hover:underline" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h3>
                     <p class="text-xs text-outline mt-1">By ${p.seller_name || 'Artisan'}</p>
                   </div>

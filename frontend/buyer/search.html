@@ -154,6 +154,50 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Diagonal Corner Ribbon Styles */
+        .ribbon-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .ribbon-tag {
+            position: absolute;
+            top: 22px;
+            left: -32px;
+            width: 160px;
+            transform: rotate(-45deg);
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            line-height: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+        .ribbon-tag::before, .ribbon-tag::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            border-top: 3px solid rgba(0,0,0,0.4);
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+        }
+        .ribbon-tag::before { left: 0; }
+        .ribbon-tag::after { right: 0; }
+
+        .ribbon-sponsored {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .ribbon-bestseller {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
     </style>
 </head>
 <body class="bg-surface-container-lowest min-h-screen relative overflow-x-hidden text-ink font-body-md antialiased">
@@ -772,15 +816,29 @@
                 const img = p.image_url || 'https://placehold.co/400x400/f4ede3/516447?text=Handcrafted';
                 const price = `₹${(p.price_paise / 100).toLocaleString('en-IN')}`;
                 
-                const shipsBadge = p.ready_to_ship ? 'Ready to Ship' : (p.ships_in_days ? `Ships in ${p.ships_in_days} days` : 'Custom Order');
-                const shipsClass = p.ready_to_ship ? 'bg-secondary-fixed/30 text-on-secondary-fixed-variant' : 'bg-tertiary-fixed/30 text-on-tertiary-fixed-variant';
-                
                 const isWishlisted = !!p.is_wishlisted;
                 const heartFill = isWishlisted ? 1 : 0;
+
+                const tagType = p.id % 3 === 0 ? 'sponsored' : (p.id % 3 === 1 ? 'bestseller' : '');
+                let ribbonHtml = '';
+                if (tagType === 'sponsored') {
+                    ribbonHtml = `
+                        <div class="ribbon-wrapper">
+                            <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
+                        </div>
+                    `;
+                } else if (tagType === 'bestseller') {
+                    ribbonHtml = `
+                        <div class="ribbon-wrapper">
+                            <div class="ribbon-tag ribbon-bestseller">Best Seller</div>
+                        </div>
+                    `;
+                }
 
                 return `
                     <div class="bg-[#FCFAF5] border border-outline-variant rounded-xl p-sm shadow-[0_4px_12px_rgba(58,51,40,0.08)] group hover:-translate-y-1 transition-all duration-300 flex flex-col h-full relative" data-product-id="${p.id}">
                         <div class="relative overflow-hidden rounded-lg aspect-square bg-[#FFFFFF] cursor-pointer" onclick="window.location.href='product.html?id=${p.id}'">
+                            ${ribbonHtml}
                             <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${img}" alt="${p.name}">
                             <button class="absolute top-3 right-3 p-sm bg-white/90 backdrop-blur-md rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity toggle-wishlist-btn hover:scale-110 active:scale-95" data-id="${p.id}" data-wishlisted="${isWishlisted}">
                                 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' ${heartFill};">favorite</span>
@@ -788,7 +846,6 @@
                         </div>
                         <div class="p-md flex flex-col flex-grow justify-between">
                             <div>
-                                <p class="font-data-price text-[10px] ${shipsClass} px-sm py-[2px] rounded-full inline-block mb-xs">${shipsBadge}</p>
                                 <h3 class="font-title-serif text-title-serif text-primary line-clamp-2 cursor-pointer hover:underline" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h3>
                                 <p class="text-xs text-outline mt-1">By ${p.seller_name || 'Artisan'}</p>
                             </div>
