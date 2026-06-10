@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html class="light scroll-smooth" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Our Story | Tohfa</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
@@ -24,7 +24,48 @@
                         "ivory-card": "#FFFDFB",
                         "sage": "#8fa382",
                         "sage-soft": "#F0F5EE",
-                        "terracotta": "#C87A53"
+                        "terracotta": "#C87A53",
+                        "secondary-fixed": "#ffdbc9",
+                        "surface-variant": "#e4e2e1",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#331200",
+                        "tertiary-fixed-dim": "#cfc5b8",
+                        "tertiary": "#332d24",
+                        "surface-container": "#f0eded",
+                        "surface-dim": "#dcd9d9",
+                        "secondary": "#8f4d23",
+                        "primary-container": "#2d4a35",
+                        "secondary-container": "#fda775",
+                        "on-primary-fixed": "#03210f",
+                        "on-tertiary-container": "#b9afa3",
+                        "surface-tint": "#47654e",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#303030",
+                        "inverse-primary": "#aecfb3",
+                        "surface-container-highest": "#e4e2e1",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1b1c1c",
+                        "on-primary-fixed-variant": "#304d38",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-secondary-container": "#773a11",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#494339",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#98b99e",
+                        "on-secondary-fixed-variant": "#71360d",
+                        "primary-fixed-dim": "#aecfb3",
+                        "on-tertiary-fixed-variant": "#4c463c",
+                        "surface-container-high": "#eae8e7",
+                        "surface": "#fbf9f8",
+                        "secondary-fixed-dim": "#ffb68d",
+                        "on-tertiary-fixed": "#201b13",
+                        "on-tertiary": "#ffffff",
+                        "brand-cream": "#F5F0E8",
+                        "brand-forest": "#2D4A35",
+                        "brand-sand": "#E8DDD0",
+                        "brand-terracotta": "#C4784A"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
@@ -33,40 +74,62 @@
                         "full": "9999px"
                     },
                     "spacing": {
-                        "margin-desktop": "64px",
-                        "unit": "8px",
                         "margin-mobile": "20px",
-                        "container-max": "1280px",
-                        "gutter": "24px",
-                        "xs": "4px",
-                        "sm": "8px",
-                        "md": "16px",
-                        "lg": "24px",
-                        "xl": "40px"
+                        "container-max": "1440px",
+                        "margin-desktop": "80px",
+                        "unit": "4px",
+                        "gutter": "24px"
                     },
                     "fontFamily": {
-                        "body-md": ["Work Sans"],
+                        "headline-md": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "body-lg": ["DM Sans"],
                         "headline-lg": ["Playfair Display"],
-                        "title-serif": ["EB Garamond"]
+                        "display-lg": ["Playfair Display"],
+                        "label-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500"}]
                     }
                 },
             },
         }
     </script>
     <style>
-        .botanical-watermark {
-            background-color: #f9faf5;
+        body { background-color: #F5F0E8; color: #173320; }
+        .linen-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/linen.png");
+        }
+        .grain-texture {
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
         }
-        .watermark-lavender {
-            position: absolute;
-            pointer-events: none;
-            color: #C8D7BF;
-            z-index: 0;
+        .organic-mask-1 { clip-path: ellipse(45% 50% at 50% 50%); }
+        .organic-mask-2 { clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 20%); }
+        .organic-mask-3 { clip-path: inset(5% 10% 5% 10% round 30% 60% 40% 70%); }
+        
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .masonry-item { break-inside: avoid; margin-bottom: 24px; }
+        .hover-zoom:hover img { transform: scale(1.05); }
     </style>
 </head>
-<body class="bg-background min-h-screen flex flex-col font-body-md text-on-surface selection:bg-[#C1C9C0]/35 botanical-watermark">
+<body class="bg-[#F5F0E8] min-h-screen flex flex-col font-body-md text-on-surface selection:bg-[#C1C9C0]/35">
 
 <!-- Standardised Top Navigation Bar -->
 <header class="w-full sticky top-0 z-50 bg-[#FAF7F0] border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20">
@@ -125,74 +188,124 @@
 </header>
 
 <!-- Main content container -->
-<main class="flex-grow pt-12 pb-xl max-w-4xl mx-auto w-full px-margin-mobile md:px-0 relative overflow-hidden">
-  <!-- Watermark Sprigs (Absolute Background Elements) -->
-  <div class="watermark-lavender -top-6 -left-10 w-32 h-32 rotate-12 select-none opacity-40">
-    <span class="material-symbols-outlined text-9xl">filter_vintage</span>
-  </div>
-  <div class="watermark-lavender bottom-12 -right-10 w-40 h-40 -rotate-12 select-none opacity-40">
-    <span class="material-symbols-outlined text-9xl">eco</span>
-  </div>
+<main class="flex-grow">
+    <!-- USP Banner / Hero Section -->
+    <section class="linen-texture py-24 md:py-32 flex flex-col md:flex-row items-stretch gap-12 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop fade-up visible" id="usp-banner">
+        <div class="w-full md:w-[45%] rounded-xl overflow-hidden aspect-[4/5] shadow-2xl">
+            <img alt="Potter hands molding clay" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoYDucXjaBiXiW69rEdxrHHFpZCIJLQCg4wla2YyndECsmiQv6FBtufolt_ihuQ-klYOHNKW13tKjoirRgkMPje9nPb3aNghgnuI7eO0RtfSgt9QsV-5IJZKnVrAcj9kDZKOV0W27GNPUJEOfBkEmpQwbuBGospmWoOlc25Eu9iMXbzMwJ_miQGasn6IPPZVSXKfCxXyU1kqgPsiD1yWgZ-94houfaHvG4MI3IdqSGbqDLqNN6QYEJurrW_SP22KtPeDRJzgsO4Cg">
+        </div>
+        <div class="w-full md:w-[55%] flex flex-col justify-center border-l-4 border-brand-terracotta pl-8 md:pl-12">
+            <span class="font-label-md text-label-md text-brand-forest tracking-[0.2em] mb-4">OUR PHILOSOPHY</span>
+            <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-[#255338] mb-6 max-w-xl">Every gift holds the hands that made it.</h1>
+            <p class="font-body-lg italic text-on-surface-variant/80 mb-8 max-w-lg">
+                "At Tohfa, every gift tells a story. We bring you hand-selected, sustainably crafted treasures made by real artisans — not factories."
+            </p>
+            <div class="flex items-center gap-4 mb-10">
+                <div class="h-px w-16 bg-brand-forest/20"></div>
+                <span class="material-symbols-outlined text-[#255338]">eco</span>
+                <div class="h-px w-16 bg-brand-forest/20"></div>
+            </div>
+            <div class="flex flex-wrap gap-4">
+                <button onclick="window.location.href='/buyer/categories.html'" class="bg-primary text-white px-8 py-3 font-label-md uppercase tracking-widest hover:bg-opacity-90 transition-all rounded-lg">Explore Collection</button>
+                <button onclick="document.getElementById('artisans-section').scrollIntoView({ behavior: 'smooth' })" class="border border-[#255338] text-[#255338] px-8 py-3 font-label-md uppercase tracking-widest hover:bg-primary hover:text-white transition-all rounded-lg">Meet Our Artisans</button>
+            </div>
+        </div>
+    </section>
 
-  <article class="relative z-10 bg-ivory-card border border-[#C1C9C0] rounded-xl shadow-sm p-8 md:p-12 max-w-3xl mx-auto flex flex-col items-center">
-    
-    <!-- Title & Subtitle Section -->
-    <header class="text-center mb-8 w-full select-none">
-      <h1 class="font-headline-lg text-[#255338] text-[44px] md:text-[56px] italic leading-tight mb-2">Our Story</h1>
-      <p class="font-title-serif italic text-lg md:text-xl text-on-surface-variant font-light">
-        Cultivating a community of makers and dreamers.
-      </p>
-      
-      <!-- Decorative Separator -->
-      <div class="flex items-center justify-center gap-sm mt-4 text-[#C1C9C0]">
-        <div class="w-16 h-[1px] bg-[#C1C9C0]"></div>
-        <span class="material-symbols-outlined text-md">spa</span>
-        <div class="w-16 h-[1px] bg-[#C1C9C0]"></div>
-      </div>
-    </header>
+    <!-- Artisans Section -->
+    <section id="artisans-section" class="bg-brand-sand grain-texture py-24 md:py-32 fade-up visible" style="background-color: #E8DDD0;">
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center mb-16">
+            <h2 class="font-headline-md text-headline-md text-primary mb-4">Hands Behind Tohfa</h2>
+            <div class="flex justify-center mb-4">
+                <span class="material-symbols-outlined text-brand-terracotta">spa</span>
+            </div>
+            <p class="font-body-lg italic text-on-surface-variant/70">Meet the makers who craft every piece with love.</p>
+        </div>
+        <div id="artisans-grid" class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter">
+            <!-- Artisans will be dynamically loaded here by JavaScript -->
+        </div>
+    </section>
 
-    <!-- Brand Narrative / Paragraphs -->
-    <div class="flex flex-col gap-6 text-[#1f1b15] font-body-md text-base md:text-lg leading-relaxed text-justify max-w-2xl">
-      <p>
-        Founded in the quiet corners of an artisan's workshop in 2024, <strong class="text-primary">Tohfa</strong> began as a humble dream—a dream to bridge the gap between soulful, slow-living makers and those seeking items with a pulse and a purpose. In a world dominated by mass production, we felt a calling to curate objects that hold the breath and touch of a human hand.
-      </p>
-      
-      <p>
-        Our focus has always been on sustainable, high-fidelity artisan craftsmanship. We work closely with woodworkers, textile weavers, and ceramicists who respect the natural lifecycle of materials. Each creation is born out of natural materials, from earthen clay to wild-harvested linen, ensuring that every purchase honors the Earth as much as the maker.
-      </p>
-      
-      <p>
-        The botanical elements woven throughout Tohfa aren't just aesthetic choices; they reflect our reverence for the organic world. We believe that by surrounding ourselves with natural textures, neutral earth tones, and handcrafted utility, we can invite the gentle, restorative pace of nature back into our modern homes.
-      </p>
-      
-      <p>
-        Every item you find here is a testament to the maker's passion and perseverance. By choosing Tohfa, you are not just acquiring a beautiful object; you are nurturing a community of dreamers and preservationists who keep ancient craft traditions alive.
-      </p>
-    </div>
-
-    <!-- Decorative Illustration/Motif card -->
-    <div class="my-8 w-full max-w-md border border-[#EAE1D7] bg-[#FAF7F0]/60 p-4 rounded-lg flex items-center gap-md">
-      <div class="text-3xl select-none">🍯</div>
-      <div class="flex flex-col">
-        <span class="font-title-serif italic text-sm text-[#725476] font-medium">"Every piece tells a story of the hands that shaped it."</span>
-        <span class="text-xs text-outline uppercase tracking-wider font-semibold mt-1">— The Tohfa Guild</span>
-      </div>
-    </div>
-
-    <!-- Call to Action Section -->
-    <footer class="mt-8 flex justify-center">
-      <button onclick="window.location.href='/buyer/home.html'" class="bg-primary text-white font-body-md text-base font-semibold px-8 py-4 rounded-lg hover:opacity-90 transition-all active:scale-95 duration-200 shadow-md flex items-center gap-xs">
-        <span class="material-symbols-outlined text-[20px]">explore</span>
-        <span>Explore Collection</span>
-      </button>
-    </footer>
-
-  </article>
+    <!-- Join Community Section -->
+    <section class="relative h-[600px] flex items-center justify-center overflow-hidden fade-up visible">
+        <div class="absolute inset-0 z-0">
+            <img alt="Craftsman workshop detail" class="w-full h-full object-cover scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPBbWxLAv5lfCUHG4_fhQ1toL95dmzT8hxfu2LIxyf4vaYfZzic9KSiF7BrmOLC01KGXVdC_cYylkAWe_RzrhHjoW3bK-YncfK6C6UjzlN9jli2ON6BmGAsk-WZ0wFI64oNRNXTyIYO2JDDhnjT6XxkSpEIPXlOv5GhshNIymEe2rfajdE3xYXucUSiSaoIKLlNBXyaJmlVod5c67e6Jjbas9l4FYfnu7soYZFWUqu_rTe90Q9wQN2AtfP5v_4Ilew6k3uTjmLth8">
+            <div class="absolute inset-0 bg-[#255338]/60 backdrop-blur-[2px]"></div>
+        </div>
+        <div class="relative z-10 text-center px-margin-mobile">
+            <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white mb-10 max-w-3xl mx-auto leading-tight italic">
+                'Craftsmanship is not a transaction. It's a relationship.'
+            </h2>
+            <button class="border-2 border-white text-white px-10 py-4 font-label-md uppercase tracking-[0.2em] hover:bg-white hover:text-brand-forest transition-all duration-300">
+                Join the Tohfa Community
+            </button>
+        </div>
+    </section>
 </main>
 
 <!-- Footer -->
-<footer class="bg-transparent border-t border-[#EAE1D7]/30 py-8 text-center text-xs text-outline/60 mt-auto select-none">
-  <p>© 2026 Tohfa Studio. All rights reserved.</p>
+<footer class="w-full mt-auto border-t border-outline-variant/30 bg-[#FAF7F0]" style="background-color: #FAF7F0;">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-xl px-margin-desktop py-xl max-w-[1440px] mx-auto relative">
+        <!-- Brand Info -->
+        <div class="md:col-span-5">
+            <h2 class="font-headline-lg text-headline-lg italic text-primary mb-md">Tohfa<span style="color: rgb(227, 176, 75);">.</span></h2>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-sm mb-lg">
+                Cultivating a community of makers and dreamers. Our studio curates the finest handmade goods from across the globe, prioritizing sustainability and craftsmanship.
+            </p>
+            <div class="flex gap-md">
+                <a class="w-10 h-10 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+                    <span class="material-symbols-outlined text-sm">public</span>
+                </a>
+                <a class="w-10 h-10 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+                    <span class="material-symbols-outlined text-sm">share</span>
+                </a>
+                <a class="w-10 h-10 rounded-full border border-outline flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+                    <span class="material-symbols-outlined text-sm">mail</span>
+                </a>
+            </div>
+        </div>
+        <!-- Links Column 1 -->
+        <div class="md:col-span-2">
+            <h4 class="font-label-caps text-label-caps text-primary mb-lg">Navigation</h4>
+            <ul class="flex flex-col gap-sm">
+                <li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Sustainability</a></li>
+                <li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Our Artisans</a></li>
+                <li class=""><a class="font-body-md text-body-md text-primary font-bold" href="/buyer/our-story.html">Our Story</a></li>
+                <li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Journal</a></li>
+            </ul>
+        </div>
+        <!-- Links Column 2 -->
+        <div class="md:col-span-2">
+            <h4 class="font-label-caps text-label-caps text-primary mb-lg">Service</h4>
+            <ul class="flex flex-col gap-sm">
+                <li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping</a></li>
+                <li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Care Guide</a></li>
+                <li class=""><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Returns</a></li>
+            </ul>
+        </div>
+        <!-- Newsletter -->
+        <div class="md:col-span-3">
+            <h4 class="font-title-serif italic text-primary text-lg mb-md">Stay Inspired</h4>
+            <p class="font-body-md text-sm text-on-surface-variant mb-md leading-snug">
+                Subscribe to receive artisan stories and exclusive collections.
+            </p>
+            <form id="newsletter-form" class="flex flex-col gap-sm">
+                <input class="w-full px-4 py-3 rounded-lg bg-surface-container-low border border-outline-variant focus:border-primary focus:ring-0 font-body-md text-sm" placeholder="Your email address" type="email" required>
+                <button class="bg-[#255338] text-white py-3 rounded-lg font-label-caps text-xs tracking-widest hover:opacity-90 active:scale-95 transition-all uppercase" type="submit">
+                    SUBSCRIBE
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Bottom Footer -->
+    <div class="border-t border-outline-variant/10 py-md px-margin-desktop max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-md text-outline">
+        <p class="font-body-md text-xs">© 2024 Tohfa Artisan Studio. Handcrafted with intention.</p>
+        <div class="flex gap-lg">
+            <a class="font-body-md text-xs hover:text-primary" href="#">Privacy Policy</a>
+            <a class="font-body-md text-xs hover:text-primary" href="#">Terms of Service</a>
+            <a class="font-body-md text-xs hover:text-primary" href="#">Sustainability</a>
+        </div>
+    </div>
 </footer>
 
 <script type="module">
@@ -301,11 +414,114 @@
         } catch (err) {}
     }
 
+    window.followArtisan = function(id) {
+        fetch(`http://localhost:4000/api/artisans/${id}/follow`, { 
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('tohfa_access_token') || ''}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const countEl = document.getElementById(`count-${id}`);
+                if (countEl) countEl.innerText = data.data.followerCount;
+                alert('Followed successfully!');
+            } else {
+                alert(data.message || 'Action failed');
+            }
+        })
+        .catch(err => alert('You must be logged in to follow.'));
+    };
+
     window.addEventListener('DOMContentLoaded', async () => {
         await checkAuthState();
         await updateCartBadge();
         await updateWishlistBadge();
         await updateNotificationsBadge();
+
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Fetch Artisans
+        const grid = document.getElementById('artisans-grid');
+        if (grid) {
+            fetch('http://localhost:4000/api/artisans')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        grid.innerHTML = data.data.map((artisan, index) => {
+                            const styles = [
+                                { bg: 'bg-[#255338] text-white', tag: 'bg-brand-terracotta text-white', border: 'border-brand-cream' },
+                                { bg: 'bg-[#FAF7F0] text-primary', tag: 'bg-brand-terracotta text-white', border: 'border-brand-sand' },
+                                { bg: 'bg-[#255338] text-white', tag: 'bg-brand-terracotta text-white', border: 'border-brand-cream' }
+                            ];
+                            const style = styles[index % styles.length];
+                            
+                            return `
+                            <div class="${style.bg} p-8 pt-20 rounded-2xl relative group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 organic-mask-${(index % 3) + 1} overflow-hidden shadow-lg border-2 ${style.border}">
+                                    <img alt="${artisan.user?.name}" class="w-full h-full object-cover" src="${artisan.coverImageUrl || 'https://via.placeholder.com/150'}">
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <span class="inline-block ${style.tag} px-3 py-1 text-[10px] tracking-widest uppercase mb-4">${artisan.craft || 'Craft'} · ${artisan.location || 'Unknown'}</span>
+                                    <h3 class="font-headline-md text-2xl mb-4">${artisan.user?.name}</h3>
+                                    <div class="relative mb-6">
+                                        <span class="absolute -top-4 -left-2 text-4xl text-brand-terracotta font-serif opacity-50">“</span>
+                                        <p class="text-sm leading-relaxed italic opacity-90 px-4">${artisan.quote || artisan.bio || ''}</p>
+                                    </div>
+                                    <button onclick="followArtisan('${artisan.id}')" class="border border-current rounded-full px-6 py-2 text-[10px] tracking-widest uppercase hover:bg-current hover:text-surface transition-colors mb-8">Follow (<span id="count-${artisan.id}">${artisan.followerCount || 0}</span>)</button>
+                                    
+                                    <div class="grid grid-cols-4 gap-2 mt-auto">
+                                        ${(artisan.products || []).slice(0, 4).map(p => `
+                                            <div class="aspect-square bg-current/10 rounded overflow-hidden hover-zoom"><img class="w-full h-full object-cover transition-transform" alt="Product" src="${p.imageUrl}"></div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                <div onclick="window.location.href='/buyer/seller-profile.html?id=${artisan.id}'" class="absolute inset-0 bg-[#255338] opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity rounded-2xl cursor-pointer">
+                                    <span class="text-brand-cream uppercase tracking-[0.3em] font-label-md">View Studio</span>
+                                    <span class="material-symbols-outlined text-brand-cream mt-4">arrow_forward</span>
+                                </div>
+                            </div>
+                            `;
+                        }).join('');
+                    }
+                })
+                .catch(err => console.error('Failed to fetch artisans:', err));
+        }
+
+        // Newsletter Form
+        const form = document.getElementById('newsletter-form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = e.target.querySelector('input').value;
+                fetch('http://localhost:4000/api/newsletter/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                }).then(res => res.json()).then(data => {
+                    if (data.success) {
+                        alert('Subscribed successfully!');
+                        e.target.reset();
+                    } else {
+                        alert('Subscription failed: ' + data.message);
+                    }
+                });
+            });
+        }
     });
 </script>
 </body>
