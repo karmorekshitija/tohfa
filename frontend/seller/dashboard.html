@@ -11,6 +11,7 @@
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/components/seller-components.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -125,70 +126,7 @@
 </head>
 <body class="bg-background text-on-background font-body-md overflow-x-hidden">
 
-<!-- Standardised Left Sidebar (Task 37 unified) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-  <div class="px-4 mb-8 flex flex-col items-center">
-    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">Tohfa Studio</h1>
-  </div>
-  <nav class="flex-1 space-y-1">
-    <a class="flex flex-col items-center py-2.5 text-primary font-bold border-r-4 border-primary bg-secondary-container/20 transition-colors duration-200" href="/seller/dashboard.html" id="sidebar-home" title="Home">
-      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html" id="sidebar-catalog" title="Catalog">
-      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html" id="sidebar-orders" title="Orders">
-      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/production-planner.html" id="sidebar-capacity" title="Capacity">
-      <span class="material-symbols-outlined mb-1 text-2xl">pending_actions</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Capacity</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/inventory.html" id="sidebar-inventory" title="Inventory">
-      <span class="material-symbols-outlined mb-1 text-2xl">package_2</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Inventory</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html" id="sidebar-analytics" title="Analytics">
-      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/messages.html" id="sidebar-messages" title="Messages">
-      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html" id="sidebar-reviews" title="Reviews">
-      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/upload-reel.html" id="sidebar-reels" title="Reels">
-      <span class="material-symbols-outlined mb-1 text-2xl">movie</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reels</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html" id="sidebar-config" title="Config">
-      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html" id="sidebar-profile" title="Profile">
-      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
-    </a>
-  </nav>
-  <div class="px-3 mt-auto pt-6 space-y-2 w-full">
-    <button id="view-store-btn" class="w-full py-2 bg-primary text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      View Store
-    </button>
-    <button id="logout-btn" class="w-full py-2 bg-error text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      Logout
-    </button>
-  </div>
-</aside>
-
-<!-- Main Content Area -->
-<main class="ml-[130px] min-h-screen px-margin-desktop py-lg">
+<seller-layout active-tab="home">
   <!-- Header -->
   <header class="flex justify-between items-end mb-xl">
     <div>
@@ -235,7 +173,7 @@
       Gathering studio records...
   </div>
 
-  <div id="dashboard-content" class="hidden">
+  <div id="dashboard-content" class="hidden flex flex-col gap-xl">
     <!-- KPI Row -->
     <section class="grid grid-cols-4 gap-lg mb-xl">
       <!-- KPI 1 -->
@@ -265,165 +203,148 @@
         </div>
       </div>
       <!-- KPI 4 -->
-      <div class="bg-surface border border-outline-variant/30 rounded-xl p-md shadow-sm relative overflow-hidden group flex items-center justify-between">
+      <div class="bg-surface border border-outline-variant/30 rounded-xl p-md shadow-sm relative overflow-hidden group">
         <div class="absolute inset-0 botanical-watermark"></div>
-        <div>
-          <p class="font-label-caps text-label-caps text-on-surface-variant/70 mb-sm">Website Visits</p>
-          <span id="kpi-visits" class="font-data-price text-[32px] text-on-surface">—</span>
-        </div>
-        <div class="relative w-16 h-16">
-          <svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
-            <circle class="stroke-surface-container-highest" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
-            <circle class="stroke-primary arc-progress" cx="18" cy="18" fill="none" r="16" stroke-linecap="round" stroke-width="3" id="kpi-progress-circle"></circle>
-          </svg>
-          <span class="absolute inset-0 flex items-center justify-center text-[10px] font-data-price" id="kpi-progress-pct">0%</span>
+        <p class="font-label-caps text-label-caps text-on-surface-variant/70 mb-sm">Pending Orders</p>
+        <div class="flex items-baseline gap-sm">
+          <span id="kpi-pending-orders" class="font-data-price text-[32px] text-on-surface">—</span>
         </div>
       </div>
     </section>
 
-    <!-- Main Body Grid -->
-    <div class="grid grid-cols-12 gap-xl">
-      <!-- Left Column (8 cols) -->
-      <div class="col-span-8 flex flex-col gap-xl">
-        <!-- Festive Warning Banner -->
-        <div class="bg-surface-container-low border border-secondary-container/50 rounded-xl p-lg flex items-center justify-between shadow-sm border-l-4 border-l-on-secondary-container">
-          <div class="flex gap-md items-center">
-            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
-              <span class="material-symbols-outlined">celebration</span>
-            </div>
-            <div>
-              <h4 class="font-title-serif text-title-serif text-on-surface">Diwali is in 18 days</h4>
-              <p class="text-on-surface-variant text-body-md opacity-90">You have 34 active orders. Recommended cutoff: <span class="font-bold text-primary">Oct 15.</span></p>
-            </div>
-          </div>
-          <button id="set-cutoff-btn" class="px-lg py-sm bg-on-secondary-container text-on-primary rounded-lg font-label-caps text-[10px] hover:opacity-90 transition-all">
-            Set Cutoff Date
-          </button>
+    <!-- 1. Low Stock Alerts -->
+    <section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden">
+      <div class="absolute inset-0 botanical-watermark"></div>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="font-headline-lg italic text-on-surface text-2xl flex items-center gap-2">
+          Low Stock Alerts
+          <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+        </h3>
+        <a href="/seller/catalog.html" class="text-primary font-label-caps text-[10px] font-bold border-b border-primary/40 hover:border-primary transition-all tracking-widest">VIEW CATALOG</a>
+      </div>
+      <ul class="flex flex-col gap-lg" id="low-stock-list">
+        <!-- Dynamically Populated -->
+      </ul>
+      <p id="low-stock-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">All products are well-stocked 🎉</p>
+    </section>
+
+    <!-- 2. Announcements -->
+    <section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden">
+      <div class="absolute inset-0 botanical-watermark"></div>
+      <h3 class="font-headline-lg italic text-on-surface text-2xl mb-6">Announcements</h3>
+      <div class="space-y-6">
+        <div class="relative pl-6">
+          <span class="absolute left-0 top-1 text-primary text-lg material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+          <h4 class="font-title-serif font-bold text-primary text-base">New Packaging Guidelines</h4>
+          <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Artisan partners must now use 100% biodegradable twine and soy-ink labels for all gift boxes starting Sept 1st.</p>
         </div>
+        <div class="relative pl-6">
+          <span class="absolute left-0 top-1 text-primary text-lg material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+          <h4 class="font-title-serif font-bold text-primary text-base">Monsoon Curated Collection</h4>
+          <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Submit your "Petrichor &amp; Fern" themed listings by July 30th for a chance to be featured on the homepage.</p>
+        </div>
+        <div class="relative pl-6">
+          <span class="absolute left-0 top-1 text-primary text-lg material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+          <h4 class="font-title-serif font-bold text-primary text-base">Seller Workshop: Botanical Inks</h4>
+          <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Join us this Friday for a live masterclass on extracting pigments from studio waste.</p>
+        </div>
+      </div>
+    </section>
 
-        <!-- Urgent Orders Section -->
-        <section>
-          <div class="flex items-center justify-between mb-lg">
-            <h3 class="font-headline-lg italic text-on-surface text-2xl">Urgent Orders</h3>
-            <a class="text-tertiary text-body-md flex items-center gap-xs hover:underline" href="/seller/orders.html">
-              View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </a>
-          </div>
-          <div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm">
-            <table class="w-full text-left border-collapse" id="recent-orders-table">
-              <thead class="bg-surface-container-highest/30">
-                <tr>
-                  <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Product</th>
-                  <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Buyer</th>
-                  <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Amount</th>
-                  <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-outline-variant/20" id="recent-orders-body">
-                <!-- Dynamically Populated -->
-              </tbody>
-            </table>
-            <p id="orders-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">No recent orders received. Start listing!</p>
-          </div>
-        </section>
+    <!-- 3. Recent Orders -->
+    <section>
+      <div class="flex items-center justify-between mb-lg">
+        <h3 class="font-headline-lg italic text-on-surface text-2xl">Recent Orders</h3>
+        <a class="text-tertiary text-body-md flex items-center gap-xs hover:underline" href="/seller/orders.html">
+          View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+      <div class="bg-surface border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm">
+        <table class="w-full text-left border-collapse" id="recent-orders-table">
+          <thead class="bg-surface-container-highest/30">
+            <tr>
+              <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Product</th>
+              <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Buyer</th>
+              <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Amount</th>
+              <th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant/60">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-outline-variant/20" id="recent-orders-body">
+            <!-- Dynamically Populated -->
+          </tbody>
+        </table>
+        <p id="orders-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">No recent orders received. Start listing!</p>
+      </div>
+    </section>
 
-        <!-- Store Performance Overview Chart (SVG) -->
-        <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden">
-            <div class="absolute inset-0 botanical-watermark"></div>
-            <div class="flex justify-between items-center mb-10">
-                <h3 class="font-headline-lg italic text-on-surface text-2xl">Store Performance Overview</h3>
-                <div class="flex gap-6">
-                    <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full bg-primary"></div>
-                        <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest">REVENUE</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full border-2 border-tertiary border-dashed bg-transparent"></div>
-                        <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest">VISITS</span>
-                    </div>
+    <!-- 4. Quick Actions -->
+    <section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden">
+      <div class="absolute inset-0 botanical-watermark"></div>
+      <h3 class="font-headline-lg italic text-on-surface text-2xl mb-6">Quick Actions</h3>
+      <div class="grid grid-cols-4 gap-lg">
+        <a href="/seller/listing-photos.html" class="flex flex-col items-center justify-center p-lg bg-surface border border-outline-variant/30 rounded-xl hover:border-primary hover:bg-secondary-container/10 transition-all group shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary">add_circle</span>
+          </div>
+          <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest text-center">ADD LISTING</span>
+        </a>
+        <a href="/seller/orders.html" class="flex flex-col items-center justify-center p-lg bg-surface border border-outline-variant/30 rounded-xl hover:border-primary hover:bg-secondary-container/10 transition-all group shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary">package_2</span>
+          </div>
+          <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest text-center">MANAGE ORDERS</span>
+        </a>
+        <a href="/seller/upload-reel.html" class="flex flex-col items-center justify-center p-lg bg-surface border border-outline-variant/30 rounded-xl hover:border-primary hover:bg-secondary-container/10 transition-all group shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary">campaign</span>
+          </div>
+          <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest text-center">UPLOAD REEL</span>
+        </a>
+        <a href="/seller/analytics.html" class="flex flex-col items-center justify-center p-lg bg-surface border border-outline-variant/30 rounded-xl hover:border-primary hover:bg-secondary-container/10 transition-all group shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary">bar_chart</span>
+          </div>
+          <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest text-center">ANALYTICS</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Store Performance Overview Chart (SVG) -->
+    <section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden">
+        <div class="absolute inset-0 botanical-watermark"></div>
+        <div class="flex justify-between items-center mb-10">
+            <h3 class="font-headline-lg italic text-on-surface text-2xl">Store Performance Overview</h3>
+            <div class="flex gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-primary"></div>
+                    <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest">REVENUE</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full border-2 border-tertiary border-dashed bg-transparent"></div>
+                    <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest">VISITS</span>
                 </div>
             </div>
-            <div class="h-64 w-full relative">
-                <!-- Simple SVG Chart -->
-                <svg class="w-full h-full" viewBox="0 0 1000 200">
-                    <!-- Revenue Line -->
-                    <path d="M0 180 L 100 160 L 200 170 L 300 120 L 400 100 L 500 130 L 600 60 L 700 80 L 800 40 L 900 60 L 1000 30" fill="none" stroke="#255338" stroke-width="3"></path>
-                    <!-- Visits Line (Dashed) -->
-                    <path d="M0 190 L 100 180 L 200 185 L 300 160 L 400 150 L 500 170 L 600 120 L 700 130 L 800 110 L 900 115 L 1000 90" fill="none" stroke="#573b81" stroke-dasharray="8,4" stroke-width="2"></path>
-                    <!-- Axis Labels -->
-                    <g class="font-data-price text-[10px] fill-on-surface-variant/40">
-                        <text x="0" y="198">17 JUL</text>
-                        <text x="250" y="198">19 JUL</text>
-                        <text x="500" y="198">21 JUL</text>
-                        <text x="750" y="198">23 JUL</text>
-                        <text x="960" y="198">TODAY</text>
-                    </g>
-                </svg>
-            </div>
-        </section>
-      </div>
-
-      <!-- Right Column (4 cols) -->
-      <aside class="col-span-4 flex flex-col gap-xl">
-        <!-- Quick Links -->
-        <section class="flex flex-wrap gap-sm">
-          <a href="/seller/orders.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
-            <span class="material-symbols-outlined text-[16px]">add</span> Manage Orders
-          </a>
-          <a href="/seller/listing-photos.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
-            <span class="material-symbols-outlined text-[16px]">post_add</span> Add Product
-          </a>
-          <a href="/seller/upload-reel.html" class="px-md py-sm bg-surface border border-outline rounded-full flex items-center gap-xs font-label-caps text-[10px] hover:bg-surface-container-high transition-colors">
-            <span class="material-symbols-outlined text-[16px]">movie</span> Upload Reel
-          </a>
-        </section>
-
-        <!-- Pending Actions (Low Stock Warnings) -->
-        <section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm">
-          <h4 class="font-title-serif text-title-serif text-on-surface mb-lg flex items-center gap-xs">
-            Pending Actions <span class="text-tertiary">✦</span>
-          </h4>
-          <ul class="flex flex-col gap-lg" id="low-stock-list">
-              <!-- Dynamically Populated -->
-          </ul>
-          <p id="low-stock-empty" class="hidden text-center text-on-surface-variant py-8 text-sm italic">All products are well-stocked 🎉</p>
-        </section>
-
-        <!-- Repeat Buyer Spotlight -->
-        <section class="bg-surface border border-outline-variant/30 border-l-4 border-l-primary rounded-xl p-lg shadow-sm relative overflow-hidden">
-          <div class="absolute inset-0 botanical-watermark"></div>
-          <div class="flex items-center gap-md mb-md">
-            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
-              <img class="w-full h-full object-cover" data-alt="Repeat buyer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADfuH5i4eUcE2Ll-Y2TzS4M6ZM6SaZiQl8V7OwLJmZMYNf3s27HA7kO3frKWyCUcv37DKkTPGHUFQ6ZMJpWD92nbaZe7f-_KwKNUV70iR1Sz63HnfYyty4Rdc_trUG_CR4IHYIHhJfHY5AY9_wi8O-oB5yuhYK1MO1FHUpTd4GOuEtXOB7wRWj_OILZwGGOSiZfCANAfAc6LtSGSlpxAjqKFFJ08p9FmU5azSXpvceAKCpPtazA_viaVOco2ZJVXf5gjxg06G8t0Q"/>
-            </div>
-            <div>
-              <h4 class="font-title-serif text-title-serif text-on-surface">Priya Sharma</h4>
-              <p class="font-label-caps text-[10px] text-primary">Repeat Buyer • 5 Orders</p>
-            </div>
-          </div>
-          <div class="bg-surface-container-low/50 p-md rounded-lg border border-outline-variant/20 italic text-on-surface-variant text-sm mb-md">
-            "Your mugs bring so much peace to my morning ritual. Looking forward to the Diwali collection!"
-          </div>
-          <a href="/seller/messages.html" class="w-full py-sm bg-surface-container-highest/50 text-on-surface-variant rounded-lg font-label-caps text-[10px] hover:bg-surface-container-highest transition-all flex items-center justify-center gap-xs">
-            <span class="material-symbols-outlined text-[16px]">mail</span> Send a Personal Note
-          </a>
-        </section>
-
-        <!-- Studio Inspiration Card -->
-        <section class="bg-secondary-container/20 border border-secondary-container rounded-xl p-lg text-center relative overflow-hidden group">
-          <div class="absolute top-0 right-0 p-lg opacity-10 group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-[64px]">yard</span>
-          </div>
-          <h5 class="font-title-serif text-title-serif text-secondary mb-sm">Artisan's Tip</h5>
-          <p class="text-body-md text-on-secondary-container leading-relaxed italic">
-            "Creativity is not a resource, it is a practice. Tend to your studio like a garden."
-          </p>
-          <div class="mt-md h-px w-12 bg-secondary/30 mx-auto"></div>
-        </section>
-      </aside>
-    </div>
+        </div>
+        <div class="h-64 w-full relative">
+            <!-- Simple SVG Chart -->
+            <svg class="w-full h-full" viewBox="0 0 1000 200">
+                <!-- Revenue Line -->
+                <path d="M0 180 L 100 160 L 200 170 L 300 120 L 400 100 L 500 130 L 600 60 L 700 80 L 800 40 L 900 60 L 1000 30" fill="none" stroke="#255338" stroke-width="3"></path>
+                <!-- Visits Line (Dashed) -->
+                <path d="M0 190 L 100 180 L 200 185 L 300 160 L 400 150 L 500 170 L 600 120 L 700 130 L 800 110 L 900 115 L 1000 90" fill="none" stroke="#573b81" stroke-dasharray="8,4" stroke-width="2"></path>
+                <!-- Axis Labels -->
+                <g class="font-data-price text-[10px] fill-on-surface-variant/40">
+                    <text x="0" y="198">17 JUL</text>
+                    <text x="250" y="198">19 JUL</text>
+                    <text x="500" y="198">21 JUL</text>
+                    <text x="750" y="198">23 JUL</text>
+                    <text x="960" y="198">TODAY</text>
+                </g>
+            </svg>
+        </div>
+    </section>
   </div>
-</main>
+</seller-layout>
 
 <!-- Scripts -->
 <script>
@@ -508,26 +429,14 @@
             ? `+${kpis.new_orders_since_last_period} new`
             : '';
 
-        document.getElementById('kpi-visits').textContent = kpis.website_visits != null
-            ? kpis.website_visits.toLocaleString('en-IN')
-            : '—';
+        const pendingOrdersEl = document.getElementById('kpi-pending-orders');
+        if (pendingOrdersEl) {
+            pendingOrdersEl.textContent = kpis.pending_orders ?? 0;
+        }
 
         const convRate = kpis.conversion_rate;
         const convPct = convRate != null ? (convRate * 100).toFixed(1) : '0';
         document.getElementById('kpi-conversion').textContent = `${convPct}%`;
-
-        // Circular progress based on conversion or capacity
-        const progressCircle = document.getElementById('kpi-progress-circle');
-        const progressPct = document.getElementById('kpi-progress-pct');
-        if (progressCircle && progressPct) {
-            // Cap at 100
-            const cap = Math.min(Math.round(convRate ? convRate * 1000 : 0), 100); 
-            progressPct.textContent = `${cap}%`;
-            // Calculate stroke-dashoffset (100 is full length)
-            const offset = 100 - cap;
-            progressCircle.style.transition = 'stroke-dashoffset 1s ease-out';
-            progressCircle.style.strokeDashoffset = offset;
-        }
 
         // ZAI Tip
         if (zai_tip) {

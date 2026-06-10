@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Tohfa | Listing Published</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/components/seller-components.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -140,88 +141,8 @@
     </script>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex">
-
-<!-- Standardised Left Sidebar (Task 37 unified) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-  <div class="px-4 mb-8 flex flex-col items-center">
-    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">Tohfa Studio</h1>
-  </div>
-  <nav class="flex-1 space-y-1">
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html" id="sidebar-home" title="Home">
-      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-primary font-bold border-r-4 border-primary bg-secondary-container/20 transition-colors duration-200" href="/seller/catalog.html" id="sidebar-catalog" title="Catalog">
-      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html" id="sidebar-orders" title="Orders">
-      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/production-planner.html" id="sidebar-capacity" title="Capacity">
-      <span class="material-symbols-outlined mb-1 text-2xl">pending_actions</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Capacity</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/inventory.html" id="sidebar-inventory" title="Inventory">
-      <span class="material-symbols-outlined mb-1 text-2xl">package_2</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Inventory</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html" id="sidebar-analytics" title="Analytics">
-      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/messages.html" id="sidebar-messages" title="Messages">
-      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html" id="sidebar-reviews" title="Reviews">
-      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/upload-reel.html" id="sidebar-reels" title="Reels">
-      <span class="material-symbols-outlined mb-1 text-2xl">movie</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reels</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html" id="sidebar-config" title="Config">
-      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html" id="sidebar-profile" title="Profile">
-      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
-    </a>
-  </nav>
-  <div class="px-3 mt-auto pt-6 space-y-2 w-full">
-    <button id="view-store-btn" class="w-full py-2 bg-primary text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      View Store
-    </button>
-    <button id="logout-btn" class="w-full py-2 bg-error text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      Logout
-    </button>
-  </div>
-</aside>
-
-<!-- TopAppBar -->
-<header class="fixed top-0 right-0 left-[130px] w-[calc(100%-130px)] h-[72px] z-40 bg-background/80 backdrop-blur-md flex justify-between items-center px-lg border-b border-outline-variant/30">
-<div class="flex items-center gap-sm">
-<span class="font-headline-lg text-headline-lg italic text-primary dark:text-primary-fixed">Tohfa</span>
-<span class="text-outline-variant px-sm">/</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant font-bold">Listing Wizard</span>
-</div>
-<div class="flex items-center gap-md">
-<button class="p-sm text-on-surface-variant hover:opacity-80 transition-opacity active:scale-[0.98]">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="p-sm text-on-surface-variant hover:opacity-80 transition-opacity active:scale-[0.98]">
-<span class="material-symbols-outlined">help_outline</span>
-</button>
-</div>
-</header>
-
-<!-- Main Content Canvas -->
-<main class="ml-[130px] mt-[72px] w-[calc(100%-130px)] flex-grow relative flex items-center justify-center min-h-[calc(100vh-72px)] overflow-hidden">
+<seller-layout active-tab="catalog">
+<div class="flex-grow relative flex items-center justify-center min-h-[calc(100vh-72px)] overflow-hidden">
 <!-- Faint botanical watercolor hero image -->
 <div class="absolute inset-0 z-0 opacity-[0.15] pointer-events-none botanical-overlay">
 <img class="w-full h-full object-cover" data-alt="A delicate watercolor painting of botanical sprigs." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwufkkcndltImy7od6xPRyDorgAosVjuLQkEAtClqolaOa4n9KWJHsN9bZtfXIKQWxVzyps1UOBWhTLtZaJXTBhfA88c2YRdxF882trxTZuLKjrVdjmStTYQ-BIlNvJVLN674FKlbxzIDPoFY-Hwx8CwnF2rKbPPCLHia5tLRl_50Tz_of2WBytqHS8kjEFZv897kNgr2UJNhXLZOL2IbqlahOP8C30AGw7xGp36Db_jrk9APUkcwpWyo_lkIRZ3UMmnrBXrzW9Bk"/>
@@ -270,17 +191,8 @@
 <!-- Subtle Texture Overlay for the card -->
 <div class="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] mix-blend-multiply rounded-xl"></div>
 </section>
-</main>
-
-<!-- Footer -->
-<footer class="fixed bottom-0 left-[130px] right-0 bg-surface-container-lowest dark:bg-surface-container-highest border-t border-outline-variant flex flex-col md:flex-row justify-between items-center py-sm px-lg z-40">
-<div class="font-label-caps text-[10px] text-primary font-bold">© 2024 Tohfa Artisan Studio. Handcrafted with intention.</div>
-<div class="flex space-x-md mt-xs md:mt-0">
-<a class="font-label-caps text-[10px] text-on-secondary-fixed-variant hover:text-tertiary transition-colors font-bold" href="#">Support</a>
-<a class="font-label-caps text-[10px] text-on-secondary-fixed-variant hover:text-tertiary transition-colors font-bold" href="#">Studio Guidelines</a>
-<a class="font-label-caps text-[10px] text-on-secondary-fixed-variant hover:text-tertiary transition-colors font-bold" href="#">Privacy</a>
 </div>
-</footer>
+</seller-layout>
 
 <script>
     const API_BASE_URL = window.location.origin;

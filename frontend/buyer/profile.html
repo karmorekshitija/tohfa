@@ -648,16 +648,12 @@
     });
 
     // Handle logout click
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-        const refreshToken = sessionStorage.getItem('tohfa_refresh_token');
-        try {
-            await apiClient.post('/auth/logout', { refresh_token: refreshToken });
-        } catch (err) {
-            console.error('Logout error:', err);
-        }
-        sessionStorage.clear();
-        window.location.href = '/auth/login.html';
-    });
+    const logoutBtn = document.getElementById('profile-logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            window.location.href = '/auth/logout-confirmation.html';
+        });
+    }
 
     // Initial load
     init();

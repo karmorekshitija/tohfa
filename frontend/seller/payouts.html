@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Payout History | Seller Studio | Tohfa</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/components/seller-components.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -41,83 +42,7 @@
 </head>
 <body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
 
-<!-- Standardised Left Sidebar (Task 37 unified) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-  <div class="px-4 mb-8 flex flex-col items-center">
-    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">Tohfa Studio</h1>
-  </div>
-  <nav class="flex-1 space-y-1">
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html" id="sidebar-home" title="Home">
-      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html" id="sidebar-catalog" title="Catalog">
-      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html" id="sidebar-orders" title="Orders">
-      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/production-planner.html" id="sidebar-capacity" title="Capacity">
-      <span class="material-symbols-outlined mb-1 text-2xl">pending_actions</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Capacity</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/inventory.html" id="sidebar-inventory" title="Inventory">
-      <span class="material-symbols-outlined mb-1 text-2xl">package_2</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Inventory</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html" id="sidebar-analytics" title="Analytics">
-      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/messages.html" id="sidebar-messages" title="Messages">
-      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/reviews.html" id="sidebar-reviews" title="Reviews">
-      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/upload-reel.html" id="sidebar-reels" title="Reels">
-      <span class="material-symbols-outlined mb-1 text-2xl">movie</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reels</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-primary font-bold border-r-4 border-primary bg-secondary-container/20 transition-colors duration-200" href="/seller/store-config.html" id="sidebar-config" title="Config">
-      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html" id="sidebar-profile" title="Profile">
-      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
-    </a>
-  </nav>
-  <div class="px-3 mt-auto pt-6 space-y-2 w-full">
-    <button id="view-store-btn" class="w-full py-2 bg-primary text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      View Store
-    </button>
-    <button id="logout-btn" class="w-full py-2 bg-error text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      Logout
-    </button>
-  </div>
-</aside>
-
-<!-- Top App Bar -->
-<header class="fixed top-0 right-0 left-[130px] w-[calc(100%-130px)] bg-surface flex justify-between items-center h-16 px-margin-desktop z-40 border-b border-outline-variant/10">
-    <div class="flex items-center gap-4">
-        <a href="/seller/store-config.html" class="p-2 hover:bg-surface-container rounded-full transition-colors">
-            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
-        </a>
-        <h1 class="font-headline-md text-2xl text-primary font-serif">Payout History</h1>
-    </div>
-    <div class="flex items-center gap-3">
-        <button id="zai-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant text-on-surface text-[12px] font-bold hover:bg-surface-container transition-all">
-            <span class="material-symbols-outlined text-[16px]">flutter_dash</span>
-            ZAI Mode
-        </button>
-    </div>
-</header>
+<seller-layout active-tab="payments">
 
 <!-- Toast -->
 <div id="toast" class="hidden fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
@@ -125,12 +50,15 @@
     <span id="toast-msg"></span>
 </div>
 
-<main class="ml-[130px] mt-16 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-20">
-
-    <!-- Header Section (hidden since it's in top header bar now) -->
-    <section class="mb-8 hidden">
-        <h1 class="font-headline-md text-3xl mb-1">Payout History</h1>
-        <p class="text-sm text-on-surface-variant">Review earnings paid out to your bank account.</p>
+    <!-- Header Section -->
+    <section class="mb-8 flex items-center gap-4">
+        <a href="/seller/store-config.html" class="p-2 hover:bg-surface-container rounded-full transition-colors flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-surface text-2xl">arrow_back</span>
+        </a>
+        <div>
+            <h1 class="font-headline-md text-3xl mb-1">Payout History</h1>
+            <p class="text-sm text-on-surface-variant">Review earnings paid out to your bank account.</p>
+        </div>
     </section>
 
     <!-- Error state -->
@@ -198,11 +126,10 @@
         </section>
 
     </div>
-</main>
-
-<footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center">
-    <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
-</footer>
+    <footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center mt-12">
+        <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+    </footer>
+</seller-layout>
 
 <script>
 const API_BASE = window.location.origin;

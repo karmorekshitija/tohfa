@@ -611,8 +611,18 @@
             await updateCartBadge();
             await updateWishlistBadge();
             
-            // Default load catalog
-            await switchTab('catalog');
+            const customiseListingId = urlParams.get('customise_listing_id');
+            if (customiseListingId) {
+                const productTypeTag = urlParams.get('product_type_tag');
+                const customiseListingTitle = urlParams.get('customise_listing_title');
+                await switchTab('customised');
+                setTimeout(() => {
+                    window.startCustomisation(customiseListingId, productTypeTag, customiseListingTitle);
+                }, 300);
+            } else {
+                // Default load catalog
+                await switchTab('catalog');
+            }
         }
 
         async function checkAuthState() {

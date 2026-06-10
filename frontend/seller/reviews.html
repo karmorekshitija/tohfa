@@ -9,6 +9,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Merriweather:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="/components/seller-components.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -122,84 +123,21 @@
 </head>
 <body class="text-on-surface selection:bg-primary-fixed opacity-0 transition-opacity duration-300" id="body-content">
 
-<!-- Standardised Left Sidebar (Task 37 unified) -->
-<aside class="w-[130px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-secondary/40 shadow-sm flex flex-col py-8 z-50 overflow-y-auto custom-scrollbar">
-  <div class="px-4 mb-8 flex flex-col items-center">
-    <img alt="TOFA Logo" class="w-12 h-12 mb-3 rounded-full border border-sage/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKjQjmSoJKqFl-kRbAH85_u94nMS-Ok8oPnG2PAsYIPao9rA7dhGe8UxdJrc2ZZAzrwZNabbn59QVEgS7BBnW9tgfg43AOgPPepQuKoNu9Y8LnAgELFnunu7fN4ziKFD3utWMnD1wUchu7IL5DN5S8YIbb4t6eImmC8IYIbyaXgktzANbK3Bp9S-uJUoxNyfKN0-3CdY6CCeB0ICMb4og8ToBCMSoIyIF4u5UejdhA3mwODAny-lA6K9JdMJHT5Qhp3buD-BTaEM0">
-    <h1 class="font-headline-sm text-[14px] text-center leading-tight text-primary">Tohfa Studio</h1>
-  </div>
-  <nav class="flex-1 space-y-1">
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/dashboard.html" id="sidebar-home" title="Home">
-      <span class="material-symbols-outlined mb-1 text-2xl">home</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Home</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/catalog.html" id="sidebar-catalog" title="Catalog">
-      <span class="material-symbols-outlined mb-1 text-2xl">library_books</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Catalog</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/orders.html" id="sidebar-orders" title="Orders">
-      <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/production-planner.html" id="sidebar-capacity" title="Capacity">
-      <span class="material-symbols-outlined mb-1 text-2xl">pending_actions</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Capacity</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/inventory.html" id="sidebar-inventory" title="Inventory">
-      <span class="material-symbols-outlined mb-1 text-2xl">package_2</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Inventory</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/analytics.html" id="sidebar-analytics" title="Analytics">
-      <span class="material-symbols-outlined mb-1 text-2xl">insights</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Analytics</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/messages.html" id="sidebar-messages" title="Messages">
-      <span class="material-symbols-outlined mb-1 text-2xl">chat_bubble</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Messages</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-primary font-bold border-r-4 border-primary bg-secondary-container/20 transition-colors duration-200" href="/seller/reviews.html" id="sidebar-reviews" title="Reviews">
-      <span class="material-symbols-outlined mb-1 text-2xl">reviews</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reviews</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/upload-reel.html" id="sidebar-reels" title="Reels">
-      <span class="material-symbols-outlined mb-1 text-2xl">movie</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Reels</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/store-config.html" id="sidebar-config" title="Config">
-      <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Config</span>
-    </a>
-    <a class="flex flex-col items-center py-2.5 text-on-surface-variant font-normal hover:text-primary hover:bg-secondary-container/10 transition-colors duration-200" href="/seller/profile.html" id="sidebar-profile" title="Profile">
-      <span class="material-symbols-outlined mb-1 text-2xl">account_circle</span>
-      <span class="text-[9px] uppercase tracking-widest text-center">Profile</span>
-    </a>
-  </nav>
-  <div class="px-3 mt-auto pt-6 space-y-2 w-full">
-    <button id="view-store-btn" class="w-full py-2 bg-primary text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      View Store
-    </button>
-    <button id="logout-btn" class="w-full py-2 bg-error text-white rounded-lg font-body-sm text-[10px] uppercase tracking-tight hover:opacity-90 transition-all shadow-sm">
-      Logout
-    </button>
-  </div>
-</aside>
+<seller-layout active-tab="reviews">
 
-<!-- TopAppBar Shell -->
-<header class="fixed top-0 right-0 left-[130px] h-16 bg-background flex justify-between items-center px-lg z-40 border-b border-outline-variant/10">
-    <div class="flex items-center gap-4">
-        <h1 class="font-headline-lg text-headline-lg text-primary">Tohfa <span class="italic text-gold">Reviews</span></h1>
-    </div>
-    <div class="flex items-center gap-6">
-        <div class="relative hidden md:block">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-            <input id="reviews-search" class="bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 text-body-md focus:outline-none focus:border-primary w-64 text-sm" placeholder="Search reviews..." type="text"/>
+    <!-- Page Header Replacement -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-6 flex-shrink-0">
+      <div>
+        <h1 class="font-headline-lg text-primary text-2xl font-bold">Studio Reviews</h1>
+        <p class="text-on-surface-variant text-sm font-body-md mt-1">Review feedback from your buyers and respond to reviews</p>
+      </div>
+      <div class="flex items-center gap-md">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+          <input id="reviews-search" class="bg-white border border-[#E8E2D9] rounded-full py-2 pl-10 pr-4 text-body-md focus:outline-none focus:border-primary w-64 text-sm" placeholder="Search reviews..." type="text"/>
         </div>
-        <span id="zai-toggle-btn" class="material-symbols-outlined text-tertiary cursor-pointer hover:bg-tertiary-container/10 p-2 rounded-full transition-all" title="ZAI Mode Status">auto_awesome</span>
+      </div>
     </div>
-</header>
-
-<!-- Main Content Area -->
-<main class="ml-[130px] mt-16 p-lg md:p-xl">
     <!-- Top Summary Row -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
         <!-- Overall Rating -->
@@ -315,7 +253,7 @@
             </div>
         </aside>
     </div>
-</main>
+</seller-layout>
 
 <!-- Toast notifications -->
 <div id="toast" class="hidden">

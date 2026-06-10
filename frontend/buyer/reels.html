@@ -757,7 +757,7 @@
           try {
             const res = await apiClient.post(`/reels/${activeReel.id}/like`);
             if (res.data && res.data.success) {
-              activeReel.is_liked = res.data.data.is_liked;
+              activeReel.is_liked = res.data.data.liked;
               activeReel.like_count = res.data.data.like_count;
               updateLikeUI(activeReel.is_liked, activeReel.like_count);
             }

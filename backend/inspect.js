@@ -7,6 +7,9 @@ console.log(db.prepare('SELECT id, name, slug FROM categories').all());
 console.log('\n--- Sellers ---');
 console.log(db.prepare("SELECT id, email, full_name, role FROM users WHERE role = 'seller'").all());
 
+console.log('\n--- Buyers ---');
+console.log(db.prepare("SELECT id, email, full_name, role FROM users WHERE email = 'buyer@test.com'").all());
+
 console.log('\n--- Existing Reels ---');
 console.log(db.prepare('SELECT id, seller_id, product_id, caption, video_url, thumbnail_url FROM reels').all());
 

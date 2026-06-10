@@ -221,7 +221,7 @@
 
                 <!-- Add to Cart Widget -->
                 <div class="space-y-md pt-md border-t border-outline-variant/20">
-                    <div class="flex items-center justify-between">
+                    <div id="qty-selector-container" class="flex items-center justify-between">
                         <span class="font-label-caps text-outline text-xs tracking-wider uppercase">Quantity</span>
                         <div class="flex items-center border border-outline-variant rounded-lg bg-white overflow-hidden shadow-sm">
                             <button id="qty-decrease" class="px-md py-sm hover:bg-surface-container transition-colors text-primary font-bold focus:outline-none">-</button>
@@ -366,6 +366,7 @@
         const productId = urlParams.get('id') || '';
 
         let product = null;
+        let isCustomized = false;
         let isWishlisted = false;
         let qty = 1;
         let maxStock = 99;
@@ -457,32 +458,66 @@
                         sellerLink.href = `/buyer/seller-profile.html?id=${product.seller.id}`;
                     }
 
-                    // Ships badge
+                    isCustomized = product.category?.slug === 'customized-gifts';
+
+                    // Ships / Custom badge
                     const shipsBadge = document.getElementById('product-ships-badge');
-                    if (product.status === 'sold_out' || maxStock === 0) {
-                        shipsBadge.innerText = 'Sold Out';
-                        shipsBadge.className = 'font-data-price text-xs bg-red-100 text-red-700 px-sm py-[2px] rounded-full inline-block';
-                    } else if (product.ships_in_days <= 1) {
-                        shipsBadge.innerText = 'Ready to Ship';
-                        shipsBadge.className = 'font-data-price text-xs bg-secondary-fixed/30 text-on-secondary-fixed-variant px-sm py-[2px] rounded-full inline-block';
+                    if (isCustomized) {
+                        shipsBadge.innerText = 'Customised';
+                        shipsBadge.className = 'font-data-price text-xs bg-amber-100 text-amber-800 border border-amber-200 px-sm py-[2px] rounded-full inline-block font-semibold';
+                        shipsBadge.style.display = 'inline-block';
                     } else {
-                        shipsBadge.innerText = `Ships in ${product.ships_in_days} days`;
-                        shipsBadge.className = 'font-data-price text-xs bg-tertiary-fixed/30 text-on-tertiary-fixed-variant px-sm py-[2px] rounded-full inline-block';
+                        // Remove/hide ships in three days tag for normal pre-made products
+                        shipsBadge.style.display = 'none';
+                    }
+
+                    // Show/hide qty selector and modify button
+                    const qtySelector = document.getElementById('qty-selector-container');
+                    const addToCartBtn = document.getElementById('add-to-cart-btn');
+                    if (isCustomized) {
+                        if (qtySelector) qtySelector.style.display = 'none';
+                        if (addToCartBtn) {
+                            addToCartBtn.querySelector('span.material-symbols-outlined').innerText = 'chat';
+                            addToCartBtn.querySelector('span:last-child').innerText = 'Chat with Seller';
+                        }
+                    } else {
+                        if (qtySelector) qtySelector.style.display = 'flex';
+                        if (addToCartBtn) {
+                            addToCartBtn.querySelector('span.material-symbols-outlined').innerText = 'shopping_cart';
+                            addToCartBtn.querySelector('span:last-child').innerText = 'Add to Cart';
+                        }
                     }
 
                     // Stock badge
                     const stockBadge = document.getElementById('product-stock-badge');
-                    if (product.status === 'sold_out' || maxStock === 0) {
+                    if (isCustomized) {
+                        stockBadge.innerText = 'Made to Order';
+                        stockBadge.className = 'text-xs bg-purple-100 text-purple-700 border border-purple-200 px-sm py-[2px] rounded font-semibold';
+                        if (addToCartBtn) {
+                            addToCartBtn.disabled = false;
+                            addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    } else if (product.status === 'sold_out' || maxStock === 0) {
                         stockBadge.innerText = 'Sold Out';
                         stockBadge.className = 'text-xs bg-red-100 text-red-700 border border-red-200 px-sm py-[2px] rounded font-semibold';
-                        document.getElementById('add-to-cart-btn').disabled = true;
-                        document.getElementById('add-to-cart-btn').classList.add('opacity-50', 'cursor-not-allowed');
+                        if (addToCartBtn) {
+                            addToCartBtn.disabled = true;
+                            addToCartBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        }
                     } else if (maxStock <= 3) {
                         stockBadge.innerText = `Only ${maxStock} left!`;
                         stockBadge.className = 'text-xs bg-amber-100 text-amber-700 border border-amber-200 px-sm py-[2px] rounded font-semibold';
+                        if (addToCartBtn) {
+                            addToCartBtn.disabled = false;
+                            addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
                     } else {
                         stockBadge.innerText = 'In Stock';
                         stockBadge.className = 'text-xs bg-green-100 text-green-700 border border-green-200 px-sm py-[2px] rounded font-semibold';
+                        if (addToCartBtn) {
+                            addToCartBtn.disabled = false;
+                            addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
                     }
 
                     // Images
@@ -675,6 +710,11 @@
         }
 
         async function handleAddToCart() {
+            if (isCustomized) {
+                window.location.href = `/buyer/seller-profile.html?id=${product.seller.id}&customise_listing_id=${product.id}&customise_listing_title=${encodeURIComponent(product.name)}&product_type_tag=${encodeURIComponent(product.category.slug)}`;
+                return;
+            }
+
             if (!isLoggedIn) {
                 window.location.href = '/auth/login.html';
                 return;

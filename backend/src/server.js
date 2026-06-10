@@ -4824,6 +4824,11 @@ app.get('/api/seller/dashboard', rateLimit(60), requireSeller, (req, res) => {
 
     const capacity_used_pct = totalSlots > 0 ? Math.round((todayOrders / totalSlots) * 100) : 0;
 
+    const pendingOrdersCount = db.prepare(`
+      SELECT COUNT(*) as c FROM orders 
+      WHERE seller_id = ? AND status = 'pending'
+    `).get(sellerId).c;
+
     // Festive alert
     const activeOrders = db.prepare(`
       SELECT COUNT(*) as c FROM orders 
@@ -4996,7 +5001,8 @@ app.get('/api/seller/dashboard', rateLimit(60), requireSeller, (req, res) => {
           website_visits: 0,
           visits_change_pct: 0,
           conversion_rate: 0,
-          conversion_change_pct: 0
+          conversion_change_pct: 0,
+          pending_orders: pendingOrdersCount
         },
         low_stock_alerts: oldLowStock,
         recent_orders: oldRecentOrders,
@@ -6805,209 +6811,8 @@ app.get('/api/seller/analytics/export', requireSeller, (req, res) => {
   }
 });
 
-// ============================================================
-// TASK 22: GET /api/seller/inventory
-// ============================================================
-app.get('/api/seller/inventory', requireSeller, (req, res) => {
-  try {
-    const sellerId = req.user.user_id;
-    const rows = db.prepare('SELECT * FROM inventory_materials WHERE seller_id = ?').all(sellerId);
+// Inventory endpoints removed.
 
-    const materials = rows.map(r => {
-      const stock_qty = r.stock_qty !== null && r.stock_qty !== undefined ? r.stock_qty : r.quantity_g_pcs;
-      const min_threshold = r.min_threshold !== null && r.min_threshold !== undefined ? r.min_threshold : r.low_stock_threshold;
-      let status = 'ok';
-      if (stock_qty <= 0) status = 'out';
-      else if (stock_qty <= min_threshold) status = 'low';
-
-      return {
-        id: r.id,
-        material_name: r.material_name,
-        stock_qty,
-        unit: r.unit,
-        min_threshold,
-        status,
-        supplier_name: r.supplier_name || null,
-        supplier_phone: r.supplier_phone || null
-      };
-    });
-
-    const low_stock_count = materials.filter(m => m.status === 'low').length;
-    const out_of_stock_count = materials.filter(m => m.status === 'out').length;
-
-    let outOfStock = materials.filter(m => m.status === 'out');
-    let critical_material = null;
-    if (outOfStock.length > 0) {
-      outOfStock.sort((a, b) => b.min_threshold - a.min_threshold);
-      const crit = outOfStock[0];
-      critical_material = {
-        name: crit.material_name,
-        needed: crit.min_threshold,
-        on_hand: crit.stock_qty,
-        unit: crit.unit
-      };
-    }
-
-    const reorder_list = materials
-      .filter(m => m.status === 'low' || m.status === 'out')
-      .map(m => ({
-        material_name: m.material_name,
-        deficit: Math.max(0, m.min_threshold - m.stock_qty),
-        needed: m.min_threshold,
-        current: m.stock_qty,
-        unit: m.unit
-      }));
-
-    const suppliersMap = new Map();
-    materials.forEach(m => {
-      if (m.supplier_name && m.supplier_name.trim()) {
-        suppliersMap.set(m.supplier_name.trim(), m.supplier_phone || null);
-      }
-    });
-    let sId = 1;
-    const suppliers = Array.from(suppliersMap.entries()).map(([name, phone]) => ({
-      id: sId++,
-      supplier_name: name,
-      supplier_phone: phone
-    }));
-
-    return res.json({
-      success: true,
-      data: {
-        summary: {
-          low_stock_count,
-          out_of_stock_count,
-          critical_material
-        },
-        materials,
-        reorder_list,
-        suppliers
-      }
-    });
-  } catch (err) {
-    console.error('GET /api/seller/inventory error:', err);
-    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
-  }
-});
-
-// ============================================================
-// TASK 23: PATCH/POST /api/seller/inventory
-// ============================================================
-app.post('/api/seller/inventory', requireSeller, (req, res) => {
-  try {
-    const sellerId = req.user.user_id;
-    const { material_name, stock_qty, unit, min_threshold = 0, supplier_name = null, supplier_phone = null } = req.body;
-
-    if (!material_name || stock_qty === undefined || !unit) {
-      return res.status(400).json({ error: true, message: 'material_name, stock_qty, and unit are required', code: 'VALIDATION_ERROR' });
-    }
-
-    const result = db.prepare(`
-      INSERT INTO inventory_materials (seller_id, material_name, quantity_g_pcs, stock_qty, unit, cost_per_unit, low_stock_threshold, min_threshold, supplier_name, supplier_phone)
-      VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?)
-    `).run(
-      sellerId,
-      material_name,
-      stock_qty,
-      stock_qty,
-      unit,
-      min_threshold,
-      min_threshold,
-      supplier_name,
-      supplier_phone
-    );
-
-    return res.status(201).json({
-      success: true,
-      data: {
-        id: result.lastInsertRowid,
-        material_name
-      }
-    });
-  } catch (err) {
-    console.error('POST /api/seller/inventory error:', err);
-    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
-  }
-});
-
-app.patch('/api/seller/inventory/:id', requireSeller, (req, res) => {
-  try {
-    const sellerId = req.user.user_id;
-    const materialId = parseInt(req.params.id);
-    const { stock_qty, delta, min_threshold, supplier_name, supplier_phone } = req.body;
-
-    const material = db.prepare('SELECT * FROM inventory_materials WHERE id = ?').get(materialId);
-    if (!material) {
-      return res.status(404).json({ error: true, message: 'Material not found', code: 'NOT_FOUND' });
-    }
-    if (material.seller_id !== sellerId) {
-      return res.status(403).json({ error: true, message: 'Forbidden', code: 'FORBIDDEN' });
-    }
-
-    if (stock_qty !== undefined && delta !== undefined) {
-      return res.status(400).json({ error: true, message: 'Cannot provide both stock_qty and delta', code: 'VALIDATION_ERROR' });
-    }
-
-    let currentQty = material.stock_qty !== null && material.stock_qty !== undefined ? material.stock_qty : material.quantity_g_pcs;
-    let newQty = currentQty;
-
-    if (stock_qty !== undefined) {
-      newQty = parseFloat(stock_qty);
-    } else if (delta !== undefined) {
-      newQty = currentQty + parseFloat(delta);
-      if (newQty < 0) newQty = 0;
-    }
-
-    const updates = {};
-    const values = [];
-
-    updates.stock_qty = '?';
-    values.push(newQty);
-    updates.quantity_g_pcs = '?';
-    values.push(newQty);
-
-    if (min_threshold !== undefined) {
-      updates.min_threshold = '?';
-      values.push(parseFloat(min_threshold));
-      updates.low_stock_threshold = '?';
-      values.push(parseFloat(min_threshold));
-    }
-    if (supplier_name !== undefined) {
-      updates.supplier_name = '?';
-      values.push(supplier_name);
-    }
-    if (supplier_phone !== undefined) {
-      updates.supplier_phone = '?';
-      values.push(supplier_phone);
-    }
-
-    const setClause = Object.keys(updates).map(k => `${k} = ${updates[k]}`).join(', ');
-    values.push(materialId);
-
-    db.prepare(`
-      UPDATE inventory_materials
-      SET ${setClause}, updated_at = datetime('now')
-      WHERE id = ?
-    `).run(...values);
-
-    let threshold = min_threshold !== undefined ? parseFloat(min_threshold) : (material.min_threshold !== null && material.min_threshold !== undefined ? material.min_threshold : material.low_stock_threshold);
-    let status = 'ok';
-    if (newQty <= 0) status = 'out';
-    else if (newQty <= threshold) status = 'low';
-
-    return res.json({
-      success: true,
-      data: {
-        id: materialId,
-        stock_qty: newQty,
-        status
-      }
-    });
-  } catch (err) {
-    console.error('PATCH /api/seller/inventory/:id error:', err);
-    return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
-  }
-});
 
 // ============================================================
 // TASK 24: GET /api/seller/store-config
