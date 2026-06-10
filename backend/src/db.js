@@ -42,6 +42,12 @@ try {
 try {
   db.exec("ALTER TABLE users ADD COLUMN ships_in_days INTEGER DEFAULT 3;");
 } catch (e) {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN instagram_handle TEXT;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN phone TEXT;");
+} catch (e) {}
 
 // Task 02: Migration for refresh_tokens table
 const migrateRefreshTokens = () => {
@@ -164,6 +170,10 @@ const migrateProducts = () => {
 };
 
 migrateProducts();
+
+try {
+  db.exec("ALTER TABLE products ADD COLUMN ready_to_ship INTEGER DEFAULT 0;");
+} catch (e) {}
 
 // Task 03: Migration for product_images table
 const migrateProductImages = () => {
@@ -469,7 +479,8 @@ const migrateOrders = () => {
                                    CHECK(status IN (
                                      'awaiting_payment','processing','in_production',
                                      'packed','dispatched','delivered','cancelled','rto',
-                                     'Awaiting Payment','Processing','Dispatched','Delivered','Cancelled'
+                                     'Awaiting Payment','Processing','Dispatched','Delivered','Cancelled',
+                                     'in_transit','on_hold'
                                    )),
       payment_status      TEXT     NOT NULL DEFAULT 'unpaid' CHECK(payment_status IN ('unpaid','paid','refunded')),
       customization       TEXT     DEFAULT NULL,   -- JSON blob of custom instructions
@@ -559,6 +570,23 @@ const migrateReels = () => {
 };
 migrateReels();
 
+// Ensure columns exist on legacy reels tables
+try {
+  db.exec("ALTER TABLE reels ADD COLUMN like_count INTEGER DEFAULT 0;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE reels ADD COLUMN comment_count INTEGER DEFAULT 0;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE reels ADD COLUMN save_count INTEGER DEFAULT 0;");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE reels ADD COLUMN status TEXT DEFAULT 'active';");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE reels ADD COLUMN product_id INTEGER REFERENCES products(id);");
+} catch (e) {}
+
 // Task 07: reviews table migration
 const migrateReviews = () => {
   db.exec(`
@@ -592,6 +620,16 @@ const migrateReviews = () => {
   `);
 };
 migrateReviews();
+
+try {
+  db.exec("ALTER TABLE reviews ADD COLUMN product_id INTEGER REFERENCES products(id);");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE reviews ADD COLUMN reviewer_id INTEGER REFERENCES users(id);");
+} catch (e) {}
+try {
+  db.exec("ALTER TABLE reviews ADD COLUMN body TEXT;");
+} catch (e) {}
 
 // Task 08: store_config, store_workspace_photos, payout_history migrations
 const migrateStoreConfig = () => {
@@ -879,6 +917,40 @@ const migrateOccasions = () => {
   `);
 };
 migrateOccasions();
+
+// Migration for seller_order_meta table
+const migrateSellerOrderMeta = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_order_meta (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      seller_id INTEGER,
+      fulfillment_status TEXT DEFAULT 'pending',
+      tracking_number TEXT,
+      dispatch_note TEXT,
+      gift_wrap_requested INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_som_order_id ON seller_order_meta(order_id);
+  `);
+};
+migrateSellerOrderMeta();
+
+// Migration for order_tracking_events table
+const migrateOrderTrackingEvents = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS order_tracking_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
+      status TEXT,
+      occurred_at TEXT DEFAULT (datetime('now')),
+      note TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_ote_order ON order_tracking_events(order_id);
+  `);
+};
+migrateOrderTrackingEvents();
 
 module.exports = db;
 

@@ -119,6 +119,23 @@ function formatMoney(paise) {
   }).format(rupees);
 }
 
+function safeToISOString(dateStr) {
+  if (!dateStr) return new Date().toISOString();
+  let clean = String(dateStr).trim();
+  if (clean.endsWith('Z')) {
+    const d = new Date(clean);
+    return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+  }
+  if (clean.indexOf(' ') > 0 && clean.indexOf('T') === -1) {
+    clean = clean.replace(' ', 'T');
+  }
+  if (!clean.endsWith('Z') && !clean.includes('+') && !clean.match(/-\d{2}:\d{2}$/)) {
+    clean = clean + 'Z';
+  }
+  const d = new Date(clean);
+  return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+}
+
 function generateTokens(user) {
   const accessToken = jwt.sign(
     { user_id: user.id, email: user.email, role: user.role },
@@ -694,6 +711,70 @@ app.post('/api/auth/reset-password', rateLimit(10), async (req, res) => {
       message: "Internal server error",
       code: "INTERNAL_SERVER_ERROR"
     });
+  }
+});
+
+// NEW ENDPOINT: GET /api/hero-slides
+app.get('/api/hero-slides', rateLimit(120), (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      data: [
+        {
+          id: 1,
+          image_url: 'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=1200&q=80',
+          alt_text: 'Handcrafted Ceramics'
+        },
+        {
+          id: 2,
+          image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80',
+          alt_text: 'Artisan Pottery Wheel'
+        },
+        {
+          id: 3,
+          image_url: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&w=1200&q=80',
+          alt_text: 'Weaving & Textiles'
+        }
+      ]
+    });
+  } catch (err) {
+    console.error('Error in hero slides:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error"
+    });
+  }
+});
+
+// NEW ENDPOINT: POST /api/comments/emoji-suggestions
+app.post('/api/comments/emoji-suggestions', rateLimit(120), (req, res) => {
+  try {
+    const { partialText } = req.body;
+    if (!partialText) {
+      return res.status(200).json({ emojis: [] });
+    }
+    const text = partialText.toLowerCase();
+    const suggestions = [];
+    if (text.includes('love') || text.includes('heart') || text.includes('beautiful') || text.includes('like')) {
+      suggestions.push('❤️', '🥰', '😍', '💕');
+    }
+    if (text.includes('fire') || text.includes('amazing') || text.includes('wow') || text.includes('great') || text.includes('stun') || text.includes('nice') || text.includes('good')) {
+      suggestions.push('🔥', '👏', '✨', '🤩');
+    }
+    if (text.includes('gift') || text.includes('present') || text.includes('buy') || text.includes('want') || text.includes('order')) {
+      suggestions.push('🎁', '🎉');
+    }
+    
+    // Fallback default suggestions if empty
+    if (suggestions.length === 0) {
+      suggestions.push('❤️', '🔥', '🎁', '✨', '👏');
+    }
+    
+    const uniqueSuggestions = [...new Set(suggestions)];
+    return res.status(200).json({ emojis: uniqueSuggestions });
+  } catch (err) {
+    console.error('Error getting emoji suggestions:', err);
+    return res.status(500).json({ error: true, message: "Internal server error" });
   }
 });
 
@@ -2946,7 +3027,7 @@ app.get('/api/reels/saved', rateLimit(60), authenticateToken, (req, res) => {
       caption: row.caption,
       seller_name: row.seller_name,
       seller_id: row.seller_id,
-      saved_at: new Date(row.saved_at + 'Z').toISOString()
+      saved_at: safeToISOString(row.saved_at)
     }));
 
     return res.status(200).json({
@@ -3303,7 +3384,7 @@ app.get('/api/reels/:id/comments', rateLimit(60), (req, res) => {
       user_name: row.user_name,
       avatar_url: row.avatar_url,
       body: row.body,
-      created_at: new Date(row.created_at + 'Z').toISOString(),
+      created_at: safeToISOString(row.created_at),
       time_ago: formatTimeAgo(row.created_at)
     }));
 
@@ -3385,7 +3466,7 @@ app.post('/api/reels/:id/comments', rateLimit(60), authenticateToken, (req, res)
         user_name: comment.user_name,
         avatar_url: comment.avatar_url,
         body: comment.body,
-        created_at: new Date(comment.created_at + 'Z').toISOString(),
+        created_at: safeToISOString(comment.created_at),
         time_ago: "Just now"
       }
     });
@@ -3489,7 +3570,7 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
 
   try {
     const user = db.prepare(`
-      SELECT id, email, role, avatar_url, created_at, bio, location, ships_in_days,
+      SELECT id, email, role, avatar_url, created_at, bio, location, ships_in_days, instagram_handle, phone,
              COALESCE(display_name, full_name) AS display_name
       FROM users WHERE id = ?
     `).get(userId);
@@ -3515,18 +3596,20 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
         id: user.id,
         display_name: user.display_name,
         email: user.email,
+        phone: user.phone || null,
         avatar_url: user.avatar_url,
         role: user.role,
         bio: user.bio,
         location: user.location,
         ships_in_days: user.ships_in_days,
+        instagram_handle: user.instagram_handle,
         following_count: followingCount,
         followers_count: followersCount,
         wishlist_count: wishlistCount,
         saved_reels_count: savedReelsCount,
         active_orders_count: activeOrdersCount,
         address_count: addressCount,
-        created_at: new Date(user.created_at + 'Z').toISOString()
+        created_at: safeToISOString(user.created_at)
       }
     });
   } catch (err) {
@@ -3542,7 +3625,7 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
 // TASK 48: PATCH /api/profile/me
 app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
   const userId = req.user.user_id;
-  const { display_name, bio, location, shipping_days } = req.body;
+  const { display_name, bio, location, shipping_days, instagram_handle, email, phone } = req.body;
 
   // Validation
   if (display_name !== undefined) {
@@ -3550,6 +3633,16 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
       return res.status(400).json({
         error: true,
         message: "display_name cannot be empty",
+        code: "VALIDATION_ERROR"
+      });
+    }
+  }
+
+  if (email !== undefined) {
+    if (typeof email !== 'string' || !email.includes('@') || email.trim().length === 0) {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid email address",
         code: "VALIDATION_ERROR"
       });
     }
@@ -3563,6 +3656,18 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
         message: "User not found",
         code: "USER_NOT_FOUND"
       });
+    }
+
+    // Check if email already taken
+    if (email !== undefined && email.trim().toLowerCase() !== user.email.toLowerCase()) {
+      const emailTaken = db.prepare("SELECT id FROM users WHERE LOWER(email) = ? AND id != ?").get(email.trim().toLowerCase(), userId);
+      if (emailTaken) {
+        return res.status(400).json({
+          error: true,
+          message: "Email is already in use",
+          code: "EMAIL_TAKEN"
+        });
+      }
     }
 
     const updates = [];
@@ -3584,10 +3689,34 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
       updates.push("ships_in_days = ?");
       params.push(shipping_days === null ? null : parseInt(shipping_days, 10));
     }
+    if (instagram_handle !== undefined) {
+      updates.push("instagram_handle = ?");
+      params.push(instagram_handle === null ? null : String(instagram_handle).trim());
+    }
+    if (email !== undefined) {
+      updates.push("email = ?");
+      params.push(email.trim().toLowerCase());
+    }
+    if (phone !== undefined) {
+      updates.push("phone = ?");
+      params.push(phone === null ? null : String(phone).trim());
+    }
 
     if (updates.length > 0) {
       params.push(userId);
       db.prepare(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`).run(...params);
+    }
+
+    // Synchronize to seller_profiles if user is a seller
+    if (instagram_handle !== undefined && user.role === 'seller') {
+      try {
+        db.prepare("UPDATE seller_profiles SET instagram_handle = ? WHERE user_id = ?").run(
+          instagram_handle === null ? null : String(instagram_handle).trim(),
+          userId
+        );
+      } catch (e) {
+        console.error('Failed to sync instagram_handle to seller_profiles:', e);
+      }
     }
 
     const updatedUser = db.prepare("SELECT * FROM users WHERE id = ?").get(userId);
@@ -3598,12 +3727,14 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
         id: updatedUser.id,
         display_name: updatedUser.display_name || updatedUser.full_name,
         email: updatedUser.email,
+        phone: updatedUser.phone || null,
         avatar_url: updatedUser.avatar_url,
         role: updatedUser.role,
         bio: updatedUser.bio,
         location: updatedUser.location,
         ships_in_days: updatedUser.ships_in_days,
-        created_at: new Date(updatedUser.created_at + 'Z').toISOString()
+        instagram_handle: updatedUser.instagram_handle,
+        created_at: safeToISOString(updatedUser.created_at)
       }
     });
   } catch (err) {
@@ -7336,7 +7467,7 @@ app.get('/api/admin/orders/:order_id', authenticateAdminToken, (req, res) => {
 
 // TASK 15: PATCH /api/admin/orders/:order_id/status
 app.patch('/api/admin/orders/:order_id/status', authenticateAdminToken, (req, res) => {
-  const VALID_STATUSES = ['processing', 'in_transit', 'delivered', 'cancelled', 'on_hold'];
+  const VALID_STATUSES = ['awaiting_payment', 'processing', 'in_production', 'packed', 'dispatched', 'delivered', 'cancelled', 'rto'];
   try {
     const orderId = req.params.order_id;
     const { new_status } = req.body;

@@ -831,9 +831,48 @@
 <div class="toast" id="globalToast">Path copied to clipboard!</div>
 
 <script>
+// Path resolver to prepend design_mockups/ where necessary
+function getMockupUrl(path, basePath) {
+  if (!path) return null;
+  if (path.startsWith('http') || path.startsWith('design_mockups/')) {
+    return `${basePath}${path}`;
+  }
+  if (path.startsWith('stitch_screens/stitch_search/')) {
+    return `${basePath}${path}`;
+  }
+  const folders = ['auth_screens/', 'botanical_seller_studio/', 'stitch_screens/', 'admin_screens/', 'components/'];
+  if (folders.some(f => path.startsWith(f))) {
+    return `${basePath}design_mockups/${path}`;
+  }
+  return `${basePath}${path}`;
+}
+
+// Helper for admin folder mappings since they were restructured in design_mockups/admin_screens/
+function getAdminMockupUrl(path, basePath) {
+  if (!path) return null;
+  const adminMappings = {
+    'tohfa_admin_audit_logs_updated_sidebar/': 'admin_screens/audit_logs/',
+    'tohfa_admin_categories_manager_updated_sidebar/': 'admin_screens/categories_manager/',
+    'tohfa_admin_order_detail_updated_sidebar/': 'admin_screens/order_detail/',
+    'tohfa_admin_orders_management_updated_sidebar/': 'admin_screens/orders_management/',
+    'tohfa_admin_payment_health_updated_sidebar/': 'admin_screens/payment_health/',
+    'tohfa_admin_products_sponsored_management/': 'admin_screens/products_sponsored/',
+    'tohfa_admin_seller_detail_updated_sidebar/': 'admin_screens/seller_detail/',
+    'tohfa_admin_sellers_directory/': 'admin_screens/sellers_directory/'
+  };
+  let resolvedPath = path;
+  for (const [key, value] of Object.entries(adminMappings)) {
+    if (path.startsWith(key)) {
+      resolvedPath = path.replace(key, value);
+      break;
+    }
+  }
+  return getMockupUrl(resolvedPath, basePath);
+}
+
 // ─────────────────────────────────────────────
 // DATA SET
-// Includes original 62 panels + 12 additional panels found in repo (10 frontend pages, 2 components)
+// Includes original panels updated to latest Stitch versions + newly added pages
 // ─────────────────────────────────────────────
 const panels = [
   // ── AUTH SCREENS ──
@@ -881,29 +920,45 @@ const panels = [
   { id: 67, category: "Buyer", title: "Categories Directory (Buyer - Integrated)", screenshot: null, code: null, filePath: "frontend/buyer/categories.html" },
   { id: 68, category: "Buyer", title: "Payment History (Buyer - Integrated)", screenshot: null, code: null, filePath: "frontend/buyer/payment-history.html" },
   { id: 69, category: "Buyer", title: "Saved Reels (Buyer - Integrated)", screenshot: null, code: null, filePath: "frontend/buyer/saved-reels.html" },
+  { id: 80, category: "Buyer", title: "Saved Addresses (Artisan Studio)", screenshot: "stitch_screens/stitch_address/tohfa_saved_addresses_artisan_studio_desktop/screen.png", code: "stitch_screens/stitch_address/tohfa_saved_addresses_artisan_studio_desktop/code.html", filePath: "frontend/buyer/addresses.html" },
+  { id: 81, category: "Buyer", title: "Saved Addresses — Empty State", screenshot: "stitch_screens/stitch_address/tohfa_saved_addresses_empty_state_desktop/screen.png", code: "stitch_screens/stitch_address/tohfa_saved_addresses_empty_state_desktop/code.html", filePath: null },
+  { id: 82, category: "Buyer", title: "Add Address — Default State", screenshot: "stitch_screens/stitch_address/tohfa_add_address_default_state_neutral_scrim/screen.png", code: "stitch_screens/stitch_address/tohfa_add_address_default_state_neutral_scrim/code.html", filePath: null },
+  { id: 83, category: "Buyer", title: "Add Address — Error State", screenshot: "stitch_screens/stitch_address/tohfa_add_address_error_state_neutral_scrim/screen.png", code: "stitch_screens/stitch_address/tohfa_add_address_error_state_neutral_scrim/code.html", filePath: null },
+  { id: 84, category: "Buyer", title: "FAQ & Help Centre", screenshot: "stitch_screens/stitch_address/tohfa_faq_help_centre_web_app_layout/screen.png", code: "stitch_screens/stitch_address/tohfa_faq_help_centre_web_app_layout/code.html", filePath: null },
+  { id: 85, category: "Buyer", title: "Birthday Reminders List View", screenshot: "stitch_screens/stitch_birthday/tohfa_birthday_reminders_list_view/screen.png", code: "stitch_screens/stitch_birthday/tohfa_birthday_reminders_list_view/code.html", filePath: "frontend/buyer/occasions.html" },
+  { id: 86, category: "Buyer", title: "Birthday Reminders — Empty State", screenshot: "stitch_screens/stitch_birthday/tohfa_birthday_reminders_empty_state/screen.png", code: "stitch_screens/stitch_birthday/tohfa_birthday_reminders_empty_state/code.html", filePath: null },
+  { id: 87, category: "Buyer", title: "Search Idle State (Desktop)", screenshot: "stitch_screens/stitch_search/tohfa_search_idle_state_desktop/screen.png", code: "stitch_screens/stitch_search/tohfa_search_idle_state_desktop/code.html", filePath: "frontend/buyer/search.html" },
+  { id: 88, category: "Buyer", title: "Search Idle State (Mobile)", screenshot: "stitch_screens/stitch_search/tohfa_search_idle_state_mobile/screen.png", code: "stitch_screens/stitch_search/tohfa_search_idle_state_mobile/code.html", filePath: null },
+  { id: 89, category: "Buyer", title: "Search No Results (Desktop)", screenshot: "stitch_screens/stitch_search/tohfa_search_no_results_state_desktop/screen.png", code: "stitch_screens/stitch_search/tohfa_search_no_results_state_desktop/code.html", filePath: null },
+  { id: 90, category: "Buyer", title: "Search Typing State (Desktop)", screenshot: "stitch_screens/stitch_search/tohfa_search_typing_state_desktop/screen.png", code: "stitch_screens/stitch_search/tohfa_search_typing_state_desktop/code.html", filePath: null },
 
   // ── SELLER SCREENS ──
   { id: 11, category: "Seller", title: "Payment History (Artisan Studio)", screenshot: "stitch_screens/03_tohfa_payment_history_-_artisan_studio_desktop_screenshot.png", code: "stitch_screens/03_tohfa_payment_history_-_artisan_studio_desktop_code.html", filePath: "frontend/seller/payment-history.html" },
   { id: 26, category: "Seller", title: "Reel Upload — Success State", screenshot: "stitch_screens/18_tohfa_reel_upload_-_success_state_screenshot.png", code: "stitch_screens/18_tohfa_reel_upload_-_success_state_code.html", filePath: "frontend/seller/reel-upload-success.html" },
   { id: 37, category: "Seller", title: "Reel Upload Studio", screenshot: "stitch_screens/29_tohfa_reel_upload_-_studio_desktop_screenshot.png", code: "stitch_screens/29_tohfa_reel_upload_-_studio_desktop_code.html", filePath: "frontend/seller/reel-upload.html" },
-  { id: 39, category: "Seller", title: "Pricing & Stock Step 3 (Unified)", screenshot: "botanical_seller_studio/01_tofa_seller_studio_-_pricing__stock_step_3_unified_layout_screenshot.png", code: "botanical_seller_studio/01_tofa_seller_studio_-_pricing__stock_step_3_unified_layout_code.html", filePath: "frontend/seller/listing-pricing-a.html" },
-  { id: 40, category: "Seller", title: "Seller Studio Home", screenshot: "botanical_seller_studio/02_tofa_seller_studio_-_home_screenshot.png", code: "botanical_seller_studio/02_tofa_seller_studio_-_home_code.html", filePath: "frontend/seller/dashboard.html" },
+  { id: 39, category: "Seller", title: "Pricing & Stock Step 3 (Unified)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_pricing_stock_step_3_unified_layout/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_pricing_stock_step_3_unified_layout/code.html", filePath: "frontend/seller/listing-pricing-a.html" },
+  { id: 40, category: "Seller", title: "Seller Studio Home", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_home_dashboard/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_home_dashboard/code.html", filePath: "frontend/seller/dashboard.html" },
   { id: 41, category: "Seller", title: "Upload Reel (Studio)", screenshot: "botanical_seller_studio/03_tofa_seller_studio_-_upload_reel_screenshot.png", code: "botanical_seller_studio/03_tofa_seller_studio_-_upload_reel_code.html", filePath: "frontend/seller/upload-reel.html" },
-  { id: 42, category: "Seller", title: "Store Config", screenshot: "botanical_seller_studio/04_tofa_seller_studio_-_store_config_screenshot.png", code: "botanical_seller_studio/04_tofa_seller_studio_-_store_config_code.html", filePath: "frontend/seller/store-config.html" },
+  { id: 42, category: "Seller", title: "Store Config", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_store_configuration/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_store_configuration/code.html", filePath: "frontend/seller/store-config.html" },
   { id: 43, category: "Seller", title: "Become a Seller Landing Page", screenshot: "botanical_seller_studio/05_tofa_-_become_a_seller_landing_page_screenshot.png", code: "botanical_seller_studio/05_tofa_-_become_a_seller_landing_page_code.html", filePath: "frontend/seller/become-seller.html" },
   { id: 44, category: "Seller", title: "Pricing & Stock (Refined Sidebar)", screenshot: "botanical_seller_studio/06_tofa_seller_studio_-_pricing__stock_refined_sidebar_card_screenshot.png", code: "botanical_seller_studio/06_tofa_seller_studio_-_pricing__stock_refined_sidebar_card_code.html", filePath: "frontend/seller/listing-pricing-b.html" },
-  { id: 45, category: "Seller", title: "Analytics (Enhanced Style)", screenshot: "botanical_seller_studio/07_tofa_seller_studio_-_analytics_enhanced_style_screenshot.png", code: "botanical_seller_studio/07_tofa_seller_studio_-_analytics_enhanced_style_code.html", filePath: "frontend/seller/analytics.html" },
-  { id: 46, category: "Seller", title: "Shipping Step 4 (Header Match)", screenshot: "botanical_seller_studio/08_tofa_seller_studio_-_shipping_step_4_header_match_screenshot.png", code: "botanical_seller_studio/08_tofa_seller_studio_-_shipping_step_4_header_match_code.html", filePath: "frontend/seller/listing-shipping.html" },
-  { id: 47, category: "Seller", title: "Seller Orders", screenshot: "botanical_seller_studio/09_tofa_seller_studio_-_orders_screenshot.png", code: "botanical_seller_studio/09_tofa_seller_studio_-_orders_code.html", filePath: "frontend/seller/orders.html" },
-  { id: 48, category: "Seller", title: "Reviews (Aligned Sidebar)", screenshot: "botanical_seller_studio/10_tofa_seller_studio_-_reviews_aligned_sidebar_screenshot.png", code: "botanical_seller_studio/10_tofa_seller_studio_-_reviews_aligned_sidebar_code.html", filePath: "frontend/seller/reviews.html" },
-  { id: 49, category: "Seller", title: "Profile & Settings", screenshot: "botanical_seller_studio/11_tofa_seller_studio_-_profile__settings_screenshot.png", code: "botanical_seller_studio/11_tofa_seller_studio_-_profile__settings_code.html", filePath: "frontend/seller/profile-settings.html" },
-  { id: 50, category: "Seller", title: "Preview Step 5 (Modal Style)", screenshot: "botanical_seller_studio/12_tofa_seller_studio_-_preview_step_5_modal_style_screenshot.png", code: "botanical_seller_studio/12_tofa_seller_studio_-_preview_step_5_modal_style_code.html", filePath: "frontend/seller/listing-preview.html" },
+  { id: 45, category: "Seller", title: "Analytics Dashboard (Stitch)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_analytics_dashboard/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_analytics_dashboard/code.html", filePath: "frontend/seller/analytics.html" },
+  { id: 46, category: "Seller", title: "Shipping Step 4 (Header Match)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_shipping_step_4_header_match/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_shipping_step_4_header_match/code.html", filePath: "frontend/seller/listing-shipping.html" },
+  { id: 47, category: "Seller", title: "Orders Queue (Stitch)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_orders_queue/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_orders_queue/code.html", filePath: "frontend/seller/orders.html" },
+  { id: 48, category: "Seller", title: "Reviews Panel (Stitch)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_reviews_aligned_sidebar/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_reviews_aligned_sidebar/code.html", filePath: "frontend/seller/reviews.html" },
+  { id: 49, category: "Seller", title: "Profile Settings (Stitch)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_profile_settings/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_profile_settings/code.html", filePath: "frontend/seller/profile-settings.html" },
+  { id: 50, category: "Seller", title: "Preview Step 5 (Modal Style)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_preview_step_5_modal_style/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_preview_step_5_modal_style/code.html", filePath: "frontend/seller/listing-preview.html" },
   { id: 51, category: "Seller", title: "Create Listing Full Wizard", screenshot: "botanical_seller_studio/13_tofa_seller_studio_-_create_listing_full_wizard_screenshot.png", code: "botanical_seller_studio/13_tofa_seller_studio_-_create_listing_full_wizard_code.html", filePath: "frontend/seller/create-listing.html" },
-  { id: 52, category: "Seller", title: "Catalog (Unified Layout)", screenshot: "botanical_seller_studio/14_tofa_seller_studio_-_catalog_unified_layout_screenshot.png", code: "botanical_seller_studio/14_tofa_seller_studio_-_catalog_unified_layout_code.html", filePath: "frontend/seller/catalog.html" },
-  { id: 53, category: "Seller", title: "Photos Step 1 (Full Page)", screenshot: "botanical_seller_studio/15_tofa_seller_studio_-_photos_step_1_full_page_match_screenshot.png", code: "botanical_seller_studio/15_tofa_seller_studio_-_photos_step_1_full_page_match_code.html", filePath: "frontend/seller/listing-photos.html" },
-  { id: 54, category: "Seller", title: "Listing Details Step 2", screenshot: "botanical_seller_studio/16_tofa_seller_studio_-_listing_details_step_2_header_match_screenshot.png", code: "botanical_seller_studio/16_tofa_seller_studio_-_listing_details_step_2_header_match_code.html", filePath: "frontend/seller/listing-details.html" },
+  { id: 52, category: "Seller", title: "Catalog Manager (Stitch)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_catalog_manager_unified_layout/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_catalog_manager_unified_layout/code.html", filePath: "frontend/seller/catalog.html" },
+  { id: 53, category: "Seller", title: "Photos Step 1 (Full Page)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_photos_step_1_full_page_match/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_photos_step_1_full_page_match/code.html", filePath: "frontend/seller/listing-photos.html" },
+  { id: 54, category: "Seller", title: "Listing Details Step 2", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_listing_details_step_2_header_match/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_listing_details_step_2_header_match/code.html", filePath: "frontend/seller/listing-details.html" },
   { id: 70, category: "Seller", title: "Payouts & Bank Settings (Seller - Integrated)", screenshot: null, code: null, filePath: "frontend/seller/payouts.html" },
   { id: 71, category: "Seller", title: "Artisan Profile Storefront (Seller - Integrated)", screenshot: null, code: null, filePath: "frontend/seller/profile.html" },
+  { id: 75, category: "Seller", title: "Inventory & Materials (Artisan Studio)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_inventory_materials/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_inventory_materials/code.html", filePath: "frontend/seller/inventory.html" },
+  { id: 76, category: "Seller", title: "Messages Inbox (Artisan Studio)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_messages_inbox/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_messages_inbox/code.html", filePath: "frontend/seller/messages.html" },
+  { id: 77, category: "Seller", title: "Production Planner (Artisan Studio)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_production_planner/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_production_planner/code.html", filePath: "frontend/seller/production-planner.html" },
+  { id: 78, category: "Seller", title: "Publish Step 6 Celebration", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_publish_step_6_celebration/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_publish_step_6_celebration/code.html", filePath: "frontend/seller/listing-publish.html" },
+  { id: 79, category: "Seller", title: "Upload Reel Gallery (Stitch)", screenshot: "stitch_screens/stitch_seller/tofa_seller_studio_upload_reel_gallery/screen.png", code: "stitch_screens/stitch_seller/tofa_seller_studio_upload_reel_gallery/code.html", filePath: "frontend/seller/upload-reel.html" },
 
   // ── ADMIN SCREENS ──
   { id: 55, category: "Admin", title: "Audit Logs", screenshot: "tohfa_admin_audit_logs_updated_sidebar/screenshot.png", code: "tohfa_admin_audit_logs_updated_sidebar/code.html", filePath: "frontend/admin/audit-logs.html" },
@@ -932,6 +987,10 @@ const STORAGE_KEY_BASE_PATH = 'tohfahub_reviewer_base_path';
 // Automatically detect the relative base path based on location
 function detectRelativeBase() {
   const path = window.location.pathname;
+  // If the file is inside the project_docs directory, the repo root is one level up (../)
+  if (path.includes('/project_docs/') || path.includes('\\project_docs\\')) {
+    return '../';
+  }
   // If the path contains TohfaHub_project-1, we are running inside the repo folder
   if (path.includes('TohfaHub_project-1')) {
     return '';
@@ -1167,8 +1226,8 @@ function renderCards() {
   let cardsHtml = '';
 
   panels.forEach(p => {
-    const screenshotUrl = p.screenshot ? `${basePath}${p.screenshot}` : null;
-    const codeUrl = p.code ? `${basePath}${p.code}` : null;
+    const screenshotUrl = p.screenshot ? (p.category === 'Admin' ? getAdminMockupUrl(p.screenshot, basePath) : getMockupUrl(p.screenshot, basePath)) : null;
+    const codeUrl = p.code ? (p.category === 'Admin' ? getAdminMockupUrl(p.code, basePath) : getMockupUrl(p.code, basePath)) : null;
     const fileUrl = p.filePath ? `${basePath}${p.filePath}` : null;
     const activePreviewUrl = p.filePath ? fileUrl : (p.code ? codeUrl : null);
 
@@ -1376,7 +1435,7 @@ function loadCardIframe(id, url) {
 function handleImageError(img, id) {
   img.style.display = 'none';
   const panel = panels.find(p => p.id === id);
-  const screenshotUrl = panel.screenshot ? `${basePath}${panel.screenshot}` : '';
+  const screenshotUrl = panel.screenshot ? (panel.category === 'Admin' ? getAdminMockupUrl(panel.screenshot, basePath) : getMockupUrl(panel.screenshot, basePath)) : '';
   
   // Show error message placeholder in place of screenshot
   const parent = img.parentElement;

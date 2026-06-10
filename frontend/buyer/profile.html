@@ -109,17 +109,30 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(37, 83, 56, 0.12);
         }
-    <style>
-/* Existing styles */
-.ink-wash-gradient { background: linear-gradient(135deg, #C8D7BF 0%, #E8F0E4 50%, #F1EADD 100%); }
-.artisan-card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.artisan-card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37, 83, 56, 0.12); }
-/* Address panel styles */
-.scrim-overlay { background-color: rgba(229,216,200,0.4); backdrop-filter: blur(2px); }
-.bottom-sheet { box-shadow: 0 -4px 20px rgba(58,51,40,0.08); max-width: 375px; margin: 0 auto; }
-.input-focus-glow { box-shadow: 0 0 0 4px rgba(123,94,167,0.05); }
-.hand-drawn-underline::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 1px; background: currentColor; opacity: 0.6; }
-</style>
+        /* Chat modal styles */
+        .chat-scrim {
+            background-color: rgba(31,27,21,0.55);
+            backdrop-filter: blur(4px);
+        }
+        @keyframes chatSlideIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .chat-modal-animate {
+            animation: chatSlideIn 0.35s cubic-bezier(0.34,1.2,0.64,1) forwards;
+        }
+        .chat-bubble-seller {
+            background: #D4E9C4;
+            border-radius: 18px 18px 18px 4px;
+        }
+        .chat-bubble-me {
+            background: #255338;
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+        .chat-scroll::-webkit-scrollbar { width: 3px; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: #c4c8bd; border-radius: 2px; }
+    </style>
 </head>
 <body class="bg-surface text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- Top Navigation -->
@@ -198,20 +211,21 @@
 <div class="relative group">
 <div class="relative group w-32 h-32 rounded-full border-[3px] border-[#255338] overflow-hidden bg-surface-container shadow-lg flex-shrink-0">
   <img class="w-full h-full object-cover" data-alt="A portrait of a creative individual with a warm smile, captured in a studio with soft, natural lighting. The aesthetic is clean and minimalist with a tactile quality, reflecting an artisan spirit. The background is a soft ivory tone, consistent with a high-end journal style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1MlCvGNVC5kb3_0adXisBIXKR2kO5rDi5REC7Ws_jdqAl-d9k85WtM1zhT8kPt7miefUL2zB7ZWlht6gOBoOFf_yaM44xEDS_XDmP2CC3-O2XtWEbyNWU5d0aYrxHES2zAVOb4to55ZXc0JuEuYUxljiCZtgqH9k3hGJLepqGwKKZZmnmigxFXREVk5a9jUDkeBzDkZX8Z9jT_im_tJi4_Y8YVc3tbxMsxYFYLwpSOJOXUuN4y3YO7VUkGCQmkVDabJ6ip82gLbE">
-  <!-- Camera overlay on hover for edit -->
-  <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+  <!-- Camera overlay → go to edit profile -->
+  <a href="/buyer/edit-profile.html" class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
     <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
-  </div>
+  </a>
 </div>
-<button class="absolute bottom-2 right-2 bg-primary text-white p-xs rounded-full border-2 border-surface artisan-card-hover">
-<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-</button>
+<a href="/buyer/edit-profile.html" class="absolute bottom-2 right-2 bg-primary text-white p-xs rounded-full border-2 border-surface artisan-card-hover">
+  <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</a>
 </div>
 <div class="mt-md text-center">
 <h2 class="font-display-hero text-headline-lg text-on-surface">Elias Thorne</h2>
-<button class="mt-lg px-xl py-sm border-2 border-outline-variant font-label-caps text-on-surface rounded-full hover:bg-surface-container transition-all active:scale-95 artisan-card-hover">
-                        Edit Profile
-                    </button>
+<a href="/buyer/edit-profile.html"
+   class="mt-lg inline-block px-xl py-sm border-2 border-outline-variant font-label-caps text-on-surface rounded-full hover:bg-surface-container transition-all active:scale-95 artisan-card-hover cursor-pointer">
+  Edit Profile
+</a>
 </div>
 </div>
 </div>
@@ -253,6 +267,13 @@
       <p class="font-title-serif text-on-surface">Notifications</p>
       <p class="text-xs text-outline mt-xs">Recent alerts</p>
     </a>
+    <!-- T-12: Custom Orders Chat — only shown when user has custom gift orders -->
+    <button id="custom-chat-card" onclick="openChatModal()"
+            class="hidden p-lg bg-gradient-to-br from-[#fcd6ff]/60 to-[#D4E9C4]/40 rounded-xl artisan-card-hover group border border-transparent hover:border-[#b492b7] text-left transition-all">
+      <span class="material-symbols-outlined text-[#725476] mb-md">chat</span>
+      <p class="font-title-serif text-on-surface">Custom Orders Chat</p>
+      <p id="chat-card-subtitle" class="text-xs text-outline mt-xs">Messages about personalised gifts</p>
+    </button>
   </div>
   <!-- Shipping & Payment Details -->
   <div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-gutter">
@@ -352,6 +373,105 @@
 <span class="material-symbols-outlined text-sm" data-icon="eco">eco</span>
 <span class="w-12 h-[1px] bg-outline"></span>
 </footer>
+
+<!-- ════════════════════════════════════════ -->
+<!-- T-12: Custom Orders Chat Modal          -->
+<!-- ════════════════════════════════════════ -->
+<div id="chat-modal-scrim" class="fixed inset-0 z-[200] chat-scrim hidden flex items-center justify-center p-4">
+  <div id="chat-modal" class="w-full max-w-lg bg-[#FCFAF5] rounded-2xl shadow-2xl flex flex-col chat-modal-animate" style="max-height: 85vh;">
+    <!-- Modal Header -->
+    <div class="px-lg py-md border-b border-outline-variant flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-md">
+        <div class="w-10 h-10 bg-[#fcd6ff] rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-[#725476] text-xl">chat</span>
+        </div>
+        <div>
+          <h3 class="font-title-serif text-on-surface text-base font-semibold">Custom Orders Chat</h3>
+          <p class="text-xs text-on-surface-variant">Only for personalised &amp; customised gift orders</p>
+        </div>
+      </div>
+      <button onclick="closeChatModal()" class="text-outline hover:text-error transition-colors p-xs rounded-lg">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- Conversation List -->
+    <div class="flex-1 overflow-y-auto chat-scroll" id="chat-conversation-area">
+      <!-- Active Conversation (default: first one open) -->
+      <div id="chat-thread" class="p-lg space-y-md">
+        <!-- Thread header -->
+        <div class="flex items-center gap-sm pb-md border-b border-outline-variant mb-md">
+          <div class="w-8 h-8 rounded-full bg-[#D4E9C4] flex items-center justify-center text-sm font-bold text-primary">P</div>
+          <div>
+            <p class="font-semibold text-on-surface text-sm">Priya Sharma</p>
+            <p class="text-xs text-on-surface-variant">Custom Macramé Wall Hanging · Order #TF-0284</p>
+          </div>
+          <span class="ml-auto text-xs text-outline">Today</span>
+        </div>
+
+        <!-- Messages -->
+        <div class="space-y-sm">
+          <div class="flex gap-sm">
+            <div class="w-7 h-7 rounded-full bg-[#D4E9C4] flex-shrink-0 flex items-center justify-center text-xs font-bold text-primary">P</div>
+            <div class="chat-bubble-seller px-md py-sm max-w-[75%]">
+              <p class="text-sm text-on-surface">Hi! I'd love the wall hanging in sage green with my initials "PS" woven in. Is that possible?</p>
+              <p class="text-xs text-outline mt-xs">2:14 PM</p>
+            </div>
+          </div>
+          <div class="flex gap-sm justify-end">
+            <div class="chat-bubble-me px-md py-sm max-w-[75%]">
+              <p class="text-sm">Absolutely! Sage green with initials is doable. It'll be a 24×36" piece. Should take about 5-6 days. Want me to send a sample swatch first?</p>
+              <p class="text-xs text-white/60 mt-xs text-right">2:31 PM</p>
+            </div>
+          </div>
+          <div class="flex gap-sm">
+            <div class="w-7 h-7 rounded-full bg-[#D4E9C4] flex-shrink-0 flex items-center justify-center text-xs font-bold text-primary">P</div>
+            <div class="chat-bubble-seller px-md py-sm max-w-[75%]">
+              <p class="text-sm text-on-surface">Yes please! Also, can we add a small dried flower accent at the bottom?</p>
+              <p class="text-xs text-outline mt-xs">2:45 PM</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Separator for other conversations -->
+        <div class="pt-md border-t border-outline-variant">
+          <button onclick="switchConversation(1)" class="w-full text-left p-md rounded-xl hover:bg-surface-container transition-colors flex items-center gap-md">
+            <div class="w-8 h-8 rounded-full bg-[#fcd6ff] flex-shrink-0 flex items-center justify-center text-sm font-bold text-[#725476]">A</div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-on-surface text-sm">Arjun Mehra</p>
+              <p class="text-xs text-on-surface-variant truncate">Can you engrave "Happy Anniversary" on the ceramic mug?</p>
+            </div>
+            <span class="text-xs text-outline flex-shrink-0">Yesterday</span>
+          </button>
+          <button onclick="switchConversation(2)" class="w-full text-left p-md rounded-xl hover:bg-surface-container transition-colors flex items-center gap-md mt-xs">
+            <div class="w-8 h-8 rounded-full bg-[#E6E2D8] flex-shrink-0 flex items-center justify-center text-sm font-bold text-secondary">R</div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-on-surface text-sm">Riya Kapoor</p>
+              <p class="text-xs text-on-surface-variant truncate">Custom resin bookmarks with pressed flowers — batch of 20 pls!</p>
+            </div>
+            <span class="text-xs text-outline flex-shrink-0">Mon</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reply Input -->
+    <div class="px-lg py-md border-t border-outline-variant flex-shrink-0 bg-[#FCFAF5] rounded-b-2xl">
+      <div class="flex gap-sm items-end">
+        <textarea id="chat-reply-input"
+                  class="flex-1 resize-none border border-outline-variant rounded-xl px-md py-sm text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all bg-white"
+                  rows="2"
+                  placeholder="Type your reply about the custom order..."
+                  onkeydown="handleChatKeydown(event)"></textarea>
+        <button onclick="sendChatReply()"
+                class="bg-primary text-white p-sm rounded-xl hover:opacity-90 active:scale-95 transition-all flex-shrink-0">
+          <span class="material-symbols-outlined">send</span>
+        </button>
+      </div>
+      <p class="text-xs text-on-surface-variant mt-xs">Press Ctrl+Enter to send</p>
+    </div>
+  </div>
+</div>
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
     import { logout } from '/src/utils/auth.js';
@@ -446,6 +566,41 @@
         }
     }
 
+    // ── T-12: Check for custom/personalised gift orders ──
+    async function checkCustomOrders() {
+        const chatCard = document.getElementById('custom-chat-card');
+        if (!chatCard) return;
+        try {
+            const res = await apiClient.get('/orders');
+            if (res.data && res.data.success) {
+                const orders = res.data.data.orders || res.data.data || [];
+                const customOrders = orders.filter(o =>
+                    o.order_type === 'custom' ||
+                    o.listing_type === 'custom' ||
+                    (o.customization && o.customization !== 'null')
+                );
+                if (customOrders.length > 0) {
+                    chatCard.classList.remove('hidden');
+                    const subtitle = document.getElementById('chat-card-subtitle');
+                    if (subtitle) {
+                        subtitle.textContent = `${customOrders.length} active conversation${customOrders.length > 1 ? 's' : ''}`;
+                    }
+                } else {
+                    // Show anyway with mock data for demo (so it's always visible in this demo)
+                    chatCard.classList.remove('hidden');
+                    const subtitle = document.getElementById('chat-card-subtitle');
+                    if (subtitle) subtitle.textContent = '3 conversations (demo)';
+                }
+            } else {
+                // Fallback: always show in demo
+                chatCard.classList.remove('hidden');
+            }
+        } catch (_) {
+            // Fallback: always show in demo
+            chatCard.classList.remove('hidden');
+        }
+    }
+
     async function updateCartBadge() {
         try {
             const res = await apiClient.get('/cart');
@@ -507,6 +662,144 @@
     // Initial load
     init();
     updateCartBadge();
+    checkCustomOrders();
+
+    // ── T-12: Chat Modal Functions ──
+    window.openChatModal = function() {
+        const scrim = document.getElementById('chat-modal-scrim');
+        scrim.classList.remove('hidden');
+        // Reset scroll to bottom of thread
+        setTimeout(() => {
+            const area = document.getElementById('chat-conversation-area');
+            if (area) area.scrollTop = area.scrollHeight;
+        }, 100);
+    };
+
+    window.closeChatModal = function() {
+        document.getElementById('chat-modal-scrim').classList.add('hidden');
+    };
+
+    // Close on backdrop click
+    document.getElementById('chat-modal-scrim').addEventListener('click', function(e) {
+        if (e.target === this) window.closeChatModal();
+    });
+
+    window.sendChatReply = function() {
+        const input = document.getElementById('chat-reply-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const thread = document.getElementById('chat-thread');
+        const messagesContainer = thread.querySelector('.space-y-sm');
+        if (!messagesContainer) return;
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const msgEl = document.createElement('div');
+        msgEl.className = 'flex gap-sm justify-end';
+        msgEl.innerHTML = `
+            <div class="chat-bubble-me px-md py-sm max-w-[75%]">
+                <p class="text-sm">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+                <p class="text-xs text-white/60 mt-xs text-right">${timeStr}</p>
+            </div>`;
+        messagesContainer.appendChild(msgEl);
+
+        input.value = '';
+        const area = document.getElementById('chat-conversation-area');
+        if (area) area.scrollTop = area.scrollHeight;
+    };
+
+    window.handleChatKeydown = function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            window.sendChatReply();
+        }
+    };
+
+    // Mock conversation data for switching
+    const mockConversations = [
+        {
+            initial: 'P', color: '#D4E9C4', textColor: '#255338', name: 'Priya Sharma',
+            orderLabel: 'Custom Macramé Wall Hanging · Order #TF-0284', timeLabel: 'Today',
+            messages: [
+                { from: 'buyer', text: 'Hi! I\'d love the wall hanging in sage green with my initials "PS" woven in. Is that possible?', time: '2:14 PM' },
+                { from: 'me', text: 'Absolutely! Sage green with initials is doable. It\'ll be a 24×36" piece. Should take about 5-6 days. Want me to send a sample swatch first?', time: '2:31 PM' },
+                { from: 'buyer', text: 'Yes please! Also, can we add a small dried flower accent at the bottom?', time: '2:45 PM' }
+            ]
+        },
+        {
+            initial: 'A', color: '#fcd6ff', textColor: '#725476', name: 'Arjun Mehra',
+            orderLabel: 'Custom Ceramic Mug · Order #TF-0291', timeLabel: 'Yesterday',
+            messages: [
+                { from: 'buyer', text: 'Can you engrave "Happy Anniversary" on the ceramic mug?', time: '11:22 AM' },
+                { from: 'me', text: 'Yes, I can hand-letter that in my signature style. Would you prefer a rustic or clean font?', time: '11:45 AM' },
+                { from: 'buyer', text: 'Rustic please! And maybe a small heart after the text?', time: '12:03 PM' }
+            ]
+        },
+        {
+            initial: 'R', color: '#E6E2D8', textColor: '#605e57', name: 'Riya Kapoor',
+            orderLabel: 'Custom Resin Bookmarks · Order #TF-0298', timeLabel: 'Mon',
+            messages: [
+                { from: 'buyer', text: 'Custom resin bookmarks with pressed flowers — batch of 20 pls!', time: '9:10 AM' },
+                { from: 'me', text: 'Lovely! Which flowers do you prefer — lavender, marigold, or baby\'s breath?', time: '9:45 AM' },
+                { from: 'buyer', text: 'Mix of all three! And can we do pastel gradient resin?', time: '10:02 AM' }
+            ]
+        }
+    ];
+
+    window.switchConversation = function(idx) {
+        const conv = mockConversations[idx];
+        if (!conv) return;
+        const thread = document.getElementById('chat-thread');
+        if (!thread) return;
+
+        const msgHtml = conv.messages.map(m => {
+            if (m.from === 'buyer') {
+                return `<div class="flex gap-sm">
+                    <div class="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold" style="background:${conv.color};color:${conv.textColor};">${conv.initial}</div>
+                    <div class="chat-bubble-seller px-md py-sm max-w-[75%]">
+                        <p class="text-sm text-on-surface">${m.text}</p>
+                        <p class="text-xs text-outline mt-xs">${m.time}</p>
+                    </div>
+                </div>`;
+            } else {
+                return `<div class="flex gap-sm justify-end">
+                    <div class="chat-bubble-me px-md py-sm max-w-[75%]">
+                        <p class="text-sm">${m.text}</p>
+                        <p class="text-xs text-white/60 mt-xs text-right">${m.time}</p>
+                    </div>
+                </div>`;
+            }
+        }).join('');
+
+        const otherBtns = mockConversations.filter((_, i) => i !== idx).map((c, i) => {
+            const origIdx = i >= idx ? i + 1 : i;
+            return `<button onclick="switchConversation(${origIdx === 0 ? 0 : origIdx})" class="w-full text-left p-md rounded-xl hover:bg-surface-container transition-colors flex items-center gap-md mt-xs">
+                <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold" style="background:${c.color};color:${c.textColor};">${c.initial}</div>
+                <div class="flex-1 min-w-0">
+                    <p class="font-semibold text-on-surface text-sm">${c.name}</p>
+                    <p class="text-xs text-on-surface-variant truncate">${c.messages[0].text}</p>
+                </div>
+                <span class="text-xs text-outline flex-shrink-0">${c.timeLabel}</span>
+            </button>`;
+        }).join('');
+
+        thread.innerHTML = `
+            <div class="flex items-center gap-sm pb-md border-b border-outline-variant mb-md">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background:${conv.color};color:${conv.textColor};">${conv.initial}</div>
+                <div>
+                    <p class="font-semibold text-on-surface text-sm">${conv.name}</p>
+                    <p class="text-xs text-on-surface-variant">${conv.orderLabel}</p>
+                </div>
+                <span class="ml-auto text-xs text-outline">${conv.timeLabel}</span>
+            </div>
+            <div class="space-y-sm">${msgHtml}</div>
+            <div class="pt-md border-t border-outline-variant">${otherBtns}</div>`;
+
+        const area = document.getElementById('chat-conversation-area');
+        if (area) area.scrollTop = area.scrollHeight;
+    };
 
     let isLoggedIn = false;
     async function checkAuthState() {

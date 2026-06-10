@@ -315,12 +315,11 @@
           }
         ];
 
-            let isLoggedIn = false;
-    async function checkAuthState() {
-        const token = sessionStorage.getItem('tohfa_access_token');
-        const authContainer = document.getElementById('auth-buttons-container');
-        
-        if (token) {
+        async function checkAuthState() {
+            const token = sessionStorage.getItem('tohfa_access_token');
+            const authContainer = document.getElementById('auth-buttons-container');
+            
+            if (token) {
             isLoggedIn = true;
             try {
                 let avatarUrl = null;

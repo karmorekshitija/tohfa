@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buyer Studio — Antigravity Agent Prompt File</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --accent: #238636;
+      --accent-soft: #1a3a24;
+      --warn: #b08800;
+      --warn-soft: #2d2400;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --tag-blue: #1f4b8e;
+      --tag-purple: #3b1f6e;
+      --tag-red: #6e1f1f;
+      --mono: 'Courier New', monospace;
+      --sans: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 32px 24px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+    }
+
+    .file-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: #3fb950;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0f6fc;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 20px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .meta-item span {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* INSTRUCTIONS BOX */
+    .instructions {
+      background: var(--warn-soft);
+      border: 1px solid var(--warn);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+
+    .instructions h2 {
+      font-size: 13px;
+      color: #e3b341;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .instructions ol {
+      padding-left: 18px;
+      color: #cba135;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .instructions ol li {
+      margin-bottom: 4px;
+    }
+
+    .instructions strong {
+      color: #f0c040;
+    }
+
+    /* SECTION */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 32px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      font-size: 18px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f0f6fc;
+    }
+
+    .section-count {
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1px 8px;
+    }
+
+    /* TASK CARD */
+    .task {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .task-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .task-id {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+
+    .task-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f0f6fc;
+      flex: 1;
+    }
+
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1px 7px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+    }
+
+    .tag.ui     { background: var(--tag-blue);   border-color: #3b7dd8; color: #a5c8ff; }
+    .tag.logic  { background: var(--tag-purple);  border-color: #7b5ea7; color: #d2b4ff; }
+    .tag.data   { background: var(--tag-red);     border-color: #c0392b; color: #ffb3b3; }
+    .tag.new    { background: #1a3a24;            border-color: #238636; color: #56d364; }
+
+    .task-body {
+      padding: 14px 16px;
+    }
+
+    .prompt-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .prompt-block {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #aff0a8;
+      line-height: 1.65;
+    }
+
+    .caution {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #e3b341;
+      background: var(--warn-soft);
+      border-left: 3px solid var(--warn);
+      padding: 8px 12px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #58a6ff;
+      background: #0d2236;
+      border-left: 3px solid #1f6feb;
+      padding: 8px 12px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 20px 14px; }
+      .meta-row { flex-direction: column; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="file-badge">ANTIGRAVITY PROMPT FILE · v1.0</div>
+  <h1>Buyer Studio — Agent Task Manifest</h1>
+  <p class="subtitle">Structured prompt file for multi-agent execution. Feed tasks sequentially. Do not skip steps.</p>
+  <div class="meta-row">
+    <div class="meta-item">Project: <span>TOFA Buyer Studio</span></div>
+    <div class="meta-item">Total Tasks: <span>12</span></div>
+    <div class="meta-item">Mode: <span>Sequential Sub-Agent Execution</span></div>
+    <div class="meta-item">Author: <span>Kshitija</span></div>
+  </div>
+</header>
+
+<!-- GLOBAL INSTRUCTIONS -->
+<div class="instructions">
+  <h2>⚠ Instructions for Antigravity — Read Before Starting</h2>
+  <ol>
+    <li>Execute each task <strong>one at a time</strong>, in the order listed below (T-01 → T-12).</li>
+    <li>After each task, <strong>verify the change is working</strong> before moving to the next one.</li>
+    <li>Use <strong>sub-agents</strong> for tasks that touch separate files simultaneously (e.g. CSS + JSX).</li>
+    <li>If a task modifies shared state or routing, <strong>run the app and check for regressions</strong> before proceeding.</li>
+    <li>Tasks marked <strong>[NEW FEATURE]</strong> require new components or files — scaffold cleanly, don't hack into existing ones.</li>
+    <li>If any task is ambiguous about a file path, <strong>search the codebase first</strong> before making assumptions.</li>
+    <li>Commit after every 3 tasks or after any task marked <strong>[COMMIT POINT]</strong>.</li>
+  </ol>
+</div>
+
+
+<!-- ───────────────────────────────────── -->
+<!--  SECTION 1: Homepage & General UI    -->
+<!-- ───────────────────────────────────── -->
+
+<div class="section-header">
+  <span class="section-icon">🏠</span>
+  <span class="section-title">Homepage &amp; General UI</span>
+  <span class="section-count">4 tasks</span>
+</div>
+
+<!-- T-01 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-01</span>
+    <div>
+      <div class="task-title">Uniformity Check — Colors &amp; Taskbars</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Search all CSS/Tailwind/styled-component files in the Buyer Studio project.
+Find every instance of a hardcoded color value or taskbar/navbar component.
+Ensure all taskbars and navigation bars use the same shared color tokens or CSS variables.
+Fix any inconsistencies so the visual style is uniform across all pages.
+Also verify that all taskbars are fully functional (clickable, correct routing, no broken links).</div>
+    <div class="note">ℹ Tip: Check both the mobile and desktop navbar variants. They often diverge.</div>
+  </div>
+</div>
+
+<!-- T-02 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-02</span>
+    <div>
+      <div class="task-title">Remove Profile Logo from Cart Section in Taskbar</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the taskbar/navbar component in the Buyer Studio codebase.
+Locate the cart section inside it.
+Remove the profile logo/avatar that is currently appearing next to or inside the cart section.
+The cart icon should remain — only the profile logo should be removed from that specific area.
+Do not affect the profile logo in the main navigation or profile section.</div>
+  </div>
+</div>
+
+<!-- T-03 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-03</span>
+    <div>
+      <div class="task-title">Review &amp; Verify Sponsored Section on Homepage</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+        <span class="tag data">Data</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the "Sponsored ones" section on the homepage.
+Verify it renders correctly and is populated with placeholder/mock product data.
+If it is empty or broken, fix the rendering logic so that at least 3–4 mock sponsored products appear.
+Ensure the section heading says "Sponsored" and is visually distinct from regular product sections.</div>
+  </div>
+</div>
+
+<!-- T-04 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-04</span>
+    <div>
+      <div class="task-title">Integrate "Our Story" Panel &amp; Fix Homepage Link</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+        <span class="tag logic">Logic</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the "Our Story" link on the homepage.
+It currently either navigates nowhere or is disconnected — fix it to route to the Our Story page or section.
+If the Our Story panel/page does not exist, create a simple placeholder page component with a heading and 2–3 lines of brand description text.
+Connect the homepage link to this page using the existing router setup.</div>
+    <div class="caution">⚠ Commit after this task — it touches routing.</div>
+  </div>
+</div>
+
+
+<!-- ──────────────────────────────────────── -->
+<!--  SECTION 2: Navigation & Products       -->
+<!-- ──────────────────────────────────────── -->
+
+<div class="section-header">
+  <span class="section-icon">🛍️</span>
+  <span class="section-title">Navigation &amp; Product Interactions</span>
+  <span class="section-count">4 tasks</span>
+</div>
+
+<!-- T-05 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-05</span>
+    <div>
+      <div class="task-title">Change CTA Text from "Find it here" → "Add to Cart"</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Search the entire codebase for all occurrences of the text "Find it here".
+Replace every instance with "Add to Cart".
+This applies to all product cards, product boxes, and subcategory listing pages.
+Verify the button still works (triggers add-to-cart logic or navigates correctly) after the text change.</div>
+  </div>
+</div>
+
+<!-- T-06 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-06</span>
+    <div>
+      <div class="task-title">Fix "Explorer" Link — Connect to Categories</div>
+      <div class="tags">
+        <span class="tag logic">Logic</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the "Explorer" navigation link or button in the Buyer Studio.
+It is currently broken or pointing to an incorrect route.
+Fix it so that clicking "Explorer" navigates the user to the main Categories page.
+Verify the categories page loads and displays product categories correctly after the fix.</div>
+  </div>
+</div>
+
+<!-- T-07 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-07</span>
+    <div>
+      <div class="task-title">Update Product Tags — Remove Ship Tags, Add Smart Tags</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+        <span class="tag data">Data</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Step 1: Find and remove the "Ready-to-ship" tab from wherever it appears (filter bar, tabs, or product cards).
+Step 2: Find and remove all "Ships in X Days" tags from product cards across all pages.
+Step 3: In place of these removed tags, add a flexible tag system on product cards that supports: "Best Seller", "Sponsored", and custom text tags.
+For now, assign mock tags — label some products as "Best Seller" and others as "Sponsored" so the UI is populated.
+Ensure the tags are visually styled consistently (small badge on product card, top-left or top-right corner).</div>
+    <div class="caution">⚠ Commit after this task — it modifies product card components globally.</div>
+  </div>
+</div>
+
+<!-- T-08 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-08</span>
+    <div>
+      <div class="task-title">Restrict "Join the Studio" Option to Sellers Only</div>
+      <div class="tags">
+        <span class="tag logic">Logic</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the "Join the Studio" button or menu option in the codebase.
+Add a conditional render: it should only be visible to users with a seller role.
+If the current user is a buyer, hide this option entirely — do not grey it out, remove it from the DOM.
+Check where the user role is stored (auth context, state, or local storage) and use that to drive the condition.
+If no role system exists yet, add a simple isSeller boolean to the user context and use that as the condition.</div>
+  </div>
+</div>
+
+
+<!-- ───────────────────── -->
+<!--  SECTION 3: Reels    -->
+<!-- ───────────────────── -->
+
+<div class="section-header">
+  <span class="section-icon">🎬</span>
+  <span class="section-title">Reels Feature</span>
+  <span class="section-count">2 tasks</span>
+</div>
+
+<!-- T-09 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-09</span>
+    <div>
+      <div class="task-title">Add Mockup Reels to Video Feed</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+        <span class="tag new">New Feature</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">The reels/video feed section is currently empty or not rendering.
+Add at least 3 mockup reel cards using placeholder video thumbnails (use a free placeholder image URL like https://picsum.photos or a static asset).
+Each mockup reel card should display: a thumbnail image, a product name, a short description, and a like button.
+Style the reel cards in a vertical scroll format, consistent with a short-video feed layout (full-width cards, stacked vertically).</div>
+  </div>
+</div>
+
+<!-- T-10 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-10</span>
+    <div>
+      <div class="task-title">Fix &amp; Implement Like Button on Reels</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+        <span class="tag logic">Logic</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the Like button on reel/video cards — it is currently missing or non-functional.
+If missing: add a Like button (heart icon) to each reel card component.
+Implement toggle logic: clicking the button switches between liked (filled heart, red) and not liked (outline heart).
+Maintain the liked state per reel using local component state (useState).
+Display a like count that increments/decrements on toggle.
+Do not require a backend call — keep it frontend-only for now.</div>
+    <div class="caution">⚠ Commit after this task — Reels section is now complete as a unit.</div>
+  </div>
+</div>
+
+
+<!-- ───────────────────────── -->
+<!--  SECTION 4: User Profile -->
+<!-- ───────────────────────── -->
+
+<div class="section-header">
+  <span class="section-icon">👤</span>
+  <span class="section-title">User Profile</span>
+  <span class="section-count">2 tasks</span>
+</div>
+
+<!-- T-11 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-11</span>
+    <div>
+      <div class="task-title">Overhaul Edit Profile — Buyer-Specific Fields Only</div>
+      <div class="tags">
+        <span class="tag ui">UI</span>
+        <span class="tag logic">Logic</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Find the "Edit Profile" section in the buyer-facing User Profile page.
+Remove these seller-specific fields entirely:
+  - Shop Name
+  - Shipping Days / Delivery Days
+  - Any other fields relevant only to sellers
+
+Replace with these buyer-relevant fields:
+  - Full Name (editable text input)
+  - Phone Number (editable, with format validation)
+  - Email Address (editable, with basic email validation)
+  - Profile Picture (optional: image upload or URL input)
+
+Add a "Save Changes" button that updates the local user state.
+Ensure the form has proper labels, placeholder text, and is styled consistently with the rest of the profile page.</div>
+  </div>
+</div>
+
+<!-- T-12 -->
+<div class="task">
+  <div class="task-header">
+    <span class="task-id">T-12</span>
+    <div>
+      <div class="task-title">Add "Chat with Buyers" for Customised Gifts — Profile Tab</div>
+      <div class="tags">
+        <span class="tag new">New Feature</span>
+        <span class="tag logic">Logic</span>
+        <span class="tag ui">UI</span>
+      </div>
+    </div>
+  </div>
+  <div class="task-body">
+    <div class="prompt-label">Prompt for Antigravity</div>
+    <div class="prompt-block">Add a "Chat with Buyers" option inside the User Profile tab.
+IMPORTANT CONSTRAINT: This feature must only appear and be accessible for customised/personalised gift products — NOT for pre-made/ready-made products.
+
+Implementation steps:
+1. Add a "Chat with Buyers" button or section in the profile tab.
+2. The button should only be active/visible when the user has at least one customised gift order or inquiry.
+3. Clicking it should open a simple chat interface (can be a modal or a new panel) showing a list of buyer conversations related to customised gift requests.
+4. Each conversation item should show: buyer name, last message preview, and a timestamp.
+5. Add mock conversation data (2–3 entries) so the UI is visible and testable.
+6. Add a text input and send button at the bottom of the chat modal for replying (frontend-only, no backend required now).
+7. Clearly label the section as "Custom Orders Chat" so users know it is only for customised products.</div>
+    <div class="caution">⚠ FINAL COMMIT — after completing T-12, commit all remaining changes with message: "feat: buyer studio tasks T-01 through T-12 complete"</div>
+  </div>
+</div>
+
+
+<footer>
+  TOFA Buyer Studio · Antigravity Prompt Manifest · Generated for Kshitija · 12 tasks across 4 sections
+</footer>
+
+</body>
+</html>

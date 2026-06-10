@@ -1,7 +1,7 @@
 // Tohfa Shared Component Inclusion Script
 document.addEventListener("DOMContentLoaded", () => {
     // Get the base directory of this script so we fetch components from the same folder
-    const scriptSrc = document.currentScript ? document.currentScript.src : '';
+    const scriptSrc = import.meta.url;
     let baseDir = '.';
     if (scriptSrc && scriptSrc.includes('/')) {
         baseDir = scriptSrc.substring(0, scriptSrc.lastIndexOf('/'));
