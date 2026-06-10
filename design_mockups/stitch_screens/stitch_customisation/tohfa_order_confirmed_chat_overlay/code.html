@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa - Chat with Sakshi Dubey</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;family=Cinzel:wght@400..900&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#755400",
+                        "inverse-surface": "#31302e",
+                        "on-surface-variant": "#43483e",
+                        "surface-tint": "#476737",
+                        "primary-fixed": "#c8edb1",
+                        "surface-container-high": "#ebe8e4",
+                        "secondary-fixed": "#ffdea5",
+                        "on-tertiary-container": "#96b983",
+                        "primary": "#163309",
+                        "on-secondary-fixed-variant": "#5d4200",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#f0bf5e",
+                        "on-primary-fixed-variant": "#304e22",
+                        "on-surface": "#1c1c1a",
+                        "tertiary-fixed": "#c9edb3",
+                        "on-background": "#1c1c1a",
+                        "surface-bright": "#fcf9f5",
+                        "surface-container": "#f0edea",
+                        "on-secondary": "#ffffff",
+                        "background": "#fcf9f5",
+                        "primary-fixed-dim": "#add197",
+                        "on-primary-container": "#96b982",
+                        "surface-variant": "#e5e2de",
+                        "outline-variant": "#c3c8bb",
+                        "outline": "#73796d",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fdca68",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ec",
+                        "surface": "#fcf9f5",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dcdad6",
+                        "primary-container": "#2c4a1e",
+                        "tertiary-container": "#2c4a1f",
+                        "surface-container-low": "#f6f3ef",
+                        "inverse-primary": "#add197",
+                        "on-primary-fixed": "#062100",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e5e2de",
+                        "on-tertiary-fixed": "#062100",
+                        "tertiary": "#17330b",
+                        "on-tertiary-fixed-variant": "#314e23",
+                        "secondary": "#7b5800",
+                        "on-secondary-fixed": "#261900",
+                        "tertiary-fixed-dim": "#add199",
+                        "gold-accent": "#C4973A",
+                        "ivory-base": "#F8F3ED",
+                        "sage-accent": "#5A7A4A",
+                        "divider-tan": "#D6CCB8",
+                        "warm-beige": "#F2EBE0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "offer": "14px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Playfair Display"],
+                        "product-title": ["Lora"],
+                        "eyebrow-label": ["Cinzel"],
+                        "price-data": ["Space Mono"],
+                        "headline-md": ["Playfair Display"],
+                        "body-main": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "product-title": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "eyebrow-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "price-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .offer-shadow {
+            box-shadow: 0 10px 30px -10px rgba(196, 151, 58, 0.1);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .sketch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 50 0 90 10 Q 100 50 90 90 Q 50 100 10 90 Q 0 50 10 10' stroke='%23000' fill='none'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 400px;
+        }
+    </style>
+</head>
+<body class="bg-white text-on-surface font-body-main selection:bg-secondary-container selection:text-on-secondary-container">
+<div class="sketch-overlay"></div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant h-20 w-full flex items-center shadow-sm">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto">
+<div class="font-display-lg text-display-lg font-bold text-primary dark:text-inverse-primary cursor-pointer">Tohfa</div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">Stories</a>
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-secondary h-20 flex items-center" href="#">Messages</a>
+</div>
+<div class="flex items-center space-x-6">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-desktop flex gap-gutter py-8 relative z-10 min-h-[calc(100vh-80px)]">
+<!-- Left Panel: Profile & Context -->
+<aside class="w-80 flex-shrink-0 flex flex-col gap-6">
+<!-- Artisan Profile Card -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-4 border-2 border-gold-accent p-1">
+<img alt="Sakshi Dubey" class="w-full h-full object-cover rounded-full" data-alt="A portrait of a serene Indian female artisan with warm skin tones and kind eyes. She is wearing a simple indigo cotton kurta and a small gold bindi. Her workshop, filled with jars of dried flowers and clear resin blocks, is softly blurred in the background, lit by golden afternoon sunlight streaming through a window." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA__LkDjhtE6axugB_4XROhwYMgfxk6mgQNjebeSan_PNcIepMszf_t_Gmr10ecOqB5T1ArV32-NwoLsCgXmFiWTE3eLaXz8ov_EQZvfe2_3vg5pugoxDa-NjxuMPtqUiFBAO9UwFbvmFxBSXJAXgQTcXe93csnm7t2-byen1m_u0gpjw3tDT5x35FXK9ZpE89c2J-5Yy5PTW0dQMFfx_dtfXsVMpAjdCuHYDlN7mGtWsx4Aip5qt_qk7csDzh_t5pSXqOQXpk7XD4"/>
+</div>
+<h3 class="font-product-title text-xl text-primary mb-1">Sakshi Dubey</h3>
+<p class="font-eyebrow-label text-[10px] text-outline mb-2 tracking-widest uppercase">Master Resin Artisan</p>
+<div class="flex items-center gap-1 mb-4 text-secondary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-sm font-bold">4.9</span>
+<span class="text-outline text-xs ml-1">(124 reviews)</span>
+</div>
+<button class="w-full py-2 border border-gold-accent text-gold-accent font-eyebrow-label text-[11px] rounded hover:bg-gold-accent hover:text-white transition-all uppercase tracking-widest">View Portfolio</button>
+</div>
+<!-- Service Detail Card -->
+<div class="bg-ivory-base p-6 rounded-offer border border-divider-tan flex flex-col">
+<h4 class="font-eyebrow-label text-[10px] text-outline mb-4 uppercase">Currently Customising</h4>
+<div class="aspect-square w-full rounded-lg overflow-hidden mb-4">
+<img alt="Resin Keychain" class="w-full h-full object-cover" data-alt="A professional close-up of a handmade teardrop-shaped resin keychain. Inside the clear resin are delicately suspended tiny white jasmine flowers and flakes of genuine 24k gold leaf. The keychain rests on a textured linen surface with soft studio lighting that highlights the depth and transparency of the artisan craft." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5FD5IGQ5TtSj_2Vin3qWwh7-vGk_iM_uAW2OmoycAxvSbr8e31WsekIo8Fy8t8svKB5IaXyiAb19_T8rvpArdiITCA1utxQEhDobBXfPs4r4NC5Z4TNiX0eDvovu2WRo1i9JIjGVJq5j7CUE7qhZ4BFr2MwfrwRG7869QMuK1LhQuB0nbKr_ESu_q5M-OlfxbcjYQpCgMPGfEA4OK1HkKx3Em2ZhSQZ8YzzwtrWbFN9X_tC25OtHVb0WgQYhvy1Hd--pFkXNf-os"/>
+</div>
+<div class="space-y-1">
+<p class="font-product-title text-primary text-base">Personalised Resin Keychain</p>
+<p class="font-body-main text-outline text-sm">Estimated price starting at</p>
+<p class="font-price-data text-lg text-primary">₹180</p>
+</div>
+</div>
+<div class="mt-auto text-center">
+<p class="text-[10px] text-outline italic">Crafting since 2018 · Udaipur, India</p>
+</div>
+</aside>
+<!-- Right Panel: Chat Conversation -->
+<section class="flex-grow flex flex-col h-full bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<!-- Chat Header -->
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="font-product-title text-primary">Chat with Sakshi</span>
+</div>
+<div class="flex gap-4 text-outline">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary" data-icon="search">search</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<!-- Message Area -->
+<div class="flex-grow p-8 overflow-y-auto scrollbar-hide space-y-8 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]">
+<!-- History Scrolled (Simulated) -->
+<div class="flex justify-center">
+<span class="bg-warm-beige px-4 py-1 rounded-full text-[10px] font-eyebrow-label text-outline uppercase tracking-wider">Conversation Started Oct 24</span>
+</div>
+<!-- Previous Messages -->
+<div class="flex flex-col gap-4 max-w-[80%]">
+<div class="bg-surface-container-low p-4 rounded-xl rounded-tl-none border border-outline-variant">
+<p class="text-sm leading-relaxed text-on-surface-variant">Hello Rahul! I'd love to help you with the keychain for the special occasion. The ocean teal base with lotus engraving sounds beautiful. It's a classic combination from my 'Ponds of Udaipur' collection.</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-4 ml-auto max-w-[80%]">
+<div class="bg-primary-container p-4 rounded-xl rounded-tr-none text-white">
+<p class="text-sm leading-relaxed">That sounds perfect, Sakshi. Can you make sure the lotus is centered? And please let me know the final price so I can confirm!</p>
+</div>
+</div>
+<!-- Current Seller Message -->
+<div class="flex flex-col gap-4 max-w-full">
+<div class="flex items-start gap-3">
+<img class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSHYjBiYZFJR3MixlPQ2qysx6CjKkTwcvI8gBbFXP6ED38X57Zxka0-0xpcChp6UXjVI9i9-7WLmXAtHXhUBxOXWzv-4f4ElRmAp61F9PIwop9kaFkKHUdASfE2ku2uOPXWifkmfuDQ1Cbczh_DVoaWT1pzf444WDBcEgY_mz5UUwMH0AqddjG6B5GQKW4S79NhRDDD2cXVBXvOgGJyPWFj2RMOkOmSLa6B8oE8Y512hOwcw7h04e0E0Dbo23MZxzhCA88xefjmRM"/>
+<div class="bg-surface-container-low p-4 rounded-xl rounded-tl-none border border-outline-variant max-w-[80%]">
+<p class="text-sm leading-relaxed text-on-surface-variant">I've prepared a custom quote for you, Rahul! Ready for December 16th. 🎁</p>
+</div>
+</div>
+<!-- CUSTOM OFFER CARD -->
+<div class="ml-11 max-w-[420px] bg-ivory-base border-2 border-gold-accent rounded-offer overflow-hidden offer-shadow relative">
+<!-- Pending Badge -->
+<div class="absolute top-4 right-4 bg-[#EDD9A3] px-3 py-1 rounded-full">
+<span class="font-eyebrow-label text-[9px] text-gold-accent tracking-tighter">PENDING</span>
+</div>
+<div class="p-6 space-y-4">
+<header>
+<p class="font-eyebrow-label text-[10px] text-[#9C8E82] tracking-widest uppercase">CUSTOM OFFER FROM SAKSHI</p>
+</header>
+<hr class="border-[#EDD9A3]"/>
+<div class="space-y-3 font-body-main text-[13px] text-on-surface-variant">
+<div class="flex justify-between">
+<span class="text-outline">Product</span>
+<span class="font-medium text-primary">Personalised Resin Keychain</span>
+</div>
+<div class="flex justify-between">
+<span class="text-outline">Personalisation</span>
+<span class="font-medium text-primary">Name: Rahul · Ocean Teal · Lotus</span>
+</div>
+<div class="flex justify-between">
+<span class="text-outline">Ready by</span>
+<span class="font-medium text-primary">December 16, 2024</span>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-outline">Amount</span>
+<span class="font-price-data text-[18px] text-gold-accent font-bold">₹240</span>
+</div>
+</div>
+<hr class="border-[#EDD9A3]"/>
+<div class="flex flex-col gap-3">
+<button class="h-[48px] bg-primary-container text-white font-eyebrow-label text-sm rounded-[10px] hover:opacity-90 transition-opacity active:scale-[0.98]">
+                                    Accept &amp; Pay
+                                </button>
+<button class="h-[40px] border border-divider-tan text-[#9C8E82] font-body-main text-[13px] rounded-lg hover:bg-surface-variant transition-colors">
+                                    Decline
+                                </button>
+</div>
+<footer class="flex items-center justify-between pt-2 border-t border-[#EDD9A3]/50">
+<div class="flex items-center gap-1 text-[#9C8E82] text-[11px]">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span>Offer expires in 47:52 hrs</span>
+</div>
+<div class="flex items-center gap-1 text-[#9C8E82] text-[11px]">
+<span class="material-symbols-outlined text-[14px]">verified_user</span>
+<span>Tohfa Secure</span>
+</div>
+</footer>
+</div>
+<div class="bg-surface-variant px-6 py-2">
+<p class="text-[11px] text-[#9C8E82] text-center">🔒 Payment is secure · Tohfa protects every transaction.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Bar -->
+<div class="p-6 border-t border-outline-variant bg-surface-bright">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary" data-icon="attach_file">attach_file</span>
+<div class="flex-grow relative">
+<input class="w-full bg-warm-beige border-none rounded-full px-6 py-3 text-sm focus:ring-1 focus:ring-primary-container placeholder:text-outline/70" placeholder="Respond to Sakshi's offer above..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="send">send</span>
+</button>
+</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary" data-icon="mood">mood</span>
+</div>
+</div>
+</section>
+</main>
+<footer class="max-w-container-max mx-auto px-margin-desktop py-12 flex flex-col md:flex-row justify-between items-center gap-6 text-outline text-[11px]">
+<div class="flex items-center gap-6">
+<span class="font-eyebrow-label uppercase tracking-widest">© 2024 Tohfa Craft Collective</span>
+<div class="flex gap-4">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Artisan Protection</a>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>All communications are end-to-end encrypted</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                let ripples = document.createElement('span');
+                ripples.style.left = x + 'px';
+                ripples.style.top = y + 'px';
+                this.appendChild(ripples);
+                setTimeout(() => { ripples.remove() }, 600);
+            });
+        });
+    </script>
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#1C140C]/55 backdrop-blur-[8px]"><div class="bg-white rounded-[24px] shadow-xl max-w-[560px] w-full p-8 md:p-12 flex flex-col items-center text-center gap-6 overflow-y-auto max-h-[90vh] scrollbar-hide"><div class="w-[72px] h-[72px] rounded-full border-2 border-[#2C4A1E] flex items-center justify-center text-[#2C4A1E]"><span class="material-symbols-outlined text-4xl">check</span></div><div class="space-y-2"><h2 class="font-display-lg text-[26px] leading-tight text-[#1C1C1A]">Your order is confirmed!</h2><p class="font-body-main text-[14px] text-[#6B5E52] max-w-[360px] mx-auto">Sakshi has received your payment and will start crafting your keychain.</p><p class="font-price-data text-[12px] text-[#9C8E82]">Order #TF-20241212-4821</p></div><div class="w-full bg-[#F8F3ED] border border-[#5A7A4A] rounded-xl p-4 text-left space-y-3"><div class="space-y-2"><p class="font-eyebrow-label text-[9px] text-[#9C8E82] tracking-widest">ORDER DETAILS</p><hr class="border-[#EDD9A3]"/></div><div class="space-y-2 text-[13px]"><div class="flex justify-between"><span class="text-outline">Product</span><span class="font-medium text-primary">Personalised Resin Keychain</span></div><div class="flex justify-between"><span class="text-outline">Personalisation</span><span class="font-medium text-primary">Rahul · Ocean Teal · Lotus</span></div><div class="flex justify-between"><span class="text-outline">Seller</span><span class="font-medium text-primary">Sakshi Dubey</span></div><div class="flex justify-between"><span class="text-outline">Amount paid</span><span class="font-price-data text-gold-accent">₹240</span></div><div class="flex justify-between"><span class="text-outline">Ready by</span><span class="font-medium text-primary">Dec 16, 2024</span></div><div class="flex justify-between items-center pt-1"><span class="text-outline">Status</span><span class="bg-[#C8D9B8] text-[#2C4A1E] px-2 py-0.5 rounded-full text-[10px] font-bold">In Production</span></div></div></div><div class="w-full space-y-4"><p class="font-eyebrow-label text-[9px] text-[#9C8E82] tracking-widest">WHAT HAPPENS NEXT</p><div class="flex flex-col gap-4 text-left pl-2"><div class="flex gap-4 relative pb-4"><div class="absolute left-[7px] top-4 bottom-0 w-[1px] bg-[#2C4A1E]"></div><div class="w-4 h-4 rounded-full bg-[#2C4A1E] flex items-center justify-center flex-shrink-0 z-10"><span class="material-symbols-outlined text-[10px] text-white">check</span></div><div><p class="font-product-title text-[13px] text-primary">Payment received</p><p class="text-[12px] text-[#9C8E82]">Sakshi has been notified</p></div></div><div class="flex gap-4 relative pb-4"><div class="absolute left-[7px] top-4 bottom-0 w-[1px] bg-divider-tan"></div><div class="w-4 h-4 rounded-full bg-gold-accent flex-shrink-0 z-10"></div><div><p class="font-product-title text-[13px] text-primary">In production</p><p class="text-[12px] text-[#9C8E82]">Sakshi will start crafting your keychain</p></div></div><div class="flex gap-4"><div class="w-4 h-4 rounded-full bg-[#C8D9B8] flex-shrink-0 z-10"></div><div><p class="font-product-title text-[13px] text-primary">Dispatched &amp; delivered</p><p class="text-[12px] text-[#9C8E82]">You'll get a tracking link when shipped</p></div></div></div></div><div class="w-full space-y-4"><button class="w-full h-[52px] bg-[#2C4A1E] text-white font-eyebrow-label text-[14px] rounded-lg tracking-widest uppercase hover:opacity-90 transition-opacity">Track this order</button><div class="flex flex-col gap-3"><a class="text-[14px] text-[#5A4A8C] font-medium hover:underline" href="#">Back to Chat</a><button class="text-[12px] text-[#9C8E82] hover:text-primary transition-colors">✕ Close</button></div></div></div></div></body></html>

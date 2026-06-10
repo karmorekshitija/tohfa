@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa Customisation Chat | Artisan Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;family=Cinzel:wght@400..900&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#ebe8e4",
+                        "on-secondary-fixed": "#261900",
+                        "primary-container": "#2c4a1e",
+                        "on-tertiary-fixed-variant": "#314e23",
+                        "surface-variant": "#e5e2de",
+                        "surface-tint": "#476737",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#f0bf5e",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#17330b",
+                        "outline": "#73796d",
+                        "inverse-surface": "#31302e",
+                        "tertiary-container": "#2c4a1f",
+                        "surface-container-highest": "#e5e2de",
+                        "surface-container": "#f0edea",
+                        "secondary-fixed": "#ffdea5",
+                        "tertiary-fixed": "#c9edb3",
+                        "primary-fixed-dim": "#add197",
+                        "on-primary-fixed-variant": "#304e22",
+                        "surface-dim": "#dcdad6",
+                        "tertiary-fixed-dim": "#add199",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f3f0ec",
+                        "outline-variant": "#c3c8bb",
+                        "on-secondary-fixed-variant": "#5d4200",
+                        "on-tertiary-container": "#96b983",
+                        "on-primary-fixed": "#062100",
+                        "inverse-primary": "#add197",
+                        "on-primary-container": "#96b982",
+                        "on-error": "#ffffff",
+                        "background": "#fcf9f5",
+                        "surface-container-low": "#f6f3ef",
+                        "primary-fixed": "#c8edb1",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#062100",
+                        "on-surface-variant": "#43483e",
+                        "secondary": "#7b5800",
+                        "on-secondary-container": "#755400",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1c1c1a",
+                        "surface": "#fcf9f5",
+                        "on-background": "#1c1c1a",
+                        "primary": "#163309",
+                        "surface-bright": "#fcf9f5",
+                        "secondary-container": "#fdca68",
+                        "on-primary": "#ffffff",
+                        "artisan-gold": "#C4973A",
+                        "artisan-ivory": "#F8F3ED",
+                        "artisan-divider": "#D6CCB8",
+                        "artisan-text-light": "#9C8E82"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "product-title": ["Lora"],
+                        "display-lg": ["Playfair Display"],
+                        "price-data": ["Space Mono"],
+                        "body-main": ["DM Sans"],
+                        "headline-md": ["Playfair Display"],
+                        "eyebrow-label": ["Cinzel"],
+                        "display-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "product-title": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "price-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "eyebrow-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .dot-pulse {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #fcf9f5;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D6CCB8;
+            border-radius: 10px;
+        }
+        .sketch-watermark {
+            opacity: 0.05;
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-main text-on-surface selection:bg-secondary-container/30">
+<!-- Global TopNavBar -->
+<header class="sticky top-0 z-50 bg-white border-b border-artisan-divider h-20 flex items-center">
+<div class="max-w-container-max w-full mx-auto px-margin-desktop flex justify-between items-center">
+<!-- Brand -->
+<div class="flex items-center gap-2 cursor-pointer">
+<span class="font-product-title text-2xl tracking-tight text-primary">Tohfa.</span>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#">Home</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Category</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#">Reels</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#">Profile</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary transition-colors">shopping_bag</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional studio headshot of a young female user with a friendly expression, soft natural lighting on her face, in a clean and modern photography style. The background is a soft beige color to match the ivory and gold aesthetic of a high-end artisan craft marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzCxztotLQihYucmOeVxuicpmzTl8_oTOrCvTxlTnlWNOVLaZq6n99R-giemy7smxO2_45eH08-MHiIMiPDHNJVcRrdyVhG_QO7FiKggE_XQ3j3tO23GW_wloxW4gkTSwrSvPwGOKyyPal3thnCP2IYzxtzMnGXiJ5EewVeKMK9ELj6ujL_zn55ylr9L3190WdfjFMg-6YO5bJEs4dArnAhauvth9b-T0dLN0mXDmx3yqgMdCERXrsu_PtNRMQofLxwCweL4jO3vw"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex h-[calc(100vh-80px)] max-w-container-max mx-auto overflow-hidden">
+<!-- LEFT PANEL: Context & Profile -->
+<aside class="w-[340px] bg-artisan-ivory border-r border-artisan-divider flex flex-col overflow-y-auto custom-scrollbar relative">
+<!-- Subtle Watermark -->
+<div class="sketch-watermark top-10 -left-10 transform -rotate-12">
+<span class="material-symbols-outlined text-9xl opacity-10">brush</span>
+</div>
+<div class="p-8 z-10">
+<!-- Artisan Profile -->
+<div class="flex flex-col items-center text-center mb-10">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-artisan-gold p-1 mb-4 shadow-sm">
+<img class="w-full h-full object-cover rounded-full" data-alt="Close-up portrait of Sakshi Dubey, a master resin artisan, looking directly at the camera with a gentle, confident smile. She is in her sunlit studio, surrounded by delicate crafting tools and colorful resin pieces. The lighting is warm and golden, highlighting her expertise and artisanal character in a high-fidelity editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7W_FT1lkNTtiY0z_4u3EvltnJSKlkUrXC_xoaroKq5pg88FTG4l-ya9Wx9eUkvdliymFAlPkRUXh_uM3N5v9xaMoby_1YsWjhbmpA67G5BMXWY8ZZOzQ4oe9MzU1HP4niB65sXKL0s5v01o5L7NXMGdL1AZQcHZfNFS3t3t01pcMlBJA0kZg7K3ZBJPl4L6KAtjZ9rvHMeOgKSlPzatE5XtMjfAKgSvrkh7uAwmR53bFgB1SHowiYXE-0MGCLT11maCBkCYFr3AQ"/>
+</div>
+<h2 class="font-product-title text-xl text-primary">Sakshi Dubey</h2>
+<p class="font-eyebrow-label text-artisan-text-light uppercase tracking-widest mt-1">Verified Master Artisan</p>
+<div class="mt-4 px-4 py-1.5 bg-primary/5 rounded-full border border-primary/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">workspace_premium</span>
+<span class="font-body-main text-xs text-primary font-semibold">Gold Rated Studio</span>
+</div>
+</div>
+<!-- Service Card -->
+<div class="bg-white border border-artisan-divider rounded-xl p-4 mb-10 group cursor-pointer transition-all hover:shadow-md">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A beautiful, handcrafted personalized resin keychain containing real pressed lotus petals and gold leaf flakes, reflecting soft studio lighting. The keychain is presented on a minimalist white surface with soft shadows, highlighting its crystalline clarity and artisanal detail in a luxury product photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYc-NeUStYyNQaonKGg7Og0K1a2Ah1y_qZX47I2PIOxoj4lYs8amHyUwhFWn5JP4AlzLS3yFE0zcLdyEFr7EkVHPT9-5l-2iVJ1OdJ6ts2qAhZHGphEq5SgOKgZkX0F059UORFDSX5I5RKM5tlRmdCeNQOUYSU6ybNYAdUOg3yEsybiffipVqbbTcFwySX__Cf9emroJQL7sUyd7zpvaw8pDop0e-7ZEvDxbDEk-UlFZqCFaaRS0ef51PnTCh_BfpZhbhw6HjmQy0"/>
+</div>
+<div>
+<h3 class="font-product-title text-sm leading-tight text-on-surface">Personalised Resin Keychain</h3>
+<p class="font-price-data text-xs text-secondary mt-1">₹899 - ₹1,499</p>
+</div>
+</div>
+</div>
+<!-- Chat Context / History -->
+<div class="space-y-6">
+<div class="flex justify-between items-center border-b border-artisan-divider pb-2">
+<span class="font-eyebrow-label text-artisan-text-light">Current Status</span>
+<span class="text-xs font-semibold text-secondary px-2 py-0.5 bg-secondary/10 rounded">In Review</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-3 opacity-60">
+<span class="material-symbols-outlined text-artisan-text-light mt-0.5">history_edu</span>
+<div>
+<p class="text-xs font-medium text-on-surface">Artisan intake completed</p>
+<p class="text-[10px] text-artisan-text-light font-price-data uppercase">14:32 PM</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">pending_actions</span>
+<div>
+<p class="text-xs font-bold text-primary">Waiting for artisan quote</p>
+<p class="text-[10px] text-artisan-text-light font-price-data uppercase">Processing...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer-like CTA -->
+<div class="mt-auto p-6 border-t border-artisan-divider bg-surface-container-low/50">
+<button class="w-full py-3 bg-white border border-artisan-gold text-secondary font-medium text-sm rounded-lg hover:bg-artisan-gold/5 transition-all active:scale-[0.98]">
+                    View My Custom Orders
+                </button>
+</div>
+</aside>
+<!-- RIGHT PANEL: Chat Area -->
+<section class="flex-1 bg-white flex flex-col relative overflow-hidden">
+<!-- CHAT HEADER -->
+<header class="h-16 px-8 flex items-center justify-between border-b border-artisan-divider z-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-artisan-divider">
+<img class="w-full h-full object-cover" data-alt="Small thumbnail avatar of Sakshi Dubey." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiV-BivLImo21Ps6pF7RSq_nzdDRUzDTwcL3vhqxQIczdJnH9gVUMbVfq2st790mSefKdVR5T2TA1lJTJYQSxJQUyGw5yhuLOmTJZ-AVJmJdOZh5_egFP_EF1AxSuhvmXCy0-0Wih4roDbUHtKPX7mMuJ4iCjZt6rbe1z5M_ppPbYvQzbvi6cMv4TAuRSH1ebUflUyN4JU3Ys05E3L0u0Wk64BimGPE4srOVxVtlUD_E7cE6uVqYoN-jDWg3bbwwRGezCAz5WTcDk"/>
+</div>
+<div>
+<h4 class="font-product-title text-sm text-on-surface">Sakshi Dubey</h4>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-artisan-divider"></span>
+<span class="text-[12px] font-body-main text-artisan-text-light">Offline · Usually replies in 2–4 hrs</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">info</span>
+</button>
+</div>
+</header>
+<!-- PINNED BANNER -->
+<div class="bg-[#EDD9A3] border-b border-artisan-gold px-8 py-2.5 flex items-center justify-between z-10 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary animate-pulse">hourglass_top</span>
+<p class="text-xs font-medium text-on-secondary-fixed-variant">Waiting for Sakshi to review your request.</p>
+</div>
+<span class="text-[10px] font-price-data text-on-secondary-fixed-variant/70 uppercase">Sent 14 min ago</span>
+</div>
+<!-- CONVERSATION AREA -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8 flex flex-col">
+<!-- Bot Message -->
+<div class="flex items-start gap-4 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 flex-shrink-0">
+<span class="material-symbols-outlined text-primary text-sm">smart_toy</span>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container-low p-4 rounded-2xl rounded-tl-none border border-artisan-divider">
+<p class="text-sm leading-relaxed text-on-surface">Great choice! I've shared your requirements with Sakshi. Here's a summary of what you've requested:</p>
+</div>
+<!-- Request Summary Card -->
+<div class="bg-artisan-ivory border border-artisan-divider rounded-xl p-5 shadow-sm overflow-hidden relative group">
+<div class="sketch-watermark -bottom-4 -right-4 transform rotate-45">
+<span class="material-symbols-outlined text-5xl text-artisan-gold/20">auto_fix_high</span>
+</div>
+<h5 class="font-eyebrow-label text-[10px] text-artisan-text-light uppercase tracking-widest mb-3">Customisation Request</h5>
+<ul class="space-y-3 text-sm">
+<li class="flex justify-between border-b border-dotted border-artisan-divider pb-1">
+<span class="text-on-surface-variant">Theme</span>
+<span class="font-semibold text-primary">Eternal Lotus</span>
+</li>
+<li class="flex justify-between border-b border-dotted border-artisan-divider pb-1">
+<span class="text-on-surface-variant">Inclusion</span>
+<span class="font-semibold text-primary">Dried Petals, Gold Foil</span>
+</li>
+<li class="flex justify-between">
+<span class="text-on-surface-variant">Initial</span>
+<span class="font-semibold text-primary font-product-title">"S"</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Buyer Message -->
+<div class="flex flex-col items-end gap-2 ml-auto max-w-[80%]">
+<div class="bg-white border border-[#C8D9B8] p-4 rounded-2xl rounded-tr-none shadow-sm">
+<p class="text-sm leading-relaxed text-on-surface">Also, could you add a small lotus flower on the back? 😊</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-price-data text-artisan-text-light uppercase">2:46 PM</span>
+<span class="material-symbols-outlined text-xs text-artisan-divider">check</span>
+</div>
+</div>
+<!-- WAITING BLOCK -->
+<div class="py-10 flex flex-col items-center gap-4">
+<div class="w-full flex items-center justify-center gap-6">
+<div class="h-[1px] bg-artisan-gold/20 flex-1"></div>
+<div class="flex items-center gap-1.5 px-4">
+<div class="w-1.5 h-1.5 rounded-full bg-artisan-gold dot-pulse"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-artisan-gold dot-pulse [animation-delay:0.2s]"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-artisan-gold dot-pulse [animation-delay:0.4s]"></div>
+</div>
+<div class="h-[1px] bg-artisan-gold/20 flex-1"></div>
+</div>
+<p class="font-product-title text-[13px] italic text-artisan-text-light">Sakshi will respond with a quote soon</p>
+</div>
+</div>
+<!-- INPUT BAR -->
+<div class="p-8 border-t border-artisan-divider bg-white">
+<div class="max-w-3xl mx-auto space-y-4">
+<!-- Chips -->
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-artisan-ivory border border-artisan-divider rounded-full flex items-center gap-2 hover:bg-white transition-all group">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">add_a_photo</span>
+<span class="text-xs font-semibold text-on-surface-variant">Add photo</span>
+</button>
+<button class="px-4 py-2 bg-artisan-ivory border border-artisan-divider rounded-full flex items-center gap-2 hover:bg-white transition-all group">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">event</span>
+<span class="text-xs font-semibold text-on-surface-variant">Add delivery date</span>
+</button>
+</div>
+<!-- Input Box -->
+<div class="relative group">
+<textarea class="w-full pl-6 pr-16 py-4 bg-artisan-ivory border-0 border-b border-artisan-divider focus:ring-0 focus:border-primary text-sm transition-all resize-none placeholder:text-artisan-text-light/60 font-body-main" placeholder="Add more details for Sakshi…" rows="1"></textarea>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform disabled:opacity-50">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+<p class="text-[10px] text-center text-artisan-text-light font-price-data tracking-tight uppercase">Crafted with patience. Tohfa Artisan Studio.</p>
+</div>
+</div>
+</section>
+</main>
+<script>
+        // Auto-expand textarea
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Simple enter-to-send simulation
+        textarea.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.value = '';
+                this.style.height = 'auto';
+            }
+        });
+    </script>
+</body></html>

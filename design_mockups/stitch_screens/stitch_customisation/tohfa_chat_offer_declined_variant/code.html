@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa | Messages - Chat with Aanya</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Lora:ital,wght@0,400;0,500;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2c4a1e",
+                        "on-background": "#1c1c1a",
+                        "primary": "#163309",
+                        "outline-variant": "#c3c8bb",
+                        "surface-container": "#f0edea",
+                        "secondary-fixed-dim": "#f0bf5e",
+                        "on-surface-variant": "#43483e",
+                        "tertiary": "#17330b",
+                        "surface": "#fcf9f5",
+                        "tertiary-container": "#2c4a1f",
+                        "surface-tint": "#476737",
+                        "surface-dim": "#dcdad6",
+                        "on-primary-container": "#96b982",
+                        "on-secondary-container": "#755400",
+                        "tertiary-fixed-dim": "#add199",
+                        "surface-variant": "#e5e2de",
+                        "inverse-primary": "#add197",
+                        "tertiary-fixed": "#c9edb3",
+                        "on-secondary-fixed-variant": "#5d4200",
+                        "on-primary-fixed": "#062100",
+                        "secondary-container": "#fdca68",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#304e22",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#261900",
+                        "primary-fixed-dim": "#add197",
+                        "on-tertiary-fixed": "#062100",
+                        "surface-bright": "#fcf9f5",
+                        "on-tertiary-container": "#96b983",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#31302e",
+                        "primary-fixed": "#c8edb1",
+                        "on-secondary": "#ffffff",
+                        "background": "#fcf9f5",
+                        "inverse-on-surface": "#f3f0ec",
+                        "on-surface": "#1c1c1a",
+                        "secondary-fixed": "#ffdea5",
+                        "on-tertiary-fixed-variant": "#314e23",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#ebe8e4",
+                        "surface-container-highest": "#e5e2de",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f6f3ef",
+                        "secondary": "#7b5800",
+                        "outline": "#73796d",
+                        "brand-muted": "#9C8E82",
+                        "brand-border": "#C8D9B8",
+                        "brand-divider": "#D6CCB8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "product-title": ["Lora"],
+                        "display-lg": ["Playfair Display"],
+                        "eyebrow-label": ["Cinzel"],
+                        "headline-md": ["Playfair Display"],
+                        "body-main": ["DM Sans"],
+                        "price-data": ["Space Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #fcf9f5;
+            color: #1c1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .chat-scroll-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scroll-area::-webkit-scrollbar-thumb {
+            background: #D6CCB8;
+            border-radius: 10px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Subtle sketch background watermark effect */
+        .sketch-watermark {
+            opacity: 0.03;
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="font-body-main text-body-main min-h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="bg-surface border-b border-outline-variant z-50 h-20 flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-12">
+<h1 class="font-display-lg text-display-lg font-bold text-primary">Tohfa</h1>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="#">Explore</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="#">Stories</a>
+<a class="text-primary font-bold border-b-2 border-secondary h-full flex items-center" href="#">Messages</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">account_circle</button>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden w-full max-w-container-max mx-auto px-margin-desktop bg-surface relative">
+<!-- Sketch Watermark Background -->
+<div class="sketch-watermark top-20 right-10">
+<svg fill="none" height="300" stroke="currentColor" viewbox="0 0 100 100" width="300">
+<path d="M50 10 Q70 10 70 30 T50 50 T30 70 T50 90" stroke-width="0.5"></path>
+<circle cx="50" cy="50" r="40" stroke-width="0.2"></circle>
+</svg>
+</div>
+<!-- Left Panel: Artisan Profile (SideNavBar Context) -->
+<aside class="w-80 flex flex-col bg-surface-container-low border-r border-outline-variant py-gutter space-y-8 z-10 shrink-0">
+<div class="px-6 flex flex-col items-center text-center">
+<div class="w-32 h-32 rounded-full overflow-hidden mb-4 ring-1 ring-outline-variant/30 ring-offset-4 ring-offset-surface-container-low">
+<img alt="Indian Artisan Portrait" class="w-full h-full object-cover" data-alt="A dignified close-up portrait of a female Indian artisan in her late twenties with expressive eyes and a warm smile. She is wearing traditional hand-woven textiles in earthy sage and ochre tones. The lighting is soft and natural, coming from a side window, highlighting the fine textures of her garments and the subtle glow of her skin against a blurred workshop background of pottery wheels." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfgpyNWQefSKHB8L7FqY13-DyVDHShSvH9jkRiDiOX27qUmpdMtZN13BOozNOemIAPCikUQ0GS-8Te8HuuQMC3XjMJoNMXvoa0MzNajqYpkhLf16UF1QrNy_dK7PvaKHhpmlPGbu8dY_33hHg-MUjA5N6ifxfx1201IsK9bWYQwbkCImjtXY5VAHU33EYuL_bUmyPjD4YoO4cQvurjP2VxDRISQYUVvHBmRUhjjm6g3XZPmDvYCUjK9RHxZqzHsKlcYjFHGhUkZbE"/>
+</div>
+<h2 class="font-product-title text-product-title text-primary">Aanya Sharma</h2>
+<p class="text-sm text-on-surface-variant mb-4 italic">Pottery &amp; Resin Artist</p>
+<button class="px-6 py-2 border border-secondary text-secondary rounded-full font-eyebrow-label text-[11px] uppercase tracking-widest hover:bg-secondary/5 transition-all">
+                    View Portfolio
+                </button>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">person</span>
+<span class="font-eyebrow-label text-eyebrow-label">Artisan Profile</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-eyebrow-label text-eyebrow-label">Product Details</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">receipt_long</span>
+<span class="font-eyebrow-label text-eyebrow-label">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">edit_note</span>
+<span class="font-eyebrow-label text-eyebrow-label">Customizations</span>
+</a>
+</nav>
+<div class="px-4 border-t border-outline-variant pt-6 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all text-xs" href="#">
+<span class="material-symbols-outlined text-lg">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all text-xs" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span>Settings</span>
+</a>
+</div>
+</aside>
+<!-- Right Panel: Chat Area -->
+<section class="flex-1 flex flex-col bg-white relative z-10">
+<!-- Chat Header (Subtle) -->
+<div class="h-16 px-8 flex items-center border-b border-brand-divider justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="font-medium text-sm text-on-surface">Sakshi (Buyer)</span>
+</div>
+<button class="material-symbols-outlined text-outline">more_vert</button>
+</div>
+<!-- Messages Stream -->
+<div class="flex-1 overflow-y-auto chat-scroll-area p-8 flex flex-col gap-6">
+<!-- History Placeholder (Scrolled) -->
+<div class="text-center">
+<span class="font-eyebrow-label text-[10px] text-outline uppercase tracking-[0.2em] bg-surface-container-low px-3 py-1 rounded-full">Dec 16, 2024</span>
+</div>
+<!-- OFFER CARD: DECLINED -->
+<div class="flex justify-center my-4">
+<div class="w-full max-w-sm bg-[#F8F3ED] border border-brand-border rounded-xl p-5 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-[#F2EBE0] px-3 py-1 rounded-full">
+<span class="font-body-main text-[11px] font-bold text-brand-muted tracking-tight">DECLINED</span>
+</div>
+<span class="font-price-data text-[12px] text-brand-muted italic">Draft #320</span>
+</div>
+<div class="space-y-1 mb-6">
+<h3 class="font-product-title text-base text-brand-muted">Personalised Resin Keychain</h3>
+<div class="flex items-center justify-between">
+<span class="font-price-data text-lg text-brand-muted">₹240</span>
+<span class="text-xs text-brand-muted/70">December 16, 2024</span>
+</div>
+</div>
+<button class="w-full py-3 bg-[#F2EBE0] border border-brand-border text-brand-muted rounded-lg font-body-main text-sm font-medium cursor-not-allowed flex items-center justify-center gap-2" disabled="">
+<span class="material-symbols-outlined text-sm">block</span>
+                            Offer declined
+                        </button>
+</div>
+</div>
+<!-- Buyer Bubble -->
+<div class="flex justify-end ml-12">
+<div class="bg-primary-container text-on-primary-container rounded-2xl rounded-tr-none px-5 py-3 shadow-md max-w-[80%]">
+<p class="font-body-main text-[15px]">I'd like to discuss the price a bit more 🙏</p>
+<span class="block text-[10px] text-on-primary-container/60 mt-1 text-right">11:42 AM</span>
+</div>
+</div>
+<!-- Bot/System Bubble -->
+<div class="flex justify-start mr-12">
+<div class="bg-surface-container-low border border-brand-divider text-on-surface-variant rounded-2xl rounded-tl-none px-5 py-3 max-w-[80%]">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-eyebrow-label text-[10px] text-primary tracking-widest">TOHFA ASSIST</span>
+</div>
+<p class="font-body-main text-[15px]">No problem! You can continue chatting with Sakshi to discuss a new offer.</p>
+<span class="block text-[10px] text-outline mt-1">Just now</span>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-6 border-t border-brand-divider bg-surface-bright">
+<div class="max-w-4xl mx-auto flex items-center gap-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">add_circle</button>
+<div class="flex-1 relative">
+<input class="w-full bg-white border-b border-brand-divider focus:border-primary focus:ring-0 transition-all py-3 px-1 font-body-main text-on-surface placeholder:text-outline placeholder:font-light italic" placeholder="Message Sakshi..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">send</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Decorative Border (Low key) -->
+<footer class="h-1 bg-gradient-to-r from-transparent via-brand-border/30 to-transparent"></footer>
+<script>
+        // Simple micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                if (!button.disabled) {
+                    button.classList.add('scale-95');
+                }
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Focus logic for input
+        const chatInput = document.querySelector('input');
+        const inputContainer = chatInput.parentElement;
+        chatInput.addEventListener('focus', () => {
+            inputContainer.classList.add('translate-y-[-2px]');
+        });
+        chatInput.addEventListener('blur', () => {
+            inputContainer.classList.remove('translate-y-[-2px]');
+        });
+    </script>
+</body></html>

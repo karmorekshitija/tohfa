@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa | Live Archive Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=Space+Mono&amp;family=Cinzel:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#add199",
+                        "on-primary-container": "#96b982",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "background": "#fcf9f5",
+                        "primary": "#163309",
+                        "on-secondary-fixed-variant": "#5d4200",
+                        "inverse-on-surface": "#f3f0ec",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#c8edb1",
+                        "secondary-fixed-dim": "#f0bf5e",
+                        "primary-fixed-dim": "#add197",
+                        "on-tertiary-container": "#96b983",
+                        "surface-container-low": "#f6f3ef",
+                        "outline-variant": "#c3c8bb",
+                        "surface-variant": "#e5e2de",
+                        "inverse-primary": "#add197",
+                        "tertiary-fixed": "#c9edb3",
+                        "surface-container-high": "#ebe8e4",
+                        "primary-container": "#2c4a1e",
+                        "surface-container": "#f0edea",
+                        "on-primary-fixed": "#062100",
+                        "surface-bright": "#fcf9f5",
+                        "tertiary": "#17330b",
+                        "on-secondary-container": "#755400",
+                        "on-tertiary-fixed-variant": "#314e23",
+                        "secondary": "#7b5800",
+                        "on-tertiary-fixed": "#062100",
+                        "on-error-container": "#93000a",
+                        "surface": "#fcf9f5",
+                        "tertiary-container": "#2c4a1f",
+                        "on-secondary-fixed": "#261900",
+                        "surface-container-highest": "#e5e2de",
+                        "secondary-container": "#fdca68",
+                        "on-background": "#1c1c1a",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#31302e",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1c1c1a",
+                        "surface-tint": "#476737",
+                        "surface-dim": "#dcdad6",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#73796d",
+                        "on-surface-variant": "#43483e",
+                        "secondary-fixed": "#ffdea5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#304e22"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "price-data": ["Space Mono"],
+                        "eyebrow-label": ["Cinzel"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "body-main": ["DM Sans"],
+                        "product-title": ["Lora"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .chat-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scrollbar::-webkit-scrollbar-thumb {
+            background: #D6CCB8;
+            border-radius: 10px;
+        }
+        .hand-drawn-bg {
+            background-image: radial-gradient(circle at 2px 2px, #D6CCB8 1px, transparent 0);
+            background-size: 40px 40px;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-main text-on-surface overflow-hidden">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 z-50 w-full bg-surface dark:bg-inverse-surface border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-display-lg-mobile md:text-headline-md text-primary dark:text-primary-fixed tracking-tight italic" href="#">Tohfa·</a>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-eyebrow-label text-eyebrow-label text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">HOME</a>
+<a class="font-eyebrow-label text-eyebrow-label text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">CATEGORY</a>
+<a class="font-eyebrow-label text-eyebrow-label text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors" href="#">REELS</a>
+<a class="font-eyebrow-label text-eyebrow-label text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1" href="#">PROFILE</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">shopping_bag</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" data-alt="A close-up portrait of a professional man in a minimalist gallery setting, looking directly into the camera with a friendly expression. The lighting is warm and cinematic, consistent with the Tohfa Living Archive brand aesthetic of warmth and prestige. He is wearing a simple linen shirt in an earthy tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR1uNxnu66oE_BbW9FeLFI_jVnmCm-vfxzG2HNi6xHWUddA5SiTldHlmPpfdEKl7xjS4TCPr5f46efeXIViPgsWuAof-pRA_OGRP61mabe4lTubGq4uu8HiZXVLnd0br-veRGr2Cua14ExjZFxysbuMUQG6O6iD5mUQjcI-YgFrHtv6hDdJWSmZHSgTNeXEjHRYDTS6OuVr468AewqD5VY1jWt0qTzpx4ZkTkbMSaHpMDLIHuExE4WabU2rut3WfJgtJw8BRKIZfU"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="flex h-screen pt-[73px]">
+<!-- Left Panel: Context & Navigation -->
+<aside class="w-[340px] bg-surface-container-low border-r border-outline-variant flex flex-col overflow-y-auto">
+<!-- Seller Card -->
+<div class="p-6">
+<div class="bg-white p-4 rounded-xl border border-outline-variant shadow-sm transition-all hover:border-secondary">
+<div class="flex items-center gap-4">
+<img alt="Sakshi Dubey" class="w-16 h-16 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLsTx1ddbQEmkgT9Fw44ECiZkeHe1Hri8KaOS1ySpU046ikJACVGKO2TOAkU0GRJKc2pKrZXdGb6ycVYGk6L4hhLaDHI0jeHZZfONUyi89F3kQT05Bw9vmUH_CsM0xY362P8EaZD_6N-WrX9ky7sfqC-q0kmT6cntyJcRplzKZ5GDZe8gb6glXasSaJ0XPIWcFoMEV8zCayetGH9AueKX771Ei13fQMX9OUqyZl2Zyb3Byjf_0QrZFrCiEk"/>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-product-title text-product-title text-on-surface">Sakshi Dubey</h3>
+<span class="bg-on-primary-container/10 text-primary-container px-2 py-0.5 rounded text-[10px] font-eyebrow-label tracking-wider">SELLER</span>
+</div>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> Udaipur, Rajasthan
+                            </p>
+<p class="text-secondary font-price-data text-price-data mt-1">4.8 ★ <span class="text-on-surface-variant text-xs">(124 reviews)</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Service Card -->
+<div class="px-6 pb-6 border-b border-outline-variant">
+<div class="bg-white rounded-xl border border-outline-variant overflow-hidden">
+<img alt="Keychain Service" class="w-full h-40 object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLsZAoWkWLxhv9zwiXkeAzfJMsLec03JLNY-TLK6_A0Rt8NfEcE2rxmBfKGSEmH6Te2UOU5DyEajSl1ca07SCo41NRLEsdsaC7cohq3LT1kvRhHSpp93N3pwQBju106hPH4nz7tNc0-m8tVebRSsfsDk0Z1RGRT2wztEa5l0j_KvXxEFCiz7Dpkd-H1bflcc3IXxqt-rVof4jkppZK1QBHA9U9a2u11tWtpyME8-hB7tnWWCZgCJzODub3g"/>
+<div class="p-4">
+<h4 class="font-product-title text-on-surface leading-tight">Personalised Resin Keychain</h4>
+<div class="flex justify-between items-end mt-2">
+<span class="font-price-data text-primary">₹180 onwards</span>
+<span class="text-xs text-on-surface-variant italic">Ready in 3–5 days</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Conversation List -->
+<div class="flex-1 overflow-y-auto">
+<div class="px-6 py-4">
+<h5 class="font-eyebrow-label text-eyebrow-label text-on-surface-variant mb-4">YOUR CONVERSATIONS</h5>
+<div class="space-y-1">
+<!-- Active Item -->
+<div class="flex items-center gap-3 p-3 bg-white border-l-4 border-primary rounded-r-lg shadow-sm">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-display-lg italic text-primary">S</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-bold text-sm truncate">Sakshi Dubey</span>
+<span class="text-[10px] text-on-surface-variant">2m ago</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate">What name or text should appear...</p>
+</div>
+</div>
+<!-- Inactive Item -->
+<div class="flex items-center gap-3 p-3 hover:bg-surface-container transition-colors rounded-lg cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-display-lg italic text-on-surface-variant">K</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-medium text-sm truncate">Karthik Iyer</span>
+<span class="text-[10px] text-on-surface-variant">1d ago</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate">The pottery set has been shipped!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Panel: Chat Area -->
+<section class="flex-1 flex flex-col bg-white relative">
+<div class="absolute inset-0 hand-drawn-bg pointer-events-none"></div>
+<!-- Chat Top Bar -->
+<header class="flex items-center justify-between px-8 py-4 border-b border-outline-variant bg-white/80 backdrop-blur-sm z-10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Sakshi" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLsTx1ddbQEmkgT9Fw44ECiZkeHe1Hri8KaOS1ySpU046ikJACVGKO2TOAkU0GRJKc2pKrZXdGb6ycVYGk6L4hhLaDHI0jeHZZfONUyi89F3kQT05Bw9vmUH_CsM0xY362P8EaZD_6N-WrX9ky7sfqC-q0kmT6cntyJcRplzKZ5GDZe8gb6glXasSaJ0XPIWcFoMEV8zCayetGH9AueKX771Ei13fQMX9OUqyZl2Zyb3Byjf_0QrZFrCiEk"/>
+<div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div>
+<h2 class="font-product-title font-bold leading-none">Sakshi Dubey</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-[10px] font-eyebrow-label text-green-700">ONLINE</span>
+<span class="text-xs text-on-surface-variant">• replies in 2–4 hrs</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">call</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">info</span>
+</button>
+</div>
+</header>
+<!-- Pinned Intake Banner -->
+<div class="px-8 py-3 bg-surface-container-low border-b border-outline-variant flex items-center justify-between z-10">
+<div class="flex items-center gap-3">
+<span class="text-primary-container animate-pulse">✦</span>
+<p class="text-xs font-medium text-on-primary-fixed-variant">Tohfa Assistant is collecting your details for customization...</p>
+</div>
+<button class="text-xs font-eyebrow-label text-primary hover:underline">VIEW ORDER SUMMARY</button>
+</div>
+<!-- Chat Scroll Area -->
+<div class="flex-1 overflow-y-auto px-8 py-6 chat-scrollbar space-y-8">
+<!-- Bot Greeting -->
+<div class="flex gap-4 items-start max-w-2xl">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-white font-display-lg text-xs border border-outline-variant">T</div>
+<div class="space-y-2">
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none shadow-sm">
+<p class="text-sm leading-relaxed">Hi! 🌿 Let's help you create something special with Sakshi. I'll collect a few details to get your Personalised Resin Keychain started.</p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none shadow-sm">
+<p class="text-sm leading-relaxed">What name or text should appear on your keychain?</p>
+</div>
+<span class="text-[10px] text-on-surface-variant font-price-data uppercase tracking-widest">Assistant • 10:32 AM</span>
+</div>
+</div>
+<!-- User Message Placeholder -->
+<div class="flex gap-4 items-start justify-end">
+<div class="space-y-2 max-w-lg text-right">
+<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none shadow-md">
+<p class="text-sm">I'd like it to say "Aanya" in a script font if possible.</p>
+</div>
+<span class="text-[10px] text-on-surface-variant font-price-data uppercase tracking-widest">You • 10:33 AM</span>
+</div>
+</div>
+<!-- Bot Follow-up -->
+<div class="flex gap-4 items-start max-w-2xl">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-white font-display-lg text-xs">T</div>
+<div class="space-y-2">
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-2xl rounded-tl-none shadow-sm">
+<p class="text-sm leading-relaxed">Beautiful choice. ✨ Would you like to add a dried flower or gold flakes to the resin base? You can see some examples in Sakshi's gallery.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Footer -->
+<footer class="p-6 bg-white border-t border-outline-variant z-20">
+<div class="max-w-4xl mx-auto">
+<!-- Suggestion Chips -->
+<div class="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-white text-xs font-medium hover:border-primary hover:text-primary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">photo_camera</span> Add photo
+                        </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-white text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                            Skip this
+                        </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-white text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                            Show me flower options
+                        </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-white text-xs font-medium hover:border-primary hover:text-primary transition-all">
+                            What is the size?
+                        </button>
+</div>
+<!-- Input Area -->
+<div class="flex items-center gap-3">
+<div class="flex-1 relative">
+<input class="w-full bg-surface-container-low border-b-2 border-x-0 border-t-0 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 text-sm placeholder:text-on-surface-variant/50 transition-all" placeholder="Type your message..." type="text"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</button>
+</div>
+</div>
+<button class="w-12 h-12 bg-primary-container text-white rounded-full flex items-center justify-center shadow-lg hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+<p class="text-[10px] text-center mt-4 text-on-surface-variant/60 font-eyebrow-label tracking-widest">END-TO-END ENCRYPTED CONVERSATION</p>
+</div>
+</footer>
+</section>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple scroll to bottom on load
+        window.onload = function() {
+            const chatContainer = document.querySelector('.chat-scrollbar');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+
+        // Input Focus Effect
+        const chatInput = document.querySelector('input');
+        const sendBtn = document.querySelector('.bg-primary-container');
+        
+        chatInput.addEventListener('focus', () => {
+            chatInput.parentElement.parentElement.classList.add('scale-[1.01]');
+        });
+        
+        chatInput.addEventListener('blur', () => {
+            chatInput.parentElement.parentElement.classList.remove('scale-[1.01]');
+        });
+    </script>
+</body></html>

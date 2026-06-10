@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tohfa | Artisan Chat - Sakshi Dubey</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=Playfair+Display:wght@600;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2c4a1e",
+                        "on-secondary-fixed-variant": "#5d4200",
+                        "inverse-surface": "#31302e",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#96b983",
+                        "on-surface": "#1c1c1a",
+                        "secondary-fixed": "#ffdea5",
+                        "on-secondary-fixed": "#261900",
+                        "surface-container": "#f0edea",
+                        "on-background": "#1c1c1a",
+                        "inverse-on-surface": "#f3f0ec",
+                        "on-tertiary-fixed": "#062100",
+                        "surface-dim": "#dcdad6",
+                        "outline-variant": "#c3c8bb",
+                        "on-primary-container": "#96b982",
+                        "secondary-fixed-dim": "#f0bf5e",
+                        "tertiary-fixed": "#c9edb3",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#43483e",
+                        "outline": "#73796d",
+                        "tertiary": "#17330b",
+                        "on-secondary-container": "#755400",
+                        "surface-container-low": "#f6f3ef",
+                        "primary-fixed-dim": "#add197",
+                        "on-tertiary-fixed-variant": "#314e23",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fcf9f5",
+                        "surface-tint": "#476737",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary": "#7b5800",
+                        "secondary-container": "#fdca68",
+                        "surface-variant": "#e5e2de",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#add197",
+                        "surface-bright": "#fcf9f5",
+                        "primary-fixed": "#c8edb1",
+                        "surface": "#fcf9f5",
+                        "tertiary-container": "#2c4a1f",
+                        "primary": "#163309",
+                        "on-primary-fixed-variant": "#304e22",
+                        "on-primary-fixed": "#062100",
+                        "surface-container-highest": "#e5e2de",
+                        "surface-container-high": "#ebe8e4",
+                        "tertiary-fixed-dim": "#add199"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "product-title": ["Lora"],
+                        "body-main": ["DM Sans"],
+                        "price-data": ["Space Mono"],
+                        "eyebrow-label": ["Cinzel"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "product-title": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "price-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "eyebrow-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        @keyframes pulse-gold {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .gold-pulse {
+            animation: pulse-gold 2s infinite ease-in-out;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #fcf9f5;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6ccb8;
+            border-radius: 10px;
+        }
+        .editorial-shadow {
+            box-shadow: 0 4px 20px -4px rgba(44, 74, 30, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-main antialiased h-screen overflow-hidden">
+<!-- Top Navigation Bar (Shared Component - Shell) -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 left-0 right-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+<h1 class="font-display-lg text-[24px] text-primary tracking-tight">Tohfa</h1>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-eyebrow-label text-eyebrow-label hover:text-primary transition-colors duration-300 border-b-2 border-primary pb-1" href="#">The Archive</a>
+<a class="text-on-surface-variant font-eyebrow-label text-eyebrow-label hover:text-primary transition-colors duration-300" href="#">Artisans</a>
+<a class="text-on-surface-variant font-eyebrow-label text-eyebrow-label hover:text-primary transition-colors duration-300" href="#">Customization</a>
+<a class="text-on-surface-variant font-eyebrow-label text-eyebrow-label hover:text-primary transition-colors duration-300" href="#">Collection</a>
+</nav>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">shopping_bag</button>
+<button class="material-symbols-outlined text-primary font-bold transition-colors">person</button>
+</div>
+</div>
+</header>
+<main class="pt-[72px] flex h-full max-w-[1280px] mx-auto bg-white border-x border-outline-variant">
+<!-- LEFT PANEL: Seller Context (340px) -->
+<aside class="w-[340px] bg-surface-container-low border-r border-outline-variant flex flex-col p-8 overflow-y-auto">
+<div class="flex flex-col items-center text-center mb-10">
+<div class="w-32 h-32 rounded-full border-2 border-outline-variant p-1 mb-6 relative">
+<img alt="Sakshi Dubey" class="w-full h-full object-cover rounded-full" data-alt="A professional and warm studio portrait of a female Indian artisan named Sakshi Dubey. She is wearing a simple yet elegant linen saree in earthy tones, and she has a gentle, inviting smile. The background is a soft-focus artisanal studio with shelves containing ceramic jars and botanical samples, conveying a mood of prestige, timelessness, and high-end Indian craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnfkp001WiQS806ydHFtigDUWocNGfE5ibRphHNSSQKZJ2QL3RjUn3cO0R0cTICEQBwLu5C6jo8XW3B1YihbxeEVfyGT2MwBNUmLSSl6FFOTUnekscMc3XHBjxW30qld2c6fW-feZHD5LGu-D7twya6kO5kgl1QVkS0fdMP2c_yDNZ4pwBt5pOcIynoGUQ74ILya0XkJG5H2bJnhYL7f0-hKtawoST_OgxCOjzWd0aVHLZUJfKMToQBDyyVa7QL7VOgmp9yeuxN64"/>
+<div class="absolute bottom-2 right-2 w-5 h-5 bg-green-500 border-4 border-surface-container-low rounded-full"></div>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-1">Sakshi Dubey</h2>
+<span class="font-eyebrow-label text-[10px] text-on-surface-variant tracking-[0.2em]">MASTER RESIN ARTISAN</span>
+</div>
+<div class="space-y-8">
+<div>
+<h3 class="font-eyebrow-label text-eyebrow-label text-primary mb-3">CURRENT INQUIRY</h3>
+<div class="bg-white border border-outline-variant p-4 rounded-xl flex gap-4">
+<img alt="Keychain Service" class="w-16 h-16 object-cover rounded-lg border border-outline-variant" data-alt="A close-up, high-fidelity photograph of a handcrafted resin keychain featuring delicate white pressed flowers and real gold flakes suspended in clear, glass-like resin. The keychain is presented on a warm beige linen cloth background with soft, editorial lighting. The aesthetic is sophisticated and artisanal, emphasizing the fine details of the floral arrangement and the shimmer of the gold." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx2m61gcIM-GPEsU_2qPtp8UzZ6y63OBJyBcEVfwEH1IpGHClT9a2_a5zgBe667kTiDIK51Ecu0TRPq_fg2db8hgKVtAzqFnin0Jt9Bg-H41y8gDAwwQqLTccvOSuK5EvBiIOG2F8UcD_4tOFiX14wLzZQXnxNWcEmnVOze4sEdnTmhXxW1pkw3hcvYj7_PUEVBx1tVbKJdTYbbEQamoMyLDNYQ8Ub1M-lTXVRQbS9rrMO-ERWU7EnYvSe4vjnTtf-llNMrqoyfbY"/>
+<div class="flex flex-col justify-center">
+<p class="font-product-title text-[14px] leading-tight text-primary">Personalised Resin Keychain</p>
+<p class="font-price-data text-price-data text-secondary mt-1">From ₹1,200</p>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-eyebrow-label text-eyebrow-label text-primary mb-3">STUDIO PHILOSOPHY</h3>
+<p class="font-body-main text-sm text-on-surface-variant italic leading-relaxed">
+                        "Preserving memories within crystal clear resin. Each piece is a hand-poured archive of nature's fleeting beauty, designed to last a lifetime."
+                    </p>
+</div>
+<div class="pt-8 border-t border-outline-variant">
+<div class="flex items-center gap-3 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-main text-sm">Jaipur, Rajasthan</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-body-main text-sm">Certified Master Crafter</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- RIGHT PANEL: Chat Area -->
+<section class="flex-1 flex flex-col relative bg-white h-full">
+<!-- CHAT TOP BAR -->
+<header class="h-[72px] px-8 flex items-center justify-between border-b border-outline-variant bg-white z-10">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<p class="font-product-title text-on-surface">Sakshi Dubey</p>
+<span class="text-[12px] text-on-surface-variant font-body-main ml-1 opacity-70">Online</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">info</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_vert</button>
+</div>
+</header>
+<!-- PINNED BANNER -->
+<div class="bg-surface-container-low px-8 py-3 flex items-center gap-3 border-b border-outline-variant">
+<div class="w-2 h-2 rounded-full bg-secondary gold-pulse"></div>
+<p class="font-body-main text-[13px] text-on-surface-variant">
+<span class="font-bold">✦ Request sent</span> · Waiting for Sakshi to review
+                </p>
+</div>
+<!-- CHAT CONTENT -->
+<div class="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar pb-32">
+<!-- History Scroll Indication -->
+<div class="flex justify-center mb-8">
+<span class="bg-surface-container text-on-surface-variant px-4 py-1 rounded-full text-[11px] font-eyebrow-label uppercase tracking-widest">Tuesday, Dec 3</span>
+</div>
+<!-- Earlier Messages -->
+<div class="flex gap-4 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container text-[12px] font-bold">T</div>
+<div class="bg-surface-container-low p-4 rounded-2xl rounded-tl-none border border-outline-variant">
+<p class="font-body-main text-sm">Namaste Rahul! I am the Tohfa Studio Assistant. To help Sakshi understand your vision for the keychain, could you share a photo of what you're thinking of?</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none max-w-[80%]">
+<p class="font-body-main text-sm">Here is a photo of the flower I'd like to use.</p>
+<div class="mt-3 rounded-lg overflow-hidden border border-white/20">
+<img alt="Uploaded Reference" class="w-48 h-48 object-cover" data-alt="A delicate, high-resolution photo of a single dried jasmine flower on a piece of parchment paper. The lighting is soft and natural, emphasizing the organic texture of the petals. The image serves as a reference for a custom resin piece, fitting the 'Living Archive' aesthetic with its scholarly yet warm and artistic presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0X5TRGxHQPV3CsnmO94POQy49oeu2qwmjJdc6dqkLtsCF_fq2NiwBE8dqsmm8KkQNnt-GHqrymvQB5OLTXRZP-i7TsttTkauynZWIYmAb3o-7-kBPi49r1bD-r7eiKh6nq_XfgEl5EZh5-lTBJfxzeWi_tYfe7jUY2bmd-1GLKYqt4xvEU74g5TtAqjGQZbvOJDWUTTFoxKTDNumOZ_6FxwTi74xeiMiOiWYvJJNXPziNv-xTx4jqU21Iyiy78Rzn6j2Zmod9C28"/>
+</div>
+</div>
+<span class="font-price-data text-[10px] text-on-surface-variant opacity-60 px-2">10:42 AM · Seen</span>
+</div>
+<div class="flex gap-4 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container text-[12px] font-bold">T</div>
+<div class="bg-surface-container-low p-4 rounded-2xl rounded-tl-none border border-outline-variant">
+<p class="font-body-main text-sm">Beautiful choice. What background color would you like for the resin?</p>
+</div>
+</div>
+<div class="flex justify-end">
+<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none max-w-[80%]">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#008080]"></div>
+<p class="font-body-main text-sm">Ocean Teal</p>
+</div>
+</div>
+</div>
+<!-- Bot Summary Header -->
+<div class="flex gap-4 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container text-[12px] font-bold">T</div>
+<div class="bg-surface-container-low p-4 rounded-2xl rounded-tl-none border border-outline-variant">
+<p class="font-body-main text-sm">Here's a summary of what you've shared with Sakshi:</p>
+</div>
+</div>
+<!-- SUMMARY CARD -->
+<div class="max-w-[460px] mx-auto bg-surface-container-low border border-primary-container/30 p-8 rounded-xl editorial-shadow relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-7xl text-primary">ink_pen</span>
+</div>
+<header class="border-b border-outline-variant pb-4 mb-6">
+<h4 class="font-eyebrow-label text-[10px] tracking-[0.3em] text-primary">YOUR REQUEST SUMMARY</h4>
+</header>
+<div class="space-y-5">
+<div class="flex justify-between items-baseline">
+<span class="font-body-main text-[13px] text-on-surface-variant">Name on keychain</span>
+<span class="font-price-data text-[14px] text-primary">Rahul</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-main text-[13px] text-on-surface-variant">Reference photo</span>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZQmSHhmVgCADNMbR_L5bi892t-c4Wbb0IotSN2CGvyp7jXBd34bIBojKlKl3Ut6MZCdw2a3mzuGjVejgz6QqdDJmqtTbQrBKjzChtUEhCuyWHbhUU8E9uGW_5DAxJjcBtYt7mOHvuSgGgzE3f_2Pgf5Tm4vnt0bY2onC5WhDDKhB_EyBk_9SA1-Og0VC86c_rtgPm1fn9taMnrImndXxP0MQ-iw6fnmj6ti5ciGMSO8F_5f97WkjwVX-vNYecIE2mq138RlK_alA"/>
+</div>
+<span class="font-price-data text-[13px] text-primary-container flex items-center gap-1">Photo uploaded ✓</span>
+</div>
+</div>
+<div class="flex justify-between items-baseline">
+<span class="font-body-main text-[13px] text-on-surface-variant">Colour</span>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#008080]"></div>
+<span class="font-price-data text-[14px] text-primary">Ocean Teal</span>
+</div>
+</div>
+<div class="flex justify-between items-baseline border-t border-outline-variant pt-5 mt-5">
+<span class="font-body-main text-[13px] text-on-surface-variant">Delivery deadline</span>
+<span class="font-price-data text-[14px] text-primary">December 20, 2024</span>
+</div>
+</div>
+<div class="mt-8 flex justify-end">
+<a class="font-body-main text-sm text-[#5A4A8C] hover:underline flex items-center gap-1" href="#">
+                            Edit request <span class="material-symbols-outlined text-sm">edit_square</span>
+</a>
+</div>
+</div>
+<!-- Final Bot Bubble -->
+<div class="flex gap-4 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container text-[12px] font-bold">T</div>
+<div class="bg-surface-container-low p-4 rounded-2xl rounded-tl-none border border-outline-variant">
+<p class="font-body-main text-sm leading-relaxed">Your request has been sent to Sakshi! 🌿 She'll come back with a price and timeline. Feel free to add anything else below.</p>
+</div>
+</div>
+</div>
+<!-- CHAT INPUT BAR -->
+<div class="absolute bottom-0 left-0 right-0 p-8 pt-0 bg-white border-t border-outline-variant bg-white/95 backdrop-blur-sm">
+<!-- Quick Action Chips -->
+<div class="flex gap-3 mb-4 -mt-10 overflow-x-auto pb-2">
+<button class="bg-white border border-outline-variant px-4 py-1.5 rounded-full flex items-center gap-2 hover:border-primary transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">add_a_photo</span>
+<span class="font-body-main text-sm text-on-surface whitespace-nowrap">Add photo</span>
+</button>
+<button class="bg-white border border-outline-variant px-4 py-1.5 rounded-full flex items-center gap-2 hover:border-primary transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">celebration</span>
+<span class="font-body-main text-sm text-on-surface whitespace-nowrap">Add occasion details</span>
+</button>
+</div>
+<!-- Input Container -->
+<div class="flex items-center gap-4 bg-surface-container-low rounded-2xl p-2 border border-outline-variant transition-focus-within focus-within:border-primary-container/40 focus-within:ring-1 focus-within:ring-primary-container/20">
+<button class="w-12 h-12 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 font-body-main text-on-surface placeholder:text-on-surface-variant/50 py-3" placeholder="Add a message for Sakshi…" type="text"/>
+<button class="w-12 h-12 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Hidden for Chat View as per "Shell Visibility & Relevance" mandate for transactional focus -->
+<script>
+        // Micro-interaction for scroll synchronization and input focus
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatContainer = document.querySelector('.custom-scrollbar');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const chatInput = document.querySelector('input[type="text"]');
+            chatInput.addEventListener('focus', () => {
+                // Subtle lift or highlighting can be handled here via classes if needed
+            });
+        });
+    </script>
+</body></html>

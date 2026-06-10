@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOFA Artisan Studio | Seller Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@700&family=Space+Mono&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&family=Playfair+Display:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#96b983",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f3f0ec",
+                    "surface-container-highest": "#e5e2de",
+                    "outline": "#73796d",
+                    "on-secondary-fixed-variant": "#5d4200",
+                    "outline-variant": "#c3c8bb",
+                    "surface-bright": "#fcf9f5",
+                    "surface-container-high": "#ebe8e4",
+                    "secondary": "#7b5800",
+                    "on-primary-fixed-variant": "#304e22",
+                    "tertiary-fixed-dim": "#add199",
+                    "surface-container": "#f0edea",
+                    "tertiary-container": "#2c4a1f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#062100",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#2c4a1e",
+                    "inverse-primary": "#add197",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e5e2de",
+                    "tertiary": "#17330b",
+                    "secondary-fixed": "#ffdea5",
+                    "surface": "#fcf9f5",
+                    "background": "#fcf9f5",
+                    "on-secondary-fixed": "#261900",
+                    "surface-dim": "#dcdad6",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#f6f3ef",
+                    "on-error-container": "#93000a",
+                    "inverse-surface": "#31302e",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#96b982",
+                    "primary-fixed": "#c8edb1",
+                    "on-background": "#1c1c1a",
+                    "on-tertiary-fixed": "#062100",
+                    "on-surface": "#1c1c1a",
+                    "on-secondary-container": "#755400",
+                    "tertiary-fixed": "#c9edb3",
+                    "primary-fixed-dim": "#add197",
+                    "secondary-fixed-dim": "#f0bf5e",
+                    "surface-tint": "#476737",
+                    "primary": "#163309",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fdca68",
+                    "on-surface-variant": "#43483e",
+                    "on-tertiary-fixed-variant": "#314e23"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "unit": "4px",
+                    "margin-desktop": "64px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Playfair Display"],
+                    "body-main": ["DM Sans"],
+                    "price-data": ["Space Mono"],
+                    "eyebrow-label": ["Cinzel"],
+                    "product-title": ["Lora"],
+                    "display-lg": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "price-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "eyebrow-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "product-title": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fcf9f5;
+            color: #1c1c1a;
+        }
+        .sketch-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 80 Q 50 10 80 80' stroke='%23D6CCB8' stroke-width='0.5' fill='none' opacity='0.2'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="font-body-main text-body-main">
+<!-- TopNavBar -->
+<header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-2">
+<span class="font-product-title text-product-title text-primary font-bold">The Living Archive</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-main" href="#">Heritage</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-main" href="#">Artisans</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-main" href="#">Exhibitions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-main" href="#">Archive</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-32 lg:w-48 placeholder-on-surface-variant" placeholder="Search archive..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-all cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="relative min-h-screen">
+<div class="absolute inset-0 sketch-overlay"></div>
+<!-- Seller Profile Header -->
+<section class="bg-surface pt-16 pb-0 relative z-10 border-b border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop text-center">
+<div class="inline-block relative">
+<img class="w-32 h-32 rounded-full border-4 border-surface shadow-lg mx-auto mb-6 object-cover" data-alt="A distinguished master artisan in his late fifties, wearing a traditional linen garment, focused intently on a delicate ceramic piece in a sun-drenched, airy studio. The lighting is soft and golden, highlighting the fine dust particles in the air. The overall mood is scholarly and professional, with a clean, high-end light-mode aesthetic using earthy tones and forest green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ5LyuX-PjsWiKzzMm0jvhksVA79mr8m3kFjMsQtMJLH583fBt-_2FhUg6K7nJ7qsQpC93-2S2JIDNX2-B4HanUqV02bP88KiKO_lOTAorLW1GhTyRt5PQIdIOUlB9F3Si0W3Yys_QDfTaqh8ZSbtVztzz4zXmbvx2LskYgSfC17HxEpsnm_X8MUF5fYyJKuwDdjEgFZa1Tq9yPsJ1ZE6pwyuzUQqgky8bu2OCsXBbauqFSswh_gaPVl007lv2fbqpCp7MHrvQvws"/>
+<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-eyebrow-label uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">
+                        Master Artisan
+                    </div>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-background mt-4 mb-2">Tohfa Studio</h1>
+<div class="flex justify-center items-center gap-8 mb-8">
+<div class="text-center">
+<span class="block font-price-data text-on-surface-variant">4.9 / 5.0</span>
+<span class="text-[10px] uppercase font-eyebrow-label text-on-surface-variant opacity-60">Rating</span>
+</div>
+<div class="w-px h-8 bg-outline-variant"></div>
+<div class="text-center">
+<span class="block font-price-data text-on-surface-variant">1,240+</span>
+<span class="text-[10px] uppercase font-eyebrow-label text-on-surface-variant opacity-60">Sold</span>
+</div>
+<div class="w-px h-8 bg-outline-variant"></div>
+<div class="text-center">
+<span class="block font-price-data text-on-surface-variant">8.4k</span>
+<span class="text-[10px] uppercase font-eyebrow-label text-on-surface-variant opacity-60">Followers</span>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex justify-center gap-12 border-t border-outline-variant pt-6">
+<a class="pb-4 text-on-surface-variant hover:text-primary font-body-main transition-colors" href="#">Overview</a>
+<a class="pb-4 text-on-surface-variant hover:text-primary font-body-main transition-colors" href="#">Works</a>
+<a class="pb-4 text-primary font-bold border-b-2 border-primary font-body-main" href="#">Customised</a>
+<a class="pb-4 text-on-surface-variant hover:text-primary font-body-main transition-colors" href="#">Reviews</a>
+<a class="pb-4 text-on-surface-variant hover:text-primary font-body-main transition-colors" href="#">Studio Story</a>
+</nav>
+</div>
+</section>
+<!-- Content Area -->
+<section class="bg-[#F2EBE0] py-16 min-h-[600px]">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<!-- Filter Chips Row -->
+<div class="flex flex-wrap gap-3 mb-16 justify-center">
+<button class="px-6 py-2 rounded-full border border-outline-variant bg-surface text-on-surface-variant hover:bg-surface-container-high transition-all text-sm font-body-main">
+                        Pottery
+                    </button>
+<button class="px-6 py-2 rounded-full border border-outline-variant bg-surface text-on-surface-variant hover:bg-surface-container-high transition-all text-sm font-body-main">
+                        Textiles
+                    </button>
+<button class="px-6 py-2 rounded-full bg-primary-container text-white border border-primary-container shadow-md transition-all text-sm font-body-main">
+                        Neon Signs
+                    </button>
+<button class="px-6 py-2 rounded-full border border-outline-variant bg-surface text-on-surface-variant hover:bg-surface-container-high transition-all text-sm font-body-main">
+                        Leatherwork
+                    </button>
+<button class="px-6 py-2 rounded-full border border-outline-variant bg-surface text-on-surface-variant hover:bg-surface-container-high transition-all text-sm font-body-main">
+                        Calligraphy
+                    </button>
+</div>
+<!-- Empty State Card -->
+<div class="max-w-[520px] mx-auto bg-surface-container-lowest border border-[#D6CCB8] rounded-[14px] p-[60px_40px] text-center shadow-sm relative overflow-hidden">
+<!-- Subtle pattern background for the card -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#2C4A1E 0.5px, transparent 0.5px); background-size: 16px 16px;"></div>
+<div class="relative z-10 flex flex-col items-center">
+<!-- Chibi Illustration Placeholder -->
+<div class="mb-8 w-24 h-24 flex items-center justify-center">
+<span class="material-symbols-outlined text-[96px] text-primary" style="font-variation-settings: 'FILL' 0, 'wght' 200;">brush</span>
+</div>
+<h2 class="font-headline-md text-[22px] text-on-background mb-3">Nothing here yet</h2>
+<p class="font-product-title italic text-sm text-[#6B5E52] max-w-[320px] mb-2 leading-relaxed">
+                            No sellers are offering custom Neon Signs right now.
+                        </p>
+<p class="font-body-main text-[13px] text-[#9C8E82] mb-10">
+                            Try a different category, or check back soon.
+                        </p>
+<div class="flex flex-col gap-4 w-full items-center">
+<button class="h-12 px-8 bg-[#2C4A1E] text-white font-eyebrow-label text-[13px] rounded-lg hover:bg-primary transition-all active:scale-95 shadow-sm w-full max-w-[240px]">
+                                BROWSE ALL CATEGORIES
+                            </button>
+<a class="text-[#5A4A8C] underline font-body-main text-sm hover:text-primary transition-colors" href="#">
+                                Request this category from a seller
+                            </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-8 max-w-container-max mx-auto">
+<div class="mb-4 md:mb-0">
+<span class="font-eyebrow-label text-eyebrow-label tracking-widest text-primary">THE LIVING ARCHIVE</span>
+<p class="text-price-data text-on-surface-variant mt-2">© 2024 The Living Archive. Preserving Indian Craftsmanship.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-price-data text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-price-data text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-price-data text-on-surface-variant hover:text-primary transition-colors" href="#">Artisan Ethics</a>
+<a class="text-price-data text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button, a').forEach(elem => {
+            elem.addEventListener('mousedown', () => {
+                elem.classList.add('scale-95');
+            });
+            elem.addEventListener('mouseup', () => {
+                elem.classList.remove('scale-95');
+            });
+            elem.addEventListener('mouseleave', () => {
+                elem.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>
