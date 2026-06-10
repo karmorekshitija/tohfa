@@ -606,9 +606,13 @@
             const img = document.createElement('img');
             img.src = slide.imageUrl || slide.image_url;
             img.alt = slide.altText || slide.alt_text || 'Artisan Craft';
-            // Smooth fade classes
-            img.className = `absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
+            // Smooth fade classes with pointer cursor
+            img.className = `absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out cursor-pointer ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
             img.id = `hero-slide-${index}`;
+            img.onclick = () => {
+                const prodId = slide.productId || slide.product_id || slide.id;
+                window.location.href = `/buyer/product.html?id=${prodId}`;
+            };
             wrapper.appendChild(img);
 
             // Dot Indicator

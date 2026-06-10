@@ -452,6 +452,7 @@
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
     import { logout } from '/src/utils/auth.js';
+    import { initSearchOverlay } from '/buyer/searchOverlay.js';
 
 
     // Categories to Subcategories mapping
@@ -699,7 +700,10 @@
         lastScrollTop = scrollTop;
     });
 
-    window.addEventListener('DOMContentLoaded', initPage);
+    window.addEventListener('DOMContentLoaded', () => {
+      initSearchOverlay();
+      initPage();
+    });
 
     let isLoggedIn = false;
     async function checkAuthState() {

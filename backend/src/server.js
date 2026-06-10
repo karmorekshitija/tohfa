@@ -729,25 +729,56 @@ app.post('/api/auth/reset-password', rateLimit(10), async (req, res) => {
 // NEW ENDPOINT: GET /api/hero-slides
 app.get('/api/hero-slides', rateLimit(120), (req, res) => {
   try {
-    return res.status(200).json({
-      success: true,
-      data: [
+    const query = `
+      SELECT 
+        p.id, p.name AS alt_text,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url
+      FROM products p
+      WHERE p.status = 'active'
+      ORDER BY RANDOM() LIMIT 6
+    `;
+    const rows = db.prepare(query).all();
+    
+    let slides = [];
+    if (rows && rows.length > 0) {
+      slides = rows.map(r => ({
+        id: r.id,
+        product_id: r.id,
+        image_url: r.image_url || 'https://placehold.co/800x600?text=Handcrafted+Treasure',
+        alt_text: r.alt_text || 'Artisan Craft'
+      }));
+    }
+    
+    if (slides.length === 0) {
+      // Fallback if no database products are active
+      slides = [
         {
           id: 1,
+          product_id: 1,
           image_url: 'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=1200&q=80',
           alt_text: 'Handcrafted Ceramics'
         },
         {
           id: 2,
+          product_id: 2,
           image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80',
           alt_text: 'Artisan Pottery Wheel'
         },
         {
           id: 3,
+          product_id: 3,
           image_url: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&w=1200&q=80',
           alt_text: 'Weaving & Textiles'
         }
-      ]
+      ];
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: slides
     });
   } catch (err) {
     console.error('Error in hero slides:', err);

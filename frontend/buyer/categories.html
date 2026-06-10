@@ -229,6 +229,7 @@
     <script type="module">
         import apiClient from '/src/utils/apiClient.js';
         import { logout } from '/src/utils/auth.js';
+        import { initSearchOverlay } from '/buyer/searchOverlay.js';
 
         let isLoggedIn = false;
 
@@ -545,6 +546,7 @@
 
 
         window.addEventListener('DOMContentLoaded', async () => {
+            initSearchOverlay();
             await checkAuthState();
             await loadCategories();
         });
