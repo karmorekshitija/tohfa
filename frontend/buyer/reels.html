@@ -334,6 +334,7 @@
     import { logout } from '/src/utils/auth.js';
     import { initCategoryDrawer } from '/src/components/CategoryDrawer.js';
     import Toast from '/src/components/Toast.js';
+    import { initSearchOverlay } from '/buyer/searchOverlay.js';
 
     const MOCK_REELS = [
       {
@@ -496,6 +497,8 @@
     async function initPage() {
       // Initialize Top Category Drawer (non-blocking)
       try { initCategoryDrawer(); } catch(e) { console.warn('CategoryDrawer unavailable', e); }
+      // Initialize search overlay
+      initSearchOverlay();
 
       // Update current user initials/avatar in comment section
       updateCurrentUserAvatar();

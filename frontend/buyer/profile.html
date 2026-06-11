@@ -480,6 +480,7 @@
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
     import { logout } from '/src/utils/auth.js';
+    import { initSearchOverlay } from '/buyer/searchOverlay.js';
 
     // Check if token exists, if not redirect
     const token = sessionStorage.getItem('tohfa_access_token');
@@ -681,6 +682,7 @@
     }
 
     // Initial load
+    initSearchOverlay();
     init();
     updateCartBadge();
     checkCustomOrders();
