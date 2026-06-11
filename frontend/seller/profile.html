@@ -4,718 +4,1043 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Profile & Settings | Seller Studio | Tohfa</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/components/seller-components.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                "colors": {
-                    "secondary-fixed-dim": "#ddbcdf",
-                    "primary-container": "#a8b48e",
-                    "on-secondary-container": "#745a78",
-                    "on-tertiary-fixed-variant": "#494740",
-                    "on-surface-variant": "#45483f",
-                    "surface-bright": "#fff8f1",
-                    "secondary-container": "#f7d5f8",
-                    "on-error": "#ffffff",
-                    "on-tertiary-fixed": "#1d1c16",
-                    "tertiary-container": "#b3afa7",
-                    "surface-container-low": "#faf2e9",
-                    "surface-container": "#f4ede3",
-                    "on-primary-fixed-variant": "#404a2c",
-                    "primary": "#576242",
-                    "surface-variant": "#e9e1d8",
-                    "on-secondary": "#ffffff",
-                    "outline-variant": "#c6c7bb",
-                    "secondary-fixed": "#fad8fb",
-                    "outline": "#76786e",
-                    "on-tertiary": "#ffffff",
-                    "error": "#ba1a1a",
-                    "primary-fixed": "#dbe8bf",
-                    "on-tertiary-container": "#44423c",
-                    "surface-container-high": "#efe7dd",
-                    "on-error-container": "#93000a",
-                    "inverse-on-surface": "#f7f0e6",
-                    "background": "#fff8f1",
-                    "on-secondary-fixed-variant": "#573e5b",
-                    "surface-tint": "#576242",
-                    "error-container": "#ffdad6",
-                    "tertiary": "#615e57",
-                    "surface-container-highest": "#e9e1d8",
-                    "primary-fixed-dim": "#bfcba4",
-                    "on-primary-container": "#3c4628",
-                    "tertiary-fixed": "#e7e2d9",
-                    "inverse-surface": "#33302a",
-                    "inverse-primary": "#bfcba4",
-                    "surface-dim": "#e0d9cf",
-                    "on-surface": "#1e1b15",
-                    "surface": "#fff8f1",
-                    "tertiary-fixed-dim": "#cac6be",
-                    "secondary": "#705673",
-                    "on-secondary-fixed": "#28132d",
-                    "on-primary-fixed": "#151e05",
-                    "on-primary": "#ffffff",
-                    "surface-container-lowest": "#ffffff",
-                    "on-background": "#1e1b15",
-                    "custom-primary": "#a8b48e"
-                },
-                "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-                },
-                "spacing": {
-                    "margin-mobile": "20px",
-                    "gutter": "24px",
-                    "unit": "8px",
-                    "container-max": "1200px",
-                    "margin-desktop": "80px"
-                },
-                "fontFamily": {
-                    "headline-md": ["EB Garamond", "serif"],
-                    "headline-lg": ["EB Garamond", "serif"],
-                    "body-md": ["Be Vietnam Pro", "sans-serif"],
-                    "body-lg": ["Be Vietnam Pro", "sans-serif"],
-                    "label-sm": ["Be Vietnam Pro", "sans-serif"],
-                    "display-lg": ["EB Garamond", "serif"]
-                },
-                "fontSize": {
-                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "400"}],
-                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
-                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "300"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
-                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
-                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}]
-                }
-            },
+          "outline-variant": "#c6c7bb",
+          "primary": "#576242",
+          "on-primary": "#ffffff",
+          "primary-fixed": "#dbe8bf",
+          "primary-fixed-dim": "#bfcba4",
+          "on-primary-fixed": "#151e05",
+          "on-primary-container": "#3c4628",
+          "primary-container": "#a8b48e",
+          "custom-primary": "#a8b48e",
+          "error": "#ba1a1a",
+          "error-container": "#ffdad6",
+          "on-error-container": "#93000a",
+          "background": "#fff8f1",
+          "on-background": "#1e1b15",
+          "inverse-surface": "#33302a",
+          "inverse-on-surface": "#f7f0e6",
+          "inverse-primary": "#bfcba4",
+          "tertiary": "#615e57",
+          "tertiary-container": "#b3afa7",
         },
+        fontFamily: {
+          "headline": ["EB Garamond", "serif"],
+          "body": ["Be Vietnam Pro", "sans-serif"],
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "0.5rem",
+          xl: "0.75rem",
+          "2xl": "1rem",
+          full: "9999px",
+        }
+      }
     }
+  }
 </script>
 <style>
-    body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f1; color: #1e1b15; }
-    h1, h2, h3, .font-headline { font-family: 'EB Garamond', serif; color: #1e1b15; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f1; color: #1e1b15; }
+  h1, h2, h3, .font-headline { font-family: 'EB Garamond', serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 
-    /* Toggle switch */
-    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #c6c7bb; transition: .3s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-    input:checked + .slider { background-color: #a8b48e; }
-    input:checked + .slider:before { transform: translateX(20px); }
+  /* Tab bar */
+  .tab-btn { position:relative; padding: 10px 24px; font-size:14px; font-weight:600; color:#45483f; letter-spacing:0.04em; transition:color .2s; cursor:pointer; background:none; border:none; }
+  .tab-btn::after { content:''; position:absolute; bottom:0; left:16px; right:16px; height:2px; background:transparent; border-radius:2px; transition:background .2s; }
+  .tab-btn.active { color:#576242; }
+  .tab-btn.active::after { background:#576242; }
+  .tab-btn:hover { color:#576242; }
 
-    /* Skeleton */
-    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
-    .skeleton { background: linear-gradient(90deg, #efe7dd 25%, #e0d9cf 50%, #efe7dd 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 4px; }
+  /* Badge chip */
+  .badge-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:600; letter-spacing:.04em; cursor:pointer; transition:all .2s; border:1.5px solid #c6c7bb; color:#45483f; background:transparent; }
+  .badge-chip.active { background:#a8b48e; border-color:#a8b48e; color:#ffffff; }
+  .badge-chip:hover { border-color:#576242; }
 
-    /* Toast */
-    #toast { transition: all 0.3s ease; }
-    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #576242; border-radius: 10px; }
+  /* Skeleton */
+  @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+  .skeleton { background:linear-gradient(90deg,#efe7dd 25%,#e0d9cf 50%,#efe7dd 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
+
+  /* Toast */
+  #toast { transition:all .3s ease; }
+
+  /* Drag drop zone */
+  .drop-zone { border:2px dashed #c6c7bb; border-radius:12px; padding:32px; text-align:center; transition:all .2s; cursor:pointer; }
+  .drop-zone.drag-over { border-color:#576242; background:#f4ede3; }
+  .drop-zone:hover { border-color:#76786e; }
+
+  /* Modal */
+  .modal-overlay { position:fixed; inset:0; background:rgba(30,27,21,.45); z-index:200; display:flex; align-items:center; justify-content:center; padding:16px; }
+
+  /* Progress bar */
+  .progress-bar-track { height:4px; background:#e9e1d8; border-radius:4px; overflow:hidden; margin-top:6px; }
+  .progress-bar-fill { height:100%; background:#a8b48e; border-radius:4px; transition:width .4s; }
+
+  body { font-family: 'DM Sans', sans-serif; background-color: #fff8f3; color: #211b11; }
+  h1, h2, h3, .font-headline { font-family: 'Playfair Display', serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Card section — matches other tabs */
+  .card-section {
+    background: #ffffff;
+    border: 1px solid rgba(193,201,192,.4);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 12px rgba(37,83,56,.07);
+  }
+
+  /* Input style — matches other tabs */
+  .field-input {
+    width: 100%;
+    background: #fff8f3;
+    border: 1px solid #c1c9c0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #211b11;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+  }
+  .field-input:focus { border-color: #255338; box-shadow: 0 0 0 3px rgba(37,83,56,.10); }
+  .field-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #414942;
+    margin-bottom: 5px;
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .field-error { font-size: 11px; color: #C0392B; margin-top: 3px; min-height: 16px; }
+
+  /* Tab indicator — matches filter tabs in reviews/analytics */
+  .tab-btn {
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    color: #414942;
+    background: transparent;
+    border: 1px solid rgba(193, 201, 192, 0.4);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(61, 107, 79, 0.04);
+  }
+  .tab-btn:hover {
+    color: #3D6B4F;
+    border-color: #8FAF82;
+    background: rgba(247, 243, 236, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(61, 107, 79, 0.08);
+  }
+  .tab-btn.active {
+    background: #3D6B4F;
+    color: #FFFFFF;
+    border-color: #3D6B4F;
+    box-shadow: 0 4px 12px rgba(61, 107, 79, 0.2);
+    transform: translateY(-2px);
+  }
+
+  /* Badge chips */
+  .badge-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border: 1.5px solid #c1c9c0;
+    border-radius: 999px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #414942;
+    background: #fff8f3;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .badge-chip:hover { border-color: #8FAF82; color: #255338; background: #f9ecdc; }
+  .badge-chip.active {
+    background: #255338;
+    color: #ffffff;
+    border-color: #255338;
+  }
+  .badge-chip.active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+
+  /* Address card */
+  .address-card {
+    background: #fff8f3;
+    border: 1px solid #c1c9c0;
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+  }
+
+  /* Drag-drop zone */
+  .drop-zone {
+    border: 2px dashed #c1c9c0;
+    border-radius: 10px;
+    padding: 32px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: #8FAF82;
+    background: #f9ecdc;
+  }
+
+  /* Embed preview */
+  .embed-preview { width: 100%; border-radius: 10px; overflow: hidden; background: #ede1d1; aspect-ratio: 16/9; }
+
+  /* Char counter */
+  .char-counter { font-size: 11px; color: #717972; text-align: right; margin-top: 3px; }
+  .char-counter.warn { color: #C0392B; }
+
+  /* Modal overlay */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(33,27,17,.45);
+    backdrop-filter: blur(4px); z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-overlay.hidden { display: none !important; }
+
+  /* Inline confirm */
+  .inline-confirm { display: none; background: #ffdad6; border: 1px solid rgba(186,26,26,.2); border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #93000a; margin-top: 8px; align-items: center; gap: 8px; }
+  .inline-confirm.show { display: flex; }
+
+  /* Skeleton */
+  @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+  .skeleton { background: linear-gradient(90deg, #ede1d1 25%, #f3e6d6 50%, #ede1d1 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 10px; }
+
+  @media(max-width: 768px) { .two-col { grid-template-columns: 1fr !important; } }
 </style>
 </head>
-<body class="min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+<body class="bg-background text-on-surface font-body-md min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
 
 <seller-layout active-tab="profile">
-<div id="toast" class="fixed top-20 right-6 z-[100] hidden items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
-    <span id="toast-icon" class="material-symbols-outlined text-lg"></span>
-    <span id="toast-msg"></span>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-20 right-6 z-[300] hidden items-center gap-3 px-5 py-3 rounded-2xl shadow-lg text-sm font-semibold">
+  <span class="material-symbols-outlined text-lg" id="toast-icon"></span>
+  <span id="toast-msg"></span>
 </div>
 
-    <!-- Page Header -->
-    <div class="mb-10">
-        <h1 class="font-headline-md text-3xl mb-1">Profile & Settings</h1>
-        <p class="text-sm text-on-surface-variant">Manage your seller studio profile and preferences.</p>
-    </div>
-
-    <!-- Error State -->
-    <div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
-        <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
-        <p class="text-on-surface-variant text-center text-sm" id="error-message">Failed to load profile.</p>
-        <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
-    </div>
-
-    <!-- Loading Skeleton -->
-    <div id="loading-state" class="space-y-8">
-        <div class="skeleton h-60 rounded-xl"></div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="skeleton h-64 rounded-xl"></div>
-            <div class="skeleton h-64 rounded-xl"></div>
+<!-- Address Modal -->
+<div id="address-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Address form">
+  <div class="bg-surface-bright rounded-2xl shadow-2xl w-full max-w-lg p-8 relative">
+    <button id="close-address-modal" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <h3 class="font-headline text-2xl mb-6" id="address-modal-title">Add New Address</h3>
+    <form id="address-form" class="space-y-4">
+      <input type="hidden" id="address-edit-id"/>
+      <div class="grid grid-cols-2 gap-4 two-col">
+        <div>
+          <label class="field-label" for="addr-label">Label</label>
+          <input class="field-input" id="addr-label" placeholder="e.g. Home, Studio" type="text"/>
+          <p class="field-error" id="err-addr-label"></p>
         </div>
-        <div class="skeleton h-40 rounded-xl"></div>
-    </div>
-
-    <!-- Profile Content -->
-    <div id="profile-content" class="hidden space-y-8">
-
-        <!-- ── Profile Card ─────────────────────────────────────── -->
-        <form id="profile-form">
-            <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
-                <div class="flex items-center gap-2 mb-8">
-                    <span class="material-symbols-outlined text-custom-primary">account_circle</span>
-                    <h2 class="font-headline-md text-xl">Studio Identity</h2>
-                </div>
-
-                <!-- Avatar + Fields -->
-                <div class="flex flex-col md:flex-row gap-10 items-start">
-                    <!-- Avatar -->
-                    <div class="relative group flex-shrink-0 cursor-pointer" onclick="document.getElementById('input-avatar').click()">
-                        <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm">
-                            <img id="profile-avatar" alt="Seller Avatar" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Seller&background=a8b48e&color=fff"/>
-                        </div>
-                        <div class="absolute bottom-1 right-1 bg-custom-primary text-on-primary p-1.5 rounded-full border-2 border-surface cursor-pointer hover:opacity-90 transition-opacity" title="Change avatar">
-                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
-                        </div>
-                    </div>
-                    <input type="file" id="input-avatar" class="hidden" accept="image/*"/>
-
-                    <!-- Fields Grid -->
-                    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                        <div class="space-y-1">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-display-name">Display Name</label>
-                            <input id="f-display-name" name="display_name" type="text" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Your studio name"/>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-handle">Handle</label>
-                            <div class="flex items-center">
-                                <span class="bg-surface-container border border-r-0 border-outline-variant px-3 py-2.5 rounded-l-xl text-sm text-on-surface-variant">@</span>
-                                <input id="f-handle" name="handle" type="text" class="flex-1 bg-surface border border-outline-variant rounded-r-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="your_handle"/>
-                            </div>
-                        </div>
-                        <div class="col-span-full space-y-1">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-bio">Bio</label>
-                            <textarea id="f-bio" name="bio" rows="3" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="Tell your story..."></textarea>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-location">Location</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">location_on</span>
-                                <input id="f-location" name="location" type="text" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="City, State"/>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-website">Website</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">link</span>
-                                <input id="f-website" name="website" type="text" class="w-full bg-surface border border-outline-variant rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary" placeholder="www.yoursite.com"/>
-                            </div>
-                        </div>
-                        <div class="col-span-full space-y-1">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-story">Artisan Story</label>
-                            <textarea id="f-story" name="artisan_story" rows="4" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary italic text-on-surface-variant" placeholder="Share your craft journey..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Save Button -->
-                <div class="flex justify-end mt-8 pt-6 border-t border-outline-variant/30">
-                    <button type="submit" id="save-profile-btn" class="bg-custom-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">save</span>
-                        Save Profile
-                    </button>
-                </div>
-            </section>
-        </form>
-
-        <!-- ── Two-column row: Notifications + App Settings ─────── -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- Notifications Card -->
-            <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="material-symbols-outlined text-custom-primary">notifications</span>
-                    <h2 class="font-headline-md text-xl">Notifications</h2>
-                </div>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
-                        <span class="text-sm">New order alerts</span>
-                        <label class="switch"><input type="checkbox" id="notif-orders" checked/><span class="slider"></span></label>
-                    </div>
-                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
-                        <span class="text-sm">Low stock warnings</span>
-                        <label class="switch"><input type="checkbox" id="notif-stock" checked/><span class="slider"></span></label>
-                    </div>
-                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
-                        <span class="text-sm">Direct messages</span>
-                        <label class="switch"><input type="checkbox" id="notif-messages" checked/><span class="slider"></span></label>
-                    </div>
-                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
-                        <span class="text-sm">Review notifications</span>
-                        <label class="switch"><input type="checkbox" id="notif-reviews"/><span class="slider"></span></label>
-                    </div>
-                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
-                        <span class="text-sm">Payout confirmations</span>
-                        <label class="switch"><input type="checkbox" id="notif-payouts" checked/><span class="slider"></span></label>
-                    </div>
-                    <div class="flex items-center justify-between py-2">
-                        <span class="text-sm">ZAI Mode suggestions</span>
-                        <label class="switch"><input type="checkbox" id="notif-zai"/><span class="slider"></span></label>
-                    </div>
-                </div>
-            </section>
-
-            <!-- App Settings Card -->
-            <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="material-symbols-outlined text-custom-primary">tune</span>
-                    <h2 class="font-headline-md text-xl">App Settings</h2>
-                </div>
-                <div class="space-y-6">
-                    <!-- Accept Orders Toggle -->
-                    <div class="flex items-center justify-between p-4 bg-primary-fixed/30 rounded-xl border border-primary-fixed-dim/40">
-                        <div>
-                            <p class="font-semibold text-sm text-on-primary-container">Accept New Orders</p>
-                            <p class="text-xs text-on-surface-variant mt-0.5">Pause to stop receiving new orders</p>
-                        </div>
-                        <label class="switch"><input type="checkbox" id="setting-accepting" checked/><span class="slider"></span></label>
-                    </div>
-
-                    <!-- Default Language -->
-                    <div class="space-y-1">
-                        <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-language">Default Language</label>
-                        <select id="f-language" name="default_language" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
-                            <option value="en">English</option>
-                            <option value="hi">Hindi</option>
-                            <option value="mr">Marathi</option>
-                            <option value="ta">Tamil</option>
-                            <option value="te">Telugu</option>
-                        </select>
-                    </div>
-
-                    <!-- Store Currency -->
-                    <div class="space-y-1">
-                        <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" for="f-currency">Store Currency</label>
-                        <select id="f-currency" name="store_currency" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-custom-primary">
-                            <option value="INR">INR (₹) — Indian Rupee</option>
-                            <option value="USD">USD ($) — US Dollar</option>
-                            <option value="GBP">GBP (£) — British Pound</option>
-                        </select>
-                    </div>
-
-                    <!-- Save Settings Button -->
-                    <button id="save-settings-btn" type="button" class="w-full bg-custom-primary text-on-primary py-2.5 px-6 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm">
-                        Save Settings
-                    </button>
-                </div>
-            </section>
+        <div>
+          <label class="field-label" for="addr-phone">Phone</label>
+          <input class="field-input" id="addr-phone" placeholder="+91 9XXXXXXXXX" type="tel"/>
+          <p class="field-error" id="err-addr-phone"></p>
         </div>
+      </div>
+      <div>
+        <label class="field-label" for="addr-line">Address Line</label>
+        <input class="field-input" id="addr-line" placeholder="Street, building, area" type="text"/>
+        <p class="field-error" id="err-addr-line"></p>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <label class="field-label" for="addr-city">City</label>
+          <input class="field-input" id="addr-city" placeholder="City" type="text"/>
+          <p class="field-error" id="err-addr-city"></p>
+        </div>
+        <div>
+          <label class="field-label" for="addr-state">State</label>
+          <input class="field-input" id="addr-state" placeholder="State" type="text"/>
+        </div>
+        <div>
+          <label class="field-label" for="addr-pincode">Pincode</label>
+          <input class="field-input" id="addr-pincode" placeholder="000000" type="text" maxlength="6"/>
+          <p class="field-error" id="err-addr-pincode"></p>
+        </div>
+      </div>
+      <label class="flex items-center gap-3 cursor-pointer mt-2">
+        <input type="checkbox" id="addr-default" class="w-4 h-4 accent-primary rounded"/>
+        <span class="text-sm">Set as default address</span>
+      </label>
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" id="cancel-address-btn" class="px-6 py-2.5 rounded-full border border-outline-variant text-sm font-semibold hover:bg-surface-container transition-all">Cancel</button>
+        <button type="submit" id="save-address-btn" class="px-8 py-2.5 rounded-full bg-primary text-on-primary text-sm font-semibold hover:opacity-90 transition-all flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">save</span>Save Address
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
-        <!-- ── Account & Security Card ───────────────────────────── -->
-        <section class="bg-surface-container border border-outline-variant/30 rounded-xl p-8 shadow-sm">
-            <div class="flex items-center gap-2 mb-8">
-                <span class="material-symbols-outlined text-custom-primary">security</span>
-                <h2 class="font-headline-md text-xl">Account & Security</h2>
-            </div>
-            <div class="space-y-4">
-                <div class="flex items-center justify-between p-4 bg-surface rounded-xl border border-outline-variant/20">
-                    <div>
-                        <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-0.5">Registered Email</p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm font-medium" id="account-email">—</span>
-                            <span class="material-symbols-outlined text-custom-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between p-4 bg-surface rounded-xl border border-outline-variant/20">
-                    <div>
-                        <p class="text-xs text-on-surface-variant uppercase tracking-wider mb-0.5">Account Password</p>
-                        <span class="text-xl leading-none tracking-wider">••••••••••••</span>
-                    </div>
-                    <a href="/auth/forgot-password.html" class="text-xs font-semibold text-custom-primary hover:underline uppercase tracking-wider">Reset</a>
-                </div>
-                <div class="pt-4 border-t border-outline-variant/30">
-                    <div class="flex items-center justify-between p-4 hover:bg-error-container/10 rounded-xl cursor-pointer transition-colors group">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-outline group-hover:text-error transition-colors">cancel</span>
-                            <span class="text-sm text-on-surface-variant group-hover:text-error transition-colors">Close Seller Account</span>
-                        </div>
-                        <span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+<!-- Close Account Modal -->
+<div id="close-account-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="bg-surface-bright rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+    <button id="close-account-modal-x" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="flex items-center gap-3 mb-4">
+      <span class="material-symbols-outlined text-error text-3xl" style="font-variation-settings:'FILL' 1">warning</span>
+      <h3 class="font-headline text-2xl text-error">Close Seller Account</h3>
     </div>
-    <footer class="border-t border-outline-variant/30 py-10 bg-surface-container-low text-center mt-12">
-        <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
-    </footer>
+    <p class="text-sm text-on-surface-variant mb-4">This action is <strong>permanent</strong>. All your listings, orders history, and data will be deleted. Type <code class="bg-error-container text-on-error-container px-1.5 py-0.5 rounded font-mono text-xs">DELETE</code> below to confirm.</p>
+    <input id="confirm-delete-input" type="text" placeholder="Type DELETE" class="field-input mb-4" autocomplete="off"/>
+    <div class="flex justify-end gap-3">
+      <button id="cancel-close-account" class="px-6 py-2.5 rounded-full border border-outline-variant text-sm font-semibold hover:bg-surface-container transition-all">Cancel</button>
+      <button id="confirm-close-account" disabled class="px-8 py-2.5 rounded-full bg-error text-white text-sm font-semibold opacity-40 transition-all">Close My Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- Page Header — matches all other tabs -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-6 flex-shrink-0">
+  <div>
+    <h1 class="font-headline-lg text-primary text-4xl font-bold">Profile & Settings</h1>
+    <p class="text-on-surface-variant text-base font-body-md mt-2">Manage your profile, about page, and addresses</p>
+  </div>
+</div>
+
+<!-- Tab Navigation — same style as filter tabs in reviews / analytics -->
+<div class="flex items-center mb-8 gap-4 py-1">
+  <a href="/seller/profile.html" class="tab-btn active" id="tab-profile">Profile</a>
+  <a href="/seller/profile-settings.html" class="tab-btn" id="tab-settings">Settings</a>
+</div>
+
+<!-- Loading Skeleton -->
+<div id="loading-state" class="space-y-6">
+  <div class="skeleton h-64 rounded-2xl"></div>
+  <div class="skeleton h-72 rounded-2xl"></div>
+  <div class="skeleton h-48 rounded-2xl"></div>
+</div>
+
+<!-- Error State -->
+<div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+  <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+  <p class="text-on-surface-variant text-center text-sm" id="error-message">Failed to load profile.</p>
+  <button id="retry-btn" class="bg-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+</div>
+
+<!-- Profile Content -->
+<div id="profile-content" class="hidden space-y-7">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION A: BASIC INFO                                       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="card-section">
+    <div class="flex items-center gap-2 mb-7">
+      <span class="material-symbols-outlined text-primary">account_circle</span>
+      <h2 class="font-headline text-2xl">Basic Info</h2>
+    </div>
+
+    <!-- Avatar Row -->
+    <div class="flex flex-col md:flex-row gap-8 items-start mb-7">
+      <div class="flex-shrink-0">
+        <div class="relative group cursor-pointer w-24 h-24" onclick="document.getElementById('input-avatar').click()" title="Change profile photo">
+          <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-surface-container-high shadow-sm bg-surface-container">
+            <img id="profile-avatar" alt="Profile photo" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Seller&background=a8b48e&color=fff"/>
+          </div>
+          <div class="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings:'FILL' 1">photo_camera</span>
+          </div>
+          <div class="absolute bottom-0.5 right-0.5 bg-primary text-on-primary p-1 rounded-full border-2 border-surface shadow-sm">
+            <span class="material-symbols-outlined text-xs" style="font-variation-settings:'FILL' 1">photo_camera</span>
+          </div>
+        </div>
+        <input type="file" id="input-avatar" class="hidden" accept="image/jpeg,image/png,image/jpg"/>
+        <p class="text-center text-xs text-on-surface-variant mt-2">JPG or PNG</p>
+      </div>
+
+      <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+        <div>
+          <label class="field-label" for="f-shop-name">Shop Name</label>
+          <input class="field-input" id="f-shop-name" name="shop_name" placeholder="Your craft shop name" type="text"/>
+          <p class="field-error" id="err-shop-name"></p>
+        </div>
+        <div>
+          <label class="field-label" for="f-handle">Username / Handle</label>
+          <div class="flex items-center">
+            <span class="bg-surface-container border border-outline-variant border-r-0 px-3 py-[10px] rounded-l-[10px] text-sm text-on-surface-variant font-medium select-none">@</span>
+            <input class="field-input rounded-l-none" id="f-handle" name="handle" placeholder="your_handle" type="text" style="border-top-left-radius:0;border-bottom-left-radius:0;"/>
+          </div>
+          <p class="field-error" id="err-handle"></p>
+          <p id="handle-status" class="text-xs mt-1 hidden"></p>
+        </div>
+        <div>
+          <label class="field-label" for="f-location">City / Location</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-base">location_on</span>
+            <input class="field-input pl-9" id="f-location" name="location" placeholder="City, State" type="text"/>
+          </div>
+          <p class="field-error" id="err-location"></p>
+        </div>
+        <div class="md:col-span-2">
+          <label class="field-label" for="f-bio">Short Bio <span class="text-on-surface-variant normal-case font-normal">(max 300 chars)</span></label>
+          <textarea class="field-input" id="f-bio" name="bio" rows="3" maxlength="300" placeholder="Tell buyers about yourself and your craft..."></textarea>
+          <p class="char-counter" id="bio-counter">0 / 300</p>
+          <p class="field-error" id="err-bio"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller Badges -->
+    <div class="mb-7">
+      <label class="field-label mb-3">Seller Badges</label>
+      <div class="flex flex-wrap gap-3" id="badges-row">
+        <button type="button" class="badge-chip" data-badge="top_seller">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">workspace_premium</span>Top Seller
+        </button>
+        <button type="button" class="badge-chip" data-badge="verified_crafts">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">verified</span>Verified Crafts
+        </button>
+        <button type="button" class="badge-chip" data-badge="fast_shipments">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">local_shipping</span>Fast Shipments
+        </button>
+        <button type="button" class="badge-chip" data-badge="eco_friendly">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">eco</span>Eco-friendly
+        </button>
+      </div>
+    </div>
+
+    <div class="flex justify-end pt-5 border-t border-outline-variant/30">
+      <button type="button" id="save-basic-info-btn" class="bg-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">save</span>Save Basic Info
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION B: ABOUT PAGE                                       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="card-section">
+    <div class="flex items-center gap-2 mb-7">
+      <span class="material-symbols-outlined text-primary">auto_stories</span>
+      <h2 class="font-headline text-2xl">About Page</h2>
+    </div>
+
+    <div class="space-y-5">
+      <!-- Story Headline -->
+      <div>
+        <label class="field-label" for="f-story-headline">Story Headline</label>
+        <input class="field-input" id="f-story-headline" name="story_headline" placeholder="A short, catchy headline for your story" type="text"/>
+      </div>
+
+      <!-- Story Description -->
+      <div>
+        <label class="field-label" for="f-story-desc">Story Description <span class="text-on-surface-variant normal-case font-normal">(max 1000 chars)</span></label>
+        <textarea class="field-input" id="f-story-desc" name="story_description" rows="6" maxlength="1000" placeholder="Share the story behind your craft, your inspiration, your journey..."></textarea>
+        <p class="char-counter" id="story-counter">0 / 1000</p>
+      </div>
+
+      <!-- Banner Image Upload -->
+      <div>
+        <label class="field-label mb-2">Banner Image</label>
+        <div id="banner-drop-zone" class="drop-zone" onclick="document.getElementById('input-banner').click()">
+          <div id="banner-placeholder">
+            <span class="material-symbols-outlined text-4xl text-outline mb-2 block">image</span>
+            <p class="text-sm font-semibold text-on-surface-variant">Drop your banner image here</p>
+            <p class="text-xs text-on-surface-variant/70 mt-1">or click to browse · JPG, PNG · max 5 MB</p>
+          </div>
+          <div id="banner-preview-wrap" class="hidden">
+            <img id="banner-preview-img" class="max-h-48 mx-auto rounded-lg object-contain" alt="Banner preview"/>
+            <p class="text-xs text-on-surface-variant mt-2 text-center">Click to change</p>
+          </div>
+        </div>
+        <input type="file" id="input-banner" class="hidden" accept="image/jpeg,image/png,image/jpg"/>
+      </div>
+
+      <!-- Working On -->
+      <div>
+        <label class="field-label" for="f-working-on">Working On Label</label>
+        <input class="field-input" id="f-working-on" name="working_on" placeholder="e.g. Working on potter's wheel" type="text"/>
+      </div>
+
+      <!-- Video URL -->
+      <div>
+        <label class="field-label" for="f-video-url">Workshop Video / Reel URL</label>
+        <input class="field-input" id="f-video-url" name="video_url" placeholder="YouTube or Instagram URL" type="url"/>
+        <p class="text-xs text-on-surface-variant mt-1.5">Paste a valid YouTube or Instagram Reel URL to see a preview below.</p>
+        <div id="video-preview-wrap" class="hidden mt-3">
+          <div class="embed-preview">
+            <iframe id="video-iframe" src="" class="w-full h-full border-0" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end pt-6 mt-4 border-t border-outline-variant/30">
+      <button type="button" id="save-about-btn" class="bg-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">save</span>Save About Page
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION C: ADDRESSES                                        -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="card-section">
+    <div class="flex items-center justify-between mb-7">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">home_pin</span>
+        <h2 class="font-headline text-2xl">Addresses</h2>
+      </div>
+      <button id="open-add-address-btn" type="button" class="flex items-center gap-2 bg-primary text-on-primary py-2.5 px-5 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm">
+        <span class="material-symbols-outlined text-base">add</span>Add New Address
+      </button>
+    </div>
+
+    <!-- Addresses List -->
+    <div id="addresses-list" class="space-y-4">
+      <div class="skeleton h-24 rounded-xl"></div>
+      <div class="skeleton h-24 rounded-xl"></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="border-t border-outline-variant/30 py-8 bg-surface-container-low text-center mt-12">
+  <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
 </seller-layout>
 
 <script>
-    const API_BASE = window.location.origin;
+const API = window.location.origin;
 
-    // ── Toast helper ──────────────────────────────────────────────
-    function showToast(message, type = 'success') {
-        const toast = document.getElementById('toast');
-        const icon  = document.getElementById('toast-icon');
-        const msg   = document.getElementById('toast-msg');
-        icon.textContent = type === 'success' ? 'check_circle' : 'error';
-        msg.textContent  = message;
-        toast.className  = `fixed top-20 right-6 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all ${
-            type === 'success'
-                ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim'
-                : 'bg-error-container text-on-error-container border border-error/30'
-        }`;
-        toast.classList.remove('hidden');
-        setTimeout(() => { toast.classList.add('hidden'); }, 3500);
+// ─── Toast ────────────────────────────────────────────────────────────────────
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icon  = document.getElementById('toast-icon');
+  const msg   = document.getElementById('toast-msg');
+  icon.textContent = type === 'success' ? 'check_circle' : 'error';
+  msg.textContent  = message;
+  toast.className  = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg text-sm font-semibold transition-all ${
+    type === 'success'
+      ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim'
+      : 'bg-error-container text-on-error-container border border-error/30'
+  }`;
+  toast.classList.remove('hidden');
+  setTimeout(() => toast.classList.add('hidden'), 3500);
+}
+
+// ─── Token ────────────────────────────────────────────────────────────────────
+function getToken() { return sessionStorage.getItem('tohfa_access_token'); }
+
+// ─── Char counters ────────────────────────────────────────────────────────────
+function wireCounter(textareaId, counterId, max) {
+  const ta = document.getElementById(textareaId);
+  const ct = document.getElementById(counterId);
+  function update() {
+    const len = ta.value.length;
+    ct.textContent = `${len} / ${max}`;
+    ct.classList.toggle('warn', len >= max * 0.9);
+  }
+  ta.addEventListener('input', update);
+  update();
+}
+
+// ─── Badge chips ──────────────────────────────────────────────────────────────
+let activeBadges = new Set();
+document.querySelectorAll('.badge-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const badge = chip.dataset.badge;
+    if (activeBadges.has(badge)) {
+      activeBadges.delete(badge);
+      chip.classList.remove('active');
+    } else {
+      activeBadges.add(badge);
+      chip.classList.add('active');
     }
+  });
+});
 
-    // ── Populate form from API data ───────────────────────────────
-    function populateForm(data) {
-        const set = (id, val) => {
-            const el = document.getElementById(id);
-            if (el) el.value = val || '';
-        };
-        const check = (id, val) => {
-            const el = document.getElementById(id);
-            if (el) el.checked = !!val;
-        };
-
-        set('f-display-name', data.display_name);
-        set('f-handle', data.handle);
-        set('f-bio', data.bio);
-        set('f-location', data.location);
-        set('f-website', data.website);
-        set('f-story', data.artisan_story);
-        set('f-language', data.default_language || 'en');
-        set('f-currency', data.store_currency || 'INR');
-
-        check('setting-accepting', data.is_accepting_orders);
-
-        if (data.avatar_url) {
-            document.getElementById('profile-avatar').src = data.avatar_url;
-            const sidebarAvatar = document.getElementById('sidebar-avatar');
-            if (sidebarAvatar) sidebarAvatar.src = data.avatar_url;
-        }
-
-        // Notification toggles (use defaults from response)
-        const notifs = data.notifications || {};
-        check('notif-orders',   notifs.new_order_alerts);
-        check('notif-stock',    notifs.low_stock_warnings);
-        check('notif-messages', notifs.direct_messages);
-        check('notif-reviews',  notifs.review_notifications);
-        check('notif-payouts',  notifs.payout_confirmations);
-        check('notif-zai',      notifs.zai_suggestions);
-
-        // Account email from sessionStorage
-        const user = JSON.parse(sessionStorage.getItem('tohfa_user') || '{}');
-        const emailEl = document.getElementById('account-email');
-        if (emailEl && user.email) emailEl.textContent = user.email;
+// ─── Handle uniqueness check ──────────────────────────────────────────────────
+let handleCheckTimeout;
+const handleInput = document.getElementById('f-handle');
+const handleStatus = document.getElementById('handle-status');
+handleInput.addEventListener('blur', () => {
+  const val = handleInput.value.trim();
+  if (!val) return;
+  clearTimeout(handleCheckTimeout);
+  handleCheckTimeout = setTimeout(async () => {
+    handleStatus.classList.remove('hidden', 'text-error', 'text-primary');
+    handleStatus.textContent = 'Checking…';
+    try {
+      const res = await fetch(`${API}/api/seller/check-handle?handle=${encodeURIComponent(val)}`, {
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      const data = await res.json();
+      if (data.available === true) {
+        handleStatus.textContent = '✓ Handle is available';
+        handleStatus.classList.add('text-primary');
+      } else {
+        handleStatus.textContent = '✗ Handle is already taken';
+        handleStatus.classList.add('text-error');
+      }
+    } catch (_) {
+      handleStatus.classList.add('hidden');
     }
+  }, 500);
+});
 
-    // ── Load profile ──────────────────────────────────────────────
-    async function loadProfile() {
-        const loadingEl = document.getElementById('loading-state');
-        const errorEl   = document.getElementById('error-state');
-        const contentEl = document.getElementById('profile-content');
-
-        loadingEl.classList.remove('hidden');
-        errorEl.classList.add('hidden');
-        contentEl.classList.add('hidden');
-
-        const token = sessionStorage.getItem('tohfa_access_token');
-
-        try {
-            const res = await fetch(`${API_BASE}/api/seller/profile`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (res.status === 401 || res.status === 403) {
-                sessionStorage.clear();
-                window.location.href = '/auth/login.html';
-                return;
-            }
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-            const resp = await res.json();
-            const data = resp.data || resp;
-
-            loadingEl.classList.add('hidden');
-            contentEl.classList.remove('hidden');
-            populateForm(data);
-            document.getElementById('body-content').classList.remove('opacity-0');
-
-        } catch (err) {
-            console.error('Profile load error:', err);
-            loadingEl.classList.add('hidden');
-            document.getElementById('error-message').textContent = err.message || 'Failed to load profile.';
-            errorEl.classList.remove('hidden');
-            document.getElementById('body-content').classList.remove('opacity-0');
-        }
+// ─── Avatar upload ────────────────────────────────────────────────────────────
+document.getElementById('input-avatar').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!['image/jpeg','image/png','image/jpg'].includes(file.type)) {
+    showToast('Only JPG/PNG allowed for profile photo.', 'error'); return;
+  }
+  // Immediate preview
+  const reader = new FileReader();
+  reader.onload = ev => { document.getElementById('profile-avatar').src = ev.target.result; };
+  reader.readAsDataURL(file);
+  // Upload
+  const fd = new FormData();
+  fd.append('photo', file);
+  try {
+    const res = await fetch(`${API}/api/seller/profile/photo`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${getToken()}` },
+      body: fd
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Upload failed');
+    if (data.data?.avatar_url || data.avatar_url) {
+      document.getElementById('profile-avatar').src = data.data?.avatar_url || data.avatar_url;
     }
+    showToast('Profile photo updated!', 'success');
+  } catch (err) {
+    showToast(err.message || 'Failed to upload photo.', 'error');
+  }
+});
 
-    // ── Save profile (PUT /api/seller/profile) ────────────────────
-    document.getElementById('profile-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('save-profile-btn');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Saving…';
+// ─── Banner upload ────────────────────────────────────────────────────────────
+const bannerDropZone = document.getElementById('banner-drop-zone');
+const bannerInput    = document.getElementById('input-banner');
 
-        const token = sessionStorage.getItem('tohfa_access_token');
-        const body  = {
-            display_name:  document.getElementById('f-display-name').value.trim(),
-            handle:        document.getElementById('f-handle').value.trim().toLowerCase(),
-            bio:           document.getElementById('f-bio').value.trim(),
-            location:      document.getElementById('f-location').value.trim(),
-            website:       document.getElementById('f-website').value.trim(),
-            artisan_story: document.getElementById('f-story').value.trim(),
-        };
+function showBannerPreview(src) {
+  document.getElementById('banner-placeholder').classList.add('hidden');
+  document.getElementById('banner-preview-wrap').classList.remove('hidden');
+  document.getElementById('banner-preview-img').src = src;
+}
 
-        try {
-            const res = await fetch(`${API_BASE}/api/seller/profile`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(body)
-            });
-            const data = await res.json();
-            if (!res.ok) {
-                throw new Error(data.message || 'Update failed');
-            }
-            showToast('Profile updated successfully!', 'success');
-        } catch (err) {
-            showToast(err.message || 'Failed to save profile.', 'error');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Save Profile';
-        }
+bannerDropZone.addEventListener('dragover', e => { e.preventDefault(); bannerDropZone.classList.add('drag-over'); });
+bannerDropZone.addEventListener('dragleave', () => bannerDropZone.classList.remove('drag-over'));
+bannerDropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  bannerDropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) uploadBanner(file);
+});
+bannerInput.addEventListener('change', e => {
+  if (e.target.files[0]) uploadBanner(e.target.files[0]);
+});
+
+async function uploadBanner(file) {
+  if (!['image/jpeg','image/png','image/jpg'].includes(file.type)) {
+    showToast('Only JPG/PNG allowed for banner.', 'error'); return;
+  }
+  const reader = new FileReader();
+  reader.onload = ev => showBannerPreview(ev.target.result);
+  reader.readAsDataURL(file);
+  const fd = new FormData();
+  fd.append('banner', file);
+  try {
+    const res = await fetch(`${API}/api/seller/profile/banner`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${getToken()}` },
+      body: fd
     });
-
-    // ── Save settings (accept orders + language + currency) ───────
-    document.getElementById('save-settings-btn').addEventListener('click', async () => {
-        const btn = document.getElementById('save-settings-btn');
-        btn.disabled = true;
-        btn.textContent = 'Saving…';
-
-        const token = sessionStorage.getItem('tohfa_access_token');
-        const body  = {
-            is_accepting_orders: document.getElementById('setting-accepting').checked,
-            default_language:    document.getElementById('f-language').value,
-            store_currency:      document.getElementById('f-currency').value,
-        };
-
-        try {
-            const res = await fetch(`${API_BASE}/api/seller/profile`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify(body)
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Update failed');
-            showToast('Settings saved!', 'success');
-        } catch (err) {
-            showToast(err.message || 'Failed to save settings.', 'error');
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Save Settings';
-        }
-    });
-
-    // ── DOMContentLoaded ──────────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', async () => {
-        const token = sessionStorage.getItem('tohfa_access_token');
-        if (!token) {
-            window.location.href = '/auth/login.html';
-            return;
-        }
-
-        // Guard: verify role is seller
-        try {
-            const pr = await fetch(`${API_BASE}/api/profile/me`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (!pr.ok) throw new Error('Auth check failed');
-            const pd = await pr.json();
-            const u  = pd.data || pd;
-            if (u.role !== 'seller') {
-                window.location.href = '/buyer/profile.html';
-                return;
-            }
-        } catch (e) {
-            sessionStorage.clear();
-            window.location.href = '/auth/login.html';
-            return;
-        }
-
-        await loadProfile();
-
-        // Setup ZAI Mode State & UI Sync
-        let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
-        updateZaiUI(zaiEnabled);
-        
-        fetch(`${API_BASE}/api/seller/dashboard`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data && data.success && data.data && data.data.seller) {
-                const dbEnabled = !!data.data.seller.zai_mode_enabled;
-                localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
-                updateZaiUI(dbEnabled);
-            }
-        })
-        .catch(err => console.error("Error syncing ZAI Mode:", err));
-
-        // Click listener on toggle button
-        const toggleBtn = document.getElementById('zai-toggle-btn');
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => {
-                const isEnabled = toggleBtn.classList.contains('bg-tertiary');
-                const nextEnabled = !isEnabled;
-                
-                updateZaiUI(nextEnabled);
-                localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
-                
-                fetch(`${API_BASE}/api/seller/zai-mode`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ enabled: nextEnabled })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (!data || !data.success) {
-                        console.error("Failed to update ZAI Mode in DB");
-                    }
-                })
-                .catch(err => console.error("Error updating ZAI Mode:", err));
-            });
-        }
-
-        // View Store button Click listener
-        const viewStoreBtn = document.getElementById('view-store-btn');
-        if (viewStoreBtn) {
-            viewStoreBtn.addEventListener('click', () => {
-                fetch(`${API_BASE}/api/seller/profile`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.success && data.data && data.data.store_slug) {
-                        window.location.href = '/' + data.data.store_slug;
-                    } else {
-                        window.location.href = '/';
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    window.location.href = '/';
-                });
-            });
-        }
-
-        // Setup avatar file input handling
-        const inputAvatar = document.getElementById('input-avatar');
-        if (inputAvatar) {
-            inputAvatar.addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const formData = new FormData();
-                formData.append('avatar', file);
-
-                try {
-                    const resUpload = await fetch(`${API_BASE}/api/profile/me/avatar`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: formData
-                    });
-                    const dataUpload = await resUpload.json();
-                    if (!resUpload.ok) {
-                        throw new Error(dataUpload.message || 'Upload failed');
-                    }
-                    const avatarUrl = dataUpload.data.avatar_url;
-                    document.getElementById('profile-avatar').src = avatarUrl;
-                    const sidebarAvatar = document.getElementById('sidebar-avatar');
-                    if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
-                    showToast('Avatar updated successfully!', 'success');
-
-                    // Update session storage user avatar
-                    const userStr = sessionStorage.getItem('tohfa_user');
-                    if (userStr) {
-                        try {
-                            const userObj = JSON.parse(userStr);
-                            userObj.avatar_url = avatarUrl;
-                            sessionStorage.setItem('tohfa_user', JSON.stringify(userObj));
-                        } catch (err) {
-                            console.error(err);
-                        }
-                    }
-                } catch (err) {
-                    showToast(err.message || 'Failed to upload avatar.', 'error');
-                }
-            });
-        }
-    });
-
-    function updateZaiUI(enabled) {
-        const btn = document.getElementById('zai-toggle-btn');
-        if (btn) {
-            if (enabled) {
-                btn.classList.add('bg-tertiary', 'text-white');
-                btn.classList.remove('text-tertiary');
-                const icon = btn.querySelector('.material-symbols-outlined');
-                if (icon) icon.style.fontVariationSettings = "'FILL' 1";
-            } else {
-                btn.classList.remove('bg-tertiary', 'text-white');
-                btn.classList.add('text-tertiary');
-                const icon = btn.querySelector('.material-symbols-outlined');
-                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
-            }
-        }
-        
-        // Find all zai tips / cards on the page and show/hide them
-        const selectors = [
-            '.zai-tip-card',
-            '[class*="zai-tip"]',
-            '[id*="zai-tip"]',
-            'aside .bg-tertiary-container\/10',
-            'section .bg-tertiary-fixed-dim\/40',
-            'div .bg-on-tertiary-fixed\/10'
-        ];
-        selectors.forEach(sel => {
-            try {
-                const els = document.querySelectorAll(sel);
-                els.forEach(el => {
-                    if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
-                    el.style.display = enabled ? '' : 'none';
-                });
-            } catch (e) {}
-        });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Upload failed');
+    if (data.data?.banner_url || data.banner_url) {
+      showBannerPreview(data.data?.banner_url || data.banner_url);
     }
+    showToast('Banner updated!', 'success');
+  } catch (err) {
+    showToast(err.message || 'Failed to upload banner.', 'error');
+  }
+}
 
-    // ── Retry button ──────────────────────────────────────────────
-    document.getElementById('retry-btn').addEventListener('click', loadProfile);
+// ─── Video URL embed preview ───────────────────────────────────────────────────
+document.getElementById('f-video-url').addEventListener('input', debounce(function() {
+  const url = this.value.trim();
+  const wrap = document.getElementById('video-preview-wrap');
+  const iframe = document.getElementById('video-iframe');
+  const embedUrl = getEmbedUrl(url);
+  if (embedUrl) {
+    iframe.src = embedUrl;
+    wrap.classList.remove('hidden');
+  } else {
+    wrap.classList.add('hidden');
+    iframe.src = '';
+  }
+}, 600));
 
-    // ── Logout ────────────────────────────────────────────────────
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        const token   = sessionStorage.getItem('tohfa_access_token');
-        const refresh = sessionStorage.getItem('tohfa_refresh_token');
-        if (token && refresh) {
-            fetch('/api/auth/logout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ refresh_token: refresh })
-            }).catch(() => {});
-        }
-        sessionStorage.removeItem('tohfa_access_token');
-        sessionStorage.removeItem('tohfa_refresh_token');
-        sessionStorage.removeItem('tohfa_user');
-        window.location.href = '/auth/login.html';
+function getEmbedUrl(url) {
+  if (!url) return null;
+  // YouTube
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0`;
+  // Instagram Reel
+  const igMatch = url.match(/instagram\.com\/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/);
+  if (igMatch) return `https://www.instagram.com/p/${igMatch[1]}/embed`;
+  return null;
+}
+
+function debounce(fn, ms) {
+  let t;
+  return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
+}
+
+// ─── Save Basic Info ──────────────────────────────────────────────────────────
+document.getElementById('save-basic-info-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('save-basic-info-btn');
+  // Clear errors
+  ['err-shop-name','err-handle','err-location','err-bio'].forEach(id => { document.getElementById(id).textContent = ''; });
+  // Validate
+  let valid = true;
+  const shopName = document.getElementById('f-shop-name').value.trim();
+  const handle   = document.getElementById('f-handle').value.trim();
+  const location = document.getElementById('f-location').value.trim();
+  const bio      = document.getElementById('f-bio').value.trim();
+  if (!shopName) { document.getElementById('err-shop-name').textContent = 'Shop name is required.'; valid = false; }
+  if (!handle)   { document.getElementById('err-handle').textContent = 'Handle is required.'; valid = false; }
+  if (!valid) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span>Saving…';
+  try {
+    const res = await fetch(`${API}/api/seller/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+      body: JSON.stringify({
+        shop_name:   shopName,
+        display_name: shopName,
+        handle:      handle.toLowerCase(),
+        location,
+        bio,
+        badges:      [...activeBadges]
+      })
     });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Update failed');
+    showToast('Basic info saved!', 'success');
+  } catch (err) {
+    showToast(err.message || 'Failed to save.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">save</span>Save Basic Info';
+  }
+});
+
+// ─── Save About Page ──────────────────────────────────────────────────────────
+document.getElementById('save-about-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('save-about-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span>Saving…';
+  try {
+    const res = await fetch(`${API}/api/seller/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+      body: JSON.stringify({
+        story_headline:    document.getElementById('f-story-headline').value.trim(),
+        story_description: document.getElementById('f-story-desc').value.trim(),
+        working_on:        document.getElementById('f-working-on').value.trim(),
+        video_url:         document.getElementById('f-video-url').value.trim(),
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Update failed');
+    showToast('About page saved!', 'success');
+  } catch (err) {
+    showToast(err.message || 'Failed to save.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">save</span>Save About Page';
+  }
+});
+
+// ─── Addresses ────────────────────────────────────────────────────────────────
+let addresses = [];
+
+async function loadAddresses() {
+  const listEl = document.getElementById('addresses-list');
+  listEl.innerHTML = '<div class="skeleton h-20 rounded-xl"></div><div class="skeleton h-20 rounded-xl mt-3"></div>';
+  try {
+    const res = await fetch(`${API}/api/seller/addresses`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error();
+    addresses = data.data || data || [];
+    renderAddresses();
+  } catch (_) {
+    listEl.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">Could not load addresses. <button onclick="loadAddresses()" class="text-primary underline">Retry</button></p>';
+  }
+}
+
+function renderAddresses() {
+  const listEl = document.getElementById('addresses-list');
+  if (!addresses.length) {
+    listEl.innerHTML = '<div class="text-center py-10 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-4xl mb-2 block opacity-40">location_off</span>No addresses saved yet. Add one to get started.</div>';
+    return;
+  }
+  listEl.innerHTML = '';
+  addresses.forEach(addr => {
+    const card = document.createElement('div');
+    card.className = 'address-card';
+    card.id = `addr-card-${addr._id || addr.id}`;
+    card.innerHTML = `
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs font-bold uppercase tracking-wider text-primary bg-primary-fixed px-2.5 py-0.5 rounded-full">${escHtml(addr.label || 'Address')}</span>
+            ${addr.is_default ? '<span class="text-xs font-semibold text-on-primary bg-custom-primary px-2.5 py-0.5 rounded-full">Default</span>' : ''}
+          </div>
+          <p class="text-sm font-medium text-on-surface">${escHtml(addr.address_line || '')}</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">${[addr.city, addr.state, addr.pincode].filter(Boolean).join(', ')}</p>
+          ${addr.phone ? `<p class="text-xs text-on-surface-variant mt-0.5"><span class="material-symbols-outlined text-xs align-middle">call</span> ${escHtml(addr.phone)}</p>` : ''}
+        </div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <button onclick="openEditAddress('${addr._id || addr.id}')" title="Edit" class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant hover:text-primary">
+            <span class="material-symbols-outlined text-base">edit</span>
+          </button>
+          <button onclick="initDeleteAddress('${addr._id || addr.id}')" title="Delete" class="p-2 rounded-full hover:bg-error-container/40 transition-colors text-on-surface-variant hover:text-error">
+            <span class="material-symbols-outlined text-base">delete</span>
+          </button>
+        </div>
+      </div>
+      <div class="inline-confirm" id="confirm-del-${addr._id || addr.id}">
+        <span class="material-symbols-outlined text-error text-base">warning</span>
+        <span>Remove this address?</span>
+        <button onclick="confirmDeleteAddress('${addr._id || addr.id}')" class="text-xs font-bold text-error underline hover:no-underline">Remove</button>
+        <button onclick="cancelDeleteAddress('${addr._id || addr.id}')" class="text-xs font-bold text-on-surface-variant underline hover:no-underline">Cancel</button>
+      </div>
+    `;
+    listEl.appendChild(card);
+  });
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function initDeleteAddress(id) {
+  document.querySelectorAll('.inline-confirm').forEach(el => el.classList.remove('show'));
+  const conf = document.getElementById(`confirm-del-${id}`);
+  if (conf) conf.classList.add('show');
+}
+
+function cancelDeleteAddress(id) {
+  const conf = document.getElementById(`confirm-del-${id}`);
+  if (conf) conf.classList.remove('show');
+}
+
+async function confirmDeleteAddress(id) {
+  try {
+    const res = await fetch(`${API}/api/seller/addresses/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (!res.ok) throw new Error();
+    addresses = addresses.filter(a => (a._id || a.id) !== id);
+    renderAddresses();
+    showToast('Address removed.', 'success');
+  } catch (_) {
+    showToast('Failed to delete address.', 'error');
+  }
+}
+
+function openEditAddress(id) {
+  const addr = addresses.find(a => (a._id || a.id) === id);
+  if (!addr) return;
+  document.getElementById('address-modal-title').textContent = 'Edit Address';
+  document.getElementById('address-edit-id').value = id;
+  document.getElementById('addr-label').value   = addr.label || '';
+  document.getElementById('addr-line').value    = addr.address_line || '';
+  document.getElementById('addr-city').value    = addr.city || '';
+  document.getElementById('addr-state').value   = addr.state || '';
+  document.getElementById('addr-pincode').value = addr.pincode || '';
+  document.getElementById('addr-phone').value   = addr.phone || '';
+  document.getElementById('addr-default').checked = !!addr.is_default;
+  openAddressModal();
+}
+
+// Address modal open/close
+function openAddressModal() {
+  document.getElementById('address-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeAddressModal() {
+  document.getElementById('address-modal').classList.add('hidden');
+  document.body.style.overflow = '';
+  document.getElementById('address-form').reset();
+  document.getElementById('address-edit-id').value = '';
+  document.getElementById('address-modal-title').textContent = 'Add New Address';
+  ['err-addr-label','err-addr-line','err-addr-city','err-addr-pincode','err-addr-phone'].forEach(id => {
+    document.getElementById(id).textContent = '';
+  });
+}
+document.getElementById('open-add-address-btn').addEventListener('click', () => {
+  document.getElementById('address-form').reset();
+  document.getElementById('address-edit-id').value = '';
+  document.getElementById('address-modal-title').textContent = 'Add New Address';
+  openAddressModal();
+});
+document.getElementById('close-address-modal').addEventListener('click', closeAddressModal);
+document.getElementById('cancel-address-btn').addEventListener('click', closeAddressModal);
+document.getElementById('address-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('address-modal')) closeAddressModal();
+});
+
+// Submit address form
+document.getElementById('address-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  ['err-addr-label','err-addr-line','err-addr-city','err-addr-pincode','err-addr-phone'].forEach(id => {
+    document.getElementById(id).textContent = '';
+  });
+  let valid = true;
+  const label   = document.getElementById('addr-label').value.trim();
+  const line    = document.getElementById('addr-line').value.trim();
+  const city    = document.getElementById('addr-city').value.trim();
+  const pincode = document.getElementById('addr-pincode').value.trim();
+  if (!label)   { document.getElementById('err-addr-label').textContent = 'Label required.'; valid = false; }
+  if (!line)    { document.getElementById('err-addr-line').textContent = 'Address line required.'; valid = false; }
+  if (!city)    { document.getElementById('err-addr-city').textContent = 'City required.'; valid = false; }
+  if (!pincode || !/^\d{6}$/.test(pincode)) { document.getElementById('err-addr-pincode').textContent = 'Enter valid 6-digit pincode.'; valid = false; }
+  if (!valid) return;
+
+  const editId = document.getElementById('address-edit-id').value;
+  const payload = {
+    label,
+    address_line: line,
+    city,
+    state:        document.getElementById('addr-state').value.trim(),
+    pincode,
+    phone:        document.getElementById('addr-phone').value.trim(),
+    is_default:   document.getElementById('addr-default').checked
+  };
+  const saveBtn = document.getElementById('save-address-btn');
+  saveBtn.disabled = true;
+  saveBtn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span>Saving…';
+  try {
+    const url    = editId ? `${API}/api/seller/addresses/${editId}` : `${API}/api/seller/addresses`;
+    const method = editId ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Save failed');
+    showToast(editId ? 'Address updated!' : 'Address added!', 'success');
+    closeAddressModal();
+    await loadAddresses();
+  } catch (err) {
+    showToast(err.message || 'Failed to save address.', 'error');
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = '<span class="material-symbols-outlined text-base">save</span>Save Address';
+  }
+});
+
+// ─── Load profile ─────────────────────────────────────────────────────────────
+async function loadProfile() {
+  const loadingEl = document.getElementById('loading-state');
+  const errorEl   = document.getElementById('error-state');
+  const contentEl = document.getElementById('profile-content');
+  loadingEl.classList.remove('hidden');
+  errorEl.classList.add('hidden');
+  contentEl.classList.add('hidden');
+  try {
+    const res = await fetch(`${API}/api/seller/profile`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (res.status === 401 || res.status === 403) {
+      sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const resp = await res.json();
+    const data = resp.data || resp;
+    populateProfile(data);
+    loadingEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+    document.getElementById('body-content').classList.remove('opacity-0');
+    await loadAddresses();
+  } catch (err) {
+    loadingEl.classList.add('hidden');
+    document.getElementById('error-message').textContent = err.message || 'Failed to load profile.';
+    errorEl.classList.remove('hidden');
+    document.getElementById('body-content').classList.remove('opacity-0');
+  }
+}
+
+function populateProfile(data) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('f-shop-name', data.shop_name || data.display_name);
+  set('f-handle', data.handle);
+  set('f-location', data.location);
+  set('f-bio', data.bio);
+  set('f-story-headline', data.story_headline);
+  set('f-story-desc', data.story_description);
+  set('f-working-on', data.working_on);
+  set('f-video-url', data.video_url);
+  if (data.avatar_url) document.getElementById('profile-avatar').src = data.avatar_url;
+  if (data.banner_url) showBannerPreview(data.banner_url);
+  if (data.video_url) {
+    const embedUrl = getEmbedUrl(data.video_url);
+    if (embedUrl) {
+      document.getElementById('video-iframe').src = embedUrl;
+      document.getElementById('video-preview-wrap').classList.remove('hidden');
+    }
+  }
+  // Badges
+  activeBadges = new Set(data.badges || []);
+  document.querySelectorAll('.badge-chip').forEach(chip => {
+    chip.classList.toggle('active', activeBadges.has(chip.dataset.badge));
+  });
+  // Trigger counters
+  ['f-bio','f-story-desc'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.dispatchEvent(new Event('input'));
+  });
+}
+
+// ─── DOMContentLoaded ─────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = getToken();
+  if (!token) { window.location.href = '/auth/login.html'; return; }
+  try {
+    const pr = await fetch(`${API}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (!pr.ok) throw new Error();
+    const pd = await pr.json();
+    const u  = pd.data || pd;
+    if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+  } catch (_) {
+    sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+  }
+  wireCounter('f-bio', 'bio-counter', 300);
+  wireCounter('f-story-desc', 'story-counter', 1000);
+  await loadProfile();
+});
+
+document.getElementById('retry-btn').addEventListener('click', loadProfile);
 </script>
 </body>
 </html>

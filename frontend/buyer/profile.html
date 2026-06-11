@@ -267,9 +267,14 @@
       <p class="font-title-serif text-on-surface">Notifications</p>
       <p class="text-xs text-outline mt-xs">Recent alerts</p>
     </a>
+    <a class="p-lg bg-surface-container-low rounded-xl artisan-card-hover group border border-transparent hover:border-outline-variant" href="/buyer/overflow-requests.html">
+      <span class="material-symbols-outlined text-primary mb-md" data-icon="event_busy">event_busy</span>
+      <p class="font-title-serif text-on-surface">Overflow Requests</p>
+      <p id="hub-overflow-count" class="text-xs text-outline mt-xs">View custom timeline offers</p>
+    </a>
     <!-- T-12: Custom Orders Chat — for personalised/customised gift orders -->
     <button id="custom-chat-card" onclick="openChatModal()"
-            class="p-lg bg-gradient-to-br from-[#fcd6ff]/60 to-[#D4E9C4]/40 rounded-xl artisan-card-hover group border border-transparent hover:border-[#b492b7] text-left transition-all">
+            class="p-lg bg-gradient-to-br from-[#fcd6ff]/60 to-[#D4E9C4]/40 rounded-xl artisan-card-hover group border border-transparent hover:border-[#b492b7] text-left transition-all col-span-2 md:col-span-1">
       <span class="material-symbols-outlined text-[#725476] mb-md">chat</span>
       <p class="font-title-serif text-on-surface">Custom Orders Chat</p>
       <p id="chat-card-subtitle" class="text-xs text-outline mt-xs">3 conversations about personalised gifts</p>
@@ -515,6 +520,26 @@
                     }
                 }
             } catch (e) { /* silently ignore */ }
+
+            // Fetch overflow requests count
+            try {
+                const overRes = await apiClient.get('/buyer/overflow-requests');
+                if (overRes.data && overRes.data.success) {
+                    const reqs = overRes.data.data || [];
+                    const pendingOffers = reqs.filter(r => r.status === 'accepted').length;
+                    const overEl = document.getElementById('hub-overflow-count');
+                    if (overEl) {
+                        if (pendingOffers > 0) {
+                            overEl.innerText = `${pendingOffers} offer${pendingOffers !== 1 ? 's' : ''} received!`;
+                            overEl.className = 'text-xs text-primary font-bold mt-xs';
+                        } else {
+                            const totalReqs = reqs.length;
+                            overEl.innerText = totalReqs === 0 ? 'View custom timeline offers' : `${totalReqs} request${totalReqs !== 1 ? 's' : ''} total`;
+                            overEl.className = 'text-xs text-outline mt-xs';
+                        }
+                    }
+                }
+            } catch (e) { /* silently ignore */ }
         } catch (err) {
             console.error('Failed to load profile/address details:', err);
         }
@@ -660,6 +685,20 @@
     updateCartBadge();
     checkCustomOrders();
 
+    async function loadAndOpenChat() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const openChat = urlParams.get('open_chat');
+        const conversationId = urlParams.get('conversation_id');
+        
+        if (openChat === 'true' && conversationId) {
+            await loadConversations(Number(conversationId));
+            window.openChatModal();
+        } else {
+            await loadConversations();
+        }
+    }
+    loadAndOpenChat();
+
     // ── T-12: Chat Modal Functions ──
     window.openChatModal = function() {
         const scrim = document.getElementById('chat-modal-scrim');
@@ -680,30 +719,76 @@
         if (e.target === this) window.closeChatModal();
     });
 
-    window.sendChatReply = function() {
+    let allConversations = [];
+    let currentActiveConvId = null;
+
+    async function loadConversations(openAndSelectId = null) {
+        try {
+            const res = await apiClient.get('/conversations');
+            if (res.data && res.data.conversations && res.data.conversations.length > 0) {
+                allConversations = res.data.conversations;
+                
+                // Update subtitle count
+                const subtitle = document.getElementById('chat-card-subtitle');
+                if (subtitle) {
+                    subtitle.textContent = `${allConversations.length} conversation${allConversations.length !== 1 ? 's' : ''}`;
+                }
+
+                let selectId = openAndSelectId || allConversations[0].conversation_id;
+                await switchConversation(selectId);
+            } else {
+                renderMockConversations();
+            }
+        } catch (e) {
+            console.error("Failed to load real conversations:", e);
+            renderMockConversations();
+        }
+    }
+
+    function renderMockConversations() {
+        switchConversationMock(0);
+    }
+
+    window.sendChatReply = async function() {
         const input = document.getElementById('chat-reply-input');
         const text = input.value.trim();
         if (!text) return;
 
-        const thread = document.getElementById('chat-thread');
-        const messagesContainer = thread.querySelector('.space-y-sm');
-        if (!messagesContainer) return;
+        if (currentActiveConvId) {
+            try {
+                const res = await apiClient.post(`/conversations/${currentActiveConvId}/messages`, {
+                    content: text,
+                    message_type: 'text'
+                });
+                if (res.data && res.data.success) {
+                    input.value = '';
+                    await switchConversation(currentActiveConvId);
+                }
+            } catch (err) {
+                console.error("Failed to send message:", err);
+                alert("Failed to send message.");
+            }
+        } else {
+            const thread = document.getElementById('chat-thread');
+            const messagesContainer = thread.querySelector('.space-y-sm');
+            if (!messagesContainer) return;
 
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        const msgEl = document.createElement('div');
-        msgEl.className = 'flex gap-sm justify-end';
-        msgEl.innerHTML = `
-            <div class="chat-bubble-me px-md py-sm max-w-[75%]">
-                <p class="text-sm">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
-                <p class="text-xs text-white/60 mt-xs text-right">${timeStr}</p>
-            </div>`;
-        messagesContainer.appendChild(msgEl);
+            const msgEl = document.createElement('div');
+            msgEl.className = 'flex gap-sm justify-end';
+            msgEl.innerHTML = `
+                <div class="chat-bubble-me px-md py-sm max-w-[75%]">
+                    <p class="text-sm">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+                    <p class="text-xs text-white/60 mt-xs text-right">${timeStr}</p>
+                </div>`;
+            messagesContainer.appendChild(msgEl);
 
-        input.value = '';
-        const area = document.getElementById('chat-conversation-area');
-        if (area) area.scrollTop = area.scrollHeight;
+            input.value = '';
+            const area = document.getElementById('chat-conversation-area');
+            if (area) area.scrollTop = area.scrollHeight;
+        }
     };
 
     window.handleChatKeydown = function(e) {
@@ -744,7 +829,88 @@
         }
     ];
 
-    window.switchConversation = function(idx) {
+    window.switchConversation = async function(idxOrId) {
+        if (typeof idxOrId === 'number' && idxOrId < 3 && allConversations.length === 0) {
+            switchConversationMock(idxOrId);
+            return;
+        }
+
+        const conversationId = idxOrId;
+        currentActiveConvId = conversationId;
+        try {
+            const res = await apiClient.get(`/conversations/${conversationId}`);
+            if (res.data) {
+                const convData = res.data;
+                const thread = document.getElementById('chat-thread');
+                if (!thread) return;
+
+                const msgHtml = convData.messages.map(m => {
+                    const isMe = m.sender_role === 'buyer';
+                    const timeStr = m.sent_at ? new Date(m.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    if (!isMe) {
+                        const avatarLetter = convData.other_party.name ? convData.other_party.name.substring(0, 1).toUpperCase() : 'S';
+                        const avatar = convData.other_party.avatar_url 
+                            ? `<img src="${convData.other_party.avatar_url}" class="w-full h-full object-cover rounded-full"/>`
+                            : avatarLetter;
+                        return `<div class="flex gap-sm">
+                            <div class="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold bg-[#D4E9C4] text-primary">${avatar}</div>
+                            <div class="chat-bubble-seller px-md py-sm max-w-[75%]">
+                                <p class="text-sm text-on-surface">${m.content || ''}</p>
+                                <p class="text-xs text-outline mt-xs">${timeStr}</p>
+                            </div>
+                        </div>`;
+                    } else {
+                        return `<div class="flex gap-sm justify-end">
+                            <div class="chat-bubble-me px-md py-sm max-w-[75%]">
+                                <p class="text-sm">${m.content || ''}</p>
+                                <p class="text-xs text-white/60 mt-xs text-right">${timeStr}</p>
+                            </div>
+                        </div>`;
+                    }
+                }).join('');
+
+                const otherBtns = allConversations.filter(c => c.conversation_id !== conversationId).map(c => {
+                    const avatarLetter = c.other_party_name ? c.other_party_name.substring(0, 1).toUpperCase() : 'S';
+                    const avatar = c.other_party_avatar 
+                        ? `<img src="${c.other_party_avatar}" class="w-full h-full object-cover rounded-full"/>`
+                        : avatarLetter;
+                    const formattedTime = c.last_message_at ? new Date(c.last_message_at).toLocaleDateString() : '';
+                    return `<button onclick="switchConversation(${c.conversation_id})" class="w-full text-left p-md rounded-xl hover:bg-surface-container transition-colors flex items-center gap-md mt-xs">
+                        <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold bg-[#E6E2D8] text-secondary">${avatar}</div>
+                        <div class="flex-grow min-w-0">
+                            <p class="font-semibold text-on-surface text-sm">${c.other_party_name}</p>
+                            <p class="text-xs text-on-surface-variant truncate">${c.last_message_preview}</p>
+                        </div>
+                        <span class="text-xs text-outline flex-shrink-0">${formattedTime}</span>
+                    </button>`;
+                }).join('');
+
+                const detailLabel = `${convData.listing.title} · Status: ${convData.status}`;
+
+                thread.innerHTML = `
+                    <div class="flex items-center gap-sm pb-md border-b border-outline-variant mb-md">
+                        <div class="w-8 h-8 rounded-full bg-[#D4E9C4] flex items-center justify-center text-sm font-bold text-primary">
+                            ${convData.other_party.avatar_url ? `<img src="${convData.other_party.avatar_url}" class="w-full h-full object-cover rounded-full"/>` : (convData.other_party.name ? convData.other_party.name.substring(0, 1).toUpperCase() : 'S')}
+                        </div>
+                        <div>
+                            <p class="font-semibold text-on-surface text-sm">${convData.other_party.name}</p>
+                            <p class="text-xs text-on-surface-variant">${detailLabel}</p>
+                        </div>
+                        <span class="ml-auto text-xs text-outline">Active</span>
+                    </div>
+                    <div class="space-y-sm">${msgHtml}</div>
+                    ${otherBtns ? `<div class="pt-md border-t border-outline-variant mt-md">${otherBtns}</div>` : ''}
+                `;
+
+                const area = document.getElementById('chat-conversation-area');
+                if (area) area.scrollTop = area.scrollHeight;
+            }
+        } catch (e) {
+            console.error("Failed to switch real conversation:", e);
+        }
+    };
+
+    window.switchConversationMock = function(idx) {
         const conv = mockConversations[idx];
         if (!conv) return;
         const thread = document.getElementById('chat-thread');

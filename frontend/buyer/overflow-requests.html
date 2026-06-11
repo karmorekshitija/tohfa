@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Manage Custom Order Requests | Tohfa</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "primary-container": "#8fa382",
+                        "inverse-surface": "#343029",
+                        "secondary-fixed-dim": "#cac6bd",
+                        "inverse-primary": "#b8cdaa",
+                        "on-surface": "#1f1b15",
+                        "on-tertiary-fixed-variant": "#593d5d",
+                        "on-secondary-fixed-variant": "#484740",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#516447",
+                        "surface-tint": "#516447",
+                        "tertiary-fixed": "#fcd6ff",
+                        "tertiary-container": "#b492b7",
+                        "on-primary-fixed-variant": "#3a4c31",
+                        "on-tertiary-container": "#452b4a",
+                        "inverse-on-surface": "#f8efe5",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#eae1d7",
+                        "tertiary": "#725476",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#fbf2e8",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444840",
+                        "outline": "#74786f",
+                        "tertiary-fixed-dim": "#dfbbe2",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#e6e2d8",
+                        "secondary-fixed": "#e6e2d8",
+                        "primary-fixed-dim": "#b8cdaa",
+                        "secondary": "#605e57",
+                        "on-secondary-fixed": "#1c1c16",
+                        "background": "#fff8f3",
+                        "surface-dim": "#e1d9cf",
+                        "primary-fixed": "#d4e9c4",
+                        "outline-variant": "#c4c8bd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7dd",
+                        "surface-bright": "#fff8f3",
+                        "on-primary-fixed": "#101f09",
+                        "on-background": "#1f1b15",
+                        "on-secondary-container": "#66645d",
+                        "surface-container": "#f6ece3",
+                        "on-primary-container": "#283920",
+                        "surface": "#fff8f3",
+                        "surface-container-highest": "#eae1d7",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2a122f",
+                        "gold-custom": "#D4AF37",
+                        "ivory-card": "#FFFDFB",
+                        "sage": "#8fa382",
+                        "sage-soft": "#F0F5EE",
+                        "terracotta": "#C87A53"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Work Sans"],
+                        "body-sm": ["Work Sans"],
+                        "headline-lg": ["EB Garamond"],
+                        "title-md": ["Work Sans"],
+                        "label-caps": ["Work Sans"],
+                        "display-lg": ["EB Garamond"],
+                        "body-md": ["Work Sans"],
+                        "data-price": ["Work Sans"],
+                        "title-serif": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .paper-texture {
+            background-color: #fff8f3;
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+        }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    </style>
+</head>
+<body class="paper-texture font-body-md text-on-surface antialiased min-h-screen pb-16">
+
+<!-- Top Navigation Bar -->
+<header class="w-full sticky top-0 z-50 bg-[#FAF7F0] border-b border-[#C1C9C0] flex justify-between items-center px-margin-desktop h-20 shadow-sm">
+  <div class="flex items-center flex-1">
+    <a class="font-['Playfair_Display'] text-[32px] italic text-[#255338] select-none" href="/buyer/home.html">
+      Tohfa<span class="text-[#D4AF37]">.</span>
+    </a>
+  </div>
+  
+  <nav class="hidden md:flex items-center justify-center gap-xl h-full">
+    <a href="/buyer/home.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px]">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+      <span>Home</span>
+    </a>
+    <a href="/buyer/categories.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px]">
+      <span class="material-symbols-outlined text-[20px]">category</span>
+      <span>Category</span>
+    </a>
+    <a href="/buyer/reels.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px]">
+      <span class="material-symbols-outlined text-[20px]">movie</span>
+      <span>Reels</span>
+    </a>
+    <a href="/buyer/profile.html" class="flex items-center gap-xs text-[#414942] hover:text-[#255338] transition-colors h-full px-1 font-['DM_Sans'] text-[16px]">
+      <span class="material-symbols-outlined text-[20px]">person</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <div class="flex-1 flex justify-end items-center gap-lg">
+    <a class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-[#EAE5D9] transition-colors" href="/buyer/cart.html">
+      <span class="material-symbols-outlined text-[#255338]">shopping_bag</span>
+    </a>
+  </div>
+</header>
+
+<!-- Main Container -->
+<main class="max-w-[1000px] mx-auto px-margin-mobile md:px-0 mt-12">
+    <!-- Breadcrumbs & Heading -->
+    <div class="mb-8">
+        <div class="flex items-center gap-2 text-xs text-outline font-medium mb-2">
+            <a href="/buyer/profile.html" class="hover:underline">My Account</a>
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            <span class="text-[#255338] font-bold">Overflow Requests</span>
+        </div>
+        <h1 class="font-headline-lg text-[40px] text-primary italic leading-tight">Your Overflow Requests</h1>
+        <p class="text-sm text-outline mt-2">Manage additional units or custom order timelines offered by our artisan partners when weekly production capacity was reached.</p>
+    </div>
+
+    <!-- Status Tabs -->
+    <div class="flex border-b border-[#C1C9C0] gap-8 mb-8 overflow-x-auto no-scrollbar" id="status-tabs">
+        <button data-status="all" class="tab-btn pb-3 px-1 border-b-2 border-primary text-primary font-bold whitespace-nowrap text-sm">All Requests</button>
+        <button data-status="pending" class="tab-btn pb-3 px-1 border-b-2 border-transparent text-[#605e57] hover:text-primary transition-colors whitespace-nowrap text-sm">Awaiting Response</button>
+        <button data-status="accepted" class="tab-btn pb-3 px-1 border-b-2 border-transparent text-[#605e57] hover:text-primary transition-colors whitespace-nowrap text-sm">Offers Received</button>
+        <button data-status="confirmed" class="tab-btn pb-3 px-1 border-b-2 border-transparent text-[#605e57] hover:text-primary transition-colors whitespace-nowrap text-sm">Confirmed</button>
+        <button data-status="declined" class="tab-btn pb-3 px-1 border-b-2 border-transparent text-[#605e57] hover:text-primary transition-colors whitespace-nowrap text-sm">Cancelled/Declined</button>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="py-16 flex flex-col items-center gap-4">
+        <div class="w-10 h-10 border-4 border-sage-soft border-t-primary rounded-full animate-spin"></div>
+        <p class="text-outline text-sm font-medium">Loading your requests...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden py-20 bg-white/70 border border-[#C1C9C0]/30 rounded-2xl flex flex-col items-center text-center p-8 gap-4 shadow-sm">
+        <span class="material-symbols-outlined text-sage text-5xl">event_busy</span>
+        <h3 class="text-xl font-bold font-headline-lg text-primary italic">No requests found</h3>
+        <p class="text-sm text-[#605e57] max-w-sm">You haven't requested any overflow deliveries in this category.</p>
+    </div>
+
+    <!-- Requests List -->
+    <div id="requests-list" class="space-y-6 hidden">
+        <!-- Request cards will be injected here -->
+    </div>
+</main>
+
+<!-- Dialog Modal for Confirmation/Actions -->
+<div id="action-dialog" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-sage-soft transform scale-95 transition-transform duration-300" id="dialog-content">
+        <h3 class="text-xl font-bold font-headline-lg text-primary italic mb-2" id="dialog-title">Confirm Offer?</h3>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6" id="dialog-message">Are you sure you want to finalize this request?</p>
+        <div class="flex gap-4 justify-end">
+            <button onclick="closeDialog()" class="px-5 py-2.5 bg-[#eae2d8] text-secondary font-bold text-sm rounded-lg hover:opacity-95 transition-all">Cancel</button>
+            <button id="dialog-confirm-btn" class="px-5 py-2.5 bg-primary text-white font-bold text-sm rounded-lg hover:opacity-90 transition-all">Yes, Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast notifications -->
+<div id="toast" class="hidden">
+    <span class="material-symbols-outlined" id="toast-icon">check_circle</span>
+    <span id="toast-msg">Success</span>
+</div>
+
+<script type="module">
+    import apiClient from '/src/utils/apiClient.js';
+
+    let allRequests = [];
+    let activeFilter = 'all';
+
+    function formatPaise(p) {
+        if (p == null) return '₹0';
+        return '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function formatDate(dt) {
+        if (!dt) return '—';
+        return new Date(dt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+    }
+
+    function showToast(msg, type='success') {
+        const t = document.getElementById('toast');
+        const icon = document.getElementById('toast-icon');
+        const text = document.getElementById('toast-msg');
+        
+        icon.textContent = type === 'success' ? 'check_circle' : 'error';
+        text.textContent = msg;
+        
+        t.className = `fixed bottom-8 right-8 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-primary text-white' : 'bg-error text-white'
+        }`;
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3500);
+    }
+
+    function getStatusBadge(s) {
+        const styles = {
+            pending: 'bg-amber-100 text-amber-800 border border-amber-200',
+            accepted: 'bg-blue-100 text-blue-800 border border-blue-200',
+            confirmed: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
+            declined: 'bg-rose-100 text-rose-800 border border-rose-200',
+            expired: 'bg-gray-100 text-gray-800 border border-gray-200',
+            cancelled: 'bg-gray-100 text-gray-800 border border-gray-200'
+        };
+        const labels = {
+            pending: 'Awaiting Artisan Review',
+            accepted: 'Offer Received',
+            confirmed: 'Confirmed & Scheduled',
+            declined: 'Declined by Artisan',
+            expired: 'Offer Expired',
+            cancelled: 'Cancelled'
+        };
+        return `<span class="text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider ${styles[s] || 'bg-gray-100 text-gray-800 border border-gray-200'}">${labels[s] || s}</span>`;
+    }
+
+    async function loadBuyerRequests() {
+        const loading = document.getElementById('loading-state');
+        const empty = document.getElementById('empty-state');
+        const list = document.getElementById('requests-list');
+
+        loading.classList.remove('hidden');
+        empty.classList.add('hidden');
+        list.classList.add('hidden');
+
+        try {
+            const res = await apiClient.get('/buyer/overflow-requests');
+            allRequests = res.data || [];
+            renderRequests();
+        } catch (err) {
+            console.error('Error fetching buyer requests:', err);
+            showToast('Unable to load overflow requests. Please try again.', 'error');
+            loading.classList.add('hidden');
+        }
+    }
+
+    function renderRequests() {
+        const loading = document.getElementById('loading-state');
+        const empty = document.getElementById('empty-state');
+        const list = document.getElementById('requests-list');
+
+        loading.classList.add('hidden');
+        list.innerHTML = '';
+
+        let filtered = allRequests;
+        if (activeFilter !== 'all') {
+            if (activeFilter === 'declined') {
+                filtered = allRequests.filter(r => ['declined', 'expired', 'cancelled'].includes(r.status));
+            } else {
+                filtered = allRequests.filter(r => r.status === activeFilter);
+            }
+        }
+
+        if (filtered.length === 0) {
+            empty.classList.remove('hidden');
+            return;
+        }
+
+        list.innerHTML = filtered.map(r => {
+            const isOffer = r.status === 'accepted';
+            const isPending = r.status === 'pending';
+            const price = r.original_price_paise * r.quantity;
+            const imageUrl = r.product_image || 'https://placehold.co/150x150/f4ede3/516447?text=Tohfa';
+
+            let offerBox = '';
+            if (isOffer) {
+                offerBox = `
+                    <div class="mt-4 p-4 bg-primary-container/10 rounded-xl border border-primary/20 flex flex-col gap-2">
+                        <div class="flex items-center gap-2 text-primary font-bold text-sm">
+                            <span class="material-symbols-outlined text-lg">calendar_month</span>
+                            Proposed Dispatch Date: ${formatDate(r.seller_proposed_date)}
+                        </div>
+                        ${r.seller_notes ? `<p class="text-xs text-on-surface-variant italic leading-relaxed mt-1">"${r.seller_notes}"</p>` : ''}
+                    </div>
+                `;
+            } else if (r.status === 'declined' && r.seller_notes) {
+                offerBox = `
+                    <div class="mt-4 p-4 bg-error-container/10 rounded-xl border border-error/20">
+                        <p class="text-xs text-error font-bold mb-1">Reason from Artisan:</p>
+                        <p class="text-xs text-on-surface-variant italic">"${r.seller_notes}"</p>
+                    </div>
+                `;
+            }
+
+            let actionButtons = '';
+            if (isOffer) {
+                actionButtons = `
+                    <div class="flex gap-3 mt-5 justify-end">
+                        <button onclick="triggerAction(${r.id}, 'cancel')" class="px-4 py-2 border border-error text-error text-xs rounded-lg font-bold hover:bg-error-container/20 transition-all">Cancel Request</button>
+                        <button onclick="triggerAction(${r.id}, 'confirm')" class="px-5 py-2 bg-primary text-white text-xs rounded-lg font-bold hover:opacity-90 transition-all shadow-sm">Confirm & Order</button>
+                    </div>
+                `;
+            } else if (isPending) {
+                actionButtons = `
+                    <div class="flex gap-3 mt-5 justify-end">
+                        <button onclick="triggerAction(${r.id}, 'cancel')" class="px-4 py-2 border border-error text-error text-xs rounded-lg font-bold hover:bg-error-container/20 transition-all">Cancel Request</button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="bg-white border border-[#C1C9C0]/40 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row gap-6 relative fade-in">
+                    <!-- Image -->
+                    <div class="w-24 h-24 rounded-xl border border-sage-soft overflow-hidden shadow-sm flex-shrink-0 bg-gray-50 self-start md:self-center">
+                        <img class="w-full h-full object-cover" src="${imageUrl}" alt="${r.product_title}"/>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0 flex flex-col justify-between">
+                        <div class="flex flex-col md:flex-row md:items-start justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold text-gold-custom uppercase tracking-wider">${r.seller_shop_name || 'Artisan Partner'}</span>
+                                <h3 class="font-headline-lg text-xl text-primary font-bold mt-0.5 leading-snug">${r.product_title}</h3>
+                                <p class="text-xs text-outline mt-1 font-data-price">Requested: ${r.quantity} unit${r.quantity !== 1 ? 's' : ''} on ${formatDate(r.created_at)}</p>
+                            </div>
+                            <div class="flex flex-col items-start md:items-end gap-1.5 flex-shrink-0">
+                                ${getStatusBadge(r.status)}
+                                <span class="font-data-price font-bold text-primary text-lg mt-0.5">${formatPaise(price)}</span>
+                            </div>
+                        </div>
+
+                        ${offerBox}
+                        ${actionButtons}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        list.classList.remove('hidden');
+    }
+
+    // Modal dialog trigger
+    window.triggerAction = function(requestId, action) {
+        const dialog = document.getElementById('action-dialog');
+        const content = document.getElementById('dialog-content');
+        const title = document.getElementById('dialog-title');
+        const message = document.getElementById('dialog-message');
+        const confirmBtn = document.getElementById('dialog-confirm-btn');
+
+        if (action === 'confirm') {
+            title.textContent = 'Accept & Finalize Order?';
+            message.textContent = 'Confirming this offer will immediately authorize the order with the proposed dispatch timeline. Any pre-authorized payment will be captured.';
+            confirmBtn.className = 'px-5 py-2.5 bg-primary text-white font-bold text-sm rounded-lg hover:opacity-90 transition-all';
+            confirmBtn.textContent = 'Confirm & Process Order';
+            confirmBtn.onclick = () => submitConfirm(requestId);
+        } else {
+            title.textContent = 'Cancel Request?';
+            message.textContent = 'Are you sure you want to cancel this overflow request? Any pending pre-authorized payment will be refunded immediately.';
+            confirmBtn.className = 'px-5 py-2.5 bg-error text-white font-bold text-sm rounded-lg hover:opacity-90 transition-all';
+            confirmBtn.textContent = 'Yes, Cancel';
+            confirmBtn.onclick = () => submitCancel(requestId);
+        }
+
+        // Show modal
+        dialog.classList.remove('pointer-events-none');
+        dialog.classList.add('opacity-100');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+    };
+
+    window.closeDialog = function() {
+        const dialog = document.getElementById('action-dialog');
+        const content = document.getElementById('dialog-content');
+        dialog.classList.add('pointer-events-none');
+        dialog.classList.remove('opacity-100');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+    };
+
+    async function submitConfirm(id) {
+        window.closeDialog();
+        try {
+            const res = await apiClient.post(`/buyer/overflow-requests/${id}/confirm`);
+            if (res.error) throw new Error(res.message);
+            showToast('Order successfully confirmed and placed!', 'success');
+            await loadBuyerRequests();
+        } catch (err) {
+            console.error(err);
+            showToast(err.message || 'Failed to confirm request', 'error');
+        }
+    }
+
+    async function submitCancel(id) {
+        window.closeDialog();
+        try {
+            const res = await apiClient.post(`/buyer/overflow-requests/${id}/cancel`);
+            if (res.error) throw new Error(res.message);
+            showToast('Request cancelled and refunded successfully.', 'success');
+            await loadBuyerRequests();
+        } catch (err) {
+            console.error(err);
+            showToast(err.message || 'Failed to cancel request', 'error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) {
+            window.location.href = '/auth/login.html';
+            return;
+        }
+
+        // Setup filter tab clicks
+        document.querySelectorAll('#status-tabs button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#status-tabs button').forEach(b => {
+                    b.className = "tab-btn pb-3 px-1 border-b-2 border-transparent text-[#605e57] hover:text-primary transition-colors whitespace-nowrap text-sm";
+                });
+                btn.className = "tab-btn pb-3 px-1 border-b-2 border-primary text-primary font-bold whitespace-nowrap text-sm";
+                activeFilter = btn.dataset.status;
+                renderRequests();
+            });
+        });
+
+        await loadBuyerRequests();
+    });
+</script>
+</body>
+</html>

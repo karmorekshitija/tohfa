@@ -1,596 +1,767 @@
-<!DOCTYPE html><html class="light" lang="en" style=""><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Profile &amp; Settings | TOFA Seller Studio</title>
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings | Seller Studio | Tohfa</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/components/seller-components.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..900&amp;family=Playfair+Display:wght@100..900&amp;display=swap" rel="stylesheet">
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-error-container": "#93000a",
-                        "primary-fixed": "#bceecb",
-                        "on-surface": "#1a1c1a",
-                        "inverse-surface": "#2e312e",
-                        "surface-tint": "#3a684c",
-                        "surface-container": "#edeeea",
-                        "error": "#ba1a1a",
-                        "surface-dim": "#d9dad6",
-                        "on-error": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-secondary-container": "#4d6a43",
-                        "primary-container": "#3d6b4f",
-                        "background": "#f9faf5",
-                        "on-tertiary-fixed": "#270550",
-                        "on-primary-fixed-variant": "#214f36",
-                        "on-primary-container": "#b7e9c6",
-                        "on-primary-fixed": "#002110",
-                        "surface-container-highest": "#e2e3df",
-                        "primary-fixed-dim": "#a0d2b0",
-                        "error-container": "#ffdad6",
-                        "inverse-on-surface": "#f0f1ed",
-                        "tertiary-fixed": "#ecdcff",
-                        "secondary-fixed": "#caecbb",
-                        "on-tertiary-fixed-variant": "#54387e",
-                        "surface": "#f9faf5",
-                        "secondary-fixed-dim": "#afd0a0",
-                        "secondary-container": "#c8e9b8",
-                        "tertiary-fixed-dim": "#d6baff",
-                        "surface-container-high": "#e7e9e4",
-                        "on-background": "#1a1c1a",
-                        "on-tertiary-container": "#e8d6ff",
-                        "outline-variant": "#c1c9c0",
-                        "primary": "#255338",
-                        "outline": "#717972",
-                        "surface-container-low": "#f3f4f0",
-                        "surface-variant": "#e2e3df",
-                        "inverse-primary": "#a0d2b0",
-                        "tertiary": "#573b81",
-                        "on-primary": "#ffffff",
-                        "tertiary-container": "#70539b",
-                        "on-surface-variant": "#414942",
-                        "on-secondary-fixed-variant": "#324e29",
-                        "surface-bright": "#f9faf5",
-                        "secondary": "#49663f",
-                        "on-tertiary": "#ffffff",
-                        "on-secondary-fixed": "#062103",
-                        "on-secondary": "#ffffff",
-                        "parchment": "#f7f3ec",
-                        "gold": "#c8973a",
-                        "sage": "#8faf82",
-                        "forest": "#3d6b4f",
-                        "violet": "#7b5ea7"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "margin-desktop": "64px",
-                        "gutter": "24px",
-                        "unit": "8px",
-                        "margin-mobile": "20px",
-                        "container-max-width": "1280px"
-                    },
-                    "fontFamily": {
-                        "label-caps": ["Playfair Display"],
-                        "display-lg-mobile": ["Playfair Display"],
-                        "body-lg": ["DM Sans"],
-                        "headline-md": ["Playfair Display"],
-                        "body-md": ["DM Sans"],
-                        "data-mono": ["Space Mono"],
-                        "display-lg": ["Playfair Display"],
-                        "body-sm": ["DM Sans"],
-                        "headline-sm": ["Playfair Display"]
-                    },
-                    "fontSize": {
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700"}],
-                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
-                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
-                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "data-mono": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
-                    }
-                },
-            },
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#255338",
+          "on-primary": "#ffffff",
+          "primary-container": "#3d6b4f",
+          "on-primary-container": "#b7e9c6",
+          "primary-fixed": "#bceecb",
+          "primary-fixed-dim": "#a0d2b0",
+          "on-primary-fixed": "#002110",
+          "on-primary-fixed-variant": "#214f36",
+          "secondary": "#49663f",
+          "secondary-container": "#c8e9b8",
+          "tertiary": "#573b81",
+          "tertiary-container": "#70539b",
+          "on-tertiary-container": "#e8d6ff",
+          "surface": "#fff8f3",
+          "surface-variant": "#ede1d1",
+          "surface-container": "#f9ecdc",
+          "surface-container-low": "#fff2e1",
+          "surface-container-high": "#f3e6d6",
+          "surface-container-highest": "#ede1d1",
+          "surface-container-lowest": "#ffffff",
+          "surface-bright": "#fff8f3",
+          "background": "#fff8f3",
+          "on-background": "#211b11",
+          "on-surface": "#211b11",
+          "on-surface-variant": "#414942",
+          "outline": "#717972",
+          "outline-variant": "#c1c9c0",
+          "error": "#ba1a1a",
+          "error-container": "#ffdad6",
+          "on-error-container": "#93000a",
+          "forest": "#3D6B4F",
+          "sage": "#8FAF82",
+          "gold": "#C8973A",
+          "violet": "#7B5EA7",
+          "parchment": "#F7F3EC"
+        },
+        fontFamily: {
+          "headline-lg": ["Playfair Display", "serif"],
+          "headline-md": ["Playfair Display", "serif"],
+          "display-hero": ["Playfair Display", "serif"],
+          "body-md": ["DM Sans", "sans-serif"],
+          "body-sm": ["DM Sans", "sans-serif"],
+          "label-caps": ["DM Sans", "sans-serif"],
+          "data-price": ["Space Mono", "monospace"]
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "0.5rem",
+          xl: "0.75rem",
+          "2xl": "1rem",
+          full: "9999px",
         }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .pressed-flower-bg {
-            background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
-            background-blend-mode: multiply;
-        }
-        .watermark-overlay {
-            mask-image: radial-gradient(circle at center, black 0%, transparent 100%);
-            opacity: 0.08;
-            pointer-events: none;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: #3D6B4F; }
-        input:checked + .slider:before { transform: translateX(20px); }
-        .violet-switch input:checked + .slider { background-color: #7B5EA7; }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF8240; border-radius: 10px; }
-    </style>
-</head>
-<body class="bg-background font-body-md text-on-surface selection:bg-secondary-container">
-<seller-layout active-tab="profile">
-<!-- Page Header -->
-<div class="mb-10">
-    <h1 class="font-headline-md text-3xl mb-1 text-primary font-bold">Profile Settings</h1>
-    <p class="text-sm text-on-surface-variant">Manage your seller studio profile and preferences.</p>
-</div>
-<!-- Content Canvas -->
-<div class="max-w-[1100px] mx-auto px-gutter py-12 space-y-gutter relative">
-<!-- Character Accent: Bunny -->
-<div class="fixed bottom-0 right-12 w-32 z-0 pointer-events-none opacity-40">
-<img alt="Artisan bunny" class="w-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG5qNUrrR8bGtop9xUMsCSJHYiQUQdUarMIcH-BwnWJA6Sk6YiDo27Yl_P2w74O82BSjban8I50YsOLFMNKBb7KUZHW-94r9q0Hicc-NOn3kfrFryx9AKq5FWHPD9iJ0yq1hsnKT9hW2Y2PJLYp6d3k0jHtmpU4hNKStjS64j1wl4JjCnHKOkHPaUt3f8XeOx6gSB-AZKo81a0GOmdyZiSSvNE8Efk9CrQGHds7vfr4_K26iTiRBO4DfYL7Sjt1_3in8LZdXPsAvo">
-</div>
-<!-- Profile Card -->
-<section class="bg-parchment border border-sage/40 rounded-xl p-8 relative overflow-hidden shadow-sm">
-<!-- Watermark -->
-<div class="absolute -bottom-10 -right-10 w-64 h-64 watermark-overlay">
-<span class="material-symbols-outlined text-[200px] text-forest">eco</span>
-</div>
-<div class="relative z-10">
-<div class="flex flex-col md:flex-row gap-10 items-start">
-<div class="relative group">
-<div class="w-24 h-24 rounded-full p-1 border-2 border-sage border-dashed">
-<div class="w-full h-full rounded-full overflow-hidden border border-sage relative">
-<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a female botanical artisan in a sunlit studio, surrounded by pressed flowers and glass terrariums. The lighting is soft and golden, reflecting a serene and intellectual mood. The style is minimalist editorial with a warm cream and sage green color palette, emphasizing tactile organic details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD963NqOAcbSY5p2B4ObjpY658eFy9s3ikun76MehPV4P49nXtBBxMPbMWtQymvX1xjeJUJQt7N7D-dV7LXn_-hX2qeFUJpXnszp_GxEFdfXFaAaW3z0VxLpEXxdDpbj08mq6DKvaIVr8Qyd77hnLqe-Llrix6IDQT0KXrLbwowiKMSZa3SpQHEfIbPc9qtOHE2knAvwamVQjZdWh9RGCWEAyAjhVoiyNblij74kr7lZ9gtVUhxOsH_GL3LWcmpcrSs0dMnp7ZUpw4">
-<div class="absolute inset-0 bg-forest/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-<span class="material-symbols-outlined text-white">photo_camera</span>
-</div>
-</div>
-</div>
-<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-4 border-parchment rounded-full"></div>
-</div>
-<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-<div class="space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Display Name</label>
-<input class="w-full bg-white/50 border-sage/30 rounded-lg font-headline-sm text-headline-sm focus:ring-forest focus:border-forest px-4 py-2" type="text" value="Elara Vance">
-</div>
-<div class="space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Handle</label>
-<div class="flex items-center">
-<span class="bg-sage/10 border border-r-0 border-sage/30 px-3 py-2 rounded-l-lg font-data-mono text-data-mono text-forest">@</span>
-<input class="w-full bg-white/50 border-sage/30 rounded-r-lg font-data-mono text-data-mono focus:ring-forest focus:border-forest px-4 py-2" type="text" value="botanical_atelier">
-</div>
-</div>
-<div class="col-span-full space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Bio</label>
-<textarea class="w-full bg-white/50 border-sage/30 rounded-lg font-body-md text-body-md focus:ring-forest focus:border-forest px-4 py-2" rows="3">Curating rare mosses and preserved ferns for the discerning collector. Based in the misty highlands.</textarea>
-</div>
-<div class="space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Location</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-sage text-sm">location_on</span>
-<input class="w-full bg-white/50 border-sage/30 rounded-lg font-body-md text-body-md focus:ring-forest focus:border-forest pl-10 pr-4 py-2" type="text" value="The Misty Highlands, UK">
-</div>
-</div>
-<div class="space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Website</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-sage text-sm">link</span>
-<input class="w-full bg-white/50 border-sage/30 rounded-lg font-body-md text-body-md focus:ring-forest focus:border-forest pl-10 pr-4 py-2" type="text" value="www.elara-botanicals.art">
-</div>
-</div>
-<div class="col-span-full space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Artisan story</label>
-<div class="border border-sage/30 rounded-lg bg-white/50 p-4 min-h-[120px] font-body-md italic text-on-surface-variant/80">
-                                    My journey began in the old family herbarium... <span class="text-gold">|</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Side-by-Side Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
-<!-- Notifications Card -->
-<section class="bg-parchment border border-sage/40 rounded-xl p-8 shadow-sm">
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-forest">notifications</span>
-<h3 class="font-headline-sm text-headline-sm text-primary">Notifications</h3>
-</div>
-<div class="space-y-4">
-<div class="flex items-center justify-between py-2 border-b border-sage/10">
-<span class="font-body-md">New order alerts</span>
-<label class="switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="flex items-center justify-between py-2 border-b border-sage/10">
-<span class="font-body-md">Low stock warnings</span>
-<label class="switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="flex items-center justify-between py-2 border-b border-sage/10">
-<span class="font-body-md">Direct messages</span>
-<label class="switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="flex items-center justify-between py-2 border-b border-sage/10">
-<span class="font-body-md">Review notifications</span>
-<label class="switch"><input type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="flex items-center justify-between py-2 border-b border-sage/10">
-<span class="font-body-md">Payout confirmations</span>
-<label class="switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="flex items-center justify-between py-2 border-b border-sage/10">
-<span class="font-body-md">ZAI Mode suggestions</span>
-<label class="switch violet-switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-</div>
-</section>
-<!-- App Settings Card -->
-<section class="bg-parchment border border-sage/40 rounded-xl p-8 shadow-sm">
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-forest">tune</span>
-<h3 class="font-headline-sm text-headline-sm text-primary">App Settings</h3>
-</div>
-<div class="space-y-6">
-<div class="flex items-center justify-between">
-<span class="font-body-md">Interface Sound Effects</span>
-<label class="switch"><input type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Default Language</label>
-<select class="w-full bg-white/50 border-sage/30 rounded-lg font-body-md focus:ring-forest focus:border-forest px-4 py-2 appearance-none">
-<option>English (UK)</option>
-<option>French (FR)</option>
-<option>Japanese (JP)</option>
-</select>
-</div>
-<div class="space-y-1">
-<label class="font-label-caps text-label-caps text-on-surface-variant">Store Currency</label>
-<select class="w-full bg-white/50 border-sage/30 rounded-lg font-data-mono text-data-mono focus:ring-forest focus:border-forest px-4 py-2 appearance-none">
-<option>INR (₹) - Indian Rupee</option>
-<option>USD ($) - US Dollar</option>
-<option>GBP (£) - British Pound</option>
-</select>
-</div>
-<div class="p-4 rounded-xl bg-tertiary-container/10 border border-tertiary/20 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-violet" style="font-variation-settings: &quot;FILL&quot; 1;">auto_awesome</span>
-<div class="flex flex-col">
-<span class="font-bold text-violet font-body-md">ZAI Mode Master</span>
-<span class="text-[10px] text-on-tertiary-fixed-variant">AI-driven botanical curation</span>
-</div>
-</div>
-<label class="switch violet-switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-<div class="flex items-center justify-between pt-2 border-t border-sage/10">
-<span class="font-body-md font-semibold text-forest">Accept New Orders</span>
-<label class="switch"><input checked="" type="checkbox"><span class="slider"></span></label>
-</div>
-</div>
-</section>
-</div>
-<!-- Payout Card -->
-<section class="bg-parchment border border-sage/40 rounded-xl p-8 shadow-sm">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-<div>
-<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-2">Current Balance</h3>
-<div class="flex items-baseline gap-2">
-<span class="font-data-mono text-[40px] leading-none text-primary font-bold">₹6,340</span>
-<span class="text-sage font-data-mono">.00</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">Next scheduled payout: <span class="font-bold">Oct 12th</span></p>
-</div>
-<div class="w-full md:w-auto p-4 rounded-lg bg-secondary-container/30 border border-sage/20 flex items-center justify-between gap-8">
-<div>
-<p class="font-label-caps text-[10px] text-on-secondary-fixed-variant">Payout Method</p>
-<p class="font-data-mono text-body-md tracking-tighter">elarav***@upi</p>
-</div>
-<a class="text-gold font-label-caps text-label-caps underline hover:text-primary transition-colors" href="#">Change</a>
-</div>
-</div>
-<div class="border border-sage/20 rounded-lg overflow-hidden">
-<button class="w-full flex justify-between items-center px-6 py-4 bg-white/30 hover:bg-white/50 transition-colors" onclick="toggleAccordion('payoutHistory')">
-<span class="font-label-caps text-label-caps text-on-surface-variant">Payout History</span>
-<span class="material-symbols-outlined transition-transform" id="accordionIcon">expand_more</span>
-</button>
-<div class="hidden px-6 pb-6 bg-white/30 overflow-x-auto" id="payoutHistory">
-<table class="w-full font-data-mono text-data-mono mt-4">
-<thead>
-<tr class="text-left border-b border-sage/20 text-on-surface-variant/60">
-<th class="pb-3 font-normal">Date</th>
-<th class="pb-3 font-normal">Ref ID</th>
-<th class="pb-3 font-normal">Amount</th>
-<th class="pb-3 font-normal text-right">Status</th>
-</tr>
-</thead>
-<tbody class="text-on-surface">
-<tr class="border-b border-sage/10">
-<td class="py-3">28 Sep 2023</td>
-<td class="py-3">TXN-4920</td>
-<td class="py-3">₹4,200</td>
-<td class="py-3 text-right text-green-600">Settled</td>
-</tr>
-<tr class="border-b border-sage/10">
-<td class="py-3">14 Sep 2023</td>
-<td class="py-3">TXN-3188</td>
-<td class="py-3">₹2,850</td>
-<td class="py-3 text-right text-green-600">Settled</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<!-- Catalog Import Card -->
-<section class="bg-parchment border border-sage/40 rounded-xl p-8 shadow-sm"><div class="flex items-center justify-between mb-8">
-    <div>
-        <h3 class="font-headline-sm text-headline-sm text-primary">Import Botanical Reels</h3>
-        <p class="font-body-sm text-body-sm text-on-surface-variant">Synchronize your creative journey from social platforms.</p>
-    </div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-    <!-- Instagram Reels Card -->
-    <div class="bg-white/40 border border-sage/20 rounded-xl p-6 flex flex-col items-center text-center hover:bg-white/60 transition-all">
-        <div class="w-12 h-12 rounded-full bg-secondary-container/50 flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-forest text-3xl">video_library</span>
-        </div>
-        <h4 class="font-headline-sm text-lg text-primary mb-2">Instagram Reels</h4>
-        <p class="font-body-sm text-on-surface-variant mb-6">Sync your latest botanical stories and reels directly to your studio.</p>
-        <button class="w-full py-2 border border-sage text-forest font-label-caps text-label-caps rounded-full hover:bg-sage hover:text-white transition-colors">
-            Connect Account
-        </button>
-    </div>
-    <!-- YouTube Reels Card -->
-    <div class="bg-white/40 border border-sage/20 rounded-xl p-6 flex flex-col items-center text-center hover:bg-white/60 transition-all">
-        <div class="w-12 h-12 rounded-full bg-secondary-container/50 flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-forest text-3xl">movie_filter</span>
-        </div>
-        <h4 class="font-headline-sm text-lg text-primary mb-2">YouTube Reels</h4>
-        <p class="font-body-sm text-on-surface-variant mb-6">Import your high-definition botanical shorts and creative processes.</p>
-        <button class="w-full py-2 border border-sage text-forest font-label-caps text-label-caps rounded-full hover:bg-sage hover:text-white transition-colors">
-            Connect Account
-        </button>
-    </div>
-</div></section>
-<!-- Account & Security Card -->
-<section class="bg-parchment border border-sage/40 rounded-xl p-8 shadow-sm">
-<div class="flex items-center gap-2 mb-8">
-<span class="material-symbols-outlined text-forest">security</span>
-<h3 class="font-headline-sm text-headline-sm text-primary">Account &amp; Security</h3>
-</div>
-<div class="space-y-6">
-<div class="flex items-center justify-between p-4 bg-white/40 rounded-lg">
-<div class="flex flex-col">
-<span class="font-label-caps text-[10px] text-on-surface-variant">Registered Email</span>
-<div class="flex items-center gap-2">
-<span class="font-body-md">elara.vance@atelier.studio</span>
-<span class="material-symbols-outlined text-gold text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
-</div>
-</div>
-<button class="text-gold font-label-caps text-label-caps underline hover:text-primary">Change</button>
-</div>
-<div class="flex items-center justify-between p-4 bg-white/40 rounded-lg">
-<div class="flex flex-col">
-<span class="font-label-caps text-[10px] text-on-surface-variant">Account Password</span>
-<span class="font-data-mono text-xl leading-none">••••••••••••</span>
-</div>
-<button class="text-gold font-label-caps text-label-caps underline hover:text-primary">Reset</button>
-</div>
-<div class="flex items-center justify-between p-4 bg-white/40 rounded-lg">
-<div class="flex flex-col">
-<span class="font-label-caps text-[10px] text-on-surface-variant">Phone Verification</span>
-<span class="font-body-md text-on-surface-variant">+44 •••• ••• 492</span>
-</div>
-<button class="text-gold font-label-caps text-label-caps underline hover:text-primary">Update</button>
-</div>
-<div class="pt-6 border-t border-sage/20">
-<div class="flex items-center justify-between p-4 hover:bg-error-container/10 rounded-lg cursor-pointer transition-colors group">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-rose-300 group-hover:text-error transition-colors">heart_broken</span>
-<span class="font-body-md text-on-surface-variant/70 group-hover:text-error transition-colors">Close TOFA Seller Account</span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant/30 text-sm">chevron_right</span>
-</div>
-</div>
-</div>
-</section>
-</div>
-</seller-layout>
-<script>
-        function toggleAccordion(id) {
-            const content = document.getElementById(id);
-            const icon = document.getElementById('accordionIcon');
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                content.classList.add('hidden');
-                icon.style.transform = 'rotate(0deg)';
-            }
-        }
-
-        // Minimal interactivity for switches
-        document.querySelectorAll('input[type="checkbox"]').forEach(input => {
-            input.addEventListener('change', () => {
-                // Future logic for saving state
-                console.log('Setting changed:', input.checked);
-            });
-        });
-    </script>
-
-
-
-<!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
-  
-  // 1. Auth check: if no token is found, redirect to login
-  if (!token && (window.location.protocol.startsWith('http'))) {
-    window.location.href = '/auth/login.html?next=' + encodeURIComponent(window.location.pathname);
-    return;
-  }
-  
-  // 2. Handle ZAI Mode State & UI Sync
-  let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
-  updateZaiUI(zaiEnabled);
-  
-  if (token) {
-    fetch('/api/seller/dashboard', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data && data.success && data.data && data.data.seller) {
-        const seller = data.data.seller;
-        const dbEnabled = !!seller.zai_mode_enabled;
-        localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
-        updateZaiUI(dbEnabled);
-        if (seller.avatar_url) {
-          const avatarEl = document.getElementById('sidebar-avatar');
-          if (avatarEl) avatarEl.src = seller.avatar_url;
-        }
-      }
-    })
-    .catch(err => console.error("Error syncing ZAI Mode:", err));
-  }
-  
-  // 3. Set up click listener on toggle button
-  const toggleBtn = document.getElementById('zai-toggle-btn');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      const isEnabled = toggleBtn.classList.contains('bg-tertiary');
-      const nextEnabled = !isEnabled;
-      
-      updateZaiUI(nextEnabled);
-      localStorage.setItem('zai_mode', nextEnabled ? 'true' : 'false');
-      
-      if (token) {
-        fetch('/api/seller/zai-mode', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ enabled: nextEnabled })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (!data || !data.success) {
-            console.error("Failed to update ZAI Mode in DB");
-          }
-        })
-        .catch(err => console.error("Error updating ZAI Mode:", err));
-      }
-    });
-  }
-  
-  function updateZaiUI(enabled) {
-    const btn = document.getElementById('zai-toggle-btn');
-    if (btn) {
-      if (enabled) {
-        btn.classList.add('bg-tertiary', 'text-white');
-        btn.classList.remove('text-tertiary');
-        const icon = btn.querySelector('.material-symbols-outlined');
-        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
-      } else {
-        btn.classList.remove('bg-tertiary', 'text-white');
-        btn.classList.add('text-tertiary');
-        const icon = btn.querySelector('.material-symbols-outlined');
-        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
       }
     }
-    
-    // Find all zai tips / cards on the page and show/hide them
-    const selectors = [
-      '.zai-tip-card',
-      '[class*="zai-tip"]',
-      '[id*="zai-tip"]',
-      'aside .bg-tertiary-container\/10',
-      'section .bg-tertiary-fixed-dim\/40',
-      'div .bg-on-tertiary-fixed\/10'
-    ];
-    selectors.forEach(sel => {
-      try {
-        const els = document.querySelectorAll(sel);
-        els.forEach(el => {
-          if (el.id === 'zai-toggle-btn' || el.closest('#zai-toggle-btn')) return;
-          el.style.display = enabled ? '' : 'none';
-        });
-      } catch (e) {}
-    });
   }
-  
-  // 4. Handle View Store button relative link click or navigation
-  const viewStoreBtn = document.getElementById('view-store-btn');
-  if (viewStoreBtn) {
-    viewStoreBtn.addEventListener('click', () => {
-      if (token) {
-        fetch('/api/seller/profile', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.success && data.data && data.data.store_slug) {
-            window.location.href = '/' + data.data.store_slug;
-          } else {
-            window.location.href = '/';
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          window.location.href = '/';
-        });
-      } else {
-        window.location.href = '/';
-      }
-    });
+</script>
+<style>
+  body { font-family: 'DM Sans', sans-serif; background-color: #fff8f3; color: #211b11; }
+  h1, h2, h3, .font-headline { font-family: 'Playfair Display', serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Tab bar — matches filter tabs in reviews / analytics */
+  .tab-btn {
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    color: #414942;
+    background: transparent;
+    border: 1px solid rgba(193, 201, 192, 0.4);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(61, 107, 79, 0.04);
+  }
+  .tab-btn:hover {
+    color: #3D6B4F;
+    border-color: #8FAF82;
+    background: rgba(247, 243, 236, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(61, 107, 79, 0.08);
+  }
+  .tab-btn.active {
+    background: #3D6B4F;
+    color: #FFFFFF;
+    border-color: #3D6B4F;
+    box-shadow: 0 4px 12px rgba(61, 107, 79, 0.2);
+    transform: translateY(-2px);
   }
 
-  // 5. Logout Action
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
-      if (token && refresh) {
-        fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ refresh_token: refresh })
-        }).catch(err => console.error('Logout failed:', err));
-      }
-      sessionStorage.clear();
-      window.location.href = '/auth/login.html';
+  /* Skeleton */
+  @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+  .skeleton { background:linear-gradient(90deg,#ede1d1 25%,#f3e6d6 50%,#ede1d1 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
+
+  /* Toast */
+  #toast { transition:all .3s ease; }
+
+  /* Card section — matches other tabs */
+  .card-section {
+    background: #ffffff;
+    border: 1px solid rgba(193,201,192,.4);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 12px rgba(37,83,56,.07);
+  }
+
+  /* Setting row */
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #fff8f3;
+    border-radius: 10px;
+    border: 1px solid rgba(193,201,192,.3);
+    transition: background .15s;
+  }
+  .setting-row:hover { background: #fff2e1; }
+
+  /* Input */
+  .field-input { width:100%; background:#fff8f3; border:1px solid #c1c9c0; border-radius:8px; padding:10px 14px; font-size:14px; color:#211b11; transition:border-color .15s, box-shadow .15s; outline:none; font-family:'DM Sans',sans-serif; }
+  .field-input:focus { border-color:#255338; box-shadow:0 0 0 3px rgba(37,83,56,.10); }
+  .field-input:disabled { background:#ede1d1; color:#717972; cursor:not-allowed; }
+  .field-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#414942; margin-bottom:5px; display:block; font-family:'DM Sans',sans-serif; }
+  .field-error { font-size:11px; color:#C0392B; margin-top:3px; min-height:16px; }
+
+  /* Progress bar */
+  .progress-bar-track { height:4px; background:#ede1d1; border-radius:4px; overflow:hidden; margin-top:6px; }
+  .progress-bar-fill { height:100%; background:#255338; border-radius:4px; transition:width .5s ease; }
+
+  /* Modal */
+  .modal-overlay { position:fixed; inset:0; background:rgba(33,27,17,.45); backdrop-filter:blur(4px); z-index:200; display:flex; align-items:center; justify-content:center; padding:16px; }
+  .modal-overlay.hidden { display:none !important; }
+
+  /* Number input */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { opacity:1; }
+
+  /* Verified dot */
+  .verified-dot { width:8px; height:8px; background:#22c55e; border-radius:50%; display:inline-block; flex-shrink:0; }
+
+  /* Reset success inline */
+  #reset-success { display:none; font-size:12px; color:#255338; margin-top:4px; font-weight:600; }
+  #reset-success.show { display:block; }
+
+  /* Toggle switch */
+  .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #c1c9c0; transition: .3s; border-radius: 34px; }
+  .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+  input:checked + .slider { background-color: #255338; }
+  input:checked + .slider:before { transform: translateX(20px); }
+
+  @media(max-width:768px) {
+    .two-col { grid-template-columns:1fr !important; }
+    .card-section { padding:20px; }
+  }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen opacity-0 transition-opacity duration-300" id="body-content">
+
+<seller-layout active-tab="profile">
+
+<!-- Toast -->
+<div id="toast" class="fixed top-20 right-6 z-[300] hidden items-center gap-3 px-5 py-3 rounded-2xl shadow-lg text-sm font-semibold">
+  <span class="material-symbols-outlined text-lg" id="toast-icon"></span>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- Close Account Modal -->
+<div id="close-account-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Close account confirmation">
+  <div class="bg-surface-bright rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+    <button id="close-account-modal-x" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="flex items-center gap-3 mb-5">
+      <div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-error text-xl" style="font-variation-settings:'FILL' 1">warning</span>
+      </div>
+      <h3 class="font-headline text-2xl text-error">Close Seller Account</h3>
+    </div>
+    <p class="text-sm text-on-surface-variant mb-1">This action is <strong class="text-on-surface">permanent and irreversible.</strong> All your listings, orders, analytics, and data will be permanently deleted.</p>
+    <p class="text-sm text-on-surface-variant mb-5">To confirm, type <code class="bg-error-container text-on-error-container px-1.5 py-0.5 rounded font-mono text-xs font-bold">DELETE</code> in the box below:</p>
+    <input id="confirm-delete-input" type="text" placeholder="Type DELETE to confirm" class="field-input mb-2" autocomplete="off" id="confirm-delete-input"/>
+    <p id="err-confirm-delete" class="field-error mb-4"></p>
+    <div class="flex justify-end gap-3">
+      <button id="cancel-close-account" class="px-6 py-2.5 rounded-full border border-outline-variant text-sm font-semibold hover:bg-surface-container transition-all">Cancel</button>
+      <button id="confirm-close-account" class="px-8 py-2.5 rounded-full bg-error text-white text-sm font-semibold opacity-40 cursor-not-allowed transition-all flex items-center gap-2" disabled>
+        <span class="material-symbols-outlined text-base">delete_forever</span>Close My Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Page Header — matches all other tabs -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-6 flex-shrink-0">
+  <div>
+    <h1 class="font-headline-lg text-primary text-4xl font-bold">Profile & Settings</h1>
+    <p class="text-on-surface-variant text-base font-body-md mt-2">Manage your account security and selling preferences</p>
+  </div>
+</div>
+
+<!-- Tab Navigation — same style as filter tabs in reviews / analytics -->
+<div class="flex items-center mb-8 gap-4 py-1">
+  <a href="/seller/profile.html" class="tab-btn" id="tab-profile">Profile</a>
+  <a href="/seller/profile-settings.html" class="tab-btn active" id="tab-settings">Settings</a>
+</div>
+
+<!-- Loading Skeleton -->
+<div id="loading-state" class="space-y-6">
+  <div class="skeleton h-48 rounded-2xl"></div>
+  <div class="skeleton h-64 rounded-2xl"></div>
+</div>
+
+<!-- Error State -->
+<div id="error-state" class="hidden flex flex-col items-center justify-center py-24 gap-4">
+  <span class="material-symbols-outlined text-5xl text-error">error_outline</span>
+  <p class="text-on-surface-variant text-center text-sm" id="error-message">Failed to load settings.</p>
+  <button id="retry-btn" class="bg-custom-primary text-on-primary py-2.5 px-8 rounded-full font-semibold text-sm hover:opacity-90 transition-all">Try Again</button>
+</div>
+
+<!-- Settings Content -->
+<div id="settings-content" class="hidden space-y-7">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION A: ACCOUNT & SECURITY                               -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="card-section">
+    <div class="flex items-center gap-2 mb-7">
+      <span class="material-symbols-outlined text-primary">security</span>
+      <h2 class="font-headline text-2xl">Account &amp; Security</h2>
+    </div>
+
+    <div class="space-y-3">
+      <!-- Registered Email -->
+      <div class="setting-row">
+        <div>
+          <p class="field-label" style="margin-bottom:2px;">Registered Email</p>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-sm font-semibold text-on-surface" id="account-email">—</span>
+            <div class="flex items-center gap-1.5 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
+              <span class="verified-dot"></span>
+              <span class="text-xs font-semibold text-green-700">Verified</span>
+            </div>
+          </div>
+        </div>
+        <!-- read-only, no edit button per spec -->
+      </div>
+
+      <!-- Account Password -->
+      <div class="setting-row">
+        <div>
+          <p class="field-label" style="margin-bottom:2px;">Account Password</p>
+          <span class="text-xl leading-none tracking-widest text-on-surface-variant select-none">••••••••••</span>
+          <p id="reset-success" class="reset-success">✓ Reset link sent to your email</p>
+        </div>
+        <button id="reset-password-btn" class="text-xs font-bold text-primary uppercase tracking-wider hover:underline transition-all flex-shrink-0 ml-4">
+          Reset
+        </button>
+      </div>
+
+      <!-- Close Seller Account -->
+      <div class="pt-3 border-t border-outline-variant/25">
+        <button id="open-close-account-btn" class="w-full setting-row cursor-pointer hover:bg-error-container/10 transition-colors text-left group border-transparent">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-error-container/40 flex items-center justify-center flex-shrink-0 group-hover:bg-error-container transition-colors">
+              <span class="material-symbols-outlined text-error text-base" style="font-variation-settings:'FILL' 1">warning</span>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-error">Close Seller Account</p>
+              <p class="text-xs text-on-surface-variant">Permanently delete your account and all data</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant text-base flex-shrink-0">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION B: SELLING LIMITS                                   -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="card-section">
+    <div class="flex items-center gap-2 mb-7">
+      <span class="material-symbols-outlined text-primary">speed</span>
+      <h2 class="font-headline text-2xl">Selling Limits</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 two-col">
+      <!-- Daily Limit -->
+      <div class="bg-surface-bright rounded-xl p-5 border border-outline-variant/25">
+        <label class="field-label" for="daily-limit">Daily Limit</label>
+        <div class="flex items-center gap-3 mt-1">
+          <input type="number" id="daily-limit" class="field-input w-28 text-center text-lg font-bold" min="1" value="50" placeholder="50"/>
+          <span class="text-sm text-on-surface-variant">Max orders per day</span>
+        </div>
+        <p class="field-error" id="err-daily-limit"></p>
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs text-on-surface-variant mb-1">
+            <span id="daily-usage-label">— sold today</span>
+            <span id="daily-usage-pct">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="daily-progress-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Limit -->
+      <div class="bg-surface-bright rounded-xl p-5 border border-outline-variant/25">
+        <label class="field-label" for="weekly-limit">Weekly Limit</label>
+        <div class="flex items-center gap-3 mt-1">
+          <input type="number" id="weekly-limit" class="field-input w-28 text-center text-lg font-bold" min="1" value="200" placeholder="200"/>
+          <span class="text-sm text-on-surface-variant">Max orders per week</span>
+        </div>
+        <p class="field-error" id="err-weekly-limit"></p>
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-xs text-on-surface-variant mb-1">
+            <span id="weekly-usage-label">— sold this week</span>
+            <span id="weekly-usage-pct">—%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="weekly-progress-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly >= Daily validation hint -->
+    <p class="text-xs text-on-surface-variant mt-3 flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-sm">info</span>
+      Weekly limit must be greater than or equal to the daily limit.
+    </p>
+
+    <div class="flex justify-end pt-6 mt-4 border-t border-outline-variant/30">
+      <button id="save-limits-btn" type="button" class="bg-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">save</span>Save Limits
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION C: BANK ACCOUNT & PAYOUTS                           -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="card-section">
+    <div class="flex items-center gap-2 mb-7">
+      <span class="material-symbols-outlined text-primary">account_balance</span>
+      <h2 class="font-headline text-2xl">Bank Account Details</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 two-col mb-6">
+      <div>
+        <label class="field-label" for="bank-account-holder">Account Holder Name</label>
+        <input type="text" id="bank-account-holder" class="field-input" placeholder="e.g. Aarav Sharma"/>
+        <p class="field-error" id="err-bank-account-holder"></p>
+      </div>
+
+      <div>
+        <label class="field-label" for="bank-name">Bank Name</label>
+        <input type="text" id="bank-name" class="field-input" placeholder="e.g. State Bank of India"/>
+        <p class="field-error" id="err-bank-name"></p>
+      </div>
+
+      <div>
+        <label class="field-label" for="bank-account-number">Account Number</label>
+        <input type="text" id="bank-account-number" class="field-input" placeholder="e.g. 123456789012"/>
+        <p class="field-error" id="err-bank-account-number"></p>
+      </div>
+
+      <div>
+        <label class="field-label" for="bank-ifsc-code">IFSC Code</label>
+        <input type="text" id="bank-ifsc-code" class="field-input" placeholder="e.g. SBIN0001234"/>
+        <p class="field-error" id="err-bank-ifsc-code"></p>
+      </div>
+    </div>
+
+    <div class="flex justify-end pt-6 mt-4 border-t border-outline-variant/30">
+      <button id="save-bank-btn" type="button" class="bg-primary text-on-primary py-2.5 px-10 rounded-full font-semibold text-sm hover:opacity-90 transition-all shadow-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-base">save</span>Save Bank Details
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<footer class="border-t border-outline-variant/30 py-8 bg-surface-container-low text-center mt-12">
+  <p class="text-xs text-on-surface-variant font-medium tracking-widest uppercase">© 2026 Tohfa Artisan Studio. All rights reserved.</p>
+</footer>
+
+</seller-layout>
+
+<script>
+const API = window.location.origin;
+
+// ─── Toast ────────────────────────────────────────────────────────────────────
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icon  = document.getElementById('toast-icon');
+  const msg   = document.getElementById('toast-msg');
+  icon.textContent = type === 'success' ? 'check_circle' : 'error';
+  msg.textContent  = message;
+  toast.className  = `fixed top-20 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg text-sm font-semibold transition-all ${
+    type === 'success'
+      ? 'bg-primary-fixed text-on-primary-container border border-primary-fixed-dim'
+      : 'bg-error-container text-on-error-container border border-error/30'
+  }`;
+  toast.classList.remove('hidden');
+  setTimeout(() => toast.classList.add('hidden'), 3500);
+}
+
+function getToken() { return sessionStorage.getItem('tohfa_access_token'); }
+
+// ─── Reset Password ───────────────────────────────────────────────────────────
+document.getElementById('reset-password-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('reset-password-btn');
+  const successEl = document.getElementById('reset-success');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  try {
+    const res = await fetch(`${API}/api/seller/settings/reset-password`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${getToken()}` }
     });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Request failed');
+    successEl.classList.add('show');
+    setTimeout(() => successEl.classList.remove('show'), 6000);
+  } catch (err) {
+    showToast(err.message || 'Failed to send reset link.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Reset';
   }
 });
-</script>
 
-</body></html>
+// ─── Close Account Modal ──────────────────────────────────────────────────────
+const closeAccountModal = document.getElementById('close-account-modal');
+const confirmDeleteInput  = document.getElementById('confirm-delete-input');
+const confirmCloseBtn     = document.getElementById('confirm-close-account');
+const errConfirmDel       = document.getElementById('err-confirm-delete');
+
+function openCloseAccountModal() {
+  confirmDeleteInput.value = '';
+  confirmCloseBtn.disabled = true;
+  confirmCloseBtn.classList.add('opacity-40', 'cursor-not-allowed');
+  errConfirmDel.textContent = '';
+  closeAccountModal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => confirmDeleteInput.focus(), 100);
+}
+function closeCloseAccountModal() {
+  closeAccountModal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('open-close-account-btn').addEventListener('click', openCloseAccountModal);
+document.getElementById('close-account-modal-x').addEventListener('click', closeCloseAccountModal);
+document.getElementById('cancel-close-account').addEventListener('click', closeCloseAccountModal);
+closeAccountModal.addEventListener('click', e => { if (e.target === closeAccountModal) closeCloseAccountModal(); });
+
+confirmDeleteInput.addEventListener('input', () => {
+  const ok = confirmDeleteInput.value === 'DELETE';
+  confirmCloseBtn.disabled = !ok;
+  confirmCloseBtn.classList.toggle('opacity-40', !ok);
+  confirmCloseBtn.classList.toggle('cursor-not-allowed', !ok);
+  errConfirmDel.textContent = '';
+});
+
+confirmCloseBtn.addEventListener('click', async () => {
+  if (confirmDeleteInput.value !== 'DELETE') {
+    errConfirmDel.textContent = 'You must type DELETE exactly.';
+    return;
+  }
+  confirmCloseBtn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span>Closing…';
+  confirmCloseBtn.disabled = true;
+  try {
+    const res = await fetch(`${API}/api/seller/account`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || 'Failed to close account.');
+    }
+    // Log out and redirect
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.href = '/';
+  } catch (err) {
+    showToast(err.message || 'Failed to close account.', 'error');
+    closeCloseAccountModal();
+  }
+});
+
+// ─── Selling Limits ───────────────────────────────────────────────────────────
+function setProgressBar(id, value, max) {
+  const pct = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0;
+  const bar = document.getElementById(id);
+  if (bar) bar.style.width = `${pct}%`;
+  return pct;
+}
+
+function populateSettings(limits, usage = {}) {
+  // Set limit inputs
+  const daily  = limits.daily_order_limit  || 50;
+  const weekly = limits.weekly_production_capacity || 200;
+  document.getElementById('daily-limit').value  = daily;
+  document.getElementById('weekly-limit').value = weekly;
+
+  // Usage
+  const soldToday = usage.sold_today || 0;
+  const soldWeek  = usage.sold_week || 0;
+
+  document.getElementById('daily-usage-label').textContent  = `${soldToday} / ${daily} sold today`;
+  document.getElementById('weekly-usage-label').textContent = `${soldWeek} / ${weekly} sold this week`;
+
+  const dpct = setProgressBar('daily-progress-bar', soldToday, daily);
+  const wpct = setProgressBar('weekly-progress-bar', soldWeek, weekly);
+
+  document.getElementById('daily-usage-pct').textContent  = `${dpct}%`;
+  document.getElementById('weekly-usage-pct').textContent = `${wpct}%`;
+}
+
+document.getElementById('save-limits-btn').addEventListener('click', async () => {
+  // Clear errors
+  document.getElementById('err-daily-limit').textContent  = '';
+  document.getElementById('err-weekly-limit').textContent = '';
+
+  const daily  = parseInt(document.getElementById('daily-limit').value, 10);
+  const weekly = parseInt(document.getElementById('weekly-limit').value, 10);
+  let valid = true;
+  if (!daily || daily < 1)  { document.getElementById('err-daily-limit').textContent  = 'Must be at least 1.'; valid = false; }
+  if (!weekly || weekly < 1) { document.getElementById('err-weekly-limit').textContent = 'Must be at least 1.'; valid = false; }
+  if (valid && weekly < daily) {
+    document.getElementById('err-weekly-limit').textContent = 'Weekly limit must be ≥ daily limit.'; valid = false;
+  }
+  if (!valid) return;
+
+  const btn = document.getElementById('save-limits-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span>Saving…';
+  try {
+    const res = await fetch(`${API}/api/seller/capacity-settings`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+      body: JSON.stringify({ daily_order_limit: daily, weekly_production_capacity: weekly })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Save failed');
+    showToast('Capacity settings updated!', 'success');
+    await loadSettings();
+  } catch (err) {
+    showToast(err.message || 'Failed to save limits.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">save</span>Save Limits';
+  }
+});
+
+// ─── Load settings ────────────────────────────────────────────────────────────
+async function loadSettings() {
+  const loadingEl  = document.getElementById('loading-state');
+  const errorEl    = document.getElementById('error-state');
+  const contentEl  = document.getElementById('settings-content');
+  loadingEl.classList.remove('hidden');
+  errorEl.classList.add('hidden');
+  contentEl.classList.add('hidden');
+
+  // Get email from session
+  const user = JSON.parse(sessionStorage.getItem('tohfa_user') || '{}');
+  if (user.email) document.getElementById('account-email').textContent = user.email;
+
+  try {
+    const res = await fetch(`${API}/api/seller/capacity-settings`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (res.status === 401 || res.status === 403) {
+      sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const resp = await res.json();
+    const limits = resp.data || {};
+
+    // Try to load email from profile if not in session
+    if (!user.email) {
+      try {
+        const pr = await fetch(`${API}/api/seller/profile`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        const pd = await pr.json();
+        const profile = pd.data || pd;
+        if (profile.email) document.getElementById('account-email').textContent = profile.email;
+      } catch (_) {}
+    }
+
+    // Fetch actual usage data for progress indicators
+    let soldToday = 0;
+    let soldWeek = 0;
+    
+    try {
+      const dashRes = await fetch(`${API}/api/seller/dashboard`, {
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      if (dashRes.ok) {
+        const dashData = await dashRes.json();
+        const stats = dashData.data ? dashData.data.stats : {};
+        soldToday = stats.new_orders_today || 0;
+      }
+    } catch (dashErr) {
+      console.error("Dashboard error loading capacity usage:", dashErr);
+    }
+
+    try {
+      const ordRes = await fetch(`${API}/api/seller/orders?period=7d`, {
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      if (ordRes.ok) {
+        const ordData = await ordRes.json();
+        const orders = ordData.data ? (ordData.data.orders || ordData.data) : [];
+        soldWeek = orders.filter(o => o.fulfillment_status !== 'cancelled').length;
+      }
+    } catch (ordErr) {
+      console.error("Orders error loading capacity usage:", ordErr);
+    }
+
+    // Fetch bank details from store-config
+    try {
+      const configRes = await fetch(`${API}/api/seller/store-config`, {
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        const config = configData.data || {};
+        const payouts = config.payment_payouts || {};
+        document.getElementById('bank-account-holder').value = payouts.bank_account_holder || '';
+        document.getElementById('bank-name').value = payouts.bank_name || '';
+        document.getElementById('bank-account-number').value = payouts.bank_account_number || '';
+        document.getElementById('bank-ifsc-code').value = payouts.ifsc_code || '';
+      }
+    } catch (configErr) {
+      console.error("Error loading bank details:", configErr);
+    }
+
+    populateSettings(limits, { sold_today: soldToday, sold_week: soldWeek });
+    
+    loadingEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+    document.getElementById('body-content').classList.remove('opacity-0');
+  } catch (err) {
+    loadingEl.classList.add('hidden');
+    document.getElementById('error-message').textContent = err.message || 'Failed to load settings.';
+    errorEl.classList.remove('hidden');
+    document.getElementById('body-content').classList.remove('opacity-0');
+    // Still show content with default values
+    populateSettings({});
+    loadingEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+  }
+}
+
+// ─── Save Bank Details ────────────────────────────────────────────────────────
+document.getElementById('save-bank-btn').addEventListener('click', async () => {
+  const holder = document.getElementById('bank-account-holder').value.trim();
+  const bankName = document.getElementById('bank-name').value.trim();
+  const accNum = document.getElementById('bank-account-number').value.trim();
+  const ifsc = document.getElementById('bank-ifsc-code').value.trim();
+
+  // Simple validation
+  let valid = true;
+  document.getElementById('err-bank-account-holder').textContent = '';
+  document.getElementById('err-bank-name').textContent = '';
+  document.getElementById('err-bank-account-number').textContent = '';
+  document.getElementById('err-bank-ifsc-code').textContent = '';
+
+  if (!holder) {
+    document.getElementById('err-bank-account-holder').textContent = 'Account holder name is required.';
+    valid = false;
+  }
+  if (!bankName) {
+    document.getElementById('err-bank-name').textContent = 'Bank name is required.';
+    valid = false;
+  }
+  if (!accNum) {
+    document.getElementById('err-bank-account-number').textContent = 'Account number is required.';
+    valid = false;
+  }
+  if (!ifsc) {
+    document.getElementById('err-bank-ifsc-code').textContent = 'IFSC code is required.';
+    valid = false;
+  } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc.toUpperCase())) {
+    document.getElementById('err-bank-ifsc-code').textContent = 'Invalid IFSC code format (e.g. SBIN0001234).';
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  const btn = document.getElementById('save-bank-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span>Saving…';
+
+  try {
+    const res = await fetch(`${API}/api/seller/store-config`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+      },
+      body: JSON.stringify({
+        bank_account_holder: holder,
+        bank_name: bankName,
+        bank_account_number: accNum,
+        ifsc_code: ifsc.toUpperCase()
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Save failed');
+    showToast('Bank details updated successfully!', 'success');
+  } catch (err) {
+    showToast(err.message || 'Failed to save bank details.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base">save</span>Save Bank Details';
+  }
+});
+
+// ─── DOMContentLoaded ─────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = getToken();
+  if (!token) { window.location.href = '/auth/login.html'; return; }
+  try {
+    const pr = await fetch(`${API}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (!pr.ok) throw new Error();
+    const pd = await pr.json();
+    const u  = pd.data || pd;
+    // Set email from profile/me if available
+    if (u.email) {
+      document.getElementById('account-email').textContent = u.email;
+    }
+    if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+  } catch (_) {
+    sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+  }
+  await loadSettings();
+});
+
+document.getElementById('retry-btn').addEventListener('click', loadSettings);
+</script>
+</body>
+</html>

@@ -179,17 +179,33 @@
     <!-- Left Panel (Table) -->
     <div class="flex-1 space-y-8 min-w-0">
       <!-- Filter & Sort Row -->
-      <section class="flex justify-between items-center border-b border-outline-variant pb-2">
-        <div class="flex gap-xl" id="filter-tabs-container">
-          <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="all">All</button>
-          <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="active">Active</button>
-          <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="paused">Paused</button>
-          <button class="filter-btn font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors pb-2" data-status="draft">Drafts</button>
+      <section class="flex justify-between items-center border-b border-outline-variant pb-3 mb-6">
+        <div class="flex items-center gap-lg">
+          <!-- Status Filter -->
+          <div class="flex items-center gap-sm">
+            <span class="font-label-caps text-on-surface-variant text-[11px] font-bold tracking-wider uppercase">Status:</span>
+            <select id="status-select" class="bg-transparent border-none font-body-md text-[#3D6B4F] font-semibold focus:ring-0 cursor-pointer pr-8 py-1 rounded hover:bg-[#8FAF82]/10 transition-colors">
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="paused">Paused</option>
+              <option value="draft">Drafts</option>
+            </select>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="flex items-center gap-sm">
+            <span class="font-label-caps text-on-surface-variant text-[11px] font-bold tracking-wider uppercase">Category:</span>
+            <select id="category-select" class="bg-transparent border-none font-body-md text-[#3D6B4F] font-semibold focus:ring-0 cursor-pointer pr-8 py-1 rounded hover:bg-[#8FAF82]/10 transition-colors">
+              <option value="all">All Categories</option>
+            </select>
+          </div>
         </div>
+
+        <!-- Sort Filter -->
         <div class="flex items-center gap-sm">
-          <span class="font-label-caps text-on-surface-variant">Sort By:</span>
-          <select id="sort-select" class="bg-transparent border-none font-body-md text-primary focus:ring-0 cursor-pointer appearance-none pr-6">
-            <option value="newest">Newest</option>
+          <span class="font-label-caps text-on-surface-variant text-[11px] font-bold tracking-wider uppercase">Sort By:</span>
+          <select id="sort-select" class="bg-transparent border-none font-body-md text-[#3D6B4F] font-semibold focus:ring-0 cursor-pointer pr-8 py-1 rounded hover:bg-[#8FAF82]/10 transition-colors">
+            <option value="newest">Newest First</option>
             <option value="best_selling">Best Selling</option>
             <option value="price_high">Price High–Low</option>
             <option value="capacity_low">Capacity Low–High</option>
@@ -269,11 +285,12 @@
 <script>
 const API_BASE = window.location.origin;
 let currentPage  = 1;
-let currentStatus= 'all';
 let searchQuery  = '';
 let searchTimer  = null;
 let totalListings = 0;
 const PAGE_LIMIT = 9;
+let allListings = [];
+let filteredListings = [];
 
 // ── Utilities ─────────────────────────────────────────────────
 function formatPaise(p) {
@@ -432,115 +449,154 @@ const MOCK_LISTINGS = [
         listing_id: "mock-7",
         title: "Eucalyptus Leaf Ceramic Mug",
         category: "Handmade Ceramic",
-        price_paise: 120000,
+        price_paise: 95000,
         stock_count: 3,
-        status: "active",
+        status: "draft",
         cover_photo_url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=60"
     }
 ];
 
-async function loadListings(page = 1) {
+async function loadListings(forceFetch = false) {
     const tableContainer = document.getElementById('listings-table-container');
     const empty = document.getElementById('empty-state');
     const error = document.getElementById('error-state');
     const load  = document.getElementById('loading-state');
     const pgn   = document.getElementById('pagination');
 
-    load.classList.remove('hidden');
-    tableContainer.classList.add('hidden');
-    empty.classList.add('hidden');
-    error.classList.add('hidden');
-    pgn.classList.add('hidden');
+    if (forceFetch || allListings.length === 0) {
+        load.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
+        empty.classList.add('hidden');
+        error.classList.add('hidden');
+        pgn.classList.add('hidden');
 
-    const token = sessionStorage.getItem('tohfa_access_token');
-    const sortVal = document.getElementById('sort-select')?.value || 'newest';
-    const params = new URLSearchParams({
-        status: currentStatus, page, limit: PAGE_LIMIT, sort: sortVal,
-        ...(searchQuery ? { search: searchQuery } : {})
-    });
-
-    let listings = [];
-    let isMock = false;
-
-    try {
-        if (!token) {
-            throw new Error("No token found, using mock data");
-        }
-        const res  = await fetch(`${API_BASE}/api/seller/listings?\${params}`, {
-            headers: { 'Authorization': `Bearer \${token}` }
+        const token = sessionStorage.getItem('tohfa_access_token');
+        const params = new URLSearchParams({
+            tab: 'all', per_page: 100
         });
-        if (res.status === 401 || res.status === 403) {
-            sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
-        }
-        if (!res.ok) throw new Error(`HTTP \${res.status}`);
 
-        const resp = await res.json();
-        const data = resp.data || resp;
-        listings = data.listings || [];
-        totalListings = data.total || 0;
-        const lowStock = data.low_stock_count ?? 0;
+        try {
+            if (!token) {
+                throw new Error("No token found, using mock data");
+            }
+            const res  = await fetch(`${API_BASE}/api/seller/listings?${params}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.status === 401 || res.status === 403) {
+                sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
+            }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        const countLabel = document.getElementById('listings-count-label');
-        if (countLabel) {
-            countLabel.textContent = `\${totalListings} active listing\${totalListings !== 1 ? 's' : ''}`;
-        }
-
-        document.getElementById('stats-total-listings').textContent = totalListings;
-        document.getElementById('stats-low-stock').textContent = lowStock;
-
-    } catch (err) {
-        console.warn('Failed to load live listings, falling back to mock data:', err);
-        listings = MOCK_LISTINGS;
-        
-        // Apply status filter locally if status is not 'all'
-        if (currentStatus !== 'all') {
-            listings = listings.filter(l => l.status === currentStatus);
-        }
-        
-        // Apply search query locally
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            listings = listings.filter(l => l.title.toLowerCase().includes(query) || (l.category && l.category.toLowerCase().includes(query)));
+            const resp = await res.json();
+            const data = resp.data || resp;
+            allListings = data.listings || [];
+        } catch (err) {
+            console.warn('Failed to load live listings, falling back to mock data:', err);
+            allListings = MOCK_LISTINGS;
         }
 
-        // Apply sorting locally
-        if (sortVal === 'price_high') {
-            listings.sort((a, b) => b.price_paise - a.price_paise);
-        } else if (sortVal === 'capacity_low') {
-            listings.sort((a, b) => a.stock_count - b.stock_count);
+        // Dynamically update unique categories
+        const categorySelect = document.getElementById('category-select');
+        const currentCategory = categorySelect?.value || 'all';
+        const categories = new Set();
+        allListings.forEach(l => {
+            if (l.category) categories.add(l.category);
+        });
+
+        let categoryOptions = '<option value="all">All Categories</option>';
+        categories.forEach(cat => {
+            categoryOptions += `<option value="${cat}">${cat}</option>`;
+        });
+        if (categorySelect) {
+            categorySelect.innerHTML = categoryOptions;
+            categorySelect.value = currentCategory;
         }
-
-        totalListings = listings.length;
-        const lowStock = listings.filter(l => l.stock_count <= 5).length;
-        isMock = true;
-
-        const countLabel = document.getElementById('listings-count-label');
-        if (countLabel) {
-            countLabel.textContent = `\${totalListings} active listing\${totalListings !== 1 ? 's' : ''} (Preview)`;
-        }
-
-        document.getElementById('stats-total-listings').textContent = totalListings;
-        document.getElementById('stats-low-stock').textContent = lowStock;
     }
+
+    applyFiltersAndRender();
+}
+
+function applyFiltersAndRender() {
+    const tableContainer = document.getElementById('listings-table-container');
+    const empty = document.getElementById('empty-state');
+    const load  = document.getElementById('loading-state');
+    const pgn   = document.getElementById('pagination');
 
     load.classList.add('hidden');
 
-    if (listings.length === 0 && page === 1 && !searchQuery) {
+    const statusVal = document.getElementById('status-select')?.value || 'all';
+    const categoryVal = document.getElementById('category-select')?.value || 'all';
+    const sortVal = document.getElementById('sort-select')?.value || 'newest';
+
+    // 1. Filter
+    filteredListings = allListings.filter(l => {
+        // Search filter
+        if (searchQuery && !l.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+            return false;
+        }
+        // Status filter
+        if (statusVal !== 'all' && l.status !== statusVal) {
+            return false;
+        }
+        // Category filter
+        if (categoryVal !== 'all' && l.category !== categoryVal) {
+            return false;
+        }
+        return true;
+    });
+
+    // 2. Sort
+    if (sortVal === 'newest') {
+        filteredListings.sort((a, b) => b.listing_id - a.listing_id || b.id - a.id);
+    } else if (sortVal === 'price_high') {
+        filteredListings.sort((a, b) => b.price_paise - a.price_paise);
+    } else if (sortVal === 'best_selling') {
+        filteredListings.sort((a, b) => (b.sale_count || 0) - (a.sale_count || 0));
+    } else if (sortVal === 'capacity_low') {
+        filteredListings.sort((a, b) => a.stock_count - b.stock_count);
+    }
+
+    // Stats
+    const totalListings = allListings.length;
+    const lowStock = allListings.filter(l => l.stock_count <= 5).length;
+    document.getElementById('stats-total-listings').textContent = totalListings;
+    document.getElementById('stats-low-stock').textContent = lowStock;
+
+    // Listings count label
+    const countLabel = document.getElementById('listings-count-label');
+    if (countLabel) {
+        countLabel.textContent = `${filteredListings.length} listing${filteredListings.length !== 1 ? 's' : ''} found`;
+    }
+
+    if (filteredListings.length === 0) {
+        tableContainer.classList.add('hidden');
         empty.classList.remove('hidden');
+        pgn.classList.add('hidden');
     } else {
-        let rowsHtml = listings.map(rowHTML).join('');
+        empty.classList.add('hidden');
+        
+        // Paginate client-side
+        const totalPages = Math.ceil(filteredListings.length / PAGE_LIMIT);
+        if (currentPage > totalPages) currentPage = Math.max(totalPages, 1);
+
+        const startIndex = (currentPage - 1) * PAGE_LIMIT;
+        const endIndex = startIndex + PAGE_LIMIT;
+        const pageListings = filteredListings.slice(startIndex, endIndex);
+
+        let rowsHtml = pageListings.map(rowHTML).join('');
         document.getElementById('listings-table-body').innerHTML = rowsHtml;
         tableContainer.classList.remove('hidden');
         attachCardListeners();
-    }
 
-    // Pagination
-    const totalPages = Math.ceil(totalListings / PAGE_LIMIT);
-    if (totalPages > 1 && !isMock) {
-        document.getElementById('page-label').textContent = `Page \${page} of \${totalPages}`;
-        document.getElementById('prev-btn').disabled = page <= 1;
-        document.getElementById('next-btn').disabled = page >= totalPages;
-        pgn.classList.remove('hidden');
+        // Render Pagination UI
+        if (totalPages > 1) {
+            document.getElementById('page-label').textContent = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('prev-btn').disabled = currentPage <= 1;
+            document.getElementById('next-btn').disabled = currentPage >= totalPages;
+            pgn.classList.remove('hidden');
+        } else {
+            pgn.classList.add('hidden');
+        }
     }
 }
 
@@ -582,7 +638,7 @@ function attachCardListeners() {
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.message || 'Failed to toggle status');
                 showToast(isPaused ? 'Listing resumed!' : 'Listing paused!', 'success');
-                loadListings(currentPage);
+                await loadListings(true);
             } catch (err) {
                 showToast(err.message, 'error');
             }
@@ -610,7 +666,7 @@ async function deleteListing(id, title) {
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         showToast(`"${title}" deleted.`, 'success');
-        loadListings(currentPage);
+        await loadListings(true);
     } catch (err) {
         showToast('Delete failed: ' + err.message, 'error');
     }
@@ -622,19 +678,15 @@ function openCreateModal() {
     window.location.href = '/seller/listing-photos.html';
 }
 
-// ── Filter tabs ───────────────────────────────────────────────
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => {
-            b.classList.remove('text-primary', 'border-b-2', 'border-primary');
-            b.classList.add('text-on-surface-variant');
-        });
-        btn.classList.add('text-primary', 'border-b-2', 'border-primary');
-        btn.classList.remove('text-on-surface-variant');
-        currentStatus = btn.dataset.status;
-        currentPage   = 1;
-        loadListings(1);
-    });
+// ── Filter change listeners ───────────────────────────────────
+document.getElementById('status-select')?.addEventListener('change', () => {
+    currentPage = 1;
+    applyFiltersAndRender();
+});
+
+document.getElementById('category-select')?.addEventListener('change', () => {
+    currentPage = 1;
+    applyFiltersAndRender();
 });
 
 // ── Search ────────────────────────────────────────────────────
@@ -643,22 +695,23 @@ document.getElementById('search-input').addEventListener('input', (e) => {
     searchTimer = setTimeout(() => {
         searchQuery  = e.target.value.trim();
         currentPage  = 1;
-        loadListings(1);
+        applyFiltersAndRender();
     }, 400);
 });
 
 // ── Sort ──────────────────────────────────────────────────────
 document.getElementById('sort-select')?.addEventListener('change', () => {
     currentPage = 1;
-    loadListings(1);
+    applyFiltersAndRender();
 });
 
 // ── Pagination ────────────────────────────────────────────────
 document.getElementById('prev-btn').addEventListener('click', () => {
-    if (currentPage > 1) { currentPage--; loadListings(currentPage); }
+    if (currentPage > 1) { currentPage--; applyFiltersAndRender(); }
 });
 document.getElementById('next-btn').addEventListener('click', () => {
-    if (currentPage < Math.ceil(totalListings / PAGE_LIMIT)) { currentPage++; loadListings(currentPage); }
+    const totalPages = Math.ceil(filteredListings.length / PAGE_LIMIT);
+    if (currentPage < totalPages) { currentPage++; applyFiltersAndRender(); }
 });
 
 // ── DOMContentLoaded ──────────────────────────────────────────
@@ -668,7 +721,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Role guard (only check if token is present)
     if (token) {
         try {
-            const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer \${token}` } });
+            const pr = await fetch(`${API_BASE}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
             if (pr.status === 401 || pr.status === 403) {
                 sessionStorage.clear(); window.location.href = '/auth/login.html'; return;
             }
@@ -683,14 +736,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn("No token found, running in preview mode");
     }
 
-    // Highlight first filter tab
-    const allTab = document.querySelector('.filter-btn[data-status="all"]');
-    if (allTab) {
-        allTab.classList.add('text-primary', 'border-b-2', 'border-primary');
-        allTab.classList.remove('text-on-surface-variant');
-    }
-
-    loadListings(1);
+    await loadListings(true);
 
     // Bind actions
     document.getElementById('header-create-listing-btn')?.addEventListener('click', openCreateModal);
@@ -716,7 +762,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-document.getElementById('retry-btn').addEventListener('click', () => loadListings(currentPage));
+document.getElementById('retry-btn')?.addEventListener('click', () => loadListings(true));
 </script>
 </body>
 </html>

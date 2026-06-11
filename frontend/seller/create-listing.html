@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
+<html class="light" lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Create Listing | TOFA Studio</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/components/seller-components.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -61,7 +60,11 @@
                         "tertiary-fixed-dim": "#d6baff",
                         "surface-container": "#edeeea",
                         "on-error": "#ffffff",
-                        "secondary-fixed-dim": "#afd0a0"
+                        "secondary-fixed-dim": "#afd0a0",
+                        "parchment": "#F7F3EC",
+                        "sage": "#8FAF82",
+                        "forest": "#3D6B4F",
+                        "gold": "#C8973A"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
@@ -85,7 +88,8 @@
                         "display-lg": ["Playfair Display"],
                         "label-caps": ["Playfair Display"],
                         "display-lg-mobile": ["Playfair Display"],
-                        "headline-md": ["Playfair Display"]
+                        "headline-md": ["Playfair Display"],
+                        "ui-serif": ["Lora", "serif"]
                     }
                 }
             }
@@ -102,350 +106,1948 @@
         .watercolor-line {
             background: linear-gradient(90deg, #3d6b4f 0%, #8faf82 50%, #edeeea 100%);
         }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #3D6B4F; /* Forest */
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
     </style>
 </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
 <seller-layout active-tab="catalog">
-<!-- Standardised Wizard Header (Task 41) -->
-<header class="h-[80px] bg-white border-b border-sage/20 px-12 flex justify-between items-center shrink-0 z-10">
-  <div class="flex items-center gap-2">
-    <span class="material-symbols-outlined text-primary">psychiatry</span>
-    <span class="material-symbols-outlined text-sage">eco</span>
-    <h2 class="font-display-lg text-primary text-3xl font-serif">Craft New Listing</h2>
+<div class="min-h-screen relative flex flex-col">
+  <!-- Standardised Wizard Header -->
+  <header class="h-[80px] bg-white border-b border-sage/20 px-12 flex justify-between items-center shrink-0 z-10">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary">psychiatry</span>
+      <span class="material-symbols-outlined text-sage">eco</span>
+      <h2 class="font-display-lg text-primary text-3xl font-serif">Craft New Listing</h2>
+    </div>
+    <div class="flex gap-4">
+      <button id="discard-draft-btn" class="px-6 py-2 border border-error rounded-full text-sm font-bold text-error hover:bg-error/10 transition-colors">Discard Draft</button>
+      <button id="publish-entry-btn" class="px-8 py-2 bg-forest text-white rounded-full font-bold shadow-lg hover:opacity-90 transition-opacity">Publish Entry</button>
+    </div>
+  </header>
+
+  <!-- Stepper Header (Clickable for Smooth Scroll) -->
+  <div class="bg-parchment/60 py-8 border-b border-sage/10 z-10 shrink-0">
+    <div class="max-w-4xl mx-auto relative flex justify-between items-center px-4">
+      <!-- Connecting Line -->
+      <div class="absolute top-1/2 left-8 right-8 h-[2px] bg-sage/20 -translate-y-1/2 z-0"></div>
+      <div id="stepper-progress-line" class="absolute top-1/2 left-8 w-[0%] h-[2px] bg-forest -translate-y-1/2 z-0 transition-all duration-500"></div>
+      
+      <!-- Step 1: Photos -->
+      <a href="#step-1-photos" class="stepper-node relative z-10 flex flex-col items-center gap-2 text-primary hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center ring-2 ring-primary">
+          <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5">Photos</span>
+      </a>
+      <!-- Step 2: Details -->
+      <a href="#step-2-details" class="stepper-node relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">description</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Details</span>
+      </a>
+      <!-- Step 3: Pricing -->
+      <a href="#step-3-pricing" class="stepper-node relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">payments</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Pricing</span>
+      </a>
+      <!-- Step 4: Shipping -->
+      <a href="#step-4-shipping" class="stepper-node relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">local_shipping</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Shipping</span>
+      </a>
+      <!-- Step 5: Preview -->
+      <a href="#step-5-preview" class="stepper-node relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">visibility</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Preview</span>
+      </a>
+      <!-- Step 6: Publish -->
+      <a href="#step-6-publish" class="stepper-node relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">check_circle</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Publish</span>
+      </a>
+    </div>
   </div>
-  <div class="flex gap-4">
-    <button class="px-6 py-2 border border-error rounded-full text-sm font-bold text-error hover:bg-error/10 transition-colors">Discard Draft</button>
-    <button class="px-8 py-2 bg-forest text-white rounded-full font-bold shadow-lg hover:opacity-90 transition-opacity">Publish Entry</button>
+
+  <!-- Main Scrollable Content -->
+  <div class="p-12 min-h-screen botanical-watermark bg-parchment">
+    <div class="max-w-6xl mx-auto space-y-16 pb-32">
+      
+      <!-- STEP 1: Photos & Title -->
+      <section id="step-1-photos" class="bg-white p-8 rounded-3xl border border-sage/20 shadow-sm relative overflow-hidden scroll-mt-24">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <!-- Left: Instructions -->
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-headline-sm text-primary mb-2 text-2xl">Visual Documentation</h4>
+              <p class="text-on-surface-variant text-sm leading-relaxed">Capture your work from multiple angles under soft, natural sunlight for the best presentation in our botanical studio.</p>
+            </div>
+            <div class="bg-sage/5 border border-sage/20 p-5 rounded-2xl">
+              <ul class="text-[11px] text-sage space-y-3 font-medium uppercase tracking-wider">
+                <li class="flex items-center gap-3"><span class="material-symbols-outlined text-base">check_circle</span> Minimum 4 photos</li>
+                <li class="flex items-center gap-3"><span class="material-symbols-outlined text-base">check_circle</span> Add one video/reel</li>
+                <li class="flex items-center gap-3"><span class="material-symbols-outlined text-base">check_circle</span> Neutral backgrounds</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Right: Grid & Upload -->
+          <div class="md:col-span-2">
+            <div class="grid grid-cols-4 gap-4">
+              <div id="drag-drop-zone" class="col-span-2 row-span-2 aspect-square border-2 border-dashed border-sage/40 rounded-3xl flex flex-col items-center justify-center bg-sage/5 hover:bg-sage/10 transition-all group relative cursor-pointer overflow-hidden">
+                <input type="file" id="photo-file-input" multiple accept="image/*" class="hidden"/>
+                <span class="material-symbols-outlined text-4xl text-sage mb-3 group-hover:scale-110 transition-transform">cloud_upload</span>
+                <span class="text-[11px] font-bold text-sage uppercase tracking-[0.2em] text-center px-8 leading-relaxed">Drag &amp; Drop <br/> Photos or Videos</span>
+              </div>
+              
+              <!-- Slot 1 (Cover Preview) -->
+              <div class="aspect-square bg-white border border-sage/30 rounded-2xl p-1 relative shadow-sm group">
+                <img id="preview-image-1" class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjznGttVIPlw2oHFQxenE48AiBUjmB83yBzKQw8ymedagmxyXm39M8ABY7eLVNcGeLhxsiIosBaMRMTredlK6jtsAqa9L-cdcRODV1g4d3Ui_z5btUj7gSOTJcQ1oSHjie1bV7NcPXfN8i_683SbdFV_kn_2qqucpiC8CJ35r3LiFK3tcNcSCdxEkjvJYc8WB-xi2fX-Ft1NyOj7Wghepds7jB6UUQzp3JvNmSvB5Si4SD7H66zpyhprSb1rj5LUplHW2CEuJ1NV4"/>
+                <div class="absolute top-2 right-2 bg-primary text-white p-1 rounded-full shadow-md">
+                  <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">grade</span>
+                </div>
+                <span class="absolute bottom-2 left-2 text-[8px] bg-black/50 text-white px-2 py-0.5 rounded-full uppercase font-bold tracking-widest backdrop-blur-sm">cover ★</span>
+              </div>
+              <div id="slot-2" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+                <span class="material-symbols-outlined text-sage">image</span>
+              </div>
+              <div id="slot-3" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+                <span class="material-symbols-outlined text-sage">image</span>
+              </div>
+              <div id="slot-4" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+                <span class="material-symbols-outlined text-sage">image</span>
+              </div>
+              <div id="slot-5" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+                <span class="material-symbols-outlined text-sage">image</span>
+              </div>
+              <div id="slot-6" class="aspect-square bg-surface-container-low border border-sage/20 rounded-2xl flex items-center justify-center opacity-40">
+                <span class="material-symbols-outlined text-sage">image</span>
+              </div>
+              <button class="col-span-1 aspect-square border border-forest/30 bg-forest/5 rounded-2xl flex flex-col items-center justify-center gap-1 hover:bg-forest/10 transition-colors group">
+                <span class="material-symbols-outlined text-forest group-hover:scale-110 transition-transform">movie</span>
+                <span class="text-[9px] font-bold text-forest uppercase tracking-widest">Add Reel</span>
+              </button>
+            </div>
+            
+            <div class="mt-8 flex flex-col gap-4">
+              <label class="font-headline-sm text-sm text-primary">Primary Identification Name</label>
+              <input id="listing-title" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-lg text-lg focus:ring-forest focus:border-forest outline-none transition-shadow" placeholder="e.g. 'Moonlight Jasmine Resin Study'" type="text"/>
+              <div class="flex justify-between">
+                <span class="text-[11px] text-on-surface-variant/60 font-data-mono italic">Common Name + Artistic Medium</span>
+                <span id="title-char-count" class="text-[11px] text-sage font-data-mono">0/80 characters</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Listing Details -->
+      <section id="step-2-details" class="bg-white p-8 rounded-3xl border border-sage/20 shadow-sm scroll-mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- Left: Details Form -->
+          <div class="lg:col-span-8 space-y-8">
+            <h3 class="font-headline-sm text-primary text-2xl border-b border-sage/10 pb-3">Step 2: Listing Details</h3>
+            
+            <!-- Product Type Toggle -->
+            <div class="bg-white border border-sage/30 rounded-2xl p-6 shadow-sm">
+              <label class="block font-display-lg text-primary text-xl mb-4">Product Type</label>
+              <div class="flex gap-4">
+                <label class="flex-1 flex items-center gap-3 p-4 border border-sage/30 rounded-xl cursor-pointer hover:bg-sage/5 transition-all" id="label-premade">
+                  <input type="radio" name="product_type" id="type-premade" value="pre-made" checked class="text-forest focus:ring-forest">
+                  <div>
+                    <span class="block font-bold text-primary text-sm">Pre-made / Ready Stock</span>
+                    <span class="block text-xs text-on-surface-variant">Standard item ready to ship directly from stock</span>
+                  </div>
+                </label>
+                <label class="flex-1 flex items-center gap-3 p-4 border border-sage/30 rounded-xl cursor-pointer hover:bg-sage/5 transition-all" id="label-custom">
+                  <input type="radio" name="product_type" id="type-customisable" value="custom" class="text-forest focus:ring-forest">
+                  <div>
+                    <span class="block font-bold text-primary text-sm">Customisable / Made-to-Order</span>
+                    <span class="block text-xs text-on-surface-variant">Accept custom names, colors, photos, or special instructions</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Category Selection -->
+            <div>
+              <label class="block font-display-lg text-primary text-xl mb-4">Category Selection</label>
+              <div id="category-container" class="flex flex-wrap gap-3">
+                <button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Pressed Flowers</button>
+                <button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Botanical Resin</button>
+                <button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Cyanotypes</button>
+                <button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Handmade Paper</button>
+                <button class="category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors">Artisan Kits</button>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="block font-display-lg text-primary text-xl mb-3">The Story Behind the Piece</label>
+              <textarea id="listing-story" class="w-full bg-white border border-sage/30 rounded-xl px-6 py-4 font-body-md text-on-surface-variant focus:ring-forest focus:border-forest outline-none resize-none" placeholder="Describe the botanical inspiration, materials sourced, and the artisanal process..." rows="6"></textarea>
+            </div>
+
+            <!-- Customisation Options Configuration Panel -->
+            <div id="customisation-panel" class="hidden space-y-6 bg-white border border-sage/30 rounded-2xl p-6 shadow-sm transition-all duration-300">
+              <h3 class="font-display-lg text-primary text-xl border-b border-sage/20 pb-2">Customisation Options</h3>
+
+              <!-- Text Personalisation -->
+              <div class="border-b border-sage/10 pb-4">
+                <label class="flex items-center gap-2 cursor-pointer mb-2">
+                  <input type="checkbox" id="allow-text-personalisation" class="rounded border-sage text-forest focus:ring-forest">
+                  <span class="text-sm font-bold text-primary">Allow Text Personalisation</span>
+                </label>
+                <div id="text-personalisation-details" class="hidden pl-6 mt-3 space-y-3">
+                  <div>
+                    <label class="block text-xs text-on-surface-variant font-medium mb-1">Text Field Label / Instructions</label>
+                    <input type="text" id="text-personalisation-label" class="w-full bg-parchment/30 border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" placeholder="e.g. Enter name to engrave">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-on-surface-variant font-medium mb-1">Max Character Limit</label>
+                    <input type="number" id="text-personalisation-limit" class="w-48 bg-parchment/30 border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" value="20" min="1">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Color Choices -->
+              <div class="border-b border-sage/10 pb-4">
+                <label class="flex items-center gap-2 cursor-pointer mb-2">
+                  <input type="checkbox" id="allow-color-choices" class="rounded border-sage text-forest focus:ring-forest">
+                  <span class="text-sm font-bold text-primary">Offer Color Choices</span>
+                </label>
+                <div id="color-choices-details" class="hidden pl-6 mt-3 space-y-3">
+                  <label class="block text-xs text-on-surface-variant font-medium mb-1">Colors (Comma separated list)</label>
+                  <input type="text" id="color-choices-input" class="w-full bg-parchment/30 border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" placeholder="e.g. Red, Blue, Gold, Ocean Teal">
+                </div>
+              </div>
+
+              <!-- Image Upload -->
+              <div class="border-b border-sage/10 pb-4">
+                <label class="flex items-center gap-2 cursor-pointer mb-2">
+                  <input type="checkbox" id="allow-image-upload" class="rounded border-sage text-forest focus:ring-forest">
+                  <span class="text-sm font-bold text-primary">Allow Image Upload</span>
+                </label>
+                <div id="image-upload-details" class="hidden pl-6 mt-3 space-y-3">
+                  <label class="block text-xs text-on-surface-variant font-medium mb-1">Seller Instructions / Notes for Image Upload</label>
+                  <textarea id="image-upload-notes" class="w-full bg-parchment/30 border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none resize-none" rows="2" placeholder="e.g. Upload a high-resolution portrait with clear lighting..."></textarea>
+                </div>
+              </div>
+
+              <!-- Additional Notes Toggle -->
+              <div class="border-b border-sage/10 pb-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="allow-additional-notes" class="rounded border-sage text-forest focus:ring-forest">
+                  <span class="text-sm font-bold text-primary">Allow Special Instructions/Additional Notes</span>
+                </label>
+              </div>
+
+              <!-- Customisation Fee -->
+              <div>
+                <label class="block text-sm font-bold text-primary mb-1">Customisation Fee (₹)</label>
+                <div class="flex items-center gap-2">
+                  <span class="text-lg font-bold text-primary">₹</span>
+                  <input type="number" id="customisation-fee" class="w-48 bg-parchment/30 border border-sage/20 rounded-lg px-4 py-2 text-sm focus:border-forest focus:ring-forest outline-none" placeholder="e.g. 150" min="0" value="0">
+                </div>
+                <span class="text-xs text-on-surface-variant block mt-1">This fee will be added on top of the listing's base price when customization is requested.</span>
+              </div>
+            </div>
+
+            <!-- Customisation Preview Summary -->
+            <div id="customisation-preview-card" class="hidden bg-surface-container-low border border-sage/30 rounded-2xl p-6 shadow-sm">
+              <h4 class="font-display-lg text-primary text-lg mb-3">Customisation Preview Summary</h4>
+              <div class="space-y-2 text-sm text-on-surface-variant" id="preview-summary-content"></div>
+            </div>
+          </div>
+          <!-- Right Side Panel -->
+          <div class="lg:col-span-4 space-y-8">
+            <div class="bg-sage/5 border border-sage/20 p-6 rounded-2xl shadow-sm">
+              <h4 class="font-headline-sm text-primary text-lg mb-4">Discovery Settings</h4>
+              <div class="space-y-6">
+                <!-- Tags -->
+                <div>
+                  <label class="block text-[10px] font-bold text-sage uppercase tracking-widest mb-2">Product Tags</label>
+                  <div class="relative">
+                    <input id="tag-input" class="w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none" placeholder="Add tags..." type="text"/>
+                    <span id="add-tag-icon" class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-sage text-sm cursor-pointer">tag</span>
+                  </div>
+                  <div id="tags-container" class="mt-3 flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Product Badge -->
+                <div>
+                  <label class="block text-[10px] font-bold text-sage uppercase tracking-widest mb-2">Product Badge</label>
+                  <select id="product-badge-select" class="w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none cursor-pointer">
+                    <option value="">None</option>
+                    <option value="Best Seller">⭐ Best Seller</option>
+                    <option value="Sponsored">✦ Sponsored</option>
+                    <option value="__custom__">Custom text...</option>
+                  </select>
+                  <input id="product-badge-custom" type="text" class="hidden mt-2 w-full bg-white border border-sage/40 rounded-lg px-4 py-2 text-sm focus:border-forest outline-none" placeholder="e.g. New Arrival, Limited Edition..." maxlength="30">
+                  <p class="text-[10px] text-on-surface-variant mt-1">Badge shown on buyer-facing product cards.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ZAI Tip -->
+            <div id="zai-card" class="p-6 rounded-2xl border border-dashed border-sage/30 text-center cursor-pointer hover:bg-sage/5 transition-all shadow-sm">
+              <span class="material-symbols-outlined text-sage/40 text-4xl mb-2">auto_awesome</span>
+              <p class="text-[11px] text-on-surface-variant italic">Use ZAI Mode to generate a narrative based on your photos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: Pricing & Stock -->
+      <section id="step-3-pricing" class="bg-white p-8 rounded-3xl border border-sage/20 shadow-sm scroll-mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- Left/Center: Form -->
+          <div class="lg:col-span-8 space-y-8">
+            <div class="mb-6 flex items-center justify-between">
+              <h3 class="font-headline-sm text-primary text-2xl">Step 3: Pricing &amp; Stock</h3>
+              <div class="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-full border border-secondary/20 shadow-sm">
+                <span class="material-symbols-outlined text-[18px] text-primary">analytics</span>
+                <span class="text-xs font-bold text-secondary text-primary uppercase tracking-tighter">Inventory Console</span>
+              </div>
+            </div>
+
+            <!-- Retail Price -->
+            <div class="space-y-4">
+              <label class="block font-headline-sm text-primary text-xl">Retail Price</label>
+              <div class="relative group max-w-md">
+                <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+                  <span class="font-data-mono text-xl text-secondary/60">₹</span>
+                </div>
+                <input id="price-input" class="w-full bg-white border border-secondary/20 rounded-xl pl-10 pr-16 py-5 font-data-mono text-3xl text-primary focus:ring-primary focus:border-primary transition-all shadow-sm group-hover:shadow-md outline-none" type="text" placeholder="e.g. 1,250">
+                <div class="absolute inset-y-0 right-5 flex items-center pointer-events-none">
+                  <span class="text-xs font-label-caps text-secondary bg-secondary/10 px-2 py-1 rounded">INR</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quantity & SKU -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-3">
+                <label class="block font-label-caps text-secondary">Inventory Count</label>
+                <div class="relative group">
+                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary/40 text-lg">inventory</span>
+                  <input id="stock-input" class="w-full bg-white border border-secondary/20 rounded-xl pl-12 pr-4 py-4 font-data-mono text-lg focus:ring-primary focus:border-primary transition-all shadow-sm outline-none" type="number" value="1"/>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <label class="block font-label-caps text-secondary">SKU / Reference</label>
+                <div class="relative group">
+                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary/40 text-lg">qr_code_2</span>
+                  <input id="sku-input" class="w-full bg-white border border-secondary/20 rounded-xl pl-12 pr-4 py-4 font-data-mono text-lg focus:ring-primary focus:border-primary transition-all shadow-sm outline-none" placeholder="MJ-RS-001" type="text"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tax Settings Card -->
+            <div class="p-6 bg-white/60 border border-secondary/10 rounded-2xl flex items-center justify-between shadow-sm backdrop-blur-sm">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-secondary">receipt_long</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-primary text-sm">Inclusive of all taxes</h4>
+                  <p class="text-xs text-on-surface-variant">Retail price includes GST and regional duties.</p>
+                </div>
+              </div>
+              <button id="tax-toggle-btn" class="w-14 h-7 bg-primary rounded-full relative p-1 transition-colors shadow-inner">
+                <div class="w-5 h-5 bg-white rounded-full ml-auto shadow-md"></div>
+              </button>
+            </div>
+
+            <!-- Artisan Variants & Limits -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+              <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                  <label class="block font-label-caps text-secondary">Artisan Variants</label>
+                  <button id="add-variant-btn" type="button" class="text-xs text-primary font-bold hover:underline">+ Add Variant</button>
+                </div>
+                <div id="variants-list-container" class="space-y-3"></div>
+              </div>
+              <div class="space-y-4">
+                <label class="block font-label-caps text-secondary">Production Limits & Prebooking</label>
+                <div class="space-y-4">
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="text-[9px] text-secondary font-bold uppercase">Daily Product Cap</label>
+                      <input id="daily-product-cap" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None" title="Daily fulfillment cap for this product"/>
+                    </div>
+                    <div>
+                      <label class="text-[9px] text-secondary font-bold uppercase">Weekly Cap</label>
+                      <input id="weekly-cap" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None"/>
+                    </div>
+                    <div>
+                      <label class="text-[9px] text-secondary font-bold uppercase">Monthly Ceiling</label>
+                      <input id="monthly-ceiling" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None"/>
+                    </div>
+                  </div>
+                  <label class="flex items-center gap-2 cursor-pointer pt-2">
+                    <input id="allow-prebooking" type="checkbox" class="w-4 h-4 rounded border-secondary/30 text-primary focus:ring-primary"/>
+                    <span class="text-xs font-bold text-primary">Allow Prebooking</span>
+                  </label>
+                  <div id="prebooking-window-container" class="hidden space-y-1">
+                    <label class="text-[9px] text-secondary font-bold uppercase block">Prebooking Window</label>
+                    <select id="prebooking-window" class="w-full bg-white border border-secondary/20 rounded-lg p-2 text-xs focus:border-primary outline-none">
+                      <option value="1_week">1 Week</option>
+                      <option value="2_weeks">2 Weeks</option>
+                      <option value="1_month">1 Month</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add-ons -->
+            <div class="space-y-4 pt-4">
+              <label class="block font-label-caps text-secondary">Add-on Options</label>
+              <div class="flex flex-wrap gap-4">
+                <label class="flex-1 min-w-[200px] flex items-center gap-4 bg-white/80 border-2 border-primary p-4 rounded-xl cursor-pointer shadow-sm">
+                  <input id="gift-wrap-checkbox" checked class="w-5 h-5 rounded border-secondary/30 text-primary focus:ring-primary" type="checkbox"/>
+                  <div>
+                    <p class="text-sm font-bold text-primary">Gift Wrapping</p>
+                    <p class="text-xs font-data-mono text-secondary">+ ₹ 50</p>
+                  </div>
+                </label>
+                <label class="flex-1 min-w-[200px] flex items-center gap-4 bg-white/40 border border-secondary/20 p-4 rounded-xl cursor-pointer hover:bg-white/80 transition-all opacity-80">
+                  <input id="handwritten-note-checkbox" class="w-5 h-5 rounded border-secondary/30 text-primary focus:ring-primary" type="checkbox"/>
+                  <div>
+                    <p class="text-sm font-bold text-primary">Handwritten Note</p>
+                    <p class="text-xs font-data-mono text-secondary italic">Included</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Sidebar -->
+          <div class="lg:col-span-4 space-y-8">
+            <!-- Revenue Projection -->
+            <div class="p-6 bg-white border border-secondary/20 rounded-2xl shadow-sm space-y-4">
+              <h3 class="font-headline-sm text-[20px] text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary text-xl">payments</span>
+                Revenue Projection
+              </h3>
+              <div class="space-y-2 border-t border-secondary/10 pt-3">
+                <div class="flex justify-between text-xs text-on-surface-variant">
+                  <span>Retail Price:</span>
+                  <span id="proj-retail" class="font-data-mono font-bold">₹0.00</span>
+                </div>
+                <div class="flex justify-between text-xs text-on-surface-variant">
+                  <span>Studio Fee (8%):</span>
+                  <span id="proj-fee" class="font-data-mono font-bold text-error">- ₹0.00</span>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-primary border-t border-dashed border-secondary/20 pt-2">
+                  <span>Est. Payout:</span>
+                  <span id="proj-payout" class="font-data-mono text-gold">₹0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fulfillment -->
+            <div class="p-6 bg-white border border-secondary/20 rounded-2xl shadow-sm space-y-6">
+              <h3 class="font-headline-sm text-[20px] text-primary flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-xl">local_shipping</span>Fulfillment</h3>
+              <div class="space-y-5">
+                <div class="space-y-2">
+                  <label class="text-[10px] font-bold text-secondary uppercase tracking-widest">Processing Time</label>
+                  <div class="relative">
+                    <select id="processing-time-select" class="w-full bg-surface-container-low border border-secondary/10 rounded-lg px-3 py-2.5 text-sm focus:border-primary outline-none appearance-none cursor-pointer">
+                      <option value="1-2_days">1-2 business days</option>
+                      <option value="3-5_days" selected>3-5 business days</option>
+                      <option value="1-2_weeks">1-2 weeks</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-sm">expand_more</span>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label class="text-[10px] font-bold text-secondary uppercase tracking-widest">Shipping Profile</label>
+                  <div class="relative">
+                    <select id="shipping-profile-select" class="w-full bg-surface-container-low border border-secondary/10 rounded-lg px-3 py-2.5 text-sm focus:border-primary outline-none appearance-none cursor-pointer">
+                      <option value="1">Standard Botanical</option>
+                      <option value="2">Express Artisan</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-sm">expand_more</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 bg-tertiary-container/10 border border-tertiary-container/30 rounded-2xl relative overflow-hidden">
+              <div class="flex items-start gap-3 relative z-10">
+                <span class="material-symbols-outlined text-tertiary text-[20px]">lightbulb</span>
+                <div>
+                  <p class="text-xs font-bold text-tertiary mb-1 uppercase tracking-tight">Pricing Strategy</p>
+                  <p class="text-xs leading-relaxed text-on-tertiary-container italic">Securely manage your artisan stock levels and regional pricing strategies to maintain value.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4: Shipping Logistics -->
+      <section id="step-4-shipping" class="bg-white p-8 rounded-3xl border border-sage/20 shadow-sm scroll-mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- Left: Shipping info -->
+          <div class="lg:col-span-8 space-y-8">
+            <h3 class="font-headline-sm text-primary text-2xl border-b border-sage/10 pb-3">Step 4: Shipping Logistics</h3>
+            
+            <!-- Shipping Origin -->
+            <div>
+              <p class="font-headline-sm text-on-surface mb-3 flex items-center gap-3 text-lg">Shipping Origin</p>
+              <div class="bg-white/60 rounded-xl p-6 border border-sage/20 flex justify-between items-center shadow-sm">
+                <div class="flex items-start gap-4">
+                  <div class="bg-primary-container/10 p-3 rounded-lg">
+                    <span class="material-symbols-outlined text-forest">location_on</span>
+                  </div>
+                  <div>
+                    <p class="font-ui-serif font-semibold text-lg text-forest">Kshitija's Studio</p>
+                    <p class="text-on-surface-variant font-body-sm">Plot No. 42, Viman Nagar, Pune, Maharashtra 411014, India</p>
+                  </div>
+                </div>
+                <button class="text-gold font-bold font-label-caps hover:underline transition-all">CHANGE</button>
+              </div>
+            </div>
+
+            <!-- Profiles -->
+            <div>
+              <p class="font-headline-sm text-on-surface mb-3 flex items-center gap-3 text-lg">Regional Profiles</p>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-forest/40 shadow-sm relative group ring-2 ring-forest/5">
+                  <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-forest" style="font-variation-settings: 'FILL' 1;">flag</span>
+                    <h4 class="font-headline-sm text-lg">Domestic (India)</h4>
+                  </div>
+                  <div class="space-y-4">
+                    <label class="block">
+                      <span class="font-label-caps text-[10px] text-on-surface-variant mb-1 block">SELECT PROFILE</span>
+                      <select id="domestic-profile-select" class="w-full bg-parchment/30 border border-sage/40 rounded-lg px-4 py-3 font-ui-serif focus:ring-0 appearance-none cursor-pointer">
+                        <option value="courier">Standard Botanical (Courier)</option>
+                        <option value="courier_express">Express Sage (Courier)</option>
+                        <option value="local">Custom Hand-Delivery (Local)</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+                <div class="bg-surface-container-low/50 p-6 rounded-xl border border-sage/20 shadow-sm">
+                  <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center gap-3">
+                      <span class="material-symbols-outlined text-sage">public</span>
+                      <h4 class="font-headline-sm text-lg">International</h4>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input checked class="sr-only peer" type="checkbox" id="intl-toggle"/>
+                      <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest"></div>
+                    </label>
+                  </div>
+                  <div class="space-y-4">
+                    <label class="block">
+                      <span class="font-label-caps text-[10px] text-on-surface-variant mb-1 block">GLOBAL PROFILE</span>
+                      <select class="w-full bg-white border border-sage/20 rounded-lg px-4 py-3 font-ui-serif focus:ring-0">
+                        <option>Global Art Pack</option>
+                        <option>Express Global Pollen</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Details -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white/60 p-6 rounded-xl border border-sage/20 shadow-sm">
+              <div>
+                <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">PACKAGING TYPE</label>
+                <select id="packaging-type" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 text-sm focus:border-forest outline-none">
+                  <option value="standard">Standard</option>
+                  <option value="branded">Branded</option>
+                  <option value="eco">Eco-Friendly</option>
+                  <option value="fragile">Fragile Care</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">RETURN POLICY</label>
+                <select id="return-policy" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 text-sm focus:border-forest outline-none">
+                  <option value="no-returns">No Returns</option>
+                  <option value="7-day">7-Day Return</option>
+                  <option value="15-day">15-Day Return</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">DISPATCH SLA (DAYS)</label>
+                <input id="dispatch-sla" class="w-full bg-white border border-sage/30 rounded-lg px-3 py-2 text-sm focus:border-forest outline-none font-data-mono" type="number" value="1"/>
+              </div>
+            </div>
+
+            <!-- Dimensions -->
+            <div>
+              <p class="font-headline-sm text-on-surface mb-3 flex items-center gap-3 text-lg">Dimensions &amp; Weight</p>
+              <div class="bg-white/40 border border-dashed border-sage/60 rounded-xl p-8">
+                <div class="grid grid-cols-4 gap-6">
+                  <div>
+                    <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">LENGTH (CM)</label>
+                    <input id="length-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg outline-none" placeholder="0.0" type="text"/>
+                  </div>
+                  <div>
+                    <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">WIDTH (CM)</label>
+                    <input id="width-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg outline-none" placeholder="0.0" type="text"/>
+                  </div>
+                  <div>
+                    <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">HEIGHT (CM)</label>
+                    <input id="height-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg outline-none" placeholder="0.0" type="text"/>
+                  </div>
+                  <div>
+                    <label class="font-label-caps text-[10px] text-on-surface-variant mb-2 block">WEIGHT (G)</label>
+                    <input id="weight-input" class="w-full bg-white border border-sage/30 rounded-lg px-4 py-3 font-data-mono text-center text-lg outline-none" placeholder="000" type="text"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Sidebar -->
+          <div class="lg:col-span-4 space-y-8">
+            <div class="bg-white rounded-xl border border-sage/20 shadow-sm overflow-hidden">
+              <div class="bg-forest/5 px-4 py-3 border-b border-sage/10">
+                <h4 class="font-label-caps text-xs text-forest">SHIPPING SUMMARY</h4>
+              </div>
+              <div class="p-6 space-y-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-forest">
+                    <span class="material-symbols-outlined">schedule</span>
+                  </div>
+                  <div>
+                    <p class="text-[10px] text-on-surface-variant font-label-caps">EST. DELIVERY</p>
+                    <p id="est-delivery-p" class="font-headline-sm text-lg text-on-surface">3–5 days</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-forest">
+                    <span class="material-symbols-outlined">payments</span>
+                  </div>
+                  <div>
+                    <p class="text-[10px] text-on-surface-variant font-label-caps">DOMESTIC RATE</p>
+                    <p id="domestic-rate-p" class="font-headline-sm text-lg text-on-surface">₹80 fixed</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ZAI Tip -->
+            <div class="bg-tertiary-fixed/20 rounded-xl border border-tertiary/20 p-6 relative group overflow-hidden">
+              <div class="flex items-center gap-2 mb-3 text-tertiary">
+                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                <span class="font-label-caps text-[10px] font-bold uppercase">ZAI Tip</span>
+              </div>
+              <p class="text-on-tertiary-fixed-variant text-sm font-ui-serif leading-relaxed italic">"Items with precise dimensions see fewer shipping disputes."</p>
+            </div>
+            
+            <div class="aspect-video rounded-lg overflow-hidden border border-sage/20 shadow-inner bg-gray-50">
+              <img alt="Packing demonstration" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjg8SUItOcqQCxRDPShA_U9h6uQitTEukKn6ZPk5vPY1DWhI2CXSLg-isExGOFD9T0qFacdMKMpDCZpf0PAtfzWWnsX8vcvGh28_CQ4XDB8VfjPQKraYGprZszw_NSJFYwsKXQlFWQGeUZ_1MNx29-lXPBC_LkEpZYS84ulNNvWGu_8Wxen6BebIlvLWQogs66KkEot_pspFFrgjemVOOE8W_urKbaAbYxu6S3igTrstNPKA4DayWCsbo8ygLxmOYWt8gJd25upHw"/>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 5: Buyer Preview (Reactive) -->
+      <section id="step-5-preview" class="bg-white p-8 rounded-3xl border border-sage/20 shadow-sm scroll-mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- Left: Customer Perspective Desktop Preview -->
+          <div class="lg:col-span-8 space-y-8">
+            <div class="mb-6 flex items-center justify-between">
+              <h3 class="font-headline-sm text-primary text-2xl">Step 5: Customer Perspective</h3>
+              <div class="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-full border border-secondary/20 shadow-sm">
+                <span class="material-symbols-outlined text-[18px] text-primary">devices</span>
+                <span class="text-xs font-bold text-secondary">Desktop Preview</span>
+              </div>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-10">
+              <!-- Gallery -->
+              <div class="lg:w-1/2 space-y-4">
+                <div class="aspect-[4/5] rounded-xl overflow-hidden border border-secondary/20 shadow-sm relative bg-white">
+                  <img alt="Product Master View" id="preview-main-img" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB9FqWXf4Yls51MytDiozh-Z0V7lujx5wX1T9mHUwYOGyRnKAsPp-GcY8dXG_2-6vybydf0rn0mNk3zopqFVPBVpTGtRgugFJ2y1izdBznJU9WNw04M1IgIlzOrRt4YKYpwNN1YsTUytR9rI46-HFthia31M0Y0gw4hVfHp0BiQHPCbI9Rdug207W2wxvsk55IUg1H16AVrNxAVDUxDykrDepBK2timVOskL7u0dT0Lh2biHHPq0VcI-Et9gItV2OC44_0vT8RXWY"/>
+                  <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-data-mono uppercase tracking-widest text-primary border border-primary/10">Master View</div>
+                </div>
+                <div class="grid grid-cols-3 gap-4" id="preview-thumb-grid"></div>
+              </div>
+              <!-- Info -->
+              <div class="lg:w-1/2 space-y-8">
+                <div class="space-y-4">
+                  <div class="flex justify-between items-start">
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-tighter uppercase border border-primary/20">New Artisan Release</span>
+                    <span id="preview-sku" class="font-data-mono text-primary text-xs">SKU: MJ-RS-001</span>
+                  </div>
+                  <h2 id="preview-title" class="font-headline-md text-headline-md text-on-surface leading-tight">Moonlight Jasmine Resin Study</h2>
+                  <p id="preview-price" class="font-data-mono text-[28px] text-primary">₹ 1,250</p>
+                </div>
+                <div class="p-6 bg-white/40 border border-secondary/10 rounded-xl relative overflow-hidden backdrop-blur-sm">
+                  <h4 class="font-label-caps text-label-caps mb-3 text-secondary">The Story</h4>
+                  <p id="preview-story" class="font-ui-serif italic text-body-md text-on-surface-variant leading-relaxed">Tell the story of this piece...</p>
+                </div>
+                <div class="space-y-6">
+                  <div id="preview-customisation-box" class="hidden p-6 bg-[#3D6B4F]/5 border border-[#3D6B4F]/20 rounded-xl space-y-4">
+                    <div class="flex items-center gap-2 text-primary font-bold text-sm">
+                      <span class="material-symbols-outlined text-lg">auto_awesome</span>
+                      <span>Customisation Settings</span>
+                    </div>
+                    <div id="preview-customisation-details" class="space-y-3 text-sm text-on-surface-variant"></div>
+                  </div>
+                  <div id="preview-tags-container" class="flex flex-wrap gap-2"></div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="flex items-center gap-3 p-3 bg-white/60 border border-secondary/10 rounded-lg">
+                      <span class="material-symbols-outlined text-primary">local_shipping</span>
+                      <div>
+                        <p class="text-[10px] text-secondary font-bold uppercase">Shipping</p>
+                        <p id="preview-shipping-days" class="text-xs font-body-md">3-5 days</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-white/60 border border-secondary/10 rounded-lg">
+                      <span class="material-symbols-outlined text-primary">featured_seasonal_and_gifts</span>
+                      <div>
+                        <p class="text-[10px] text-secondary font-bold uppercase">Add-ons</p>
+                        <p id="preview-addons" class="text-xs font-body-md">Gift Wrapping</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right: Checklist -->
+          <div class="lg:col-span-4 space-y-8">
+            <div class="p-6 bg-white border border-secondary/20 rounded-2xl shadow-sm space-y-6">
+              <h3 class="font-headline-sm text-[20px] text-primary">Completeness Checklist</h3>
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 text-sm">
+                  <span id="chk-photos" class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                  <span class="text-on-surface-variant font-medium">Images & Video uploaded</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                  <span id="chk-title" class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                  <span class="text-on-surface-variant font-medium">Title & Story written</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                  <span id="chk-price" class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                  <span class="text-on-surface-variant font-medium">Price & Inventory defined</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                  <span id="chk-shipping" class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                  <span class="text-on-surface-variant font-medium">Shipping profile linked</span>
+                </div>
+              </div>
+              <div class="pt-6 border-t border-secondary/10">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Score</span>
+                  <span id="checklist-score" class="font-data-mono text-primary font-bold">25%</span>
+                </div>
+                <div class="w-full bg-secondary-container/30 h-2 rounded-full overflow-hidden">
+                  <div id="checklist-score-bar" class="bg-primary h-full rounded-full transition-all duration-300" style="width: 25%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-5 bg-tertiary-container/10 border border-tertiary-container/30 rounded-2xl relative overflow-hidden">
+              <div class="flex items-start gap-3 relative z-10">
+                <span class="material-symbols-outlined text-tertiary text-[20px]">smart_toy</span>
+                <div>
+                  <p class="text-xs font-bold text-tertiary mb-1 uppercase tracking-tight">ZAI Tip</p>
+                  <p class="text-xs leading-relaxed text-on-tertiary-container">Ensure your descriptions tell the organic sourcing story behind your craft elements.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 6: Publish Success Panel -->
+      <section id="step-6-publish" class="bg-white p-10 rounded-3xl border border-sage/20 shadow-sm scroll-mt-24 relative overflow-hidden flex flex-col items-center min-h-[350px] justify-center">
+        <div class="botanical-watermark absolute inset-0 opacity-[0.03]"></div>
+        
+        <!-- Before Publish State -->
+        <div id="publish-initial-state" class="flex flex-col items-center gap-6 z-10 w-full">
+          <h3 class="font-headline-sm text-primary text-2xl mb-2 text-center font-serif">Ready to launch your masterpiece? 🌸</h3>
+          <p class="text-on-surface-variant text-sm text-center max-w-md mb-4 font-body-md">Review your details in the preview panel. Once you're ready, click below to make your listing live to the Tohfa marketplace.</p>
+          <button id="publish-main-btn" class="group relative bg-primary text-on-primary px-16 py-5 rounded-full flex items-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-lg overflow-hidden">
+            <span class="material-symbols-outlined animate-pulse text-white">auto_awesome</span>
+            <span class="font-headline-sm text-headline-sm font-bold text-white">Publish Listing 🌸</span>
+            <span class="material-symbols-outlined group-hover:rotate-12 transition-transform text-white">colors_spark</span>
+            <div class="absolute inset-0 pointer-events-none bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </button>
+          <p class="font-body-sm text-outline text-center max-w-md">By publishing, you agree to our artisan terms and conditions for handmade crafts.</p>
+        </div>
+
+        <!-- After Publish Success State -->
+        <div id="publish-success-state" class="hidden flex flex-col items-center text-center w-full z-10">
+          <!-- Animated Checkmark -->
+          <div class="mb-6">
+            <svg class="w-20 h-20" viewBox="0 0 52 52">
+              <circle class="checkmark-circle" cx="26" cy="26" fill="none" r="25"></circle>
+              <path class="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8" fill="none"></path>
+            </svg>
+          </div>
+          
+          <!-- Title -->
+          <h1 class="font-display-lg text-primary text-3xl font-bold mb-3 font-serif">Your listing is live! ✦</h1>
+          
+          <!-- Subtitle -->
+          <p id="published-subline-inline" class="font-body-md text-on-surface-variant mb-8 max-w-sm">
+            Midnight Jasmine Resin Study is now visible to buyers.
+          </p>
+          
+          <!-- Action Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-[500px]">
+            <!-- Share to Instagram -->
+            <button class="flex flex-col items-center justify-center p-4 bg-[#7B5EA7] text-white rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 group font-bold" id="share-instagram-btn-inline">
+              <span class="material-symbols-outlined mb-2 text-2xl group-hover:rotate-12 transition-transform text-white">share</span>
+              <span class="font-label-caps text-[10px] tracking-wider uppercase text-white">Share Post</span>
+            </button>
+            
+            <!-- Upload a Reel -->
+            <a href="/seller/upload-reel.html" class="flex flex-col items-center justify-center p-4 bg-[#3D6B4F] text-white rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 group font-bold">
+              <span class="material-symbols-outlined mb-2 text-2xl group-hover:-translate-y-1 transition-transform text-white">video_library</span>
+              <span class="font-label-caps text-[10px] tracking-wider uppercase text-white">Add Reel</span>
+            </a>
+            
+            <!-- View in Catalog -->
+            <a href="/seller/catalog.html" class="flex flex-col items-center justify-center p-4 bg-[#F7F3EC] border border-sage/30 text-primary rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 group font-bold">
+              <span class="material-symbols-outlined mb-2 text-2xl group-hover:scale-110 transition-transform text-[#3D6B4F]">library_books</span>
+              <span class="font-label-caps text-[10px] tracking-wider uppercase text-[#3D6B4F]">View Catalog</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
   </div>
-</header>
-<!-- Main Content -->
-<div class="p-12 min-h-screen botanical-watermark">
-<div class="max-w-4xl mx-auto space-y-16 pb-32">
-<!-- Standardised listing wizard step indicators (Task 41) -->
-<div class="bg-parchment/60 py-8 border-b border-sage/10 z-10 shrink-0">
-  <div class="max-w-3xl mx-auto relative flex justify-between items-center">
-    <!-- Connecting Line -->
-    <div class="absolute top-1/2 left-8 right-8 h-[2px] bg-sage/20 -translate-y-1/2 z-0"></div>
-    <div class="absolute top-1/2 left-8 w-[0%] h-[2px] bg-forest -translate-y-1/2 z-0 transition-all duration-500"></div>
-    <!-- Step 1: Photos (Current) -->
-    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
-      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center ring-2 ring-primary">
-        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
-      </div>
-      <span class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5">Photos</span>
+
+  <!-- Bottom Taskbar (Fixed Footer) -->
+  <footer class="border-t border-sage/20 px-12 py-6 bg-white flex justify-between items-center shrink-0 z-20 sticky bottom-0">
+    <button id="discard-draft-footer" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">
+      Discard Draft
+    </button>
+    <div class="flex gap-4">
+      <button id="save-draft-footer" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">
+        Save as Draft
+      </button>
+      <button id="publish-footer-btn" class="px-10 py-3 rounded-full bg-forest text-white font-label-caps uppercase tracking-widest text-[11px] shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+        Publish Listing
+        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </button>
     </div>
-    <!-- Step 2: Details (Future) -->
-    <div class="relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant">
-      <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
-        <span class="material-symbols-outlined text-lg">description</span>
+  </footer>
+
+  <!-- Mascot Peeking -->
+  <div class="fixed bottom-[80px] right-10 z-[70] pointer-events-none transform translate-y-2">
+    <div class="relative w-24 h-24">
+      <div class="absolute bottom-0 w-full flex justify-center">
+        <img class="w-16 h-16 object-contain" data-alt="A cute bunny mascot peeking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYaFNvAD7YrFVSxKp15-VxW6mVgFrAmpIs-u_OKLhkU3aVoYU6klQ6uWUlmzfG3Rs9pZq9XDYU71jn9yhmVY2A6dyAr2SYuD-74Wn9tRHBKI9seO9L025K6hJ9wijO_PCPwb2Wd53gTVay1v67xIMGs5tbyDOuM6VZLB-d-DT9ikbKG_MxPeWRZmFK34MMVk-c1_Qiv3IiZ2XUfQWAXOz5VsYVeQmeTAoDELqTJEQA2_thsgRXVrKgd1szwoXluIV1y9Jzs0ftqzY"/>
       </div>
-      <span class="text-[10px] font-bold uppercase tracking-widest">Details</span>
-    </div>
-    <!-- Step 3: Pricing (Future) -->
-    <div class="relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant">
-      <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
-        <span class="material-symbols-outlined text-lg">payments</span>
-      </div>
-      <span class="text-[10px] font-bold uppercase tracking-widest">Pricing</span>
-    </div>
-    <!-- Step 4: Shipping (Future) -->
-    <div class="relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant">
-      <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
-        <span class="material-symbols-outlined text-lg">local_shipping</span>
-      </div>
-      <span class="text-[10px] font-bold uppercase tracking-widest">Shipping</span>
-    </div>
-    <!-- Step 5: Preview (Future) -->
-    <div class="relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant">
-      <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
-        <span class="material-symbols-outlined text-lg">visibility</span>
-      </div>
-      <span class="text-[10px] font-bold uppercase tracking-widest">Preview</span>
     </div>
   </div>
-</div>
-<!-- Step 1: Photos/Video -->
-<section class="bg-surface-container-low p-8 rounded-xl border border-secondary/20 shadow-sm relative overflow-hidden">
-<h3 class="font-headline-sm text-headline-sm text-primary mb-6">Step 1: Photos &amp; Video</h3>
-<div class="border-2 border-dashed border-secondary/40 rounded-xl p-10 bg-surface flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-4xl text-secondary">potted_plant</span>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Drop your craft photos here or <span class="text-primary font-bold">tap to upload</span></p>
-</div>
-<div class="grid grid-cols-4 gap-4 mt-8">
-<!-- Filled Slots -->
-<div class="relative aspect-square rounded-lg overflow-hidden border border-secondary/20 group">
-<img alt="Pottery" class="w-full h-full object-cover" data-alt="A macro photograph of handcrafted artisan pottery featuring organic, textured glazes in earth tones. The vessel is displayed on a rustic wooden shelf in a sun-drenched studio filled with soft, natural light. The mood is peaceful and tactile, emphasizing the handcrafted nature of the ceramic piece." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm9_QNDVWZFOBn7AJCb1erF0AsrKtWfkTz8aMCY6q-BLpe-5xkBiv7JbHGfKyEsoj5TtFSqbiXPUy7x8994-iHfyEe2Ils9FUqa91ApIEjUxtw79YuB_5Xap7hLnkg3Kb4J_CZZy-eP7dWm4VJS8KBx2fEecRIcTVG88Awcz0469Gp5t26jGHuZHnln11wRLj_D1G_-s3P8In2xlgReP43JkpTvAu2eOqRvHj9wiDUiPd3V-RRtXE0H6_UodGMJadTbtfq3qdAJz0"/>
-<div class="absolute top-2 left-2 bg-secondary text-white p-1 rounded-full shadow-lg">
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-</div>
-</div>
-<div class="relative aspect-square rounded-lg overflow-hidden border border-secondary/20">
-<img alt="Plant" class="w-full h-full object-cover" data-alt="A lush green succulent plant in a minimalist clay pot, positioned on a cream-toned parchment surface. The lighting is bright and high-key, creating soft shadows and highlighting the delicate geometric patterns of the plant's leaves. The overall aesthetic is clean, botanical, and artisanal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0w9g7o5oZzSQL30kRfAxSRZ2JUJ0yR7j_Q2YO4FT1P0t5d1rEEaECyORvmJo08FHW6X2_MoNXt7BB7mBsDYmfBamrbx0BopLVFaj3dPGoe8hV79mUfQ-RLq_6yIqF2J7DAndOVp467eyrp4AmPh9MBL8t1wOVTOqKWaf0ogLBuYlxjrENzSpXQWfoMhd1QwsX9aMwCcijo1mpvdG6YHp3UtzyEfjisAG_YG_CC8_LG9yK88oYp8MYAern0XWe9vSmuXwVsLaP-Rk"/>
-</div>
-<div class="relative aspect-square rounded-lg overflow-hidden border border-secondary/20">
-<img alt="Vase" class="w-full h-full object-cover" data-alt="A detailed view of a hand-thrown ceramic vase with a subtle floral imprint, sitting on an aged wooden tabletop. Warm amber sunlight filters through a nearby window, casting long, soft shadows. The image captures a serene, intellectual atmosphere reminiscent of a botanical researcher's home studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzl4UXtjQqkNp1pcddKFbmlo14DbRx6c13F2psMirT0vCdCcbz9d1JmJLMGmq4WvMZ3AC7V4i3ae-xuloT3xmKhG4yT-C7K_Kete_oumn1XIeYc9vR9nsG4vv6gjy3JqMN1xqf_uJpIMxQ7u1E1FzrBjBgIr-ZGzGKnRh0b6ZV7xmrko5EzTruknR-78lpPwBVOGX7Z71FxWW_PV9Cs6hM5bISMheHvcxlFAWaMLMaqiZl-rwHvvAi89LF41FG6fHzvCoP-thBrr8"/>
-</div>
-<!-- Empty Slots -->
-<div class="aspect-square rounded-lg border border-dashed border-outline-variant bg-surface flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">add</span>
-</div>
-<div class="aspect-square rounded-lg border border-dashed border-outline-variant bg-surface flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">add</span>
-</div>
-<div class="aspect-square rounded-lg border border-dashed border-outline-variant bg-surface flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">add</span>
-</div>
-<div class="aspect-square rounded-lg border border-dashed border-outline-variant bg-surface flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">add</span>
-</div>
-<!-- Add Reel Button -->
-<div class="aspect-square rounded-lg border border-outline bg-surface-container-high flex flex-col items-center justify-center gap-2 cursor-pointer group">
-<div class="w-12 h-12 rounded-full border-2 border-secondary flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all">
-<span class="material-symbols-outlined">play_arrow</span>
-</div>
-<span class="font-label-caps text-label-caps text-secondary">Add Reel</span>
-</div>
-</div>
-<div class="absolute -bottom-6 -right-6 opacity-[0.05] pointer-events-none">
-<span class="material-symbols-outlined text-[120px] text-primary">filter_vintage</span>
-</div>
-</section>
-<!-- Step 2: Details -->
-<section class="bg-surface-container-low p-8 rounded-xl border border-secondary/20 shadow-sm">
-<h3 class="font-headline-sm text-headline-sm text-primary mb-6">Step 2: Listing Details</h3>
-<div class="space-y-6">
-<div class="relative">
-<input class="w-full bg-surface border border-secondary/40 rounded-lg px-4 py-4 pt-6 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all peer" id="title" placeholder=" " type="text"/>
-<label class="absolute left-4 top-2 text-outline text-xs transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs" for="title">Name your creation...</label>
-</div>
-<div class="grid grid-cols-2 gap-6">
-<div class="relative">
-<select class="w-full bg-surface border border-secondary/40 rounded-lg px-4 py-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none appearance-none">
-<option>Select Category</option>
-<option>Home Decor</option>
-<option>Wearables</option>
-<option>Botanical Art</option>
-</select>
-<span class="material-symbols-outlined absolute right-4 top-4 text-outline pointer-events-none">expand_more</span>
-</div>
-</div>
-<div>
-<p class="font-label-caps text-label-caps text-outline mb-3">Primary Medium</p>
-<div class="flex flex-wrap gap-2">
-<span class="px-4 py-2 rounded-full border border-secondary text-secondary bg-secondary/5 font-body-sm cursor-pointer hover:bg-secondary hover:text-white transition-colors">Crochet</span>
-<span class="px-4 py-2 rounded-full bg-secondary text-white font-body-sm cursor-pointer">Ceramic</span>
-<span class="px-4 py-2 rounded-full border border-secondary text-secondary bg-secondary/5 font-body-sm cursor-pointer hover:bg-secondary hover:text-white transition-colors">Wood</span>
-<span class="px-4 py-2 rounded-full border border-secondary text-secondary bg-secondary/5 font-body-sm cursor-pointer hover:bg-secondary hover:text-white transition-colors">Fiber</span>
-<span class="px-4 py-2 rounded-full border border-secondary text-secondary bg-secondary/5 font-body-sm cursor-pointer hover:bg-secondary hover:text-white transition-colors">Mixed</span>
-</div>
-</div>
-<div>
-<label class="block font-label-caps text-label-caps text-outline mb-2">Description</label>
-<textarea class="w-full bg-surface border border-secondary/40 rounded-lg p-4 h-32 focus:ring-1 focus:ring-primary focus:border-primary outline-none font-body-md" placeholder="Tell the story of this piece..."></textarea>
-</div>
-<div class="flex gap-8 py-4">
-<label class="flex items-center gap-3 cursor-pointer group">
-<input checked="" class="w-5 h-5 rounded border-secondary text-primary focus:ring-primary" type="checkbox"/>
-<span class="font-body-md text-on-surface group-hover:text-primary">Handmade 🌸</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="w-5 h-5 rounded border-secondary text-primary focus:ring-primary" type="checkbox"/>
-<span class="font-body-md text-on-surface group-hover:text-primary">Made to order</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="w-5 h-5 rounded border-secondary text-primary focus:ring-primary" type="checkbox"/>
-<span class="font-body-md text-on-surface group-hover:text-primary">Limited drop</span>
-</label>
-</div>
-</div>
-</section>
-<!-- Step 3: Pricing & Stock -->
-<section class="bg-surface-container-low p-8 rounded-xl border border-secondary/20 shadow-sm">
-<div class="flex justify-between items-center mb-6">
-<h3 class="font-headline-sm text-headline-sm text-primary">Step 3: Pricing &amp; Stock</h3>
-<div class="flex items-center gap-2 bg-tertiary-fixed px-3 py-1 rounded-full">
-<span class="material-symbols-outlined text-[16px] text-tertiary">timer</span>
-<span class="font-data-mono text-data-mono text-tertiary">Ends in 24:00:00</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-8">
-<div class="space-y-6">
-<div>
-<label class="block font-label-caps text-label-caps text-outline mb-2">Listing Price</label>
-<div class="relative">
-<span class="absolute left-4 top-4 font-data-mono text-secondary">₹</span>
-<input class="w-full bg-surface border border-secondary/40 rounded-lg pl-10 pr-4 py-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none font-data-mono" type="number" value="1250"/>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<div class="flex-1">
-<label class="block font-label-caps text-label-caps text-outline mb-2">Quantity</label>
-<div class="flex items-center bg-surface border border-secondary/40 rounded-lg overflow-hidden">
-<button class="px-4 py-4 text-secondary hover:bg-surface-container transition-colors">-</button>
-<input class="w-full bg-transparent border-none text-center font-data-mono focus:ring-0" type="text" value="01"/>
-<button class="px-4 py-4 text-secondary hover:bg-surface-container transition-colors">+</button>
-</div>
-</div>
-<div class="pt-6">
-<div class="bg-secondary-container px-3 py-2 rounded-lg flex items-center gap-2">
-<span class="font-label-caps text-[10px] text-on-secondary-container">SAVE 15%</span>
-</div>
-</div>
-</div>
-</div>
-<div class="bg-surface border border-secondary/10 rounded-xl p-6 space-y-4">
-<div class="flex justify-between items-center">
-<span class="font-body-md">Limited drop availability</span>
-<div class="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
-<div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
-</div>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-body-md">Custom order lead time</span>
-<select class="bg-transparent border-none font-data-mono text-primary focus:ring-0 cursor-pointer">
-<option>3-5 Days</option>
-<option>1-2 Weeks</option>
-<option>2-4 Weeks</option>
-</select>
-</div>
-</div>
-</div>
-</section>
-<!-- Step 4: Shipping -->
-<section class="bg-surface-container-low p-8 rounded-xl border border-secondary/20 shadow-sm">
-<h3 class="font-headline-sm text-headline-sm text-primary mb-6">Step 4: Shipping Logistics</h3>
-<div class="grid grid-cols-3 gap-4 mb-8">
-<div>
-<label class="block font-label-caps text-label-caps text-outline mb-2">Length (cm)</label>
-<input class="w-full bg-surface border border-secondary/40 rounded-lg p-4 font-data-mono focus:ring-1 focus:ring-primary" placeholder="0.0" type="text"/>
-</div>
-<div>
-<label class="block font-label-caps text-label-caps text-outline mb-2">Width (cm)</label>
-<input class="w-full bg-surface border border-secondary/40 rounded-lg p-4 font-data-mono focus:ring-1 focus:ring-primary" placeholder="0.0" type="text"/>
-</div>
-<div>
-<label class="block font-label-caps text-label-caps text-outline mb-2">Height (cm)</label>
-<input class="w-full bg-surface border border-secondary/40 rounded-lg p-4 font-data-mono focus:ring-1 focus:ring-primary" placeholder="0.0" type="text"/>
-</div>
-</div>
-<div class="space-y-6">
-<div>
-<p class="font-label-caps text-label-caps text-outline mb-3">Shipping Regions</p>
-<div class="flex flex-wrap gap-2">
-<span class="px-4 py-2 rounded-full bg-primary text-on-primary font-body-sm flex items-center gap-2">Domestic <span class="material-symbols-outlined text-[14px]">close</span></span>
-<span class="px-4 py-2 rounded-full bg-primary text-on-primary font-body-sm flex items-center gap-2">International <span class="material-symbols-outlined text-[14px]">close</span></span>
-<span class="px-4 py-2 rounded-full border border-secondary text-secondary bg-surface font-body-sm flex items-center gap-2 hover:bg-secondary hover:text-white transition-all">+ Add Region</span>
-</div>
-</div>
-<div class="flex items-center gap-4 border-t border-outline-variant/30 pt-6">
-<div class="flex items-center gap-2 p-1 bg-surface border border-outline-variant rounded-full">
-<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-body-sm">Flat Rate</button>
-<button class="px-6 py-2 rounded-full text-on-surface-variant font-body-sm">Calculated</button>
-</div>
-<div class="flex-1">
-<select class="w-full bg-surface border border-secondary/40 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary">
-<option>Ships in 3-5 business days</option>
-<option>Ships in 5-7 business days</option>
-<option>Ships in 1-2 weeks</option>
-</select>
-</div>
-</div>
-</div>
-</section>
-<!-- Step 5: Preview -->
-<section class="bg-surface-container-low p-8 rounded-xl border border-secondary/20 shadow-sm flex flex-col items-center">
-<h3 class="font-headline-sm text-headline-sm text-primary mb-10 w-full text-left">Step 5: Buyer Preview</h3>
-<div class="w-full max-w-sm bg-surface rounded-2xl shadow-xl border border-secondary/10 overflow-hidden group">
-<div class="relative aspect-square overflow-hidden">
-<img alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A premium close-up of a handcrafted ceramic vessel with botanical fern engravings. The pottery has a matte cream finish with deep green accents, sitting elegantly in a high-end designer space with soft, directional lighting that emphasizes its sculptural form and artisanal texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtU9HAnqkGL138c_6EKs-75ZHBlDNqIWsreCdH1dsgZxtBM3tZfeqREJBMpYl-QO3lHhP-7oZaf-2mkcZeDFHLa-Yo463f96nC3nxSCLLtCXnLtwsZal0v0NEvpl7R6XQRwzcFTW5CjsET9wsLgSinrKfvczX9HfeOjaL2jf0u3jenvsk4H9nWT7nkxoQpZuuxPyEQETH5zb1Tgl7ZG6MFurNWE0K4EJn_GmVLOK9caKlsffzE74OnR9Wfea9dLZXxy0-u0qp4teI"/>
-<div class="absolute top-4 right-4 bg-white/90 backdrop-blur p-2 rounded-full">
-<span class="material-symbols-outlined text-primary">favorite</span>
-</div>
-</div>
-<div class="p-6 space-y-4">
-<div class="flex justify-between items-start">
-<div>
-<h4 class="font-headline-sm text-headline-sm text-primary">Vintage Fern Vessel</h4>
-<p class="font-body-sm text-secondary">@botanical_atelier</p>
-</div>
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-tertiary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-data-mono text-data-mono text-on-surface">4.9</span>
-</div>
-</div>
-<div class="flex justify-between items-center">
-<span class="font-data-mono text-headline-sm font-bold text-primary">₹1,250</span>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-body-sm font-semibold hover:opacity-90 transition-opacity">Add to Bag</button>
-</div>
-</div>
-<div class="h-1 bg-gradient-to-r from-primary via-secondary to-tertiary"></div>
-</div>
-<p class="mt-8 font-body-md text-on-surface-variant flex items-center gap-2">
-                    Looks good? Publish 🌸
-                </p>
-</section>
-<!-- Step 6: Publish -->
-<section class="flex flex-col items-center gap-6 py-10">
-<button class="group relative bg-primary text-on-primary px-12 py-5 rounded-full flex items-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-lg overflow-hidden" id="publishBtn">
-<span class="material-symbols-outlined animate-pulse">auto_awesome</span>
-<span class="font-headline-sm text-headline-sm font-bold">Publish Listing 🌸</span>
-<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">colors_spark</span>
-<!-- Atmospheric Sparkle Effect (Hidden by default) -->
-<div class="absolute inset-0 pointer-events-none bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-</button>
-<p class="font-body-sm text-outline text-center max-w-md">By publishing, you agree to our artisan terms and conditions for handmade crafts.</p>
-</section>
+
 </div>
 </seller-layout>
-<!-- Success Toast (Animated with JS) -->
-<div class="fixed bottom-12 left-1/2 -translate-x-1/2 translate-y-32 bg-secondary text-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-4 transition-all duration-500 ease-out z-[100] opacity-0" id="successToast">
-<span class="material-symbols-outlined text-[24px]">check_circle</span>
-<span class="font-body-lg font-bold">Your craft is live 🌸</span>
-<div class="w-8 h-[2px] bg-white/40"></div>
-<button class="text-white/80 hover:text-white font-body-sm uppercase tracking-widest text-[10px]">View Live</button>
-</div>
+
 <script>
-        const publishBtn = document.getElementById('publishBtn');
-        const toast = document.getElementById('successToast');
+    const API_BASE = window.location.origin;
+    const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('tohfa_access_token');
+    
+    let selectedFiles = [];
+    let existingPhotos = [];
+    let selectedCategory = '';
+    let tagsList = [];
+    let variantsList = [];
 
-        publishBtn.addEventListener('click', () => {
-            // Trigger Animation
-            toast.classList.remove('translate-y-32', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+    function showToast(msg, type='success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            document.body.appendChild(toast);
+        }
+        toast.className = `fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-[#3D6B4F] text-white' : 'bg-[#BA1A1A] text-white'
+        }`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span><span>${msg}</span>`;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3500);
+    }
 
-            // Optional: Particle effect or sound would go here
-            console.log("Listing Published!");
+    // Step 1: Photos & Upload logic
+    const fileInput = document.getElementById('photo-file-input');
+    const dragZone = document.getElementById('drag-drop-zone');
+    if (dragZone && fileInput) {
+        dragZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            selectedFiles = selectedFiles.concat(files);
+            renderPreviews();
+            updateChecklist();
+        });
+    }
 
-            // Hide after 5 seconds
-            setTimeout(() => {
-                toast.classList.add('translate-y-32', 'opacity-0');
-                toast.classList.remove('translate-y-0', 'opacity-100');
-            }, 5000);
+    function renderPreviews() {
+        const allUrls = [
+            ...existingPhotos.map(p => p.url),
+            ...selectedFiles.map(f => URL.createObjectURL(f))
+        ];
+
+        const coverImg = document.getElementById('preview-image-1');
+        const previewMainImg = document.getElementById('preview-main-img');
+        const previewThumbGrid = document.getElementById('preview-thumb-grid');
+
+        if (coverImg && allUrls.length > 0) {
+            coverImg.src = allUrls[0];
+            coverImg.parentElement.style.opacity = '1';
+        }
+        if (previewMainImg && allUrls.length > 0) {
+            previewMainImg.src = allUrls[0];
+        }
+
+        if (previewThumbGrid) {
+            previewThumbGrid.innerHTML = '';
+            allUrls.slice(1, 4).forEach(url => {
+                const div = document.createElement('div');
+                div.className = 'aspect-square rounded-lg overflow-hidden border border-secondary/20 shadow-sm';
+                div.innerHTML = `<img class="w-full h-full object-cover" src="${url}"/>`;
+                previewThumbGrid.appendChild(div);
+            });
+            if (allUrls.length < 4) {
+                const addDiv = document.createElement('div');
+                addDiv.className = 'aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center bg-white/40 gap-1 text-outline';
+                addDiv.innerHTML = `<span class="material-symbols-outlined text-lg">add_photo_alternate</span><span class="text-[10px] font-data-mono">ADD MORE</span>`;
+                previewThumbGrid.appendChild(addDiv);
+            }
+        }
+
+        for (let i = 2; i <= 6; i++) {
+            const slot = document.getElementById(`slot-${i}`);
+            if (slot) {
+                if (allUrls[i - 1]) {
+                    slot.innerHTML = `<img class="w-full h-full object-cover rounded-xl" src="${allUrls[i - 1]}"/>`;
+                    slot.style.opacity = '1';
+                } else {
+                    slot.innerHTML = `<span class="material-symbols-outlined text-sage">image</span>`;
+                    slot.style.opacity = '0.4';
+                }
+            }
+        }
+    }
+
+    // Step 2: Category list logic
+    const categoryContainer = document.getElementById('category-container');
+    const catButtons = categoryContainer.querySelectorAll('.category-btn');
+    catButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            catButtons.forEach(b => {
+                b.className = 'category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors';
+            });
+            btn.className = 'category-btn px-5 py-2 rounded-full border border-forest bg-forest text-white text-sm font-medium transition-colors';
+            selectedCategory = btn.textContent.trim();
+            updateChecklist();
+        });
+    });
+
+    // Step 2: Tags list logic
+    const tagInput = document.getElementById('tag-input');
+    const tagsContainer = document.getElementById('tags-container');
+    const previewTagsContainer = document.getElementById('preview-tags-container');
+
+    function renderTags() {
+        tagsContainer.innerHTML = '';
+        if (previewTagsContainer) previewTagsContainer.innerHTML = '';
+
+        tagsList.forEach((tag, idx) => {
+            const span = document.createElement('span');
+            span.className = 'text-[10px] bg-sage/10 text-sage px-2 py-1 rounded-md border border-sage/20 flex items-center gap-1';
+            span.innerHTML = `#${tag} <span class="material-symbols-outlined text-[10px] cursor-pointer remove-tag-btn" data-idx="${idx}">close</span>`;
+            tagsContainer.appendChild(span);
+
+            if (previewTagsContainer) {
+                const previewSpan = document.createElement('span');
+                previewSpan.className = 'px-3 py-1 bg-white border border-secondary/20 rounded-full text-[10px] font-bold text-secondary uppercase';
+                previewSpan.textContent = `#${tag}`;
+                previewTagsContainer.appendChild(previewSpan);
+            }
         });
 
-        // Simple smooth scroll for navigation (mock)
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        document.querySelectorAll('.remove-tag-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.dataset.idx);
+                tagsList.splice(idx, 1);
+                renderTags();
             });
         });
-    </script>
+    }
+
+    function addTag() {
+        let val = tagInput.value.trim().replace(/^#/, '');
+        if (val && !tagsList.includes(val)) {
+            tagsList.push(val);
+            tagInput.value = '';
+            renderTags();
+        }
+    }
+
+    tagInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTag();
+        }
+    });
+    document.getElementById('add-tag-icon').addEventListener('click', addTag);
+
+    // Step 2: Character counts & Realtime preview sync
+    const titleInput = document.getElementById('listing-title');
+    const charCountSpan = document.getElementById('title-char-count');
+    const previewTitle = document.getElementById('preview-title');
+
+    titleInput.addEventListener('input', () => {
+        const len = titleInput.value.length;
+        charCountSpan.textContent = `${len}/80 characters`;
+        previewTitle.textContent = titleInput.value.trim() || 'Moonlight Jasmine Resin Study';
+        updateChecklist();
+    });
+
+    const storyTextarea = document.getElementById('listing-story');
+    const previewStory = document.getElementById('preview-story');
+    storyTextarea.addEventListener('input', () => {
+        previewStory.textContent = storyTextarea.value.trim() || 'Tell the story of this piece...';
+        updateChecklist();
+    });
+
+    // ZAI Mode narrative generation click handler
+    document.getElementById('zai-card').addEventListener('click', () => {
+        const title = titleInput.value.trim();
+        storyTextarea.value = `This exquisite handcrafted piece${title ? ', ' + title : ''}, is created with carefully selected natural elements preserved in crystal clear resin. Sourced from local woodlands, the delicate structures reflect slow design principles. Perfectly captured to bring organic warmth and the quiet luxury of nature to your home space.`;
+        previewStory.textContent = storyTextarea.value;
+        showToast('ZAI narrative generated based on title!', 'success');
+        updateChecklist();
+    });
+
+    // Customisation suite logic
+    function updateCustomisationPreview() {
+        const isCustom = document.getElementById('type-customisable').checked;
+        const panel = document.getElementById('customisation-panel');
+        const previewCard = document.getElementById('customisation-preview-card');
+        const previewCustBox = document.getElementById('preview-customisation-box');
+
+        if (!isCustom) {
+            panel.classList.add('hidden');
+            previewCard.classList.add('hidden');
+            if (previewCustBox) previewCustBox.classList.add('hidden');
+            return;
+        }
+
+        panel.classList.remove('hidden');
+        previewCard.classList.remove('hidden');
+        if (previewCustBox) previewCustBox.classList.remove('hidden');
+
+        const allowText = document.getElementById('allow-text-personalisation').checked;
+        const textLabel = document.getElementById('text-personalisation-label').value.trim();
+        const textLimit = document.getElementById('text-personalisation-limit').value;
+
+        const allowColor = document.getElementById('allow-color-choices').checked;
+        const colors = document.getElementById('color-choices-input').value.trim();
+
+        const allowImage = document.getElementById('allow-image-upload').checked;
+        const imageNotes = document.getElementById('image-upload-notes').value.trim();
+
+        const allowNotes = document.getElementById('allow-additional-notes').checked;
+        const fee = document.getElementById('customisation-fee').value || 0;
+
+        let html = '';
+        let previewHtml = '';
+
+        if (allowText) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Text Personalisation: <strong>"${textLabel || 'Personalisation Text'}"</strong> (Max ${textLimit} chars)</div>`;
+            previewHtml += `<p>• Personalisation: "${textLabel || 'Name/Text'}" (max ${textLimit} characters)</p>`;
+        }
+        if (allowColor) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Color Choices: <strong>"${colors || 'Any color'}"</strong></div>`;
+            previewHtml += `<p>• Colors offered: ${colors || 'Custom choices'}</p>`;
+        }
+        if (allowImage) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Image Reference Upload: <strong>Enabled</strong></div>`;
+            previewHtml += `<p>• Reference Image upload enabled</p>`;
+        }
+        if (allowNotes) {
+            html += `<div class="flex items-center gap-2 text-forest"><span class="material-symbols-outlined text-sm">check</span>Special Notes: <strong>Allowed</strong></div>`;
+            previewHtml += `<p>• Special instructions notes allowed</p>`;
+        }
+        html += `<div class="mt-2 pt-2 border-t border-sage/20 text-primary font-bold">Extra Fee: ₹${fee}</div>`;
+        if (fee > 0 && (allowText || allowColor || allowImage || allowNotes)) {
+            previewHtml += `<p class="mt-2 text-primary font-bold">Customisation surcharge: + ₹${fee}</p>`;
+        }
+
+        if (!allowText && !allowColor && !allowImage && !allowNotes) {
+            html = '<div class="text-rose-500 italic">No customisation options configured yet. Set some options above.</div>';
+            previewHtml = '<p class="italic">No customisation options configured.</p>';
+        }
+
+        document.getElementById('preview-summary-content').innerHTML = html;
+        document.getElementById('preview-customisation-details').innerHTML = previewHtml;
+    }
+
+    function initCustomisationSuite() {
+        const radioPremade = document.getElementById('type-premade');
+        const radioCustom = document.getElementById('type-customisable');
+        const labelPremade = document.getElementById('label-premade');
+        const labelCustom = document.getElementById('label-custom');
+
+        function togglePanel() {
+            if (radioCustom.checked) {
+                labelCustom.classList.add('border-forest', 'bg-sage/5');
+                labelPremade.classList.remove('border-forest', 'bg-sage/5');
+            } else {
+                labelPremade.classList.add('border-forest', 'bg-sage/5');
+                labelCustom.classList.remove('border-forest', 'bg-sage/5');
+            }
+            updateCustomisationPreview();
+        }
+
+        radioPremade.addEventListener('change', togglePanel);
+        radioCustom.addEventListener('change', togglePanel);
+
+        // Sub-sections toggles
+        const allowTextCheckbox = document.getElementById('allow-text-personalisation');
+        const textDetails = document.getElementById('text-personalisation-details');
+        allowTextCheckbox.addEventListener('change', () => {
+            if (allowTextCheckbox.checked) textDetails.classList.remove('hidden');
+            else textDetails.classList.add('hidden');
+            updateCustomisationPreview();
+        });
+
+        const allowColorCheckbox = document.getElementById('allow-color-choices');
+        const colorDetails = document.getElementById('color-choices-details');
+        allowColorCheckbox.addEventListener('change', () => {
+            if (allowColorCheckbox.checked) colorDetails.classList.remove('hidden');
+            else colorDetails.classList.add('hidden');
+            updateCustomisationPreview();
+        });
+
+        const allowImageCheckbox = document.getElementById('allow-image-upload');
+        const imageDetails = document.getElementById('image-upload-details');
+        allowImageCheckbox.addEventListener('change', () => {
+            if (allowImageCheckbox.checked) imageDetails.classList.remove('hidden');
+            else imageDetails.classList.add('hidden');
+            updateCustomisationPreview();
+        });
+
+        // Input syncs
+        document.getElementById('text-personalisation-label').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('text-personalisation-limit').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('color-choices-input').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('customisation-fee').addEventListener('input', updateCustomisationPreview);
+        document.getElementById('allow-additional-notes').addEventListener('change', updateCustomisationPreview);
+    }
+
+    // Badge dropdown custom text sync
+    const badgeSelect = document.getElementById('product-badge-select');
+    const badgeCustom = document.getElementById('product-badge-custom');
+    badgeSelect.addEventListener('change', () => {
+        if (badgeSelect.value === '__custom__') {
+            badgeCustom.classList.remove('hidden');
+            badgeCustom.focus();
+        } else {
+            badgeCustom.classList.add('hidden');
+            badgeCustom.value = '';
+        }
+    });
+
+    // Step 3: Pricing live projection
+    const priceInput = document.getElementById('price-input');
+    const projRetail = document.getElementById('proj-retail');
+    const projFee = document.getElementById('proj-fee');
+    const projPayout = document.getElementById('proj-payout');
+    const previewPrice = document.getElementById('preview-price');
+
+    function updateProjection() {
+        const valStr = priceInput.value.replace(/,/g, '').trim();
+        const price = parseFloat(valStr) || 0;
+        const fee = price * 0.08;
+        const payout = price - fee;
+
+        projRetail.textContent = `₹${price.toLocaleString('en-IN')}`;
+        projFee.textContent = `- ₹${fee.toLocaleString('en-IN')}`;
+        projPayout.textContent = `₹${payout.toLocaleString('en-IN')}`;
+        previewPrice.textContent = price > 0 ? `₹ ${price.toLocaleString('en-IN')}` : '₹ 0';
+        updateChecklist();
+    }
+    priceInput.addEventListener('input', updateProjection);
+
+    // Variants list
+    const variantsContainer = document.getElementById('variants-list-container');
+    const addVariantBtn = document.getElementById('add-variant-btn');
+
+    function renderVariants() {
+        variantsContainer.innerHTML = '';
+        variantsList.forEach((v, idx) => {
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-12 gap-2 items-center bg-white/50 border border-secondary/15 p-2 rounded-lg';
+            div.innerHTML = `
+                <div class="col-span-6">
+                    <input class="w-full bg-white border border-secondary/20 rounded px-2 py-1 text-xs var-name-input outline-none" type="text" value="${v.variant_name || ''}" placeholder="Variant Name" data-idx="${idx}"/>
+                </div>
+                <div class="col-span-3">
+                    <input class="w-full bg-white border border-secondary/20 rounded px-2 py-1 text-xs font-data-mono var-delta-input outline-none" type="number" value="${v.price_delta !== undefined ? v.price_delta : 0}" placeholder="Delta (₹)" data-idx="${idx}"/>
+                </div>
+                <div class="col-span-2">
+                    <input class="w-full bg-white border border-secondary/20 rounded px-2 py-1 text-xs font-data-mono var-cap-input outline-none" type="number" value="${v.daily_capacity || ''}" placeholder="Cap" data-idx="${idx}"/>
+                </div>
+                <div class="col-span-1 text-right">
+                    <button type="button" class="text-error remove-var-btn cursor-pointer" data-idx="${idx}">&times;</button>
+                </div>
+            `;
+            variantsContainer.appendChild(div);
+        });
+
+        document.querySelectorAll('.var-name-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                variantsList[idx].variant_name = e.target.value;
+            });
+        });
+        document.querySelectorAll('.var-delta-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                variantsList[idx].price_delta = parseFloat(e.target.value) || 0;
+            });
+        });
+        document.querySelectorAll('.var-cap-input').forEach(inp => {
+            inp.addEventListener('input', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                variantsList[idx].daily_capacity = parseInt(e.target.value) || null;
+            });
+        });
+        document.querySelectorAll('.remove-var-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.dataset.idx);
+                variantsList.splice(idx, 1);
+                renderVariants();
+            });
+        });
+    }
+
+    addVariantBtn.addEventListener('click', () => {
+        variantsList.push({ variant_name: '', price_delta: 0, daily_capacity: null });
+        renderVariants();
+    });
+
+    const prebookingCheckbox = document.getElementById('allow-prebooking');
+    const prebookingContainer = document.getElementById('prebooking-window-container');
+    prebookingCheckbox.addEventListener('change', () => {
+        if (prebookingCheckbox.checked) {
+            prebookingContainer.classList.remove('hidden');
+        } else {
+            prebookingContainer.classList.add('hidden');
+        }
+    });
+
+    // Step 4: Shipping Summary update
+    const domesticProfileSelect = document.getElementById('domestic-profile-select');
+    const estDeliveryP = document.getElementById('est-delivery-p');
+    const domesticRateP = document.getElementById('domestic-rate-p');
+    const previewShippingDays = document.getElementById('preview-shipping-days');
+
+    function updateShippingSummary() {
+        const val = domesticProfileSelect.value;
+        if (val === 'local') {
+            estDeliveryP.textContent = '1-2 days';
+            domesticRateP.textContent = '₹50 fixed';
+            if (previewShippingDays) previewShippingDays.textContent = '1-2 days';
+        } else if (val === 'courier_express') {
+            estDeliveryP.textContent = '2-3 days';
+            domesticRateP.textContent = '₹150 fixed';
+            if (previewShippingDays) previewShippingDays.textContent = '2-3 days';
+        } else {
+            estDeliveryP.textContent = '3-5 days';
+            domesticRateP.textContent = '₹80 fixed';
+            if (previewShippingDays) previewShippingDays.textContent = '3-5 days';
+        }
+        updateChecklist();
+    }
+    domesticProfileSelect.addEventListener('change', updateShippingSummary);
+
+    // Add-on Options Preview
+    const giftWrapCheckbox = document.getElementById('gift-wrap-checkbox');
+    const handwrittenNoteCheckbox = document.getElementById('handwritten-note-checkbox');
+    const previewAddons = document.getElementById('preview-addons');
+    function updateAddonsPreview() {
+        let list = [];
+        if (giftWrapCheckbox.checked) list.push('Gift Wrap');
+        if (handwrittenNoteCheckbox.checked) list.push('Note');
+        previewAddons.textContent = list.length > 0 ? list.join(' & ') : 'None';
+    }
+    giftWrapCheckbox.addEventListener('change', updateAddonsPreview);
+    handwrittenNoteCheckbox.addEventListener('change', updateAddonsPreview);
+
+    // Scroll progress line update & node highlight
+    const stepperProgressLine = document.getElementById('stepper-progress-line');
+    const stepperNodes = document.querySelectorAll('.stepper-node');
+    const sections = [
+        document.getElementById('step-1-photos'),
+        document.getElementById('step-2-details'),
+        document.getElementById('step-3-pricing'),
+        document.getElementById('step-4-shipping'),
+        document.getElementById('step-5-preview'),
+        document.getElementById('step-6-publish')
+    ];
+
+    window.addEventListener('scroll', () => {
+        let currentIdx = 0;
+        const scrollPos = window.scrollY + 200;
+
+        sections.forEach((sec, idx) => {
+            if (sec && scrollPos >= sec.offsetTop) {
+                currentIdx = idx;
+            }
+        });
+
+        // Update stepper line width:
+        // 0% -> 20% -> 40% -> 60% -> 80% -> 100%
+        const percent = currentIdx * 20;
+        stepperProgressLine.style.width = `${percent}%`;
+
+        // Highlight nodes
+        stepperNodes.forEach((node, idx) => {
+            if (idx === currentIdx) {
+                node.className = 'stepper-node relative z-10 flex flex-col items-center gap-2 text-primary hover:opacity-80 transition-opacity';
+                const circle = node.querySelector('.w-10');
+                circle.className = 'w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center ring-2 ring-primary';
+                const label = node.querySelector('span:last-of-type');
+                label.className = 'text-[10px] font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5';
+            } else if (idx < currentIdx) {
+                node.className = 'stepper-node relative z-10 flex flex-col items-center gap-2 text-primary hover:opacity-80 transition-opacity';
+                const circle = node.querySelector('.w-10');
+                circle.className = 'w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest';
+                circle.innerHTML = `<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>`;
+                const label = node.querySelector('span:last-of-type');
+                label.className = 'text-[10px] font-bold uppercase tracking-widest';
+            } else {
+                node.className = 'stepper-node relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant hover:opacity-80 transition-opacity';
+                const circle = node.querySelector('.w-10');
+                circle.className = 'w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center';
+                const label = node.querySelector('span:last-of-type');
+                label.className = 'text-[10px] font-bold uppercase tracking-widest';
+                
+                // restore original icons
+                const iconSpan = circle.querySelector('.material-symbols-outlined');
+                if (iconSpan) {
+                    if (idx === 1) iconSpan.textContent = 'description';
+                    if (idx === 2) iconSpan.textContent = 'payments';
+                    if (idx === 3) iconSpan.textContent = 'local_shipping';
+                    if (idx === 4) iconSpan.textContent = 'visibility';
+                    if (idx === 5) iconSpan.textContent = 'check_circle';
+                }
+            }
+        });
+    });
+
+    // Stepper smooth scroll
+    document.querySelectorAll('.stepper-node').forEach(node => {
+        node.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = node.getAttribute('href');
+            const targetSec = document.querySelector(targetId);
+            if (targetSec) {
+                targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // Completeness Checklist update
+    function updateChecklist() {
+        let score = 0;
+        
+        // 1. Photos
+        const hasPhotos = existingPhotos.length > 0 || selectedFiles.length > 0;
+        const chkPhotos = document.getElementById('chk-photos');
+        if (hasPhotos) {
+            chkPhotos.className = 'material-symbols-outlined text-primary text-[20px]';
+            chkPhotos.style.fontVariationSettings = "'FILL' 1";
+            score += 25;
+        } else {
+            chkPhotos.className = 'material-symbols-outlined text-on-surface-variant/40 text-[20px]';
+            chkPhotos.style.fontVariationSettings = "'FILL' 0";
+        }
+
+        // 2. Title & Story
+        const hasTitle = titleInput.value.trim().length > 0;
+        const hasStory = storyTextarea.value.trim().length > 0;
+        const chkTitle = document.getElementById('chk-title');
+        if (hasTitle && hasStory) {
+            chkTitle.className = 'material-symbols-outlined text-primary text-[20px]';
+            chkTitle.style.fontVariationSettings = "'FILL' 1";
+            score += 25;
+        } else {
+            chkTitle.className = 'material-symbols-outlined text-on-surface-variant/40 text-[20px]';
+            chkTitle.style.fontVariationSettings = "'FILL' 0";
+        }
+
+        // 3. Price & Stock
+        const hasPrice = parseFloat(priceInput.value.replace(/,/g, '')) > 0;
+        const chkPrice = document.getElementById('chk-price');
+        if (hasPrice) {
+            chkPrice.className = 'material-symbols-outlined text-primary text-[20px]';
+            chkPrice.style.fontVariationSettings = "'FILL' 1";
+            score += 25;
+        } else {
+            chkPrice.className = 'material-symbols-outlined text-on-surface-variant/40 text-[20px]';
+            chkPrice.style.fontVariationSettings = "'FILL' 0";
+        }
+
+        // 4. Shipping
+        const hasShipping = domesticProfileSelect.value !== '';
+        const chkShipping = document.getElementById('chk-shipping');
+        if (hasShipping) {
+            chkShipping.className = 'material-symbols-outlined text-primary text-[20px]';
+            chkShipping.style.fontVariationSettings = "'FILL' 1";
+            score += 25;
+        } else {
+            chkShipping.className = 'material-symbols-outlined text-on-surface-variant/40 text-[20px]';
+            chkShipping.style.fontVariationSettings = "'FILL' 0";
+        }
+
+        // Update score display
+        document.getElementById('checklist-score').textContent = `${score}%`;
+        document.getElementById('checklist-score-bar').style.width = `${score}%`;
+    }
+
+    // Save Listing Draft (consolidated)
+    async function saveAllDetails(status='draft') {
+        const title = titleInput.value.trim();
+        if (!title) {
+            showToast('Title is required to save listing.', 'error');
+            titleInput.focus();
+            titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return null;
+        }
+
+        const story = storyTextarea.value.trim();
+        const priceVal = parseFloat(priceInput.value.replace(/,/g, '')) || 0;
+        const base_price = Math.round(priceVal * 100); // in paise
+
+        const stock_count = parseInt(document.getElementById('stock-input').value) || 0;
+        const sku = document.getElementById('sku-input').value.trim();
+
+        // Customisation Config
+        const isCustomisable = document.getElementById('type-customisable').checked;
+        const customization_config = {
+            allow_text: document.getElementById('allow-text-personalisation').checked,
+            text_label: document.getElementById('text-personalisation-label').value.trim(),
+            text_limit: parseInt(document.getElementById('text-personalisation-limit').value, 10) || 0,
+            allow_color: document.getElementById('allow-color-choices').checked,
+            colors: document.getElementById('color-choices-input').value.split(',').map(c => c.trim()).filter(Boolean),
+            allow_image: document.getElementById('allow-image-upload').checked,
+            image_notes: document.getElementById('image-upload-notes').value.trim(),
+            allow_notes: document.getElementById('allow-additional-notes').checked,
+            extra_fee_rupees: parseFloat(document.getElementById('customisation-fee').value) || 0
+        };
+
+        // Product Badge value
+        const badgeSelectVal = badgeSelect.value;
+        const badgeCustomVal = badgeCustom.value.trim();
+        let product_tag = badgeSelectVal === '__custom__' ? (badgeCustomVal || null) : (badgeSelectVal || null);
+
+        // Shipping Logistics
+        const domesticProfile = domesticProfileSelect.value;
+        let shipping_method = 'courier';
+        let ships_in_days = 5;
+        if (domesticProfile === 'local') {
+            shipping_method = 'local';
+            ships_in_days = 2;
+        } else if (domesticProfile === 'courier_express') {
+            shipping_method = 'courier';
+            ships_in_days = 3;
+        }
+
+        const packaging_type = document.getElementById('packaging-type').value;
+        const return_policy = document.getElementById('return-policy').value;
+        const dispatch_sla_days = parseInt(document.getElementById('dispatch-sla').value) || 1;
+
+        const length_cm = parseFloat(document.getElementById('length-input').value) || null;
+        const width_cm = parseFloat(document.getElementById('width-input').value) || null;
+        const height_cm = parseFloat(document.getElementById('height-input').value) || null;
+        const weight_g = parseInt(document.getElementById('weight-input').value) || null;
+
+        // Add-ons
+        const gift_wrap_available = giftWrapCheckbox.checked ? 1 : 0;
+        const gift_wrap_price_paise = gift_wrap_available ? 5000 : 0;
+        const handwritten_note = handwrittenNoteCheckbox.checked ? 1 : 0;
+
+        const processing_time = document.getElementById('processing-time-select').value;
+        const shipping_profile_id = parseInt(document.getElementById('shipping-profile-select').value) || null;
+        const daily_product_cap = document.getElementById('daily-product-cap').value.trim() !== '' ? parseInt(document.getElementById('daily-product-cap').value, 10) : null;
+
+        // Variants delta in paise
+        const variants = variantsList.map(v => ({
+            variant_name: v.variant_name,
+            price_delta: Math.round((v.price_delta || 0) * 100),
+            daily_capacity: v.daily_capacity
+        }));
+
+        let draftId = sessionStorage.getItem('draft_id');
+        let requestBody = {
+            title,
+            description: story,
+            story: story,
+            base_price,
+            price_paise: base_price,
+            stock_count,
+            sku,
+            category: selectedCategory,
+            tags: tagsList,
+            status,
+            isCustomisable,
+            customization_config,
+            product_tag,
+            shipping_method,
+            ships_in_days,
+            packaging_type,
+            return_policy,
+            dispatch_sla_days,
+            length_cm,
+            width_cm,
+            height_cm,
+            weight_g,
+            weight_grams: weight_g,
+            gift_wrap_available,
+            gift_wrap_price_paise,
+            handwritten_note,
+            processing_time,
+            shipping_profile_id,
+            variants,
+            daily_product_cap
+        };
+
+        try {
+            let res;
+            if (!draftId) {
+                res = await fetch(`${API_BASE}/api/seller/listings`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+            } else {
+                res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+            }
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to save details');
+
+            const finalId = draftId || data.data.listing_id || data.data.id;
+            sessionStorage.setItem('draft_id', finalId);
+
+            // Upload files if selected
+            if (selectedFiles.length > 0) {
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const formData = new FormData();
+                    formData.append('file', selectedFiles[i]);
+                    formData.append('is_cover', (existingPhotos.length === 0 && i === 0) ? 'true' : 'false');
+                    formData.append('sort_order', String(existingPhotos.length + i));
+                    
+                    await fetch(`${API_BASE}/api/seller/listings/${finalId}/photos`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: formData
+                    });
+                }
+                selectedFiles = [];
+            }
+
+            // Sync fresh database state
+            await loadDraftListing(finalId);
+            return finalId;
+        } catch (err) {
+            showToast(err.message, 'error');
+            return null;
+        }
+    }
+
+    async function loadDraftListing(draftId) {
+        try {
+            const res = await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const resp = await res.json();
+                const listing = resp.data || resp;
+
+                // Title
+                titleInput.value = listing.title || '';
+                previewTitle.textContent = listing.title || 'Moonlight Jasmine Resin Study';
+                charCountSpan.textContent = `${titleInput.value.length}/80 characters`;
+
+                // Story
+                storyTextarea.value = listing.story || listing.description || '';
+                previewStory.textContent = storyTextarea.value || 'Tell the story of this piece...';
+
+                // Price
+                if (listing.base_price) {
+                    priceInput.value = (listing.base_price / 100).toFixed(0);
+                    updateProjection();
+                }
+
+                // Inventory & SKU
+                document.getElementById('stock-input').value = listing.stock_count || 1;
+                document.getElementById('sku-input').value = listing.sku || '';
+
+                // Category select
+                if (listing.category) {
+                    selectedCategory = listing.category;
+                    catButtons.forEach(btn => {
+                        if (btn.textContent.trim().toLowerCase() === selectedCategory.toLowerCase()) {
+                            btn.className = 'category-btn px-5 py-2 rounded-full border border-forest bg-forest text-white text-sm font-medium transition-colors';
+                        } else {
+                            btn.className = 'category-btn px-5 py-2 rounded-full border border-sage/40 text-on-surface-variant hover:border-forest hover:text-forest text-sm font-medium transition-colors';
+                        }
+                    });
+                }
+
+                // Tags
+                if (listing.tags) {
+                    tagsList = Array.isArray(listing.tags) ? listing.tags : JSON.parse(listing.tags || '[]');
+                    renderTags();
+                }
+
+                // Badge
+                const badge = listing.product_tag || '';
+                if (badge === '' || badge === 'Best Seller' || badge === 'Sponsored') {
+                    badgeSelect.value = badge;
+                    badgeCustom.classList.add('hidden');
+                } else if (badge) {
+                    badgeSelect.value = '__custom__';
+                    badgeCustom.classList.remove('hidden');
+                    badgeCustom.value = badge;
+                }
+
+                // Customisation
+                const isCust = listing.isCustomisable || listing.listing_type === 'custom';
+                document.getElementById(isCust ? 'type-customisable' : 'type-premade').checked = true;
+
+                const config = listing.customization_config || {};
+                document.getElementById('allow-text-personalisation').checked = !!config.allow_text;
+                document.getElementById('text-personalisation-label').value = config.text_label || '';
+                document.getElementById('text-personalisation-limit').value = config.text_limit || 20;
+
+                document.getElementById('allow-color-choices').checked = !!config.allow_color;
+                document.getElementById('color-choices-input').value = Array.isArray(config.colors) ? config.colors.join(', ') : (config.colors || '');
+
+                document.getElementById('allow-image-upload').checked = !!config.allow_image;
+                document.getElementById('image-upload-notes').value = config.image_notes || '';
+
+                document.getElementById('allow-additional-notes').checked = !!config.allow_notes;
+                document.getElementById('customisation-fee').value = config.extra_fee_rupees || 0;
+
+                // Sync Visibility details
+                const textDetails = document.getElementById('text-personalisation-details');
+                if (config.allow_text) textDetails.classList.remove('hidden');
+                else textDetails.classList.add('hidden');
+
+                const colorDetails = document.getElementById('color-choices-details');
+                if (config.allow_color) colorDetails.classList.remove('hidden');
+                else colorDetails.classList.add('hidden');
+
+                const imageDetails = document.getElementById('image-upload-details');
+                if (config.allow_image) imageDetails.classList.remove('hidden');
+                else imageDetails.classList.add('hidden');
+
+                const panel = document.getElementById('customisation-panel');
+                if (isCust) panel.classList.remove('hidden');
+                else panel.classList.add('hidden');
+
+                updateCustomisationPreview();
+
+                // Shipping origins & dimensions
+                if (listing.shipping_method) {
+                    if (listing.shipping_method === 'local') {
+                        domesticProfileSelect.value = 'local';
+                    } else if (listing.shipping_method === 'courier' && listing.ships_in_days <= 3) {
+                        domesticProfileSelect.value = 'courier_express';
+                    } else {
+                        domesticProfileSelect.value = 'courier';
+                    }
+                    updateShippingSummary();
+                }
+
+                document.getElementById('packaging-type').value = listing.packaging_type || 'standard';
+                document.getElementById('return-policy').value = listing.return_policy || 'no-returns';
+                document.getElementById('dispatch-sla').value = listing.dispatch_sla_days || 1;
+
+                document.getElementById('length-input').value = listing.length_cm || '';
+                document.getElementById('width-input').value = listing.width_cm || '';
+                document.getElementById('height-input').value = listing.height_cm || '';
+                document.getElementById('weight-input').value = listing.weight_g || listing.weight_grams || '';
+                document.getElementById('daily-product-cap').value = listing.daily_product_cap !== null && listing.daily_product_cap !== undefined ? listing.daily_product_cap : '';
+
+                // Add-ons
+                giftWrapCheckbox.checked = !!listing.gift_wrap_available;
+                handwrittenNoteCheckbox.checked = !!listing.handwritten_note;
+                updateAddonsPreview();
+
+                document.getElementById('processing-time-select').value = listing.processing_time || '3-5_days';
+                document.getElementById('shipping-profile-select').value = listing.shipping_profile_id || 1;
+
+                // Variants
+                if (listing.variants && listing.variants.length > 0) {
+                    variantsList = listing.variants.map(v => ({
+                        variant_name: v.variant_name,
+                        price_delta: (v.price_delta || 0) / 100,
+                        daily_capacity: v.daily_capacity
+                    }));
+                } else if (listing.listing_variants && listing.listing_variants.length > 0) {
+                    variantsList = listing.listing_variants.map(v => ({
+                        variant_name: v.variant_name,
+                        price_delta: (v.price_delta || 0) / 100,
+                        daily_capacity: v.daily_capacity
+                    }));
+                }
+                renderVariants();
+
+                // Photos & Videos
+                existingPhotos = listing.photos || [];
+                renderPreviews();
+
+                updateChecklist();
+            }
+        } catch (err) {
+            console.error('Error fetching draft:', err);
+        }
+    }
+
+    async function discardDraft() {
+        if (!confirm('Are you sure you want to discard this draft? This cannot be undone.')) return;
+        const draftId = sessionStorage.getItem('draft_id');
+        if (draftId) {
+            await fetch(`${API_BASE}/api/seller/listings/${draftId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            sessionStorage.removeItem('draft_id');
+        }
+        showToast('Draft discarded successfully.', 'success');
+        setTimeout(() => {
+            window.location.href = '/seller/catalog.html';
+        }, 1000);
+    }
+
+    async function publishListingFlow() {
+        const title = titleInput.value.trim();
+        if (!title) {
+            showToast('A listing title is required to publish.', 'error');
+            titleInput.focus();
+            return;
+        }
+        if (!selectedCategory) {
+            showToast('A product category is required to publish.', 'error');
+            return;
+        }
+
+        const draftId = await saveAllDetails('active');
+        if (draftId) {
+            // Update inline success subline
+            const pubSubline = document.getElementById('published-subline-inline');
+            if (pubSubline) {
+                pubSubline.textContent = `${title} is now visible to buyers.`;
+            }
+            
+            // Switch states
+            document.getElementById('publish-initial-state').classList.add('hidden');
+            document.getElementById('publish-success-state').classList.remove('hidden');
+            
+            // Update stepper line width and make node 6 active
+            if (stepperProgressLine) {
+                stepperProgressLine.style.width = '100%';
+            }
+            
+            // Highlight nodes
+            stepperNodes.forEach((node, idx) => {
+                node.className = 'stepper-node relative z-10 flex flex-col items-center gap-2 text-primary hover:opacity-80 transition-opacity';
+                const circle = node.querySelector('.w-10');
+                if (circle) {
+                    circle.className = 'w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest';
+                    if (idx === 5) {
+                        circle.className = 'w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center ring-2 ring-primary text-forest';
+                        circle.innerHTML = `<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>`;
+                    } else {
+                        circle.innerHTML = `<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>`;
+                    }
+                }
+                const label = node.querySelector('span:last-of-type');
+                if (label) {
+                    if (idx === 5) {
+                        label.className = 'text-[10px] font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5';
+                    } else {
+                        label.className = 'text-[10px] font-bold uppercase tracking-widest';
+                    }
+                }
+            });
+            
+            // Transition footer buttons
+            const discardBtn = document.getElementById('discard-draft-footer');
+            if (discardBtn) {
+                discardBtn.outerHTML = `<button id="view-store-btn-footer" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">View Store</button>`;
+                
+                // Add click handler for the new View Store button
+                const newViewStoreBtn = document.getElementById('view-store-btn-footer');
+                if (newViewStoreBtn) {
+                    newViewStoreBtn.addEventListener('click', () => {
+                        fetch(`${API_BASE}/api/seller/profile`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            const profileData = data.data || data;
+                            if (profileData && profileData.handle) {
+                                window.location.href = `/store/${profileData.handle}`;
+                            } else {
+                                window.location.href = '/';
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error fetching seller profile:', err);
+                            window.location.href = '/';
+                        });
+                    });
+                }
+            }
+            
+            const discardBtnHeader = document.getElementById('discard-draft-btn');
+            if (discardBtnHeader) {
+                discardBtnHeader.outerHTML = `<button id="view-store-btn-header" class="px-6 py-2 border border-sage rounded-full text-sm font-bold text-forest hover:bg-parchment transition-colors">View Store</button>`;
+                const newViewStoreBtnHeader = document.getElementById('view-store-btn-header');
+                if (newViewStoreBtnHeader) {
+                    newViewStoreBtnHeader.addEventListener('click', () => {
+                        fetch(`${API_BASE}/api/seller/profile`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            const profileData = data.data || data;
+                            if (profileData && profileData.handle) {
+                                window.location.href = `/store/${profileData.handle}`;
+                            } else {
+                                window.location.href = '/';
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error fetching seller profile:', err);
+                            window.location.href = '/';
+                        });
+                    });
+                }
+            }
+            
+            const saveBtnFooter = document.getElementById('save-draft-footer');
+            if (saveBtnFooter) saveBtnFooter.classList.add('hidden');
+            
+            const publishFooterBtn = document.getElementById('publish-footer-btn');
+            if (publishFooterBtn) {
+                publishFooterBtn.innerHTML = `Go to Dashboard <span class="material-symbols-outlined text-sm">arrow_forward</span>`;
+                publishFooterBtn.onclick = () => window.location.href = '/seller/dashboard.html';
+            }
+
+            const publishEntryBtn = document.getElementById('publish-entry-btn');
+            if (publishEntryBtn) {
+                publishEntryBtn.innerHTML = `Go to Dashboard`;
+                publishEntryBtn.onclick = () => window.location.href = '/seller/dashboard.html';
+            }
+            
+            // Clear draft_id so that next creation starts fresh
+            sessionStorage.removeItem('draft_id');
+            
+            showToast('Listing published successfully! 🌸', 'success');
+            
+            // Scroll to publish panel
+            document.getElementById('step-6-publish').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    // Save as draft button handlers
+    document.getElementById('save-draft-footer').addEventListener('click', async () => {
+        const draftId = await saveAllDetails('draft');
+        if (draftId) {
+            showToast('Draft saved successfully.', 'success');
+        }
+    });
+
+    document.getElementById('discard-draft-btn').addEventListener('click', discardDraft);
+    document.getElementById('discard-draft-footer').addEventListener('click', discardDraft);
+
+    // Publish buttons click
+    document.getElementById('publish-entry-btn').addEventListener('click', publishListingFlow);
+    document.getElementById('publish-main-btn').addEventListener('click', publishListingFlow);
+    document.getElementById('publish-footer-btn').addEventListener('click', publishListingFlow);
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initCustomisationSuite();
+        updateChecklist();
+
+        const draftId = sessionStorage.getItem('draft_id');
+        if (draftId) {
+            loadDraftListing(draftId);
+        }
+
+        const shareBtnInline = document.getElementById('share-instagram-btn-inline');
+        if (shareBtnInline) {
+            shareBtnInline.addEventListener('click', () => {
+                console.log('Instagram share action triggered');
+                showToast('Share link copied to clipboard!', 'success');
+            });
+        }
+    });
+</script>
 
 <!-- Injected Standard Seller Studio Script (Tasks 38, 39) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
   
-  // 1. Auth check: if no token is found, redirect to login
   if (!token && (window.location.protocol.startsWith('http'))) {
     window.location.href = '/auth/login.html?next=' + encodeURIComponent(window.location.pathname);
     return;
   }
   
-  // 2. Handle ZAI Mode State & UI Sync
   let zaiEnabled = localStorage.getItem('zai_mode') === 'true';
   updateZaiUI(zaiEnabled);
   
@@ -464,7 +2066,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(err => console.error("Error syncing ZAI Mode:", err));
   }
   
-  // 3. Set up click listener on toggle button
   const toggleBtn = document.getElementById('zai-toggle-btn');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
@@ -510,7 +2111,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    // Find all zai tips / cards on the page and show/hide them
     const selectors = [
       '.zai-tip-card',
       '[class*="zai-tip"]',
@@ -529,33 +2129,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (e) {}
     });
   }
-  
-  // 4. Handle View Store button relative link click or navigation
-  const viewStoreBtn = document.querySelector('aside button:last-of-type, aside button.bg-forest');
-  if (viewStoreBtn) {
-    viewStoreBtn.addEventListener('click', () => {
-      if (token) {
-        fetch('/api/seller/profile', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.success && data.data && data.data.store_slug) {
-            window.location.href = '/' + data.data.store_slug;
-          } else {
-            window.location.href = '/';
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          window.location.href = '/';
-        });
-      } else {
-        window.location.href = '/';
-      }
-    });
-  }
 });
 </script>
 
-</body></html>
+</body>
+</html>

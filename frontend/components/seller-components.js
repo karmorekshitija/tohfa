@@ -147,10 +147,12 @@ class SellerSidebar extends HTMLElement {
             <span class="material-symbols-outlined mb-1 text-2xl">shopping_basket</span>
             <span class="text-[9px] uppercase tracking-widest text-center">Orders</span>
           </a>
-          <!-- Capacity -->
-          <a class="sidebar-link \${activeTab === 'capacity' ? 'sidebar-link-active' : ''}" href="/seller/production-planner.html" id="sidebar-capacity" title="Capacity">
-            <span class="material-symbols-outlined mb-1 text-2xl">pending_actions</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Capacity</span>
+
+          <!-- Overflow -->
+          <a class="sidebar-link \${activeTab === 'overflow' ? 'sidebar-link-active' : ''} relative" href="/seller/overflow-requests.html" id="sidebar-overflow" title="Overflow Requests">
+            <span class="material-symbols-outlined mb-1 text-2xl">event_busy</span>
+            <span class="text-[9px] uppercase tracking-widest text-center">Overflow</span>
+            <span id="sidebar-overflow-badge" class="hidden absolute top-1 right-3 bg-[#ba1a1a] text-white font-bold text-[8px] w-4 h-4 rounded-full flex items-center justify-center border border-white">0</span>
           </a>
           <!-- Payments (Payouts) -->
           <a class="sidebar-link \${activeTab === 'payments' ? 'sidebar-link-active' : ''}" href="/seller/payouts.html" id="sidebar-payments" title="Payments">
@@ -176,11 +178,6 @@ class SellerSidebar extends HTMLElement {
           <a class="sidebar-link \${activeTab === 'reels' ? 'sidebar-link-active' : ''}" href="/seller/upload-reel.html" id="sidebar-reels" title="Reels">
             <span class="material-symbols-outlined mb-1 text-2xl">movie</span>
             <span class="text-[9px] uppercase tracking-widest text-center">Reels</span>
-          </a>
-          <!-- Config / Settings -->
-          <a class="sidebar-link \${activeTab === 'config' ? 'sidebar-link-active' : ''}" href="/seller/store-config.html" id="sidebar-config" title="Settings">
-            <span class="material-symbols-outlined mb-1 text-2xl">settings</span>
-            <span class="text-[9px] uppercase tracking-widest text-center">Settings</span>
           </a>
           <!-- Profile -->
           <a class="sidebar-link \${activeTab === 'profile' ? 'sidebar-link-active' : ''}" href="/seller/profile.html" id="sidebar-profile" title="Profile">
@@ -242,6 +239,31 @@ class SellerSidebar extends HTMLElement {
         }
         sessionStorage.clear();
         window.location.href = '/auth/login.html';
+      });
+    }
+
+    // Fetch and render pending overflow requests count for sidebar badge
+    const token = sessionStorage.getItem('tohfa_access_token') || sessionStorage.getItem('access_token');
+    if (token) {
+      fetch('/api/seller/overflow-requests', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => {
+        if (res.ok) return res.json();
+      })
+      .then(resp => {
+        if (resp && resp.data) {
+          const requests = resp.data || [];
+          const pendingCount = requests.filter(r => r.status === 'pending').length;
+          const badge = this.querySelector('#sidebar-overflow-badge');
+          if (badge && pendingCount > 0) {
+            badge.textContent = pendingCount;
+            badge.classList.remove('hidden');
+          }
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching overflow requests count for sidebar:', err);
       });
     }
   }

@@ -655,6 +655,7 @@ const migrateStoreConfig = () => {
       bank_account_holder TEXT  DEFAULT NULL,
       bank_name         TEXT    DEFAULT NULL,
       bank_account_number TEXT  DEFAULT NULL,
+      ifsc_code         TEXT    DEFAULT NULL,
       gstin             TEXT    DEFAULT NULL,
       gstin_verified    INTEGER DEFAULT 0,
       notif_new_order_email   INTEGER DEFAULT 1,
@@ -1218,6 +1219,297 @@ try {
 try {
   db.exec("ALTER TABLE listings ADD COLUMN product_tag TEXT DEFAULT NULL;");
 } catch (e) {}
+
+
+// ============================================================
+// NEW SELLER PROFILE / SETTINGS SCHEMA
+// ============================================================
+
+// sellers — canonical seller profile (new schema)
+const migrateNewSellers = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS sellers (
+      id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id             INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      shop_name           TEXT    NOT NULL DEFAULT '',
+      handle              TEXT    UNIQUE,
+      city                TEXT    DEFAULT NULL,
+      bio                 TEXT    DEFAULT NULL,
+      photo_url           TEXT    DEFAULT NULL,
+      banner_url          TEXT    DEFAULT NULL,
+      about_headline      TEXT    DEFAULT NULL,
+      about_description   TEXT    DEFAULT NULL,
+      about_video_url     TEXT    DEFAULT NULL,
+      working_on_label    TEXT    DEFAULT NULL,
+      badges              TEXT    DEFAULT NULL,
+      created_at          TEXT    DEFAULT (datetime('now')),
+      deleted_at          TEXT    DEFAULT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_sellers_user_id ON sellers(user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_sellers_handle ON sellers(handle);
+  `);
+};
+migrateNewSellers();
+
+// seller_addresses
+const migrateSellerAddresses = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_addresses (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id     INTEGER NOT NULL REFERENCES sellers(id) ON DELETE CASCADE,
+      label         TEXT    NOT NULL DEFAULT 'Home',
+      address_line  TEXT    NOT NULL,
+      city          TEXT    NOT NULL,
+      state         TEXT    NOT NULL,
+      pincode       TEXT    NOT NULL,
+      phone         TEXT    NOT NULL,
+      is_default    INTEGER NOT NULL DEFAULT 0,
+      created_at    TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_seller_addresses_seller ON seller_addresses(seller_id);
+  `);
+};
+migrateSellerAddresses();
+
+// seller_settings
+const migrateSellerSettings = () => {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_settings (
+      id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id           INTEGER NOT NULL UNIQUE REFERENCES sellers(id) ON DELETE CASCADE,
+      daily_limit         INTEGER NOT NULL DEFAULT 50,
+      weekly_limit        INTEGER NOT NULL DEFAULT 200,
+      daily_sold_count    INTEGER NOT NULL DEFAULT 0,
+      weekly_sold_count   INTEGER NOT NULL DEFAULT 0,
+      last_daily_reset    TEXT    DEFAULT (datetime('now')),
+      last_weekly_reset   TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_seller_settings_seller ON seller_settings(seller_id);
+  `);
+};
+migrateSellerSettings();
+
+// Capacity Management & Overflow Orders migration
+const migrateCapacityFeature = () => {
+  // 1. Add weekly_production_capacity and daily_order_limit to seller_profiles
+  try {
+    db.exec("ALTER TABLE seller_profiles ADD COLUMN weekly_production_capacity INTEGER DEFAULT NULL;");
+  } catch (e) {}
+  try {
+    db.exec("ALTER TABLE seller_profiles ADD COLUMN daily_order_limit INTEGER DEFAULT NULL;");
+  } catch (e) {}
+
+  // 2. Add daily_product_cap column to listings
+  try {
+    db.exec("ALTER TABLE listings ADD COLUMN daily_product_cap INTEGER DEFAULT NULL;");
+  } catch (e) {}
+
+  // 3. Create daily_order_tracking table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS daily_order_tracking (
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      date TEXT NOT NULL,
+      total_units_ordered INTEGER DEFAULT 0,
+      PRIMARY KEY (seller_id, date)
+    );
+    CREATE INDEX IF NOT EXISTS idx_dot_seller_date ON daily_order_tracking(seller_id, date);
+  `);
+
+  // 4. Create overflow_requests table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS overflow_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      buyer_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      listing_id INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+      variant_id INTEGER REFERENCES listing_variants(id) ON DELETE SET NULL,
+      quantity INTEGER NOT NULL DEFAULT 1,
+      original_price_paise INTEGER NOT NULL,
+      seller_proposed_date TEXT DEFAULT NULL,
+      seller_notes TEXT DEFAULT NULL,
+      status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'accepted', 'declined', 'confirmed', 'cancelled', 'expired')),
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_or_buyer_id ON overflow_requests(buyer_id);
+    CREATE INDEX IF NOT EXISTS idx_or_seller_id ON overflow_requests(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_or_status ON overflow_requests(status);
+  `);
+  try {
+    db.exec("ALTER TABLE overflow_requests ADD COLUMN order_id INTEGER REFERENCES orders(id) ON DELETE SET NULL;");
+  } catch (e) {}
+};
+migrateCapacityFeature();
+
+// Backfill sellers + seller_settings for every existing seller_profiles row
+try {
+  const sellerRows = db.prepare("SELECT user_id, shop_name FROM seller_profiles").all();
+  for (const row of sellerRows) {
+    const existing = db.prepare("SELECT id FROM sellers WHERE user_id = ?").get(row.user_id);
+    if (!existing) {
+      const info = db.prepare(
+        "INSERT OR IGNORE INTO sellers (user_id, shop_name) VALUES (?, ?)"
+      ).run(row.user_id, row.shop_name || '');
+      if (info.lastInsertRowid) {
+        db.prepare(
+          "INSERT OR IGNORE INTO seller_settings (seller_id) VALUES (?)"
+        ).run(info.lastInsertRowid);
+      }
+    } else {
+      db.prepare(
+        "INSERT OR IGNORE INTO seller_settings (seller_id) VALUES (?)"
+      ).run(existing.id);
+    }
+  }
+} catch (e) {
+  console.error('Backfill sellers error:', e.message);
+}
+
+// Migration to add ifsc_code to store_config if it doesn't exist
+try {
+  db.exec("ALTER TABLE store_config ADD COLUMN ifsc_code TEXT DEFAULT NULL;");
+} catch (e) {}
+
+// Migration for Payments & Payouts
+const migratePayments = () => {
+  // 1. seller_earnings
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_earnings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      total_earned INTEGER NOT NULL DEFAULT 0,
+      pending_amount INTEGER NOT NULL DEFAULT 0,
+      on_hold_amount INTEGER NOT NULL DEFAULT 0,
+      this_month_earned INTEGER NOT NULL DEFAULT 0,
+      this_week_earned INTEGER NOT NULL DEFAULT 0,
+      last_updated TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_se_seller ON seller_earnings(seller_id);
+  `);
+
+  // 2. seller_payout_accounts
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_payout_accounts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      method TEXT NOT NULL CHECK(method IN ('BANK', 'UPI')),
+      account_holder_name TEXT NOT NULL,
+      account_number TEXT DEFAULT NULL,
+      ifsc_code TEXT DEFAULT NULL,
+      upi_id TEXT DEFAULT NULL,
+      is_primary INTEGER NOT NULL DEFAULT 0 CHECK(is_primary IN (0, 1)),
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_spa_seller ON seller_payout_accounts(seller_id);
+  `);
+
+  // 3. payouts
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS payouts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      amount INTEGER NOT NULL,
+      method TEXT NOT NULL CHECK(method IN ('BANK', 'UPI')),
+      status TEXT NOT NULL CHECK(status IN ('PENDING', 'PROCESSING', 'PAID', 'FAILED')),
+      initiated_at TEXT NOT NULL DEFAULT (datetime('now')),
+      completed_at TEXT DEFAULT NULL,
+      failure_reason TEXT DEFAULT NULL,
+      reference_id TEXT DEFAULT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_payouts_new_seller ON payouts(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_payouts_new_status ON payouts(status);
+  `);
+
+  // 4. transactions
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS transactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      order_id INTEGER REFERENCES orders(id) ON DELETE SET NULL,
+      product_name TEXT NOT NULL,
+      buyer_name TEXT NOT NULL,
+      type TEXT NOT NULL CHECK(type IN ('SALE', 'REFUND', 'PAYOUT', 'FEE', 'ADJUSTMENT')),
+      gross_amount INTEGER NOT NULL,
+      platform_fee INTEGER NOT NULL DEFAULT 0,
+      tax_amount INTEGER NOT NULL DEFAULT 0,
+      net_amount INTEGER NOT NULL,
+      status TEXT NOT NULL CHECK(status IN ('COMPLETED', 'PENDING', 'FAILED')),
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_tx_seller ON transactions(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_tx_order ON transactions(order_id);
+    CREATE INDEX IF NOT EXISTS idx_tx_type ON transactions(type);
+  `);
+
+  // 5. seller_tax_info
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_tax_info (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      is_gst_registered INTEGER NOT NULL DEFAULT 0 CHECK(is_gst_registered IN (0, 1)),
+      gstin TEXT DEFAULT NULL,
+      pan_number TEXT DEFAULT NULL,
+      tds_applicable INTEGER NOT NULL DEFAULT 0 CHECK(tds_applicable IN (0, 1)),
+      financial_year TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_sti_seller ON seller_tax_info(seller_id);
+  `);
+
+  // 6. refund_disputes
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS refund_disputes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      amount INTEGER NOT NULL,
+      reason TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'OPEN' CHECK(status IN ('OPEN', 'ACCEPTED', 'CONTESTED', 'RESOLVED')),
+      seller_response TEXT DEFAULT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      resolved_at TEXT DEFAULT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_rd_seller ON refund_disputes(seller_id);
+    CREATE INDEX IF NOT EXISTS idx_rd_order ON refund_disputes(order_id);
+  `);
+
+  // 7. seller_payment_preferences
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS seller_payment_preferences (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      seller_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      preferred_method TEXT NOT NULL CHECK(preferred_method IN ('BANK', 'UPI')),
+      auto_payout_enabled INTEGER NOT NULL DEFAULT 0 CHECK(auto_payout_enabled IN (0, 1)),
+      auto_payout_threshold INTEGER NOT NULL DEFAULT 50000,
+      notify_on_payout INTEGER NOT NULL DEFAULT 1 CHECK(notify_on_payout IN (0, 1))
+    );
+    CREATE INDEX IF NOT EXISTS idx_spp_seller ON seller_payment_preferences(seller_id);
+  `);
+};
+migratePayments();
+
+// Backfill for Payments
+try {
+  const sellers = db.prepare("SELECT user_id FROM seller_profiles").all();
+  for (const seller of sellers) {
+    // 1. Initialize seller_earnings if not exist
+    const hasEarnings = db.prepare("SELECT id FROM seller_earnings WHERE seller_id = ?").get(seller.user_id);
+    if (!hasEarnings) {
+      db.prepare("INSERT INTO seller_earnings (seller_id, total_earned, pending_amount, on_hold_amount, this_month_earned, this_week_earned) VALUES (?, 0, 0, 0, 0, 0)").run(seller.user_id);
+    }
+    // 2. Initialize seller_tax_info if not exist
+    const hasTaxInfo = db.prepare("SELECT id FROM seller_tax_info WHERE seller_id = ?").get(seller.user_id);
+    if (!hasTaxInfo) {
+      db.prepare("INSERT INTO seller_tax_info (seller_id, is_gst_registered, gstin, pan_number, tds_applicable, financial_year) VALUES (?, 0, NULL, NULL, 0, '2026-2027')").run(seller.user_id);
+    }
+    // 3. Initialize seller_payment_preferences if not exist
+    const hasPrefs = db.prepare("SELECT id FROM seller_payment_preferences WHERE seller_id = ?").get(seller.user_id);
+    if (!hasPrefs) {
+      db.prepare("INSERT INTO seller_payment_preferences (seller_id, preferred_method, auto_payout_enabled, auto_payout_threshold, notify_on_payout) VALUES (?, 'BANK', 0, 50000, 1)").run(seller.user_id);
+    }
+  }
+} catch (e) {
+  console.error("Backfill payments tables error:", e.message);
+}
 
 module.exports = db;
 

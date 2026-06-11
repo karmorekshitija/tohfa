@@ -220,50 +220,32 @@
         </div>
     </section>
 
-    <!-- Section: Customer Insights & Order Type Comparison -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-lg mb-xl">
-        <!-- Left Box: Customer Insights -->
-        <div class="bg-parchment p-lg rounded-xl border border-outline-variant/20 shadow-sm flex flex-col md:flex-row gap-lg">
-            <!-- Chart Side -->
-            <div class="flex-1">
-                <h4 class="font-display-hero italic text-title-serif text-primary mb-md">Customer Insights</h4>
-                <div class="h-48 relative">
-                    <canvas id="customerChart"></canvas>
-                </div>
-            </div>
-            <!-- Locations Side -->
-            <div class="w-full md:w-1/2">
-                <h5 class="font-bold text-xs uppercase tracking-widest text-primary mb-sm">Top Buyer Locations</h5>
-                <ul id="top-locations-list" class="space-y-sm text-sm">
-                    <!-- Dynamic locations list -->
-                </ul>
-            </div>
-        </div>
-
+    <!-- Section: Custom vs Pre-made Comparison -->
+    <section class="mb-xl">
         <!-- Right Box: Custom vs Pre-made Comparison -->
         <div class="bg-white p-lg rounded-xl border border-outline-variant/20 shadow-sm">
             <h4 class="font-display-hero italic text-title-serif text-primary mb-md">Custom vs Pre-made Orders</h4>
-            <div class="grid grid-cols-2 gap-md h-full pb-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-md h-full pb-4">
                 <!-- Custom Card -->
-                <div class="bg-surface-container p-md rounded-lg flex flex-col justify-between">
+                <div class="bg-surface-container p-md rounded-lg flex flex-col justify-between min-h-[140px]">
                     <div>
                         <span class="px-2 py-0.5 bg-tertiary text-white text-[9px] uppercase tracking-wider rounded-full font-bold">Custom</span>
                         <h5 class="text-xs text-on-surface-variant font-bold mt-sm">Orders Count</h5>
                         <p class="font-data-price text-lg font-bold text-on-surface mt-xs" id="custom-order-count">0</p>
                     </div>
-                    <div>
+                    <div class="mt-4">
                         <h5 class="text-xs text-on-surface-variant font-bold">Revenue</h5>
                         <p class="font-data-price text-lg font-bold text-primary" id="custom-revenue-val">₹0</p>
                     </div>
                 </div>
                 <!-- Pre-made Card -->
-                <div class="bg-surface-container p-md rounded-lg flex flex-col justify-between">
+                <div class="bg-surface-container p-md rounded-lg flex flex-col justify-between min-h-[140px]">
                     <div>
                         <span class="px-2 py-0.5 bg-secondary text-white text-[9px] uppercase tracking-wider rounded-full font-bold">Pre-made</span>
                         <h5 class="text-xs text-on-surface-variant font-bold mt-sm">Orders Count</h5>
                         <p class="font-data-price text-lg font-bold text-on-surface mt-xs" id="premade-order-count">0</p>
                     </div>
-                    <div>
+                    <div class="mt-4">
                         <h5 class="text-xs text-on-surface-variant font-bold">Revenue</h5>
                         <p class="font-data-price text-lg font-bold text-primary" id="premade-revenue-val">₹0</p>
                     </div>
@@ -461,62 +443,67 @@
             });
         }
 
-        // 4. Customer Insights - Top Locations
+        // 4. Customer Insights - Top Locations (Safe Check)
         const locationsList = document.getElementById('top-locations-list');
-        locationsList.innerHTML = '';
-        const locations = data.customer_insights?.top_locations || [];
-        if (locations.length === 0) {
-            locationsList.innerHTML = `<li class="text-on-surface-variant italic py-xs">No locations data yet.</li>`;
-        } else {
-            locations.forEach((loc, index) => {
-                const li = document.createElement('li');
-                li.className = 'flex justify-between items-center py-xs border-b border-outline-variant/10';
-                li.innerHTML = `
-                    <div class="flex items-center gap-xs">
-                        <span class="text-gold font-bold text-xs">#${index + 1}</span>
-                        <span class="font-medium">${loc.city}</span>
-                    </div>
-                    <div class="text-right">
-                        <span class="font-data-price font-bold text-xs">${loc.order_count} orders</span>
-                        <span class="text-xs text-sage block">${formatCurrency(loc.revenue)}</span>
-                    </div>
-                `;
-                locationsList.appendChild(li);
-            });
+        if (locationsList) {
+            locationsList.innerHTML = '';
+            const locations = data.customer_insights?.top_locations || [];
+            if (locations.length === 0) {
+                locationsList.innerHTML = `<li class="text-on-surface-variant italic py-xs">No locations data yet.</li>`;
+            } else {
+                locations.forEach((loc, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center py-xs border-b border-outline-variant/10';
+                    li.innerHTML = `
+                        <div class="flex items-center gap-xs">
+                            <span class="text-gold font-bold text-xs">#${index + 1}</span>
+                            <span class="font-medium">${loc.city}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-data-price font-bold text-xs">${loc.order_count} orders</span>
+                            <span class="text-xs text-sage block">${formatCurrency(loc.revenue)}</span>
+                        </div>
+                    `;
+                    locationsList.appendChild(li);
+                });
+            }
         }
 
-        // 5. Customer Insights - Repeat vs New Donut Chart
-        const ctxCustomer = document.getElementById('customerChart').getContext('2d');
-        if (customerChartInstance) customerChartInstance.destroy();
-        
-        const repeatCount = data.customer_insights?.repeat_buyers || 0;
-        const newCount = data.customer_insights?.new_buyers || 0;
-        
-        customerChartInstance = new Chart(ctxCustomer, {
-            type: 'doughnut',
-            data: {
-                labels: ['New Buyers', 'Repeat Buyers'],
-                datasets: [{
-                    data: [newCount, repeatCount],
-                    backgroundColor: ['#717972', '#d4af37'],
-                    borderColor: '#fff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            font: { family: 'DM Sans', size: 10 }
-                        }
-                    }
+        // 5. Customer Insights - Repeat vs New Donut Chart (Safe Check)
+        const customerChartCanvas = document.getElementById('customerChart');
+        if (customerChartCanvas) {
+            const ctxCustomer = customerChartCanvas.getContext('2d');
+            if (customerChartInstance) customerChartInstance.destroy();
+            
+            const repeatCount = data.customer_insights?.repeat_buyers || 0;
+            const newCount = data.customer_insights?.new_buyers || 0;
+            
+            customerChartInstance = new Chart(ctxCustomer, {
+                type: 'doughnut',
+                data: {
+                    labels: ['New Buyers', 'Repeat Buyers'],
+                    datasets: [{
+                        data: [newCount, repeatCount],
+                        backgroundColor: ['#717972', '#d4af37'],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
                 },
-                cutout: '60%'
-            }
-        });
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'DM Sans', size: 10 }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
 
         // 6. Main Charts
         const chartsData = data.charts || { labels: [], revenue: [], orders: [], conversion: [] };

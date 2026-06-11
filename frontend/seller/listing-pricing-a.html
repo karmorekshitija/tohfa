@@ -134,10 +134,10 @@
 <!-- Stepper Header -->
 <!-- Standardised listing wizard step indicators (Task 41) -->
 <div class="bg-parchment/60 py-8 border-b border-sage/10 z-10 shrink-0">
-  <div class="max-w-3xl mx-auto relative flex justify-between items-center">
+  <div class="max-w-4xl mx-auto relative flex justify-between items-center px-4">
     <!-- Connecting Line -->
     <div class="absolute top-1/2 left-8 right-8 h-[2px] bg-sage/20 -translate-y-1/2 z-0"></div>
-    <div class="absolute top-1/2 left-8 w-[50%] h-[2px] bg-forest -translate-y-1/2 z-0 transition-all duration-500"></div>
+    <div class="absolute top-1/2 left-8 w-[40%] h-[2px] bg-forest -translate-y-1/2 z-0 transition-all duration-500"></div>
     <!-- Step 1: Photos (Completed) -->
     <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
       <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
@@ -172,6 +172,13 @@
         <span class="material-symbols-outlined text-lg">visibility</span>
       </div>
       <span class="text-[10px] font-bold uppercase tracking-widest">Preview</span>
+    </div>
+    <!-- Step 6: Publish (Future) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 opacity-40 text-on-surface-variant">
+      <div class="w-10 h-10 rounded-full bg-white border border-sage/40 flex items-center justify-center">
+        <span class="material-symbols-outlined text-lg">check_circle</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest">Publish</span>
     </div>
   </div>
 </div>
@@ -252,8 +259,8 @@
     <div class="space-y-4">
       <div class="grid grid-cols-3 gap-2">
         <div>
-          <label class="text-[9px] text-secondary font-bold uppercase">Daily Max</label>
-          <input id="daily-max-slots" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None"/>
+          <label class="text-[9px] text-secondary font-bold uppercase">Daily Product Cap</label>
+          <input id="daily-product-cap" type="number" class="w-full bg-white border border-secondary/20 rounded-lg p-2 font-data-mono text-sm outline-none" placeholder="None" title="Daily fulfillment cap for this product"/>
         </div>
         <div>
           <label class="text-[9px] text-secondary font-bold uppercase">Weekly Cap</label>
@@ -531,7 +538,7 @@
                 document.getElementById('stock-input').value = listing.stock_count || 1;
                 document.getElementById('sku-input').value = listing.sku || '';
 
-                document.getElementById('daily-max-slots').value = listing.daily_max_slots || '';
+                document.getElementById('daily-product-cap').value = listing.daily_product_cap !== null && listing.daily_product_cap !== undefined ? listing.daily_product_cap : '';
                 document.getElementById('weekly-cap').value = listing.weekly_cap || '';
                 document.getElementById('monthly-ceiling').value = listing.monthly_ceiling || '';
 
@@ -585,7 +592,7 @@
         const stock_count = parseInt(document.getElementById('stock-input').value) || 0;
         const sku = document.getElementById('sku-input').value.trim();
 
-        const daily_max_slots = parseInt(document.getElementById('daily-max-slots').value) || null;
+        const daily_product_cap = document.getElementById('daily-product-cap').value.trim() !== '' ? parseInt(document.getElementById('daily-product-cap').value, 10) : null;
         const weekly_cap = parseInt(document.getElementById('weekly-cap').value) || null;
         const monthly_ceiling = parseInt(document.getElementById('monthly-ceiling').value) || null;
 
@@ -626,7 +633,7 @@
                     price_paise: base_price,
                     stock_count,
                     sku,
-                    daily_max_slots,
+                    daily_product_cap,
                     weekly_cap,
                     monthly_ceiling,
                     allow_prebooking,

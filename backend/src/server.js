@@ -7,6 +7,9 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const multer = require('multer');
 const db = require('./db');
+const { router: sellerProfileRouter } = require('./sellerProfileRoutes');
+const paymentRouter = require('./paymentRoutes');
+const cron = require('node-cron');
 
 try { db.exec("ALTER TABLE notifications ADD COLUMN conversation_id INTEGER;"); } catch (e) {}
 try { db.exec("ALTER TABLE notifications ADD COLUMN offer_id INTEGER;"); } catch (e) {}
@@ -33,6 +36,8 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(sellerProfileRouter);
+app.use(paymentRouter);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Serve standard static screens for interactive flow
@@ -2034,6 +2039,118 @@ app.delete('/api/occasions/:id', rateLimit(30), authenticateToken, (req, res) =>
   }
 });
 
+function getLocalDateString() {
+  // Always use IST (Asia/Kolkata, UTC+5:30) so daily cap resets at midnight IST,
+  // not at midnight UTC (which would be 5:30 AM IST on a UTC server).
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+}
+
+function checkCapacityExceeded(productId, quantity) {
+  const product = db.prepare('SELECT seller_id, name FROM products WHERE id = ?').get(productId);
+  if (!product) {
+    return { exceeded: false, reason: 'Product not found', listing: null, sellerId: null };
+  }
+  
+  const sellerId = product.seller_id;
+  const productName = product.name;
+  
+  // Try to find the corresponding listing
+  let listing = db.prepare('SELECT id, title, daily_product_cap FROM listings WHERE id = ?').get(productId);
+  if (!listing || listing.seller_id !== sellerId || listing.title !== productName) {
+    listing = db.prepare('SELECT id, title, daily_product_cap FROM listings WHERE seller_id = ? AND title = ?').get(sellerId, productName);
+  }
+  
+  const listingId = listing ? listing.id : productId;
+  const dailyProductCap = listing ? listing.daily_product_cap : null;
+  
+  // Get seller limits from seller_profile
+  const sellerProfile = db.prepare('SELECT daily_order_limit, weekly_production_capacity FROM seller_profiles WHERE user_id = ?').get(sellerId);
+  const dailyOrderLimit = sellerProfile ? sellerProfile.daily_order_limit : null;
+  const weeklyProductionCapacity = sellerProfile ? sellerProfile.weekly_production_capacity : null;
+  
+  // 1. Check Listing Daily Cap
+  if (dailyProductCap !== null && dailyProductCap >= 0) {
+    const todayStr = getLocalDateString();
+    const standardUnits = db.prepare(`
+      SELECT COALESCE(SUM(oi.quantity), 0) as qty
+      FROM order_items oi
+      JOIN orders o ON oi.order_id = o.id
+      WHERE oi.product_id = ? AND date(o.created_at) = ? AND o.status != 'Cancelled'
+    `).get(listingId, todayStr).qty;
+    
+    const customUnits = db.prepare(`
+      SELECT COALESCE(SUM(quantity), 0) as qty
+      FROM orders
+      WHERE listing_id = ? AND date(created_at) = ? AND status != 'Cancelled' AND order_type = 'custom'
+    `).get(listingId, todayStr).qty;
+    
+    const listingTodayUnits = standardUnits + customUnits;
+    if (listingTodayUnits + quantity > dailyProductCap) {
+      return {
+        exceeded: true,
+        reason: `Listing daily cap of ${dailyProductCap} units exceeded.`,
+        listing,
+        sellerId
+      };
+    }
+  }
+  
+  // 2. Check Seller Daily Order Limit
+  if (dailyOrderLimit !== null && dailyOrderLimit >= 0) {
+    const todayStr = getLocalDateString();
+    const standardUnits = db.prepare(`
+      SELECT COALESCE(SUM(oi.quantity), 0) as qty
+      FROM order_items oi
+      JOIN orders o ON oi.order_id = o.id
+      WHERE o.seller_id = ? AND date(o.created_at) = ? AND o.status != 'Cancelled'
+    `).get(sellerId, todayStr).qty;
+    
+    const customUnits = db.prepare(`
+      SELECT COALESCE(SUM(quantity), 0) as qty
+      FROM orders
+      WHERE seller_id = ? AND date(created_at) = ? AND status != 'Cancelled' AND order_type = 'custom'
+    `).get(sellerId, todayStr).qty;
+    
+    const sellerTodayUnits = standardUnits + customUnits;
+    if (sellerTodayUnits + quantity > dailyOrderLimit) {
+      return {
+        exceeded: true,
+        reason: `Seller daily limit of ${dailyOrderLimit} units exceeded.`,
+        listing,
+        sellerId
+      };
+    }
+  }
+  
+  // 3. Check Seller Weekly Production Capacity
+  if (weeklyProductionCapacity !== null && weeklyProductionCapacity >= 0) {
+    const standardUnits = db.prepare(`
+      SELECT COALESCE(SUM(oi.quantity), 0) as qty
+      FROM order_items oi
+      JOIN orders o ON oi.order_id = o.id
+      WHERE o.seller_id = ? AND o.created_at >= date('now', '-6 days') AND o.status != 'Cancelled'
+    `).get(sellerId).qty;
+    
+    const customUnits = db.prepare(`
+      SELECT COALESCE(SUM(quantity), 0) as qty
+      FROM orders
+      WHERE seller_id = ? AND created_at >= date('now', '-6 days') AND status != 'Cancelled' AND order_type = 'custom'
+    `).get(sellerId).qty;
+    
+    const sellerWeeklyUnits = standardUnits + customUnits;
+    if (sellerWeeklyUnits + quantity > weeklyProductionCapacity) {
+      return {
+        exceeded: true,
+        reason: `Seller weekly capacity of ${weeklyProductionCapacity} units exceeded.`,
+        listing,
+        sellerId
+      };
+    }
+  }
+  
+  return { exceeded: false, reason: '', listing, sellerId };
+}
+
 // TASK 28: POST /api/orders
 app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
   const userId = req.user.user_id;
@@ -2106,17 +2223,42 @@ app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
         });
       }
     }
-    
-    // 4. Calculate subtotal, shipping
+
+    // ------------------------------------------------------------------
+    // C1 FIX: Aggregate quantity per seller so a mixed cart with
+    // 15 × Product-A + 10 × Product-B (same seller, cap=20) is correctly
+    // detected as 25 units — not two separate 15 and 10 unit checks.
+    // ------------------------------------------------------------------
+    const sellerQuantityMap = {}; // { sellerId: { totalQty, items[] } }
+    for (const item of cartItems) {
+      const pRow = db.prepare('SELECT seller_id FROM products WHERE id = ?').get(item.product_id);
+      const sid = pRow ? pRow.seller_id : null;
+      if (sid !== null) {
+        if (!sellerQuantityMap[sid]) {
+          sellerQuantityMap[sid] = { totalQty: 0, items: [] };
+        }
+        sellerQuantityMap[sid].totalQty += item.quantity;
+        sellerQuantityMap[sid].items.push(item);
+      }
+    }
+
+    // ------------------------------------------------------------------
+    // C2 FIX: Run capacity check AND inserts inside a SINGLE transaction.
+    // SQLite serialises write transactions, so the re-check inside the
+    // transaction sees the fully up-to-date committed state; a concurrent
+    // request will block until this one either commits or rolls back.
+    // ------------------------------------------------------------------
+
+    // 4. Calculate subtotal, shipping (outside txn — read-only maths)
     const subtotal_paise = cartItems.reduce((sum, item) => sum + item.price_paise * item.quantity, 0);
     const shipping_paise = subtotal_paise >= 50000 ? 0 : 12000;
     const total_paise = subtotal_paise + shipping_paise;
-    
-    // 5. Generate order_ref
+
+    // 5. Generate order_ref (outside txn — no DB dependency)
     const year = new Date().getFullYear();
     const order_ref = `TF-${year}-${Math.floor(1000 + Math.random() * 9000)}`;
-    
-    // 8. Create Razorpay order (or mock)
+
+    // 8. Create Razorpay order (or mock) — outside txn (async network call)
     let razorpayOrderId = null;
     if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
       try {
@@ -2141,51 +2283,130 @@ app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
         console.error('Error generating real Razorpay order ID:', err);
       }
     }
-    
+
     if (!razorpayOrderId) {
       razorpayOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
     }
-    
-    // 6, 7, 9. INSERT order and order_items, delete cart items
-    const orderId = db.transaction(() => {
-      const firstItem = cartItems[0];
-      const pRow = db.prepare("SELECT seller_id FROM products WHERE id = ?").get(firstItem.product_id);
-      const orderSellerId = pRow ? pRow.seller_id : null;
 
-      const orderInfo = db.prepare(`
-        INSERT INTO orders (order_ref, buyer_id, seller_id, address_id, status, subtotal_paise, shipping_paise, total_paise, razorpay_order_id)
-        VALUES (?, ?, ?, ?, 'Awaiting Payment', ?, ?, ?, ?)
-      `).run(order_ref, userId, orderSellerId, address_id, subtotal_paise, shipping_paise, total_paise, razorpayOrderId);
-      
-      const oId = orderInfo.lastInsertRowid;
-      
-      const insertOrderItem = db.prepare(`
-        INSERT INTO order_items (order_id, product_id, product_name, unit_price_paise, quantity, image_url)
-        VALUES (?, ?, ?, ?, ?, ?)
-      `);
-      
-      for (const item of cartItems) {
-        insertOrderItem.run(oId, item.product_id, item.name, item.price_paise, item.quantity, item.image_url);
-      }
-      
-      const cartItemIds = cartItems.map(item => item.id);
-      const placeholders = cartItemIds.map(() => '?').join(',');
-      db.prepare(`DELETE FROM cart_items WHERE id IN (${placeholders})`).run(...cartItemIds);
-      
-      return oId;
-    })();
-    
+    // 6, 7, 9. Atomic block: re-check capacity + INSERT order + order_items + clear cart
+    let txnResult;
+    try {
+      txnResult = db.transaction(() => {
+        // --- C2 + C1: Re-read capacity inside the transaction ---
+        // Iterate per seller so we check the aggregated cart total, not per item.
+        for (const [sid, sellerCart] of Object.entries(sellerQuantityMap)) {
+          // We only need to check against one representative product for
+          // seller/listing limits — use first item, but pass the *total* qty.
+          const representativeItem = sellerCart.items[0];
+          const check = checkCapacityExceeded(representativeItem.product_id, sellerCart.totalQty);
+
+          if (check.exceeded) {
+            // --- C3 FIX: Create a REAL draft order so /confirm can finalise it ---
+            // Build a draft order record so the buyer's reschedule confirmation
+            // can transition it to 'Processing' + collect payment.
+
+            // Insert the draft order (status = 'Awaiting Reschedule Payment')
+            const draftOrderRef = `TF-OVF-${year}-${Math.floor(1000 + Math.random() * 9000)}`;
+            const draftOrderInfo = db.prepare(`
+              INSERT INTO orders (order_ref, buyer_id, seller_id, address_id, status, subtotal_paise, shipping_paise, total_paise, razorpay_order_id)
+              VALUES (?, ?, ?, ?, 'Awaiting Reschedule Payment', ?, ?, ?, NULL)
+            `).run(draftOrderRef, userId, parseInt(sid), address_id, subtotal_paise, shipping_paise, total_paise);
+
+            const draftOrderId = draftOrderInfo.lastInsertRowid;
+
+            // Insert order items for the draft order
+            const insertOrderItem = db.prepare(`
+              INSERT INTO order_items (order_id, product_id, product_name, unit_price_paise, quantity, image_url)
+              VALUES (?, ?, ?, ?, ?, ?)
+            `);
+            for (const item of sellerCart.items) {
+              insertOrderItem.run(draftOrderId, item.product_id, item.name, item.price_paise, item.quantity, item.image_url);
+            }
+
+            // Insert the overflow request with the draft order id linked
+            let overflowRequestId = null;
+            if (check.listing) {
+              const info = db.prepare(`
+                INSERT INTO overflow_requests (buyer_id, seller_id, listing_id, variant_id, quantity, original_price_paise, order_id, status, created_at, updated_at)
+                VALUES (?, ?, ?, NULL, ?, ?, ?, 'pending', datetime('now'), datetime('now'))
+              `).run(userId, check.sellerId, check.listing.id, sellerCart.totalQty, representativeItem.price_paise, draftOrderId);
+
+              overflowRequestId = info.lastInsertRowid;
+            }
+
+            // Notify seller (still inside txn — DB-only, fine)
+            const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(userId);
+            const buyerName = buyer ? buyer.full_name : 'A buyer';
+            if (check.listing) {
+              db.prepare(`
+                INSERT INTO notifications (user_id, type, message, is_read, created_at)
+                VALUES (?, 'new_overflow_request', ?, 0, datetime('now'))
+              `).run(check.sellerId, `New overflow order request from ${buyerName} for ${check.listing.title}`);
+            }
+
+            // Signal overflow by returning a special marker object
+            return {
+              overflow: true,
+              overflow_request_id: overflowRequestId ? String(overflowRequestId) : null,
+              draft_order_id: String(draftOrderId)
+            };
+          }
+        }
+
+        // No capacity issues — proceed with the normal order
+        const firstItem = cartItems[0];
+        const pRow = db.prepare("SELECT seller_id FROM products WHERE id = ?").get(firstItem.product_id);
+        const orderSellerId = pRow ? pRow.seller_id : null;
+
+        const orderInfo = db.prepare(`
+          INSERT INTO orders (order_ref, buyer_id, seller_id, address_id, status, subtotal_paise, shipping_paise, total_paise, razorpay_order_id)
+          VALUES (?, ?, ?, ?, 'Awaiting Payment', ?, ?, ?, ?)
+        `).run(order_ref, userId, orderSellerId, address_id, subtotal_paise, shipping_paise, total_paise, razorpayOrderId);
+
+        const oId = orderInfo.lastInsertRowid;
+
+        const insertOrderItem = db.prepare(`
+          INSERT INTO order_items (order_id, product_id, product_name, unit_price_paise, quantity, image_url)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+
+        for (const item of cartItems) {
+          insertOrderItem.run(oId, item.product_id, item.name, item.price_paise, item.quantity, item.image_url);
+        }
+
+        const cartItemIds = cartItems.map(item => item.id);
+        const placeholders = cartItemIds.map(() => '?').join(',');
+        db.prepare(`DELETE FROM cart_items WHERE id IN (${placeholders})`).run(...cartItemIds);
+
+        return { overflow: false, orderId: oId };
+      })();
+    } catch (txnErr) {
+      console.error('Transaction error in POST /api/orders:', txnErr);
+      return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
+    }
+
+    // Return overflow response
+    if (txnResult.overflow) {
+      return res.status(200).json({
+        success: true,
+        overflow: true,
+        overflow_request_id: txnResult.overflow_request_id,
+        draft_order_id: txnResult.draft_order_id,
+        message: "Capacity exceeded. Reschedule request created."
+      });
+    }
+
     const itemsFormatted = cartItems.map(item => ({
       product_name: item.name,
       quantity: item.quantity,
       unit_price_paise: item.price_paise,
       image_url: item.image_url
     }));
-    
+
     return res.status(200).json({
       success: true,
       data: {
-        order_id: orderId,
+        order_id: txnResult.orderId,
         order_ref,
         status: 'Awaiting Payment',
         items: itemsFormatted,
@@ -2204,6 +2425,7 @@ app.post('/api/orders', rateLimit(10), authenticateToken, async (req, res) => {
     });
   }
 });
+
 
 // TASK 29: GET /api/orders
 app.get('/api/orders', rateLimit(60), authenticateToken, (req, res) => {
@@ -2797,6 +3019,56 @@ app.post('/api/payments/initiate', rateLimit(60), authenticateToken, async (req,
   }
 });
 
+// Helper to record seller earnings and transactions when order is paid
+function recordOrderSale(orderId) {
+  try {
+    const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
+    if (!order) return;
+    
+    // Calculate gross amount
+    const gross = order.total_paise || (order.amount_paid ? order.amount_paid * 100 : 0);
+    if (gross <= 0) return;
+    
+    // Deduct 8% platform fee
+    const platformFee = Math.round(gross * 0.08);
+    
+    // Check if TDS is applicable (1% deduction)
+    const taxInfo = db.prepare('SELECT tds_applicable FROM seller_tax_info WHERE seller_id = ?').get(order.seller_id);
+    const tdsApplicable = taxInfo ? taxInfo.tds_applicable : 0;
+    const taxAmount = tdsApplicable === 1 ? Math.round(gross * 0.01) : 0;
+    
+    const netAmount = gross - platformFee - taxAmount;
+    
+    const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(order.buyer_id);
+    const buyerName = buyer ? buyer.full_name : 'Valued Buyer';
+    
+    // 1. Create a completed transaction record
+    db.prepare(`
+      INSERT INTO transactions (seller_id, order_id, product_name, buyer_name, type, gross_amount, platform_fee, tax_amount, net_amount, status, created_at)
+      VALUES (?, ?, ?, ?, 'SALE', ?, ?, ?, ?, 'COMPLETED', datetime('now'))
+    `).run(order.seller_id, order.id, order.product_name || 'Handcrafted Goods', buyerName, gross, platformFee, taxAmount, netAmount);
+    
+    // 2. Update seller_earnings
+    let earnings = db.prepare('SELECT id FROM seller_earnings WHERE seller_id = ?').get(order.seller_id);
+    if (!earnings) {
+      db.prepare('INSERT INTO seller_earnings (seller_id, total_earned, pending_amount, on_hold_amount, this_month_earned, this_week_earned) VALUES (?, 0, 0, 0, 0, 0)')
+        .run(order.seller_id);
+    }
+    
+    db.prepare(`
+      UPDATE seller_earnings
+      SET total_earned = total_earned + ?,
+          pending_amount = pending_amount + ?,
+          this_month_earned = this_month_earned + ?,
+          this_week_earned = this_week_earned + ?,
+          last_updated = datetime('now')
+      WHERE seller_id = ?
+    `).run(netAmount, netAmount, netAmount, netAmount, order.seller_id);
+  } catch (err) {
+    console.error('Error in recordOrderSale:', err);
+  }
+}
+
 // TASK 34: POST /api/payments/verify
 app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, res) => {
   const userId = req.user.user_id;
@@ -2899,6 +3171,17 @@ app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, r
           total_paise, total_amount, total_paise, 'paid'
         );
 
+        // Increment daily_order_tracking for custom order
+        const todayStr = getLocalDateString();
+        const existing = db.prepare("SELECT total_units_ordered FROM daily_order_tracking WHERE seller_id = ? AND date = ?").get(conversation.seller_id, todayStr);
+        if (existing) {
+          db.prepare("UPDATE daily_order_tracking SET total_units_ordered = total_units_ordered + 1 WHERE seller_id = ? AND date = ?")
+            .run(conversation.seller_id, todayStr);
+        } else {
+          db.prepare("INSERT INTO daily_order_tracking (seller_id, date, total_units_ordered) VALUES (?, ?, 1)")
+            .run(conversation.seller_id, todayStr);
+        }
+
         // Update conversation status to 'completed'
         db.prepare("UPDATE conversations SET status = 'completed', updated_at = datetime('now') WHERE id = ?").run(conversation_id);
 
@@ -2919,6 +3202,10 @@ app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, r
 
       try {
         verifyTx();
+        const newOrder = db.prepare('SELECT id FROM orders WHERE order_ref = ?').get(order_code);
+        if (newOrder) {
+          recordOrderSale(newOrder.id);
+        }
       } catch (err) {
         if (err.code === 'PAYMENT_ALREADY_PROCESSED') {
           return res.status(err.status).json({ error: err.message, code: err.code });
@@ -2999,9 +3286,22 @@ app.post('/api/payments/verify', rateLimit(60), authenticateToken, async (req, r
         DELETE FROM cart_items 
         WHERE user_id = ? AND product_id IN (SELECT product_id FROM order_items WHERE order_id = ?)
       `).run(userId, order_id);
+
+      // Increment daily_order_tracking on successful orders
+      const totalUnits = items.reduce((sum, i) => sum + i.quantity, 0);
+      const todayStr = getLocalDateString();
+      const existing = db.prepare("SELECT total_units_ordered FROM daily_order_tracking WHERE seller_id = ? AND date = ?").get(order.seller_id, todayStr);
+      if (existing) {
+        db.prepare("UPDATE daily_order_tracking SET total_units_ordered = total_units_ordered + ? WHERE seller_id = ? AND date = ?")
+          .run(totalUnits, order.seller_id, todayStr);
+      } else {
+        db.prepare("INSERT INTO daily_order_tracking (seller_id, date, total_units_ordered) VALUES (?, ?, ?)")
+          .run(order.seller_id, todayStr, totalUnits);
+      }
     });
     
     verifyTx();
+    recordOrderSale(order_id);
     
     return res.status(200).json({
       success: true,
@@ -5019,8 +5319,9 @@ app.get('/api/seller/dashboard', rateLimit(60), requireSeller, (req, res) => {
 });
 
 // ============================================================
-// TASK 17: GET /api/seller/profile
+// TASK 17: GET /api/seller/profile (REPLACED BY NEW ROUTER)
 // ============================================================
+/*
 app.get('/api/seller/profile', requireSeller, (req, res) => {
   try {
     return res.json({ success: true, data: buildSellerProfileResponse(req.seller) });
@@ -5029,10 +5330,12 @@ app.get('/api/seller/profile', requireSeller, (req, res) => {
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
 });
+*/
 
 // ============================================================
-// TASK 18: PUT /api/seller/profile
+// TASK 18: PUT /api/seller/profile (REPLACED BY NEW ROUTER)
 // ============================================================
+/*
 app.put('/api/seller/profile', requireSeller, (req, res) => {
   try {
     const seller = req.seller;
@@ -5079,6 +5382,7 @@ app.put('/api/seller/profile', requireSeller, (req, res) => {
     return res.status(500).json({ error: true, message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR' });
   }
 });
+*/
 
 // ============================================================
 // TASK 12: GET /api/seller/catalog
@@ -5261,7 +5565,8 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
       badges = [],
       isCustomisable,
       customization_config,
-      product_tag = null
+      product_tag = null,
+      daily_product_cap = null
     } = req.body;
 
     const titleVal = title;
@@ -5284,8 +5589,8 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
         allow_prebooking, prebooking_window, min_order_qty, max_order_qty, weight_g,
         length_cm, width_cm, height_cm, shipping_method, packaging_type, return_policy,
         is_eco_friendly, festive_tags, category, tags, badges, status, published_at,
-        stock_count, customization_config, product_tag
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        stock_count, customization_config, product_tag, daily_product_cap
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       sellerId,
       titleVal,
@@ -5318,7 +5623,8 @@ app.post('/api/seller/listings', rateLimit(30), requireSeller, (req, res) => {
       publishedAt,
       req.body.stock_count || 0,
       customConfigStr,
-      product_tag || null
+      product_tag || null,
+      daily_product_cap !== undefined && daily_product_cap !== '' ? parseInt(daily_product_cap, 10) : null
     );
 
     const listingId = result.lastInsertRowid;
@@ -5431,7 +5737,8 @@ const handleUpdateListing = (req, res) => {
       'title', 'description', 'story', 'listing_type', 'ships_in_days', 'dispatch_sla_days',
       'daily_max_slots', 'weekly_cap', 'monthly_ceiling', 'prebooking_window', 'min_order_qty',
       'max_order_qty', 'weight_g', 'length_cm', 'width_cm', 'height_cm', 'shipping_method',
-      'packaging_type', 'return_policy', 'status', 'category', 'stock_count', 'product_tag'
+      'packaging_type', 'return_policy', 'status', 'category', 'stock_count', 'product_tag',
+      'daily_product_cap'
     ];
 
     allowedFields.forEach(f => {
@@ -6614,7 +6921,7 @@ app.get('/api/seller/analytics', requireSeller, (req, res) => {
     });
 
     // 8. Product Performance
-    const prodParams = [...queryParams, sellerId];
+    const prodParams = [...queryParams.slice(1), sellerId];
     const productPerformance = db.prepare(`
       SELECT 
         l.id,
@@ -6750,7 +7057,7 @@ app.get('/api/seller/analytics', requireSeller, (req, res) => {
         customer_insights: {
           repeat_buyers,
           new_buyers,
-          top_locations
+          top_locations: topLocations
         },
         order_types: {
           custom: {
@@ -6890,7 +7197,9 @@ app.get('/api/seller/store-config', requireSeller, (req, res) => {
         payment_payouts: {
           bank_account_holder: config.bank_account_holder || null,
           bank_name: config.bank_name || null,
+          bank_account_number: config.bank_account_number || null,
           bank_account_masked: bankMasked,
+          ifsc_code: config.ifsc_code || null,
           recent_payouts: recentPayouts.map(p => ({
             date: p.date,
             amount: p.amount,
@@ -6982,7 +7291,7 @@ const handleUpdateStoreConfig = (req, res) => {
 
     const directFields = [
       'tagline', 'artist_bio', 'whatsapp_business', 'city',
-      'bank_account_holder', 'bank_name', 'bank_account_number', 'gstin',
+      'bank_account_holder', 'bank_name', 'bank_account_number', 'ifsc_code', 'gstin',
       'away_dates', 'festive_cutoff', 'vacation_note'
     ];
     directFields.forEach(f => {
@@ -10407,9 +10716,710 @@ app.get('/api/sellers/:id/reviews', (req, res) => {
 app.post('/api/test/trigger-expiry-check', (req, res) => {
   try {
     checkExpiredOffersBackground();
+    runOverflowExpiryCheck();
     return res.status(200).json({ success: true });
   } catch (err) {
     return res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
+// CAPACITY MANAGEMENT & OVERFLOW ORDERS ENDPOINTS
+// ============================================================
+
+// Check capacity endpoint
+app.post('/api/capacity/check', rateLimit(60), optionalAuthenticateToken, (req, res) => {
+  let items = req.body.items;
+  if (!items && req.body.product_id) {
+    items = [{ product_id: req.body.product_id, quantity: req.body.quantity || 1, variant_id: req.body.variant_id }];
+  }
+  
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: true, message: "Missing items to check", code: "VALIDATION_ERROR" });
+  }
+  
+  try {
+    const buyerId = req.user ? req.user.user_id : null;
+    
+    for (const item of items) {
+      const productId = item.product_id;
+      const quantity = parseInt(item.quantity) || 1;
+      const variantId = item.variant_id || null;
+      
+      const check = checkCapacityExceeded(productId, quantity);
+      if (check.exceeded) {
+        let overflowRequestId = null;
+        const isPreview = req.body.preview === true;
+        if (!isPreview && buyerId && check.listing) {
+          const product = db.prepare('SELECT price_paise FROM products WHERE id = ?').get(productId);
+          let pricePaise = product ? product.price_paise : 0;
+          if (variantId) {
+            const variant = db.prepare('SELECT price_paise FROM listing_variants WHERE id = ?').get(variantId);
+            if (variant && variant.price_paise !== null) {
+              pricePaise = variant.price_paise;
+            }
+          }
+          
+          const info = db.prepare(`
+            INSERT INTO overflow_requests (buyer_id, seller_id, listing_id, variant_id, quantity, original_price_paise, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, 'pending', datetime('now'), datetime('now'))
+          `).run(buyerId, check.sellerId, check.listing.id, variantId, quantity, pricePaise);
+          
+          overflowRequestId = info.lastInsertRowid;
+          
+          // Notify seller
+          const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(buyerId);
+          const buyerName = buyer ? buyer.full_name : 'A buyer';
+          db.prepare(`
+            INSERT INTO notifications (user_id, type, message, is_read, created_at)
+            VALUES (?, 'new_overflow_request', ?, 0, datetime('now'))
+          `).run(check.sellerId, `New overflow order request from ${buyerName} for ${check.listing.title}`);
+        }
+        
+        return res.status(200).json({
+          success: true,
+          overflow: true,
+          overflow_request_id: overflowRequestId ? String(overflowRequestId) : null
+        });
+      }
+    }
+    
+    return res.status(200).json({
+      success: true,
+      overflow: false
+    });
+  } catch (err) {
+    console.error('Error in /api/capacity/check:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Create overflow request (e.g. from chat)
+app.post(['/api/overflow/request', '/api/buyer/overflow-requests'], rateLimit(30), authenticateToken, (req, res) => {
+  const buyerId = req.user.user_id;
+  const listing_id = req.body.listing_id || req.body.product_id;
+  const { variant_id, quantity = 1 } = req.body;
+  
+  if (!listing_id) {
+    return res.status(400).json({ error: true, message: "listing_id or product_id is required", code: "VALIDATION_ERROR" });
+  }
+  
+  try {
+    const listing = db.prepare('SELECT seller_id, base_price, title FROM listings WHERE id = ?').get(listing_id);
+    if (!listing) {
+      return res.status(442).json({ error: true, message: "Listing not found", code: "LISTING_NOT_FOUND" });
+    }
+    
+    let pricePaise = listing.base_price;
+    if (variant_id) {
+      const variant = db.prepare('SELECT price_paise FROM listing_variants WHERE id = ?').get(variant_id);
+      if (variant && variant.price_paise !== null) {
+        pricePaise = variant.price_paise;
+      }
+    }
+    
+    const originalPricePaise = req.body.original_price_paise !== undefined ? req.body.original_price_paise : pricePaise;
+    
+    const info = db.prepare(`
+      INSERT INTO overflow_requests (buyer_id, seller_id, listing_id, variant_id, quantity, original_price_paise, status, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending', datetime('now'), datetime('now'))
+    `).run(buyerId, listing.seller_id, listing_id, variant_id || null, quantity, originalPricePaise);
+    
+    const overflowRequestId = info.lastInsertRowid;
+    
+    // Check if open conversation exists between buyer and seller for this listing
+    let conversation = db.prepare(`
+      SELECT id FROM conversations 
+      WHERE buyer_id = ? AND seller_id = ? AND listing_id = ? AND status NOT IN ('completed', 'closed')
+      LIMIT 1
+    `).get(buyerId, listing.seller_id, listing_id);
+    
+    let conversationId;
+    if (conversation) {
+      conversationId = conversation.id;
+    } else {
+      // Create new conversation
+      const category = db.prepare('SELECT slug FROM categories WHERE id = (SELECT category_id FROM listings WHERE id = ?)').get(listing_id);
+      const productTypeTag = category ? category.slug : 'resin_art';
+      
+      const convInfo = db.prepare(`
+        INSERT INTO conversations (seller_id, buyer_id, listing_id, product_type_tag, status, intake_complete, intake_summary)
+        VALUES (?, ?, ?, ?, 'active', 1, 'Overflow reschedule request')
+      `).run(listing.seller_id, buyerId, listing_id, productTypeTag);
+      conversationId = convInfo.lastInsertRowid;
+    }
+
+    // Pre-populate message with overflow context
+    const messageContent = `I would like to request a reschedule/overflow order for ${quantity}x "${listing.title}". (Request ID: #${overflowRequestId})`;
+    db.prepare(`
+      INSERT INTO conversation_messages (conversation_id, sender_id, sender_role, message_type, content, sent_at)
+      VALUES (?, ?, 'buyer', 'text', ?, datetime('now'))
+    `).run(conversationId, buyerId, messageContent);
+
+    // Notify seller
+    const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(buyerId);
+    const buyerName = buyer ? buyer.full_name : 'A buyer';
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, message, is_read, created_at)
+      VALUES (?, 'new_overflow_request', ?, 0, datetime('now'))
+    `).run(listing.seller_id, `New overflow order request from ${buyerName} for ${listing.title}`);
+    
+    return res.status(201).json({
+      success: true,
+      conversation_id: conversationId,
+      overflow_request_id: overflowRequestId,
+      data: {
+        id: overflowRequestId,
+        buyer_id: buyerId,
+        seller_id: listing.seller_id,
+        listing_id,
+        variant_id,
+        quantity,
+        original_price_paise: originalPricePaise,
+        status: 'pending'
+      }
+    });
+  } catch (err) {
+    console.error('Error creating overflow request:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Get overflow requests for seller (seller isolation)
+app.get('/api/seller/overflow-requests', rateLimit(60), requireSeller, (req, res) => {
+  const sellerId = req.user.user_id;
+  try {
+    const rows = db.prepare(`
+      SELECT r.*, 
+             u.full_name as buyer_name, u.email as buyer_email,
+             l.title as product_title, l.cover_photo_url as product_image
+      FROM overflow_requests r
+      JOIN users u ON r.buyer_id = u.id
+      JOIN listings l ON r.listing_id = l.id
+      WHERE r.seller_id = ?
+      ORDER BY r.created_at DESC
+    `).all(sellerId);
+    
+    return res.status(200).json({
+      success: true,
+      data: rows
+    });
+  } catch (err) {
+    console.error('Error fetching seller overflow requests:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Accept overflow request
+app.post('/api/seller/overflow-requests/:id/accept', rateLimit(30), requireSeller, (req, res) => {
+  const sellerId = req.user.user_id;
+  const requestId = parseInt(req.params.id);
+  const { seller_proposed_date, seller_notes } = req.body;
+  
+  if (!seller_proposed_date) {
+    return res.status(400).json({ error: true, message: "seller_proposed_date is required", code: "VALIDATION_ERROR" });
+  }
+  
+  try {
+    const request = db.prepare('SELECT * FROM overflow_requests WHERE id = ?').get(requestId);
+    if (!request) {
+      return res.status(404).json({ error: true, message: "Overflow request not found", code: "NOT_FOUND" });
+    }
+    
+    if (request.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    if (request.status !== 'pending') {
+      return res.status(400).json({ error: true, message: `Cannot accept request with status: ${request.status}`, code: "INVALID_STATUS" });
+    }
+    
+    db.prepare(`
+      UPDATE overflow_requests
+      SET status = 'accepted', 
+          seller_proposed_date = ?, 
+          seller_notes = ?, 
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).run(seller_proposed_date, seller_notes || null, requestId);
+    
+    // Notify buyer
+    const seller = db.prepare('SELECT shop_name FROM seller_profiles WHERE user_id = ?').get(sellerId);
+    const sellerName = seller ? seller.shop_name : 'The seller';
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, message, is_read, created_at)
+      VALUES (?, 'overflow_accepted', ?, 0, datetime('now'))
+    `).run(request.buyer_id, `${sellerName} has accepted your overflow request with proposed date: ${seller_proposed_date}`);
+    
+    return res.status(200).json({
+      success: true,
+      message: "Overflow request accepted with terms",
+      data: {
+        id: requestId,
+        status: 'accepted',
+        seller_proposed_date,
+        seller_notes
+      }
+    });
+  } catch (err) {
+    console.error('Error accepting overflow request:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Decline overflow request (decline + refund trigger)
+app.post('/api/seller/overflow-requests/:id/decline', rateLimit(30), requireSeller, (req, res) => {
+  const sellerId = req.user.user_id;
+  const requestId = parseInt(req.params.id);
+  const { seller_notes } = req.body;
+  
+  try {
+    const request = db.prepare('SELECT * FROM overflow_requests WHERE id = ?').get(requestId);
+    if (!request) {
+      return res.status(404).json({ error: true, message: "Overflow request not found", code: "NOT_FOUND" });
+    }
+    
+    if (request.seller_id !== sellerId) {
+      return res.status(403).json({ error: true, message: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    if (request.status !== 'pending' && request.status !== 'accepted') {
+      return res.status(400).json({ error: true, message: `Cannot decline request with status: ${request.status}`, code: "INVALID_STATUS" });
+    }
+    
+    db.prepare(`
+      UPDATE overflow_requests
+      SET status = 'declined', 
+          seller_notes = ?, 
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).run(seller_notes || null, requestId);
+    
+    // If there is an associated order, cancel and refund it
+    if (request.order_id) {
+      const order = db.prepare('SELECT status, payment_status FROM orders WHERE id = ?').get(request.order_id);
+      if (order) {
+        db.prepare("UPDATE orders SET status = 'Cancelled', payment_status = 'refunded', updated_at = datetime('now') WHERE id = ?").run(request.order_id);
+        // Revert stock
+        const items = db.prepare('SELECT product_id, quantity FROM order_items WHERE order_id = ?').all(request.order_id);
+        for (const item of items) {
+          db.prepare('UPDATE products SET stock_qty = stock_qty + ? WHERE id = ?').run(item.quantity, item.product_id);
+        }
+      }
+    }
+    
+    // Notify buyer
+    const seller = db.prepare('SELECT shop_name FROM seller_profiles WHERE user_id = ?').get(sellerId);
+    const sellerName = seller ? seller.shop_name : 'The seller';
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, message, is_read, created_at)
+      VALUES (?, 'overflow_declined', ?, 0, datetime('now'))
+    `).run(request.buyer_id, `${sellerName} has declined your overflow request.`);
+    
+    return res.status(200).json({
+      success: true,
+      message: "Overflow request declined",
+      data: {
+        id: requestId,
+        status: 'declined'
+      }
+    });
+  } catch (err) {
+    console.error('Error declining overflow request:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Get overflow requests for buyer (buyer isolation)
+app.get('/api/buyer/overflow-requests', rateLimit(60), authenticateToken, (req, res) => {
+  const buyerId = req.user.user_id;
+  try {
+    const rows = db.prepare(`
+      SELECT r.*, 
+             sp.shop_name as seller_shop_name,
+             l.title as product_title, l.cover_photo_url as product_image
+      FROM overflow_requests r
+      LEFT JOIN seller_profiles sp ON r.seller_id = sp.user_id
+      JOIN listings l ON r.listing_id = l.id
+      WHERE r.buyer_id = ?
+      ORDER BY r.created_at DESC
+    `).all(buyerId);
+    
+    return res.status(200).json({
+      success: true,
+      data: rows
+    });
+  } catch (err) {
+    console.error('Error fetching buyer overflow requests:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Confirm overflow request
+app.post(['/api/buyer/overflow-requests/:id/confirm', '/api/overflow/requests/:id/confirm'], rateLimit(30), authenticateToken, async (req, res) => {
+  const buyerId = req.user.user_id;
+  const requestId = parseInt(req.params.id);
+  
+  try {
+    const request = db.prepare('SELECT * FROM overflow_requests WHERE id = ?').get(requestId);
+    if (!request) {
+      return res.status(404).json({ error: true, message: "Overflow request not found", code: "NOT_FOUND" });
+    }
+    
+    if (request.buyer_id !== buyerId) {
+      return res.status(403).json({ error: true, message: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    if (request.status !== 'accepted') {
+      return res.status(400).json({ error: true, message: `Cannot confirm request with status: ${request.status}`, code: "INVALID_STATUS" });
+    }
+
+    // --- C3 FIX: Generate a Razorpay payment session so the buyer can pay ---
+    // The draft order was created when capacity was exceeded. Transition it to
+    // 'Awaiting Payment' and hand the buyer a Razorpay order ID to complete payment.
+    let razorpayOrderId = null;
+    let orderTotalPaise = null;
+    let orderRef = null;
+
+    if (request.order_id) {
+      const draftOrder = db.prepare('SELECT * FROM orders WHERE id = ?').get(request.order_id);
+      if (draftOrder) {
+        orderTotalPaise = draftOrder.total_paise;
+        orderRef = draftOrder.order_ref;
+
+        // Generate Razorpay order ID (or mock)
+        if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+          try {
+            const auth = Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString('base64');
+            const rpRes = await fetch('https://api.razorpay.com/v1/orders', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${auth}` },
+              body: JSON.stringify({ amount: orderTotalPaise, currency: 'INR', receipt: orderRef })
+            });
+            if (rpRes.ok) {
+              const rpData = await rpRes.json();
+              razorpayOrderId = rpData.id;
+            }
+          } catch (rpErr) {
+            console.error('Error generating Razorpay order for reschedule:', rpErr);
+          }
+        }
+        if (!razorpayOrderId) {
+          razorpayOrderId = 'order_' + crypto.randomBytes(8).toString('hex');
+        }
+      }
+    }
+
+    db.transaction(() => {
+      // Mark overflow request as confirmed
+      db.prepare(`
+        UPDATE overflow_requests
+        SET status = 'confirmed', 
+            updated_at = datetime('now')
+        WHERE id = ?
+      `).run(requestId);
+
+      // Transition draft order: update status to Awaiting Payment + attach Razorpay ID
+      if (request.order_id && razorpayOrderId) {
+        db.prepare(`
+          UPDATE orders
+          SET status = 'Awaiting Payment',
+              razorpay_order_id = ?,
+              deadline_at = ?,
+              updated_at = datetime('now')
+          WHERE id = ?
+        `).run(razorpayOrderId, request.seller_proposed_date, request.order_id);
+      }
+
+      // Notify seller
+      const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(buyerId);
+      const buyerName = buyer ? buyer.full_name : 'The buyer';
+      db.prepare(`
+        INSERT INTO notifications (user_id, type, message, is_read, created_at)
+        VALUES (?, 'overflow_confirmed', ?, 0, datetime('now'))
+      `).run(request.seller_id, `${buyerName} has confirmed your proposed terms for the overflow request.`);
+    })();
+    
+    return res.status(200).json({
+      success: true,
+      message: "Overflow request confirmed. Please complete payment.",
+      data: {
+        id: requestId,
+        status: 'confirmed',
+        order_id: request.order_id,
+        order_ref: orderRef,
+        total_paise: orderTotalPaise,
+        razorpay_order_id: razorpayOrderId
+      }
+    });
+
+  } catch (err) {
+    console.error('Error confirming overflow request:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Cancel overflow request
+app.post(['/api/buyer/overflow-requests/:id/cancel', '/api/overflow/requests/:id/cancel'], rateLimit(30), authenticateToken, (req, res) => {
+  const buyerId = req.user.user_id;
+  const requestId = parseInt(req.params.id);
+  
+  try {
+    const request = db.prepare('SELECT * FROM overflow_requests WHERE id = ?').get(requestId);
+    if (!request) {
+      return res.status(404).json({ error: true, message: "Overflow request not found", code: "NOT_FOUND" });
+    }
+    
+    if (request.buyer_id !== buyerId) {
+      return res.status(403).json({ error: true, message: "Forbidden", code: "FORBIDDEN" });
+    }
+    
+    if (request.status !== 'pending' && request.status !== 'accepted') {
+      return res.status(400).json({ error: true, message: `Cannot cancel request with status: ${request.status}`, code: "INVALID_STATUS" });
+    }
+    
+    db.prepare(`
+      UPDATE overflow_requests
+      SET status = 'cancelled', 
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).run(requestId);
+    
+    // If there is an associated order, cancel and refund it
+    if (request.order_id) {
+      const order = db.prepare('SELECT status, payment_status FROM orders WHERE id = ?').get(request.order_id);
+      if (order) {
+        db.prepare("UPDATE orders SET status = 'Cancelled', payment_status = 'refunded', updated_at = datetime('now') WHERE id = ?").run(request.order_id);
+        // Revert stock
+        const items = db.prepare('SELECT product_id, quantity FROM order_items WHERE order_id = ?').all(request.order_id);
+        for (const item of items) {
+          db.prepare('UPDATE products SET stock_qty = stock_qty + ? WHERE id = ?').run(item.quantity, item.product_id);
+        }
+      }
+    }
+    
+    // Notify seller
+    const buyer = db.prepare('SELECT full_name FROM users WHERE id = ?').get(buyerId);
+    const buyerName = buyer ? buyer.full_name : 'The buyer';
+    db.prepare(`
+      INSERT INTO notifications (user_id, type, message, is_read, created_at)
+      VALUES (?, 'overflow_cancelled', ?, 0, datetime('now'))
+    `).run(request.seller_id, `${buyerName} has cancelled their overflow request.`);
+    
+    return res.status(200).json({
+      success: true,
+      message: "Overflow request cancelled",
+      data: {
+        id: requestId,
+        status: 'cancelled'
+      }
+    });
+  } catch (err) {
+    console.error('Error cancelling overflow request:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Capacity settings GET
+app.get('/api/seller/capacity-settings', rateLimit(60), requireSeller, (req, res) => {
+  const sellerId = req.user.user_id;
+  try {
+    const profile = db.prepare('SELECT weekly_production_capacity, daily_order_limit FROM seller_profiles WHERE user_id = ?').get(sellerId);
+    return res.status(200).json({
+      success: true,
+      data: {
+        weekly_production_capacity: profile ? profile.weekly_production_capacity : null,
+        daily_order_limit: profile ? profile.daily_order_limit : null
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching capacity settings:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Capacity settings PUT / POST
+app.put('/api/seller/capacity-settings', rateLimit(30), requireSeller, (req, res) => {
+  const sellerId = req.user.user_id;
+  const { weekly_production_capacity, daily_order_limit } = req.body;
+  
+  try {
+    db.prepare(`
+      UPDATE seller_profiles
+      SET weekly_production_capacity = ?,
+          daily_order_limit = ?
+      WHERE user_id = ?
+    `).run(
+      weekly_production_capacity !== undefined ? weekly_production_capacity : null,
+      daily_order_limit !== undefined ? daily_order_limit : null,
+      sellerId
+    );
+    
+    return res.status(200).json({
+      success: true,
+      message: "Capacity settings updated successfully",
+      data: {
+        weekly_production_capacity,
+        daily_order_limit
+      }
+    });
+  } catch (err) {
+    console.error('Error updating capacity settings:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+app.post('/api/seller/capacity-settings', rateLimit(30), requireSeller, (req, res) => {
+  const sellerId = req.user.user_id;
+  const { weekly_production_capacity, daily_order_limit } = req.body;
+  
+  try {
+    db.prepare(`
+      UPDATE seller_profiles
+      SET weekly_production_capacity = ?,
+          daily_order_limit = ?
+      WHERE user_id = ?
+    `).run(
+      weekly_production_capacity !== undefined ? weekly_production_capacity : null,
+      daily_order_limit !== undefined ? daily_order_limit : null,
+      sellerId
+    );
+    
+    return res.status(200).json({
+      success: true,
+      message: "Capacity settings updated successfully",
+      data: {
+        weekly_production_capacity,
+        daily_order_limit
+      }
+    });
+  } catch (err) {
+    console.error('Error updating capacity settings:', err);
+    return res.status(500).json({ error: true, message: "Internal server error", code: "INTERNAL_SERVER_ERROR" });
+  }
+});
+
+// Auto-expiry background worker function
+function runOverflowExpiryCheck() {
+  try {
+    const expiredRequests = db.prepare(`
+      SELECT r.*, l.title as product_title
+      FROM overflow_requests r
+      JOIN listings l ON r.listing_id = l.id
+      WHERE r.status IN ('pending', 'accepted')
+        AND r.created_at < datetime('now', '-2 days')
+    `).all();
+    
+    for (const r of expiredRequests) {
+      db.prepare("UPDATE overflow_requests SET status = 'expired', updated_at = datetime('now') WHERE id = ?").run(r.id);
+      
+      // If there is an associated order, cancel & refund it
+      if (r.order_id) {
+        const order = db.prepare("SELECT * FROM orders WHERE id = ?").get(r.order_id);
+        if (order) {
+          db.prepare("UPDATE orders SET status = 'Cancelled', payment_status = 'refunded', updated_at = datetime('now') WHERE id = ?").run(r.order_id);
+          // Revert stock
+          const items = db.prepare('SELECT product_id, quantity FROM order_items WHERE order_id = ?').all(r.order_id);
+          for (const item of items) {
+            db.prepare('UPDATE products SET stock_qty = stock_qty + ? WHERE id = ?').run(item.quantity, item.product_id);
+          }
+        }
+      }
+      
+      // Notify buyer
+      db.prepare(`
+        INSERT INTO notifications (user_id, type, message, is_read, created_at)
+        VALUES (?, 'overflow_expired', ?, 0, datetime('now'))
+      `).run(r.buyer_id, `Your overflow request for "${r.product_title}" has expired after 48 hours.`);
+    }
+  } catch (err) {
+    console.error('Error running overflow expiry check background task:', err);
+  }
+}
+
+// Start auto-expiry job hourly
+setInterval(runOverflowExpiryCheck, 60 * 60 * 1000);
+
+// Setup node-cron jobs
+cron.schedule('0 0 * * *', () => {
+  console.log('[CRON] Running midnight reset and auto-payout check...');
+  try {
+    const now = new Date();
+    
+    // Reset weekly earnings on Monday
+    if (now.getDay() === 1) {
+      console.log('[CRON] Monday detected: resetting weekly earnings.');
+      db.prepare("UPDATE seller_earnings SET this_week_earned = 0, last_updated = datetime('now')").run();
+    }
+    
+    // Reset monthly earnings on the 1st of the month
+    if (now.getDate() === 1) {
+      console.log('[CRON] First of month detected: resetting monthly earnings.');
+      db.prepare("UPDATE seller_earnings SET this_month_earned = 0, last_updated = datetime('now')").run();
+    }
+    
+    // Auto-payout job
+    const prefs = db.prepare('SELECT * FROM seller_payment_preferences WHERE auto_payout_enabled = 1').all();
+    for (const pref of prefs) {
+      const earnings = db.prepare('SELECT pending_amount FROM seller_earnings WHERE seller_id = ?').get(pref.seller_id);
+      if (earnings && earnings.pending_amount >= pref.auto_payout_threshold) {
+        const withdrawAmount = earnings.pending_amount; // payout all pending amount
+        const referenceId = 'apout_' + crypto.randomBytes(8).toString('hex');
+        
+        console.log(`[CRON] Auto-payout triggered for seller ${pref.seller_id}. Amount: ${withdrawAmount / 100}`);
+        
+        const runTx = db.transaction(() => {
+          db.prepare('UPDATE seller_earnings SET pending_amount = 0, last_updated = datetime(\'now\') WHERE seller_id = ?')
+            .run(pref.seller_id);
+          
+          db.prepare(`
+            INSERT INTO payouts (seller_id, amount, method, status, initiated_at, reference_id)
+            VALUES (?, ?, ?, 'PENDING', datetime('now'), ?)
+          `).run(pref.seller_id, withdrawAmount, pref.preferred_method, referenceId);
+          
+          db.prepare(`
+            INSERT INTO transactions (seller_id, order_id, product_name, buyer_name, type, gross_amount, platform_fee, tax_amount, net_amount, status, created_at)
+            VALUES (?, NULL, ?, 'Tohfa Auto-Finance', 'PAYOUT', ?, 0, 0, ?, 'PENDING', datetime('now'))
+          `).run(pref.seller_id, `Auto-Withdrawal to ${pref.preferred_method}`, -withdrawAmount, -withdrawAmount);
+        });
+        
+        runTx();
+      }
+    }
+  } catch (err) {
+    console.error('[CRON ERROR] Midnight job failed:', err);
+  }
+});
+
+cron.schedule('0 * * * *', () => {
+  console.log('[CRON] Running hourly payout status synchronization...');
+  try {
+    const pendingPayouts = db.prepare("SELECT * FROM payouts WHERE status IN ('PENDING', 'PROCESSING')").all();
+    for (const payout of pendingPayouts) {
+      const newStatus = 'PAID';
+      const referenceId = payout.reference_id;
+      
+      console.log(`[CRON] Syncing payout Ref ${referenceId} to ${newStatus}`);
+      
+      const runTx = db.transaction(() => {
+        db.prepare("UPDATE payouts SET status = ?, completed_at = datetime('now') WHERE id = ?")
+          .run(newStatus, payout.id);
+          
+        if (newStatus === 'PAID') {
+          // Add to total_earned
+          db.prepare('UPDATE seller_earnings SET total_earned = total_earned + ?, last_updated = datetime(\'now\') WHERE seller_id = ?')
+            .run(payout.amount, payout.seller_id);
+            
+          // Update transaction to COMPLETED
+          db.prepare("UPDATE transactions SET status = 'COMPLETED' WHERE seller_id = ? AND type = 'PAYOUT' AND gross_amount = ? AND status = 'PENDING'")
+            .run(payout.seller_id, -payout.amount);
+        }
+      });
+      
+      runTx();
+    }
+  } catch (err) {
+    console.error('[CRON ERROR] Hourly sync job failed:', err);
   }
 });
 

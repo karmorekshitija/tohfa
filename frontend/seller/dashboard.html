@@ -281,7 +281,7 @@
     <section class="bg-surface border border-outline-variant/30 rounded-xl p-lg shadow-sm relative overflow-hidden">
       <div class="absolute inset-0 botanical-watermark"></div>
       <h3 class="font-headline-lg italic text-on-surface text-2xl mb-6">Quick Actions</h3>
-      <div class="grid grid-cols-4 gap-lg">
+      <div class="grid grid-cols-5 gap-lg">
         <a href="/seller/listing-photos.html" class="flex flex-col items-center justify-center p-lg bg-surface border border-outline-variant/30 rounded-xl hover:border-primary hover:bg-secondary-container/10 transition-all group shadow-sm">
           <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
             <span class="material-symbols-outlined text-primary">add_circle</span>
@@ -305,6 +305,13 @@
             <span class="material-symbols-outlined text-primary">bar_chart</span>
           </div>
           <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest text-center">ANALYTICS</span>
+        </a>
+        <a href="/seller/overflow-requests.html" class="flex flex-col items-center justify-center p-lg bg-surface border border-outline-variant/30 rounded-xl hover:border-primary hover:bg-secondary-container/10 transition-all group shadow-sm relative">
+          <span id="overflow-badge" class="hidden absolute -top-1.5 -right-1.5 bg-[#ba1a1a] text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border border-white">0</span>
+          <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary">event_busy</span>
+          </div>
+          <span class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-widest text-center">OVERFLOW REQUESTS</span>
         </a>
       </div>
     </section>
@@ -550,6 +557,29 @@
                 const dbEnabled = !!data.seller.zai_mode_enabled;
                 localStorage.setItem('zai_mode', dbEnabled ? 'true' : 'false');
                 updateZaiUI(dbEnabled);
+            }
+
+            // Load pending overflow requests count
+            try {
+                const reqRes = await fetch(`${API_BASE_URL}/api/seller/overflow-requests`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                if (reqRes.ok) {
+                    const reqData = await reqRes.json();
+                    const requests = reqData.data || [];
+                    const pendingCount = requests.filter(r => r.status === 'pending').length;
+                    const badge = document.getElementById('overflow-badge');
+                    if (badge) {
+                        if (pendingCount > 0) {
+                            badge.textContent = pendingCount;
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                    }
+                }
+            } catch (reqErr) {
+                console.error("Error loading overflow requests count for badge:", reqErr);
             }
 
         } catch (err) {

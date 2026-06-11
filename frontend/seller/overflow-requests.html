@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TOFA Seller Studio | Overflow Requests</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&amp;family=Merriweather:wght@300;400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="/components/seller-components.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#211b11",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#e5d8c8",
+                        "surface-bright": "#fff8f3",
+                        "surface-container-low": "#fff2e1",
+                        "primary-fixed-dim": "#a0d2b0",
+                        "on-secondary-container": "#4d6a43",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#bceecb",
+                        "on-tertiary-fixed": "#270550",
+                        "surface-container-high": "#f3e6d6",
+                        "inverse-surface": "#362f25",
+                        "tertiary-container": "#70539b",
+                        "surface-container": "#f9ecdc",
+                        "secondary-container": "#c8e9b8",
+                        "primary-container": "#3d6b4f",
+                        "surface-variant": "#ede1d1",
+                        "on-tertiary-container": "#e8d6ff",
+                        "on-surface": "#211b11",
+                        "on-primary-container": "#b7e9c6",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#324e29",
+                        "background": "#ffffff",
+                        "on-secondary-fixed": "#062103",
+                        "surface-tint": "#3a684c",
+                        "surface-container-highest": "#ede1d1",
+                        "on-primary-fixed-variant": "#214f36",
+                        "outline": "#717972",
+                        "inverse-primary": "#a0d2b0",
+                        "tertiary-fixed": "#ecdcff",
+                        "secondary-fixed-dim": "#afd0a0",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#fcefde",
+                        "surface": "#fff8f3",
+                        "error": "#ba1a1a",
+                        "primary": "#255338",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#414942",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#d6baff",
+                        "on-tertiary-fixed-variant": "#54387e",
+                        "tertiary": "#573b81",
+                        "secondary": "#49663f",
+                        "outline-variant": "#c1c9c0",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#caecbb",
+                        "gold": "#D4AF37",
+                        "sage": "#8FAF82",
+                        "sage-soft": "#e9f0e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "margin-mobile": "20px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"],
+                        "title-serif": ["Merriweather"],
+                        "data-price": ["Space Mono"],
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["Cinzel"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-hero": ["48px", {"lineHeight": "56px", "fontWeight": "300"}],
+                        "title-serif": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "data-price": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .botanical-overlay {
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            background-repeat: repeat;
+        }
+        .pressed-flower {
+            opacity: 0.08;
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
+        }
+        .request-card:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+        .fade-in { animation:fadeIn 0.25s ease forwards; }
+
+        /* Custom filter pill tabs */
+        .filter-btn {
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            color: #414942;
+            background: transparent;
+            border: 1px solid rgba(193, 201, 192, 0.4);
+            border-radius: 999px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(61, 107, 79, 0.04);
+        }
+        .filter-btn:hover {
+            color: #3D6B4F;
+            border-color: #8FAF82;
+            background: rgba(247, 243, 236, 0.6);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(61, 107, 79, 0.08);
+        }
+        .filter-btn.active {
+            background: #3D6B4F;
+            color: #FFFFFF;
+            border-color: #3D6B4F;
+            box-shadow: 0 4px 12px rgba(61, 107, 79, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden botanical-overlay opacity-0 transition-opacity duration-300" id="body-content">
+
+<!-- Pressed Flower Watermarks -->
+<div class="pressed-flower top-10 left-40 scale-150 rotate-12">
+    <span class="material-symbols-outlined text-[120px] text-sage">local_florist</span>
+</div>
+<div class="pressed-flower bottom-20 right-20 scale-125 -rotate-45">
+    <span class="material-symbols-outlined text-[150px] text-sage">eco</span>
+</div>
+
+<seller-layout active-tab="overflow">
+    <!-- Header -->
+    <header class="flex flex-col gap-6 mb-xl">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-md">
+            <div>
+                <h1 class="font-headline-lg text-4xl italic text-primary">Overflow Requests</h1>
+                <p class="text-on-surface-variant opacity-70 font-body-md mt-2" id="requests-count-label">Loading overflow requests...</p>
+            </div>
+            <div class="flex gap-4 items-center">
+                <a href="/seller/production-planner.html" class="px-4 py-2 border border-primary text-primary rounded-lg font-bold text-sm hover:bg-secondary-container/20 transition-all flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px]">calendar_today</span> Production Planner
+                </a>
+            </div>
+        </div>
+        
+        <!-- Status Tabs -->
+        <div class="flex items-center gap-4 overflow-x-auto no-scrollbar py-2" id="status-tabs">
+            <button data-status="all" class="filter-btn active">All Requests</button>
+            <button data-status="pending" class="filter-btn">Pending</button>
+            <button data-status="accepted" class="filter-btn">Offered (Accepted)</button>
+            <button data-status="confirmed" class="filter-btn">Confirmed</button>
+            <button data-status="declined" class="filter-btn">Declined / Expired / Cancelled</button>
+        </div>
+    </header>
+
+    <!-- KPI Strip -->
+    <section id="kpi-strip" class="grid grid-cols-2 md:grid-cols-4 gap-md mb-xl hidden">
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Total Requests</p>
+            <p class="text-2xl font-bold font-display-hero text-primary mt-sm" id="kpi-total">0</p>
+        </div>
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Pending Action</p>
+            <p class="text-2xl font-bold font-display-hero text-error mt-sm" id="kpi-pending">0</p>
+        </div>
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Fulfillment Offer Sent</p>
+            <p class="text-2xl font-bold font-display-hero text-primary mt-sm" id="kpi-accepted">0</p>
+        </div>
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-sm">
+            <p class="text-xs font-label-caps text-on-surface-variant opacity-70">Fulfillment Confirmed</p>
+            <p class="text-2xl font-bold font-display-hero text-[#3D6B4F] mt-sm" id="kpi-confirmed">0</p>
+        </div>
+    </section>
+
+    <!-- States -->
+    <div id="loading-state" class="py-xl flex flex-col items-center gap-md">
+        <div class="w-12 h-12 border-4 border-sage border-t-primary rounded-full animate-spin"></div>
+        <p class="text-on-surface-variant font-medium">Fetching overflow requests...</p>
+    </div>
+
+    <div id="error-state" class="hidden py-xl bg-error-container border border-error/20 rounded-xl p-lg flex flex-col items-center text-center gap-md">
+        <span class="material-symbols-outlined text-error text-4xl">error</span>
+        <h3 class="text-lg font-bold font-headline-lg text-on-error-container">Unable to load overflow requests</h3>
+        <p id="error-msg" class="text-sm text-on-error-container opacity-80"></p>
+        <button id="retry-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 transition-all font-body-md">Retry Fetching</button>
+    </div>
+
+    <div id="empty-state" class="hidden py-24 bg-white border border-sage-soft rounded-xl flex flex-col items-center text-center p-lg gap-md shadow-sm">
+        <span class="material-symbols-outlined text-sage text-5xl">event_busy</span>
+        <h3 class="text-xl font-bold font-headline-lg text-primary italic">No requests found</h3>
+        <p class="text-sm text-on-surface-variant max-w-sm">There are no overflow order requests matching the current filter category.</p>
+    </div>
+
+    <!-- Requests Table/Grid -->
+    <section id="requests-grid" class="flex flex-col gap-4 hidden">
+        <div class="grid grid-cols-12 px-6 py-2 font-label-caps text-on-surface-variant opacity-60 text-xs tracking-wider border-b border-outline-variant/30 pb-3">
+            <div class="col-span-3">Product / Listing</div>
+            <div class="col-span-2">Buyer</div>
+            <div class="col-span-1 text-center">Qty</div>
+            <div class="col-span-2 text-center">Original Price</div>
+            <div class="col-span-2 text-center">Requested At</div>
+            <div class="col-span-2 text-center">Status / Actions</div>
+        </div>
+        <div id="requests-list-container" class="flex flex-col gap-3"></div>
+    </section>
+</seller-layout>
+
+<!-- Action Slide-over -->
+<div class="fixed inset-0 z-[60] pointer-events-none" id="actionSlideOver">
+    <div class="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 pointer-events-none" id="slideOverOverlay" onclick="closeSlideOver()"></div>
+    <aside class="absolute right-0 top-0 h-screen w-[450px] bg-white shadow-2xl border-l border-sage-soft translate-x-full transition-transform duration-500 ease-in-out pointer-events-auto p-10 flex flex-col gap-8 overflow-y-auto" id="slideOverContent">
+        <div class="flex justify-between items-start">
+            <div>
+                <span class="font-label-caps text-gold text-xs" id="slide-over-subtitle">Respond to Request</span>
+                <h2 class="font-headline-lg text-primary text-2xl mt-1" id="slide-over-title">Fulfillment Offer</h2>
+            </div>
+            <button class="p-2 hover:bg-surface-variant rounded-full transition-colors" onclick="closeSlideOver()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="slide-over-body" class="space-y-6 flex-1">
+            <!-- Dynamically populated offer form -->
+        </div>
+    </aside>
+</div>
+
+<!-- Toast notifications -->
+<div id="toast" class="hidden">
+    <span class="material-symbols-outlined" id="toast-icon">check_circle</span>
+    <span id="toast-msg">Success</span>
+</div>
+
+<script>
+    const API_BASE_URL = window.location.origin;
+    let allRequests = [];
+    let currentStatusFilter = 'all';
+
+    function formatPaise(p) {
+        if (p == null) return '₹0';
+        return '₹' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function formatDate(dt) {
+        if (!dt) return '—';
+        return new Date(dt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function showToast(msg, type='success') {
+        const t = document.getElementById('toast');
+        document.getElementById('toast-icon').textContent = type === 'success' ? 'check_circle' : 'error';
+        document.getElementById('toast-msg').textContent  = msg;
+        t.className = `fixed top-24 right-6 z-[300] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium transition-all transform duration-300 ${
+            type === 'success' ? 'bg-primary text-white border border-primary/20' : 'bg-error-container text-on-error-container border border-error/20'
+        }`;
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3500);
+    }
+
+    function statusBadge(s) {
+        const m = {
+            pending:   'bg-amber-100 text-amber-800 border border-amber-200',
+            accepted:  'bg-blue-100 text-blue-800 border border-blue-200',
+            confirmed: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
+            declined:  'bg-rose-100 text-rose-800 border border-rose-200',
+            expired:   'bg-gray-100 text-gray-800 border border-gray-200',
+            cancelled: 'bg-gray-100 text-gray-800 border border-gray-200'
+        };
+        const labels = { 
+            pending: 'Pending', 
+            accepted: 'Offer Sent', 
+            confirmed: 'Confirmed', 
+            declined: 'Declined', 
+            expired: 'Expired', 
+            cancelled: 'Cancelled' 
+        };
+        return `<span class="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${m[s] || 'bg-surface-variant text-on-surface-variant'}">${labels[s] || s}</span>`;
+    }
+
+    async function loadRequests() {
+        const loading = document.getElementById('loading-state');
+        const error   = document.getElementById('error-state');
+        const empty   = document.getElementById('empty-state');
+        const grid    = document.getElementById('requests-grid');
+        const kpi     = document.getElementById('kpi-strip');
+
+        loading.classList.remove('hidden');
+        error.classList.add('hidden');
+        empty.classList.add('hidden');
+        grid.classList.add('hidden');
+        kpi.classList.add('hidden');
+
+        const token = sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/overflow-requests`, { 
+                headers: { 'Authorization': `Bearer ${token}` } 
+            });
+            if (res.status === 401 || res.status === 403) { 
+                sessionStorage.clear(); 
+                window.location.href = '/auth/login.html'; 
+                return; 
+            }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const resp = await res.json();
+            allRequests = resp.data || [];
+        } catch (err) {
+            console.warn('Load requests failed, using dummy fallback data:', err);
+            // Fallback dummy data for local preview & testing
+            allRequests = [
+                {
+                    id: 101,
+                    status: 'pending',
+                    product_title: 'Handwoven Botanical Wall Hanging',
+                    listing_id: '1284',
+                    product_image: 'https://images.unsplash.com/photo-1528190336454-13cd56b45b5a?w=150&auto=format&fit=crop&q=60',
+                    buyer_name: 'Priya Patel',
+                    buyer_email: 'priya.patel@example.com',
+                    quantity: 2,
+                    original_price_paise: 180000,
+                    created_at: new Date(Date.now() - 3600000 * 24).toISOString() // 1 day ago
+                },
+                {
+                    id: 102,
+                    status: 'accepted',
+                    product_title: 'Terracotta Ceramic Coffee Mug Set',
+                    listing_id: '1532',
+                    product_image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=150&auto=format&fit=crop&q=60',
+                    buyer_name: 'Aarav Sharma',
+                    buyer_email: 'aarav.sharma@example.com',
+                    quantity: 1,
+                    original_price_paise: 120000,
+                    created_at: new Date(Date.now() - 3600000 * 48).toISOString(), // 2 days ago
+                    seller_proposed_date: new Date(Date.now() + 3600000 * 24 * 7).toISOString().slice(0, 10),
+                    seller_notes: 'Handcrafting these takes 5 days.'
+                },
+                {
+                    id: 103,
+                    status: 'confirmed',
+                    product_title: 'Hand-Carved Walnut Wood Coasters',
+                    listing_id: '1908',
+                    product_image: 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=150&auto=format&fit=crop&q=60',
+                    buyer_name: 'Meera Nair',
+                    buyer_email: 'meera.nair@example.com',
+                    quantity: 3,
+                    original_price_paise: 95000,
+                    created_at: new Date(Date.now() - 3600000 * 72).toISOString() // 3 days ago
+                },
+                {
+                    id: 104,
+                    status: 'pending',
+                    product_title: 'Pure Soy Wax Lavender Candle',
+                    listing_id: '2045',
+                    product_image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=150&auto=format&fit=crop&q=60',
+                    buyer_name: 'Kabir Sen',
+                    buyer_email: 'kabir.sen@example.com',
+                    quantity: 5,
+                    original_price_paise: 45000,
+                    created_at: new Date(Date.now() - 3600000 * 2).toISOString() // 2 hours ago
+                }
+            ];
+        }
+
+        // Calculate KPIs
+        const total = allRequests.length;
+        const pending = allRequests.filter(r => r.status === 'pending').length;
+        const accepted = allRequests.filter(r => r.status === 'accepted').length;
+        const confirmed = allRequests.filter(r => r.status === 'confirmed').length;
+
+        document.getElementById('kpi-total').textContent = total;
+        document.getElementById('kpi-pending').textContent = pending;
+        document.getElementById('kpi-accepted').textContent = accepted;
+        document.getElementById('kpi-confirmed').textContent = confirmed;
+        kpi.classList.remove('hidden');
+
+        renderRequests();
+    }
+
+    function renderRequests() {
+        const loading = document.getElementById('loading-state');
+        const empty   = document.getElementById('empty-state');
+        const grid    = document.getElementById('requests-grid');
+
+        loading.classList.add('hidden');
+        grid.classList.add('hidden');
+        empty.classList.add('hidden');
+
+        // Filter list
+        let filtered = allRequests;
+        if (currentStatusFilter !== 'all') {
+            if (currentStatusFilter === 'declined') {
+                filtered = allRequests.filter(r => ['declined', 'expired', 'cancelled'].includes(r.status));
+            } else {
+                filtered = allRequests.filter(r => r.status === currentStatusFilter);
+            }
+        }
+
+        document.getElementById('requests-count-label').textContent = 
+            `Curating ${filtered.length} overflow request${filtered.length !== 1 ? 's' : ''} for your store.`;
+
+        if (filtered.length === 0) {
+            empty.classList.remove('hidden');
+            return;
+        }
+
+        const listContainer = document.getElementById('requests-list-container');
+        listContainer.innerHTML = filtered.map(r => {
+            const isPending = r.status === 'pending';
+            const imageUrl = r.product_image || 'https://placehold.co/120x120/f4ede3/516447?text=Handcrafted';
+            
+            // Generate actions UI
+            let actionsHtml = `<div class="flex flex-col items-center gap-1">${statusBadge(r.status)}</div>`;
+            if (isPending) {
+                actionsHtml = `
+                    <div class="flex gap-2 justify-center">
+                        <button onclick="openAcceptForm(${r.id})" class="bg-primary text-white text-xs px-3 py-1.5 rounded-lg hover:opacity-90 transition-all font-bold">Offer Terms</button>
+                        <button onclick="openDeclineForm(${r.id})" class="border border-error text-error text-xs px-3 py-1.5 rounded-lg hover:bg-error-container/20 transition-all font-bold">Decline</button>
+                    </div>
+                `;
+            } else if (r.status === 'accepted') {
+                actionsHtml = `
+                    <div class="flex flex-col items-center gap-1.5">
+                        ${statusBadge(r.status)}
+                        <span class="text-[10px] text-on-surface-variant font-medium text-center">Proposed: ${new Date(r.seller_proposed_date).toLocaleDateString()}</span>
+                        <button onclick="openDeclineForm(${r.id})" class="text-error text-[10px] hover:underline">Cancel Offer</button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="request-card grid grid-cols-12 px-6 py-5 bg-white border border-outline-variant/30 rounded-xl items-center shadow-sm relative group fade-in">
+                    <div class="col-span-3 flex items-center gap-md">
+                        <div class="w-12 h-12 rounded-lg overflow-hidden border border-outline-variant/30 flex-shrink-0">
+                            <img class="w-full h-full object-cover" src="${imageUrl}" alt="${r.product_title}"/>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="font-title-serif text-sm font-bold text-primary truncate block">${r.product_title || '—'}</span>
+                            <span class="text-xs text-outline block">ID: #${r.listing_id}</span>
+                        </div>
+                    </div>
+                    <div class="col-span-2 flex flex-col">
+                        <span class="font-body-md font-bold text-on-surface text-sm">${r.buyer_name || '—'}</span>
+                        <span class="text-[10px] text-on-surface-variant opacity-70 truncate">${r.buyer_email || '—'}</span>
+                    </div>
+                    <div class="col-span-1 text-center font-data-price font-bold text-primary">${r.quantity}</div>
+                    <div class="col-span-2 text-center font-data-price text-on-surface">${formatPaise(r.original_price_paise * r.quantity)}</div>
+                    <div class="col-span-2 text-center text-xs text-on-surface-variant font-data-price">${formatDate(r.created_at)}</div>
+                    <div class="col-span-2">
+                        ${actionsHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        grid.classList.remove('hidden');
+    }
+
+    function toggleSlideOver(show) {
+        const slideOver = document.getElementById('actionSlideOver');
+        const overlay = document.getElementById('slideOverOverlay');
+        const content = document.getElementById('slideOverContent');
+
+        if (show) {
+            slideOver.classList.remove('pointer-events-none');
+            overlay.classList.add('opacity-100');
+            overlay.classList.remove('pointer-events-none');
+            content.classList.remove('translate-x-full');
+        } else {
+            slideOver.classList.add('pointer-events-none');
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('pointer-events-none');
+            content.classList.add('translate-x-full');
+        }
+    }
+
+    window.closeSlideOver = function() {
+        toggleSlideOver(false);
+    };
+
+    window.openAcceptForm = function(requestId) {
+        const r = allRequests.find(req => req.id === requestId);
+        if (!r) return;
+
+        document.getElementById('slide-over-subtitle').textContent = `Request #${r.id} · Offer Terms`;
+        document.getElementById('slide-over-title').textContent = "Propose Fulfillment";
+
+        const defaultDate = new Date();
+        defaultDate.setDate(defaultDate.getDate() + 7); // Default to 1 week from now
+        const defaultDateStr = defaultDate.toISOString().slice(0, 10);
+
+        document.getElementById('slide-over-body').innerHTML = `
+            <div class="space-y-4">
+                <div class="bg-primary/5 p-4 rounded-xl border border-primary/10">
+                    <p class="text-xs uppercase tracking-wider text-primary font-label-caps font-bold">Request Summary</p>
+                    <p class="text-sm font-semibold text-on-surface mt-1">${r.buyer_name} wants ${r.quantity}x ${r.product_title}</p>
+                    <p class="text-xs text-on-surface-variant mt-0.5">Value: ${formatPaise(r.original_price_paise * r.quantity)}</p>
+                </div>
+
+                <form id="accept-terms-form" onsubmit="submitAccept(event, ${r.id})" class="space-y-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-label-caps text-on-surface-variant opacity-70">Proposed Shipping/Fulfillment Date</label>
+                        <input id="proposed-date" type="date" required min="${new Date().toISOString().slice(0,10)}" value="${defaultDateStr}" class="w-full bg-surface-bright border border-sage rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"/>
+                        <p class="text-[10px] text-on-surface-variant">Select the date by which you expect to craft and dispatch these extra units.</p>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-label-caps text-on-surface-variant opacity-70">Message / Custom Notes to Buyer</label>
+                        <textarea id="seller-notes" placeholder="Explain the custom timeline or add a personal note..." class="w-full bg-surface-bright border border-sage rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary text-white font-bold py-2.5 rounded-lg text-sm hover:opacity-90 transition-all mt-4 flex items-center justify-center gap-1">
+                        Send Offer to Buyer
+                    </button>
+                </form>
+            </div>
+        `;
+
+        toggleSlideOver(true);
+    };
+
+    window.openDeclineForm = function(requestId) {
+        const r = allRequests.find(req => req.id === requestId);
+        if (!r) return;
+
+        document.getElementById('slide-over-subtitle').textContent = `Request #${r.id} · Decline`;
+        document.getElementById('slide-over-title').textContent = "Decline Request";
+
+        document.getElementById('slide-over-body').innerHTML = `
+            <div class="space-y-4">
+                <div class="bg-error-container/10 p-4 rounded-xl border border-error/20">
+                    <p class="text-xs uppercase tracking-wider text-error font-label-caps font-bold">Decline Confirmation</p>
+                    <p class="text-sm font-semibold text-on-surface mt-1">Declining ${r.buyer_name}'s request for ${r.product_title}</p>
+                    <p class="text-xs text-on-surface-variant mt-1">Note: Decline will cancel the overflow request. If there is an associated payment/pending order authorization, it will be refunded automatically.</p>
+                </div>
+
+                <form id="decline-terms-form" onsubmit="submitDecline(event, ${r.id})" class="space-y-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-label-caps text-on-surface-variant opacity-70">Reason / Note to Buyer (Optional)</label>
+                        <textarea id="seller-notes" placeholder="Let the buyer know why you are unable to fulfill this request..." class="w-full bg-surface-bright border border-sage rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-error text-white font-bold py-2.5 rounded-lg text-sm hover:opacity-90 transition-all mt-4">
+                        Confirm Decline & Release Capacity
+                    </button>
+                </form>
+            </div>
+        `;
+
+        toggleSlideOver(true);
+    };
+
+    window.submitAccept = async function(event, requestId) {
+        event.preventDefault();
+        const dateInput = document.getElementById('proposed-date').value;
+        const notesInput = document.getElementById('seller-notes').value.trim();
+
+        const token = sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/overflow-requests/${requestId}/accept`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    seller_proposed_date: dateInput,
+                    seller_notes: notesInput
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to accept overflow request');
+
+            showToast("Fulfillment offer sent to buyer!", "success");
+            toggleSlideOver(false);
+            await loadRequests();
+        } catch (err) {
+            console.error(err);
+            showToast(err.message, "error");
+        }
+    };
+
+    window.submitDecline = async function(event, requestId) {
+        event.preventDefault();
+        const notesInput = document.getElementById('seller-notes').value.trim();
+
+        const token = sessionStorage.getItem('tohfa_access_token');
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/seller/overflow-requests/${requestId}/decline`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    seller_notes: notesInput
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to decline overflow request');
+
+            showToast("Overflow request declined successfully", "success");
+            toggleSlideOver(false);
+            await loadRequests();
+        } catch (err) {
+            console.error(err);
+            showToast(err.message, "error");
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = sessionStorage.getItem('tohfa_access_token');
+        if (!token) { window.location.href = '/auth/login.html'; return; }
+
+        // Auth Role check
+        try {
+            const pr = await fetch(`${API_BASE_URL}/api/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (!pr.ok) throw new Error();
+            const pd = await pr.json();
+            const u  = pd.data || pd;
+            if (u.role !== 'seller') { window.location.href = '/buyer/profile.html'; return; }
+        } catch { 
+            sessionStorage.clear(); 
+            window.location.href = '/auth/login.html'; 
+            return; 
+        }
+
+        // Parse query param filter
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialFilter = urlParams.get('filter');
+        if (initialFilter) {
+            currentStatusFilter = initialFilter;
+            // Update active tab visuals
+            document.querySelectorAll('#status-tabs button').forEach(btn => {
+                if (btn.dataset.status === initialFilter) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        await loadRequests();
+        document.getElementById('body-content').classList.remove('opacity-0');
+
+        // Status filter tabs event
+        document.querySelectorAll('#status-tabs button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#status-tabs button').forEach(b => {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+                currentStatusFilter = btn.dataset.status;
+                renderRequests();
+            });
+        });
+
+        // Retry button
+        document.getElementById('retry-btn').addEventListener('click', loadRequests);
+    });
+</script>
+</body>
+</html>

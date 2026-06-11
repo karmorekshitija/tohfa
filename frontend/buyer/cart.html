@@ -734,6 +734,20 @@
         btn.innerHTML = `<span>Processing...</span>`;
 
         try {
+            // Check capacity first
+            const checkRes = await apiClient.post('/capacity/check-cart', {
+                items: cartItems.map(ci => ({ product_id: ci.product_id, quantity: ci.quantity }))
+            });
+            if (checkRes.data && checkRes.data.overflow) {
+                const exceeded = checkRes.data.exceededItems || [];
+                const itemNames = exceeded.map(x => x.name).join(', ');
+                alert(`Fulfillment capacity exceeded for: ${itemNames || 'some items'}. Please request a reschedule for these products individually from their product pages or adjust their quantities in the cart.`);
+                btn.disabled = false;
+                const totalText = document.getElementById('summary-total')?.innerText || '';
+                btn.innerHTML = `<span>Place Order & Pay</span><span id="btn-total" class="font-data-price text-sm border-l border-solid border-white/40 pl-3 ml-3">${totalText}</span>`;
+                return;
+            }
+
             const res = await apiClient.post('/orders', { address_id: selectedAddressId });
             if (res.data && res.data.success) {
                 const order = res.data.data;

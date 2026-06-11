@@ -132,6 +132,9 @@
         <p class="text-on-surface-variant text-sm font-body-md mt-1">Review feedback from your buyers and respond to reviews</p>
       </div>
       <div class="flex items-center gap-md">
+        <button id="auto-request-btn" class="bg-white border border-sage text-primary font-bold px-4 py-2 rounded-lg hover:bg-parchment transition-all flex items-center gap-2 text-sm shadow-sm">
+          <span class="material-symbols-outlined text-sm">settings</span> Auto-Request Settings
+        </button>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
           <input id="reviews-search" class="bg-white border border-[#E8E2D9] rounded-full py-2 pl-10 pr-4 text-body-md focus:outline-none focus:border-primary w-64 text-sm" placeholder="Search reviews..." type="text"/>
@@ -183,8 +186,8 @@
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-        <!-- Left Column: Review List -->
-        <div class="lg:col-span-8 space-y-6">
+        <!-- Review List (Full Width) -->
+        <div class="lg:col-span-12 space-y-6">
             <!-- Filters -->
             <div class="flex gap-6 border-b border-outline-variant pb-2 overflow-x-auto" id="filter-tabs">
                 <button data-filter="all" class="filter-tab-active pb-2 whitespace-nowrap font-label-caps text-xs">All Reviews</button>
@@ -206,54 +209,60 @@
             <!-- Reviews Container -->
             <div id="reviews-list" class="space-y-6"></div>
         </div>
-
-        <!-- Right Column: Auto-Request Settings Mockup -->
-        <aside class="lg:col-span-4">
-            <div class="bg-white border border-sage rounded-xl p-lg custom-shadow sticky top-24">
-                <h3 class="font-headline-lg text-2xl text-primary mb-6">Auto-Request Settings</h3>
-                <div class="space-y-6">
-                    <div class="flex items-center justify-between">
-                        <span class="font-body-md font-bold text-sm">Enable Auto-Requests</span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input checked="" class="sr-only peer" type="checkbox"/>
-                            <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="block font-label-caps text-[11px] text-on-surface-variant mb-2">Send request after delivery</label>
-                        <div class="flex items-center border border-outline-variant rounded-lg overflow-hidden max-w-[140px]">
-                            <button class="p-2 hover:bg-surface-container-low text-primary"><span class="material-symbols-outlined text-sm">remove</span></button>
-                            <input class="w-full text-center border-none font-data-price focus:ring-0 text-sm bg-transparent" readonly="" type="text" value="3 Days"/>
-                            <button class="p-2 hover:bg-surface-container-low text-primary"><span class="material-symbols-outlined text-sm">add</span></button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-label-caps text-[11px] text-on-surface-variant mb-2">Message Template Preview</label>
-                        <div class="bg-parchment p-4 border border-outline-variant rounded-lg relative overflow-hidden">
-                            <p class="font-body-md text-xs italic text-on-surface-variant relative z-10 leading-relaxed">
-                                "Hi [Name], your studio find has arrived! If it brings you joy, would you share a quick review? Your feedback helps my small studio thrive."
-                            </p>
-                        </div>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-start gap-2 text-xs text-on-surface-variant">
-                            <span class="text-gold">✦</span>
-                            Automatically filtered for successful deliveries.
-                        </li>
-                        <li class="flex items-start gap-2 text-xs text-on-surface-variant">
-                            <span class="text-gold">✦</span>
-                            Includes direct link to photo upload.
-                        </li>
-                    </ul>
-                    <button class="w-full bg-primary text-white font-body-md py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 text-sm font-bold">
-                        <span class="material-symbols-outlined text-sm">save</span>
-                        Save Settings
-                    </button>
-                </div>
-            </div>
-        </aside>
     </div>
 </seller-layout>
+
+<!-- Auto-Request Settings Modal -->
+<div id="auto-request-modal" class="fixed inset-0 bg-[#211b11]/40 backdrop-blur-sm z-[1000] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white border border-sage rounded-2xl p-lg custom-shadow max-w-md w-full mx-4 relative overflow-hidden transform scale-95 transition-transform duration-300">
+        <div class="absolute inset-0 botanical-watermark pointer-events-none"></div>
+        <div class="flex justify-between items-center mb-6 relative z-10">
+            <h3 class="font-headline-lg text-2xl text-primary">Auto-Request Settings</h3>
+            <button id="close-modal-btn" class="text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="space-y-6 relative z-10">
+            <div class="flex items-center justify-between">
+                <span class="font-body-md font-bold text-sm">Enable Auto-Requests</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input id="modal-enable-auto" checked="" class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+            <div>
+                <label class="block font-label-caps text-[11px] text-on-surface-variant mb-2">Send request after delivery</label>
+                <div class="flex items-center border border-outline-variant rounded-lg overflow-hidden max-w-[140px]">
+                    <button id="modal-days-minus" class="p-2 hover:bg-surface-container-low text-primary"><span class="material-symbols-outlined text-sm">remove</span></button>
+                    <input id="modal-days-input" class="w-full text-center border-none font-data-price focus:ring-0 text-sm bg-transparent" readonly="" type="text" value="3 Days"/>
+                    <button id="modal-days-plus" class="p-2 hover:bg-surface-container-low text-primary"><span class="material-symbols-outlined text-sm">add</span></button>
+                </div>
+            </div>
+            <div>
+                <label class="block font-label-caps text-[11px] text-on-surface-variant mb-2">Message Template Preview</label>
+                <div class="bg-parchment p-4 border border-outline-variant rounded-lg relative overflow-hidden">
+                    <p class="font-body-md text-xs italic text-on-surface-variant relative z-10 leading-relaxed">
+                        "Hi [Name], your studio find has arrived! If it brings you joy, would you share a quick review? Your feedback helps my small studio thrive."
+                    </p>
+                </div>
+            </div>
+            <ul class="space-y-2">
+                <li class="flex items-start gap-2 text-xs text-on-surface-variant">
+                    <span class="text-gold">✦</span>
+                    Automatically filtered for successful deliveries.
+                </li>
+                <li class="flex items-start gap-2 text-xs text-on-surface-variant">
+                    <span class="text-gold">✦</span>
+                    Includes direct link to photo upload.
+                </li>
+            </ul>
+            <button id="modal-save-btn" class="w-full bg-primary text-white font-body-md py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 text-sm font-bold shadow-sm">
+                <span class="material-symbols-outlined text-sm">save</span>
+                Save Settings
+            </button>
+        </div>
+    </div>
+</div>
 
 <!-- Toast notifications -->
 <div id="toast" class="hidden">
@@ -577,6 +586,71 @@
                 fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
             }
             sessionStorage.clear(); window.location.href = '/auth/login.html';
+        });
+
+        // Auto-Request Settings Modal Handler
+        const autoRequestBtn = document.getElementById('auto-request-btn');
+        const autoRequestModal = document.getElementById('auto-request-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalSaveBtn = document.getElementById('modal-save-btn');
+        const modalDaysInput = document.getElementById('modal-days-input');
+        const modalDaysMinus = document.getElementById('modal-days-minus');
+        const modalDaysPlus = document.getElementById('modal-days-plus');
+
+        let daysCount = parseInt(localStorage.getItem('auto_request_days') || '3', 10);
+        const savedEnabled = localStorage.getItem('auto_request_enabled') !== 'false';
+        
+        document.getElementById('modal-enable-auto').checked = savedEnabled;
+
+        const updateDaysDisplay = () => {
+            modalDaysInput.value = `${daysCount} Day${daysCount > 1 ? 's' : ''}`;
+        };
+        updateDaysDisplay();
+
+        modalDaysMinus.addEventListener('click', () => {
+            if (daysCount > 1) {
+                daysCount--;
+                updateDaysDisplay();
+            }
+        });
+
+        modalDaysPlus.addEventListener('click', () => {
+            if (daysCount < 30) {
+                daysCount++;
+                updateDaysDisplay();
+            }
+        });
+
+        const openModal = () => {
+            autoRequestModal.classList.remove('hidden');
+            setTimeout(() => {
+                autoRequestModal.classList.remove('opacity-0');
+                autoRequestModal.querySelector('div').classList.remove('scale-95');
+            }, 10);
+        };
+
+        const closeModal = () => {
+            autoRequestModal.classList.add('opacity-0');
+            autoRequestModal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                autoRequestModal.classList.add('hidden');
+            }, 300);
+        };
+
+        autoRequestBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        autoRequestModal.addEventListener('click', (e) => {
+            if (e.target === autoRequestModal) {
+                closeModal();
+            }
+        });
+
+        modalSaveBtn.addEventListener('click', () => {
+            const enabled = document.getElementById('modal-enable-auto').checked;
+            localStorage.setItem('auto_request_enabled', enabled ? 'true' : 'false');
+            localStorage.setItem('auto_request_days', String(daysCount));
+            showToast('Auto-request settings saved successfully!', 'success');
+            closeModal();
         });
     });
 </script>

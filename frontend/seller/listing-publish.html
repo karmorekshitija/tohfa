@@ -3,194 +3,259 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Tohfa | Listing Published</title>
+<title>Listing Published | TOFA Studio</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/components/seller-components.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;family=Merriweather:wght@400;700&amp;family=Cinzel:wght@700&amp;family=Space+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        
+        .botanical-watermark {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            opacity: 0.08;
+            pointer-events: none;
+        }
         @keyframes stroke {
             100% { stroke-dashoffset: 0; }
         }
-        @keyframes scale {
-            0%, 100% { transform: none; }
-            50% { transform: scale3d(1.1, 1.1, 1); }
-        }
-        @keyframes fill {
-            100% { box-shadow: inset 0px 0px 0px 30px transparent; }
-        }
-
         .checkmark-circle {
             stroke-dasharray: 166;
             stroke-dashoffset: 166;
             stroke-width: 2;
             stroke-miterlimit: 10;
-            stroke: #49663f; /* Sage-ish Forest */
+            stroke: #3D6B4F; /* Forest */
             fill: none;
             animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
         }
-
         .checkmark-check {
             transform-origin: 50% 50%;
             stroke-dasharray: 48;
             stroke-dashoffset: 48;
             animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
         }
-
-        .botanical-overlay {
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
-        }
-    </style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #8FAF82; border-radius: 10px; }
+</style>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "secondary-fixed": "#caecbb",
-                        "on-primary-fixed": "#002110",
-                        "on-tertiary-container": "#e8d6ff",
-                        "tertiary-fixed": "#ecdcff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-error": "#ffffff",
-                        "surface": "#fff8f3",
-                        "primary-fixed": "#bceecb",
-                        "on-surface-variant": "#414942",
-                        "on-error-container": "#93000a",
-                        "surface-tint": "#3a684c",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary-fixed-variant": "#54387e",
-                        "on-tertiary-fixed": "#270550",
-                        "on-secondary-fixed-variant": "#324e29",
-                        "on-primary-container": "#b7e9c6",
-                        "surface-container": "#f9ecdc",
-                        "inverse-surface": "#362f25",
-                        "surface-dim": "#e5d8c8",
-                        "primary-fixed-dim": "#a0d2b0",
-                        "background": "#fff8f3",
-                        "surface-variant": "#ede1d1",
-                        "outline": "#717972",
-                        "on-tertiary": "#ffffff",
-                        "outline-variant": "#c1c9c0",
-                        "inverse-on-surface": "#fcefde",
-                        "on-primary-fixed-variant": "#214f36",
-                        "surface-container-low": "#fff2e1",
-                        "on-primary": "#ffffff",
-                        "error-container": "#ffdad6",
-                        "secondary": "#49663f",
-                        "error": "#ba1a1a",
-                        "surface-container-high": "#f3e6d6",
-                        "surface-container-highest": "#ede1d1",
-                        "tertiary": "#573b81",
-                        "surface-bright": "#fff8f3",
-                        "primary-container": "#3d6b4f",
-                        "primary": "#255338",
-                        "on-background": "#211b11",
-                        "secondary-fixed-dim": "#afd0a0",
-                        "on-secondary-container": "#4d6a43",
-                        "tertiary-fixed-dim": "#d6baff",
-                        "secondary-container": "#c8e9b8",
-                        "on-secondary-fixed": "#062103",
-                        "inverse-primary": "#a0d2b0",
-                        "tertiary-container": "#70539b",
-                        "on-surface": "#211b11"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "xl": "40px",
-                        "xs": "4px",
-                        "margin-mobile": "20px",
-                        "sm": "8px",
-                        "md": "16px",
-                        "unit": "4px",
-                        "margin-desktop": "64px",
-                        "lg": "24px",
-                        "gutter": "16px"
-                    },
-                    "fontFamily": {
-                        "label-caps": ["Cinzel"],
-                        "body-md": ["DM Sans"],
-                        "title-serif": ["Merriweather"],
-                        "headline-lg-mobile": ["Playfair Display"],
-                        "headline-lg": ["Playfair Display"],
-                        "data-price": ["Space Mono"],
-                        "display-hero": ["Playfair Display"]
-                    },
-                    "fontSize": {
-                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "title-serif": ["18px", { "lineHeight": "24px", "fontWeight": "700" }],
-                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }],
-                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "400" }],
-                        "data-price": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
-                        "display-hero": ["48px", { "lineHeight": "56px", "fontWeight": "300" }]
-                    }
-                },
-            },
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#afd0a0",
+                      "tertiary-fixed": "#ecdcff",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "background": "#f9faf5",
+                      "primary-fixed": "#bceecb",
+                      "on-secondary-container": "#4d6a43",
+                      "surface-container-high": "#e7e9e4",
+                      "tertiary-container": "#70539b",
+                      "surface": "#f9faf5",
+                      "primary": "#255338",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c1c9c0",
+                      "tertiary-fixed-dim": "#d6baff",
+                      "on-primary-fixed": "#002110",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#f0f1ed",
+                      "inverse-surface": "#2e312e",
+                      "secondary": "#49663f",
+                      "primary-fixed-dim": "#a0d2b0",
+                      "on-tertiary-fixed": "#270550",
+                      "on-tertiary-fixed-variant": "#54387e",
+                      "surface-variant": "#e2e3df",
+                      "inverse-primary": "#a0d2b0",
+                      "surface-tint": "#3a684c",
+                      "on-primary-container": "#b7e9c6",
+                      "surface-dim": "#d9dad6",
+                      "secondary-container": "#c8e9b8",
+                      "surface-bright": "#f9faf5",
+                      "outline": "#717972",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e2e3df",
+                      "tertiary": "#573b81",
+                      "on-tertiary-container": "#e8d6ff",
+                      "on-surface-variant": "#414942",
+                      "surface-container-low": "#f3f4f0",
+                      "on-secondary-fixed": "#062103",
+                      "on-error": "#ffffff",
+                      "surface-container": "#edeeea",
+                      "primary-container": "#3d6b4f",
+                      "on-secondary-fixed-variant": "#324e29",
+                      "on-primary-fixed-variant": "#214f36",
+                      "secondary-fixed": "#caecbb",
+                      "on-surface": "#1a1c1a",
+                      "on-background": "#1a1c1a",
+                      "parchment": "#F7F3EC",
+                      "sage": "#8FAF82",
+                      "forest": "#3D6B4F",
+                      "gold": "#C8973A"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Playfair Display"],
+                      "body-lg": ["DM Sans"],
+                      "label-caps": ["Playfair Display"],
+                      "headline-md": ["Playfair Display"],
+                      "body-sm": ["DM Sans"],
+                      "display-lg-mobile": ["Playfair Display"],
+                      "data-mono": ["Space Mono"],
+                      "body-md": ["DM Sans"],
+                      "headline-sm": ["Playfair Display"]
+              }
+            }
+          }
         }
-    </script>
+</script>
 </head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<body class="bg-parchment text-on-surface font-body-md overflow-hidden">
 <seller-layout active-tab="catalog">
-<div class="flex-grow relative flex items-center justify-center min-h-[calc(100vh-72px)] overflow-hidden">
-<!-- Faint botanical watercolor hero image -->
-<div class="absolute inset-0 z-0 opacity-[0.15] pointer-events-none botanical-overlay">
-<img class="w-full h-full object-cover" data-alt="A delicate watercolor painting of botanical sprigs." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwufkkcndltImy7od6xPRyDorgAosVjuLQkEAtClqolaOa4n9KWJHsN9bZtfXIKQWxVzyps1UOBWhTLtZaJXTBhfA88c2YRdxF882trxTZuLKjrVdjmStTYQ-BIlNvJVLN674FKlbxzIDPoFY-Hwx8CwnF2rKbPPCLHia5tLRl_50Tz_of2WBytqHS8kjEFZv897kNgr2UJNhXLZOL2IbqlahOP8C30AGw7xGp36Db_jrk9APUkcwpWyo_lkIRZ3UMmnrBXrzW9Bk"/>
+<div class="min-h-screen relative flex flex-col h-screen">
+<!-- Botanical Watermark Overlay -->
+<div class="absolute inset-0 botanical-watermark overflow-hidden z-0">
+<span class="material-symbols-outlined absolute -bottom-20 -right-20 text-[300px] opacity-[0.03]">psychiatry</span>
+<span class="material-symbols-outlined absolute top-40 left-20 text-[180px] opacity-[0.03]">eco</span>
 </div>
-<!-- Success Modal -->
-<section class="relative z-10 w-full max-w-[640px] mx-margin-mobile px-md py-xl md:px-xl">
-<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_60px_-15px_rgba(58,51,40,0.12)] border border-outline-variant p-lg md:p-xl flex flex-col items-center text-center">
-<!-- Animated Checkmark -->
-<div class="mb-lg">
-<svg class="w-20 h-20" viewbox="0 0 52 52">
-<circle class="checkmark-circle" cx="26" cy="26" fill="none" r="25"></circle>
-<path class="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8" fill="none"></path>
-</svg>
+
+<!-- (1) Specialized Wizard Header -->
+<header class="h-[80px] bg-white border-b border-sage/20 px-12 flex justify-between items-center shrink-0 z-10">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary">psychiatry</span>
+    <span class="material-symbols-outlined text-sage">eco</span>
+    <h2 class="font-display-lg text-primary text-3xl font-serif">Listing Live!</h2>
+  </div>
+  <div class="flex gap-4">
+    <a href="/seller/catalog.html" class="px-6 py-2 border border-sage text-[#3D6B4F] rounded-full text-sm font-bold hover:bg-[#F7F3EC] transition-colors flex items-center justify-center">Catalog</a>
+    <a href="/seller/dashboard.html" class="px-8 py-2 bg-forest text-white rounded-full font-bold shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center">Dashboard</a>
+  </div>
+</header>
+
+<!-- (2) Horizontal Stepper -->
+<div class="bg-parchment/60 py-8 border-b border-sage/10 z-10 shrink-0">
+  <div class="max-w-4xl mx-auto relative flex justify-between items-center px-4">
+    <!-- Connecting Line -->
+    <div class="absolute top-1/2 left-8 right-8 h-[2px] bg-sage/20 -translate-y-1/2 z-0"></div>
+    <div class="absolute top-1/2 left-8 w-[100%] h-[2px] bg-forest -translate-y-1/2 z-0 transition-all duration-500"></div>
+    <!-- Step 1: Photos (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Photos</span>
+    </div>
+    <!-- Step 2: Details (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Details</span>
+    </div>
+    <!-- Step 3: Pricing (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Pricing</span>
+    </div>
+    <!-- Step 4: Shipping (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Shipping</span>
+    </div>
+    <!-- Step 5: Preview (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Preview</span>
+    </div>
+    <!-- Step 6: Publish (Completed) -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-primary">
+      <div class="w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center ring-2 ring-primary text-forest">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+      </div>
+      <span class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-primary pb-0.5">Publish</span>
+    </div>
+  </div>
 </div>
-<!-- Headline -->
-<h1 class="font-headline-lg text-headline-lg text-primary mb-sm font-bold">
-                    Your listing is live! ✦
-                </h1>
-<!-- Subline -->
-<p id="published-subline" class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-sm font-medium">
-                    Midnight Jasmine Resin Study is now visible to buyers.
-                </p>
-<!-- Action Card Row (3 cards) -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-md w-full mb-xl">
-<!-- Share to Instagram -->
-<button class="flex flex-col items-center justify-center p-md bg-[#8B5CF6] text-white rounded-lg hover:scale-[1.02] transition-transform active:scale-95 group font-bold" id="share-instagram-btn">
-<span class="material-symbols-outlined mb-sm text-2xl group-hover:rotate-12 transition-transform">share</span>
-<span class="font-label-caps text-[10px] tracking-wider font-bold">Share to Instagram</span>
-</button>
-<!-- Upload a Reel -->
-<a href="/seller/upload-reel.html" class="flex flex-col items-center justify-center p-md bg-primary-container text-on-primary-container rounded-lg hover:scale-[1.02] transition-transform active:scale-95 group font-bold">
-<span class="material-symbols-outlined mb-sm text-2xl group-hover:-translate-y-1 transition-transform">video_library</span>
-<span class="font-label-caps text-[10px] tracking-wider font-bold">Upload a Reel</span>
-</a>
-<!-- View in Catalog -->
-<a href="/seller/catalog.html" class="flex flex-col items-center justify-center p-md bg-[#F7F3EC] border border-outline-variant/30 text-primary rounded-lg hover:scale-[1.02] transition-transform active:scale-95 group font-bold">
-<span class="material-symbols-outlined mb-sm text-2xl group-hover:scale-110 transition-transform">library_books</span>
-<span class="font-label-caps text-[10px] tracking-wider font-bold">View in Catalog</span>
-</a>
+
+<!-- (3) Main Content - Centered Card -->
+<div class="flex-1 overflow-y-auto custom-scrollbar z-10 bg-parchment flex items-center justify-center p-8">
+  <section class="w-full max-w-[600px] bg-white rounded-3xl border border-sage/30 shadow-lg p-10 flex flex-col items-center text-center relative overflow-hidden">
+    <div class="botanical-watermark absolute inset-0 opacity-[0.03]"></div>
+    
+    <!-- Animated Checkmark -->
+    <div class="mb-6 relative z-10">
+      <svg class="w-20 h-20" viewBox="0 0 52 52">
+        <circle class="checkmark-circle" cx="26" cy="26" fill="none" r="25"></circle>
+        <path class="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8" fill="none"></path>
+      </svg>
+    </div>
+    
+    <!-- Title -->
+    <h1 class="font-display-lg text-primary text-3xl font-bold mb-3 relative z-10">Your listing is live! ✦</h1>
+    
+    <!-- Subtitle -->
+    <p id="published-subline" class="font-body-md text-on-surface-variant mb-8 max-w-sm relative z-10">
+      Midnight Jasmine Resin Study is now visible to buyers.
+    </p>
+    
+    <!-- Action Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-8 relative z-10">
+      <!-- Share to Instagram -->
+      <button class="flex flex-col items-center justify-center p-4 bg-[#7B5EA7] text-white rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 group font-bold" id="share-instagram-btn">
+        <span class="material-symbols-outlined mb-2 text-2xl group-hover:rotate-12 transition-transform">share</span>
+        <span class="font-label-caps text-[10px] tracking-wider uppercase">Share Post</span>
+      </button>
+      
+      <!-- Upload a Reel -->
+      <a href="/seller/upload-reel.html" class="flex flex-col items-center justify-center p-4 bg-[#3D6B4F] text-white rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 group font-bold">
+        <span class="material-symbols-outlined mb-2 text-2xl group-hover:-translate-y-1 transition-transform">video_library</span>
+        <span class="font-label-caps text-[10px] tracking-wider uppercase">Add Reel</span>
+      </a>
+      
+      <!-- View in Catalog -->
+      <a href="/seller/catalog.html" class="flex flex-col items-center justify-center p-4 bg-[#F7F3EC] border border-sage/30 text-primary rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 group font-bold">
+        <span class="material-symbols-outlined mb-2 text-2xl group-hover:scale-110 transition-transform">library_books</span>
+        <span class="font-label-caps text-[10px] tracking-wider uppercase">View Catalog</span>
+      </a>
+    </div>
+  </section>
 </div>
-<!-- Footer Link -->
-<a class="font-label-caps text-[11px] text-on-surface-variant/70 hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-px font-bold" href="/seller/dashboard.html">
-                    Go to Dashboard
-                </a>
+
+<!-- (5) Footer -->
+<footer class="border-t border-sage/20 px-12 py-6 bg-white flex justify-between items-center shrink-0 z-20">
+  <button id="view-store-btn-footer" class="px-8 py-3 rounded-full border border-sage text-forest font-label-caps uppercase tracking-widest text-[11px] hover:bg-parchment transition-colors">
+    View Store
+  </button>
+  <a href="/seller/dashboard.html" class="px-10 py-3 rounded-full bg-forest text-white font-label-caps uppercase tracking-widest text-[11px] shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+    Go to Dashboard
+    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+  </a>
+</footer>
+
+<!-- Character Accent -->
+<div class="fixed bottom-0 right-10 z-[70] pointer-events-none transform translate-y-2">
+  <div class="relative w-24 h-24">
+    <div class="absolute bottom-0 w-full flex justify-center">
+      <img class="w-16 h-16 object-contain" data-alt="A cute, minimalist bunny mascot peeking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYaFNvAD7YrFVSxKp15-VxW6mVgFrAmpIs-u_OKLhkU3aVoYU6klQ6uWUlmzfG3Rs9pZq9XDYU71jn9yhmVY2A6dyAr2SYuD-74Wn9tRHBKI9seO9L025K6hJ9wijO_PCPwb2Wd53gTVay1v67xIMGs5tbyDOuM6VZLB-d-DT9ikbKG_MxPeWRZmFK34MMVk-c1_Qiv3IiZ2XUfQWAXOz5VsYVeQmeTAoDELqTJEQA2_thsgRXVrKgd1szwoXluIV1y9Jzs0ftqzY"/>
+    </div>
+  </div>
 </div>
-<!-- Subtle Texture Overlay for the card -->
-<div class="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] mix-blend-multiply rounded-xl"></div>
-</section>
+
 </div>
 </seller-layout>
 
@@ -218,8 +283,8 @@
             return;
         }
 
-        // View Store
-        const viewStoreBtn = document.getElementById('view-store-btn');
+        // View Store Footer Link
+        const viewStoreBtn = document.getElementById('view-store-btn-footer');
         if (viewStoreBtn) {
             viewStoreBtn.addEventListener('click', () => {
                 fetch(`${API_BASE_URL}/api/seller/profile`, {
@@ -238,18 +303,6 @@
                     console.error('Error fetching seller profile:', err);
                     window.location.href = '/';
                 });
-            });
-        }
-
-        // Logout
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                const refresh = sessionStorage.getItem('tohfa_refresh_token') || sessionStorage.getItem('refresh_token');
-                if (token && refresh) {
-                    fetch('/api/auth/logout', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({refresh_token:refresh}) }).catch(()=>{});
-                }
-                sessionStorage.clear(); window.location.href = '/auth/login.html';
             });
         }
 

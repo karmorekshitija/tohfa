@@ -233,6 +233,15 @@
                         <span class="material-symbols-outlined">shopping_cart</span>
                         <span>Add to Cart</span>
                     </button>
+                    <div id="overflow-container" class="hidden space-y-xs">
+                        <button id="reschedule-btn" class="w-full border-2 border-amber-500 text-amber-600 hover:bg-amber-50/50 py-4 rounded-xl font-semibold uppercase tracking-widest hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-sm">
+                            <span class="material-symbols-outlined">calendar_today</span>
+                            <span>Request Reschedule</span>
+                        </button>
+                        <p id="overflow-msg" class="text-xs text-amber-700 bg-amber-50/50 border border-amber-200/60 rounded-lg p-sm leading-relaxed">
+                            Daily fulfillment capacity for this product has been reached. You can request the seller to schedule this for a later date.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -574,6 +583,22 @@
 
                     // Check if user has bought this item to gate review submission
                     await checkReviewEligibility();
+
+                    // Check capacity on page load for pre-made items
+                    if (!isCustomized && product.status !== 'sold_out' && maxStock > 0) {
+                        try {
+                            const checkRes = await apiClient.post('/capacity/check', { 
+                                product_id: Number(productId), 
+                                quantity: 1, 
+                                preview: true 
+                            });
+                            if (checkRes.data && checkRes.data.overflow) {
+                                showOverflowState("Today's capacity reached — next available: tomorrow");
+                            }
+                        } catch (e) {
+                            console.error("Error checking capacity status on load:", e);
+                        }
+                    }
                 } else {
                     showErrorState();
                 }
@@ -709,6 +734,48 @@
             }
         }
 
+        function resetOverflowState() {
+            document.getElementById('add-to-cart-btn')?.classList.remove('hidden');
+            document.getElementById('overflow-container')?.classList.add('hidden');
+        }
+
+        function showOverflowState(msg) {
+            document.getElementById('add-to-cart-btn')?.classList.add('hidden');
+            const container = document.getElementById('overflow-container');
+            if (container) {
+                container.classList.remove('hidden');
+                if (msg) {
+                    document.getElementById('overflow-msg').innerText = msg;
+                }
+            }
+        }
+
+        async function handleRequestReschedule() {
+            const rescheduleBtn = document.getElementById('reschedule-btn');
+            rescheduleBtn.disabled = true;
+            rescheduleBtn.querySelector('span:last-child').innerText = 'Processing...';
+
+            try {
+                const res = await apiClient.post('/overflow/request', {
+                    product_id: Number(productId),
+                    quantity: qty
+                });
+                if (res.data && res.data.success) {
+                    const { conversation_id, overflow_request_id } = res.data;
+                    window.Toast?.show("Reschedule request created!", "success");
+                    setTimeout(() => {
+                        window.location.href = `/buyer/profile.html?open_chat=true&conversation_id=${conversation_id}&overflow_request_id=${overflow_request_id}`;
+                    }, 1000);
+                }
+            } catch (err) {
+                console.error("Failed to create reschedule request:", err);
+                window.Toast?.show(err.response?.data?.message || "Failed to create reschedule request.", "error");
+            } finally {
+                rescheduleBtn.disabled = false;
+                rescheduleBtn.querySelector('span:last-child').innerText = 'Request Reschedule';
+            }
+        }
+
         async function handleAddToCart() {
             if (isCustomized) {
                 window.location.href = `/buyer/seller-profile.html?id=${product.seller.id}&customise_listing_id=${product.id}&customise_listing_title=${encodeURIComponent(product.name)}&product_type_tag=${encodeURIComponent(product.category.slug)}`;
@@ -722,15 +789,24 @@
 
             const btn = document.getElementById('add-to-cart-btn');
             btn.disabled = true;
-            btn.querySelector('span:last-child').innerText = 'Adding...';
+            btn.querySelector('span:last-child').innerText = 'Checking...';
 
             try {
+                // Check capacity first
+                const checkRes = await apiClient.post('/capacity/check', { product_id: Number(productId), quantity: qty });
+                if (checkRes.data && checkRes.data.overflow) {
+                    showOverflowState(checkRes.data.message || "Fulfillment capacity exceeded for this date. Would you like to request a reschedule?");
+                    return;
+                }
+
+                btn.querySelector('span:last-child').innerText = 'Adding...';
                 const response = await apiClient.post('/cart/items', { product_id: Number(productId), quantity: qty });
                 if (response.data && response.data.success) {
                     window.Toast?.show("Added to cart successfully!", "success");
                 }
             } catch (e) {
                 console.error("Error adding to cart:", e);
+                window.Toast?.show(e.response?.data?.message || "Failed to add to cart.", "error");
             } finally {
                 btn.disabled = false;
                 btn.querySelector('span:last-child').innerText = 'Add to Cart';
@@ -746,6 +822,7 @@
                 if (qty > 1) {
                     qty--;
                     qtyInput.value = qty;
+                    resetOverflowState();
                 }
             });
 
@@ -753,6 +830,7 @@
                 if (qty < maxStock) {
                     qty++;
                     qtyInput.value = qty;
+                    resetOverflowState();
                 }
             });
 
@@ -762,6 +840,7 @@
                 if (val > maxStock) val = maxStock;
                 qty = val;
                 qtyInput.value = qty;
+                resetOverflowState();
             });
         }
 
@@ -835,6 +914,7 @@
 
             document.getElementById('wishlist-toggle-btn')?.addEventListener('click', handleToggleWishlist);
             document.getElementById('add-to-cart-btn')?.addEventListener('click', handleAddToCart);
+            document.getElementById('reschedule-btn')?.addEventListener('click', handleRequestReschedule);
         });
     </script>
 </body>
