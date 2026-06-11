@@ -1062,12 +1062,38 @@ app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateTok
     }
     
     // 2. Build query
+    const filterCategoryId = req.query.category_id;
+    const activeCategoryId = filterCategoryId ? parseInt(filterCategoryId) : category.id;
+    
     let queryParts = [];
-    let queryParams = [category.id];
+    let queryParams = [activeCategoryId];
     
     if (sub) {
       queryParts.push("(p.name LIKE ? OR p.description LIKE ?)");
       queryParams.push(`%${sub}%`, `%${sub}%`);
+    }
+    
+    const minPrice = req.query.min_price;
+    const maxPrice = req.query.max_price;
+    const rating = req.query.rating;
+    const availability = req.query.availability;
+
+    if (minPrice !== undefined && minPrice !== '') {
+      queryParts.push("p.price_paise >= ?");
+      queryParams.push(Math.round(parseFloat(minPrice) * 100));
+    }
+    if (maxPrice !== undefined && maxPrice !== '') {
+      queryParts.push("p.price_paise <= ?");
+      queryParams.push(Math.round(parseFloat(maxPrice) * 100));
+    }
+    if (rating !== undefined && rating !== '') {
+      queryParts.push("p.avg_rating >= ?");
+      queryParams.push(parseFloat(rating));
+    }
+    if (availability === 'in_stock') {
+      queryParts.push("p.stock_qty > 0");
+    } else if (availability === 'made_to_order') {
+      queryParts.push("p.stock_qty = 0");
     }
     
     if (cursor) {
@@ -1082,9 +1108,12 @@ app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateTok
         } else if (sort === 'price_desc') {
           queryParts.push("(p.price_paise < ? OR (p.price_paise = ? AND p.id < ?))");
           queryParams.push(lastProduct.price_paise, lastProduct.price_paise, lastProduct.id);
-        } else if (sort === 'top_rated') {
+        } else if (sort === 'top_rated' || sort === 'best_rated') {
           queryParts.push("(p.avg_rating < ? OR (p.avg_rating = ? AND p.id < ?))");
           queryParams.push(lastProduct.avg_rating, lastProduct.avg_rating, lastProduct.id);
+        } else if (sort === 'most_popular') {
+          queryParts.push("(p.review_count < ? OR (p.review_count = ? AND p.id < ?))");
+          queryParams.push(lastProduct.review_count, lastProduct.review_count, lastProduct.id);
         }
       }
     }
@@ -1094,8 +1123,10 @@ app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateTok
       orderBy = 'p.price_paise ASC, p.id ASC';
     } else if (sort === 'price_desc') {
       orderBy = 'p.price_paise DESC, p.id DESC';
-    } else if (sort === 'top_rated') {
+    } else if (sort === 'top_rated' || sort === 'best_rated') {
       orderBy = 'p.avg_rating DESC, p.id DESC';
+    } else if (sort === 'most_popular') {
+      orderBy = 'p.review_count DESC, p.id DESC';
     }
     
     let userId = req.user ? req.user.user_id : null;
@@ -1131,7 +1162,7 @@ app.get('/api/categories/:slug/products', rateLimit(60), optionalAuthenticateTok
     if (userId) {
       finalParams.push(userId);
     }
-    finalParams.push(category.id);
+    finalParams.push(activeCategoryId);
     finalParams.push(...queryParams.slice(1));
     finalParams.push(limit + 1); // Fetch limit + 1 to check if has_more
     
@@ -1424,7 +1455,16 @@ app.get('/api/products/:id', rateLimit(120), optionalAuthenticateToken, (req, re
         name: productData.category_name,
         slug: productData.category_slug
       },
-      recent_reviews: recentReviews
+      recent_reviews: recentReviews,
+      is_customized: productData.category_slug === 'customized-gifts',
+      is_sponsored: db.prepare("SELECT 1 FROM sponsored_products WHERE product_id = ? AND is_sponsored = 1").get(id) !== undefined,
+      is_best_seller: db.prepare(`
+        SELECT p.id, COALESCE((SELECT SUM(quantity) FROM order_items WHERE product_id = p.id), 0) AS sales_rank
+        FROM products p
+        WHERE p.status = 'active'
+        ORDER BY sales_rank DESC, p.created_at DESC, p.id DESC
+        LIMIT 8
+      `).all().some(b => b.id === Number(id))
     };
     
     return res.status(200).json({
@@ -1683,6 +1723,83 @@ app.delete('/api/cart/items/:id', rateLimit(120), authenticateToken, (req, res) 
       error: true,
       message: "Internal server error",
       code: "INTERNAL_SERVER_ERROR"
+    });
+  }
+});
+
+const pincodeCache = {};
+
+function fetchPincodeDetails(pincode) {
+  const https = require('https');
+  return new Promise((resolve, reject) => {
+    https.get(`https://api.postalpincode.in/pincode/${pincode}`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          resolve(parsed);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }).on('error', (err) => {
+      reject(err);
+    });
+  });
+}
+
+app.get('/api/addresses/pincode/:pincode', rateLimit(120), async (req, res) => {
+  const { pincode } = req.params;
+  
+  if (!/^\d{6}$/.test(pincode)) {
+    return res.status(400).json({
+      error: true,
+      message: "PIN code must be a 6-digit number",
+      code: "INVALID_PINCODE"
+    });
+  }
+  
+  if (pincodeCache[pincode]) {
+    return res.status(200).json({
+      success: true,
+      data: pincodeCache[pincode]
+    });
+  }
+  
+  try {
+    const responseData = await fetchPincodeDetails(pincode);
+    if (responseData && responseData[0] && responseData[0].Status === "Success") {
+      const postOffice = responseData[0].PostOffice;
+      if (postOffice && postOffice.length > 0) {
+        const info = postOffice[0];
+        const result = {
+          state: info.State,
+          city: info.District || info.Region || info.Circle,
+          district: info.District,
+          region: info.Region,
+          country: "India"
+        };
+        pincodeCache[pincode] = result;
+        return res.status(200).json({
+          success: true,
+          data: result
+        });
+      }
+    }
+    
+    return res.status(404).json({
+      error: true,
+      message: "Invalid PIN code or no details found",
+      code: "PINCODE_NOT_FOUND"
+    });
+  } catch (err) {
+    console.error('Error fetching pincode details:', err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error"
     });
   }
 });
@@ -3591,6 +3708,36 @@ app.get('/api/reels/feed', rateLimit(60), optionalAuthenticateToken, (req, res) 
       rows.pop();
     }
 
+    const reelIds = rows.map(r => r.id);
+    let productLinks = [];
+    if (reelIds.length > 0) {
+      const placeholders = reelIds.map(() => '?').join(',');
+      productLinks = db.prepare(`
+        SELECT 
+          rpl.reel_id, rpl.product_id AS id, p.name, p.price_paise,
+          COALESCE(
+            (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+            (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+          ) AS image_url
+        FROM reel_product_links rpl
+        JOIN products p ON rpl.product_id = p.id
+        WHERE rpl.reel_id IN (${placeholders})
+      `).all(...reelIds);
+    }
+
+    const productsByReelId = {};
+    for (const link of productLinks) {
+      if (!productsByReelId[link.reel_id]) {
+        productsByReelId[link.reel_id] = [];
+      }
+      productsByReelId[link.reel_id].push({
+        id: link.id,
+        name: link.name,
+        price_paise: link.price_paise,
+        image_url: link.image_url
+      });
+    }
+
     const reels = rows.map(row => {
       const r = {
         id: row.id,
@@ -3611,15 +3758,8 @@ app.get('/api/reels/feed', rateLimit(60), optionalAuthenticateToken, (req, res) 
         }
       };
 
-      if (row.product_id) {
-        r.linked_product = {
-          id: row.product_id,
-          name: row.product_name,
-          price_paise: row.product_price_paise
-        };
-      } else {
-        r.linked_product = null;
-      }
+      r.linked_products = productsByReelId[row.id] || [];
+      r.linked_product = r.linked_products.length > 0 ? r.linked_products[0] : null;
 
       return r;
     });
@@ -3761,15 +3901,20 @@ app.get('/api/reels/:id', rateLimit(60), optionalAuthenticateToken, (req, res) =
       }
     };
 
-    if (row.product_id) {
-      reel.linked_product = {
-        id: row.product_id,
-        name: row.product_name,
-        price_paise: row.product_price_paise
-      };
-    } else {
-      reel.linked_product = null;
-    }
+    const taggedProducts = db.prepare(`
+      SELECT 
+        rpl.product_id AS id, p.name, p.price_paise,
+        COALESCE(
+          (SELECT url FROM product_images WHERE product_id = p.id AND is_primary = 1),
+          (SELECT url FROM product_images WHERE product_id = p.id LIMIT 1)
+        ) AS image_url
+      FROM reel_product_links rpl
+      JOIN products p ON rpl.product_id = p.id
+      WHERE rpl.reel_id = ?
+    `).all(row.id);
+
+    reel.linked_products = taggedProducts;
+    reel.linked_product = taggedProducts.length > 0 ? taggedProducts[0] : null;
 
     return res.status(200).json({
       success: true,
@@ -3843,19 +3988,37 @@ app.post('/api/reels', rateLimit(60), authenticateToken, uploadReelMiddleware, (
     });
   }
 
-  // 3. Validate product_id if provided
-  const productId = req.body.product_id;
-  if (productId) {
-    const product = db.prepare("SELECT id, seller_id FROM products WHERE id = ? AND status != 'archived'").get(productId);
-    if (!product || product.seller_id !== req.user.user_id) {
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
+  // 3. Validate product_id / product_ids if provided
+  let productIds = [];
+  if (req.body.product_ids) {
+    if (Array.isArray(req.body.product_ids)) {
+      productIds = req.body.product_ids.map(id => parseInt(id, 10));
+    } else {
+      try {
+        const parsed = JSON.parse(req.body.product_ids);
+        productIds = Array.isArray(parsed) ? parsed.map(id => parseInt(id, 10)) : [parseInt(parsed, 10)];
+      } catch (e) {
+        productIds = req.body.product_ids.split(',').map(id => parseInt(id.trim(), 10)).filter(id => !isNaN(id));
       }
-      return res.status(422).json({
-        error: true,
-        message: "product_id not found or not owned by this seller",
-        code: "INVALID_PRODUCT"
-      });
+    }
+  } else if (req.body.product_id) {
+    productIds = [parseInt(req.body.product_id, 10)];
+  }
+  productIds = [...new Set(productIds)].filter(id => !isNaN(id));
+
+  if (productIds.length > 0) {
+    for (const pId of productIds) {
+      const product = db.prepare("SELECT id, seller_id FROM products WHERE id = ? AND status != 'archived'").get(pId);
+      if (!product || product.seller_id !== req.user.user_id) {
+        if (req.file) {
+          fs.unlinkSync(req.file.path);
+        }
+        return res.status(422).json({
+          error: true,
+          message: `product_id ${pId} not found or not owned by this seller`,
+          code: "INVALID_PRODUCT"
+        });
+      }
     }
   }
 
@@ -3899,7 +4062,7 @@ app.post('/api/reels', rateLimit(60), authenticateToken, uploadReelMiddleware, (
     const protocol = req.protocol;
     const videoUrl = `${protocol}://${host}/uploads/reels/${req.file.filename}`;
     const caption = req.body.caption || '';
-    const prodId = productId ? parseInt(productId, 10) : null;
+    const prodId = productIds.length > 0 ? productIds[0] : null;
     const sellerId = req.user.user_id;
 
     const insertResult = db.prepare(`
@@ -3907,7 +4070,15 @@ app.post('/api/reels', rateLimit(60), authenticateToken, uploadReelMiddleware, (
       VALUES (?, ?, ?, ?, ?, ?, 'active')
     `).run(sellerId, prodId, caption, videoUrl, thumbnailUrl, durationSecs);
 
-    const newReel = db.prepare("SELECT * FROM reels WHERE id = ?").get(insertResult.lastInsertRowid);
+    const newReelId = insertResult.lastInsertRowid;
+    if (productIds.length > 0) {
+      const insertLink = db.prepare("INSERT OR IGNORE INTO reel_product_links (reel_id, product_id) VALUES (?, ?)");
+      for (const pId of productIds) {
+        insertLink.run(newReelId, pId);
+      }
+    }
+
+    const newReel = db.prepare("SELECT * FROM reels WHERE id = ?").get(newReelId);
 
     return res.status(200).json({
       success: true,
@@ -4269,7 +4440,7 @@ app.get('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
 // TASK 48: PATCH /api/profile/me
 app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
   const userId = req.user.user_id;
-  const { display_name, bio, location, shipping_days, instagram_handle, email, phone } = req.body;
+  const { display_name, shipping_days, instagram_handle, email, phone } = req.body;
 
   // Validation
   if (display_name !== undefined) {
@@ -4290,6 +4461,26 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
         code: "VALIDATION_ERROR"
       });
     }
+  }
+
+  // Phone validation (required and must be a 10-digit Indian mobile number)
+  if (phone === undefined || typeof phone !== 'string' || phone.trim().length === 0) {
+    return res.status(400).json({
+      error: true,
+      message: "Phone number is required",
+      code: "VALIDATION_ERROR"
+    });
+  }
+  let cleanPhone = phone.replace(/[\s\-\+\(\)]/g, '');
+  if (cleanPhone.startsWith('91') && cleanPhone.length > 10) {
+    cleanPhone = cleanPhone.substring(2);
+  }
+  if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+    return res.status(400).json({
+      error: true,
+      message: "Invalid phone number. Must be a valid 10-digit Indian mobile number.",
+      code: "VALIDATION_ERROR"
+    });
   }
 
   try {
@@ -4321,14 +4512,6 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
       updates.push("display_name = ?", "full_name = ?");
       params.push(display_name.trim(), display_name.trim());
     }
-    if (bio !== undefined) {
-      updates.push("bio = ?");
-      params.push(bio === null ? null : String(bio));
-    }
-    if (location !== undefined) {
-      updates.push("location = ?");
-      params.push(location === null ? null : String(location));
-    }
     if (shipping_days !== undefined) {
       updates.push("ships_in_days = ?");
       params.push(shipping_days === null ? null : parseInt(shipping_days, 10));
@@ -4343,7 +4526,7 @@ app.patch('/api/profile/me', rateLimit(60), authenticateToken, (req, res) => {
     }
     if (phone !== undefined) {
       updates.push("phone = ?");
-      params.push(phone === null ? null : String(phone).trim());
+      params.push(phone.trim());
     }
 
     if (updates.length > 0) {
@@ -6012,11 +6195,14 @@ app.post('/api/seller/reels', rateLimit(20), requireSeller, uploadSellerReel.fie
       }
     }
 
+    const primaryProductId = linkedListingIds.length > 0 ? parseInt(linkedListingIds[0], 10) : null;
+
     const result = db.prepare(`
-      INSERT INTO reels (seller_id, title, caption, video_url, thumbnail_url, reel_type, seasonal_tag, visibility, share_to_instagram, ig_reminder)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO reels (seller_id, product_id, title, caption, video_url, thumbnail_url, reel_type, seasonal_tag, visibility, share_to_instagram, ig_reminder)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       sellerId,
+      primaryProductId,
       title,
       caption,
       videoUrl,
@@ -6032,9 +6218,12 @@ app.post('/api/seller/reels', rateLimit(20), requireSeller, uploadSellerReel.fie
 
     if (Array.isArray(linkedListingIds)) {
       const stmt = db.prepare('INSERT OR IGNORE INTO reel_listing_links (reel_id, listing_id) VALUES (?, ?)');
+      const stmtProd = db.prepare('INSERT OR IGNORE INTO reel_product_links (reel_id, product_id) VALUES (?, ?)');
       linkedListingIds.forEach(lid => {
         if (lid) {
-          stmt.run(reelId, parseInt(lid));
+          const idVal = parseInt(lid, 10);
+          stmt.run(reelId, idVal);
+          stmtProd.run(reelId, idVal);
         }
       });
     }
@@ -11454,7 +11643,7 @@ cron.schedule('0 * * * *', () => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

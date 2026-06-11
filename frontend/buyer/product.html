@@ -198,7 +198,7 @@
             <!-- Right: Product Information -->
             <div class="lg:col-span-5 space-y-lg bg-[#FCFAF5] p-lg border border-outline-variant/60 rounded-2xl">
                 <div class="space-y-sm">
-                    <p class="font-data-price text-xs bg-tertiary-fixed/30 text-on-tertiary-fixed-variant px-sm py-[2px] rounded-full inline-block" id="product-ships-badge">Loading...</p>
+                    <div id="product-tags-container" class="flex flex-wrap gap-2 mb-2"></div>
                     <h1 id="product-name" class="font-headline-lg text-primary text-3xl leading-tight">Product Name</h1>
                     <div class="flex items-center gap-md pt-sm">
                         <span class="text-2xl font-data-price text-secondary-fixed-variant font-bold" id="product-price">₹0.00</span>
@@ -467,17 +467,36 @@
                         sellerLink.href = `/buyer/seller-profile.html?id=${product.seller.id}`;
                     }
 
-                    isCustomized = product.category?.slug === 'customized-gifts';
+                    isCustomized = product.is_customized || product.category?.slug === 'customized-gifts';
 
-                    // Ships / Custom badge
-                    const shipsBadge = document.getElementById('product-ships-badge');
-                    if (isCustomized) {
-                        shipsBadge.innerText = 'Customised';
-                        shipsBadge.className = 'font-data-price text-xs bg-amber-100 text-amber-800 border border-amber-200 px-sm py-[2px] rounded-full inline-block font-semibold';
-                        shipsBadge.style.display = 'inline-block';
-                    } else {
-                        // Remove/hide ships in three days tag for normal pre-made products
-                        shipsBadge.style.display = 'none';
+                    // Populate badges/tags in the tags container
+                    const tagsContainer = document.getElementById('product-tags-container');
+                    if (tagsContainer) {
+                        tagsContainer.innerHTML = '';
+                        
+                        // Check Customized
+                        if (isCustomized) {
+                            const customTag = document.createElement('span');
+                            customTag.innerText = 'Customized';
+                            customTag.className = 'font-data-price text-xs bg-[#255338] text-white px-3 py-[2px] rounded-full inline-block font-semibold';
+                            tagsContainer.appendChild(customTag);
+                        }
+                        
+                        // Check Sponsored
+                        if (product.is_sponsored) {
+                            const sponsoredTag = document.createElement('span');
+                            sponsoredTag.innerText = 'Sponsored';
+                            sponsoredTag.className = 'font-data-price text-xs bg-[#d97706] text-white px-3 py-[2px] rounded-full inline-block font-semibold';
+                            tagsContainer.appendChild(sponsoredTag);
+                        }
+                        
+                        // Check Best Seller
+                        if (product.is_best_seller) {
+                            const bestSellerTag = document.createElement('span');
+                            bestSellerTag.innerText = 'Best Seller';
+                            bestSellerTag.className = 'font-data-price text-xs bg-[#C4622D] text-white px-3 py-[2px] rounded-full inline-block font-semibold';
+                            tagsContainer.appendChild(bestSellerTag);
+                        }
                     }
 
                     // Show/hide qty selector and modify button

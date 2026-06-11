@@ -393,7 +393,7 @@ class SearchOverlay {
     }
   }
 
-  async function executeSearch(query) {
+  async executeSearch(query) {
     if (!query || query.trim() === '') return;
     query = query.trim();
     this.saveRecentSearch(query);

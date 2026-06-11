@@ -148,7 +148,7 @@
             background: linear-gradient(135deg, #f59e0b, #d97706);
         }
         .ribbon-bestseller {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #d57744, #C4622D);
         }
     </style>
 </head>
@@ -230,9 +230,9 @@
 <section class="bg-[#FFFFFF] py-md sticky top-20 z-40 border-b border-outline-variant/30">
 <div class="flex items-center gap-sm px-margin-desktop">
 <div class="flex-shrink-0 bg-[#FFFFFF] pr-md border-r border-outline-variant/50 mr-md">
-<button class="p-sm bg-[#FCFAF5] border border-outline-variant rounded-lg text-primary flex items-center gap-sm hover:bg-surface-container transition-colors">
+<button id="filter-btn" class="p-sm bg-[#FCFAF5] border border-outline-variant rounded-lg text-primary flex items-center gap-sm hover:bg-surface-container transition-colors">
 <span class="material-symbols-outlined">tune</span>
-<span class="text-sm font-body-md pr-1">Filter</span>
+<span id="filter-btn-text" class="text-sm font-body-md pr-1">Filter</span>
 </button>
 </div>
 <div id="subcategory-filters-container" class="flex items-center gap-sm overflow-x-auto no-scrollbar flex-grow">
@@ -244,7 +244,8 @@
     <option value="newest">Newest</option>
     <option value="price_asc">Price: Low to High</option>
     <option value="price_desc">Price: High to Low</option>
-    <option value="top_rated">Top Rated</option>
+    <option value="most_popular">Most Popular</option>
+    <option value="top_rated">Best Rated</option>
 </select>
 </div>
 </div>
@@ -449,6 +450,97 @@
 </div>
 </div>
 </footer>
+
+<!-- Filter Drawer Backdrop -->
+<div id="filter-drawer-backdrop" class="fixed inset-0 bg-[#1f1b15]/40 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+<!-- Filter Drawer Sidebar -->
+<div id="filter-drawer" class="fixed top-0 left-0 h-full w-[360px] bg-background shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-r border-outline-variant/30">
+    <!-- Header -->
+    <div class="p-md flex items-center justify-between border-b border-outline-variant/30">
+        <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary">tune</span>
+            <h3 class="font-title-serif text-xl text-primary font-bold">Filters</h3>
+        </div>
+        <button id="filter-drawer-close" class="p-sm hover:bg-surface-container-high rounded-full transition-colors flex items-center justify-center">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <!-- Body -->
+    <div class="flex-grow overflow-y-auto p-md space-y-lg">
+        <!-- Craft/Category Type -->
+        <div class="space-y-sm">
+            <h4 class="font-label-caps text-xs text-primary tracking-widest uppercase">Craft/Category</h4>
+            <select id="filter-category" class="w-full px-md py-sm rounded-lg bg-surface text-on-surface-variant font-body-md text-sm border border-outline-variant/50 focus:ring-1 focus:ring-primary focus:outline-none">
+                <option value="">All Crafts</option>
+                <!-- Dynamic categories loaded here -->
+            </select>
+        </div>
+
+        <!-- Price Range -->
+        <div class="space-y-sm">
+            <h4 class="font-label-caps text-xs text-primary tracking-widest uppercase">Price Range</h4>
+            <div class="grid grid-cols-2 gap-sm">
+                <div>
+                    <label class="text-[10px] text-outline font-label-caps block mb-1">Min Price (₹)</label>
+                    <input type="number" id="filter-price-min" min="0" placeholder="0" class="w-full px-md py-sm rounded-lg bg-surface text-on-surface-variant font-body-md text-sm border border-outline-variant/50 focus:ring-1 focus:ring-primary focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-[10px] text-outline font-label-caps block mb-1">Max Price (₹)</label>
+                    <input type="number" id="filter-price-max" min="0" placeholder="10000" class="w-full px-md py-sm rounded-lg bg-surface text-on-surface-variant font-body-md text-sm border border-outline-variant/50 focus:ring-1 focus:ring-primary focus:outline-none">
+                </div>
+            </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="space-y-sm">
+            <h4 class="font-label-caps text-xs text-primary tracking-widest uppercase">Minimum Rating</h4>
+            <div class="flex flex-col gap-xs">
+                <label class="flex items-center gap-sm cursor-pointer p-sm rounded-lg hover:bg-surface-container transition-colors">
+                    <input type="radio" name="filter-rating" value="" checked class="text-primary focus:ring-primary border-outline-variant/50">
+                    <span class="text-sm font-body-md text-on-surface">Any Rating</span>
+                </label>
+                <label class="flex items-center gap-sm cursor-pointer p-sm rounded-lg hover:bg-surface-container transition-colors">
+                    <input type="radio" name="filter-rating" value="4" class="text-primary focus:ring-primary border-outline-variant/50">
+                    <span class="text-sm font-body-md text-on-surface">⭐ 4+ Stars</span>
+                </label>
+                <label class="flex items-center gap-sm cursor-pointer p-sm rounded-lg hover:bg-surface-container transition-colors">
+                    <input type="radio" name="filter-rating" value="3" class="text-primary focus:ring-primary border-outline-variant/50">
+                    <span class="text-sm font-body-md text-on-surface">⭐ 3+ Stars</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="space-y-sm">
+            <h4 class="font-label-caps text-xs text-primary tracking-widest uppercase">Availability</h4>
+            <div class="flex flex-col gap-xs">
+                <label class="flex items-center gap-sm cursor-pointer p-sm rounded-lg hover:bg-surface-container transition-colors">
+                    <input type="radio" name="filter-availability" value="" checked class="text-primary focus:ring-primary border-outline-variant/50">
+                    <span class="text-sm font-body-md text-on-surface">All Items</span>
+                </label>
+                <label class="flex items-center gap-sm cursor-pointer p-sm rounded-lg hover:bg-surface-container transition-colors">
+                    <input type="radio" name="filter-availability" value="in_stock" class="text-primary focus:ring-primary border-outline-variant/50">
+                    <span class="text-sm font-body-md text-on-surface">In Stock</span>
+                </label>
+                <label class="flex items-center gap-sm cursor-pointer p-sm rounded-lg hover:bg-surface-container transition-colors">
+                    <input type="radio" name="filter-availability" value="made_to_order" class="text-primary focus:ring-primary border-outline-variant/50">
+                    <span class="text-sm font-body-md text-on-surface">Made to Order</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="p-md border-t border-outline-variant/30 flex items-center gap-md bg-surface">
+        <button id="filter-clear" class="flex-1 py-sm bg-transparent border border-outline-variant text-secondary rounded-lg font-body-md text-sm hover:bg-surface-container transition-colors">
+            Clear All
+        </button>
+        <button id="filter-apply" class="flex-1 py-sm bg-primary text-white rounded-lg font-body-md text-sm hover:bg-primary/95 shadow-md active:scale-95 transition-all">
+            Apply Filters
+        </button>
+    </div>
+</div>
+
 <script type="module">
     import apiClient from '/src/utils/apiClient.js';
     import { logout } from '/src/utils/auth.js';
@@ -475,17 +567,40 @@
     let currentSub = 'All';
     let currentSort = 'newest';
 
+    let activeFilters = {
+      min_price: '',
+      max_price: '',
+      rating: '',
+      availability: '',
+      category_id: ''
+    };
+    let allCategoriesList = [];
+
     async function initPage() {
       // 1. Fetch categories to find display name & emoji
       try {
         const res = await apiClient.get('/categories');
         if (res.data && res.data.success) {
           const categories = res.data.data.categories || [];
-          const cat = categories.find(c => c.slug === slug);
-          if (cat) {
-            document.getElementById('category-title').innerText = cat.display_name || cat.name;
-            document.getElementById('category-emoji').innerText = cat.emoji_icon || cat.icon_emoji || '🏺';
-            document.getElementById('category-product-count').innerText = `${cat.product_count !== undefined ? cat.product_count : (cat.item_count || 0)} active makes`;
+          allCategoriesList = categories;
+
+          // Populate filter category dropdown
+          const categorySelect = document.getElementById('filter-category');
+          if (categorySelect) {
+            categorySelect.innerHTML = '<option value="">All Crafts</option>' + categories.map(c => `
+              <option value="${c.id}">${c.display_name || c.name}</option>
+            `).join('');
+
+            // Set current category selected by default
+            const cat = categories.find(c => c.slug === slug);
+            if (cat) {
+              categorySelect.value = cat.id;
+              activeFilters.category_id = cat.id;
+
+              document.getElementById('category-title').innerText = cat.display_name || cat.name;
+              document.getElementById('category-emoji').innerText = cat.emoji_icon || cat.icon_emoji || '🏺';
+              document.getElementById('category-product-count').innerText = `${cat.product_count !== undefined ? cat.product_count : (cat.item_count || 0)} active makes`;
+            }
           }
         }
       } catch (err) {
@@ -505,6 +620,118 @@
         currentSort = e.target.value;
         await fetchProducts();
       });
+
+      // 5. Wire Filter Drawer open/close/apply/clear listeners
+      initFilterDrawer();
+    }
+
+    function initFilterDrawer() {
+      const filterBtn = document.getElementById('filter-btn');
+      const filterDrawer = document.getElementById('filter-drawer');
+      const filterBackdrop = document.getElementById('filter-drawer-backdrop');
+      const filterCloseBtn = document.getElementById('filter-drawer-close');
+      const filterApplyBtn = document.getElementById('filter-apply');
+      const filterClearBtn = document.getElementById('filter-clear');
+
+      function openFilterDrawer() {
+        document.getElementById('filter-price-min').value = activeFilters.min_price;
+        document.getElementById('filter-price-max').value = activeFilters.max_price;
+        
+        const ratingRadios = document.getElementsByName('filter-rating');
+        ratingRadios.forEach(radio => {
+          radio.checked = radio.value === activeFilters.rating;
+        });
+        
+        const availabilityRadios = document.getElementsByName('filter-availability');
+        availabilityRadios.forEach(radio => {
+          radio.checked = radio.value === activeFilters.availability;
+        });
+        
+        const categorySelect = document.getElementById('filter-category');
+        if (categorySelect) {
+          categorySelect.value = activeFilters.category_id;
+        }
+        
+        filterDrawer.classList.remove('-translate-x-full');
+        filterDrawer.classList.add('translate-x-0');
+        filterBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+        filterBackdrop.classList.add('opacity-100');
+      }
+
+      function closeFilterDrawer() {
+        filterDrawer.classList.remove('translate-x-0');
+        filterDrawer.classList.add('-translate-x-full');
+        filterBackdrop.classList.remove('opacity-100');
+        filterBackdrop.classList.add('opacity-0', 'pointer-events-none');
+      }
+
+      if (filterBtn) filterBtn.addEventListener('click', openFilterDrawer);
+      if (filterCloseBtn) filterCloseBtn.addEventListener('click', closeFilterDrawer);
+      if (filterBackdrop) filterBackdrop.addEventListener('click', closeFilterDrawer);
+
+      if (filterApplyBtn) {
+        filterApplyBtn.addEventListener('click', async () => {
+          activeFilters.min_price = document.getElementById('filter-price-min').value;
+          activeFilters.max_price = document.getElementById('filter-price-max').value;
+          
+          const ratingRadios = document.getElementsByName('filter-rating');
+          activeFilters.rating = Array.from(ratingRadios).find(r => r.checked)?.value || '';
+          
+          const availabilityRadios = document.getElementsByName('filter-availability');
+          activeFilters.availability = Array.from(availabilityRadios).find(r => r.checked)?.value || '';
+          
+          const categorySelect = document.getElementById('filter-category');
+          if (categorySelect) {
+            activeFilters.category_id = categorySelect.value;
+          }
+          
+          updateFilterBadge();
+          closeFilterDrawer();
+          await fetchProducts();
+        });
+      }
+
+      if (filterClearBtn) {
+        filterClearBtn.addEventListener('click', async () => {
+          activeFilters.min_price = '';
+          activeFilters.max_price = '';
+          activeFilters.rating = '';
+          activeFilters.availability = '';
+          
+          const defaultCat = allCategoriesList.find(c => c.slug === slug);
+          if (defaultCat) {
+            activeFilters.category_id = defaultCat.id;
+          } else {
+            activeFilters.category_id = '';
+          }
+          
+          updateFilterBadge();
+          closeFilterDrawer();
+          await fetchProducts();
+        });
+      }
+    }
+
+    function updateFilterBadge() {
+      let count = 0;
+      if (activeFilters.min_price !== '') count++;
+      if (activeFilters.max_price !== '') count++;
+      if (activeFilters.rating !== '') count++;
+      if (activeFilters.availability !== '') count++;
+      
+      const defaultCat = allCategoriesList.find(c => c.slug === slug);
+      if (activeFilters.category_id && defaultCat && Number(activeFilters.category_id) !== Number(defaultCat.id)) {
+        count++;
+      }
+      
+      const filterBtnText = document.getElementById('filter-btn-text');
+      if (filterBtnText) {
+        if (count > 0) {
+          filterBtnText.innerText = `Filter • ${count}`;
+        } else {
+          filterBtnText.innerText = 'Filter';
+        }
+      }
     }
 
     function renderSubcategoryFilters() {
@@ -544,7 +771,14 @@
       `;
 
       try {
-        const params = { sort: currentSort };
+        const params = { 
+          sort: currentSort,
+          min_price: activeFilters.min_price,
+          max_price: activeFilters.max_price,
+          rating: activeFilters.rating,
+          availability: activeFilters.availability,
+          category_id: activeFilters.category_id
+        };
         if (currentSub !== 'All') {
           params.sub = currentSub;
         }

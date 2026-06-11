@@ -1511,5 +1511,28 @@ try {
   console.error("Backfill payments tables error:", e.message);
 }
 
+// Migration for multiple tagged products on reels
+try {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS reel_product_links (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      reel_id     INTEGER NOT NULL REFERENCES reels(id) ON DELETE CASCADE,
+      product_id  INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+      created_at  TEXT DEFAULT (datetime('now')),
+      UNIQUE(reel_id, product_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_rpl_reel ON reel_product_links(reel_id);
+  `);
+  
+  // Backfill existing reels.product_id into reel_product_links
+  const existingReels = db.prepare("SELECT id, product_id FROM reels WHERE product_id IS NOT NULL").all();
+  const insertLink = db.prepare("INSERT OR IGNORE INTO reel_product_links (reel_id, product_id) VALUES (?, ?)");
+  for (const r of existingReels) {
+    insertLink.run(r.id, r.product_id);
+  }
+} catch (e) {
+  console.error("Migration reel_product_links error:", e.message);
+}
+
 module.exports = db;
 

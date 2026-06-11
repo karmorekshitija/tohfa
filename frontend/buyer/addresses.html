@@ -307,14 +307,19 @@
           <label class="font-label-caps text-[10px] text-gold-brand uppercase tracking-widest flex justify-between">City <span class="text-[8px] opacity-50">REQUIRED</span></label>
           <input id="city-input" class="w-full bg-[#FCFAF5] border border-sage px-md py-sm rounded-lg text-body-md focus:outline-none focus:border-gold-brand" type="text" placeholder="City" />
         </div>
-        <div class="space-y-xs">
+        <div class="space-y-xs relative">
           <label class="font-label-caps text-[10px] text-gold-brand uppercase tracking-widest flex justify-between">State <span class="text-[8px] opacity-50">REQUIRED</span></label>
-          <input id="state-input" class="w-full bg-[#FCFAF5] border border-sage px-md py-sm rounded-lg text-body-md focus:outline-none focus:border-gold-brand" type="text" placeholder="State" />
+          <input id="state-input" class="w-full bg-[#FCFAF5] border border-sage px-md py-sm rounded-lg text-body-md focus:outline-none focus:border-gold-brand" type="text" placeholder="State" autocomplete="off" />
+          <div id="state-suggestions" class="absolute left-0 right-0 top-full mt-1 bg-white border border-sage rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto hidden divide-y divide-outline-variant/30"></div>
         </div>
       </div>
-      <div class="space-y-xs">
+      <div class="space-y-xs relative">
         <label class="font-label-caps text-[10px] text-gold-brand uppercase tracking-widest flex justify-between">Postal Code <span class="text-[8px] opacity-50">REQUIRED</span></label>
-        <input id="pincode-input" class="w-full bg-[#FCFAF5] border border-sage px-md py-sm rounded-lg text-body-md focus:outline-none focus:border-gold-brand" type="text" placeholder="Postal Code" />
+        <input id="pincode-input" class="w-full bg-[#FCFAF5] border border-sage px-md py-sm rounded-lg text-body-md focus:outline-none focus:border-gold-brand" type="text" placeholder="Postal Code" autocomplete="off" />
+      </div>
+      <div class="space-y-xs">
+        <label class="font-label-caps text-[10px] text-gold-brand uppercase tracking-widest flex justify-between">Country</label>
+        <input id="country-input" class="w-full bg-[#E6E2D8] border border-sage px-md py-sm rounded-lg text-body-md text-[#717972] cursor-not-allowed" type="text" value="India" disabled readonly />
       </div>
       
       <!-- Address Type Selector -->
@@ -748,6 +753,89 @@
     window.addEventListener('DOMContentLoaded', () => {
         fetchAddresses();
         updateBadges();
+
+        // State Auto-Suggestions & PIN Code Auto-Fill
+        const INDIAN_STATES = [
+            "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat",
+            "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
+            "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim",
+            "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+            "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu",
+            "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+        ];
+
+        const stateInput = document.getElementById('state-input');
+        const stateSuggestions = document.getElementById('state-suggestions');
+        const pincodeInput = document.getElementById('pincode-input');
+        const cityInput = document.getElementById('city-input');
+
+        stateInput.addEventListener('input', () => {
+            const val = stateInput.value.trim().toLowerCase();
+            if (val.length < 1) {
+                stateSuggestions.classList.add('hidden');
+                return;
+            }
+            const filtered = INDIAN_STATES.filter(s => s.toLowerCase().includes(val));
+            if (filtered.length === 0) {
+                stateSuggestions.classList.add('hidden');
+                return;
+            }
+            stateSuggestions.innerHTML = filtered.map(s => `
+                <div class="state-suggestion-item p-3 text-sm hover:bg-[#255338]/5 cursor-pointer text-[#211b11] font-medium" data-state="${s}">${s}</div>
+            `).join('');
+            stateSuggestions.classList.remove('hidden');
+
+            stateSuggestions.querySelectorAll('.state-suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    stateInput.value = item.getAttribute('data-state');
+                    stateSuggestions.classList.add('hidden');
+                });
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!stateInput.contains(e.target) && !stateSuggestions.contains(e.target)) {
+                stateSuggestions.classList.add('hidden');
+            }
+        });
+
+        pincodeInput.addEventListener('input', async () => {
+            const pin = pincodeInput.value.trim();
+            if (/^\d{6}$/.test(pin)) {
+                showPincodeLoading(true);
+                try {
+                    const res = await apiClient.get(`/addresses/pincode/${pin}`);
+                    showPincodeLoading(false);
+                    if (res.data && res.data.success) {
+                        const info = res.data.data;
+                        stateInput.value = info.state || "";
+                        cityInput.value = info.city || "";
+                    } else {
+                        Toast.show("Invalid PIN code or details not found.", "error");
+                    }
+                } catch (err) {
+                    showPincodeLoading(false);
+                    console.error("Pincode error:", err);
+                    Toast.show(err.response?.data?.message || "Failed to fetch PIN code details.", "error");
+                }
+            }
+        });
+
+        function showPincodeLoading(isLoading) {
+            let loader = document.getElementById('pincode-loader');
+            if (isLoading) {
+                if (!loader) {
+                    pincodeInput.parentElement.insertAdjacentHTML('beforeend', `
+                        <div id="pincode-loader" class="absolute right-3 top-[32px] flex items-center gap-1.5 text-xs text-outline italic">
+                            <div class="w-3.5 h-3.5 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                            Fetching...
+                        </div>
+                    `);
+                }
+            } else {
+                if (loader) loader.remove();
+            }
+        }
 
         // Mascot parallax micro-interaction
         document.addEventListener('mousemove', (e) => {

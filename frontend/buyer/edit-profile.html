@@ -288,7 +288,7 @@
 
         <!-- Phone Number -->
         <div class="space-y-sm">
-          <label class="font-label-caps text-on-surface-variant" for="input-phone">Phone Number <span class="text-outline normal-case font-normal">(optional)</span></label>
+          <label class="font-label-caps text-on-surface-variant" for="input-phone">Phone Number</label>
           <div class="relative">
             <span class="absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">
               <span class="material-symbols-outlined text-[18px]">phone</span>
@@ -296,26 +296,7 @@
             <input id="input-phone" class="input-field pl-10" type="tel"
                    placeholder="+91 98765 43210"/>
           </div>
-          <p id="error-phone" class="field-error">Please enter a valid phone number (10-15 digits).</p>
-        </div>
-
-        <!-- Bio (optional) -->
-        <div class="space-y-sm">
-          <label class="font-label-caps text-on-surface-variant" for="input-bio">Bio <span class="text-outline normal-case font-normal">(optional)</span></label>
-          <textarea id="input-bio" class="input-field resize-none" rows="3"
-                    placeholder="A little about yourself..."></textarea>
-        </div>
-
-        <!-- Location (optional) -->
-        <div class="space-y-sm">
-          <label class="font-label-caps text-on-surface-variant" for="input-location">Location <span class="text-outline normal-case font-normal">(optional)</span></label>
-          <div class="relative">
-            <span class="absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">
-              <span class="material-symbols-outlined text-[18px]">location_on</span>
-            </span>
-            <input id="input-location" class="input-field pl-10" type="text"
-                   placeholder="City, Country"/>
-          </div>
+          <p id="error-phone" class="field-error">Please enter a valid 10-digit Indian mobile number.</p>
         </div>
 
       </div>
@@ -385,9 +366,12 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     }
     function validatePhone(phone) {
-        if (!phone || !phone.trim()) return true; // optional
-        const cleaned = phone.replace(/[\s\-\(\)]/g, '');
-        return /^\+?[0-9]{10,15}$/.test(cleaned);
+        if (!phone || !phone.trim()) return false;
+        let cleaned = phone.replace(/[\s\-\+\(\)]/g, '');
+        if (cleaned.startsWith('91') && cleaned.length > 10) {
+            cleaned = cleaned.substring(2);
+        }
+        return /^[6-9]\d{9}$/.test(cleaned);
     }
 
     /* ── Handle Save ── */
@@ -395,8 +379,6 @@
         const displayName = document.getElementById('input-display-name').value;
         const email = document.getElementById('input-email').value;
         const phone = document.getElementById('input-phone').value;
-        const bio = document.getElementById('input-bio').value;
-        const location = document.getElementById('input-location').value;
         const avatarUrl = document.getElementById('input-avatar-url').value;
 
         let hasErrors = false;
@@ -417,7 +399,7 @@
             clearError('input-email', 'error-email');
         }
 
-        // Validate Phone (optional but if provided, must be valid)
+        // Validate Phone (must be a valid 10-digit Indian mobile number)
         if (!validatePhone(phone)) {
             showError('input-phone', 'error-phone');
             hasErrors = true;
@@ -435,10 +417,8 @@
         try {
             const payload = {
                 display_name: displayName.trim(),
-                bio: bio.trim() || null,
-                location: location.trim() || null,
                 email: email.trim().toLowerCase(),
-                phone: phone.trim() || null
+                phone: phone.trim()
             };
 
             const response = await apiClient.patch('/profile/me', payload);
@@ -466,8 +446,6 @@
                         userObj.display_name = response.data.data.display_name;
                         userObj.email = response.data.data.email;
                         userObj.phone = response.data.data.phone;
-                        userObj.bio = response.data.data.bio;
-                        userObj.location = response.data.data.location;
                         sessionStorage.setItem('tohfa_user', JSON.stringify(userObj));
                     } catch (_) {}
                 }
@@ -505,8 +483,6 @@
                 document.getElementById('input-display-name').value = user.display_name || '';
                 document.getElementById('input-email').value = user.email || '';
                 document.getElementById('input-phone').value = user.phone || '';
-                document.getElementById('input-bio').value = user.bio || '';
-                document.getElementById('input-location').value = user.location || '';
 
                 // Populate background section
                 if (document.getElementById('bg-user-name')) {

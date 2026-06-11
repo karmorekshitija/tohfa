@@ -164,7 +164,7 @@
             background: linear-gradient(135deg, #f59e0b, #d97706);
         }
         .ribbon-bestseller {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #d57744, #C4622D);
         }
         
         /* Shimmer Animation for Skeletons */
@@ -177,7 +177,9 @@
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
         }
-
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 <body class="text-on-surface selection:bg-secondary-container bg-white">
@@ -339,7 +341,7 @@
     </div>
 </section>
 
-<!-- For You (Endless Scroll Feed) -->
+<!-- For You (Capped at 15 products) -->
 <section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
     <div class="flex justify-between items-end mb-xl">
         <div>
@@ -388,9 +390,13 @@
             <div class="h-10 w-full shimmer rounded-lg"></div>
         </div>
     </div>
+</section>
 
-    <!-- Scroll Anchor Trigger -->
-    <div id="feed-scroll-anchor" class="w-full h-10 mt-6"></div>
+<!-- Section 3 — Category Rows -->
+<section class="py-xl px-margin-desktop max-w-[1440px] mx-auto mt-24">
+    <div id="category-rows-container" class="flex flex-col gap-16">
+        <!-- Dynamic category rows will load here -->
+    </div>
 </section>
 </main>
 
@@ -473,101 +479,146 @@
     import apiClient from '../src/utils/apiClient.js';
     import { logout } from '/src/utils/auth.js';
 
-    let page = 1;
-    let loading = false;
-    let hasMore = true;
-
     const grid = document.getElementById('product-feed-grid');
     const skeletons = document.getElementById('feed-skeletons');
-    const anchor = document.getElementById('feed-scroll-anchor');
 
-    async function loadNextBatch() {
-        if (loading || !hasMore) return;
-        loading = true;
+    // Helper to generate ribbon HTML
+    function getRibbonHtml(type) {
+        if (type === 'sponsored') {
+            return `
+                <div class="ribbon-wrapper">
+                    <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
+                </div>
+            `;
+        } else if (type === 'bestseller') {
+            return `
+                <div class="ribbon-wrapper">
+                    <div class="ribbon-tag ribbon-bestseller">Best Seller</div>
+                </div>
+            `;
+        }
+        return '';
+    }
+
+    // Helper to create product card template (reusable)
+    function createProductCard(product, extraClasses = '') {
+        const card = document.createElement('div');
+        card.className = `group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer opacity-0 translate-y-10 ${extraClasses}`;
+        card.onclick = () => window.location.href = `/buyer/product.html?id=${product.id}`;
+
+        const ribbonHtml = getRibbonHtml(product.type);
+        const formattedPrice = `₹${(product.price_paise / 100).toLocaleString('en-IN')}`;
+
+        card.innerHTML = `
+            <div>
+                <div class="aspect-square rounded-t-xl overflow-hidden p-3 relative">
+                    ${ribbonHtml}
+                    <img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="${product.image_url}" alt="${product.name}">
+                </div>
+                <div class="p-md flex flex-col">
+                    <div class="flex justify-between items-baseline mb-sm">
+                        <span class="font-data-price text-data-price text-[#B8860B] font-bold text-lg">${formattedPrice}</span>
+                    </div>
+                    <h4 class="font-title-serif text-title-serif font-bold text-on-surface mb-xs line-clamp-1">${product.name}</h4>
+                    <span class="font-body-md text-xs text-on-surface-variant hover:underline cursor-pointer" onclick="event.stopPropagation(); window.location.href='/buyer/seller-profile.html?id=${product.seller_id}'">By ${product.seller_name}</span>
+                </div>
+            </div>
+            <div class="px-md pb-md">
+                <button class="w-full bg-[#255338] text-white py-2 rounded-lg font-body-md text-sm hover:bg-opacity-90 transition-all active:scale-95 duration-200">
+                    Add to Cart
+                </button>
+            </div>
+        `;
+
+        setTimeout(() => {
+            card.classList.remove('opacity-0', 'translate-y-10');
+            card.classList.add('opacity-100', 'translate-y-0');
+        }, 50);
+
+        return card;
+    }
+
+    async function loadForYouProducts() {
         skeletons.classList.remove('hidden');
-
         try {
-            const response = await apiClient.get(`/products/feed?page=${page}&limit=8`);
-            const { products, has_more } = response.data.data;
-            
-            hasMore = has_more;
-            page++;
-
-            // Filter out products that have product.type === 'sponsored'
+            // Fetch 30 products to ensure we have at least 15 non-sponsored items
+            const response = await apiClient.get('/products/feed?page=1&limit=30');
+            const { products } = response.data.data;
             const filteredProducts = products.filter(product => product.type !== 'sponsored');
+            const forYouProducts = filteredProducts.slice(0, 15);
 
-            filteredProducts.forEach(product => {
-                const card = document.createElement('div');
-                card.className = "group bg-surface-bright rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer opacity-0 translate-y-10";
-                card.onclick = () => window.location.href = `/buyer/product.html?id=${product.id}`;
-
-                let ribbonHtml = '';
-                if (product.type === 'sponsored') {
-                    ribbonHtml = `
-                        <div class="ribbon-wrapper">
-                            <div class="ribbon-tag ribbon-sponsored">Sponsored</div>
-                        </div>
-                    `;
-                } else if (product.type === 'bestseller') {
-                    ribbonHtml = `
-                        <div class="ribbon-wrapper">
-                            <div class="ribbon-tag ribbon-bestseller">Best Seller</div>
-                        </div>
-                    `;
-                }
-
-                const formattedPrice = `₹${(product.price_paise / 100).toLocaleString('en-IN')}`;
-
-                card.innerHTML = `
-                    <div>
-                        <div class="aspect-square rounded-t-xl overflow-hidden p-3 relative">
-                            ${ribbonHtml}
-                            <img class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" src="${product.image_url}" alt="${product.name}">
-                        </div>
-                        <div class="p-md flex flex-col">
-                            <div class="flex justify-between items-baseline mb-sm">
-                                <span class="font-data-price text-data-price text-[#B8860B] font-bold text-lg">${formattedPrice}</span>
-                            </div>
-                            <h4 class="font-title-serif text-title-serif font-bold text-on-surface mb-xs line-clamp-1">${product.name}</h4>
-                            <span class="font-body-md text-xs text-on-surface-variant hover:underline cursor-pointer" onclick="event.stopPropagation(); window.location.href='/buyer/seller-profile.html?id=${product.seller_id}'">By ${product.seller_name}</span>
-                        </div>
-                    </div>
-                    <div class="px-md pb-md">
-                        <button class="w-full bg-[#255338] text-white py-2 rounded-lg font-body-md text-sm hover:bg-opacity-90 transition-all active:scale-95 duration-200">
-                            Add to Cart
-                        </button>
-                    </div>
-                `;
-
+            grid.innerHTML = '';
+            forYouProducts.forEach(product => {
+                const card = createProductCard(product);
                 grid.appendChild(card);
-                
-                // Trigger transition animation
-                setTimeout(() => {
-                    card.classList.remove('opacity-0', 'translate-y-10');
-                    card.classList.add('opacity-100', 'translate-y-0');
-                }, 50);
             });
-
         } catch (error) {
-            console.error('Failed to load products feed:', error);
+            console.error('Failed to load For You products:', error);
         } finally {
-            loading = false;
             skeletons.classList.add('hidden');
         }
     }
 
-    // Set up intersection observer
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                loadNextBatch();
-            }
-        });
-    }, {
-        rootMargin: '100px'
-    });
+    async function loadCategoryRows() {
+        const container = document.getElementById('category-rows-container');
+        if (!container) return;
 
-    observer.observe(anchor);
+        try {
+            const categoriesRes = await apiClient.get('/categories');
+            if (!categoriesRes.data || !categoriesRes.data.success) return;
+
+            const categories = categoriesRes.data.data.categories;
+
+            for (const category of categories) {
+                // Fetch products for each category
+                const productsRes = await apiClient.get(`/categories/${category.slug}/products?limit=20`);
+                if (!productsRes.data || !productsRes.data.success) continue;
+
+                const products = productsRes.data.data.products || [];
+                if (products.length === 0) continue; // Only show row if it has products
+
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'category-row-wrapper relative';
+
+                rowWrapper.innerHTML = `
+                    <div class="flex justify-between items-baseline mb-6">
+                        <h3 class="font-headline-lg text-2xl text-primary font-semibold">${category.name}</h3>
+                        <a href="/buyer/category.html?slug=${category.slug}" class="text-primary hover:underline text-sm font-semibold flex items-center gap-1">
+                            <span>View All</span>
+                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        </a>
+                    </div>
+                    <div class="relative group">
+                        <!-- Scroll Left Button -->
+                        <button class="absolute left-[-20px] top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-primary p-2 rounded-full border border-outline-variant shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity active:scale-95 duration-200" onclick="this.nextElementSibling.scrollBy({left: -320, behavior: 'smooth'})">
+                            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+                        </button>
+                        
+                        <!-- Horizontally Scrollable Content -->
+                        <div class="flex gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory scrollbar-none" style="scrollbar-width: none; -ms-overflow-style: none;">
+                            <!-- Product Cards will load here -->
+                        </div>
+
+                        <!-- Scroll Right Button -->
+                        <button class="absolute right-[-20px] top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-primary p-2 rounded-full border border-outline-variant shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity active:scale-95 duration-200" onclick="this.previousElementSibling.scrollBy({left: 320, behavior: 'smooth'})">
+                            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                        </button>
+                    </div>
+                `;
+
+                const scrollContent = rowWrapper.querySelector('.scrollbar-none');
+                products.forEach(product => {
+                    // Render using the same card layout with fixed width for horizontal scrolling
+                    const card = createProductCard(product, 'w-[280px] flex-shrink-0 snap-start');
+                    scrollContent.appendChild(card);
+                });
+
+                container.appendChild(rowWrapper);
+            }
+        } catch (error) {
+            console.error('Failed to load category rows:', error);
+        }
+    }
 
     // --- Hero Slideshow Logic ---
     let currentSlide = 0;
@@ -760,6 +811,8 @@
     // Initialize
     loadHeroSlides();
     loadSponsoredProducts();
+    loadForYouProducts();
+    loadCategoryRows();
 
     let isLoggedIn = false;
     async function checkAuthState() {
